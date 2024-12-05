@@ -14,21 +14,21 @@ public final class ValidationThresholdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationThreshold model = BinaryData
-            .fromString("{\"grouping\":\"PerRack\",\"type\":\"CountSuccess\",\"value\":1449809140711379739}")
+            .fromString("{\"grouping\":\"PerRack\",\"type\":\"PercentSuccess\",\"value\":1125965714665499028}")
             .toObject(ValidationThreshold.class);
         Assertions.assertEquals(ValidationThresholdGrouping.PER_RACK, model.grouping());
-        Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.type());
-        Assertions.assertEquals(1449809140711379739L, model.value());
+        Assertions.assertEquals(ValidationThresholdType.PERCENT_SUCCESS, model.type());
+        Assertions.assertEquals(1125965714665499028L, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidationThreshold model = new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_RACK)
-            .withType(ValidationThresholdType.COUNT_SUCCESS)
-            .withValue(1449809140711379739L);
+            .withType(ValidationThresholdType.PERCENT_SUCCESS)
+            .withValue(1125965714665499028L);
         model = BinaryData.fromObject(model).toObject(ValidationThreshold.class);
         Assertions.assertEquals(ValidationThresholdGrouping.PER_RACK, model.grouping());
-        Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.type());
-        Assertions.assertEquals(1449809140711379739L, model.value());
+        Assertions.assertEquals(ValidationThresholdType.PERCENT_SUCCESS, model.type());
+        Assertions.assertEquals(1125965714665499028L, model.value());
     }
 }

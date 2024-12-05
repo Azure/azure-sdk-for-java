@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class FreeTrialState extends ExpandableStringEnum<FreeTrialState> {
      * @param name a name to look for.
      * @return the corresponding FreeTrialState.
      */
-    @JsonCreator
     public static FreeTrialState fromString(String name) {
         return fromString(name, FreeTrialState.class);
     }

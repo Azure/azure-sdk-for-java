@@ -6,40 +6,40 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
 
-/** Samples for PolicyFragment Get. */
+/**
+ * Samples for PolicyFragment Get.
+ */
 public final class PolicyFragmentGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPolicyFragment.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetPolicyFragment.json
      */
     /**
      * Sample code: ApiManagementGetPolicyFragment.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetPolicyFragment(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .policyFragments()
+    public static void
+        apiManagementGetPolicyFragment(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyFragments()
             .getWithResponse("rg1", "apimService1", "policyFragment1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPolicyFragmentFormat.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetPolicyFragmentFormat.json
      */
     /**
      * Sample code: ApiManagementGetPolicyFragmentFormat.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetPolicyFragmentFormat(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .policyFragments()
-            .getWithResponse(
-                "rg1",
-                "apimService1",
-                "policyFragment1",
-                PolicyFragmentContentFormat.RAWXML,
+    public static void
+        apiManagementGetPolicyFragmentFormat(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyFragments()
+            .getWithResponse("rg1", "apimService1", "policyFragment1", PolicyFragmentContentFormat.RAWXML,
                 com.azure.core.util.Context.NONE);
     }
 }

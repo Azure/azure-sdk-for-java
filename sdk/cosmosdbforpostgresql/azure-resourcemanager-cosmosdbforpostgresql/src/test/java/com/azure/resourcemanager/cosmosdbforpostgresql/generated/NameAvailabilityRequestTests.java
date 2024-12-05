@@ -12,14 +12,14 @@ public final class NameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NameAvailabilityRequest model
-            = BinaryData.fromString("{\"name\":\"uuimjmvxieduug\"}").toObject(NameAvailabilityRequest.class);
-        Assertions.assertEquals("uuimjmvxieduug", model.name());
+            = BinaryData.fromString("{\"name\":\"rkcciwwzjuqk\"}").toObject(NameAvailabilityRequest.class);
+        Assertions.assertEquals("rkcciwwzjuqk", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityRequest model = new NameAvailabilityRequest().withName("uuimjmvxieduug");
+        NameAvailabilityRequest model = new NameAvailabilityRequest().withName("rkcciwwzjuqk");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityRequest.class);
-        Assertions.assertEquals("uuimjmvxieduug", model.name());
+        Assertions.assertEquals("rkcciwwzjuqk", model.name());
     }
 }

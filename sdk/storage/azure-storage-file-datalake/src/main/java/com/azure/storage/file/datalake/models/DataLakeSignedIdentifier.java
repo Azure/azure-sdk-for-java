@@ -21,6 +21,12 @@ public class DataLakeSignedIdentifier {
     private DataLakeAccessPolicy accessPolicy;
 
     /**
+     * Creates a new instance of {@link DataLakeSignedIdentifier}.
+     */
+    public DataLakeSignedIdentifier() {
+    }
+
+    /**
      * Get the id property: a unique id.
      *
      * @return the id value.

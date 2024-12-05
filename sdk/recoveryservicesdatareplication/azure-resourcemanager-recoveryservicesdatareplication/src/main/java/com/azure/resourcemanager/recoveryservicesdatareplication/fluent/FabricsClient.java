@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.FabricModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricModelUpdate;
 
-/** An instance of this class provides access to all the operations defined in FabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FabricsClient.
+ */
 public interface FabricsClient {
     /**
      * Gets the fabric.
-     *
-     * <p>Gets the details of the fabric.
-     *
+     * 
+     * Gets the details of the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -35,9 +37,9 @@ public interface FabricsClient {
 
     /**
      * Gets the fabric.
-     *
-     * <p>Gets the details of the fabric.
-     *
+     * 
+     * Gets the details of the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,9 +52,9 @@ public interface FabricsClient {
 
     /**
      * Puts the fabric.
-     *
-     * <p>Creates the fabric.
-     *
+     * 
+     * Creates the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,9 +67,9 @@ public interface FabricsClient {
 
     /**
      * Puts the fabric.
-     *
-     * <p>Creates the fabric.
-     *
+     * 
+     * Creates the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param body Fabric properties.
@@ -83,9 +85,9 @@ public interface FabricsClient {
 
     /**
      * Puts the fabric.
-     *
-     * <p>Creates the fabric.
-     *
+     * 
+     * Creates the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,9 +100,9 @@ public interface FabricsClient {
 
     /**
      * Puts the fabric.
-     *
-     * <p>Creates the fabric.
-     *
+     * 
+     * Creates the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param body Fabric properties.
@@ -115,9 +117,9 @@ public interface FabricsClient {
 
     /**
      * Updates the fabric.
-     *
-     * <p>Performs update on the fabric.
-     *
+     * 
+     * Performs update on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,9 +132,9 @@ public interface FabricsClient {
 
     /**
      * Updates the fabric.
-     *
-     * <p>Performs update on the fabric.
-     *
+     * 
+     * Performs update on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param body Fabric properties.
@@ -148,9 +150,9 @@ public interface FabricsClient {
 
     /**
      * Updates the fabric.
-     *
-     * <p>Performs update on the fabric.
-     *
+     * 
+     * Performs update on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,9 +165,9 @@ public interface FabricsClient {
 
     /**
      * Updates the fabric.
-     *
-     * <p>Performs update on the fabric.
-     *
+     * 
+     * Performs update on the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param body Fabric properties.
@@ -180,9 +182,9 @@ public interface FabricsClient {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,9 +197,9 @@ public interface FabricsClient {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -211,9 +213,9 @@ public interface FabricsClient {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,9 +227,9 @@ public interface FabricsClient {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -240,9 +242,9 @@ public interface FabricsClient {
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of fabrics in the given subscription as paginated response with {@link PagedIterable}.
@@ -252,9 +254,9 @@ public interface FabricsClient {
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,32 +269,32 @@ public interface FabricsClient {
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of fabrics in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of fabrics in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FabricModelInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of fabrics in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of fabrics in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FabricModelInner> listByResourceGroup(String resourceGroupName, String continuationToken,

@@ -257,8 +257,8 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualMachineName = Utils.getValueFromIdByName(innerObject.id(), "virtualMachines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualMachines");
     }
 
     public VirtualMachine refresh() {

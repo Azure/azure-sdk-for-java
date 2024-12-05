@@ -50,9 +50,7 @@ public interface ConfidentialLedger {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: LedgerProperties
-     * 
-     * Properties of Confidential Ledger Resource.
+     * Gets the properties property: Properties of Confidential Ledger Resource.
      * 
      * @return the properties value.
      */
@@ -183,13 +181,9 @@ public interface ConfidentialLedger {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: LedgerProperties
+             * Specifies the properties property: Properties of Confidential Ledger Resource..
              * 
-             * Properties of Confidential Ledger Resource..
-             * 
-             * @param properties LedgerProperties
-             * 
-             * Properties of Confidential Ledger Resource.
+             * @param properties Properties of Confidential Ledger Resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(LedgerProperties properties);
@@ -245,13 +239,9 @@ public interface ConfidentialLedger {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: LedgerProperties
+             * Specifies the properties property: Properties of Confidential Ledger Resource..
              * 
-             * Properties of Confidential Ledger Resource..
-             * 
-             * @param properties LedgerProperties
-             * 
-             * Properties of Confidential Ledger Resource.
+             * @param properties Properties of Confidential Ledger Resource.
              * @return the next definition stage.
              */
             Update withProperties(LedgerProperties properties);

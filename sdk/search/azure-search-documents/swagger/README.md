@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4b7fbd8b842b509a0330f20260821dd844328dff/specification/search/data-plane/Azure.Search/preview/2024-09-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14531a7cf6101c1dd57e7c1c83103a047bb8f5bb/specification/search/data-plane/Azure.Search/preview/2024-11-01-preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4b7fbd8b842b509a0330f20260821dd844328dff/specification/search/data-plane/Azure.Search/preview/2024-09-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14531a7cf6101c1dd57e7c1c83103a047bb8f5bb/specification/search/data-plane/Azure.Search/preview/2024-11-01-preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
@@ -285,7 +285,7 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Change Answers and Captions to a string in SearchOptions and SearchRequest
+### Change Answers, Captions, and QueryRewrites to a string in SearchOptions and SearchRequest
 ``` yaml $(java)
 directive:
   - from: swagger-document
@@ -300,6 +300,13 @@ directive:
       param.type = "string";
       delete param.enum;
       delete param["x-ms-enum"];
+      
+      param = $.find(p => p.name == "queryRewrites");
+      param.type = "string";
+      delete param.enum;
+      delete param["x-ms-enum"];
+      
+      
 ```
 
 ``` yaml $(tag) == 'searchindex'
@@ -315,6 +322,11 @@ directive:
       param = $.SearchRequest.properties.captions;
       param.type = "string";
       param.description = $.Captions.description;
+      delete param["$ref"];
+      
+      param = $.SearchRequest.properties.queryRewrites;
+      param.type = "string";
+      param.description = $.QueryRewrites.description;
       delete param["$ref"];
 ```
 
@@ -450,17 +462,6 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
-### QueryDebugMode is missing vector property
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: "searchindex.json"
-  where: $.definitions.QueryDebugMode
-  transform: >
-    $.enum.push("vector");
-    $["x-ms-enum"].values.push({ "value": "vector", "name": "Vector", description: "Allows the user to further explore their hybrid and vector query results." });
-```
-
 ### Rename Speller to QuerySpellerType
 ``` yaml $(java)
 directive:
@@ -470,12 +471,23 @@ directive:
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
 ```
 
-### Rename Speller to QuerySpellerType
+### Fix `SearchResult["@search.documentDebugInfo"]`
 ``` yaml $(tag) == 'searchindex'
 directive:
   - from: swagger-document
-    where: $.definitions
+    where: $.definitions.SearchResult.properties
     transform: >
-      $.Speller["x-ms-enum"].name = "QuerySpellerType";
+      $["@search.documentDebugInfo"]["$ref"] = $["@search.documentDebugInfo"].items["$ref"];
+      delete $["@search.documentDebugInfo"].type;
+      delete $["@search.documentDebugInfo"].items;
 ```
 
+### `SearchDocumentsResult["@search.debugInfo"]` -> `SearchDocumentsResult["@search.debug"]`
+``` yaml $(tag) == 'searchindex'
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchDocumentsResult.properties
+    transform: >
+      $["@search.debug"] = $["@search.debugInfo"];
+      delete $["@search.debugInfo"];
+```

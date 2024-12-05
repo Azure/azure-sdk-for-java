@@ -5,43 +5,43 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Properties of an image version.
  */
 @Immutable
-public final class ImageVersionProperties {
+public final class ImageVersionProperties implements JsonSerializable<ImageVersionProperties> {
     /*
      * The semantic version string.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The datetime that the backing image version was published.
      */
-    @JsonProperty(value = "publishedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime publishedDate;
 
     /*
      * If the version should be excluded from being treated as the latest version.
      */
-    @JsonProperty(value = "excludeFromLatest", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean excludeFromLatest;
 
     /*
      * The size of the OS disk image, in GB.
      */
-    @JsonProperty(value = "osDiskImageSizeInGb", access = JsonProperty.Access.WRITE_ONLY)
     private Integer osDiskImageSizeInGb;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -101,5 +101,50 @@ public final class ImageVersionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageVersionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageVersionProperties.
+     */
+    public static ImageVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageVersionProperties deserializedImageVersionProperties = new ImageVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageVersionProperties.name = reader.getString();
+                } else if ("publishedDate".equals(fieldName)) {
+                    deserializedImageVersionProperties.publishedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("excludeFromLatest".equals(fieldName)) {
+                    deserializedImageVersionProperties.excludeFromLatest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("osDiskImageSizeInGb".equals(fieldName)) {
+                    deserializedImageVersionProperties.osDiskImageSizeInGb = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedImageVersionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageVersionProperties;
+        });
     }
 }

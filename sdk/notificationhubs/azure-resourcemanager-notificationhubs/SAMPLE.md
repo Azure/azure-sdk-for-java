@@ -68,8 +68,9 @@ public final class NamespacesCheckAvailabilitySamples {
      */
     public static void
         namespacesCheckAvailability(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().checkAvailabilityWithResponse(
-            new CheckAvailabilityParameters().withName("sdk-Namespace-2924"), com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .checkAvailabilityWithResponse(new CheckAvailabilityParameters().withName("sdk-Namespace-2924"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -104,9 +105,13 @@ public final class NamespacesCreateOrUpdateSamples {
      */
     public static void
         namespacesCreateOrUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().define("nh-sdk-ns").withRegion("South Central US").withExistingResourceGroup("5ktrial")
+        manager.namespaces()
+            .define("nh-sdk-ns")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("5ktrial")
             .withSku(new Sku().withName(SkuName.STANDARD).withTier("Standard"))
-            .withTags(mapOf("tag1", "value1", "tag2", "value2")).withZoneRedundancy(ZoneRedundancyPreference.ENABLED)
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withZoneRedundancy(ZoneRedundancyPreference.ENABLED)
             .withNetworkAcls(new NetworkAcls()
                 .withIpRules(Arrays.asList(new IpRule().withIpMask("185.48.100.00/24")
                     .withRights(Arrays.asList(AccessRights.MANAGE, AccessRights.SEND, AccessRights.LISTEN))))
@@ -179,8 +184,8 @@ public final class NamespacesDeleteSamples {
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void namespacesDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().deleteByResourceGroupWithResponse("5ktrial", "nh-sdk-ns",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .deleteByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -204,8 +209,9 @@ public final class NamespacesDeleteAuthorizationRuleSamples {
      */
     public static void
         namespacesDeleteAuthorizationRule(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().deleteAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .deleteAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -229,8 +235,9 @@ public final class NamespacesGetAuthorizationRuleSamples {
      */
     public static void
         namespacesGetAuthorizationRule(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -370,8 +377,9 @@ public final class NamespacesListKeysSamples {
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void namespacesListKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().listKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .listKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -398,8 +406,9 @@ public final class NamespacesRegenerateKeysSamples {
      */
     public static void
         namespacesRegenerateKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            new PolicyKeyResource().withPolicyKey(PolicyKeyType.PRIMARY_KEY), com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                new PolicyKeyResource().withPolicyKey(PolicyKeyType.PRIMARY_KEY), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -432,11 +441,14 @@ public final class NamespacesUpdateSamples {
      */
     public static void namespacesUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         NamespaceResource resource = manager.namespaces()
-            .getByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tag1", "value3")).withSku(new Sku().withName(SkuName.FREE))
-            .withProperties(
-                new NamespaceProperties().withPnsCredentials(new PnsCredentials().withGcmCredential(new GcmCredential()
-                    .withGcmEndpoint("https://fcm.googleapis.com/fcm/send").withGoogleApiKey("fakeTokenPlaceholder"))))
+            .getByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value3"))
+            .withSku(new Sku().withName(SkuName.FREE))
+            .withProperties(new NamespaceProperties().withPnsCredentials(new PnsCredentials()
+                .withGcmCredential(new GcmCredential().withGcmEndpoint("https://fcm.googleapis.com/fcm/send")
+                    .withGoogleApiKey("fakeTokenPlaceholder"))))
             .apply();
     }
 
@@ -475,9 +487,10 @@ public final class NotificationHubsCheckNotificationHubAvailabilitySamples {
      */
     public static void notificationHubsCheckNotificationHubAvailability(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().checkNotificationHubAvailabilityWithResponse("5ktrial", "locp-newns",
-            new CheckAvailabilityParameters().withName("sdktest").withLocation("West Europe"),
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .checkNotificationHubAvailabilityWithResponse("5ktrial", "locp-newns",
+                new CheckAvailabilityParameters().withName("sdktest").withLocation("West Europe"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -501,8 +514,11 @@ public final class NotificationHubsCreateOrUpdateSamples {
      */
     public static void
         notificationHubsCreateOrUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().define("nh-sdk-hub").withRegion("eastus")
-            .withExistingNamespace("5ktrial", "nh-sdk-ns").create();
+        manager.notificationHubs()
+            .define("nh-sdk-hub")
+            .withRegion("eastus")
+            .withExistingNamespace("5ktrial", "nh-sdk-ns")
+            .create();
     }
 }
 ```
@@ -529,9 +545,11 @@ public final class NotificationHubsCreateOrUpdateAuthorizationRuleSamples {
      */
     public static void notificationHubsCreateOrUpdateAuthorizationRule(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().defineAuthorizationRule("MyManageSharedAccessKey")
+        manager.notificationHubs()
+            .defineAuthorizationRule("MyManageSharedAccessKey")
             .withExistingNotificationHub("5ktrial", "nh-sdk-ns", "nh-sdk-hub")
-            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)).create();
+            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND))
+            .create();
     }
 }
 ```
@@ -555,8 +573,8 @@ public final class NotificationHubsDebugSendSamples {
      */
     public static void
         notificationHubsDebugSend(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().debugSendWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .debugSendWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -580,8 +598,8 @@ public final class NotificationHubsDeleteSamples {
      */
     public static void
         notificationHubsDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().deleteWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .deleteWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -605,8 +623,9 @@ public final class NotificationHubsDeleteAuthorizationRuleSamples {
      */
     public static void notificationHubsDeleteAuthorizationRule(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().deleteAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            "DefaultListenSharedAccessSignature", com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .deleteAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
+                "DefaultListenSharedAccessSignature", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -629,8 +648,8 @@ public final class NotificationHubsGetSamples {
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void notificationHubsGet(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().getWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .getWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -654,8 +673,9 @@ public final class NotificationHubsGetAuthorizationRuleSamples {
      */
     public static void notificationHubsGetAuthorizationRule(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            "DefaultListenSharedAccessSignature", com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
+                "DefaultListenSharedAccessSignature", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -679,8 +699,8 @@ public final class NotificationHubsGetPnsCredentialsSamples {
      */
     public static void
         notificationHubsGetPnsCredentials(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().getPnsCredentialsWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .getPnsCredentialsWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -728,8 +748,8 @@ public final class NotificationHubsListAuthorizationRulesSamples {
      */
     public static void notificationHubsListAuthorizationRules(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().listAuthorizationRules("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .listAuthorizationRules("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -753,8 +773,9 @@ public final class NotificationHubsListKeysSamples {
      */
     public static void
         notificationHubsListKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().listKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", "sdk-AuthRules-5800",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .listKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", "sdk-AuthRules-5800",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -781,9 +802,9 @@ public final class NotificationHubsRegenerateKeysSamples {
      */
     public static void
         notificationHubsRegenerateKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            "DefaultListenSharedAccessSignature", new PolicyKeyResource().withPolicyKey(PolicyKeyType.PRIMARY_KEY),
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .regenerateKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", "DefaultListenSharedAccessSignature",
+                new PolicyKeyResource().withPolicyKey(PolicyKeyType.PRIMARY_KEY), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -810,11 +831,14 @@ public final class NotificationHubsUpdateSamples {
      */
     public static void
         notificationHubsUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        NotificationHubResource resource = manager.notificationHubs().getWithResponse("sdkresourceGroup", "nh-sdk-ns",
-            "sdk-notificationHubs-8708", com.azure.core.util.Context.NONE).getValue();
-        resource
-            .update().withRegistrationTtl("10675199.02:48:05.4775807").withGcmCredential(new GcmCredential()
-                .withGcmEndpoint("https://fcm.googleapis.com/fcm/send").withGoogleApiKey("fakeTokenPlaceholder"))
+        NotificationHubResource resource = manager.notificationHubs()
+            .getWithResponse("sdkresourceGroup", "nh-sdk-ns", "sdk-notificationHubs-8708",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withRegistrationTtl("10675199.02:48:05.4775807")
+            .withGcmCredential(new GcmCredential().withGcmEndpoint("https://fcm.googleapis.com/fcm/send")
+                .withGoogleApiKey("fakeTokenPlaceholder"))
             .apply();
     }
 }
@@ -862,8 +886,9 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      */
     public static void
         privateEndpointConnectionsDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().delete("5ktrial", "nh-sdk-ns",
-            "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .delete("5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -887,8 +912,9 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void
         privateEndpointConnectionsGet(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().getWithResponse("5ktrial", "nh-sdk-ns",
-            "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -912,8 +938,8 @@ public final class PrivateEndpointConnectionsGetGroupIdSamples {
      */
     public static void privateEndpointConnectionsGetGroupId(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().getGroupIdWithResponse("5ktrial", "nh-sdk-ns", "namespace",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getGroupIdWithResponse("5ktrial", "nh-sdk-ns", "namespace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -991,12 +1017,13 @@ public final class PrivateEndpointConnectionsUpdateSamples {
      */
     public static void
         privateEndpointConnectionsUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().update("5ktrial", "nh-sdk-ns",
-            "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
-            new PrivateEndpointConnectionResourceInner().withProperties(new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new RemotePrivateEndpointConnection()).withPrivateLinkServiceConnectionState(
-                    new RemotePrivateLinkServiceConnectionState().withStatus(PrivateLinkConnectionStatus.APPROVED))),
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .update("5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                new PrivateEndpointConnectionResourceInner().withProperties(
+                    new PrivateEndpointConnectionProperties().withPrivateEndpoint(new RemotePrivateEndpointConnection())
+                        .withPrivateLinkServiceConnectionState(new RemotePrivateLinkServiceConnectionState()
+                            .withStatus(PrivateLinkConnectionStatus.APPROVED))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

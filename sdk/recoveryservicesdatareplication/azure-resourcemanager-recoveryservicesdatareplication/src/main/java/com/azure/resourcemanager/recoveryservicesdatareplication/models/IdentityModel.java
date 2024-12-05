@@ -6,49 +6,52 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Identity model. */
+/**
+ * Identity model.
+ */
 @Fluent
-public final class IdentityModel {
+public final class IdentityModel implements JsonSerializable<IdentityModel> {
     /*
      * Gets or sets the tenant Id of the SPN with which Dra communicates to service.
      */
-    @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
     /*
      * Gets or sets the client/application Id of the SPN with which Dra communicates to
      * service.
      */
-    @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
 
     /*
      * Gets or sets the object Id of the SPN with which Dra communicates to service.
      */
-    @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /*
      * Gets or sets the audience of the SPN with which Dra communicates to service.
      */
-    @JsonProperty(value = "audience", required = true)
     private String audience;
 
     /*
      * Gets or sets the authority of the SPN with which Dra communicates to service.
      */
-    @JsonProperty(value = "aadAuthority", required = true)
     private String aadAuthority;
 
-    /** Creates an instance of IdentityModel class. */
+    /**
+     * Creates an instance of IdentityModel class.
+     */
     public IdentityModel() {
     }
 
     /**
      * Get the tenantId property: Gets or sets the tenant Id of the SPN with which Dra communicates to service.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -57,7 +60,7 @@ public final class IdentityModel {
 
     /**
      * Set the tenantId property: Gets or sets the tenant Id of the SPN with which Dra communicates to service.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the IdentityModel object itself.
      */
@@ -69,7 +72,7 @@ public final class IdentityModel {
     /**
      * Get the applicationId property: Gets or sets the client/application Id of the SPN with which Dra communicates to
      * service.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -79,7 +82,7 @@ public final class IdentityModel {
     /**
      * Set the applicationId property: Gets or sets the client/application Id of the SPN with which Dra communicates to
      * service.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the IdentityModel object itself.
      */
@@ -90,7 +93,7 @@ public final class IdentityModel {
 
     /**
      * Get the objectId property: Gets or sets the object Id of the SPN with which Dra communicates to service.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -99,7 +102,7 @@ public final class IdentityModel {
 
     /**
      * Set the objectId property: Gets or sets the object Id of the SPN with which Dra communicates to service.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the IdentityModel object itself.
      */
@@ -110,7 +113,7 @@ public final class IdentityModel {
 
     /**
      * Get the audience property: Gets or sets the audience of the SPN with which Dra communicates to service.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -119,7 +122,7 @@ public final class IdentityModel {
 
     /**
      * Set the audience property: Gets or sets the audience of the SPN with which Dra communicates to service.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the IdentityModel object itself.
      */
@@ -130,7 +133,7 @@ public final class IdentityModel {
 
     /**
      * Get the aadAuthority property: Gets or sets the authority of the SPN with which Dra communicates to service.
-     *
+     * 
      * @return the aadAuthority value.
      */
     public String aadAuthority() {
@@ -139,7 +142,7 @@ public final class IdentityModel {
 
     /**
      * Set the aadAuthority property: Gets or sets the authority of the SPN with which Dra communicates to service.
-     *
+     * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the IdentityModel object itself.
      */
@@ -150,31 +153,80 @@ public final class IdentityModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property tenantId in model IdentityModel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tenantId in model IdentityModel"));
         }
         if (applicationId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property applicationId in model IdentityModel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property applicationId in model IdentityModel"));
         }
         if (objectId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property objectId in model IdentityModel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property objectId in model IdentityModel"));
         }
         if (audience() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property audience in model IdentityModel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property audience in model IdentityModel"));
         }
         if (aadAuthority() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property aadAuthority in model IdentityModel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property aadAuthority in model IdentityModel"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IdentityModel.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeStringField("aadAuthority", this.aadAuthority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityModel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IdentityModel.
+     */
+    public static IdentityModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityModel deserializedIdentityModel = new IdentityModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedIdentityModel.tenantId = reader.getString();
+                } else if ("applicationId".equals(fieldName)) {
+                    deserializedIdentityModel.applicationId = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedIdentityModel.objectId = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedIdentityModel.audience = reader.getString();
+                } else if ("aadAuthority".equals(fieldName)) {
+                    deserializedIdentityModel.aadAuthority = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityModel;
+        });
+    }
 }

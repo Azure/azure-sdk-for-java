@@ -6,35 +6,37 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** StorageProfile represents information about a disk. */
+/**
+ * StorageProfile represents information about a disk.
+ */
 @Fluent
-public final class StorageProfile {
+public final class StorageProfile implements JsonSerializable<StorageProfile> {
     /*
-     * OsDisk represents configuration of the boot disk.
-     *
      * The disk to use with this virtual machine.
      */
-    @JsonProperty(value = "osDisk", required = true)
     private OsDisk osDisk;
 
     /*
      * The resource IDs of volumes that are requested to be attached to the virtual machine.
      */
-    @JsonProperty(value = "volumeAttachments")
     private List<String> volumeAttachments;
 
-    /** Creates an instance of StorageProfile class. */
+    /**
+     * Creates an instance of StorageProfile class.
+     */
     public StorageProfile() {
     }
 
     /**
-     * Get the osDisk property: OsDisk represents configuration of the boot disk.
-     *
-     * <p>The disk to use with this virtual machine.
-     *
+     * Get the osDisk property: The disk to use with this virtual machine.
+     * 
      * @return the osDisk value.
      */
     public OsDisk osDisk() {
@@ -42,10 +44,8 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the osDisk property: OsDisk represents configuration of the boot disk.
-     *
-     * <p>The disk to use with this virtual machine.
-     *
+     * Set the osDisk property: The disk to use with this virtual machine.
+     * 
      * @param osDisk the osDisk value to set.
      * @return the StorageProfile object itself.
      */
@@ -57,7 +57,7 @@ public final class StorageProfile {
     /**
      * Get the volumeAttachments property: The resource IDs of volumes that are requested to be attached to the virtual
      * machine.
-     *
+     * 
      * @return the volumeAttachments value.
      */
     public List<String> volumeAttachments() {
@@ -67,7 +67,7 @@ public final class StorageProfile {
     /**
      * Set the volumeAttachments property: The resource IDs of volumes that are requested to be attached to the virtual
      * machine.
-     *
+     * 
      * @param volumeAttachments the volumeAttachments value to set.
      * @return the StorageProfile object itself.
      */
@@ -78,17 +78,59 @@ public final class StorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osDisk() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osDisk in model StorageProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osDisk in model StorageProfile"));
         } else {
             osDisk().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("osDisk", this.osDisk);
+        jsonWriter.writeArrayField("volumeAttachments", this.volumeAttachments,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageProfile.
+     */
+    public static StorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProfile deserializedStorageProfile = new StorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osDisk".equals(fieldName)) {
+                    deserializedStorageProfile.osDisk = OsDisk.fromJson(reader);
+                } else if ("volumeAttachments".equals(fieldName)) {
+                    List<String> volumeAttachments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStorageProfile.volumeAttachments = volumeAttachments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProfile;
+        });
+    }
 }

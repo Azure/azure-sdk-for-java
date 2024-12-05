@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The indicator of whether the platform default endpoints are allowed for the egress traffic. */
+/**
+ * The indicator of whether the platform default endpoints are allowed for the egress traffic.
+ */
 public final class CloudServicesNetworkEnableDefaultEgressEndpoints
     extends ExpandableStringEnum<CloudServicesNetworkEnableDefaultEgressEndpoints> {
-    /** Static value True for CloudServicesNetworkEnableDefaultEgressEndpoints. */
+    /**
+     * Static value True for CloudServicesNetworkEnableDefaultEgressEndpoints.
+     */
     public static final CloudServicesNetworkEnableDefaultEgressEndpoints TRUE = fromString("True");
 
-    /** Static value False for CloudServicesNetworkEnableDefaultEgressEndpoints. */
+    /**
+     * Static value False for CloudServicesNetworkEnableDefaultEgressEndpoints.
+     */
     public static final CloudServicesNetworkEnableDefaultEgressEndpoints FALSE = fromString("False");
 
     /**
      * Creates a new instance of CloudServicesNetworkEnableDefaultEgressEndpoints value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class CloudServicesNetworkEnableDefaultEgressEndpoints
 
     /**
      * Creates or finds a CloudServicesNetworkEnableDefaultEgressEndpoints from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CloudServicesNetworkEnableDefaultEgressEndpoints.
      */
-    @JsonCreator
     public static CloudServicesNetworkEnableDefaultEgressEndpoints fromString(String name) {
         return fromString(name, CloudServicesNetworkEnableDefaultEgressEndpoints.class);
     }
 
     /**
      * Gets known CloudServicesNetworkEnableDefaultEgressEndpoints values.
-     *
+     * 
      * @return known CloudServicesNetworkEnableDefaultEgressEndpoints values.
      */
     public static Collection<CloudServicesNetworkEnableDefaultEgressEndpoints> values() {

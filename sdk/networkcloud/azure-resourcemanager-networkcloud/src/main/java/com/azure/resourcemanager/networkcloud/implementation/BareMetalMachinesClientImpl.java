@@ -48,17 +48,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BareMetalMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BareMetalMachinesClient.
+ */
 public final class BareMetalMachinesClientImpl implements BareMetalMachinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BareMetalMachinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of BareMetalMachinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BareMetalMachinesClientImpl(NetworkCloudImpl client) {
@@ -135,7 +141,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/cordon")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cordon(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -146,7 +152,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/powerOff")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> powerOff(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -157,7 +163,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/reimage")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reimage(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -167,7 +173,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/replace")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> replace(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -178,7 +184,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/restart")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -188,7 +194,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runCommand")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runCommand(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -199,7 +205,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtracts")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runDataExtracts(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -210,7 +216,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runReadCommands")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runReadCommands(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -221,7 +227,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/start")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -231,7 +237,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/uncordon")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> uncordon(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -258,13 +264,13 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listSinglePageAsync() {
@@ -287,15 +293,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listSinglePageAsync(Context context) {
@@ -318,9 +324,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided subscription as paginated response with {@link PagedFlux}.
@@ -333,9 +339,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -350,13 +356,13 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> list() {
@@ -365,15 +371,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> list(Context context) {
@@ -382,15 +388,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -417,16 +423,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machines in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -454,15 +460,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BareMetalMachineInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -472,16 +478,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BareMetalMachineInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -491,15 +497,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName) {
@@ -508,16 +514,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -526,16 +532,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided bare metal machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BareMetalMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -565,9 +571,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -575,7 +581,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided bare metal machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BareMetalMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -604,9 +610,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -622,9 +628,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -641,9 +647,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,10 +664,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -669,7 +675,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachine represents the physical machine in the rack along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -706,10 +712,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -718,7 +724,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachine represents the physical machine in the rack along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -754,10 +760,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -778,10 +784,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -804,10 +810,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -825,10 +831,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -849,10 +855,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -870,10 +876,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -893,10 +899,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -913,10 +919,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -935,16 +941,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -974,17 +981,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -1013,166 +1021,172 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String bareMetalMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String bareMetalMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bareMetalMachineName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String bareMetalMachineName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String bareMetalMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, bareMetalMachineName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String bareMetalMachineName) {
         return this.beginDeleteAsync(resourceGroupName, bareMetalMachineName).getSyncPoller();
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String bareMetalMachineName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, bareMetalMachineName, context).getSyncPoller();
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String bareMetalMachineName) {
         return beginDeleteAsync(resourceGroupName, bareMetalMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String bareMetalMachineName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String bareMetalMachineName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, bareMetalMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String bareMetalMachineName) {
-        deleteAsync(resourceGroupName, bareMetalMachineName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName) {
+        return deleteAsync(resourceGroupName, bareMetalMachineName).block();
     }
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String bareMetalMachineName, Context context) {
-        deleteAsync(resourceGroupName, bareMetalMachineName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName, Context context) {
+        return deleteAsync(resourceGroupName, bareMetalMachineName, context).block();
     }
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1180,7 +1194,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachine represents the physical machine in the rack along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1214,10 +1228,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1226,7 +1240,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachine represents the physical machine in the rack along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1259,10 +1273,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1284,10 +1298,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1308,10 +1322,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1334,10 +1348,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1355,10 +1369,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1378,10 +1392,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1399,10 +1413,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1419,10 +1433,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1442,10 +1456,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1461,10 +1475,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -1482,17 +1496,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cordonWithResponseAsync(String resourceGroupName,
@@ -1526,9 +1540,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1536,8 +1550,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cordonWithResponseAsync(String resourceGroupName,
@@ -1570,9 +1584,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1594,9 +1608,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1617,9 +1631,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1642,9 +1656,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1662,9 +1676,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1684,9 +1698,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1704,9 +1718,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1723,9 +1737,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1745,9 +1759,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1763,9 +1777,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -1783,17 +1797,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceGroupName,
@@ -1827,9 +1841,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -1837,8 +1851,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceGroupName,
@@ -1871,9 +1885,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -1895,9 +1909,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1918,9 +1932,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -1943,9 +1957,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1963,9 +1977,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -1986,9 +2000,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -2006,9 +2020,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2025,9 +2039,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -2047,9 +2061,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2065,9 +2079,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -2086,16 +2100,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName,
@@ -2125,17 +2139,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName,
@@ -2164,9 +2178,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2185,9 +2199,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2208,9 +2222,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2226,9 +2240,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2245,9 +2259,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2263,9 +2277,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2283,9 +2297,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2300,9 +2314,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2318,17 +2332,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> replaceWithResponseAsync(String resourceGroupName,
@@ -2362,9 +2376,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2372,8 +2386,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> replaceWithResponseAsync(String resourceGroupName,
@@ -2406,9 +2420,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2430,9 +2444,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2453,9 +2467,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2478,9 +2492,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2498,9 +2512,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2521,9 +2535,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2541,9 +2555,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2560,9 +2574,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2582,9 +2596,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2600,9 +2614,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -2621,16 +2635,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -2660,17 +2674,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -2699,9 +2713,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2720,9 +2734,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2743,9 +2757,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2761,9 +2775,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2780,9 +2794,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2798,9 +2812,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2818,9 +2832,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2835,9 +2849,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -2853,18 +2867,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName,
@@ -2901,10 +2915,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -2912,8 +2926,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName,
@@ -2950,10 +2964,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -2975,10 +2989,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3001,10 +3015,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3023,10 +3037,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3048,10 +3062,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3070,10 +3084,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3092,10 +3106,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3112,10 +3126,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -3134,19 +3148,18 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runDataExtractsWithResponseAsync(String resourceGroupName,
@@ -3184,11 +3197,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3196,8 +3208,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runDataExtractsWithResponseAsync(String resourceGroupName,
@@ -3234,11 +3246,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3260,11 +3271,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3287,11 +3297,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3312,11 +3321,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3338,11 +3346,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3360,11 +3367,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3383,11 +3389,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3405,11 +3410,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -3428,19 +3432,19 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(String resourceGroupName,
@@ -3478,11 +3482,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3490,8 +3494,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(String resourceGroupName,
@@ -3528,11 +3532,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3554,11 +3558,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3581,11 +3585,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3606,11 +3610,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3632,11 +3636,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3654,11 +3658,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3677,11 +3681,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3699,11 +3703,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -3722,16 +3726,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -3761,17 +3765,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -3800,9 +3804,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3821,9 +3825,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -3844,9 +3848,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3862,9 +3866,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -3881,9 +3885,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3899,9 +3903,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -3919,9 +3923,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3936,9 +3940,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -3954,16 +3958,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> uncordonWithResponseAsync(String resourceGroupName,
@@ -3993,17 +3997,17 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> uncordonWithResponseAsync(String resourceGroupName,
@@ -4032,9 +4036,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4053,9 +4057,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -4076,9 +4080,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4094,9 +4098,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -4113,9 +4117,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4131,9 +4135,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -4151,9 +4155,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4168,9 +4172,9 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -4186,14 +4190,13 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -4215,15 +4218,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -4244,14 +4246,13 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -4273,15 +4274,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineList represents a list of bare metal machines along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

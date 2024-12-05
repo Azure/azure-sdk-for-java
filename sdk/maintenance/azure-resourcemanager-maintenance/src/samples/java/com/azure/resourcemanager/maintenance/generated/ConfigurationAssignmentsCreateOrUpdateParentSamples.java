@@ -11,7 +11,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
  */
 public final class ConfigurationAssignmentsCreateOrUpdateParentSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignments_CreateOrUpdateParent.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ConfigurationAssignments_CreateOrUpdateParent.json
      */
     /**
      * Sample code: ConfigurationAssignments_CreateOrUpdateParent.

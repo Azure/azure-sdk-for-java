@@ -15,6 +15,17 @@
 
 ### Other Changes
 
+
+## 1.0.9 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `netty-codec-http` from `4.1.112.Final` to version `4.1.115.Final`.
+
+
 ## 1.0.8 (2024-10-25)
 
 ### Other Changes

@@ -8,9 +8,6 @@ parameters:
 - name: SDKType
   type: string
   default: client
-- name: TargetDocRepoName
-  type: string
-  default: azure-docs-sdk-java
 - name: BuildParallelization
   type: string
   default: '2C'
@@ -323,4 +320,3 @@ extends:
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
             ArtifactName: packages
-            TargetDocRepoName: ${{ parameters.TargetDocRepoName }}

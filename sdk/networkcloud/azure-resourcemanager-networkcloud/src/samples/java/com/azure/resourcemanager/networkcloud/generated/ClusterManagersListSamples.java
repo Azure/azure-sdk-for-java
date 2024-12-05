@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for ClusterManagers List. */
+/**
+ * Samples for ClusterManagers List.
+ */
 public final class ClusterManagersListSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/ClusterManagers_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * ClusterManagers_ListBySubscription.json
      */
     /**
      * Sample code: List cluster managers for subscription.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void listClusterManagersForSubscription(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+    public static void
+        listClusterManagersForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.clusterManagers().list(com.azure.core.util.Context.NONE);
     }
 }

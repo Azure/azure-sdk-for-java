@@ -11,25 +11,27 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterContractInner;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateContract;
 
-/** An instance of this class provides access to all the operations defined in QuotaByPeriodKeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotaByPeriodKeysClient.
+ */
 public interface QuotaByPeriodKeysClient {
     /**
      * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
      * service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
-     *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-     *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-     *     by "ba" key.
+     * attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+     * accessible by "boo" counter key. But if it’s defined as counter-key="&#064;("b"+"a")" then it will be accessible
+     * by "ba" key.
      * @param quotaPeriodKey Quota period key identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance along with {@link Response}.
+     * service instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<QuotaCounterContractInner> getWithResponse(String resourceGroupName, String serviceName,
@@ -38,19 +40,19 @@ public interface QuotaByPeriodKeysClient {
     /**
      * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
      * service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
-     *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-     *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-     *     by "ba" key.
+     * attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+     * accessible by "boo" counter key. But if it’s defined as counter-key="&#064;("b"+"a")" then it will be accessible
+     * by "ba" key.
      * @param quotaPeriodKey Quota period key identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
+     * service instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     QuotaCounterContractInner get(String resourceGroupName, String serviceName, String quotaCounterKey,
@@ -58,13 +60,13 @@ public interface QuotaByPeriodKeysClient {
 
     /**
      * Updates an existing quota counter value in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
-     *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-     *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-     *     by "ba" key.
+     * attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+     * accessible by "boo" counter key. But if it’s defined as counter-key="&#064;("b"+"a")" then it will be accessible
+     * by "ba" key.
      * @param quotaPeriodKey Quota period key identifier.
      * @param parameters The value of the Quota counter to be applied on the specified period.
      * @param context The context to associate with this operation.
@@ -79,13 +81,13 @@ public interface QuotaByPeriodKeysClient {
 
     /**
      * Updates an existing quota counter value in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param quotaCounterKey Quota counter key identifier.This is the result of expression defined in counter-key
-     *     attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
-     *     accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
-     *     by "ba" key.
+     * attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+     * accessible by "boo" counter key. But if it’s defined as counter-key="&#064;("b"+"a")" then it will be accessible
+     * by "ba" key.
      * @param quotaPeriodKey Quota period key identifier.
      * @param parameters The value of the Quota counter to be applied on the specified period.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

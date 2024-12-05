@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -43,39 +44,14 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /*
-    /**********************************************************************
-    /* Extended API
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Extended API
+     * /**********************************************************************
      */
 
     @Override
     public JsonLocation getLocation() {
         return _location;
-    }
-
-    /**
-     * Method that allows to remove context information from this exception's message.
-     * Useful when you are parsing security-sensitive data and don't want original data excerpts
-     * to be present in Jackson parser error messages.
-     *
-     * @since 2.9
-     */
-    public void clearLocation() {
-        _location = null;
-    }
-
-    /**
-     * Method that allows accessing the original "message" argument,
-     * without additional decorations (like location information)
-     * that overridden {@link #getMessage} adds.
-     *
-     * @return Original message passed in constructor
-     *
-     * @since 2.1
-     */
-    @Override
-    public String getOriginalMessage() {
-        return super.getMessage();
     }
 
     /**
@@ -98,9 +74,9 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /*
-    /**********************************************************************
-    /* Methods for sub-classes to use, override
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Methods for sub-classes to use, override
+     * /**********************************************************************
      */
 
     /**
@@ -115,9 +91,9 @@ public class JsonProcessingException extends JacksonException {
     }
 
     /*
-    /**********************************************************************
-    /* Overrides of standard methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Overrides of standard methods
+     * /**********************************************************************
      */
 
     /**

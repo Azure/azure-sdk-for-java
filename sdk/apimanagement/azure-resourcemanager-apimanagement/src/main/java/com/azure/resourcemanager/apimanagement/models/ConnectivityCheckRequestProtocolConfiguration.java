@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Protocol-specific configuration. */
+/**
+ * Protocol-specific configuration.
+ */
 @Fluent
-public final class ConnectivityCheckRequestProtocolConfiguration {
+public final class ConnectivityCheckRequestProtocolConfiguration
+    implements JsonSerializable<ConnectivityCheckRequestProtocolConfiguration> {
     /*
      * Configuration for HTTP or HTTPS requests.
      */
-    @JsonProperty(value = "HTTPConfiguration")
     private ConnectivityCheckRequestProtocolConfigurationHttpConfiguration httpConfiguration;
 
-    /** Creates an instance of ConnectivityCheckRequestProtocolConfiguration class. */
+    /**
+     * Creates an instance of ConnectivityCheckRequestProtocolConfiguration class.
+     */
     public ConnectivityCheckRequestProtocolConfiguration() {
     }
 
     /**
      * Get the httpConfiguration property: Configuration for HTTP or HTTPS requests.
-     *
+     * 
      * @return the httpConfiguration value.
      */
     public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration httpConfiguration() {
@@ -31,7 +39,7 @@ public final class ConnectivityCheckRequestProtocolConfiguration {
 
     /**
      * Set the httpConfiguration property: Configuration for HTTP or HTTPS requests.
-     *
+     * 
      * @param httpConfiguration the httpConfiguration value to set.
      * @return the ConnectivityCheckRequestProtocolConfiguration object itself.
      */
@@ -43,12 +51,50 @@ public final class ConnectivityCheckRequestProtocolConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (httpConfiguration() != null) {
             httpConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("HTTPConfiguration", this.httpConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityCheckRequestProtocolConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityCheckRequestProtocolConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityCheckRequestProtocolConfiguration.
+     */
+    public static ConnectivityCheckRequestProtocolConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityCheckRequestProtocolConfiguration deserializedConnectivityCheckRequestProtocolConfiguration
+                = new ConnectivityCheckRequestProtocolConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("HTTPConfiguration".equals(fieldName)) {
+                    deserializedConnectivityCheckRequestProtocolConfiguration.httpConfiguration
+                        = ConnectivityCheckRequestProtocolConfigurationHttpConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityCheckRequestProtocolConfiguration;
+        });
     }
 }

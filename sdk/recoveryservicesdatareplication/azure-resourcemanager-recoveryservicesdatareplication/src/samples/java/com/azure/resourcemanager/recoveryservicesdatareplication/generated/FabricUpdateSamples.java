@@ -10,26 +10,27 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricMo
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Fabric Update. */
+/**
+ * Samples for Fabric Update.
+ */
 public final class FabricUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Update.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Update.json
      */
     /**
      * Sample code: Fabric_Update.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricUpdate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        FabricModel resource =
-            manager
-                .fabrics()
-                .getByResourceGroupWithResponse(
-                    "rgrecoveryservicesdatareplication", "wPR", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        FabricModel resource = manager.fabrics()
+            .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "wPR",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key6664", "fakeTokenPlaceholder"))
             .withProperties(new FabricModelProperties().withCustomProperties(new FabricModelCustomProperties()))
             .apply();

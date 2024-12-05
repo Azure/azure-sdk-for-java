@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The connection status. */
+/**
+ * The connection status.
+ */
 public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatus> {
-    /** Static value Unknown for ConnectionStatus. */
+    /**
+     * Static value Unknown for ConnectionStatus.
+     */
     public static final ConnectionStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Connected for ConnectionStatus. */
+    /**
+     * Static value Connected for ConnectionStatus.
+     */
     public static final ConnectionStatus CONNECTED = fromString("Connected");
 
-    /** Static value Disconnected for ConnectionStatus. */
+    /**
+     * Static value Disconnected for ConnectionStatus.
+     */
     public static final ConnectionStatus DISCONNECTED = fromString("Disconnected");
 
-    /** Static value Degraded for ConnectionStatus. */
+    /**
+     * Static value Degraded for ConnectionStatus.
+     */
     public static final ConnectionStatus DEGRADED = fromString("Degraded");
 
     /**
      * Creates a new instance of ConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatu
 
     /**
      * Creates or finds a ConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionStatus.
      */
-    @JsonCreator
     public static ConnectionStatus fromString(String name) {
         return fromString(name, ConnectionStatus.class);
     }
 
     /**
      * Gets known ConnectionStatus values.
-     *
+     * 
      * @return known ConnectionStatus values.
      */
     public static Collection<ConnectionStatus> values() {

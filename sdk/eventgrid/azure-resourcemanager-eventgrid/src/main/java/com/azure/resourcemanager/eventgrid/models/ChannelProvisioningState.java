@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -69,7 +68,6 @@ public final class ChannelProvisioningState extends ExpandableStringEnum<Channel
      * @param name a name to look for.
      * @return the corresponding ChannelProvisioningState.
      */
-    @JsonCreator
     public static ChannelProvisioningState fromString(String name) {
         return fromString(name, ChannelProvisioningState.class);
     }

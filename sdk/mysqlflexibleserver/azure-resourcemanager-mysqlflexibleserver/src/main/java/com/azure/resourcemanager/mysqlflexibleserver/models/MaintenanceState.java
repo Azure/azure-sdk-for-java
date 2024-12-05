@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class MaintenanceState extends ExpandableStringEnum<MaintenanceStat
      * @param name a name to look for.
      * @return the corresponding MaintenanceState.
      */
-    @JsonCreator
     public static MaintenanceState fromString(String name) {
         return fromString(name, MaintenanceState.class);
     }

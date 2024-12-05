@@ -30,17 +30,23 @@ import com.azure.resourcemanager.networkcloud.fluent.models.OperationInner;
 import com.azure.resourcemanager.networkcloud.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(NetworkCloudImpl client) {
@@ -73,14 +79,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List resource provider operations.
-     *
-     * <p>Get a list of all available resource provider operations. It contains a URL link to get the next set of
-     * results.
-     *
+     * 
+     * Get a list of all available resource provider operations. It contains a URL link to get the next set of results.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all available resource provider operations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
@@ -99,16 +104,15 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List resource provider operations.
-     *
-     * <p>Get a list of all available resource provider operations. It contains a URL link to get the next set of
-     * results.
-     *
+     * 
+     * Get a list of all available resource provider operations. It contains a URL link to get the next set of results.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all available resource provider operations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
@@ -125,10 +129,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List resource provider operations.
-     *
-     * <p>Get a list of all available resource provider operations. It contains a URL link to get the next set of
-     * results.
-     *
+     * 
+     * Get a list of all available resource provider operations. It contains a URL link to get the next set of results.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all available resource provider operations as paginated response with {@link PagedFlux}.
@@ -140,10 +143,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List resource provider operations.
-     *
-     * <p>Get a list of all available resource provider operations. It contains a URL link to get the next set of
-     * results.
-     *
+     * 
+     * Get a list of all available resource provider operations. It contains a URL link to get the next set of results.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -158,10 +160,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List resource provider operations.
-     *
-     * <p>Get a list of all available resource provider operations. It contains a URL link to get the next set of
-     * results.
-     *
+     * 
+     * Get a list of all available resource provider operations. It contains a URL link to get the next set of results.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all available resource provider operations as paginated response with {@link PagedIterable}.
@@ -173,10 +174,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * List resource provider operations.
-     *
-     * <p>Get a list of all available resource provider operations. It contains a URL link to get the next set of
-     * results.
-     *
+     * 
+     * Get a list of all available resource provider operations. It contains a URL link to get the next set of results.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -190,14 +190,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
@@ -217,15 +216,14 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {

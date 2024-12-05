@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Additional information about every inline event.
  */
 @Fluent
-public final class InlineEventProperties {
+public final class InlineEventProperties implements JsonSerializable<InlineEventProperties> {
     /*
      * The description for the inline event.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The displayName for the inline event.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The documentationUrl for the inline event.
      */
-    @JsonProperty(value = "documentationUrl")
     private String documentationUrl;
 
     /*
      * The dataSchemaUrl for the inline event.
      */
-    @JsonProperty(value = "dataSchemaUrl")
     private String dataSchemaUrl;
 
     /**
@@ -128,5 +128,50 @@ public final class InlineEventProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("documentationUrl", this.documentationUrl);
+        jsonWriter.writeStringField("dataSchemaUrl", this.dataSchemaUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InlineEventProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InlineEventProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InlineEventProperties.
+     */
+    public static InlineEventProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InlineEventProperties deserializedInlineEventProperties = new InlineEventProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedInlineEventProperties.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedInlineEventProperties.displayName = reader.getString();
+                } else if ("documentationUrl".equals(fieldName)) {
+                    deserializedInlineEventProperties.documentationUrl = reader.getString();
+                } else if ("dataSchemaUrl".equals(fieldName)) {
+                    deserializedInlineEventProperties.dataSchemaUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInlineEventProperties;
+        });
     }
 }

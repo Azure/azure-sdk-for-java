@@ -113,9 +113,9 @@ public final class TagContractImpl implements TagContract, TagContract.Definitio
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.tagId = Utils.getValueFromIdByName(innerObject.id(), "tags");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.tagId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tags");
     }
 
     public TagContract refresh() {

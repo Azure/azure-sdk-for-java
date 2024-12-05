@@ -13,16 +13,16 @@ public final class MaintenancePropertiesForUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenancePropertiesForUpdate model
-            = BinaryData.fromString("{\"maintenanceStartTime\":\"2021-04-06T20:50:40Z\"}")
+            = BinaryData.fromString("{\"maintenanceStartTime\":\"2021-08-08T19:14:54Z\"}")
                 .toObject(MaintenancePropertiesForUpdate.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T20:50:40Z"), model.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T19:14:54Z"), model.maintenanceStartTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenancePropertiesForUpdate model = new MaintenancePropertiesForUpdate()
-            .withMaintenanceStartTime(OffsetDateTime.parse("2021-04-06T20:50:40Z"));
+            .withMaintenanceStartTime(OffsetDateTime.parse("2021-08-08T19:14:54Z"));
         model = BinaryData.fromObject(model).toObject(MaintenancePropertiesForUpdate.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T20:50:40Z"), model.maintenanceStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T19:14:54Z"), model.maintenanceStartTime());
     }
 }

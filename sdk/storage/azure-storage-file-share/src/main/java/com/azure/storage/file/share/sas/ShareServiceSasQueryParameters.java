@@ -24,19 +24,12 @@ import java.util.Map;
  */
 @Deprecated
 public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters {
-
     private final String identifier;
-
     private final String resource;
-
     private final String cacheControl;
-
     private final String contentDisposition;
-
     private final String contentEncoding;
-
     private final String contentLanguage;
-
     private final String contentType;
 
     /**
@@ -99,6 +92,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the signed identifier (only for {@link ShareServiceSasSignatureValues}) or {@code null}.
+     *
      * @return The signed identifier (only for {@link ShareServiceSasSignatureValues}) or {@code null}. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
@@ -110,6 +105,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the storage share or file (only for {@link ShareServiceSasSignatureValues}).
+     *
      * @return The storage share or file (only for {@link ShareServiceSasSignatureValues}).
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
@@ -119,6 +116,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the Cache-Control header value when a client accesses the resource with this sas token.
+     *
      * @return The Cache-Control header value when a client accesses the resource with this sas token.
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
@@ -128,6 +127,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the Content-Disposition header value when a client accesses the resource with this sas token.
+     *
      * @return The Content-Disposition header value when a client accesses the resource with this sas token.
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
@@ -137,6 +138,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the Content-Encoding header value when a client accesses the resource with this sas token.
+     *
      * @return The Content-Encoding header value when a client accesses the resource with this sas token.
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
@@ -146,6 +149,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the Content-Language header value when a client accesses the resource with this sas token.
+     *
      * @return The Content-Language header value when a client accesses the resource with this sas token.
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */
@@ -155,6 +160,8 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the Content-Type header value when a client accesses the resource with this sas token.
+     *
      * @return The Content-Type header value when a client accesses the resource with this sas token.
      * @deprecated Please use {@link ShareServiceSasSignatureValues}
      */

@@ -165,9 +165,9 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     ConsoleImpl(ConsoleInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualMachineName = Utils.getValueFromIdByName(innerObject.id(), "virtualMachines");
-        this.consoleName = Utils.getValueFromIdByName(innerObject.id(), "consoles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualMachineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualMachines");
+        this.consoleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "consoles");
     }
 
     public Console refresh() {

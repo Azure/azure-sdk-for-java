@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdvancedThreatProtectionProvisioningState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdvancedThreatProtectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Properties of an Advanced Threat Protection setting.
  */
 @Fluent
-public final class AdvancedThreatProtectionProperties {
+public final class AdvancedThreatProtectionProperties implements JsonSerializable<AdvancedThreatProtectionProperties> {
     /*
      * Specifies the UTC creation time of the policy.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
-     * Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been applied yet on the specific database or server.
+     * Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been
+     * applied yet on the specific database or server.
      */
-    @JsonProperty(value = "state")
     private AdvancedThreatProtectionState state;
 
     /*
      * Provisioning state of the Threat Protection.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AdvancedThreatProtectionProvisioningState provisioningState;
 
     /**
@@ -85,5 +88,49 @@ public final class AdvancedThreatProtectionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvancedThreatProtectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvancedThreatProtectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdvancedThreatProtectionProperties.
+     */
+    public static AdvancedThreatProtectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvancedThreatProtectionProperties deserializedAdvancedThreatProtectionProperties
+                = new AdvancedThreatProtectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    deserializedAdvancedThreatProtectionProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedAdvancedThreatProtectionProperties.state
+                        = AdvancedThreatProtectionState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAdvancedThreatProtectionProperties.provisioningState
+                        = AdvancedThreatProtectionProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvancedThreatProtectionProperties;
+        });
     }
 }

@@ -39,8 +39,9 @@ public final class AzureLargeInstanceGetByResourceGroupSamples {
      * @param manager Entry point to LargeInstanceManager.
      */
     public static void azureLargeInstanceGet(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().getByResourceGroupWithResponse("myResourceGroup", "myAzureLargeInstance",
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .getByResourceGroupWithResponse("myResourceGroup", "myAzureLargeInstance",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -112,8 +113,8 @@ public final class AzureLargeInstanceRestartSamples {
      * @param manager Entry point to LargeInstanceManager.
      */
     public static void azureLargeInstanceRestart(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().restart("myResourceGroup", "myALInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .restart("myResourceGroup", "myALInstance", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -185,8 +186,8 @@ public final class AzureLargeInstanceUpdateSamples {
      */
     public static void
         azureLargeInstanceUpdateTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().updateWithResponse("myResourceGroup", "myALInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .updateWithResponse("myResourceGroup", "myALInstance", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -201,8 +202,8 @@ public final class AzureLargeInstanceUpdateSamples {
      */
     public static void
         azureLargeInstanceDeleteTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().updateWithResponse("myResourceGroup", "myALInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .updateWithResponse("myResourceGroup", "myALInstance", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -226,8 +227,9 @@ public final class AzureLargeStorageInstanceGetByResourceGroupSamples {
      */
     public static void
         azureLargeStorageInstanceGet(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeStorageInstances().getByResourceGroupWithResponse("myResourceGroup",
-            "myAzureLargeStorageInstance", com.azure.core.util.Context.NONE);
+        manager.azureLargeStorageInstances()
+            .getByResourceGroupWithResponse("myResourceGroup", "myAzureLargeStorageInstance",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -300,8 +302,8 @@ public final class AzureLargeStorageInstanceUpdateSamples {
      */
     public static void
         azureLargeStorageInstanceDeleteTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeStorageInstances().updateWithResponse("myResourceGroup", "myALSInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeStorageInstances()
+            .updateWithResponse("myResourceGroup", "myALSInstance", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -316,8 +318,8 @@ public final class AzureLargeStorageInstanceUpdateSamples {
      */
     public static void
         azureLargeStorageInstanceUpdateTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeStorageInstances().updateWithResponse("myResourceGroup", "myALSInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeStorageInstances()
+            .updateWithResponse("myResourceGroup", "myALSInstance", null, com.azure.core.util.Context.NONE);
     }
 }
 ```

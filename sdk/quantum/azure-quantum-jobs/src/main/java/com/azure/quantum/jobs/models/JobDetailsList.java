@@ -34,6 +34,12 @@ public final class JobDetailsList implements JsonSerializable<JobDetailsList> {
     private String nextLink;
 
     /**
+     * Creates an instance of {@link JobDetailsList}.
+     */
+    public JobDetailsList() {
+    }
+
+    /**
      * Get the value property: The value property.
      *
      * @return the value value.

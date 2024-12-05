@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.1 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-communication-common` from `1.3.7` to version `1.3.8`.
+
+
+## 1.3.0 (2024-11-22)
+
+### Features Added
+
+- Support multiple play sources for Play and Recognize
+- Support for PlayStarted event in Play/Recognize
+- Hold and Unhold the participant
+- CallDisconnected now includes more information on why the call has ended
+- Support to manage the rooms/servercall/group call using connect API
+- Expose original PSTN number target from incoming call event in call connection properties
+- Support for VoIP to PSTN transfer scenario
+
+### Other Changes
+
+- Added CreateCallFailed event to signify when create call API fails to establish a call
+- Added AnswerFailed event to signify when answer call API fails to answer a call
+
 
 ## 1.2.6 (2024-10-25)
 

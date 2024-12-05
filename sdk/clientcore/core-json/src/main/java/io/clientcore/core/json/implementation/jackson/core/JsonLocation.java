@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -59,9 +60,9 @@ public class JsonLocation implements java.io.Serializable {
     protected transient String _sourceDescription;
 
     /*
-    /**********************************************************************
-    /* Life cycle
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Life cycle
+     * /**********************************************************************
      */
 
     public JsonLocation(ContentReference contentRef, long totalChars, int lineNr, int colNr) {
@@ -98,26 +99,10 @@ public class JsonLocation implements java.io.Serializable {
     }
 
     /*
-    /**********************************************************************
-    /* Simple accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Simple accessors
+     * /**********************************************************************
      */
-
-    /**
-     * Accessor for information about the original input source content is being
-     * read from. Returned reference is never {@code null} but may not contain
-     * useful information.
-     *<p>
-     * NOTE: not getter, on purpose, to avoid inlusion if serialized using
-     * default Jackson serializer.
-     *
-     * @return Object with information about input source.
-     *
-     * @since 2.13 (to replace {@code getSourceRef})
-     */
-    public ContentReference contentReference() {
-        return _contentReference;
-    }
 
     /**
      * Reference to the original resource being read, if one available.
@@ -134,42 +119,6 @@ public class JsonLocation implements java.io.Serializable {
     @Deprecated
     public Object getSourceRef() {
         return _contentReference.getRawContent();
-    }
-
-    /**
-     * Access for getting line number of this location, if available.
-     * Note that line number is typically not available for binary formats.
-     *
-     * @return Line number of the location (1-based), if available; {@code -1} if not.
-     */
-    public int getLineNr() {
-        return _lineNr;
-    }
-
-    /**
-     * Access for getting column position of this location, if available.
-     * Note that column position is typically not available for binary formats.
-     *
-     * @return Column position of the location (1-based), if available; {@code -1} if not.
-     */
-    public int getColumnNr() {
-        return _columnNr;
-    }
-
-    /**
-     * @return Character offset within underlying stream, reader or writer,
-     *   if available; {@code -1} if not.
-     */
-    public long getCharOffset() {
-        return _totalChars;
-    }
-
-    /**
-     * @return Byte offset within underlying stream, reader or writer,
-     *   if available; {@code -1} if not.
-     */
-    public long getByteOffset() {
-        return _totalBytes;
     }
 
     /**
@@ -194,24 +143,11 @@ public class JsonLocation implements java.io.Serializable {
         return _sourceDescription;
     }
 
-    /**
-     * Accessor for a brief summary of Location offsets (line number, column position,
-     * or byte offset, if available).
-     *
-     * @return Description of available relevant location offsets; combination of
-     *    line number and column position or byte offset
-     *
-     * @since 2.13
-     */
-    public String offsetDescription() {
-        return appendOffsetDescription(new StringBuilder(40)).toString();
-    }
-
     // @since 2.13
     public StringBuilder appendOffsetDescription(StringBuilder sb) {
         // 04-Apr-2021, tatu: [core#694] For binary content, we have no line
-        //    number or column position indicators; try using what we do have
-        //    (if anything)
+        // number or column position indicators; try using what we do have
+        // (if anything)
 
         if (_contentReference.hasTextualContent()) {
             sb.append("line: ");
@@ -229,8 +165,8 @@ public class JsonLocation implements java.io.Serializable {
             }
         } else {
             // 04-Apr-2021, tatu: Ideally byte formats would not need line/column
-            //    info, but for backwards-compatibility purposes (Jackson 2.x),
-            //    will leave logic here
+            // info, but for backwards-compatibility purposes (Jackson 2.x),
+            // will leave logic here
             if (_lineNr > 0) { // yes, require 1-based in case of allegedly binary content
                 sb.append("line: ").append(_lineNr);
                 if (_columnNr > 0) {
@@ -252,9 +188,9 @@ public class JsonLocation implements java.io.Serializable {
     }
 
     /*
-    /**********************************************************************
-    /* Standard method overrides
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Standard method overrides
+     * /**********************************************************************
      */
 
     @Override

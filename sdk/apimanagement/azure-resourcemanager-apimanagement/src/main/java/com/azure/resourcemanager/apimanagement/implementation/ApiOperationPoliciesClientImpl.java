@@ -35,17 +35,23 @@ import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiOperationPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiOperationPoliciesClient.
+ */
 public final class ApiOperationPoliciesClientImpl implements ApiOperationPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiOperationPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiOperationPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiOperationPoliciesClientImpl(ApiManagementClientImpl client) {
@@ -118,18 +124,18 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the list of policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the API Operation level along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyCollectionInner>> listByOperationWithResponseAsync(String resourceGroupName,
@@ -164,19 +170,19 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the list of policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the API Operation level along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyCollectionInner>> listByOperationWithResponseAsync(String resourceGroupName,
@@ -210,13 +216,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the list of policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -231,13 +237,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the list of policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -252,13 +258,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the list of policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,19 +278,19 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API operation policy specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -323,20 +329,20 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API operation policy specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -373,19 +379,19 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API operation policy specified by its identifier on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId, String operationId,
@@ -396,13 +402,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -419,13 +425,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -439,13 +445,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,13 +496,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -540,13 +546,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -563,13 +569,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -587,13 +593,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Get the policy configuration at the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -610,13 +616,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Creates or updates policy configuration for the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -668,13 +674,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Creates or updates policy configuration for the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -726,13 +732,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Creates or updates policy configuration for the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -750,13 +756,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Creates or updates policy configuration for the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -776,13 +782,13 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Creates or updates policy configuration for the API Operation level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,16 +806,16 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Deletes the policy configuration at the Api Operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -855,16 +861,16 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Deletes the policy configuration at the Api Operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -909,16 +915,16 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Deletes the policy configuration at the Api Operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -933,16 +939,16 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Deletes the policy configuration at the Api Operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,16 +964,16 @@ public final class ApiOperationPoliciesClientImpl implements ApiOperationPolicie
 
     /**
      * Deletes the policy configuration at the Api Operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

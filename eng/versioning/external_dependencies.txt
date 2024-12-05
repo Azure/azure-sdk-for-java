@@ -9,7 +9,7 @@
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.3.14
 com.azure:azure-servicebus-jms;2.0.0
-com.azure.tools:azure-autorest-customization;1.0.0-beta.8
+com.azure.tools:azure-autorest-customization;1.0.0-beta.9
 com.fasterxml:aalto-xml;1.3.3
 com.fasterxml.jackson.core:jackson-annotations;2.17.2
 com.fasterxml.jackson.core:jackson-core;2.17.2
@@ -222,7 +222,6 @@ org.bouncycastle:bcpkix-lts8on;2.73.6
 org.eclipse.jetty:jetty-http;9.4.56.v20240826
 org.eclipse.jetty:jetty-server;9.4.56.v20240826
 org.eclipse.jetty:jetty-servlet;9.4.56.v20240826
-org.glassfish:javax.json;1.1.4
 org.hamcrest:hamcrest;2.2
 org.hamcrest:hamcrest-all;1.3
 org.hamcrest:hamcrest-library;2.2
@@ -233,8 +232,6 @@ org.junit.jupiter:junit-jupiter-params;5.11.2
 org.openjdk.jmh:jmh-core;1.37
 org.openjdk.jmh:jmh-generator-annprocess;1.37
 org.testng:testng;7.5.1
-org.awaitility:awaitility;4.2.0
-uk.org.lidalia:slf4j-test;1.2.0
 uk.org.webcompere:system-stubs-jupiter;2.0.2
 com.google.truth:truth;1.1.3
 
@@ -251,7 +248,7 @@ com.puppycrawl.tools:checkstyle;9.3
 com.toasttab.android:gummy-bears-api-26;0.10.0
 commons-io:commons-io;2.17.0
 io.reactivex.rxjava2:rxjava;2.2.21
-net.java.dev.jna:jna-platform;5.6.0
+net.java.dev.jna:jna-platform;5.13.0
 net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
 org.apache.commons:commons-collections4;4.4

@@ -68,6 +68,13 @@ public interface WebSiteManagementClient {
     CertificateRegistrationProvidersClient getCertificateRegistrationProviders();
 
     /**
+     * Gets the DomainRegistrationProvidersClient object to access its operations.
+     * 
+     * @return the DomainRegistrationProvidersClient object.
+     */
+    DomainRegistrationProvidersClient getDomainRegistrationProviders();
+
+    /**
      * Gets the DomainsClient object to access its operations.
      * 
      * @return the DomainsClient object.
@@ -80,13 +87,6 @@ public interface WebSiteManagementClient {
      * @return the TopLevelDomainsClient object.
      */
     TopLevelDomainsClient getTopLevelDomains();
-
-    /**
-     * Gets the DomainRegistrationProvidersClient object to access its operations.
-     * 
-     * @return the DomainRegistrationProvidersClient object.
-     */
-    DomainRegistrationProvidersClient getDomainRegistrationProviders();
 
     /**
      * Gets the AppServiceEnvironmentsClient object to access its operations.

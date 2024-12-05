@@ -7,32 +7,52 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailConfigurationModelProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailConfigurationModelSystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Email configuration model. */
+/**
+ * Email configuration model.
+ */
 @Fluent
 public final class EmailConfigurationModelInner extends ProxyResource {
     /*
      * Email configuration model properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private EmailConfigurationModelProperties properties;
 
     /*
      * The systemData property.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private EmailConfigurationModelSystemData systemData;
 
-    /** Creates an instance of EmailConfigurationModelInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EmailConfigurationModelInner class.
+     */
     public EmailConfigurationModelInner() {
     }
 
     /**
      * Get the properties property: Email configuration model properties.
-     *
+     * 
      * @return the properties value.
      */
     public EmailConfigurationModelProperties properties() {
@@ -41,7 +61,7 @@ public final class EmailConfigurationModelInner extends ProxyResource {
 
     /**
      * Set the properties property: Email configuration model properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EmailConfigurationModelInner object itself.
      */
@@ -52,7 +72,7 @@ public final class EmailConfigurationModelInner extends ProxyResource {
 
     /**
      * Get the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     public EmailConfigurationModelSystemData systemData() {
@@ -60,14 +80,45 @@ public final class EmailConfigurationModelInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model EmailConfigurationModelInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model EmailConfigurationModelInner"));
         } else {
             properties().validate();
         }
@@ -77,4 +128,51 @@ public final class EmailConfigurationModelInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EmailConfigurationModelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailConfigurationModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailConfigurationModelInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailConfigurationModelInner.
+     */
+    public static EmailConfigurationModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailConfigurationModelInner deserializedEmailConfigurationModelInner = new EmailConfigurationModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEmailConfigurationModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEmailConfigurationModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEmailConfigurationModelInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEmailConfigurationModelInner.properties
+                        = EmailConfigurationModelProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEmailConfigurationModelInner.systemData
+                        = EmailConfigurationModelSystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailConfigurationModelInner;
+        });
+    }
 }

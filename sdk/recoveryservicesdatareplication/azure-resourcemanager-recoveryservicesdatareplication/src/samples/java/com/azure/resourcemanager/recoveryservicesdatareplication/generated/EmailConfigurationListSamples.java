@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for EmailConfiguration List. */
+/**
+ * Samples for EmailConfiguration List.
+ */
 public final class EmailConfigurationListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/EmailConfiguration_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/EmailConfiguration_List.json
      */
     /**
      * Sample code: EmailConfiguration_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationList(

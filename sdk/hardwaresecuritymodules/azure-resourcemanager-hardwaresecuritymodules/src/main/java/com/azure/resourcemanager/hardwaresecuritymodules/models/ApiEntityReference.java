@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The API entity reference.
  */
 @Fluent
-public final class ApiEntityReference {
+public final class ApiEntityReference implements JsonSerializable<ApiEntityReference> {
     /*
-     * The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+     * The Azure resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
-    @JsonProperty(value = "id")
-    private String id;
+    private String resourceId;
 
     /**
      * Creates an instance of ApiEntityReference class.
@@ -25,24 +28,24 @@ public final class ApiEntityReference {
     }
 
     /**
-     * Get the id property: The ARM resource id in the form of
+     * Get the resourceId property: The Azure resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      * 
-     * @return the id value.
+     * @return the resourceId value.
      */
-    public String id() {
-        return this.id;
+    public String resourceId() {
+        return this.resourceId;
     }
 
     /**
-     * Set the id property: The ARM resource id in the form of
+     * Set the resourceId property: The Azure resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      * 
-     * @param id the id value to set.
+     * @param resourceId the resourceId value to set.
      * @return the ApiEntityReference object itself.
      */
-    public ApiEntityReference withId(String id) {
-        this.id = id;
+    public ApiEntityReference withResourceId(String resourceId) {
+        this.resourceId = resourceId;
         return this;
     }
 
@@ -52,5 +55,41 @@ public final class ApiEntityReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiEntityReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiEntityReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiEntityReference.
+     */
+    public static ApiEntityReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiEntityReference deserializedApiEntityReference = new ApiEntityReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedApiEntityReference.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiEntityReference;
+        });
     }
 }

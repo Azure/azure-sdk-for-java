@@ -29,7 +29,7 @@ public final class ServersResetGtidMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.servers()
-            .resetGtid("qlgehg", "pipifh", new ServerGtidSetParameter().withGtidSet("e"),
+            .resetGtid("vsjcswsmystuluqy", "fcvlerch", new ServerGtidSetParameter().withGtidSet("bm"),
                 com.azure.core.util.Context.NONE);
 
     }

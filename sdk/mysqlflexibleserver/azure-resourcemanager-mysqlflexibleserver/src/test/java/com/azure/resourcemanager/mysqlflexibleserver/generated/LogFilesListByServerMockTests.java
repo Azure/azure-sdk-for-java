@@ -22,7 +22,7 @@ public final class LogFilesListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sizeInKB\":848870221890738563,\"createdTime\":\"2021-07-13T16:54:43Z\",\"type\":\"mysu\",\"lastModifiedTime\":\"2021-04-28T09:40:52Z\",\"url\":\"rntvlwijp\"},\"id\":\"texoqqpwc\",\"name\":\"yufmhruncuwmq\",\"type\":\"pkcdqzhlct\"}]}";
+            = "{\"value\":[{\"properties\":{\"sizeInKB\":6282247410712068570,\"createdTime\":\"2021-05-31T00:15:25Z\",\"type\":\"vkbunzozudh\",\"lastModifiedTime\":\"2021-08-22T14:57:30Z\",\"url\":\"oyxcdyuib\"},\"id\":\"fdn\",\"name\":\"zydvfvf\",\"type\":\"jnaeois\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class LogFilesListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LogFile> response
-            = manager.logFiles().listByServer("tybbwwpgda", "chzyvlixqnrk", com.azure.core.util.Context.NONE);
+            = manager.logFiles().listByServer("rafwgckhocxvdf", "fwafqrouda", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(848870221890738563L, response.iterator().next().sizeInKB());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T16:54:43Z"), response.iterator().next().createdTime());
-        Assertions.assertEquals("mysu", response.iterator().next().typePropertiesType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T09:40:52Z"),
+        Assertions.assertEquals(6282247410712068570L, response.iterator().next().sizeInKB());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T00:15:25Z"), response.iterator().next().createdTime());
+        Assertions.assertEquals("vkbunzozudh", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-22T14:57:30Z"),
             response.iterator().next().lastModifiedTime());
-        Assertions.assertEquals("rntvlwijp", response.iterator().next().url());
+        Assertions.assertEquals("oyxcdyuib", response.iterator().next().url());
     }
 }

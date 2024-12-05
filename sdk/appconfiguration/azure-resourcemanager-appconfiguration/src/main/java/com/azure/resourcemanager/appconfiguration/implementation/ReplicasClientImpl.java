@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReplicasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicasClient.
+ */
 public final class ReplicasClientImpl implements ReplicasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReplicasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppConfigurationManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReplicasClientImpl(AppConfigurationManagementClientImpl client) {
@@ -116,17 +122,17 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(String resourceGroupName,
@@ -159,18 +165,18 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(String resourceGroupName,
@@ -202,12 +208,12 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,7 +229,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,12 +247,12 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -263,7 +269,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,12 +285,12 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Lists the replicas for a given configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,15 +306,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replica along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified replica along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
@@ -341,7 +347,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -349,8 +355,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replica along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified replica along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
@@ -382,7 +388,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -399,7 +405,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -417,7 +423,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Gets the properties of the specified replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -433,7 +439,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -481,7 +487,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -528,7 +534,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -549,7 +555,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -572,7 +578,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -591,7 +597,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -612,7 +618,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -631,7 +637,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -652,7 +658,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -670,7 +676,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Creates a replica with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -689,7 +695,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -729,7 +735,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -769,7 +775,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -789,7 +795,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -811,7 +817,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -828,7 +834,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -846,7 +852,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -863,7 +869,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -882,7 +888,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -897,7 +903,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Deletes a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param replicaName The name of the replica.
@@ -913,14 +919,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreNextSinglePageAsync(String nextLink) {
@@ -942,15 +947,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreNextSinglePageAsync(String nextLink,

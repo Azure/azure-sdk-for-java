@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The PortalConfigDelegationProperties model. */
+/**
+ * The PortalConfigDelegationProperties model.
+ */
 @Fluent
-public final class PortalConfigDelegationProperties {
+public final class PortalConfigDelegationProperties implements JsonSerializable<PortalConfigDelegationProperties> {
     /*
      * Enable or disable delegation for user registration.
      */
-    @JsonProperty(value = "delegateRegistration")
     private Boolean delegateRegistration;
 
     /*
      * Enable or disable delegation for product subscriptions.
      */
-    @JsonProperty(value = "delegateSubscription")
     private Boolean delegateSubscription;
 
     /*
      * A delegation endpoint URL.
      */
-    @JsonProperty(value = "delegationUrl")
     private String delegationUrl;
 
     /*
      * A base64-encoded validation key to ensure requests originate from Azure API Management service.
      */
-    @JsonProperty(value = "validationKey")
     private String validationKey;
 
-    /** Creates an instance of PortalConfigDelegationProperties class. */
+    /**
+     * Creates an instance of PortalConfigDelegationProperties class.
+     */
     public PortalConfigDelegationProperties() {
     }
 
     /**
      * Get the delegateRegistration property: Enable or disable delegation for user registration.
-     *
+     * 
      * @return the delegateRegistration value.
      */
     public Boolean delegateRegistration() {
@@ -49,7 +53,7 @@ public final class PortalConfigDelegationProperties {
 
     /**
      * Set the delegateRegistration property: Enable or disable delegation for user registration.
-     *
+     * 
      * @param delegateRegistration the delegateRegistration value to set.
      * @return the PortalConfigDelegationProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class PortalConfigDelegationProperties {
 
     /**
      * Get the delegateSubscription property: Enable or disable delegation for product subscriptions.
-     *
+     * 
      * @return the delegateSubscription value.
      */
     public Boolean delegateSubscription() {
@@ -69,7 +73,7 @@ public final class PortalConfigDelegationProperties {
 
     /**
      * Set the delegateSubscription property: Enable or disable delegation for product subscriptions.
-     *
+     * 
      * @param delegateSubscription the delegateSubscription value to set.
      * @return the PortalConfigDelegationProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class PortalConfigDelegationProperties {
 
     /**
      * Get the delegationUrl property: A delegation endpoint URL.
-     *
+     * 
      * @return the delegationUrl value.
      */
     public String delegationUrl() {
@@ -89,7 +93,7 @@ public final class PortalConfigDelegationProperties {
 
     /**
      * Set the delegationUrl property: A delegation endpoint URL.
-     *
+     * 
      * @param delegationUrl the delegationUrl value to set.
      * @return the PortalConfigDelegationProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class PortalConfigDelegationProperties {
     /**
      * Get the validationKey property: A base64-encoded validation key to ensure requests originate from Azure API
      * Management service.
-     *
+     * 
      * @return the validationKey value.
      */
     public String validationKey() {
@@ -111,7 +115,7 @@ public final class PortalConfigDelegationProperties {
     /**
      * Set the validationKey property: A base64-encoded validation key to ensure requests originate from Azure API
      * Management service.
-     *
+     * 
      * @param validationKey the validationKey value to set.
      * @return the PortalConfigDelegationProperties object itself.
      */
@@ -122,9 +126,57 @@ public final class PortalConfigDelegationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("delegateRegistration", this.delegateRegistration);
+        jsonWriter.writeBooleanField("delegateSubscription", this.delegateSubscription);
+        jsonWriter.writeStringField("delegationUrl", this.delegationUrl);
+        jsonWriter.writeStringField("validationKey", this.validationKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigDelegationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigDelegationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalConfigDelegationProperties.
+     */
+    public static PortalConfigDelegationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigDelegationProperties deserializedPortalConfigDelegationProperties
+                = new PortalConfigDelegationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("delegateRegistration".equals(fieldName)) {
+                    deserializedPortalConfigDelegationProperties.delegateRegistration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("delegateSubscription".equals(fieldName)) {
+                    deserializedPortalConfigDelegationProperties.delegateSubscription
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("delegationUrl".equals(fieldName)) {
+                    deserializedPortalConfigDelegationProperties.delegationUrl = reader.getString();
+                } else if ("validationKey".equals(fieldName)) {
+                    deserializedPortalConfigDelegationProperties.validationKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigDelegationProperties;
+        });
     }
 }

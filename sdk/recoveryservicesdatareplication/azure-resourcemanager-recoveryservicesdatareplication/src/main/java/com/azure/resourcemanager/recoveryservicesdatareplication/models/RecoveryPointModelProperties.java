@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Recovery point model properties. */
+/**
+ * Recovery point model properties.
+ */
 @Fluent
-public final class RecoveryPointModelProperties {
+public final class RecoveryPointModelProperties implements JsonSerializable<RecoveryPointModelProperties> {
     /*
      * Gets or sets the recovery point time.
      */
-    @JsonProperty(value = "recoveryPointTime", required = true)
     private OffsetDateTime recoveryPointTime;
 
     /*
      * Gets or sets the recovery point type.
      */
-    @JsonProperty(value = "recoveryPointType", required = true)
     private RecoveryPointType recoveryPointType;
 
     /*
      * Recovery point model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private RecoveryPointModelCustomProperties customProperties;
 
-    /** Creates an instance of RecoveryPointModelProperties class. */
+    /**
+     * Creates an instance of RecoveryPointModelProperties class.
+     */
     public RecoveryPointModelProperties() {
     }
 
     /**
      * Get the recoveryPointTime property: Gets or sets the recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -45,7 +52,7 @@ public final class RecoveryPointModelProperties {
 
     /**
      * Set the recoveryPointTime property: Gets or sets the recovery point time.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the RecoveryPointModelProperties object itself.
      */
@@ -56,7 +63,7 @@ public final class RecoveryPointModelProperties {
 
     /**
      * Get the recoveryPointType property: Gets or sets the recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public RecoveryPointType recoveryPointType() {
@@ -65,7 +72,7 @@ public final class RecoveryPointModelProperties {
 
     /**
      * Set the recoveryPointType property: Gets or sets the recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPointModelProperties object itself.
      */
@@ -76,7 +83,7 @@ public final class RecoveryPointModelProperties {
 
     /**
      * Get the customProperties property: Recovery point model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public RecoveryPointModelCustomProperties customProperties() {
@@ -85,7 +92,7 @@ public final class RecoveryPointModelProperties {
 
     /**
      * Set the customProperties property: Recovery point model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the RecoveryPointModelProperties object itself.
      */
@@ -96,25 +103,78 @@ public final class RecoveryPointModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recoveryPointTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointTime in model RecoveryPointModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointTime in model RecoveryPointModelProperties"));
         }
         if (recoveryPointType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointType in model RecoveryPointModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointType in model RecoveryPointModelProperties"));
         }
         if (customProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property customProperties in model RecoveryPointModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model RecoveryPointModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        jsonWriter.writeStringField("recoveryPointType",
+            this.recoveryPointType == null ? null : this.recoveryPointType.toString());
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointModelProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPointModelProperties.
+     */
+    public static RecoveryPointModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointModelProperties deserializedRecoveryPointModelProperties = new RecoveryPointModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedRecoveryPointModelProperties.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointType".equals(fieldName)) {
+                    deserializedRecoveryPointModelProperties.recoveryPointType
+                        = RecoveryPointType.fromString(reader.getString());
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedRecoveryPointModelProperties.customProperties
+                        = RecoveryPointModelCustomProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointModelProperties;
+        });
+    }
 }

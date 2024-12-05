@@ -67,22 +67,6 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
-        <Method name="decode"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.webkey.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-        <Method name="getX509Thumbprint"/>
-      </And>
-      <And>
         <Class name="com.azure.json.gson.GsonJsonReader"/>
         <Method name="getBinary"/>
       </And>
@@ -94,15 +78,6 @@
         <Class name="com.azure.json.reflect.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationResult"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeySignParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters"/>
-      <Class name="com.azure.security.keyvault.keys.implementation.models.RandomBytes"/>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -111,14 +86,6 @@
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-
-  <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory"/> <!-- false positive -->
-    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -321,15 +288,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <Match>
-    <Class name="com.azure.compute.batch.models.CreateTasksErrorException"/>
-    <Or>
-      <Field name="failureTaskList"/>
-      <Field name="pendingTaskList"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
@@ -398,49 +356,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <!-- Incorrect flagging, null is checked in signal.hasValue() -->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer"/>
-    <Method name="~(.*)\$reportSyncReceiveSpan\$(.*)"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Jackson property setter method is private -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
-      <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
-      <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
-      <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-      <Class name="com.azure.security.keyvault.certificates.models.IssuerProperties"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateIssuer"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
-      <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
-      <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- Field initialized by jackson property annotation -->
-  <Match>
-    <Class name="com.azure.security.keyvault.keys.models.webkey.JsonWebKey"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
     <Or>
@@ -453,29 +368,6 @@
                   DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD,
                   NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
                   NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- These methods are called, SpotBugs just can't see through the specific lambda and static class code -->
-  <Match>
-    <Or>
-      <Class
-        name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
-      <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
-      <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
-  </Match>
-
-  <!-- Names defined in the service. -->
-  <Match>
-    <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting"/>
-    <Bug pattern="NM_CONFUSING"/>
   </Match>
 
   <!-- Disable some spotbugs rules on perf-tests -->
@@ -919,20 +811,6 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
     <Field name="~(cosmosError|status)"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- FormRecognizerException fields re serializable -->
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
-    <Field name="errorInformationList"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- TextAnalyticsException fields re serializable -->
-  <Match>
-    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException"/>
-    <Field name="errors"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -1676,13 +1554,6 @@
     <Method name="encryptAndSerializeProperty"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
-  <!-- Serializing a null value should return null to allow client to handle null cases
-    consistently instead of injecting null payload behavior from the payload. -->
-  <Match>
-    <Class name="com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer"/>
-    <Method name="serialize"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
 
   <!-- Exclude spotbug from non-shipping modules -->
   <Match>
@@ -1829,15 +1700,6 @@
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
-  <!-- EventGrid swagger naming -->
-  <Match>
-    <Or>
-      <Class name="com.azure.messaging.eventgrid.implementation.models.CloudEvent"/>
-      <Class name="com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData"/>
-    </Or>
-  </Match>
-  <Bug pattern="NM_CONFUSING"/>
-
   <!--  This method is made synchronous by blocking and waiting for a result. They do not return
   anything, so it can be ignored. -->
   <Match>
@@ -1846,101 +1708,11 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter"/>
-    <Method name="getUserName"/>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
-
-  <!-- False positives -->
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
-    <Method name="getFilenames"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.implementation.utils.HttpUtil"/>
-    <Method name="~(get|post)"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- This is an internal type used to hold the request body which will not be mutated outside this class -->
-  <Match>
-    <Or>
-      <Class name="com.azure.monitor.ingestion.implementation.LogsIngestionRequest"/>
-    </Or>
-    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
-  </Match>
-
-  <!-- Machine generated classes for MAA service generate spotBugs errors -->
-  <Match>
-    <Or>
-      <Class name="~com.azure.security.attestation.implementation.models.*"/>
-      <Class name="~com.azure.security.attestation.models.*+"/>
-    </Or>
-    <Or>
-      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-    </Or>
-  </Match>
-
-  <!-- Generated implementation of Anomaly Detector is using an inline class -->
-  <Match>
-    <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Generated implementation of Personalizer is using an inline class -->
-  <Match>
-    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Some generated base clients in Purview Catalog do not send api-version -->
-  <Match>
-    <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
-  <Match>
-    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
   <!-- This is a false positive. The type of TOptions is known because it is set
        in the constructor of the concrete class. -->
   <Match>
     <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
-  <!-- We shouldn't return a zero-length array if null is provided to serialization/deserialization and clone methods. -->
-  <Match>
-    <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
-    <Method name="deserialize"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
-    <Method name="clone"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
-
-  <!-- This is inside Azure Maps Implementation package (codegen), and cannot be modified via a customization. -->
-  <Match>
-    <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
-    <Method name="~getMap.*+"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <Match>
@@ -1963,13 +1735,6 @@
       <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
-  <Match>
-    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
-    <Method name="computeHash"/>
-    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
   </Match>
 
   <!-- Non Shipped code -->
@@ -2005,20 +1770,4 @@
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
-
-   <!-- Returning a new copy of the object is not necessary -->
-  <Match>
-    <Class name="~com\.azure\.ai\.openai\.models\.(AudioTranscriptionOptions|AudioTranslationOptions)"/>
-    <Method name="&lt;init&gt;"/>
-    <Bug pattern="EI_EXPOSE_REP2"/>
-  </Match>
-
-  <!-- False positive, it throws an IllegalArgumentException if non-exist method parameter type passed.-->
-  <Match>
-    <Class name="com.azure.ai.openai.implementation.MultipartDataHelper"/>
-    <Method name="serializeRequest"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>

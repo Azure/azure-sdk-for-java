@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The InboundIpRule model.
  */
 @Fluent
-public final class InboundIpRule {
+public final class InboundIpRule implements JsonSerializable<InboundIpRule> {
     /*
      * IP Address in CIDR notation e.g., 10.0.0.0/8.
      */
-    @JsonProperty(value = "ipMask")
     private String ipMask;
 
     /*
      * Action to perform based on the match or no match of the IpMask.
      */
-    @JsonProperty(value = "action")
     private IpActionType action;
 
     /**
@@ -76,5 +78,44 @@ public final class InboundIpRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipMask", this.ipMask);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundIpRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundIpRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InboundIpRule.
+     */
+    public static InboundIpRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundIpRule deserializedInboundIpRule = new InboundIpRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipMask".equals(fieldName)) {
+                    deserializedInboundIpRule.ipMask = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedInboundIpRule.action = IpActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundIpRule;
+        });
     }
 }

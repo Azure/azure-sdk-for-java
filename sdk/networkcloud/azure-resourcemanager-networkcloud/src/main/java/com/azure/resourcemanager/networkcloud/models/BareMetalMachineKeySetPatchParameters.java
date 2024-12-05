@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineKeySetPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** BareMetalMachineKeySetPatchParameters represents the body of the request to patch the bare metal machine key set. */
+/**
+ * BareMetalMachineKeySetPatchParameters represents the body of the request to patch the bare metal machine key set.
+ */
 @Fluent
-public final class BareMetalMachineKeySetPatchParameters {
+public final class BareMetalMachineKeySetPatchParameters
+    implements JsonSerializable<BareMetalMachineKeySetPatchParameters> {
     /*
-     * BareMetalMachineKeySetPatchProperties represents the properties of bare metal machine key set that can be
-     * patched.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private BareMetalMachineKeySetPatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of BareMetalMachineKeySetPatchParameters class. */
+    /**
+     * Creates an instance of BareMetalMachineKeySetPatchParameters class.
+     */
     public BareMetalMachineKeySetPatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: BareMetalMachineKeySetPatchProperties represents the properties of bare metal
-     * machine key set that can be patched.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private BareMetalMachineKeySetPatchProperties innerProperties() {
@@ -49,7 +48,7 @@ public final class BareMetalMachineKeySetPatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -58,7 +57,7 @@ public final class BareMetalMachineKeySetPatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the BareMetalMachineKeySetPatchParameters object itself.
      */
@@ -70,7 +69,7 @@ public final class BareMetalMachineKeySetPatchParameters {
     /**
      * Get the expiration property: The date and time after which the users in this key set will be removed from the
      * bare metal machines.
-     *
+     * 
      * @return the expiration value.
      */
     public OffsetDateTime expiration() {
@@ -80,7 +79,7 @@ public final class BareMetalMachineKeySetPatchParameters {
     /**
      * Set the expiration property: The date and time after which the users in this key set will be removed from the
      * bare metal machines.
-     *
+     * 
      * @param expiration the expiration value to set.
      * @return the BareMetalMachineKeySetPatchParameters object itself.
      */
@@ -95,7 +94,7 @@ public final class BareMetalMachineKeySetPatchParameters {
     /**
      * Get the jumpHostsAllowed property: The list of IP addresses of jump hosts with management network access from
      * which a login will be allowed for the users.
-     *
+     * 
      * @return the jumpHostsAllowed value.
      */
     public List<String> jumpHostsAllowed() {
@@ -105,7 +104,7 @@ public final class BareMetalMachineKeySetPatchParameters {
     /**
      * Set the jumpHostsAllowed property: The list of IP addresses of jump hosts with management network access from
      * which a login will be allowed for the users.
-     *
+     * 
      * @param jumpHostsAllowed the jumpHostsAllowed value to set.
      * @return the BareMetalMachineKeySetPatchParameters object itself.
      */
@@ -119,7 +118,7 @@ public final class BareMetalMachineKeySetPatchParameters {
 
     /**
      * Get the userList property: The unique list of permitted users.
-     *
+     * 
      * @return the userList value.
      */
     public List<KeySetUser> userList() {
@@ -128,7 +127,7 @@ public final class BareMetalMachineKeySetPatchParameters {
 
     /**
      * Set the userList property: The unique list of permitted users.
-     *
+     * 
      * @param userList the userList value to set.
      * @return the BareMetalMachineKeySetPatchParameters object itself.
      */
@@ -142,12 +141,54 @@ public final class BareMetalMachineKeySetPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineKeySetPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineKeySetPatchParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachineKeySetPatchParameters.
+     */
+    public static BareMetalMachineKeySetPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineKeySetPatchParameters deserializedBareMetalMachineKeySetPatchParameters
+                = new BareMetalMachineKeySetPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedBareMetalMachineKeySetPatchParameters.innerProperties
+                        = BareMetalMachineKeySetPatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBareMetalMachineKeySetPatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineKeySetPatchParameters;
+        });
     }
 }
