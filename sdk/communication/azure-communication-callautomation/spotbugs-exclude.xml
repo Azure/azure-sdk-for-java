@@ -119,7 +119,6 @@
   </Match>
   <Match>
     <Bug pattern="URF_UNREAD_FIELD" />
-    <Class name="com.azure.communication.callautomation.models.events.CallAutomationEventBaseWithReasonCode" />
     <Class name="com.azure.communication.callautomation.models.OutStreamingData" />
   </Match>
   <Match>
