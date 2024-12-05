@@ -63,7 +63,7 @@ public class CosmosExceptionUtils {
                     }
                     throw new CosmosRequestTimeoutException(message, cosmosException);
                 }
-                case HttpConstants.StatusCodes.PRECONDITION_FAILED -> throw new CosmosPreconditionFailedException(message, unwrappedThrowable);
+                case HttpConstants.StatusCodes.PRECONDITION_FAILED -> throw new CosmosPreconditionFailedException(message, cosmosException);
                 case HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE -> throw new CosmosRequestEntityTooLargeException(message, cosmosException);
                 case HttpConstants.StatusCodes.TOO_MANY_REQUESTS -> throw new CosmosRequestRateTooLargeException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.RETRY_WITH -> throw new CosmosRetryWithException(message, unwrappedThrowable);
