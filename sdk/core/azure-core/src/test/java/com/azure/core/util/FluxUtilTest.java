@@ -212,17 +212,30 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void testWriteFileWithReSubscription() throws Exception {
+    public void testWriteFileWithReSubscriptionAndRetry() throws Exception {
         String initialContent = "hello there";
-        String firstWrite = "test";
-        String secondWrite = "again";
-        String expectedContent = "hello testagain";
+        String firstWrite = "Hello ";
+        String secondWrite = "test";
+        String thirdWrite = "again";
+        String expectedContent = "hello Hello testagain";
 
         byte[] firstBytes = firstWrite.getBytes(StandardCharsets.UTF_8);
         byte[] secondBytes = secondWrite.getBytes(StandardCharsets.UTF_8);
+        byte[] thirdBytes = thirdWrite.getBytes(StandardCharsets.UTF_8);
 
-        Flux<ByteBuffer> firstBody = Flux.just(ByteBuffer.wrap(firstBytes));
-        Flux<ByteBuffer> secondBody = Flux.just(ByteBuffer.wrap(secondBytes));
+        AtomicInteger attempt = new AtomicInteger(0);
+
+        Flux<ByteBuffer> body = Flux.defer(() -> {
+            int currentAttempt = attempt.incrementAndGet();
+            if (currentAttempt == 1) {
+                return Flux.just(ByteBuffer.wrap(firstBytes)).concatWith(Flux.error(new IOException()));
+            } else if (currentAttempt == 2) {
+                return Flux.just(ByteBuffer.wrap(secondBytes))
+                    .concatWith(Flux.error(new IOException()));
+            } else {
+                return Flux.just(ByteBuffer.wrap(thirdBytes));
+            }
+        });
 
         File file = createFileIfNotExist();
 
@@ -230,18 +243,23 @@ public class FluxUtilTest {
             stream.write(initialContent.getBytes(StandardCharsets.UTF_8));
         }
 
-        Mono.fromCallable(() -> AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE))
-            .flatMap(channel -> FluxUtil.writeFile(firstBody, channel, 6) // write "test" -> "hello test"
-                .then(FluxUtil.writeFile(secondBody, channel, 10)) // write "again" -> "hello testagain"
-                .then(Mono.fromCallable(() -> Files.readAllBytes(file.toPath())).doFinally(signalType -> {
-                    try {
-                        channel.close();
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                })))
-            .subscribe(
-                outputStream -> assertArraysEqual(outputStream, expectedContent.getBytes(StandardCharsets.UTF_8)));
+        StepVerifier.create(
+                Mono.fromCallable(() -> AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE))
+                    .flatMap(channel -> FluxUtil.writeFile(body, channel, 6)
+                        .retry(2) // Retry twice, third should succeed
+                        .then(Mono.fromCallable(() -> Files.readAllBytes(file.toPath())).doFinally(signalType -> {
+                            try {
+                                channel.close();
+                            } catch (IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        })))
+            )
+            .expectNextMatches(outputStream -> {
+                assertArraysEqual(outputStream, expectedContent.getBytes(StandardCharsets.UTF_8));
+                return true;
+            })
+            .verifyComplete();
     }
 
     @Test
