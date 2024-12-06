@@ -17,9 +17,12 @@ parameters:
   - name: BuildOptions
     type: string
     default: '-Denforcer.skip=true'
+  - name: TestClassPackages
+    type: string
+    default: ''
   - name: TestResourceDirectories
     type: object
-    default:
+    default: []
   - name: MatrixConfigs
     type: object
     default:
@@ -40,6 +43,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
     parameters:
       SupportedClouds: "Public,UsGov,China"
+      TestClassPackages: ${{ parameters.TestClassPackages }}
       TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       Artifacts: ${{ parameters.Artifacts }}
       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
@@ -48,7 +52,7 @@ stages:
       BuildOptions: ${{ parameters.BuildOptions }}
       EnvVars: ${{ parameters.EnvVars }}
       TestGoals: "clean verify"
-      TestOptions: ${{ parameters.TestOptions }}
+      TestOptions: '${{ parameters.TestOptions }} -Dit.test=${{ TestClassPackages }}'
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       PreGenerationSteps:
         - script: |

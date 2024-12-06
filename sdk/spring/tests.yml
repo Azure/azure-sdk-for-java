@@ -4,28 +4,17 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
-      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
-          TestName: Spring_Integration
-          TimeoutInMinutes: 240
-          TestOptions: "-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
+          TestName: IT_AppConfig
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/common
-#            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
-            - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
-            - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
-            - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
-            - spring/spring-cloud-azure-integration-tests/test-resources/storage
-            - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
-            - spring/spring-cloud-azure-integration-tests/test-resources/dummy
-          Artifacts:
-            - name: spring-cloud-azure-integration-tests
-              groupId: com.azure.spring
-              safeName: springcloudazureintegrationtests
+          TestClassPackages:
+            - com.azure.spring.cloud.integration.tests.appconfiguration.*
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          TestName: Spring_AppConfig_Integration
+          TestName: AppConfig_Integration
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-test-appconfiguration-config
           Artifacts:
@@ -35,7 +24,7 @@ extends:
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           MatrixConfigs:
-            - Name: Cosmos_live_test_integration
+            - Name: Cosmos_Integration
               Path: sdk/spring/pipeline/cosmos-integration-matrix-compatible.json
               Selection: all
               GenerateVMJobs: true
