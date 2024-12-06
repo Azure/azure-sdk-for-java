@@ -21,7 +21,6 @@ stages:
       TestName: ${{ parameters.TestName }}
       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
       TestOptions: ' ${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPatterns }} '
-      TestClassPatterns: ${{ parameters.TestClassPatterns }}
       TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       Artifacts:
         - name: spring-cloud-azure-integration-tests
