@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ThirdPartyProviderAuthorization model. */
+/**
+ * The ThirdPartyProviderAuthorization model.
+ */
 @Fluent
-public class ThirdPartyProviderAuthorization {
+public class ThirdPartyProviderAuthorization implements JsonSerializable<ThirdPartyProviderAuthorization> {
     /*
      * The authorizations property.
      */
-    @JsonProperty(value = "authorizations")
     private List<LightHouseAuthorization> authorizations;
 
     /*
      * The managedByTenantId property.
      */
-    @JsonProperty(value = "managedByTenantId")
     private String managedByTenantId;
 
-    /** Creates an instance of ThirdPartyProviderAuthorization class. */
+    /**
+     * Creates an instance of ThirdPartyProviderAuthorization class.
+     */
     public ThirdPartyProviderAuthorization() {
     }
 
     /**
      * Get the authorizations property: The authorizations property.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<LightHouseAuthorization> authorizations() {
@@ -38,7 +44,7 @@ public class ThirdPartyProviderAuthorization {
 
     /**
      * Set the authorizations property: The authorizations property.
-     *
+     * 
      * @param authorizations the authorizations value to set.
      * @return the ThirdPartyProviderAuthorization object itself.
      */
@@ -49,7 +55,7 @@ public class ThirdPartyProviderAuthorization {
 
     /**
      * Get the managedByTenantId property: The managedByTenantId property.
-     *
+     * 
      * @return the managedByTenantId value.
      */
     public String managedByTenantId() {
@@ -58,7 +64,7 @@ public class ThirdPartyProviderAuthorization {
 
     /**
      * Set the managedByTenantId property: The managedByTenantId property.
-     *
+     * 
      * @param managedByTenantId the managedByTenantId value to set.
      * @return the ThirdPartyProviderAuthorization object itself.
      */
@@ -69,12 +75,55 @@ public class ThirdPartyProviderAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authorizations() != null) {
             authorizations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("authorizations", this.authorizations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("managedByTenantId", this.managedByTenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThirdPartyProviderAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThirdPartyProviderAuthorization if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThirdPartyProviderAuthorization.
+     */
+    public static ThirdPartyProviderAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThirdPartyProviderAuthorization deserializedThirdPartyProviderAuthorization
+                = new ThirdPartyProviderAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizations".equals(fieldName)) {
+                    List<LightHouseAuthorization> authorizations
+                        = reader.readArray(reader1 -> LightHouseAuthorization.fromJson(reader1));
+                    deserializedThirdPartyProviderAuthorization.authorizations = authorizations;
+                } else if ("managedByTenantId".equals(fieldName)) {
+                    deserializedThirdPartyProviderAuthorization.managedByTenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThirdPartyProviderAuthorization;
+        });
     }
 }

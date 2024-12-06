@@ -28,17 +28,23 @@ import com.azure.resourcemanager.providerhub.fluent.models.ResourceProviderManif
 import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ProviderHubImpl client) {
@@ -55,8 +61,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceInterface(name = "ProviderHubResourceP")
     public interface ResourceProvidersService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/generateManifest")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateManifest")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceProviderManifestInner>> generateManifest(@HostParam("$host") String endpoint,
@@ -65,8 +70,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/checkinManifest")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/checkinManifest")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckinManifestInfoInner>> checkinManifest(@HostParam("$host") String endpoint,
@@ -78,7 +82,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -108,7 +112,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +143,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -153,7 +157,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +173,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,7 +187,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +225,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @param context The context to associate with this operation.
@@ -259,7 +263,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +280,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @param context The context to associate with this operation.
@@ -293,7 +297,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

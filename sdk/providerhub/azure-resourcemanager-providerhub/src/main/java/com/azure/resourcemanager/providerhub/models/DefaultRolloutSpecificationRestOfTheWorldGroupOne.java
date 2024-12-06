@@ -5,24 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The DefaultRolloutSpecificationRestOfTheWorldGroupOne model. */
+/**
+ * The DefaultRolloutSpecificationRestOfTheWorldGroupOne model.
+ */
 @Fluent
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupOne extends TrafficRegionRolloutConfiguration {
-    /** Creates an instance of DefaultRolloutSpecificationRestOfTheWorldGroupOne class. */
+    /**
+     * Creates an instance of DefaultRolloutSpecificationRestOfTheWorldGroupOne class.
+     */
     public DefaultRolloutSpecificationRestOfTheWorldGroupOne() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutSpecificationRestOfTheWorldGroupOne withWaitDuration(Duration waitDuration) {
         super.withWaitDuration(waitDuration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultRolloutSpecificationRestOfTheWorldGroupOne withRegions(List<String> regions) {
         super.withRegions(regions);
@@ -31,11 +44,52 @@ public final class DefaultRolloutSpecificationRestOfTheWorldGroupOne extends Tra
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("regions", regions(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("waitDuration", CoreUtils.durationToStringWithDays(waitDuration()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultRolloutSpecificationRestOfTheWorldGroupOne from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultRolloutSpecificationRestOfTheWorldGroupOne if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultRolloutSpecificationRestOfTheWorldGroupOne.
+     */
+    public static DefaultRolloutSpecificationRestOfTheWorldGroupOne fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultRolloutSpecificationRestOfTheWorldGroupOne deserializedDefaultRolloutSpecificationRestOfTheWorldGroupOne
+                = new DefaultRolloutSpecificationRestOfTheWorldGroupOne();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDefaultRolloutSpecificationRestOfTheWorldGroupOne.withRegions(regions);
+                } else if ("waitDuration".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecificationRestOfTheWorldGroupOne.withWaitDuration(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultRolloutSpecificationRestOfTheWorldGroupOne;
+        });
     }
 }

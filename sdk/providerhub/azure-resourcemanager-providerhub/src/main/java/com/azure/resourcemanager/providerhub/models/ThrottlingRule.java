@@ -6,37 +6,42 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ThrottlingRule model. */
+/**
+ * The ThrottlingRule model.
+ */
 @Fluent
-public final class ThrottlingRule {
+public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     /*
      * The action property.
      */
-    @JsonProperty(value = "action", required = true)
     private String action;
 
     /*
      * The metrics property.
      */
-    @JsonProperty(value = "metrics", required = true)
     private List<ThrottlingMetric> metrics;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
-    /** Creates an instance of ThrottlingRule class. */
+    /**
+     * Creates an instance of ThrottlingRule class.
+     */
     public ThrottlingRule() {
     }
 
     /**
      * Get the action property: The action property.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -45,7 +50,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the action property: The action property.
-     *
+     * 
      * @param action the action value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -56,7 +61,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the metrics property: The metrics property.
-     *
+     * 
      * @return the metrics value.
      */
     public List<ThrottlingMetric> metrics() {
@@ -65,7 +70,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the metrics property: The metrics property.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -76,7 +81,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -85,7 +90,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -96,21 +101,67 @@ public final class ThrottlingRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property action in model ThrottlingRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model ThrottlingRule"));
         }
         if (metrics() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property metrics in model ThrottlingRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property metrics in model ThrottlingRule"));
         } else {
             metrics().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThrottlingRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThrottlingRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThrottlingRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThrottlingRule.
+     */
+    public static ThrottlingRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThrottlingRule deserializedThrottlingRule = new ThrottlingRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedThrottlingRule.action = reader.getString();
+                } else if ("metrics".equals(fieldName)) {
+                    List<ThrottlingMetric> metrics = reader.readArray(reader1 -> ThrottlingMetric.fromJson(reader1));
+                    deserializedThrottlingRule.metrics = metrics;
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThrottlingRule.requiredFeatures = requiredFeatures;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThrottlingRule;
+        });
+    }
 }

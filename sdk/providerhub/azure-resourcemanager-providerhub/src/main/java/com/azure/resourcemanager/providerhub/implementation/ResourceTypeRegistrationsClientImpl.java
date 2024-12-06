@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceTypeRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceTypeRegistrationsClient.
+ */
 public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRegistrationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceTypeRegistrationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of ResourceTypeRegistrationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceTypeRegistrationsClientImpl(ProviderHubImpl client) {
@@ -65,8 +71,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceInterface(name = "ProviderHubResourceT")
     public interface ResourceTypeRegistrationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceTypeRegistrationInner>> get(@HostParam("$host") String endpoint,
@@ -75,8 +80,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -87,8 +91,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -97,8 +100,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceTypeRegistrationArrayResponseWithContinuation>> listByProviderRegistration(
@@ -117,14 +119,14 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource type details in the given subscription and provider along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(String providerNamespace,
@@ -153,7 +155,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -161,7 +163,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource type details in the given subscription and provider along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(String providerNamespace,
@@ -189,7 +191,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +206,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -221,7 +223,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,11 +238,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -278,11 +280,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -320,11 +322,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -343,11 +345,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -368,11 +370,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -386,11 +388,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -405,11 +407,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -424,11 +426,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -444,11 +446,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -462,11 +464,11 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -481,7 +483,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,7 +517,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -550,7 +552,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,7 +567,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -581,7 +583,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,13 +597,13 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the resource types for the given provider along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceTypeRegistrationInner>>
@@ -629,14 +631,14 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the resource types for the given provider along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceTypeRegistrationInner>>
@@ -664,7 +666,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -679,7 +681,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,7 +698,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -710,7 +712,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -726,9 +728,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,9 +756,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,38 +5,44 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** The ThrottlingMetric model. */
+/**
+ * The ThrottlingMetric model.
+ */
 @Fluent
-public final class ThrottlingMetric {
+public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric> {
     /*
      * The type property.
      */
-    @JsonProperty(value = "type", required = true)
     private ThrottlingMetricType type;
 
     /*
      * The limit property.
      */
-    @JsonProperty(value = "limit", required = true)
     private long limit;
 
     /*
      * The interval property.
      */
-    @JsonProperty(value = "interval")
     private Duration interval;
 
-    /** Creates an instance of ThrottlingMetric class. */
+    /**
+     * Creates an instance of ThrottlingMetric class.
+     */
     public ThrottlingMetric() {
     }
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public ThrottlingMetricType type() {
@@ -45,7 +51,7 @@ public final class ThrottlingMetric {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the ThrottlingMetric object itself.
      */
@@ -56,7 +62,7 @@ public final class ThrottlingMetric {
 
     /**
      * Get the limit property: The limit property.
-     *
+     * 
      * @return the limit value.
      */
     public long limit() {
@@ -65,7 +71,7 @@ public final class ThrottlingMetric {
 
     /**
      * Set the limit property: The limit property.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the ThrottlingMetric object itself.
      */
@@ -76,7 +82,7 @@ public final class ThrottlingMetric {
 
     /**
      * Get the interval property: The interval property.
-     *
+     * 
      * @return the interval value.
      */
     public Duration interval() {
@@ -85,7 +91,7 @@ public final class ThrottlingMetric {
 
     /**
      * Set the interval property: The interval property.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ThrottlingMetric object itself.
      */
@@ -96,15 +102,59 @@ public final class ThrottlingMetric {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ThrottlingMetric"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ThrottlingMetric"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThrottlingMetric.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeLongField("limit", this.limit);
+        jsonWriter.writeStringField("interval", CoreUtils.durationToStringWithDays(this.interval));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThrottlingMetric from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThrottlingMetric if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThrottlingMetric.
+     */
+    public static ThrottlingMetric fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThrottlingMetric deserializedThrottlingMetric = new ThrottlingMetric();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedThrottlingMetric.type = ThrottlingMetricType.fromString(reader.getString());
+                } else if ("limit".equals(fieldName)) {
+                    deserializedThrottlingMetric.limit = reader.getLong();
+                } else if ("interval".equals(fieldName)) {
+                    deserializedThrottlingMetric.interval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThrottlingMetric;
+        });
+    }
 }

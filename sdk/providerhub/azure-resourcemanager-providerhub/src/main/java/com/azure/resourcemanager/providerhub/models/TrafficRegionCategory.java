@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrafficRegionCategory. */
+/**
+ * Defines values for TrafficRegionCategory.
+ */
 public final class TrafficRegionCategory extends ExpandableStringEnum<TrafficRegionCategory> {
-    /** Static value NotSpecified for TrafficRegionCategory. */
+    /**
+     * Static value NotSpecified for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Canary for TrafficRegionCategory. */
+    /**
+     * Static value Canary for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory CANARY = fromString("Canary");
 
-    /** Static value LowTraffic for TrafficRegionCategory. */
+    /**
+     * Static value LowTraffic for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory LOW_TRAFFIC = fromString("LowTraffic");
 
-    /** Static value MediumTraffic for TrafficRegionCategory. */
+    /**
+     * Static value MediumTraffic for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory MEDIUM_TRAFFIC = fromString("MediumTraffic");
 
-    /** Static value HighTraffic for TrafficRegionCategory. */
+    /**
+     * Static value HighTraffic for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory HIGH_TRAFFIC = fromString("HighTraffic");
 
-    /** Static value None for TrafficRegionCategory. */
+    /**
+     * Static value None for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory NONE = fromString("None");
 
-    /** Static value RestOfTheWorldGroupOne for TrafficRegionCategory. */
+    /**
+     * Static value RestOfTheWorldGroupOne for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory REST_OF_THE_WORLD_GROUP_ONE = fromString("RestOfTheWorldGroupOne");
 
-    /** Static value RestOfTheWorldGroupTwo for TrafficRegionCategory. */
+    /**
+     * Static value RestOfTheWorldGroupTwo for TrafficRegionCategory.
+     */
     public static final TrafficRegionCategory REST_OF_THE_WORLD_GROUP_TWO = fromString("RestOfTheWorldGroupTwo");
 
     /**
      * Creates a new instance of TrafficRegionCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class TrafficRegionCategory extends ExpandableStringEnum<TrafficReg
 
     /**
      * Creates or finds a TrafficRegionCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrafficRegionCategory.
      */
-    @JsonCreator
     public static TrafficRegionCategory fromString(String name) {
         return fromString(name, TrafficRegionCategory.class);
     }
 
     /**
      * Gets known TrafficRegionCategory values.
-     *
+     * 
      * @return known TrafficRegionCategory values.
      */
     public static Collection<TrafficRegionCategory> values() {

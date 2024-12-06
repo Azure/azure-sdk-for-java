@@ -4,25 +4,23 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-/** Samples for Skus ListByResourceTypeRegistrationsNestedResourceTypeSecond. */
+/**
+ * Samples for Skus ListByResourceTypeRegistrationsNestedResourceTypeSecond.
+ */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void skusListByResourceTypeRegistrationsNestedResourceTypeSecond(
         com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
-        manager
-            .skus()
-            .listByResourceTypeRegistrationsNestedResourceTypeSecond(
-                "Microsoft.Contoso",
-                "testResourceType",
-                "nestedResourceTypeFirst",
-                "nestedResourceTypeSecond",
-                com.azure.core.util.Context.NONE);
+        manager.skus()
+            .listByResourceTypeRegistrationsNestedResourceTypeSecond("Microsoft.Contoso", "testResourceType",
+                "nestedResourceTypeFirst", "nestedResourceTypeSecond", com.azure.core.util.Context.NONE);
     }
 }
