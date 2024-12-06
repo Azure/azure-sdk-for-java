@@ -20,7 +20,7 @@ stages:
     parameters:
       TestName: ${{ parameters.TestName }}
       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-      TestOptions: ${{ parameters.TestOptions }}
+      TestOptions: ' ${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPatterns }} '
       TestClassPatterns: ${{ parameters.TestClassPatterns }}
       TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       Artifacts:

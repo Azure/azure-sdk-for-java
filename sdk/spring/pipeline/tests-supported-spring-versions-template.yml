@@ -17,9 +17,6 @@ parameters:
   - name: BuildOptions
     type: string
     default: '-Denforcer.skip=true'
-  - name: TestClassPatterns
-    type: string
-    default: '*.*IT'
   - name: TestResourceDirectories
     type: object
     default: []
@@ -51,7 +48,7 @@ stages:
       BuildOptions: ${{ parameters.BuildOptions }}
       EnvVars: ${{ parameters.EnvVars }}
       TestGoals: "clean verify"
-      TestOptions: ' ${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPatterns }} '
+      TestOptions: ${{ parameters.TestOptions }}
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       PreGenerationSteps:
         - script: |
