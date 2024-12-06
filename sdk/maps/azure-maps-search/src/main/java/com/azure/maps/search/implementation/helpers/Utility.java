@@ -38,8 +38,12 @@ public class Utility {
     public static GeoPosition fromDoubleList(List<Double> position) {
         if (position.size() == 2) {
             return new GeoPosition(position.get(0), position.get(1));
+        } else if (position.size() == 3) {
+            return new GeoPosition(position.get(0), position.get(1), position.get(2));
+        } else {
+            throw new IllegalArgumentException(
+                "Position must contain 2 or 3 elements (latitude, longitude, [altitude])");
         }
-        return null;
     }
 
     public static GeoObject toGeoObject(GeoJsonObject object) {

@@ -24,6 +24,7 @@ import com.azure.maps.search.models.GeocodingResponse;
 import com.azure.maps.search.models.ResolutionEnum;
 import com.azure.maps.search.models.ReverseGeocodingBatchRequestBody;
 import reactor.core.publisher.Mono;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
