@@ -14,7 +14,6 @@ import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.maps.search.implementation.SearchesImpl;
 import com.azure.maps.search.models.Boundary;
-import com.azure.maps.search.implementation.models.ErrorResponseException;
 import com.azure.maps.search.implementation.models.ReverseGeocodingResultTypeEnum;
 import com.azure.maps.search.implementation.models.SearchesGetGeocodingHeaders;
 import com.azure.maps.search.models.BaseSearchOptions;
@@ -82,7 +81,7 @@ public final class MapsSearchClient {
      * @param resolution Resolution determines the amount of points to send back. If not specified, the default is
      * medium resolution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area.
      */
@@ -121,7 +120,7 @@ public final class MapsSearchClient {
      * medium resolution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area along with
      * {@link Response}.
@@ -160,7 +159,7 @@ public final class MapsSearchClient {
      *
      * **If query is given, should not use this parameter.**.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding call on successful completion of {@link Mono}.
      */
@@ -191,7 +190,7 @@ public final class MapsSearchClient {
      * **If query is given, should not use this parameter.**.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding call along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -224,7 +223,7 @@ public final class MapsSearchClient {
      * **If query is given, should not use this parameter.**.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding call along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -257,7 +256,7 @@ public final class MapsSearchClient {
      *
      * **If query is given, should not use this parameter.**.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding call.
      */
@@ -392,7 +391,7 @@ public final class MapsSearchClient {
      * @param body The list of address geocoding queries/requests to process. The list can contain
      * a max of 100 queries and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding Batch service call on successful completion of
      * {@link Mono}.
@@ -464,7 +463,7 @@ public final class MapsSearchClient {
      * a max of 100 queries and must contain at least 1 query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
      * successful completion of {@link Mono}.
@@ -513,7 +512,7 @@ public final class MapsSearchClient {
      * Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available
      * Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding call.
      */
@@ -568,7 +567,7 @@ public final class MapsSearchClient {
      * Views.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding call along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -644,7 +643,7 @@ public final class MapsSearchClient {
      * @param reverseGeocodingBatchRequestBody The list of reverse geocoding queries/requests to process. The list can
      * contain a max of 100 queries and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding Batch service call on successful completion of
      * {@link Mono}.
@@ -715,7 +714,7 @@ public final class MapsSearchClient {
      * contain a max of 100 queries and must contain at least 1 query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Geocoding Batch service call along with {@link Response}
      */
