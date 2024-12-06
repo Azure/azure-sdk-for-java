@@ -200,9 +200,10 @@ public final class SapCentralServerInstanceImpl
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
-        this.centralInstanceName = Utils.getValueFromIdByName(innerObject.id(), "centralInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sapVirtualInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
+        this.centralInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "centralInstances");
     }
 
     public SapCentralServerInstance refresh() {

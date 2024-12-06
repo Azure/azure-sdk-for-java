@@ -28,6 +28,7 @@ public final class TagUpdateTests {
         Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

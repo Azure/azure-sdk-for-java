@@ -5,89 +5,96 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Gets or sets the provider properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
-@JsonTypeName("SapNetWeaver")
+/**
+ * Gets or sets the provider properties.
+ */
 @Fluent
 public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecificProperties {
     /*
+     * The provider type. For example, the value can be SapHana.
+     */
+    private String providerType = "SapNetWeaver";
+
+    /*
      * Gets or sets the SAP System Identifier
      */
-    @JsonProperty(value = "sapSid")
     private String sapSid;
 
     /*
      * Gets or sets the target virtual machine IP Address/FQDN.
      */
-    @JsonProperty(value = "sapHostname")
     private String sapHostname;
 
     /*
      * Gets or sets the instance number of SAP NetWeaver.
      */
-    @JsonProperty(value = "sapInstanceNr")
     private String sapInstanceNr;
 
     /*
      * Gets or sets the list of HostFile Entries
      */
-    @JsonProperty(value = "sapHostFileEntries")
     private List<String> sapHostFileEntries;
 
     /*
      * Gets or sets the SAP user name.
      */
-    @JsonProperty(value = "sapUsername")
     private String sapUsername;
 
     /*
      * Sets the SAP password.
      */
-    @JsonProperty(value = "sapPassword")
     private String sapPassword;
 
     /*
      * Gets or sets the key vault URI to secret with the SAP password.
      */
-    @JsonProperty(value = "sapPasswordUri")
     private String sapPasswordUri;
 
     /*
      * Gets or sets the SAP Client ID.
      */
-    @JsonProperty(value = "sapClientId")
     private String sapClientId;
 
     /*
      * Gets or sets the SAP HTTP port number.
      */
-    @JsonProperty(value = "sapPortNumber")
     private String sapPortNumber;
 
     /*
      * Gets or sets the blob URI to SSL certificate for the SAP system.
      */
-    @JsonProperty(value = "sslCertificateUri")
     private String sslCertificateUri;
 
     /*
      * Gets or sets certificate preference if secure communication is enabled.
      */
-    @JsonProperty(value = "sslPreference")
     private SslPreference sslPreference;
 
-    /** Creates an instance of SapNetWeaverProviderInstanceProperties class. */
+    /**
+     * Creates an instance of SapNetWeaverProviderInstanceProperties class.
+     */
     public SapNetWeaverProviderInstanceProperties() {
     }
 
     /**
+     * Get the providerType property: The provider type. For example, the value can be SapHana.
+     * 
+     * @return the providerType value.
+     */
+    @Override
+    public String providerType() {
+        return this.providerType;
+    }
+
+    /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @return the sapSid value.
      */
     public String sapSid() {
@@ -96,7 +103,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @param sapSid the sapSid value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -107,7 +114,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapHostname property: Gets or sets the target virtual machine IP Address/FQDN.
-     *
+     * 
      * @return the sapHostname value.
      */
     public String sapHostname() {
@@ -116,7 +123,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapHostname property: Gets or sets the target virtual machine IP Address/FQDN.
-     *
+     * 
      * @param sapHostname the sapHostname value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -127,7 +134,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapInstanceNr property: Gets or sets the instance number of SAP NetWeaver.
-     *
+     * 
      * @return the sapInstanceNr value.
      */
     public String sapInstanceNr() {
@@ -136,7 +143,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapInstanceNr property: Gets or sets the instance number of SAP NetWeaver.
-     *
+     * 
      * @param sapInstanceNr the sapInstanceNr value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -147,7 +154,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapHostFileEntries property: Gets or sets the list of HostFile Entries.
-     *
+     * 
      * @return the sapHostFileEntries value.
      */
     public List<String> sapHostFileEntries() {
@@ -156,7 +163,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapHostFileEntries property: Gets or sets the list of HostFile Entries.
-     *
+     * 
      * @param sapHostFileEntries the sapHostFileEntries value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -167,7 +174,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapUsername property: Gets or sets the SAP user name.
-     *
+     * 
      * @return the sapUsername value.
      */
     public String sapUsername() {
@@ -176,7 +183,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapUsername property: Gets or sets the SAP user name.
-     *
+     * 
      * @param sapUsername the sapUsername value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -187,7 +194,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapPassword property: Sets the SAP password.
-     *
+     * 
      * @return the sapPassword value.
      */
     public String sapPassword() {
@@ -196,7 +203,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapPassword property: Sets the SAP password.
-     *
+     * 
      * @param sapPassword the sapPassword value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -207,7 +214,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapPasswordUri property: Gets or sets the key vault URI to secret with the SAP password.
-     *
+     * 
      * @return the sapPasswordUri value.
      */
     public String sapPasswordUri() {
@@ -216,7 +223,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapPasswordUri property: Gets or sets the key vault URI to secret with the SAP password.
-     *
+     * 
      * @param sapPasswordUri the sapPasswordUri value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -227,7 +234,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapClientId property: Gets or sets the SAP Client ID.
-     *
+     * 
      * @return the sapClientId value.
      */
     public String sapClientId() {
@@ -236,7 +243,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapClientId property: Gets or sets the SAP Client ID.
-     *
+     * 
      * @param sapClientId the sapClientId value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -247,7 +254,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sapPortNumber property: Gets or sets the SAP HTTP port number.
-     *
+     * 
      * @return the sapPortNumber value.
      */
     public String sapPortNumber() {
@@ -256,7 +263,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sapPortNumber property: Gets or sets the SAP HTTP port number.
-     *
+     * 
      * @param sapPortNumber the sapPortNumber value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -267,7 +274,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SAP system.
-     *
+     * 
      * @return the sslCertificateUri value.
      */
     public String sslCertificateUri() {
@@ -276,7 +283,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SAP system.
-     *
+     * 
      * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -287,7 +294,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @return the sslPreference value.
      */
     public SslPreference sslPreference() {
@@ -296,7 +303,7 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @param sslPreference the sslPreference value to set.
      * @return the SapNetWeaverProviderInstanceProperties object itself.
      */
@@ -307,11 +314,83 @@ public final class SapNetWeaverProviderInstanceProperties extends ProviderSpecif
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerType", this.providerType);
+        jsonWriter.writeStringField("sapSid", this.sapSid);
+        jsonWriter.writeStringField("sapHostname", this.sapHostname);
+        jsonWriter.writeStringField("sapInstanceNr", this.sapInstanceNr);
+        jsonWriter.writeArrayField("sapHostFileEntries", this.sapHostFileEntries,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sapUsername", this.sapUsername);
+        jsonWriter.writeStringField("sapPassword", this.sapPassword);
+        jsonWriter.writeStringField("sapPasswordUri", this.sapPasswordUri);
+        jsonWriter.writeStringField("sapClientId", this.sapClientId);
+        jsonWriter.writeStringField("sapPortNumber", this.sapPortNumber);
+        jsonWriter.writeStringField("sslCertificateUri", this.sslCertificateUri);
+        jsonWriter.writeStringField("sslPreference", this.sslPreference == null ? null : this.sslPreference.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapNetWeaverProviderInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapNetWeaverProviderInstanceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapNetWeaverProviderInstanceProperties.
+     */
+    public static SapNetWeaverProviderInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapNetWeaverProviderInstanceProperties deserializedSapNetWeaverProviderInstanceProperties
+                = new SapNetWeaverProviderInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerType".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.providerType = reader.getString();
+                } else if ("sapSid".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapSid = reader.getString();
+                } else if ("sapHostname".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapHostname = reader.getString();
+                } else if ("sapInstanceNr".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapInstanceNr = reader.getString();
+                } else if ("sapHostFileEntries".equals(fieldName)) {
+                    List<String> sapHostFileEntries = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSapNetWeaverProviderInstanceProperties.sapHostFileEntries = sapHostFileEntries;
+                } else if ("sapUsername".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapUsername = reader.getString();
+                } else if ("sapPassword".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapPassword = reader.getString();
+                } else if ("sapPasswordUri".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapPasswordUri = reader.getString();
+                } else if ("sapClientId".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapClientId = reader.getString();
+                } else if ("sapPortNumber".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sapPortNumber = reader.getString();
+                } else if ("sslCertificateUri".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sslCertificateUri = reader.getString();
+                } else if ("sslPreference".equals(fieldName)) {
+                    deserializedSapNetWeaverProviderInstanceProperties.sslPreference
+                        = SslPreference.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapNetWeaverProviderInstanceProperties;
+        });
     }
 }

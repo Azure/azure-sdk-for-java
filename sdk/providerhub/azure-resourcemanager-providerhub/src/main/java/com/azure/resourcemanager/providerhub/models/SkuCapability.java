@@ -6,30 +6,36 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SkuCapability model. */
+/**
+ * The SkuCapability model.
+ */
 @Fluent
-public final class SkuCapability {
+public final class SkuCapability implements JsonSerializable<SkuCapability> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of SkuCapability class. */
+    /**
+     * Creates an instance of SkuCapability class.
+     */
     public SkuCapability() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class SkuCapability {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuCapability object itself.
      */
@@ -49,7 +55,7 @@ public final class SkuCapability {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +64,7 @@ public final class SkuCapability {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SkuCapability object itself.
      */
@@ -69,19 +75,59 @@ public final class SkuCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SkuCapability"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SkuCapability"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SkuCapability"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SkuCapability"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuCapability.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuCapability.
+     */
+    public static SkuCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCapability deserializedSkuCapability = new SkuCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSkuCapability.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSkuCapability.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCapability;
+        });
+    }
 }

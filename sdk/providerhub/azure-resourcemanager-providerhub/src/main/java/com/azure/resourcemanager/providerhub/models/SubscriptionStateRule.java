@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SubscriptionStateRule model. */
+/**
+ * The SubscriptionStateRule model.
+ */
 @Fluent
-public final class SubscriptionStateRule {
+public final class SubscriptionStateRule implements JsonSerializable<SubscriptionStateRule> {
     /*
      * The state property.
      */
-    @JsonProperty(value = "state")
     private SubscriptionState state;
 
     /*
      * The allowedActions property.
      */
-    @JsonProperty(value = "allowedActions")
     private List<String> allowedActions;
 
-    /** Creates an instance of SubscriptionStateRule class. */
+    /**
+     * Creates an instance of SubscriptionStateRule class.
+     */
     public SubscriptionStateRule() {
     }
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -38,7 +44,7 @@ public final class SubscriptionStateRule {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionStateRule object itself.
      */
@@ -49,7 +55,7 @@ public final class SubscriptionStateRule {
 
     /**
      * Get the allowedActions property: The allowedActions property.
-     *
+     * 
      * @return the allowedActions value.
      */
     public List<String> allowedActions() {
@@ -58,7 +64,7 @@ public final class SubscriptionStateRule {
 
     /**
      * Set the allowedActions property: The allowedActions property.
-     *
+     * 
      * @param allowedActions the allowedActions value to set.
      * @return the SubscriptionStateRule object itself.
      */
@@ -69,9 +75,50 @@ public final class SubscriptionStateRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("allowedActions", this.allowedActions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionStateRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionStateRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionStateRule.
+     */
+    public static SubscriptionStateRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionStateRule deserializedSubscriptionStateRule = new SubscriptionStateRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedSubscriptionStateRule.state = SubscriptionState.fromString(reader.getString());
+                } else if ("allowedActions".equals(fieldName)) {
+                    List<String> allowedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubscriptionStateRule.allowedActions = allowedActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionStateRule;
+        });
     }
 }

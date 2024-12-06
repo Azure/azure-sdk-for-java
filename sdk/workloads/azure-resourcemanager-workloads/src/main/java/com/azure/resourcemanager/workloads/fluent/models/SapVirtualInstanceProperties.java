@@ -6,6 +6,10 @@ package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.SapConfiguration;
 import com.azure.resourcemanager.workloads.models.SapEnvironmentType;
@@ -15,73 +19,68 @@ import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Defines the Virtual Instance for SAP solutions resource properties. */
+/**
+ * Defines the Virtual Instance for SAP solutions resource properties.
+ */
 @Fluent
-public final class SapVirtualInstanceProperties {
+public final class SapVirtualInstanceProperties implements JsonSerializable<SapVirtualInstanceProperties> {
     /*
      * Defines the environment type - Production/Non Production.
      */
-    @JsonProperty(value = "environment", required = true)
     private SapEnvironmentType environment;
 
     /*
      * Defines the SAP Product type.
      */
-    @JsonProperty(value = "sapProduct", required = true)
     private SapProductType sapProduct;
 
     /*
      * Defines if the SAP system is being created using Azure Center for SAP solutions (ACSS) or if an existing SAP
      * system is being registered with ACSS
      */
-    @JsonProperty(value = "configuration", required = true)
     private SapConfiguration configuration;
 
     /*
      * Managed resource group configuration
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedRGConfiguration managedResourceGroupConfiguration;
 
     /*
      * Defines the SAP Instance status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the health of SAP Instances.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
     /*
      * Defines the Virtual Instance for SAP state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceState state;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Indicates any errors on the Virtual Instance for SAP solutions resource.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceError errors;
 
-    /** Creates an instance of SapVirtualInstanceProperties class. */
+    /**
+     * Creates an instance of SapVirtualInstanceProperties class.
+     */
     public SapVirtualInstanceProperties() {
     }
 
     /**
      * Get the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @return the environment value.
      */
     public SapEnvironmentType environment() {
@@ -90,7 +89,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Set the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
@@ -101,7 +100,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -110,7 +109,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @param sapProduct the sapProduct value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
@@ -122,7 +121,7 @@ public final class SapVirtualInstanceProperties {
     /**
      * Get the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
      * (ACSS) or if an existing SAP system is being registered with ACSS.
-     *
+     * 
      * @return the configuration value.
      */
     public SapConfiguration configuration() {
@@ -132,7 +131,7 @@ public final class SapVirtualInstanceProperties {
     /**
      * Set the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
      * (ACSS) or if an existing SAP system is being registered with ACSS.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
@@ -143,7 +142,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedRGConfiguration managedResourceGroupConfiguration() {
@@ -152,7 +151,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Set the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the SapVirtualInstanceProperties object itself.
      */
@@ -164,7 +163,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -173,7 +172,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -182,7 +181,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the state property: Defines the Virtual Instance for SAP state.
-     *
+     * 
      * @return the state value.
      */
     public SapVirtualInstanceState state() {
@@ -191,7 +190,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -200,7 +199,7 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Get the errors property: Indicates any errors on the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -209,21 +208,24 @@ public final class SapVirtualInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (environment() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property environment in model SapVirtualInstanceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property environment in model SapVirtualInstanceProperties"));
         }
         if (sapProduct() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sapProduct in model SapVirtualInstanceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sapProduct in model SapVirtualInstanceProperties"));
         }
         if (configuration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property configuration in model SapVirtualInstanceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property configuration in model SapVirtualInstanceProperties"));
         } else {
             configuration().validate();
         }
@@ -236,4 +238,65 @@ public final class SapVirtualInstanceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapVirtualInstanceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environment", this.environment == null ? null : this.environment.toString());
+        jsonWriter.writeStringField("sapProduct", this.sapProduct == null ? null : this.sapProduct.toString());
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapVirtualInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapVirtualInstanceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapVirtualInstanceProperties.
+     */
+    public static SapVirtualInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapVirtualInstanceProperties deserializedSapVirtualInstanceProperties = new SapVirtualInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environment".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.environment
+                        = SapEnvironmentType.fromString(reader.getString());
+                } else if ("sapProduct".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.sapProduct = SapProductType.fromString(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.configuration = SapConfiguration.fromJson(reader);
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.managedResourceGroupConfiguration
+                        = ManagedRGConfiguration.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.status
+                        = SapVirtualInstanceStatus.fromString(reader.getString());
+                } else if ("health".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.health = SapHealthState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.state
+                        = SapVirtualInstanceState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.provisioningState
+                        = SapVirtualInstanceProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedSapVirtualInstanceProperties.errors = SapVirtualInstanceError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapVirtualInstanceProperties;
+        });
+    }
 }

@@ -5,24 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
+import java.io.IOException;
 import java.util.List;
 
-/** The CustomRolloutPropertiesSpecification model. */
+/**
+ * The CustomRolloutPropertiesSpecification model.
+ */
 @Fluent
 public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpecification {
-    /** Creates an instance of CustomRolloutPropertiesSpecification class. */
+    /**
+     * Creates an instance of CustomRolloutPropertiesSpecification class.
+     */
     public CustomRolloutPropertiesSpecification() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomRolloutPropertiesSpecification withCanary(CustomRolloutSpecificationCanary canary) {
         super.withCanary(canary);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomRolloutPropertiesSpecification
         withProviderRegistration(CustomRolloutSpecificationProviderRegistration providerRegistration) {
@@ -30,7 +43,9 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomRolloutPropertiesSpecification
         withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
@@ -40,11 +55,75 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (canary() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property canary in model CustomRolloutPropertiesSpecification"));
+        } else {
+            canary().validate();
+        }
+        if (providerRegistration() != null) {
+            providerRegistration().validate();
+        }
+        if (resourceTypeRegistrations() != null) {
+            resourceTypeRegistrations().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomRolloutPropertiesSpecification.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("canary", canary());
+        jsonWriter.writeJsonField("providerRegistration", providerRegistration());
+        jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomRolloutPropertiesSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomRolloutPropertiesSpecification if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomRolloutPropertiesSpecification.
+     */
+    public static CustomRolloutPropertiesSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomRolloutPropertiesSpecification deserializedCustomRolloutPropertiesSpecification
+                = new CustomRolloutPropertiesSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("canary".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withCanary(CustomRolloutSpecificationCanary.fromJson(reader));
+                } else if ("providerRegistration".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withProviderRegistration(CustomRolloutSpecificationProviderRegistration.fromJson(reader));
+                } else if ("resourceTypeRegistrations".equals(fieldName)) {
+                    List<ResourceTypeRegistrationInner> resourceTypeRegistrations
+                        = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withResourceTypeRegistrations(resourceTypeRegistrations);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomRolloutPropertiesSpecification;
+        });
     }
 }

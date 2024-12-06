@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageReference model = BinaryData.fromString(
-            "{\"publisher\":\"iysui\",\"offer\":\"ynkedyatrwyhqmib\",\"sku\":\"hwit\",\"version\":\"ypyynpcdpumnzg\"}")
+        ImageReference model = BinaryData
+            .fromString("{\"publisher\":\"divkrt\",\"offer\":\"bxqz\",\"sku\":\"zjf\",\"version\":\"vjfdx\"}")
             .toObject(ImageReference.class);
-        Assertions.assertEquals("iysui", model.publisher());
-        Assertions.assertEquals("ynkedyatrwyhqmib", model.offer());
-        Assertions.assertEquals("hwit", model.sku());
-        Assertions.assertEquals("ypyynpcdpumnzg", model.version());
+        Assertions.assertEquals("divkrt", model.publisher());
+        Assertions.assertEquals("bxqz", model.offer());
+        Assertions.assertEquals("zjf", model.sku());
+        Assertions.assertEquals("vjfdx", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageReference model = new ImageReference().withPublisher("iysui")
-            .withOffer("ynkedyatrwyhqmib")
-            .withSku("hwit")
-            .withVersion("ypyynpcdpumnzg");
+        ImageReference model
+            = new ImageReference().withPublisher("divkrt").withOffer("bxqz").withSku("zjf").withVersion("vjfdx");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("iysui", model.publisher());
-        Assertions.assertEquals("ynkedyatrwyhqmib", model.offer());
-        Assertions.assertEquals("hwit", model.sku());
-        Assertions.assertEquals("ypyynpcdpumnzg", model.version());
+        Assertions.assertEquals("divkrt", model.publisher());
+        Assertions.assertEquals("bxqz", model.offer());
+        Assertions.assertEquals("zjf", model.sku());
+        Assertions.assertEquals("vjfdx", model.version());
     }
 }

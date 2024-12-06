@@ -5,52 +5,55 @@
 package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The options for query evaluation. */
+/**
+ * The options for query evaluation.
+ */
 @Fluent
-public final class QueryRequestOptions {
+public final class QueryRequestOptions implements JsonSerializable<QueryRequestOptions> {
     /*
      * Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
      */
-    @JsonProperty(value = "$skipToken")
     private String skipToken;
 
     /*
      * The maximum number of rows that the query should return. Overrides the page size when ```$skipToken``` property
      * is present.
      */
-    @JsonProperty(value = "$top")
     private Integer top;
 
     /*
      * The number of rows to skip from the beginning of the results. Overrides the next page offset when
      * ```$skipToken``` property is present.
      */
-    @JsonProperty(value = "$skip")
     private Integer skip;
 
     /*
      * Defines in which format query result returned.
      */
-    @JsonProperty(value = "resultFormat")
     private ResultFormat resultFormat;
 
     /*
      * Only applicable for tenant and management group level queries to decide whether to allow partial scopes for
      * result in case the number of subscriptions exceed allowed limits.
      */
-    @JsonProperty(value = "allowPartialScopes")
     private Boolean allowPartialScopes;
 
-    /** Creates an instance of QueryRequestOptions class. */
+    /**
+     * Creates an instance of QueryRequestOptions class.
+     */
     public QueryRequestOptions() {
     }
 
     /**
      * Get the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
      * as the context of the query.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -60,7 +63,7 @@ public final class QueryRequestOptions {
     /**
      * Set the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
      * as the context of the query.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the QueryRequestOptions object itself.
      */
@@ -72,7 +75,7 @@ public final class QueryRequestOptions {
     /**
      * Get the top property: The maximum number of rows that the query should return. Overrides the page size when
      * ```$skipToken``` property is present.
-     *
+     * 
      * @return the top value.
      */
     public Integer top() {
@@ -82,7 +85,7 @@ public final class QueryRequestOptions {
     /**
      * Set the top property: The maximum number of rows that the query should return. Overrides the page size when
      * ```$skipToken``` property is present.
-     *
+     * 
      * @param top the top value to set.
      * @return the QueryRequestOptions object itself.
      */
@@ -94,7 +97,7 @@ public final class QueryRequestOptions {
     /**
      * Get the skip property: The number of rows to skip from the beginning of the results. Overrides the next page
      * offset when ```$skipToken``` property is present.
-     *
+     * 
      * @return the skip value.
      */
     public Integer skip() {
@@ -104,7 +107,7 @@ public final class QueryRequestOptions {
     /**
      * Set the skip property: The number of rows to skip from the beginning of the results. Overrides the next page
      * offset when ```$skipToken``` property is present.
-     *
+     * 
      * @param skip the skip value to set.
      * @return the QueryRequestOptions object itself.
      */
@@ -115,7 +118,7 @@ public final class QueryRequestOptions {
 
     /**
      * Get the resultFormat property: Defines in which format query result returned.
-     *
+     * 
      * @return the resultFormat value.
      */
     public ResultFormat resultFormat() {
@@ -124,7 +127,7 @@ public final class QueryRequestOptions {
 
     /**
      * Set the resultFormat property: Defines in which format query result returned.
-     *
+     * 
      * @param resultFormat the resultFormat value to set.
      * @return the QueryRequestOptions object itself.
      */
@@ -136,7 +139,7 @@ public final class QueryRequestOptions {
     /**
      * Get the allowPartialScopes property: Only applicable for tenant and management group level queries to decide
      * whether to allow partial scopes for result in case the number of subscriptions exceed allowed limits.
-     *
+     * 
      * @return the allowPartialScopes value.
      */
     public Boolean allowPartialScopes() {
@@ -146,7 +149,7 @@ public final class QueryRequestOptions {
     /**
      * Set the allowPartialScopes property: Only applicable for tenant and management group level queries to decide
      * whether to allow partial scopes for result in case the number of subscriptions exceed allowed limits.
-     *
+     * 
      * @param allowPartialScopes the allowPartialScopes value to set.
      * @return the QueryRequestOptions object itself.
      */
@@ -157,9 +160,57 @@ public final class QueryRequestOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("$skipToken", this.skipToken);
+        jsonWriter.writeNumberField("$top", this.top);
+        jsonWriter.writeNumberField("$skip", this.skip);
+        jsonWriter.writeStringField("resultFormat", this.resultFormat == null ? null : this.resultFormat.toString());
+        jsonWriter.writeBooleanField("allowPartialScopes", this.allowPartialScopes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryRequestOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryRequestOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryRequestOptions.
+     */
+    public static QueryRequestOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryRequestOptions deserializedQueryRequestOptions = new QueryRequestOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("$skipToken".equals(fieldName)) {
+                    deserializedQueryRequestOptions.skipToken = reader.getString();
+                } else if ("$top".equals(fieldName)) {
+                    deserializedQueryRequestOptions.top = reader.getNullable(JsonReader::getInt);
+                } else if ("$skip".equals(fieldName)) {
+                    deserializedQueryRequestOptions.skip = reader.getNullable(JsonReader::getInt);
+                } else if ("resultFormat".equals(fieldName)) {
+                    deserializedQueryRequestOptions.resultFormat = ResultFormat.fromString(reader.getString());
+                } else if ("allowPartialScopes".equals(fieldName)) {
+                    deserializedQueryRequestOptions.allowPartialScopes = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryRequestOptions;
+        });
     }
 }

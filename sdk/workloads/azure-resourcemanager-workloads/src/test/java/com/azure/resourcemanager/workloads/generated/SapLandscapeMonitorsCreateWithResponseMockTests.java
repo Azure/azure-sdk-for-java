@@ -6,58 +6,74 @@ package com.azure.resourcemanager.workloads.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.workloads.WorkloadsManager;
 import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorInner;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitor;
+import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorMetricThresholds;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorPropertiesGrouping;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorSidMapping;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SapLandscapeMonitorsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Created\",\"grouping\":{\"landscape\":[],\"sapApplication\":[]},\"topMetricsThresholds\":[]},\"id\":\"xgpnr\",\"name\":\"govfgpikqmhhaow\",\"type\":\"rmzvupo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"grouping\":{\"landscape\":[{\"name\":\"tu\",\"topSid\":[\"gebx\",\"cnwfepbnwgfmxjg\",\"g\",\"jbgdlfgtdysnaquf\"]},{\"name\":\"bctqhamzjrwd\",\"topSid\":[\"eqyj\",\"eziunjxdfzant\",\"wcegyamlbn\"]},{\"name\":\"qa\",\"topSid\":[\"vpilg\",\"ooqjagmditgueio\",\"kjbsah\"]},{\"name\":\"dt\",\"topSid\":[\"lq\",\"cslmotoebnfxo\",\"vcjkgd\"]}],\"sapApplication\":[{\"name\":\"f\",\"topSid\":[\"jwabmd\",\"jtmvc\",\"pexcmjurbuhh\",\"kyqltqsrogt\"]},{\"name\":\"kffdjktsys\",\"topSid\":[\"vclglxnfuij\"]},{\"name\":\"busqogsfi\",\"topSid\":[\"ians\"]},{\"name\":\"rujtjiqxfzyjq\",\"topSid\":[\"wkpqhjpenuygbq\",\"qqekewvnqvcdlgu\"]}]},\"topMetricsThresholds\":[{\"name\":\"f\",\"green\":40.09459,\"yellow\":41.300297,\"red\":38.310463},{\"name\":\"un\",\"green\":85.25324,\"yellow\":32.793068,\"red\":14.307761},{\"name\":\"itacgxmfcsserx\",\"green\":6.610566,\"yellow\":27.112644,\"red\":51.11168}]},\"id\":\"wntsjgqrsxy\",\"name\":\"ruuuybnch\",\"type\":\"szizoyuelyetndnb\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         WorkloadsManager manager = WorkloadsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapLandscapeMonitor response = manager.sapLandscapeMonitors()
-            .createWithResponse("yxrxmunj", "xvglnkvxlxp",
+            .createWithResponse("taboidvmf", "hppubowsepdfgkmt",
                 new SapLandscapeMonitorInner()
-                    .withGrouping(new SapLandscapeMonitorPropertiesGrouping().withLandscape(Arrays.asList())
-                        .withSapApplication(Arrays.asList()))
-                    .withTopMetricsThresholds(Arrays.asList()),
+                    .withGrouping(new SapLandscapeMonitorPropertiesGrouping()
+                        .withLandscape(Arrays.asList(
+                            new SapLandscapeMonitorSidMapping().withName("c")
+                                .withTopSid(Arrays.asList("hokq", "obkauxofsh", "phwpnulaiywzej", "whslwkoj")),
+                            new SapLandscapeMonitorSidMapping().withName("l")
+                                .withTopSid(Arrays.asList("pdwrpqafgfugsn", "fhyete"))))
+                        .withSapApplication(Arrays.asList(
+                            new SapLandscapeMonitorSidMapping().withName("coc")
+                                .withTopSid(Arrays.asList("gt", "xrjvzuyturmlm")),
+                            new SapLandscapeMonitorSidMapping().withName("wolba")
+                                .withTopSid(Arrays.asList("opionszon", "pngajin")),
+                            new SapLandscapeMonitorSidMapping().withName("xjawrt")
+                                .withTopSid(Arrays.asList("jmyccxlzhcoxov", "ekhenl", "sfnrdtjxt")))))
+                    .withTopMetricsThresholds(Arrays.asList(
+                        new SapLandscapeMonitorMetricThresholds().withName("qtj")
+                            .withGreen(11.541671F)
+                            .withYellow(98.33309F)
+                            .withRed(16.182882F),
+                        new SapLandscapeMonitorMetricThresholds().withName("uslvyjtcvuwkasi")
+                            .withGreen(48.76997F)
+                            .withYellow(68.419876F)
+                            .withRed(95.45886F),
+                        new SapLandscapeMonitorMetricThresholds().withName("htuqfecjxe")
+                            .withGreen(48.33301F)
+                            .withYellow(74.89713F)
+                            .withRed(64.985504F))),
                 com.azure.core.util.Context.NONE)
             .getValue();
+
+        Assertions.assertEquals("tu", response.grouping().landscape().get(0).name());
+        Assertions.assertEquals("gebx", response.grouping().landscape().get(0).topSid().get(0));
+        Assertions.assertEquals("f", response.grouping().sapApplication().get(0).name());
+        Assertions.assertEquals("jwabmd", response.grouping().sapApplication().get(0).topSid().get(0));
+        Assertions.assertEquals("f", response.topMetricsThresholds().get(0).name());
+        Assertions.assertEquals(40.09459F, response.topMetricsThresholds().get(0).green());
+        Assertions.assertEquals(41.300297F, response.topMetricsThresholds().get(0).yellow());
+        Assertions.assertEquals(38.310463F, response.topMetricsThresholds().get(0).red());
     }
 }

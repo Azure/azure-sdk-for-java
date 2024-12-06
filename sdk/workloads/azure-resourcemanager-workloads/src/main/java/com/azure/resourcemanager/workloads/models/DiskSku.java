@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS. */
+/**
+ * The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS.
+ */
 @Fluent
-public final class DiskSku {
+public final class DiskSku implements JsonSerializable<DiskSku> {
     /*
      * Defines the disk sku name.
      */
-    @JsonProperty(value = "name")
     private DiskSkuName name;
 
-    /** Creates an instance of DiskSku class. */
+    /**
+     * Creates an instance of DiskSku class.
+     */
     public DiskSku() {
     }
 
     /**
      * Get the name property: Defines the disk sku name.
-     *
+     * 
      * @return the name value.
      */
     public DiskSkuName name() {
@@ -31,7 +38,7 @@ public final class DiskSku {
 
     /**
      * Set the name property: Defines the disk sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskSku object itself.
      */
@@ -42,9 +49,45 @@ public final class DiskSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskSku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the DiskSku.
+     */
+    public static DiskSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskSku deserializedDiskSku = new DiskSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDiskSku.name = DiskSkuName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskSku;
+        });
     }
 }

@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the WorkloadsClientImpl type. */
+/**
+ * A builder for creating a new instance of the WorkloadsClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { WorkloadsClientImpl.class })
 public final class WorkloadsClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the WorkloadsClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the WorkloadsClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the WorkloadsClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the WorkloadsClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the WorkloadsClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the WorkloadsClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class WorkloadsClientBuilder {
 
     /**
      * Builds an instance of WorkloadsClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of WorkloadsClientImpl.
      */
     public WorkloadsClientImpl buildClient() {
@@ -130,7 +132,7 @@ public final class WorkloadsClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         WorkloadsClientImpl client = new WorkloadsClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

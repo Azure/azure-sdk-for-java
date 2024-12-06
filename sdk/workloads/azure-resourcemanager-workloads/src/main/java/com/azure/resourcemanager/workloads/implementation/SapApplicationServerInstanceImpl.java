@@ -201,9 +201,11 @@ public final class SapApplicationServerInstanceImpl implements SapApplicationSer
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
-        this.applicationInstanceName = Utils.getValueFromIdByName(innerObject.id(), "applicationInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sapVirtualInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
+        this.applicationInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationInstances");
     }
 
     public SapApplicationServerInstance refresh() {
