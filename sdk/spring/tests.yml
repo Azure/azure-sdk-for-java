@@ -7,11 +7,10 @@ extends:
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_AppConfig
+          TestClassPackages: com.azure.spring.cloud.integration.tests.appconfiguration.*
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/common
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
-          TestClassPackages:
-            - com.azure.spring.cloud.integration.tests.appconfiguration.*
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           TestName: AppConfig_Integration
