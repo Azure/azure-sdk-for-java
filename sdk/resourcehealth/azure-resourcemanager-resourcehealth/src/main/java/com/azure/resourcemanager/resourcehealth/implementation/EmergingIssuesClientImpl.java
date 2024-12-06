@@ -31,17 +31,23 @@ import com.azure.resourcemanager.resourcehealth.models.EmergingIssueListResult;
 import com.azure.resourcemanager.resourcehealth.models.IssueNameParameter;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EmergingIssuesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EmergingIssuesClient.
+ */
 public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EmergingIssuesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of EmergingIssuesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EmergingIssuesClientImpl(MicrosoftResourceHealthImpl client) {
@@ -82,7 +88,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of emerging issues along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -104,7 +110,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -126,7 +132,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of emerging issues as paginated response with {@link PagedFlux}.
@@ -138,7 +144,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -153,7 +159,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of emerging issues as paginated response with {@link PagedIterable}.
@@ -165,7 +171,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Lists Azure services' emerging issues.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -179,7 +185,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -203,7 +209,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +234,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,7 +248,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +263,7 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Gets Azure services' emerging issues.
-     *
+     * 
      * @param issueName The name of the emerging issue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -271,9 +277,8 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,9 +302,8 @@ public final class EmergingIssuesClientImpl implements EmergingIssuesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
