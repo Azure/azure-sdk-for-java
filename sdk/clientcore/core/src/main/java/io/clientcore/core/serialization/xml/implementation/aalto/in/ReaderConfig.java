@@ -39,7 +39,7 @@ public final class ReaderConfig extends CommonConfig {
     /**
      * These are the default settings for XMLInputFactory.
      */
-    private final static int DEFAULT_FLAGS = F_NS_AWARE | F_DTD_AWARE | F_EXPAND_ENTITIES
+    private final static int DEFAULT_FLAGS = F_NS_AWARE | F_EXPAND_ENTITIES
     // by default we do intern names, ns uris...
         | F_INTERN_NAMES | F_INTERN_NS_URIS
         // and will report CDATA as such (and not as CHARACTERS)

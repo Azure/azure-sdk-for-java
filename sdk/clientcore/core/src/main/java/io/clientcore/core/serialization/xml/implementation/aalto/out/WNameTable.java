@@ -16,13 +16,11 @@
 
 package io.clientcore.core.serialization.xml.implementation.aalto.out;
 
-import io.clientcore.core.serialization.xml.implementation.aalto.util.NameTable;
-
 /**
  * This is a symbol table implementation used for storing byte-based
  * <code>WName</code>s.
  */
-public final class WNameTable extends NameTable {
+public final class WNameTable {
     final static int MIN_HASH_SIZE = 16;
 
     final static int INITIAL_COLLISION_LEN = 32;
@@ -254,17 +252,11 @@ public final class WNameTable extends NameTable {
     /**********************************************************************
      */
 
-    @Override
-    public int size() {
-        return mCount;
-    }
-
     /**
      * Method called to check to quickly see if a child symbol table
      * may have gotten additional entries. Used for checking to see
      * if a child table should be merged into shared table.
      */
-    @Override
     public boolean maybeDirty() {
         return !mMainHashShared;
     }
@@ -452,18 +444,16 @@ public final class WNameTable extends NameTable {
         /* Ok. Now, do we need a rehash next time? Need to have at least
          * 50% fill rate no matter what:
          */
-        {
-            int hashSize = mMainHash.length;
-            if (mCount > (hashSize >> 1)) {
-                int hashQuarter = (hashSize >> 2);
-                /* And either strictly above 75% (the usual) or
-                 * just 50%, and collision count >= 25% of total hash size
-                 */
-                if (mCount > (hashSize - hashQuarter)) {
-                    mNeedRehash = true;
-                } else if (mCollCount >= hashQuarter) {
-                    mNeedRehash = true;
-                }
+        int hashSize = mMainHash.length;
+        if (mCount > (hashSize >> 1)) {
+            int hashQuarter = (hashSize >> 2);
+            /* And either strictly above 75% (the usual) or
+             * just 50%, and collision count >= 25% of total hash size
+             */
+            if (mCount > (hashSize - hashQuarter)) {
+                mNeedRehash = true;
+            } else if (mCollCount >= hashQuarter) {
+                mNeedRehash = true;
             }
         }
     }

@@ -22,7 +22,7 @@ import io.clientcore.core.serialization.xml.implementation.aalto.impl.StreamExce
 import io.clientcore.core.serialization.xml.implementation.aalto.in.CharSourceBootstrapper;
 import io.clientcore.core.serialization.xml.implementation.aalto.in.PNameC;
 import io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig;
-import io.clientcore.core.serialization.xml.implementation.aalto.in.XmlScanner;
+import io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner;
 import io.clientcore.core.serialization.xml.implementation.aalto.util.TextAccumulator;
 
 import javax.xml.namespace.NamespaceContext;
@@ -55,7 +55,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     /**
      * Underlying XML scanner
      */
-    protected final XmlScanner _scanner;
+    protected final ReaderScanner _scanner;
 
     // // // Config flags:
 
@@ -105,7 +105,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     /**********************************************************************
      */
 
-    public StreamReaderImpl(XmlScanner scanner) {
+    public StreamReaderImpl(ReaderScanner scanner) {
         _scanner = scanner;
         _currToken = START_DOCUMENT;
         ReaderConfig cfg = scanner.getConfig();
@@ -642,7 +642,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     public final int next() throws XMLStreamException {
         if (_parseState == STATE_TREE) {
             int type = _scanner.nextFromTree();
-            if (type == XmlScanner.TOKEN_EOI) { // Not allowed here...
+            if (type == ReaderScanner.TOKEN_EOI) { // Not allowed here...
                 handleTreeEoi();
             }
             _currToken = type;

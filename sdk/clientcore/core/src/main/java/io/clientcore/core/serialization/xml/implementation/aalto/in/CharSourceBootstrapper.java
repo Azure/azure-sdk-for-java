@@ -336,7 +336,7 @@ public final class CharSourceBootstrapper {
         return getNextAfterWs();
     }
 
-    public XmlScanner bootstrap() throws XMLStreamException {
+    public ReaderScanner bootstrap() throws XMLStreamException {
         try {
             return doBootstrap();
         } catch (IOException ioe) {
@@ -344,7 +344,7 @@ public final class CharSourceBootstrapper {
         }
     }
 
-    public XmlScanner doBootstrap() throws IOException, XMLStreamException {
+    public ReaderScanner doBootstrap() throws IOException, XMLStreamException {
         if (_inputPtr >= _inputLast) {
             initialLoad();
         }

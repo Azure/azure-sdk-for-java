@@ -8,15 +8,23 @@ import io.clientcore.core.serialization.xml.implementation.aalto.util.DataUtil;
 import io.clientcore.core.serialization.xml.implementation.aalto.util.TextBuilder;
 import io.clientcore.core.serialization.xml.implementation.aalto.util.XmlCharTypes;
 import io.clientcore.core.serialization.xml.implementation.aalto.util.XmlChars;
-import io.clientcore.core.serialization.xml.implementation.aalto.util.XmlConsts;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Objects;
 
 import static io.clientcore.core.serialization.xml.implementation.aalto.util.XmlConsts.CHAR_LF;
+import static io.clientcore.core.serialization.xml.implementation.aalto.util.XmlConsts.CHAR_NULL;
 import static io.clientcore.core.serialization.xml.implementation.aalto.util.XmlConsts.CHAR_SPACE;
 
 /**
@@ -27,7 +35,60 @@ import static io.clientcore.core.serialization.xml.implementation.aalto.util.Xml
  * interface allows passing Readers as input sources.
  */
 @SuppressWarnings("fallthrough")
-public final class ReaderScanner extends XmlScanner {
+public final class ReaderScanner implements XMLStreamConstants, NamespaceContext {
+    // // // Constants:
+
+    /**
+     * String that identifies CDATA section (after "&lt;![" prefix)
+     */
+    private final String CDATA_STR = "CDATA[";
+
+    /**
+     * This token type signifies end-of-input, in cases where it can be
+     * returned. In other cases, an exception may be thrown.
+     */
+    public final static int TOKEN_EOI = -1;
+
+    /**
+     * This constant defines the highest Unicode character allowed
+     * in XML content.
+     */
+    private final static int MAX_UNICODE_CHAR = 0x10FFFF;
+
+    private final static int INT_NULL = 0;
+    private final static int INT_CR = '\r';
+    private final static int INT_LF = '\n';
+    private final static int INT_TAB = '\t';
+    private final static int INT_SPACE = 0x0020;
+
+    private final static int INT_QMARK = '?';
+    private final static int INT_AMP = '&';
+    private final static int INT_LT = '<';
+    private final static int INT_GT = '>';
+    private final static int INT_QUOTE = '"';
+    private final static int INT_APOS = '\'';
+    private final static int INT_COLON = ':';
+    private final static int INT_SLASH = '/';
+
+    private final static int INT_A = 'A';
+
+    // // // Config for bound PName cache:
+
+    /**
+     * Let's activate cache quite soon, no need to wait for hundreds
+     * of misses; just try to avoid cache construction if all we get
+     * is soap envelope element or such.
+     */
+    private final static int BIND_MISSES_TO_ACTIVATE_CACHE = 10;
+
+    /**
+     * Size of the bind cache can be reasonably small, and should
+     * still get high enough hit rate
+     */
+    private final static int BIND_CACHE_SIZE = 0x40;
+
+    private final static int BIND_CACHE_MASK = 0x3F;
+
     /**
      * Although java chars are basically UTF-16 in memory, the closest
      * match for char types is Latin1.
@@ -44,6 +105,171 @@ public final class ReaderScanner extends XmlScanner {
      * Underlying InputStream to use for reading content.
      */
     private final Reader _in;
+    private final ReaderConfig _config;
+    private final boolean _cfgCoalescing;
+
+    /*
+    /**********************************************************************
+    /* Tokenization state
+    /**********************************************************************
+     */
+
+    private int _currToken = START_DOCUMENT;
+
+    private boolean _tokenIncomplete = false;
+
+    /**
+     * Number of START_ELEMENT events returned for which no END_ELEMENT
+     * has been returned; including current event.
+     */
+    private int _depth = 0;
+
+    /**
+     * Textual content of the current event
+     */
+    private final TextBuilder _textBuilder;
+
+    /**
+     * Flag set to indicate that an entity is pending
+     */
+    private boolean _entityPending = false;
+
+    /*
+    /**********************************************************************
+    /* Name/String handling
+    /**********************************************************************
+     */
+
+    /**
+     * Similarly, need a char buffer for actual String construction
+     * (in future, could perhaps use StringBuilder?). It is used
+     * for holding things like names (element, attribute), and
+     * attribute values.
+     */
+    private char[] _nameBuffer;
+
+    /**
+     * Current name associated with the token, if any. Name of the
+     * current element, target of processing instruction, or name
+     * of an unexpanded entity.
+     */
+    private PNameC _tokenName = null;
+
+    /*
+    /**********************************************************************
+    /* Element information
+    /**********************************************************************
+     */
+
+    /**
+     * Flag that is used if the current state is <code>START_ELEMENT</code>
+     * or <code>END_ELEMENT</code>, to indicate if the underlying physical
+     * tag is a so-called empty tag (one ending with "/&gt;")
+     */
+    private boolean _isEmptyTag = false;
+
+    /**
+     * Information about the current element on the stack
+     */
+    private ElementScope _currElem;
+
+    /*
+    /**********************************************************************
+    /* Namespace binding
+    /**********************************************************************
+     */
+
+    /**
+     * Pointer to the last namespace declaration encountered. Because of backwards
+     * linking, it also serves as the head of the linked list of all active
+     * namespace declarations starting from the most recent one.
+     */
+    private NsDeclaration _lastNsDecl = null;
+
+    /**
+     * This is a temporary state variable, valid during START_ELEMENT
+     * event. For those events, contains number of namespace declarations
+     * available. For END_ELEMENT, this count is computed on the fly.
+     */
+    private int _currNsCount = 0;
+
+    /**
+     * Default namespace binding is a per-document singleton, like
+     * explicit bindings, and used for elements (never for attributes).
+     */
+    private final NsBinding _defaultNs = NsBinding.createDefaultNs();
+
+    /**
+     * Array containing all prefix bindings needed within the current
+     * document, so far (if any). These bindings are not in a particular
+     * order, and they specifically do NOT represent actual namespace
+     * declarations parsed from xml content.
+     */
+    private NsBinding[] _nsBindings;
+
+    private int _nsBindingCount = 0;
+
+    /**
+     * Although unbound pname instances can be easily and safely reused,
+     * bound ones are per-document. However, it makes sense to try to
+     * reuse them too; at least using a minimal static cache, activate
+     * only after certain number of cache misses (to avoid overhead for
+     * tiny documents, or documents with few or no namespace prefixes).
+     */
+    private PNameC[] _nsBindingCache = null;
+
+    private int _nsBindMisses = 0;
+
+    /*
+    /**********************************************************************
+    /* Attribute info
+    /**********************************************************************
+     */
+
+    private final AttributeCollector _attrCollector;
+
+    private int _attrCount = 0;
+
+    /*
+    /**********************************************************************
+    /* Minimal location info for all impls
+    /**********************************************************************
+     */
+
+    /**
+     * Number of bytes that were read and processed before the contents
+     * of the current buffer; used for calculating absolute offsets.
+     */
+    private long _pastBytesOrChars;
+
+    /**
+     * The row on which the character to read next is on. Note that
+     * it is 0-based, so API will generally add one to it before
+     * returning the value
+     */
+    private int _currRow;
+
+    /**
+     * Offset used to calculate the column value given current input
+     * buffer pointer. May be negative, if the first character of the
+     * row was contained within an earlier buffer.
+     */
+    private int _rowStartOffset;
+
+    /**
+     * Offset (in chars or bytes) at start of current token
+     */
+    private long _startRawOffset;
+
+    /**
+     * Current row at start of current (last returned) token
+     */
+    private long _startRow = -1L;
+
+    /**
+     * Current column at start of current (last returned) token
+     */
+    private long _startColumn = -1L;
 
     /*
     /**********************************************************************
@@ -75,14 +301,15 @@ public final class ReaderScanner extends XmlScanner {
      */
     private final CharBasedPNameTable _symbols;
 
-    /*
-    /**********************************************************************
-    /* Life-cycle
-    /**********************************************************************
-     */
-
     public ReaderScanner(ReaderConfig cfg, Reader r, char[] buffer, int ptr, int last) {
-        super(cfg);
+        _config = cfg;
+
+        _cfgCoalescing = cfg.willCoalesceText();
+        _textBuilder = TextBuilder.createRecyclableBuffer(_config);
+        _attrCollector = new AttributeCollector();
+        _nameBuffer = new char[ReaderConfig.DEFAULT_SMALL_BUFFER_LEN];
+        _currRow = 0;
+
         _in = r;
         _inputBuffer = buffer;
         _inputPtr = ptr;
@@ -93,9 +320,18 @@ public final class ReaderScanner extends XmlScanner {
         _symbols = cfg.getCBSymbols();
     }
 
-    @Override
-    protected void _releaseBuffers() {
-        super._releaseBuffers();
+    /**
+     * Method called at point when the parsing process has ended (either
+     * by encountering end of the input, or via explicit close), and
+     * buffers can and should be released.
+     *
+     */
+    public void close() throws XMLStreamException {
+        _releaseBuffers();
+    }
+
+    private void _releaseBuffers() {
+        _textBuilder.recycle(true);
         if (_symbols.maybeDirty()) {
             _config.updateCBSymbols(_symbols);
         }
@@ -103,46 +339,22 @@ public final class ReaderScanner extends XmlScanner {
 
     /*
     /**********************************************************************
-    /* Public scanner interface (1st level parsing)
+    /* Package access methods, needed by SAX impl
     /**********************************************************************
      */
 
-    @Override
-    protected void finishToken() throws XMLStreamException {
-        _tokenIncomplete = false;
-        switch (_currToken) {
-            case PROCESSING_INSTRUCTION:
-                finishPI();
-                break;
-
-            case CHARACTERS:
-                finishCharacters();
-                break;
-
-            case COMMENT:
-                finishComment();
-                break;
-
-            case SPACE:
-                finishSpace();
-                break;
-
-            case DTD:
-                finishDTD(true); // true -> get text
-                break;
-
-            case CDATA:
-                finishCData();
-                break;
-
-            default:
-                throw new RuntimeException("Internal error");
-        }
+    public ReaderConfig getConfig() {
+        return _config;
     }
+
+    /*
+    /**********************************************************************
+    /* Public scanner interface, iterating
+    /**********************************************************************
+     */
 
     // // // First, main iteration methods
 
-    @Override
     public int nextFromProlog(boolean isProlog) throws XMLStreamException {
         if (_tokenIncomplete) { // left-overs from last thingy?
             skipToken();
@@ -207,7 +419,6 @@ public final class ReaderScanner extends XmlScanner {
         return handleStartElement(c);
     }
 
-    @Override
     public int nextFromTree() throws XMLStreamException {
         if (_tokenIncomplete) { // left-overs?
             if (skipToken()) { // Figured out next event (ENTITY_REFERENCE)?
@@ -292,6 +503,43 @@ public final class ReaderScanner extends XmlScanner {
     }
 
     /**
+     * This method is called to ensure that the current token/event has been
+     * completely parsed, such that we have all the data needed to return
+     * it (textual content, PI data, comment text etc)
+     */
+    private void finishToken() throws XMLStreamException {
+        _tokenIncomplete = false;
+        switch (_currToken) {
+            case PROCESSING_INSTRUCTION:
+                finishPI();
+                break;
+
+            case CHARACTERS:
+                finishCharacters();
+                break;
+
+            case COMMENT:
+                finishComment();
+                break;
+
+            case SPACE:
+                finishSpace();
+                break;
+
+            case DTD:
+                finishDTD(true); // true -> get text
+                break;
+
+            case CDATA:
+                finishCData();
+                break;
+
+            default:
+                throw new RuntimeException("Internal error");
+        }
+    }
+
+    /**
      * Helper method used to isolate things that need to be (re)set in
      * cases where
      */
@@ -300,6 +548,388 @@ public final class ReaderScanner extends XmlScanner {
         _textBuilder.resetWithEmpty();
         // !!! TODO: handle start location?
         return (_currToken = ENTITY_REFERENCE);
+    }
+
+    /**
+     * This method is called to essentially skip remaining of the
+     * current token (data of PI etc)
+     *
+     * @return True If by skipping we also figured out following event
+     *   type (and assigned its type to _currToken); false if that remains
+     *   to be done
+     */
+    private boolean skipToken() throws XMLStreamException {
+        _tokenIncomplete = false;
+        switch (_currToken) {
+            case PROCESSING_INSTRUCTION:
+                skipPI();
+                break;
+
+            case CHARACTERS:
+                if (skipCharacters()) { // encountered an entity
+                    // _tokenName already set, just need to set curr token
+                    _currToken = ENTITY_REFERENCE;
+                    return true;
+                }
+                if (_cfgCoalescing) {
+                    if (skipCoalescedText()) { // encountered an entity
+                        _currToken = ENTITY_REFERENCE;
+                        return true;
+                    }
+                }
+                break;
+
+            case COMMENT:
+                skipComment();
+                break;
+
+            case SPACE:
+                skipSpace();
+                break;
+
+            case CDATA:
+                skipCData();
+                if (_cfgCoalescing) {
+                    skipCoalescedText();
+                    if (_entityPending) { // encountered an entity
+                        _currToken = ENTITY_REFERENCE;
+                        return true;
+                    }
+                }
+                break;
+
+            case DTD:
+                finishDTD(false); // false -> skip subset text
+                break;
+
+            default:
+                throw new Error(
+                    "Internal error, unexpected incomplete token type " + ErrorConsts.tokenTypeDesc(_currToken));
+        }
+        return false;
+    }
+
+    /*
+    /**********************************************************************
+    /* Public scanner interface, location access
+    /**********************************************************************
+     */
+
+    /**
+     * @return Current input location
+     */
+    public Location getCurrentLocation() {
+        return LocationImpl.fromZeroBased(_pastBytesOrChars + _inputPtr, _currRow, _inputPtr - _rowStartOffset);
+    }
+
+    private void markLF(int offset) {
+        _rowStartOffset = offset;
+        ++_currRow;
+    }
+
+    private void markLF() {
+        _rowStartOffset = _inputPtr;
+        ++_currRow;
+    }
+
+    private void setStartLocation() {
+        _startRawOffset = _pastBytesOrChars + _inputPtr;
+        _startRow = _currRow;
+        _startColumn = _inputPtr - _rowStartOffset;
+    }
+
+    public Location getStartLocation() {
+        // !!! TODO: deal with impedance wrt int/long (flaw in Stax API)
+        int row = (int) _startRow;
+        int col = (int) _startColumn;
+        return LocationImpl.fromZeroBased(_startRawOffset, row, col);
+    }
+
+    /*
+    /**********************************************************************
+    /* Public scanner interface, other methods
+    /**********************************************************************
+     */
+
+    public boolean hasEmptyStack() {
+        return (_depth == 0);
+    }
+
+    /*
+    /**********************************************************************
+    /* Data accessors, names:
+    /**********************************************************************
+     */
+
+    public PNameC getName() {
+        return _tokenName;
+    }
+
+    public QName getQName() {
+        return _tokenName.constructQName(_defaultNs);
+    }
+
+    /*
+    /**********************************************************************
+    /* Data accessors, (element) text:
+    /**********************************************************************
+     */
+
+    public String getText() throws XMLStreamException {
+        if (_tokenIncomplete) {
+            finishToken();
+        }
+        return _textBuilder.contentsAsString();
+    }
+
+    public int getTextLength() throws XMLStreamException {
+        if (_tokenIncomplete) {
+            finishToken();
+        }
+        return _textBuilder.size();
+    }
+
+    public char[] getTextCharacters() throws XMLStreamException {
+        if (_tokenIncomplete) {
+            finishToken();
+        }
+        return _textBuilder.getTextBuffer();
+    }
+
+    public int getTextCharacters(int srcStart, char[] target, int targetStart, int len) throws XMLStreamException {
+        if (_tokenIncomplete) {
+            finishToken();
+        }
+        return _textBuilder.contentsToArray(srcStart, target, targetStart, len);
+    }
+
+    public boolean isTextWhitespace() throws XMLStreamException {
+        if (_tokenIncomplete) {
+            finishToken();
+        }
+        return _textBuilder.isAllWhitespace();
+    }
+
+    /*
+    /**********************************************************************
+    /* Data accessors, attributes:
+    /**********************************************************************
+     */
+
+    public int getAttrCount() {
+        return _attrCount;
+    }
+
+    public String getAttrLocalName(int index) {
+        // Note: caller checks indices:
+        return _attrCollector.getName(index).getLocalName();
+    }
+
+    public QName getAttrQName(int index) {
+        // Note: caller checks indices:
+        return _attrCollector.getQName(index);
+    }
+
+    public String getAttrNsURI(int index) {
+        // Note: caller checks indices:
+        return _attrCollector.getName(index).getNsUri();
+    }
+
+    public String getAttrPrefix(int index) {
+        // Note: caller checks indices:
+        return _attrCollector.getName(index).getPrefix();
+    }
+
+    public String getAttrValue(int index) {
+        // Note: caller checks indices
+        return _attrCollector.getValue(index);
+    }
+
+    public String getAttrValue(String nsURI, String localName) {
+        /* Collector may not be reset if there are no attributes,
+         * need to check if any could be found first:
+         */
+        if (_attrCount < 1) {
+            return null;
+        }
+        return _attrCollector.getValue(nsURI, localName);
+    }
+
+    /*
+    /**********************************************************************
+    /* Data accessors, namespace declarations:
+    /**********************************************************************
+     */
+
+    public int getNsCount() {
+        if (_currToken == START_ELEMENT) {
+            return _currNsCount;
+        }
+        return (_lastNsDecl == null) ? 0 : _lastNsDecl.countDeclsOnLevel(_depth);
+    }
+
+    public String getNamespacePrefix(int index) {
+        return findCurrNsDecl(index).getBinding().mPrefix;
+    }
+
+    public String getNamespaceURI(int index) {
+        return findCurrNsDecl(index).getBinding().mURI;
+    }
+
+    private NsDeclaration findCurrNsDecl(int index) {
+        NsDeclaration nsDecl = _lastNsDecl;
+        /* 17-Sep-2006, tatu: There is disparity between START/END_ELEMENT;
+         *   with START_ELEMENT, _depth is one higher than that of ns
+         *   declarations; with END_ELEMENT, the same
+         */
+        int level = _depth;
+        int count;
+        // 20-Jan-2011, tatu: Hmmh... since declarations are in reverse order should we reorder?
+        if (_currToken == START_ELEMENT) {
+            count = _currNsCount - 1 - index;
+            --level;
+        } else {
+            count = index;
+        }
+
+        while (nsDecl != null && nsDecl.getLevel() == level) {
+            if (count == 0) {
+                return nsDecl;
+            }
+            --count;
+            nsDecl = nsDecl.getPrev();
+        }
+        reportInvalidNsIndex(index);
+        return null; // never gets here
+    }
+
+    // Part of NamespaceContext impl below
+    //public final String getNsUri(String prefix)
+
+    public String getNamespaceURI() {
+        String uri = _tokenName.getNsUri();
+        // Null means it uses the default ns:
+        return (uri == null) ? _defaultNs.mURI : uri;
+    }
+
+    /*
+    /**********************************************************************
+    /* NamespaceContext implementation
+    /**********************************************************************
+     */
+
+    @Override
+    public String getNamespaceURI(String prefix) {
+        if (prefix == null) {
+            throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
+        }
+        if (prefix.isEmpty()) { // default namespace?
+            // Need to check if it's null, too, to convert
+            String uri = _defaultNs.mURI;
+            return (uri == null) ? "" : uri;
+        }
+        // xml, xmlns?
+        if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
+            return XMLConstants.XML_NS_URI;
+        }
+        if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+        }
+        // Nope, a specific other prefix
+        NsDeclaration nsDecl = _lastNsDecl;
+        while (nsDecl != null) {
+            if (nsDecl.hasPrefix(prefix)) {
+                return nsDecl.getCurrNsURI();
+            }
+            nsDecl = nsDecl.getPrev();
+        }
+        return null;
+    }
+
+    @Override
+    public String getPrefix(String nsURI) {
+        /* As per JDK 1.5 JavaDocs, null is illegal; but no mention
+         * about empty String (""). But that should
+         */
+        if (nsURI == null) {
+            throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
+        }
+        if (nsURI.equals(XMLConstants.XML_NS_URI)) {
+            return XMLConstants.XML_NS_PREFIX;
+        }
+        if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+            return XMLConstants.XMLNS_ATTRIBUTE;
+        }
+        // First: does the default namespace bind to the URI?
+        if (nsURI.equals(_defaultNs.mURI)) {
+            return "";
+        }
+        /* Need to loop twice; first find a prefix, then ensure it's
+         * not masked by a later declaration
+         */
+        main_loop: for (NsDeclaration nsDecl = _lastNsDecl; nsDecl != null; nsDecl = nsDecl.getPrev()) {
+            if (nsDecl.hasNsURI(nsURI)) {
+                // Ok: but is prefix masked?
+                String prefix = nsDecl.getPrefix();
+                // Plus, default ns wouldn't do (since current one was already checked)
+                if (prefix != null) {
+                    for (NsDeclaration decl2 = _lastNsDecl; decl2 != nsDecl; decl2 = decl2.getPrev()) {
+                        if (decl2.hasPrefix(prefix)) {
+                            continue main_loop;
+                        }
+                    }
+                    return prefix;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Iterator<String> getPrefixes(String nsURI) {
+        if (nsURI == null) {
+            throw new IllegalArgumentException(ErrorConsts.ERR_NULL_ARG);
+        }
+        if (nsURI.equals(XMLConstants.XML_NS_URI)) {
+            return Collections.singletonList(XMLConstants.XML_NS_PREFIX).iterator();
+        }
+        if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+            return Collections.singletonList(XMLConstants.XMLNS_ATTRIBUTE).iterator();
+        }
+        ArrayList<String> l = null;
+
+        // First, the default ns?
+        if (nsURI.equals(_defaultNs.mURI)) {
+            l = new ArrayList<>();
+            l.add("");
+        }
+
+        main_loop: for (NsDeclaration nsDecl = _lastNsDecl; nsDecl != null; nsDecl = nsDecl.getPrev()) {
+            if (nsDecl.hasNsURI(nsURI)) {
+                // Ok: but is prefix masked?
+                String prefix = nsDecl.getPrefix();
+                // Plus, default ns wouldn't do (since current one was already checked)
+                if (prefix != null) {
+                    for (NsDeclaration decl2 = _lastNsDecl; decl2 != nsDecl; decl2 = decl2.getPrev()) {
+                        if (decl2.hasPrefix(prefix)) {
+                            continue main_loop;
+                        }
+                    }
+                    if (l == null) {
+                        l = new ArrayList<>();
+                    }
+                    l.add(prefix);
+                }
+            }
+        }
+
+        if (l == null) {
+            return Collections.emptyIterator();
+        }
+        if (l.size() == 1) {
+            return Collections.singletonList(l.get(0)).iterator();
+        }
+        return l.iterator();
     }
 
     /*
@@ -345,23 +975,21 @@ public final class ReaderScanner extends XmlScanner {
         _tokenName = parsePName(c);
         c = skipInternalWs(false, null);
 
-        //boolean gotId;
-
+        String _systemId;
         if (c == 'P') { // PUBLIC
             matchAsciiKeyword("PUBLIC");
             c = skipInternalWs(true, null);
-            _publicId = parsePublicId(c);
+            parsePublicId(c);
             c = skipInternalWs(true, null);
             _systemId = parseSystemId(c);
             c = skipInternalWs(false, null);
         } else if (c == 'S') { // SYSTEM
             matchAsciiKeyword("SYSTEM");
             c = skipInternalWs(true, null);
-            _publicId = null;
             _systemId = parseSystemId(c);
             c = skipInternalWs(false, null);
         } else {
-            _publicId = _systemId = null;
+            _systemId = null;
         }
 
         /* Ok; so, need to get either an internal subset, or the
@@ -1180,8 +1808,7 @@ public final class ReaderScanner extends XmlScanner {
         return 0;
     }
 
-    @Override
-    protected void finishComment() throws XMLStreamException {
+    private void finishComment() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1282,8 +1909,7 @@ public final class ReaderScanner extends XmlScanner {
         _textBuilder.setCurrentLength(outPtr);
     }
 
-    @Override
-    protected void finishPI() throws XMLStreamException {
+    private void finishPI() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1376,8 +2002,7 @@ public final class ReaderScanner extends XmlScanner {
         _textBuilder.setCurrentLength(outPtr);
     }
 
-    @Override
-    protected void finishDTD(boolean copyContents) throws XMLStreamException {
+    private void finishDTD(boolean copyContents) throws XMLStreamException {
         char[] outputBuffer = copyContents ? _textBuilder.resetWithEmpty() : null;
         int outPtr = 0;
 
@@ -1510,8 +2135,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected void finishCData() throws XMLStreamException {
+    private void finishCData() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
         char[] outputBuffer = _textBuilder.resetWithEmpty();
@@ -1645,8 +2269,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected void finishCharacters() throws XMLStreamException {
+    private void finishCharacters() throws XMLStreamException {
         int outPtr;
         char[] outputBuffer;
 
@@ -1831,8 +2454,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected void finishSpace() throws XMLStreamException {
+    private void finishSpace() throws XMLStreamException {
         /* Ok: so, mTmpChar contains first space char. If it looks
          * like indentation, we can probably optimize a bit...
          */
@@ -2251,8 +2873,7 @@ public final class ReaderScanner extends XmlScanner {
      *
      * @return True if we encountered an unexpandable entity
      */
-    @Override
-    protected boolean skipCoalescedText() throws XMLStreamException {
+    private boolean skipCoalescedText() throws XMLStreamException {
         while (true) {
             // no matter what, will need (and can get) one char
             if (_inputPtr >= _inputEnd) {
@@ -2300,8 +2921,7 @@ public final class ReaderScanner extends XmlScanner {
     /**********************************************************************
      */
 
-    @Override
-    protected void skipComment() throws XMLStreamException {
+    private void skipComment() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2374,8 +2994,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected void skipPI() throws XMLStreamException {
+    private void skipPI() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2447,8 +3066,11 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected boolean skipCharacters() throws XMLStreamException {
+    /**
+     * @return True, if an unexpanded entity was encountered (and
+     *   is now pending)
+     */
+    private boolean skipCharacters() throws XMLStreamException {
         final int[] TYPES = sCharTypes.TEXT_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2547,8 +3169,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected void skipCData() throws XMLStreamException {
+    private void skipCData() throws XMLStreamException {
         final int[] TYPES = sCharTypes.OTHER_CHARS;
         final char[] inputBuffer = _inputBuffer;
 
@@ -2639,8 +3260,7 @@ public final class ReaderScanner extends XmlScanner {
         }
     }
 
-    @Override
-    protected void skipSpace() throws XMLStreamException {
+    private void skipSpace() throws XMLStreamException {
         // mTmpChar has a space, but it's been checked, can ignore
         int ptr = _inputPtr;
 
@@ -2956,7 +3576,7 @@ public final class ReaderScanner extends XmlScanner {
         return _symbols.addSymbol(nameBuffer, 0, nameLen, hash);
     }
 
-    private String parsePublicId(char quoteChar) throws XMLStreamException {
+    private void parsePublicId(char quoteChar) throws XMLStreamException {
         char[] outputBuffer = _nameBuffer;
         int outPtr = 0;
         final int[] TYPES = XmlCharTypes.PUBID_CHARS;
@@ -2994,7 +3614,6 @@ public final class ReaderScanner extends XmlScanner {
             }
             outputBuffer[outPtr++] = c;
         }
-        return new String(outputBuffer, 0, outPtr);
     }
 
     private String parseSystemId(char quoteChar) throws XMLStreamException {
@@ -3067,10 +3686,6 @@ public final class ReaderScanner extends XmlScanner {
             reportInvalidSecondSurrogate(sec);
         }
         // And the composite, is it ok?
-        int val = ((firstChar - 0xD800) << 10) + 0x10000;
-        if (val > XmlConsts.MAX_UNICODE_CHAR) {
-            reportInvalidXmlChar(val);
-        }
         return sec;
     }
 
@@ -3083,9 +3698,6 @@ public final class ReaderScanner extends XmlScanner {
         }
         // And the composite, is it ok?
         int val = ((firstChar - 0xD800) << 10) + 0x10000;
-        if (val > XmlConsts.MAX_UNICODE_CHAR) {
-            reportInvalidXmlChar(val);
-        }
         reportInvalidNameChar(val, index);
     }
 
@@ -3107,11 +3719,7 @@ public final class ReaderScanner extends XmlScanner {
             reportInvalidSecondSurrogate(sec);
         }
         // And the composite, is it ok?
-        int val = ((firstChar - 0xD800) << 10) + 0x10000;
-        if (val > XmlConsts.MAX_UNICODE_CHAR) {
-            reportInvalidXmlChar(val);
-        }
-        return val;
+        return ((firstChar - 0xD800) << 10) + 0x10000;
     }
 
     private void reportInvalidFirstSurrogate(char ch) throws XMLStreamException {
@@ -3126,29 +3734,347 @@ public final class ReaderScanner extends XmlScanner {
 
     /*
     /**********************************************************************
-    /* Location handling
+    /* Basic namespace binding methods
     /**********************************************************************
      */
 
-    @Override
-    public Location getCurrentLocation() {
-        return LocationImpl.fromZeroBased(_pastBytesOrChars + _inputPtr, _currRow, _inputPtr - _rowStartOffset);
+    /**
+     * This method is called to find/create a fully qualified (bound)
+     * name (element / attribute), for a name with prefix. For non-prefixed
+     * names this method will not get called
+     */
+    private PNameC bindName(PNameC name, String prefix) {
+        // First, do we have a cache, to perhaps find bound name from?
+        if (_nsBindingCache != null) {
+            PNameC cn = _nsBindingCache[name.unboundHashCode() & BIND_CACHE_MASK];
+            if (cn != null && cn.unboundEquals(name)) {
+                return cn;
+            }
+        }
+
+        // If no cache, or not found there, need to first find binding
+        for (int i = 0, len = _nsBindingCount; i < len; ++i) {
+            NsBinding b = _nsBindings[i];
+            if (!Objects.equals(b.mPrefix, prefix)) { // prefixes are canonicalized
+                continue;
+            }
+            // Ok, match!
+            // Can we bubble prefix closer to the head?
+            if (i > 0) {
+                _nsBindings[i] = _nsBindings[i - 1];
+                _nsBindings[i - 1] = b;
+            }
+            // Plus, should we cache it?
+            PNameC bn = name.createBoundName(b);
+            if (_nsBindingCache == null) {
+                if (++_nsBindMisses < BIND_MISSES_TO_ACTIVATE_CACHE) {
+                    return bn;
+                }
+                _nsBindingCache = new PNameC[BIND_CACHE_SIZE];
+            }
+            _nsBindingCache[bn.unboundHashCode() & BIND_CACHE_MASK] = bn;
+            return bn;
+        }
+
+        // If not even binding, need to create that first
+
+        // No match; perhaps "xml"? But is "xmlns" legal to use too?
+        if (Objects.equals(prefix, "xml")) {
+            return name.createBoundName(NsBinding.XML_BINDING);
+        }
+        /* Nope. Need to create a new binding. For such entries, let's
+         * not try caching, yet, but let's note it as a miss
+         */
+        ++_nsBindMisses;
+        return name.createBoundName(createNewBinding(prefix));
     }
 
-    private void markLF(int offset) {
-        _rowStartOffset = offset;
-        ++_currRow;
+    /**
+     * Method called when a namespace declaration needs to find the
+     * binding object (essentially a per-prefix-per-document canonical
+     * container object)
+     */
+    private NsBinding findOrCreateBinding(String prefix) {
+        // !!! TODO: switch to hash at size N?
+
+        // TEST only (for ns-soap.xml):
+        //int MAX = (_nsBindingCount > 8) ? 8 : _nsBindingCount;
+        //for (int i = 0; i < MAX; ++i) {
+
+        for (int i = 0, len = _nsBindingCount; i < len; ++i) {
+            NsBinding b = _nsBindings[i];
+            if (Objects.equals(b.mPrefix, prefix)) { // prefixes are interned
+                if (i > 0) { // let's do bubble it up a notch... can speed things up
+                    _nsBindings[i] = _nsBindings[i - 1];
+                    _nsBindings[i - 1] = b;
+                }
+                return b;
+            }
+        }
+
+        if (Objects.equals(prefix, "xml")) {
+            return NsBinding.XML_BINDING;
+        }
+        if (Objects.equals(prefix, "xmlns")) {
+            return NsBinding.XMLNS_BINDING;
+        }
+        // Nope. Need to create a new binding
+        return createNewBinding(prefix);
     }
 
-    private void markLF() {
-        _rowStartOffset = _inputPtr;
-        ++_currRow;
+    private NsBinding createNewBinding(String prefix) {
+        NsBinding b = new NsBinding(prefix);
+        if (_nsBindingCount == 0) {
+            _nsBindings = new NsBinding[16];
+        } else if (_nsBindingCount >= _nsBindings.length) {
+            _nsBindings = (NsBinding[]) DataUtil.growAnyArrayBy(_nsBindings, _nsBindings.length);
+        }
+        _nsBindings[_nsBindingCount] = b;
+        ++_nsBindingCount;
+        return b;
     }
 
-    private void setStartLocation() {
-        _startRawOffset = _pastBytesOrChars + _inputPtr;
-        _startRow = _currRow;
-        _startColumn = _inputPtr - _rowStartOffset;
+    /**
+     * Method called when we are ready to bind a declared namespace.
+     */
+    private void bindNs(PNameC name, String uri) throws XMLStreamException {
+        NsBinding ns;
+        String prefix = name.getPrefix();
+
+        if (prefix == null) { // default ns
+            ns = _defaultNs;
+        } else {
+            prefix = name.getLocalName();
+            ns = findOrCreateBinding(prefix);
+            if (ns.isImmutable()) { // xml, xmlns
+                checkImmutableBinding(prefix, uri);
+            }
+        }
+
+        /* 28-Oct-2006, tatus: Also need to ensure that neither
+         *   xml nor xmlns-bound namespaces are bound to any
+         *   other prefixes. Since we know that URIs are intern()ed,
+         *   can just do identity comparison
+         */
+        if (!ns.isImmutable()) {
+            if (Objects.equals(uri, XMLConstants.XML_NS_URI)) {
+                reportIllegalNsDecl("xml", XMLConstants.XML_NS_URI);
+            } else if (Objects.equals(uri, XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+                reportIllegalNsDecl("xmlns", XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+            }
+        }
+        // Already declared in current scope?
+        if (_lastNsDecl != null && _lastNsDecl.alreadyDeclared(prefix, _depth)) {
+            reportDuplicateNsDecl(prefix);
+        }
+        _lastNsDecl = new NsDeclaration(ns, uri, _lastNsDecl, _depth);
+    }
+
+    /**
+     * Method called when an immutable ns prefix (xml, xmlns) is
+     * encountered.
+     */
+    private void checkImmutableBinding(String prefix, String uri) throws XMLStreamException {
+        if (!Objects.equals(prefix, "xml") || !uri.equals(XMLConstants.XML_NS_URI)) {
+            reportIllegalNsDecl(prefix);
+        }
+    }
+
+    /*
+    /**********************************************************************
+    /* Helper methods for sub-classes, input data
+    /**********************************************************************
+     */
+
+    /**
+     * Method that tries to load at least one more byte into buffer;
+     * and if that fails, throws an appropriate EOI exception.
+     */
+    private void loadMoreGuaranteed() throws XMLStreamException {
+        loadMoreGuaranteed(_currToken);
+    }
+
+    private void loadMoreGuaranteed(int tt) throws XMLStreamException {
+        if (!loadMore()) {
+            reportInputProblem("Unexpected end-of-input when trying to parse " + ErrorConsts.tokenTypeDesc(tt));
+        }
+    }
+
+    /*
+    /**********************************************************************
+    /* Helper methods for sub-classes, error reporting
+    /**********************************************************************
+     */
+
+    private void reportInputProblem(String msg) throws XMLStreamException {
+        /* 29-Mar-2008, tatus: Not sure if these are all Well-Formedness
+         *   Constraint (WFC) violations? They should be... ?
+         */
+        throw new StreamExceptionBase(msg, getCurrentLocation());
+    }
+
+    /**
+     * Method called when a call to expand an entity within attribute
+     * value fails to expand it.
+     */
+    private void reportUnexpandedEntityInAttr(boolean isNsDecl) throws XMLStreamException {
+        reportInputProblem("Unexpanded ENTITY_REFERENCE (" + _tokenName + ") in "
+            + (isNsDecl ? "namespace declaration" : "attribute value"));
+    }
+
+    private void reportPrologUnexpElement(boolean isProlog, int ch) throws XMLStreamException {
+        if (ch < 0) { // just to be safe, in case caller passed signed byte
+            ch &= 0x7FFFF;
+        }
+        if (ch == '/') { // end element
+            if (isProlog) {
+                reportInputProblem("Unexpected end element in prolog: malformed XML document, expected root element");
+            }
+            reportInputProblem("Unexpected end element in epilog: malformed XML document (unbalanced start/end tags?)");
+        }
+
+        // Otherwise, likely start element. But check for invalid white space for funsies
+        if (ch < 32) {
+            String type = isProlog ? ErrorConsts.SUFFIX_IN_PROLOG : ErrorConsts.SUFFIX_IN_EPILOG;
+            throwUnexpectedChar(ch, "Unrecognized directive " + type);
+        }
+        reportInputProblem("Second root element in content: malformed XML document, only one allowed");
+    }
+
+    private void reportPrologUnexpChar(boolean isProlog, int ch, String msg) throws XMLStreamException {
+        String fullMsg = isProlog ? ErrorConsts.SUFFIX_IN_PROLOG : ErrorConsts.SUFFIX_IN_EPILOG;
+        if (msg == null) {
+            if (ch == '&') {
+                throwUnexpectedChar(ch, fullMsg + "; no entities allowed");
+            }
+        } else {
+            fullMsg += msg;
+        }
+        throwUnexpectedChar(ch, fullMsg);
+    }
+
+    private void reportTreeUnexpChar(int ch, String msg) throws XMLStreamException {
+        String fullMsg = ErrorConsts.SUFFIX_IN_TREE;
+        if (msg != null) {
+            fullMsg += msg;
+        }
+        throwUnexpectedChar(ch, fullMsg);
+    }
+
+    private void reportInvalidNameChar(int ch, int index) throws XMLStreamException {
+        if (ch == INT_COLON) {
+            reportInputProblem(
+                "Invalid colon in name: at most one colon allowed in element/attribute names, and none in PI target or entity names");
+        }
+        if (index == 0) {
+            reportInputProblem("Invalid name start character (0x" + Integer.toHexString(ch) + ")");
+        }
+        reportInputProblem("Invalid name character (0x" + Integer.toHexString(ch) + ")");
+    }
+
+    private void reportInvalidXmlChar(int ch) throws XMLStreamException {
+        if (ch == 0) {
+            reportInputProblem("Invalid null character");
+        }
+        if (ch < 32) {
+            reportInputProblem("Invalid white space character (0x" + Integer.toHexString(ch) + ")");
+        }
+        reportInputProblem("Invalid xml content character (0x" + Integer.toHexString(ch) + ")");
+    }
+
+    /**
+     * Called when there's an unexpected char after PI target (non-ws,
+     * not part of {@code '?>'} end marker
+     */
+    private void reportMissingPISpace(int ch) throws XMLStreamException {
+        throwUnexpectedChar(ch, ": expected either white space, or closing '?>'");
+    }
+
+    private void reportDoubleHyphenInComments() throws XMLStreamException {
+        reportInputProblem("String '--' not allowed in comment (missing '>'?)");
+    }
+
+    private void reportMultipleColonsInName() throws XMLStreamException {
+        reportInputProblem("Multiple colons not allowed in names");
+    }
+
+    private void reportEntityOverflow() throws XMLStreamException {
+        reportInputProblem("Illegal character entity: value higher than max allowed (0x"
+            + Integer.toHexString(MAX_UNICODE_CHAR) + ")");
+    }
+
+    private void reportInvalidNsIndex(int index) {
+        /* 24-Jun-2006, tatus: Stax API doesn't specify what (if anything)
+         *   should be thrown. Ref. Impl. throws IndexOutOfBounds, which
+         *   makes sense; could also throw IllegalArgumentException.
+         */
+        throw new IndexOutOfBoundsException("Illegal namespace declaration index, " + index
+            + ", current START_ELEMENT/END_ELEMENT has " + getNsCount() + " declarations");
+    }
+
+    private void reportUnboundPrefix(PNameC name, boolean isAttr) throws XMLStreamException {
+        reportInputProblem("Unbound namespace prefix '" + name.getPrefix() + "' (for "
+            + (isAttr ? "attribute" : "element") + " name '" + name.getPrefixedName() + "')");
+    }
+
+    private void reportDuplicateNsDecl(String prefix) throws XMLStreamException {
+        if (prefix == null) {
+            reportInputProblem("Duplicate namespace declaration for the default namespace");
+        } else {
+            reportInputProblem("Duplicate namespace declaration for prefix '" + prefix + "'");
+        }
+    }
+
+    private void reportIllegalNsDecl(String prefix) throws XMLStreamException {
+        reportInputProblem("Illegal namespace declaration: can not re-bind prefix '" + prefix + "'");
+    }
+
+    private void reportIllegalNsDecl(String prefix, String uri) throws XMLStreamException {
+        reportInputProblem(
+            "Illegal namespace declaration: can not bind URI '" + uri + "' to prefix other than '" + prefix + "'");
+    }
+
+    private void reportUnexpectedEndTag(String expName) throws XMLStreamException {
+        reportInputProblem("Unexpected end tag: expected </" + expName + ">");
+    }
+
+    // Thrown when ']]>' found in text content
+    private void reportIllegalCDataEnd() throws XMLStreamException {
+        reportInputProblem("String ']]>' not allowed in textual content, except as the end marker of CDATA section");
+    }
+
+    private void throwUnexpectedChar(int i, String msg) throws XMLStreamException {
+        // But first, let's check illegals
+        if (i < 32 && i != '\r' && i != '\n' && i != '\t') {
+            throwInvalidSpace(i);
+        }
+        char c = (char) i;
+        String excMsg = "Unexpected character " + XmlChars.getCharDesc(c) + msg;
+        reportInputProblem(excMsg);
+    }
+
+    private void throwNullChar() throws XMLStreamException {
+        reportInputProblem("Illegal character (NULL, unicode 0) encountered: not valid in any content");
+    }
+
+    private char handleInvalidXmlChar(int i) throws XMLStreamException {
+        char c = (char) i;
+        if (c == CHAR_NULL) {
+            throwNullChar();
+        }
+
+        reportInputProblem("Illegal XML character (" + XmlChars.getCharDesc(c) + ")");
+
+        //will not reach this block
+        return (char) i;
+    }
+
+    private void throwInvalidSpace(int i) throws XMLStreamException {
+        char c = (char) i;
+        if (c == CHAR_NULL) {
+            throwNullChar();
+        }
+        reportInputProblem("Illegal character (" + XmlChars.getCharDesc(c) + ")");
     }
 
     /*
@@ -3157,8 +4083,7 @@ public final class ReaderScanner extends XmlScanner {
     /**********************************************************************
      */
 
-    @Override
-    protected boolean loadMore() throws XMLStreamException {
+    private boolean loadMore() throws XMLStreamException {
         _pastBytesOrChars += _inputEnd;
         _rowStartOffset -= _inputEnd;
         _inputPtr = 0;

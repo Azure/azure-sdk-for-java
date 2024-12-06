@@ -16,14 +16,12 @@
 
 package io.clientcore.core.serialization.xml.implementation.aalto.in;
 
-import io.clientcore.core.serialization.xml.implementation.aalto.util.NameTable;
-
 /**
  * This is a symbol table implementation used for storing byte-based
  * <code>PNames</code>, specifically, instances of
  * ({@link PNameC}).
  */
-public class CharBasedPNameTable extends NameTable {
+public final class CharBasedPNameTable {
     final static int MIN_HASH_SIZE = 16;
 
     /*
@@ -36,7 +34,7 @@ public class CharBasedPNameTable extends NameTable {
      * Primary matching symbols; it's expected most match occur from
      * here.
      */
-    protected PNameC[] _symbols;
+    private PNameC[] _symbols;
 
     /**
      * Overflow buckets; if primary doesn't match, lookup is done
@@ -45,27 +43,27 @@ public class CharBasedPNameTable extends NameTable {
      * Note: Number of buckets is half of number of symbol entries, on
      * assumption there's less need for buckets.
      */
-    protected Bucket[] _buckets;
+    private Bucket[] _buckets;
 
     /**
      * Current size (number of entries); needed to know if and when
      * rehash.
      */
-    protected int _size;
+    private int _size;
 
     /**
      * Limit that indicates maximum size this instance can hold before
      * it needs to be expanded and rehashed. Calculated using fill
      * factor passed in to constructor.
      */
-    protected int _sizeThreshold;
+    private int _sizeThreshold;
 
     /**
      * Mask used to get index from hash values; equal to
      * <code>mBuckets.length - 1</code>, when mBuckets.length is
      * a power of two.
      */
-    protected int _indexMask;
+    private int _indexMask;
 
     /*
     /**********************************************************************
@@ -79,7 +77,7 @@ public class CharBasedPNameTable extends NameTable {
      * (first) change is made, and potentially if updated bucket list
      * is to be resync'ed back to master instance.
      */
-    protected boolean _dirty;
+    private boolean _dirty;
 
     /*
     /**********************************************************************
@@ -141,7 +139,7 @@ public class CharBasedPNameTable extends NameTable {
      */
     public synchronized void mergeFromChild(CharBasedPNameTable child) {
         // Let's do a basic sanity check first:
-        if (child.size() <= size()) { // nothing to add
+        if (child._size <= _size) { // nothing to add
             return;
         }
 
@@ -171,12 +169,11 @@ public class CharBasedPNameTable extends NameTable {
     /**********************************************************************
      */
 
-    @Override
-    public int size() {
-        return _size;
-    }
-
-    @Override
+    /**
+     * Method called to check to quickly see if a child symbol table
+     * may have gotten additional entries. Used for checking to see
+     * if a child table should be merged into shared table.
+     */
     public boolean maybeDirty() {
         return _dirty;
     }
