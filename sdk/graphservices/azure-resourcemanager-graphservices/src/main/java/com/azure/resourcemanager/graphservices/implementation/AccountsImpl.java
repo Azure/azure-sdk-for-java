@@ -29,23 +29,23 @@ public final class AccountsImpl implements Accounts {
 
     public PagedIterable<AccountResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AccountResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccountResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<AccountResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccountResource> list() {
         PagedIterable<AccountResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccountResource> list(Context context) {
         PagedIterable<AccountResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
     }
 
     public Response<AccountResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
@@ -79,12 +79,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public AccountResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -93,12 +93,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public Response<AccountResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -107,12 +107,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -121,12 +121,12 @@ public final class AccountsImpl implements Accounts {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
