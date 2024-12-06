@@ -70,14 +70,14 @@ jobs:
     - bash: |
         java -version
         set -x
-        ./eng/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+        ./eng/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
       displayName: Generation from TypeSpec
       condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
 
     - bash: |
         java -version
         set -x
-        ./eng/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+        ./eng/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
       displayName: Generation from Swagger
       condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
