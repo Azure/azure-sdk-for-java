@@ -122,14 +122,14 @@ jobs:
         displayName: Dump Test-Proxy Logs
         condition: succeededOrFailed()
 
-#      - pwsh: |
-#          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
-#          foreach($file in $files){
-#              Write-Host "##[group]$file"
-#              cat $file
-#              Write-Host "##[endgroup]"
-#          }
-#        displayName: Dump Test-Proxy Error Logs
-#        condition: succeededOrFailed()
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Error Logs
+        condition: succeededOrFailed()
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
