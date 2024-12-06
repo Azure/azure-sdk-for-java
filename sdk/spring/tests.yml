@@ -24,15 +24,10 @@ extends:
             - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
-          TestName: IT_EventHubs
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.eventhubs.*IT
+          TestName: IT_EventHubs_Storage
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.eventhubs.*IT,com.azure.spring.cloud.integration.tests.storage.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
-      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
-        parameters:
-          TestName: IT_Storage
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.storage.*IT
-          TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/storage
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
