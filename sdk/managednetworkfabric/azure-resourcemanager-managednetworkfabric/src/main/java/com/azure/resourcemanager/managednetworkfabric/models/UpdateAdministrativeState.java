@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Update administrative state on list of resources. */
+/**
+ * Update administrative state on list of resources.
+ */
 @Fluent
 public final class UpdateAdministrativeState extends EnableDisableOnResources {
     /*
      * Administrative state.
      */
-    @JsonProperty(value = "state")
     private EnableDisableState state;
 
-    /** Creates an instance of UpdateAdministrativeState class. */
+    /**
+     * Creates an instance of UpdateAdministrativeState class.
+     */
     public UpdateAdministrativeState() {
     }
 
     /**
      * Get the state property: Administrative state.
-     *
+     * 
      * @return the state value.
      */
     public EnableDisableState state() {
@@ -32,7 +38,7 @@ public final class UpdateAdministrativeState extends EnableDisableOnResources {
 
     /**
      * Set the state property: Administrative state.
-     *
+     * 
      * @param state the state value to set.
      * @return the UpdateAdministrativeState object itself.
      */
@@ -41,7 +47,9 @@ public final class UpdateAdministrativeState extends EnableDisableOnResources {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UpdateAdministrativeState withResourceIds(List<String> resourceIds) {
         super.withResourceIds(resourceIds);
@@ -50,11 +58,50 @@ public final class UpdateAdministrativeState extends EnableDisableOnResources {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceIds", resourceIds(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateAdministrativeState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateAdministrativeState if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAdministrativeState.
+     */
+    public static UpdateAdministrativeState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateAdministrativeState deserializedUpdateAdministrativeState = new UpdateAdministrativeState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceIds".equals(fieldName)) {
+                    List<String> resourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpdateAdministrativeState.withResourceIds(resourceIds);
+                } else if ("state".equals(fieldName)) {
+                    deserializedUpdateAdministrativeState.state = EnableDisableState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateAdministrativeState;
+        });
     }
 }

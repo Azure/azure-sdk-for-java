@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of NNI used. Example: CE | NPB. */
+/**
+ * Type of NNI used. Example: CE | NPB.
+ */
 public final class NniType extends ExpandableStringEnum<NniType> {
-    /** Static value CE for NniType. */
+    /**
+     * Static value CE for NniType.
+     */
     public static final NniType CE = fromString("CE");
 
-    /** Static value NPB for NniType. */
+    /**
+     * Static value NPB for NniType.
+     */
     public static final NniType NPB = fromString("NPB");
 
     /**
      * Creates a new instance of NniType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class NniType extends ExpandableStringEnum<NniType> {
 
     /**
      * Creates or finds a NniType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NniType.
      */
-    @JsonCreator
     public static NniType fromString(String name) {
         return fromString(name, NniType.class);
     }
 
     /**
      * Gets known NniType values.
-     *
+     * 
      * @return known NniType values.
      */
     public static Collection<NniType> values() {

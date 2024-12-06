@@ -16,13 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNet
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient.
+ */
 public interface NetworkToNetworkInterconnectsClient {
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -39,9 +41,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -59,9 +61,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -77,9 +79,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -96,9 +98,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -114,9 +116,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -131,9 +133,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -150,9 +152,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -170,9 +172,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -188,9 +190,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -207,9 +209,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -224,9 +226,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -242,9 +244,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -257,9 +259,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -274,9 +276,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,9 +292,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -307,9 +309,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -326,9 +328,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -346,9 +348,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -364,9 +366,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -384,9 +386,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -403,9 +405,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -423,9 +425,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -441,9 +443,9 @@ public interface NetworkToNetworkInterconnectsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.

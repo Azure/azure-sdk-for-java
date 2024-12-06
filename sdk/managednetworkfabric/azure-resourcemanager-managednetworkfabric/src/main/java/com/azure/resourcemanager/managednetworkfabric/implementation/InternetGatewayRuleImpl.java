@@ -147,8 +147,9 @@ public final class InternetGatewayRuleImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.internetGatewayRuleName = Utils.getValueFromIdByName(innerObject.id(), "internetGatewayRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.internetGatewayRuleName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "internetGatewayRules");
     }
 
     public InternetGatewayRule refresh() {

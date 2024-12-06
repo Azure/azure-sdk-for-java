@@ -17,13 +17,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in AccessControlListsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessControlListsClient.
+ */
 public interface AccessControlListsClient {
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -38,9 +40,9 @@ public interface AccessControlListsClient {
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -56,9 +58,9 @@ public interface AccessControlListsClient {
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -72,9 +74,9 @@ public interface AccessControlListsClient {
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -90,9 +92,9 @@ public interface AccessControlListsClient {
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -107,9 +109,9 @@ public interface AccessControlListsClient {
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,9 +124,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -139,9 +141,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -157,9 +159,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -173,9 +175,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -191,9 +193,9 @@ public interface AccessControlListsClient {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,9 +208,9 @@ public interface AccessControlListsClient {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -223,9 +225,9 @@ public interface AccessControlListsClient {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,9 +239,9 @@ public interface AccessControlListsClient {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -252,9 +254,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,9 +268,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +283,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
@@ -293,9 +295,9 @@ public interface AccessControlListsClient {
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,9 +309,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -325,9 +327,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -344,9 +346,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -361,9 +363,9 @@ public interface AccessControlListsClient {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -379,9 +381,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,9 +397,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -412,9 +414,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,9 +429,9 @@ public interface AccessControlListsClient {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -444,9 +446,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,9 +462,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -477,9 +479,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,9 +494,9 @@ public interface AccessControlListsClient {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.

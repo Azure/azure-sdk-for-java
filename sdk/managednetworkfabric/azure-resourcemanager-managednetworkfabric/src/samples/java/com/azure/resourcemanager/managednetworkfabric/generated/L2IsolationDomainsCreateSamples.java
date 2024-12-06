@@ -7,20 +7,23 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for L2IsolationDomains Create. */
+/**
+ * Samples for L2IsolationDomains Create.
+ */
 public final class L2IsolationDomainsCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * L2IsolationDomains_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: L2IsolationDomains_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void l2IsolationDomainsCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .l2IsolationDomains()
+        manager.l2IsolationDomains()
             .define("example-l2domain")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
@@ -33,6 +36,7 @@ public final class L2IsolationDomainsCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

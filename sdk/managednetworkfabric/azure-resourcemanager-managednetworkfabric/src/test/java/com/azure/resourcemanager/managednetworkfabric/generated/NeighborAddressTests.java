@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborAddress model = BinaryData.fromString("{\"address\":\"kw\",\"configurationState\":\"Provisioned\"}")
-            .toObject(NeighborAddress.class);
-        Assertions.assertEquals("kw", model.address());
+        NeighborAddress model
+            = BinaryData.fromString("{\"address\":\"zhzzwvywrg\",\"configurationState\":\"PendingCommit\"}")
+                .toObject(NeighborAddress.class);
+        Assertions.assertEquals("zhzzwvywrg", model.address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborAddress model = new NeighborAddress().withAddress("kw");
+        NeighborAddress model = new NeighborAddress().withAddress("zhzzwvywrg");
         model = BinaryData.fromObject(model).toObject(NeighborAddress.class);
-        Assertions.assertEquals("kw", model.address());
+        Assertions.assertEquals("zhzzwvywrg", model.address());
     }
 }

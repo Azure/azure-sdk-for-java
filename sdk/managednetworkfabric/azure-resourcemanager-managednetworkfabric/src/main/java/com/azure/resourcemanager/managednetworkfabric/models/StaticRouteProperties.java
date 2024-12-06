@@ -6,31 +6,37 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Route Properties. */
+/**
+ * Route Properties.
+ */
 @Fluent
-public final class StaticRouteProperties {
+public final class StaticRouteProperties implements JsonSerializable<StaticRouteProperties> {
     /*
      * Prefix of the route.
      */
-    @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
     /*
      * List of next hop addresses.
      */
-    @JsonProperty(value = "nextHop", required = true)
     private List<String> nextHop;
 
-    /** Creates an instance of StaticRouteProperties class. */
+    /**
+     * Creates an instance of StaticRouteProperties class.
+     */
     public StaticRouteProperties() {
     }
 
     /**
      * Get the prefix property: Prefix of the route.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -39,7 +45,7 @@ public final class StaticRouteProperties {
 
     /**
      * Set the prefix property: Prefix of the route.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the StaticRouteProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class StaticRouteProperties {
 
     /**
      * Get the nextHop property: List of next hop addresses.
-     *
+     * 
      * @return the nextHop value.
      */
     public List<String> nextHop() {
@@ -59,7 +65,7 @@ public final class StaticRouteProperties {
 
     /**
      * Set the nextHop property: List of next hop addresses.
-     *
+     * 
      * @param nextHop the nextHop value to set.
      * @return the StaticRouteProperties object itself.
      */
@@ -70,19 +76,60 @@ public final class StaticRouteProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (prefix() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property prefix in model StaticRouteProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property prefix in model StaticRouteProperties"));
         }
         if (nextHop() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nextHop in model StaticRouteProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nextHop in model StaticRouteProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StaticRouteProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeArrayField("nextHop", this.nextHop, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticRouteProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticRouteProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticRouteProperties.
+     */
+    public static StaticRouteProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticRouteProperties deserializedStaticRouteProperties = new StaticRouteProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefix".equals(fieldName)) {
+                    deserializedStaticRouteProperties.prefix = reader.getString();
+                } else if ("nextHop".equals(fieldName)) {
+                    List<String> nextHop = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStaticRouteProperties.nextHop = nextHop;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticRouteProperties;
+        });
+    }
 }

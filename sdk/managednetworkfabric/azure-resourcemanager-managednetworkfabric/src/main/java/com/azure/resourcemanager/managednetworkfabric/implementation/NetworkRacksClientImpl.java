@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkRacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkRacksClient.
+ */
 public final class NetworkRacksClientImpl implements NetworkRacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkRacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkRacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkRacksClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -142,17 +148,17 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkRackName,
@@ -187,9 +193,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -197,8 +203,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkRackName,
@@ -232,9 +238,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -253,9 +259,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -277,9 +283,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -296,9 +302,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -316,9 +322,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -336,9 +342,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -357,9 +363,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -375,9 +381,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -395,9 +401,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,9 +440,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -472,9 +478,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,9 +496,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -509,9 +515,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,17 +532,17 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkRackName,
@@ -571,9 +577,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -581,8 +587,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Rack resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Rack resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkRackName,
@@ -616,9 +622,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -637,9 +643,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -661,9 +667,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -680,9 +686,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -700,9 +706,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -719,9 +725,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -740,9 +746,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -758,9 +764,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -777,9 +783,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -814,9 +820,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -852,9 +858,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -871,9 +877,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -893,9 +899,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -910,9 +916,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -929,9 +935,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -947,9 +953,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -966,9 +972,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -982,9 +988,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -999,9 +1005,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1033,9 +1039,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1069,9 +1075,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1086,9 +1092,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1104,9 +1110,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1120,9 +1126,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1137,9 +1143,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Racks along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1165,9 +1171,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1195,9 +1201,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Racks as paginated response with {@link PagedFlux}.
@@ -1210,9 +1216,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1227,9 +1233,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Racks as paginated response with {@link PagedIterable}.
@@ -1241,9 +1247,9 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1257,9 +1263,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1285,9 +1290,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1313,9 +1317,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1341,9 +1344,8 @@ public final class NetworkRacksClientImpl implements NetworkRacksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

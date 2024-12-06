@@ -5,25 +5,35 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the port condition that needs to be matched. */
+/**
+ * Defines the port condition that needs to be matched.
+ */
 @Fluent
 public final class AccessControlListPortCondition extends PortCondition {
     /*
-     * List of protocol flags that needs to be matched.
+     * List of protocol flags that need to be matched. Example: established | initial | <List-of-TCP-flags>. List of
+     * eligible TCP Flags are ack, fin, not-ack, not-fin, not-psh, not-rst, not-syn, not-urg, psh, rst, syn, urg
      */
-    @JsonProperty(value = "flags")
     private List<String> flags;
 
-    /** Creates an instance of AccessControlListPortCondition class. */
+    /**
+     * Creates an instance of AccessControlListPortCondition class.
+     */
     public AccessControlListPortCondition() {
     }
 
     /**
-     * Get the flags property: List of protocol flags that needs to be matched.
-     *
+     * Get the flags property: List of protocol flags that need to be matched. Example: established | initial |
+     * &lt;List-of-TCP-flags&gt;. List of eligible TCP Flags are ack, fin, not-ack, not-fin, not-psh, not-rst, not-syn,
+     * not-urg, psh, rst, syn, urg.
+     * 
      * @return the flags value.
      */
     public List<String> flags() {
@@ -31,8 +41,10 @@ public final class AccessControlListPortCondition extends PortCondition {
     }
 
     /**
-     * Set the flags property: List of protocol flags that needs to be matched.
-     *
+     * Set the flags property: List of protocol flags that need to be matched. Example: established | initial |
+     * &lt;List-of-TCP-flags&gt;. List of eligible TCP Flags are ack, fin, not-ack, not-fin, not-psh, not-rst, not-syn,
+     * not-urg, psh, rst, syn, urg.
+     * 
      * @param flags the flags value to set.
      * @return the AccessControlListPortCondition object itself.
      */
@@ -41,28 +53,36 @@ public final class AccessControlListPortCondition extends PortCondition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPortCondition withPortType(PortType portType) {
         super.withPortType(portType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPortCondition withLayer4Protocol(Layer4Protocol layer4Protocol) {
         super.withLayer4Protocol(layer4Protocol);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPortCondition withPorts(List<String> ports) {
         super.withPorts(ports);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPortCondition withPortGroupNames(List<String> portGroupNames) {
         super.withPortGroupNames(portGroupNames);
@@ -71,11 +91,72 @@ public final class AccessControlListPortCondition extends PortCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (layer4Protocol() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property layer4Protocol in model AccessControlListPortCondition"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccessControlListPortCondition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("layer4Protocol", layer4Protocol() == null ? null : layer4Protocol().toString());
+        jsonWriter.writeStringField("portType", portType() == null ? null : portType().toString());
+        jsonWriter.writeArrayField("ports", ports(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("portGroupNames", portGroupNames(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("flags", this.flags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessControlListPortCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessControlListPortCondition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccessControlListPortCondition.
+     */
+    public static AccessControlListPortCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessControlListPortCondition deserializedAccessControlListPortCondition
+                = new AccessControlListPortCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("layer4Protocol".equals(fieldName)) {
+                    deserializedAccessControlListPortCondition
+                        .withLayer4Protocol(Layer4Protocol.fromString(reader.getString()));
+                } else if ("portType".equals(fieldName)) {
+                    deserializedAccessControlListPortCondition.withPortType(PortType.fromString(reader.getString()));
+                } else if ("ports".equals(fieldName)) {
+                    List<String> ports = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListPortCondition.withPorts(ports);
+                } else if ("portGroupNames".equals(fieldName)) {
+                    List<String> portGroupNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListPortCondition.withPortGroupNames(portGroupNames);
+                } else if ("flags".equals(fieldName)) {
+                    List<String> flags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccessControlListPortCondition.flags = flags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessControlListPortCondition;
+        });
     }
 }

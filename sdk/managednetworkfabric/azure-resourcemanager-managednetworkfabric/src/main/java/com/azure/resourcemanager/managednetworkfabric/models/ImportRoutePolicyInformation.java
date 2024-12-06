@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Import Route Policy Configuration. */
+/**
+ * Import Route Policy Configuration.
+ */
 @Fluent
-public final class ImportRoutePolicyInformation {
+public final class ImportRoutePolicyInformation implements JsonSerializable<ImportRoutePolicyInformation> {
     /*
      * Import IPv4 Route Policy Id.
      */
-    @JsonProperty(value = "importIpv4RoutePolicyId")
     private String importIpv4RoutePolicyId;
 
     /*
      * Import IPv6 Route Policy Id.
      */
-    @JsonProperty(value = "importIpv6RoutePolicyId")
     private String importIpv6RoutePolicyId;
 
-    /** Creates an instance of ImportRoutePolicyInformation class. */
+    /**
+     * Creates an instance of ImportRoutePolicyInformation class.
+     */
     public ImportRoutePolicyInformation() {
     }
 
     /**
      * Get the importIpv4RoutePolicyId property: Import IPv4 Route Policy Id.
-     *
+     * 
      * @return the importIpv4RoutePolicyId value.
      */
     public String importIpv4RoutePolicyId() {
@@ -37,7 +43,7 @@ public final class ImportRoutePolicyInformation {
 
     /**
      * Set the importIpv4RoutePolicyId property: Import IPv4 Route Policy Id.
-     *
+     * 
      * @param importIpv4RoutePolicyId the importIpv4RoutePolicyId value to set.
      * @return the ImportRoutePolicyInformation object itself.
      */
@@ -48,7 +54,7 @@ public final class ImportRoutePolicyInformation {
 
     /**
      * Get the importIpv6RoutePolicyId property: Import IPv6 Route Policy Id.
-     *
+     * 
      * @return the importIpv6RoutePolicyId value.
      */
     public String importIpv6RoutePolicyId() {
@@ -57,7 +63,7 @@ public final class ImportRoutePolicyInformation {
 
     /**
      * Set the importIpv6RoutePolicyId property: Import IPv6 Route Policy Id.
-     *
+     * 
      * @param importIpv6RoutePolicyId the importIpv6RoutePolicyId value to set.
      * @return the ImportRoutePolicyInformation object itself.
      */
@@ -68,9 +74,48 @@ public final class ImportRoutePolicyInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("importIpv4RoutePolicyId", this.importIpv4RoutePolicyId);
+        jsonWriter.writeStringField("importIpv6RoutePolicyId", this.importIpv6RoutePolicyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportRoutePolicyInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportRoutePolicyInformation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImportRoutePolicyInformation.
+     */
+    public static ImportRoutePolicyInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportRoutePolicyInformation deserializedImportRoutePolicyInformation = new ImportRoutePolicyInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("importIpv4RoutePolicyId".equals(fieldName)) {
+                    deserializedImportRoutePolicyInformation.importIpv4RoutePolicyId = reader.getString();
+                } else if ("importIpv6RoutePolicyId".equals(fieldName)) {
+                    deserializedImportRoutePolicyInformation.importIpv6RoutePolicyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportRoutePolicyInformation;
+        });
     }
 }

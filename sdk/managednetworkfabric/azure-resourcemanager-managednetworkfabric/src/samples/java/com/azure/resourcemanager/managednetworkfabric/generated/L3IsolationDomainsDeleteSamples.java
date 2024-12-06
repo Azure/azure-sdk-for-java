@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for L3IsolationDomains Delete. */
+/**
+ * Samples for L3IsolationDomains Delete.
+ */
 public final class L3IsolationDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * L3IsolationDomains_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void l3IsolationDomainsDeleteMaximumSetGen(

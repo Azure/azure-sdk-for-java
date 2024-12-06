@@ -6,17 +6,14 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunity;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,75 +21,52 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IpCommunitiesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"configurationState\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":1934573662126007624,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"xywabkitnipa\",\"tgvnaqyj\"]},{\"action\":\"Deny\",\"sequenceNumber\":5190929238437453512,\"wellKnownCommunities\":[\"GShut\",\"GShut\",\"LocalAS\",\"NoAdvertise\"],\"communityMembers\":[\"onopf\",\"emiwfhhawbabhzbf\",\"di\"]}],\"annotation\":\"nxydgzfoiqzsus\"},\"location\":\"y\",\"tags\":{\"af\":\"lqeronz\",\"uwdbvytqav\":\"xf\"},\"id\":\"uymkdeuqxlvzpfd\",\"name\":\"axgbiwpgop\",\"type\":\"lktthbmrrmtrxg\"}";
+            = "{\"properties\":{\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":7419786157769811395,\"wellKnownCommunities\":[\"NoAdvertise\"],\"communityMembers\":[\"rrrqnneqrypyurv\",\"hhovtue\"]},{\"action\":\"Permit\",\"sequenceNumber\":5041983404964007850,\"wellKnownCommunities\":[\"NoExport\",\"GShut\"],\"communityMembers\":[\"yb\",\"dzycxhaoegjzgplj\",\"nwczsraz\"]},{\"action\":\"Deny\",\"sequenceNumber\":7036914459390802617,\"wellKnownCommunities\":[\"NoAdvertise\",\"NoAdvertise\"],\"communityMembers\":[\"h\",\"pua\",\"asizzfmugykwuyc\",\"otennd\"]}],\"annotation\":\"thdzitjzffph\"},\"location\":\"wjqvs\",\"tags\":{\"z\":\"onadez\",\"rsguogkcbr\":\"vfybxmmrvnuvqk\",\"tvvqtmvifgcvsim\":\"tpyabensjflwp\",\"xgosnxa\":\"lbmti\"},\"id\":\"ptcd\",\"name\":\"mzxaoxlhmvj\",\"type\":\"nn\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IpCommunity response = manager.ipCommunities()
-            .define("envtol")
-            .withRegion("gikkmibnmdpi")
-            .withExistingResourceGroup("zrrwsciclhdw")
-            .withTags(mapOf("loqavst", "wtgzwmzhcm", "bngzldvvd", "zavkyjjludnmbj", "pmq", "optythctoxo", "sfzsgzgus",
-                "erwhemvids"))
-            .withIpCommunityRules(Arrays.asList(
-                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(4795950063400188951L)
-                    .withWellKnownCommunities(
-                        Arrays.asList(WellKnownCommunities.NO_EXPORT, WellKnownCommunities.NO_ADVERTISE))
-                    .withCommunityMembers(Arrays.asList("h", "wppvihbmwrv", "vdrohu")),
-                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(4939402553869338194L)
-                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT))
-                    .withCommunityMembers(Arrays.asList("xj", "a")),
-                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
-                    .withSequenceNumber(1871939289139657586L)
-                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET, WellKnownCommunities.GSHUT,
-                        WellKnownCommunities.LOCAL_AS))
-                    .withCommunityMembers(Arrays.asList("tixkg", "obmkphvdlorxz")),
-                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(3690161019255251039L)
-                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.INTERNET))
-                    .withCommunityMembers(Arrays.asList("tfcieil", "e"))))
-            .withAnnotation("tkehldopjsxvbb")
-            .create();
+        IpCommunity response
+            = manager.ipCommunities()
+                .define("khdhpmkxdujkxpuq")
+                .withRegion("i")
+                .withExistingResourceGroup("cabaam")
+                .withTags(mapOf("pvhcbtza", "bvxqtolpwb", "ick", "rjxcon", "gvuqzgbjwvrudmp", "kithueoc", "esgyzwph",
+                    "ewpmioleaja"))
+                .withIpCommunityRules(Arrays.asList(
+                    new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                        .withSequenceNumber(4994198146168498626L)
+                        .withWellKnownCommunities(
+                            Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.INTERNET))
+                        .withCommunityMembers(Arrays.asList("ezxiz", "syxbfjilb")),
+                    new IpCommunityRule().withAction(CommunityActionTypes.DENY)
+                        .withSequenceNumber(6838121574977908802L)
+                        .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_ADVERTISE))
+                        .withCommunityMembers(Arrays.asList("wivkdf", "jsk"))))
+                .withAnnotation("bxzepirtv")
+                .create();
 
-        Assertions.assertEquals("y", response.location());
-        Assertions.assertEquals("lqeronz", response.tags().get("af"));
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(1934573662126007624L, response.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("wjqvs", response.location());
+        Assertions.assertEquals("onadez", response.tags().get("z"));
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(7419786157769811395L, response.ipCommunityRules().get(0).sequenceNumber());
         Assertions.assertEquals(WellKnownCommunities.NO_ADVERTISE,
             response.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("xywabkitnipa", response.ipCommunityRules().get(0).communityMembers().get(0));
-        Assertions.assertEquals("nxydgzfoiqzsus", response.annotation());
+        Assertions.assertEquals("rrrqnneqrypyurv", response.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("thdzitjzffph", response.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

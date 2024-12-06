@@ -169,8 +169,9 @@ public final class NetworkPacketBrokerImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkPacketBrokerName = Utils.getValueFromIdByName(innerObject.id(), "networkPacketBrokers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkPacketBrokerName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkPacketBrokers");
     }
 
     public NetworkPacketBroker refresh() {

@@ -6,45 +6,26 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NeighborGroupsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"networkTapIds\":[\"rybytcaqpj\",\"hlc\",\"nrvxyyh\",\"sis\"],\"networkTapRuleIds\":[\"frpan\",\"eqiwduukaamimkj\",\"cxysjdfxvksi\"],\"provisioningState\":\"Canceled\",\"destination\":{\"ipv4Addresses\":[\"ndexijo\",\"uyxuupze\",\"ddatopdtphvjgvjz\",\"kngq\"],\"ipv6Addresses\":[\"jxzxbth\",\"nyzpu\",\"nrmd\"]},\"annotation\":\"oabfcvefb\"},\"location\":\"pmgyqshsasm\",\"tags\":{\"grz\":\"yutkbx\"},\"id\":\"kyqguauuihkybg\",\"name\":\"yncyzjnd\",\"type\":\"eemxiu\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkTapIds\":[\"hfwlnvqacbyfisb\",\"nlmpuyypaggpaih\"],\"networkTapRuleIds\":[\"yzwloqrmgd\"],\"provisioningState\":\"Failed\",\"destination\":{\"ipv4Addresses\":[\"lxtywukhj\",\"spllitxrrgkw\",\"yoy\",\"qoivxcodw\"],\"ipv6Addresses\":[\"ytcachhsizfuew\",\"fwfiikqcdnzsfi\",\"hgneo\"]},\"annotation\":\"mcrxlyzoaho\"},\"location\":\"fakrxjjwnbrmdw\",\"tags\":{\"nistcjhatc\":\"nlsyia\",\"anapfaoiz\":\"pphcstmryc\",\"mzc\":\"inlpxngzzxqbgqn\",\"pucv\":\"bxzjkpi\"},\"id\":\"dozw\",\"name\":\"sk\",\"type\":\"e\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -52,10 +33,10 @@ public final class NeighborGroupsListMockTests {
 
         PagedIterable<NeighborGroup> response = manager.neighborGroups().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pmgyqshsasm", response.iterator().next().location());
-        Assertions.assertEquals("yutkbx", response.iterator().next().tags().get("grz"));
-        Assertions.assertEquals("ndexijo", response.iterator().next().destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("jxzxbth", response.iterator().next().destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("oabfcvefb", response.iterator().next().annotation());
+        Assertions.assertEquals("fakrxjjwnbrmdw", response.iterator().next().location());
+        Assertions.assertEquals("nlsyia", response.iterator().next().tags().get("nistcjhatc"));
+        Assertions.assertEquals("lxtywukhj", response.iterator().next().destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("ytcachhsizfuew", response.iterator().next().destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("mcrxlyzoaho", response.iterator().next().annotation());
     }
 }

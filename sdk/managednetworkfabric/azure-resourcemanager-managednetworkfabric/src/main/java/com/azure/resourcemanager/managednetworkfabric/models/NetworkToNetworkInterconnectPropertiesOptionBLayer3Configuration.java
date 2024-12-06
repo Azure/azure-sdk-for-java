@@ -5,29 +5,58 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Common properties for Layer3Configuration. */
+/**
+ * Common properties for Layer3Configuration.
+ */
 @Fluent
 public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration extends OptionBLayer3Configuration {
-    /** Creates an instance of NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration class. */
+    /*
+     * ASN of CE devices for CE/PE connectivity.
+     */
+    private Long fabricAsn;
+
+    /**
+     * Creates an instance of NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration class.
+     */
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
+     * 
+     * @return the fabricAsn value.
+     */
+    @Override
+    public Long fabricAsn() {
+        return this.fabricAsn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration withPeerAsn(Long peerAsn) {
         super.withPeerAsn(peerAsn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration withVlanId(Integer vlanId) {
         super.withVlanId(vlanId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
         withPrimaryIpv4Prefix(String primaryIpv4Prefix) {
@@ -35,7 +64,9 @@ public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configurat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
         withPrimaryIpv6Prefix(String primaryIpv6Prefix) {
@@ -43,7 +74,9 @@ public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configurat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
         withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
@@ -51,7 +84,9 @@ public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configurat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
         withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
@@ -61,11 +96,73 @@ public final class NetworkToNetworkInterconnectPropertiesOptionBLayer3Configurat
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryIpv4Prefix", primaryIpv4Prefix());
+        jsonWriter.writeStringField("primaryIpv6Prefix", primaryIpv6Prefix());
+        jsonWriter.writeStringField("secondaryIpv4Prefix", secondaryIpv4Prefix());
+        jsonWriter.writeStringField("secondaryIpv6Prefix", secondaryIpv6Prefix());
+        jsonWriter.writeNumberField("peerASN", peerAsn());
+        jsonWriter.writeNumberField("vlanId", vlanId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.
+     */
+    public static NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                = new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryIpv4Prefix".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                        .withPrimaryIpv4Prefix(reader.getString());
+                } else if ("primaryIpv6Prefix".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                        .withPrimaryIpv6Prefix(reader.getString());
+                } else if ("secondaryIpv4Prefix".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                        .withSecondaryIpv4Prefix(reader.getString());
+                } else if ("secondaryIpv6Prefix".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                        .withSecondaryIpv6Prefix(reader.getString());
+                } else if ("peerASN".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                        .withPeerAsn(reader.getNullable(JsonReader::getLong));
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration
+                        .withVlanId(reader.getNullable(JsonReader::getInt));
+                } else if ("fabricASN".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration.fabricAsn
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration;
+        });
     }
 }

@@ -5,34 +5,39 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapPatchableParametersDestinationsItem;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The Network Tap resource patch definition. */
+/**
+ * The Network Tap resource patch definition.
+ */
 @Fluent
 public final class NetworkTapPatchableParameters extends AnnotationResource {
     /*
      * Polling type.
      */
-    @JsonProperty(value = "pollingType")
     private PollingType pollingType;
 
     /*
      * List of destination properties to send the filter traffic.
      */
-    @JsonProperty(value = "destinations")
     private List<NetworkTapPatchableParametersDestinationsItem> destinations;
 
-    /** Creates an instance of NetworkTapPatchableParameters class. */
+    /**
+     * Creates an instance of NetworkTapPatchableParameters class.
+     */
     public NetworkTapPatchableParameters() {
     }
 
     /**
      * Get the pollingType property: Polling type.
-     *
+     * 
      * @return the pollingType value.
      */
     public PollingType pollingType() {
@@ -41,7 +46,7 @@ public final class NetworkTapPatchableParameters extends AnnotationResource {
 
     /**
      * Set the pollingType property: Polling type.
-     *
+     * 
      * @param pollingType the pollingType value to set.
      * @return the NetworkTapPatchableParameters object itself.
      */
@@ -52,7 +57,7 @@ public final class NetworkTapPatchableParameters extends AnnotationResource {
 
     /**
      * Get the destinations property: List of destination properties to send the filter traffic.
-     *
+     * 
      * @return the destinations value.
      */
     public List<NetworkTapPatchableParametersDestinationsItem> destinations() {
@@ -61,7 +66,7 @@ public final class NetworkTapPatchableParameters extends AnnotationResource {
 
     /**
      * Set the destinations property: List of destination properties to send the filter traffic.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the NetworkTapPatchableParameters object itself.
      */
@@ -71,7 +76,9 @@ public final class NetworkTapPatchableParameters extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapPatchableParameters withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -80,14 +87,58 @@ public final class NetworkTapPatchableParameters extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (destinations() != null) {
             destinations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("pollingType", this.pollingType == null ? null : this.pollingType.toString());
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapPatchableParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapPatchableParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkTapPatchableParameters.
+     */
+    public static NetworkTapPatchableParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapPatchableParameters deserializedNetworkTapPatchableParameters
+                = new NetworkTapPatchableParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkTapPatchableParameters.withAnnotation(reader.getString());
+                } else if ("pollingType".equals(fieldName)) {
+                    deserializedNetworkTapPatchableParameters.pollingType = PollingType.fromString(reader.getString());
+                } else if ("destinations".equals(fieldName)) {
+                    List<NetworkTapPatchableParametersDestinationsItem> destinations
+                        = reader.readArray(reader1 -> NetworkTapPatchableParametersDestinationsItem.fromJson(reader1));
+                    deserializedNetworkTapPatchableParameters.destinations = destinations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapPatchableParameters;
+        });
     }
 }

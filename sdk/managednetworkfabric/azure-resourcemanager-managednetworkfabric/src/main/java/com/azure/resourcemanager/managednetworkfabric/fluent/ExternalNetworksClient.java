@@ -16,13 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetw
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in ExternalNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExternalNetworksClient.
+ */
 public interface ExternalNetworksClient {
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -38,9 +40,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -57,9 +59,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -75,9 +77,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -94,9 +96,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -112,9 +114,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -128,9 +130,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -146,9 +148,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -165,9 +167,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -183,9 +185,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -202,9 +204,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -219,9 +221,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -237,9 +239,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -252,9 +254,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -268,9 +270,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,9 +285,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -300,9 +302,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -319,9 +321,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -339,9 +341,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -357,9 +359,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -376,9 +378,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -395,9 +397,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -415,9 +417,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -433,9 +435,9 @@ public interface ExternalNetworksClient {
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.

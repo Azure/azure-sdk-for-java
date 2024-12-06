@@ -16,30 +16,31 @@ public final class NetworkTapPropertiesDestinationsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkTapPropertiesDestinationsItem model = BinaryData.fromString(
-            "{\"name\":\"avi\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"g\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"wichmxczby\"]},\"destinationTapRuleId\":\"ocgmzdcts\"}")
+            "{\"name\":\"cfvvtdpcbpzfo\",\"destinationType\":\"Direct\",\"destinationId\":\"ugbrhfiwltkfys\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"klx\"]},\"destinationTapRuleId\":\"cvasyyh\"}")
             .toObject(NetworkTapPropertiesDestinationsItem.class);
-        Assertions.assertEquals("avi", model.name());
-        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinationType());
-        Assertions.assertEquals("g", model.destinationId());
-        Assertions.assertEquals(Encapsulation.NONE, model.isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("wichmxczby", model.isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("ocgmzdcts", model.destinationTapRuleId());
+        Assertions.assertEquals("cfvvtdpcbpzfo", model.name());
+        Assertions.assertEquals(DestinationType.DIRECT, model.destinationType());
+        Assertions.assertEquals("ugbrhfiwltkfys", model.destinationId());
+        Assertions.assertEquals(Encapsulation.GRE, model.isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("klx", model.isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("cvasyyh", model.destinationTapRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapPropertiesDestinationsItem model = new NetworkTapPropertiesDestinationsItem().withName("avi")
-            .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-            .withDestinationId("g")
-            .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-                .withNeighborGroupIds(Arrays.asList("wichmxczby")))
-            .withDestinationTapRuleId("ocgmzdcts");
+        NetworkTapPropertiesDestinationsItem model
+            = new NetworkTapPropertiesDestinationsItem().withName("cfvvtdpcbpzfo")
+                .withDestinationType(DestinationType.DIRECT)
+                .withDestinationId("ugbrhfiwltkfys")
+                .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                    .withNeighborGroupIds(Arrays.asList("klx")))
+                .withDestinationTapRuleId("cvasyyh");
         model = BinaryData.fromObject(model).toObject(NetworkTapPropertiesDestinationsItem.class);
-        Assertions.assertEquals("avi", model.name());
-        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinationType());
-        Assertions.assertEquals("g", model.destinationId());
-        Assertions.assertEquals(Encapsulation.NONE, model.isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("wichmxczby", model.isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("ocgmzdcts", model.destinationTapRuleId());
+        Assertions.assertEquals("cfvvtdpcbpzfo", model.name());
+        Assertions.assertEquals(DestinationType.DIRECT, model.destinationType());
+        Assertions.assertEquals("ugbrhfiwltkfys", model.destinationId());
+        Assertions.assertEquals(Encapsulation.GRE, model.isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("klx", model.isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("cvasyyh", model.destinationTapRuleId());
     }
 }

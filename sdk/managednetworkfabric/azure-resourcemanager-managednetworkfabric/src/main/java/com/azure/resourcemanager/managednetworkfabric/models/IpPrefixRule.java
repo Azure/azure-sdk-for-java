@@ -6,15 +6,20 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IP Prefix Rule properties. */
+/**
+ * IP Prefix Rule properties.
+ */
 @Fluent
-public final class IpPrefixRule {
+public final class IpPrefixRule implements JsonSerializable<IpPrefixRule> {
     /*
      * Action to be taken on the configuration. Example: Permit | Deny.
      */
-    @JsonProperty(value = "action", required = true)
     private CommunityActionTypes action;
 
     /*
@@ -22,36 +27,34 @@ public final class IpPrefixRule {
      * number and continue down the list until a match is made. Once a match is made, the permit or deny statement is
      * applied to that network and the rest of the list is ignored.
      */
-    @JsonProperty(value = "sequenceNumber", required = true)
     private long sequenceNumber;
 
     /*
      * Network Prefix specifying IPv4/IPv6 packets to be permitted or denied. Example: 1.1.1.0/24 |
      * 3FFE:FFFF:0:CD30::/126
      */
-    @JsonProperty(value = "networkPrefix", required = true)
     private String networkPrefix;
 
     /*
      * Specify prefix-list bounds.
      */
-    @JsonProperty(value = "condition")
     private Condition condition;
 
     /*
      * SubnetMaskLength gives the minimum NetworkPrefix length to be matched. Possible values for IPv4 are 1 - 32 .
      * Possible values of IPv6 are 1 - 128.
      */
-    @JsonProperty(value = "subnetMaskLength")
     private String subnetMaskLength;
 
-    /** Creates an instance of IpPrefixRule class. */
+    /**
+     * Creates an instance of IpPrefixRule class.
+     */
     public IpPrefixRule() {
     }
 
     /**
      * Get the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
+     * 
      * @return the action value.
      */
     public CommunityActionTypes action() {
@@ -60,7 +63,7 @@ public final class IpPrefixRule {
 
     /**
      * Set the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpPrefixRule object itself.
      */
@@ -73,7 +76,7 @@ public final class IpPrefixRule {
      * Get the sequenceNumber property: Sequence to insert to/delete from existing route. Prefix lists are evaluated
      * starting with the lowest sequence number and continue down the list until a match is made. Once a match is made,
      * the permit or deny statement is applied to that network and the rest of the list is ignored.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public long sequenceNumber() {
@@ -84,7 +87,7 @@ public final class IpPrefixRule {
      * Set the sequenceNumber property: Sequence to insert to/delete from existing route. Prefix lists are evaluated
      * starting with the lowest sequence number and continue down the list until a match is made. Once a match is made,
      * the permit or deny statement is applied to that network and the rest of the list is ignored.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the IpPrefixRule object itself.
      */
@@ -96,7 +99,7 @@ public final class IpPrefixRule {
     /**
      * Get the networkPrefix property: Network Prefix specifying IPv4/IPv6 packets to be permitted or denied. Example:
      * 1.1.1.0/24 | 3FFE:FFFF:0:CD30::/126.
-     *
+     * 
      * @return the networkPrefix value.
      */
     public String networkPrefix() {
@@ -106,7 +109,7 @@ public final class IpPrefixRule {
     /**
      * Set the networkPrefix property: Network Prefix specifying IPv4/IPv6 packets to be permitted or denied. Example:
      * 1.1.1.0/24 | 3FFE:FFFF:0:CD30::/126.
-     *
+     * 
      * @param networkPrefix the networkPrefix value to set.
      * @return the IpPrefixRule object itself.
      */
@@ -117,7 +120,7 @@ public final class IpPrefixRule {
 
     /**
      * Get the condition property: Specify prefix-list bounds.
-     *
+     * 
      * @return the condition value.
      */
     public Condition condition() {
@@ -126,7 +129,7 @@ public final class IpPrefixRule {
 
     /**
      * Set the condition property: Specify prefix-list bounds.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the IpPrefixRule object itself.
      */
@@ -138,7 +141,7 @@ public final class IpPrefixRule {
     /**
      * Get the subnetMaskLength property: SubnetMaskLength gives the minimum NetworkPrefix length to be matched.
      * Possible values for IPv4 are 1 - 32 . Possible values of IPv6 are 1 - 128.
-     *
+     * 
      * @return the subnetMaskLength value.
      */
     public String subnetMaskLength() {
@@ -148,7 +151,7 @@ public final class IpPrefixRule {
     /**
      * Set the subnetMaskLength property: SubnetMaskLength gives the minimum NetworkPrefix length to be matched.
      * Possible values for IPv4 are 1 - 32 . Possible values of IPv6 are 1 - 128.
-     *
+     * 
      * @param subnetMaskLength the subnetMaskLength value to set.
      * @return the IpPrefixRule object itself.
      */
@@ -159,19 +162,68 @@ public final class IpPrefixRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property action in model IpPrefixRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model IpPrefixRule"));
         }
         if (networkPrefix() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property networkPrefix in model IpPrefixRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property networkPrefix in model IpPrefixRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpPrefixRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeLongField("sequenceNumber", this.sequenceNumber);
+        jsonWriter.writeStringField("networkPrefix", this.networkPrefix);
+        jsonWriter.writeStringField("condition", this.condition == null ? null : this.condition.toString());
+        jsonWriter.writeStringField("subnetMaskLength", this.subnetMaskLength);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpPrefixRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpPrefixRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpPrefixRule.
+     */
+    public static IpPrefixRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpPrefixRule deserializedIpPrefixRule = new IpPrefixRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedIpPrefixRule.action = CommunityActionTypes.fromString(reader.getString());
+                } else if ("sequenceNumber".equals(fieldName)) {
+                    deserializedIpPrefixRule.sequenceNumber = reader.getLong();
+                } else if ("networkPrefix".equals(fieldName)) {
+                    deserializedIpPrefixRule.networkPrefix = reader.getString();
+                } else if ("condition".equals(fieldName)) {
+                    deserializedIpPrefixRule.condition = Condition.fromString(reader.getString());
+                } else if ("subnetMaskLength".equals(fieldName)) {
+                    deserializedIpPrefixRule.subnetMaskLength = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpPrefixRule;
+        });
+    }
 }

@@ -19,41 +19,39 @@ public final class L3IsolationDomainPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3IsolationDomainPatchableProperties model = BinaryData.fromString(
-            "{\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"True\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"dpkawnsnl\"},{\"prefix\":\"imouxwksqmudmfco\"},{\"prefix\":\"bicziuswswj\"}],\"ipv6Routes\":[{\"prefix\":\"qsj\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"qqvyfscyrfw\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"qvogfuyz\",\"exportIpv6RoutePolicyId\":\"bhli\"}}}")
+            "{\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"oiqtamtyvskn\"},{\"prefix\":\"rwzawnvs\"}],\"ipv6Routes\":[{\"prefix\":\"hzagxnvhycvdimw\"},{\"prefix\":\"zregzgyufutrwpw\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"ekzkdhmeottaw\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"sxwwhnhjtf\",\"exportIpv6RoutePolicyId\":\"n\"}}}")
             .toObject(L3IsolationDomainPatchableProperties.class);
-        Assertions.assertEquals(RedistributeConnectedSubnets.FALSE, model.redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.redistributeStaticRoutes());
-        Assertions.assertEquals("dpkawnsnl", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("qsj", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("qqvyfscyrfw", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions.assertEquals("qvogfuyz",
+        Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, model.redistributeConnectedSubnets());
+        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, model.redistributeStaticRoutes());
+        Assertions.assertEquals("oiqtamtyvskn", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("hzagxnvhycvdimw", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ekzkdhmeottaw", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions.assertEquals("sxwwhnhjtf",
             model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("bhli",
-            model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("n", model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3IsolationDomainPatchableProperties model = new L3IsolationDomainPatchableProperties()
-            .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.FALSE)
-            .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
+            .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
+            .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
             .withAggregateRouteConfiguration(new AggregateRouteConfiguration()
-                .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("dpkawnsnl"),
-                    new AggregateRoute().withPrefix("imouxwksqmudmfco"),
-                    new AggregateRoute().withPrefix("bicziuswswj")))
-                .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("qsj"))))
-            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicyId("qqvyfscyrfw")
-                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("qvogfuyz")
-                    .withExportIpv6RoutePolicyId("bhli")));
+                .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("oiqtamtyvskn"),
+                    new AggregateRoute().withPrefix("rwzawnvs")))
+                .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("hzagxnvhycvdimw"),
+                    new AggregateRoute().withPrefix("zregzgyufutrwpw"))))
+            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicyId("ekzkdhmeottaw")
+                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("sxwwhnhjtf")
+                    .withExportIpv6RoutePolicyId("n")));
         model = BinaryData.fromObject(model).toObject(L3IsolationDomainPatchableProperties.class);
-        Assertions.assertEquals(RedistributeConnectedSubnets.FALSE, model.redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.redistributeStaticRoutes());
-        Assertions.assertEquals("dpkawnsnl", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("qsj", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("qqvyfscyrfw", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
-        Assertions.assertEquals("qvogfuyz",
+        Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, model.redistributeConnectedSubnets());
+        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, model.redistributeStaticRoutes());
+        Assertions.assertEquals("oiqtamtyvskn", model.aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("hzagxnvhycvdimw", model.aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("ekzkdhmeottaw", model.connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions.assertEquals("sxwwhnhjtf",
             model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("bhli",
-            model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("n", model.connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 }

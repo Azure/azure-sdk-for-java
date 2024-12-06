@@ -64,14 +64,14 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName) {
         PagedIterable<NetworkInterfaceInner> inner
             = this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName);
-        return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkInterface> listByNetworkDevice(String resourceGroupName, String networkDeviceName,
         Context context) {
         PagedIterable<NetworkInterfaceInner> inner
             = this.serviceClient().listByNetworkDevice(resourceGroupName, networkDeviceName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkInterfaceImpl(inner1, this.manager()));
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
@@ -97,17 +97,17 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public NetworkInterface getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
+        String networkDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
-        String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
+        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
@@ -117,17 +117,17 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public Response<NetworkInterface> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
+        String networkDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
-        String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
+        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
@@ -136,17 +136,17 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
+        String networkDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
-        String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
+        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));
@@ -155,17 +155,17 @@ public final class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkDeviceName = Utils.getValueFromIdByName(id, "networkDevices");
+        String networkDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkDevices");
         if (networkDeviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkDevices'.", id)));
         }
-        String networkInterfaceName = Utils.getValueFromIdByName(id, "networkInterfaces");
+        String networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(id, "networkInterfaces");
         if (networkInterfaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkInterfaces'.", id)));

@@ -15,31 +15,34 @@ public final class NpbStaticRouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NpbStaticRouteConfiguration model = BinaryData.fromString(
-            "{\"bfdConfiguration\":{\"administrativeState\":\"Enabled\",\"intervalInMilliSeconds\":171013724,\"multiplier\":1206192752},\"ipv4Routes\":[{\"prefix\":\"b\",\"nextHop\":[\"bispglqjoxtdah\",\"eaoo\"]}],\"ipv6Routes\":[{\"prefix\":\"jztivfwjlofzek\",\"nextHop\":[\"rmauklaj\",\"cfocz\"]}]}")
+            "{\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":703140986,\"multiplier\":468071165},\"ipv4Routes\":[{\"prefix\":\"gbzxmbtplefoioy\",\"nextHop\":[\"oxznvgvd\",\"muuv\"]},{\"prefix\":\"awsxmrszbknimxlp\",\"nextHop\":[\"rxrzutylcur\",\"aqmnbxqaehtd\",\"jmbnvynf\",\"ooeactedc\"]}],\"ipv6Routes\":[{\"prefix\":\"kakddidahzllrqm\",\"nextHop\":[\"pbyxroiduyqy\",\"ffmnoiics\",\"dyhbrjj\"]}]}")
             .toObject(NpbStaticRouteConfiguration.class);
-        Assertions.assertEquals(171013724, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1206192752, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("b", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("bispglqjoxtdah", model.ipv4Routes().get(0).nextHop().get(0));
-        Assertions.assertEquals("jztivfwjlofzek", model.ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("rmauklaj", model.ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals(703140986, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(468071165, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("gbzxmbtplefoioy", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("oxznvgvd", model.ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("kakddidahzllrqm", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("pbyxroiduyqy", model.ipv6Routes().get(0).nextHop().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NpbStaticRouteConfiguration model = new NpbStaticRouteConfiguration()
             .withBfdConfiguration(
-                new BfdConfiguration().withIntervalInMilliSeconds(171013724).withMultiplier(1206192752))
+                new BfdConfiguration().withIntervalInMilliSeconds(703140986).withMultiplier(468071165))
             .withIpv4Routes(Arrays.asList(
-                new StaticRouteProperties().withPrefix("b").withNextHop(Arrays.asList("bispglqjoxtdah", "eaoo"))))
-            .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("jztivfwjlofzek")
-                .withNextHop(Arrays.asList("rmauklaj", "cfocz"))));
+                new StaticRouteProperties().withPrefix("gbzxmbtplefoioy")
+                    .withNextHop(Arrays.asList("oxznvgvd", "muuv")),
+                new StaticRouteProperties().withPrefix("awsxmrszbknimxlp")
+                    .withNextHop(Arrays.asList("rxrzutylcur", "aqmnbxqaehtd", "jmbnvynf", "ooeactedc"))))
+            .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("kakddidahzllrqm")
+                .withNextHop(Arrays.asList("pbyxroiduyqy", "ffmnoiics", "dyhbrjj"))));
         model = BinaryData.fromObject(model).toObject(NpbStaticRouteConfiguration.class);
-        Assertions.assertEquals(171013724, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1206192752, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("b", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("bispglqjoxtdah", model.ipv4Routes().get(0).nextHop().get(0));
-        Assertions.assertEquals("jztivfwjlofzek", model.ipv6Routes().get(0).prefix());
-        Assertions.assertEquals("rmauklaj", model.ipv6Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals(703140986, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(468071165, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("gbzxmbtplefoioy", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("oxznvgvd", model.ipv4Routes().get(0).nextHop().get(0));
+        Assertions.assertEquals("kakddidahzllrqm", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("pbyxroiduyqy", model.ipv6Routes().get(0).nextHop().get(0));
     }
 }

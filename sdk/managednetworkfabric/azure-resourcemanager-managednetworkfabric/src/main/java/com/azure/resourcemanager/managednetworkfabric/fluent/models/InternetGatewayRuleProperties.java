@@ -6,40 +6,44 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Internet Gateway Rule Properties defines the resource properties. */
+/**
+ * Internet Gateway Rule Properties defines the resource properties.
+ */
 @Fluent
 public final class InternetGatewayRuleProperties extends AnnotationResource {
     /*
      * Rules for the InternetGateways
      */
-    @JsonProperty(value = "ruleProperties", required = true)
     private RuleProperties ruleProperties;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * List of Internet Gateway resource Id.
      */
-    @JsonProperty(value = "internetGatewayIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> internetGatewayIds;
 
-    /** Creates an instance of InternetGatewayRuleProperties class. */
+    /**
+     * Creates an instance of InternetGatewayRuleProperties class.
+     */
     public InternetGatewayRuleProperties() {
     }
 
     /**
      * Get the ruleProperties property: Rules for the InternetGateways.
-     *
+     * 
      * @return the ruleProperties value.
      */
     public RuleProperties ruleProperties() {
@@ -48,7 +52,7 @@ public final class InternetGatewayRuleProperties extends AnnotationResource {
 
     /**
      * Set the ruleProperties property: Rules for the InternetGateways.
-     *
+     * 
      * @param ruleProperties the ruleProperties value to set.
      * @return the InternetGatewayRuleProperties object itself.
      */
@@ -59,7 +63,7 @@ public final class InternetGatewayRuleProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -68,14 +72,16 @@ public final class InternetGatewayRuleProperties extends AnnotationResource {
 
     /**
      * Get the internetGatewayIds property: List of Internet Gateway resource Id.
-     *
+     * 
      * @return the internetGatewayIds value.
      */
     public List<String> internetGatewayIds() {
         return this.internetGatewayIds;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InternetGatewayRuleProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -84,19 +90,66 @@ public final class InternetGatewayRuleProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (ruleProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleProperties in model InternetGatewayRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleProperties in model InternetGatewayRuleProperties"));
         } else {
             ruleProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InternetGatewayRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeJsonField("ruleProperties", this.ruleProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternetGatewayRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternetGatewayRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InternetGatewayRuleProperties.
+     */
+    public static InternetGatewayRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternetGatewayRuleProperties deserializedInternetGatewayRuleProperties
+                = new InternetGatewayRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedInternetGatewayRuleProperties.withAnnotation(reader.getString());
+                } else if ("ruleProperties".equals(fieldName)) {
+                    deserializedInternetGatewayRuleProperties.ruleProperties = RuleProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInternetGatewayRuleProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("internetGatewayIds".equals(fieldName)) {
+                    List<String> internetGatewayIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInternetGatewayRuleProperties.internetGatewayIds = internetGatewayIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternetGatewayRuleProperties;
+        });
+    }
 }

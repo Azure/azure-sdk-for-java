@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient.
+ */
 public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToNetworkInterconnectsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkToNetworkInterconnectsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkToNetworkInterconnectsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkToNetworkInterconnectsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -160,9 +166,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -171,7 +177,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -211,9 +217,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -223,7 +229,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -261,9 +267,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -286,9 +292,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -313,9 +319,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -335,9 +341,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -359,9 +365,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -380,9 +386,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -403,9 +409,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -423,9 +429,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Configuration used to setup CE-PE connectivity PUT Method.
-     *
+     * 
+     * Configuration used to setup CE-PE connectivity PUT Method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -445,9 +451,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -455,7 +461,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkToNetworkInterconnectInner>> getWithResponseAsync(String resourceGroupName,
@@ -490,9 +496,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -501,7 +507,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkToNetworkInterconnectInner>> getWithResponseAsync(String resourceGroupName,
@@ -534,9 +540,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -554,9 +560,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -575,9 +581,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -595,9 +601,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -606,7 +612,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -646,9 +652,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -658,7 +664,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network To Network Interconnect resource definition along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkFabricName,
@@ -696,9 +702,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -721,9 +727,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -748,9 +754,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -770,9 +776,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -794,9 +800,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -815,9 +821,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -838,9 +844,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -858,9 +864,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Updates a Network To NetworkInterconnects.
-     *
-     * <p>Update certain properties of the Network To NetworkInterconnects resource.
-     *
+     * 
+     * Update certain properties of the Network To NetworkInterconnects resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -880,9 +886,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -924,9 +930,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -967,9 +973,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -989,9 +995,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1013,9 +1019,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1033,9 +1039,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1054,9 +1060,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1074,9 +1080,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1095,9 +1101,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1112,9 +1118,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1131,16 +1137,16 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkToNetworkInterconnectInner>>
@@ -1173,9 +1179,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1183,7 +1189,7 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkToNetworkInterconnectInner>>
@@ -1215,9 +1221,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1234,9 +1240,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1254,9 +1260,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1272,9 +1278,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1291,9 +1297,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1301,8 +1307,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateNpbStaticRouteBfdAdministrativeStateWithResponseAsync(
@@ -1343,9 +1349,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1354,8 +1360,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateNpbStaticRouteBfdAdministrativeStateWithResponseAsync(
@@ -1395,9 +1401,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1422,9 +1428,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1451,9 +1457,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1476,9 +1482,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1502,9 +1508,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1524,9 +1530,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1547,9 +1553,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1569,9 +1575,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1592,9 +1598,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1602,8 +1608,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1643,9 +1649,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1654,8 +1660,8 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1695,9 +1701,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1722,9 +1728,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1751,9 +1757,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1776,9 +1782,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1802,9 +1808,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1823,9 +1829,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1846,9 +1852,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1867,9 +1873,9 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -1890,14 +1896,13 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkToNetworkInterconnectInner>>
@@ -1920,15 +1925,14 @@ public final class NetworkToNetworkInterconnectsClientImpl implements NetworkToN
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network To Network Interconnects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkToNetworkInterconnectInner>>

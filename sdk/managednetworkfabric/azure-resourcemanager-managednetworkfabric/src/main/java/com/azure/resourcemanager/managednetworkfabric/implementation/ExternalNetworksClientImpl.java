@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExternalNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExternalNetworksClient.
+ */
 public final class ExternalNetworksClientImpl implements ExternalNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExternalNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of ExternalNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExternalNetworksClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -160,9 +166,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -170,8 +176,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -211,9 +217,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -222,8 +228,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -261,9 +267,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -284,9 +290,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -310,9 +316,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -331,9 +337,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -353,9 +359,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -374,9 +380,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -396,9 +402,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -416,9 +422,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Creates ExternalNetwork for Layer3 Isolation Domain for communication of computes with external services
-     *
-     * <p>Creates ExternalNetwork PUT method.
-     *
+     * 
+     * Creates ExternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -437,17 +443,17 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExternalNetworkInner>> getWithResponseAsync(String resourceGroupName,
@@ -482,9 +488,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -492,8 +498,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExternalNetworkInner>> getWithResponseAsync(String resourceGroupName,
@@ -526,9 +532,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -546,9 +552,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -566,9 +572,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Retrieves details of ExternalNetwork.
-     *
-     * <p>Implements ExternalNetworks GET method.
-     *
+     * 
+     * Implements ExternalNetworks GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -585,9 +591,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -595,8 +601,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -636,9 +642,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -647,8 +653,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the External Network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the External Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -686,9 +692,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -709,9 +715,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -735,9 +741,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -756,9 +762,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -778,9 +784,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -799,9 +805,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -821,9 +827,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -841,9 +847,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Updates a External Networks.
-     *
-     * <p>API to update certain properties of the ExternalNetworks resource.
-     *
+     * 
+     * API to update certain properties of the ExternalNetworks resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -862,9 +868,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -906,9 +912,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -949,9 +955,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -971,9 +977,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -995,9 +1001,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1014,9 +1020,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1035,9 +1041,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1054,9 +1060,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1075,9 +1081,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1092,9 +1098,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Deletes a ExternalNetworks.
-     *
-     * <p>Implements ExternalNetworks DELETE method.
-     *
+     * 
+     * Implements ExternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1111,9 +1117,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1152,9 +1158,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1193,9 +1199,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1212,9 +1218,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1233,9 +1239,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1251,9 +1257,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
-     *
-     * <p>Implements External Networks list by resource group GET method.
-     *
+     * 
+     * Implements External Networks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1270,9 +1276,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1280,8 +1286,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1321,9 +1327,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1332,8 +1338,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1372,9 +1378,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1399,9 +1405,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1428,9 +1434,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1452,9 +1458,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1478,9 +1484,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1500,9 +1506,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1522,9 +1528,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1543,9 +1549,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
-     *
+     * 
+     * Executes update operation to enable or disable administrative State for externalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1565,9 +1571,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1575,8 +1581,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateStaticRouteBfdAdministrativeStateWithResponseAsync(
@@ -1617,9 +1623,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1628,8 +1634,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateStaticRouteBfdAdministrativeStateWithResponseAsync(
@@ -1669,9 +1675,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1696,9 +1702,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1725,9 +1731,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1750,9 +1756,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1776,9 +1782,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1798,9 +1804,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1821,9 +1827,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1842,9 +1848,9 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Executes Static Route BFD state update operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD for external Network.
-     *
+     * 
+     * Update Static Route BFD for external Network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param externalNetworkName Name of the External Network.
@@ -1864,9 +1870,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1892,9 +1897,8 @@ public final class ExternalNetworksClientImpl implements ExternalNetworksClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

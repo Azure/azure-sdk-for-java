@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Import Route Policy either IPv4 or IPv6. */
+/**
+ * Import Route Policy either IPv4 or IPv6.
+ */
 @Fluent
-public final class ImportRoutePolicy {
+public final class ImportRoutePolicy implements JsonSerializable<ImportRoutePolicy> {
     /*
      * ARM resource ID of RoutePolicy.
      */
-    @JsonProperty(value = "importIpv4RoutePolicyId")
     private String importIpv4RoutePolicyId;
 
     /*
      * ARM resource ID of RoutePolicy.
      */
-    @JsonProperty(value = "importIpv6RoutePolicyId")
     private String importIpv6RoutePolicyId;
 
-    /** Creates an instance of ImportRoutePolicy class. */
+    /**
+     * Creates an instance of ImportRoutePolicy class.
+     */
     public ImportRoutePolicy() {
     }
 
     /**
      * Get the importIpv4RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @return the importIpv4RoutePolicyId value.
      */
     public String importIpv4RoutePolicyId() {
@@ -37,7 +43,7 @@ public final class ImportRoutePolicy {
 
     /**
      * Set the importIpv4RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @param importIpv4RoutePolicyId the importIpv4RoutePolicyId value to set.
      * @return the ImportRoutePolicy object itself.
      */
@@ -48,7 +54,7 @@ public final class ImportRoutePolicy {
 
     /**
      * Get the importIpv6RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @return the importIpv6RoutePolicyId value.
      */
     public String importIpv6RoutePolicyId() {
@@ -57,7 +63,7 @@ public final class ImportRoutePolicy {
 
     /**
      * Set the importIpv6RoutePolicyId property: ARM resource ID of RoutePolicy.
-     *
+     * 
      * @param importIpv6RoutePolicyId the importIpv6RoutePolicyId value to set.
      * @return the ImportRoutePolicy object itself.
      */
@@ -68,9 +74,48 @@ public final class ImportRoutePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("importIpv4RoutePolicyId", this.importIpv4RoutePolicyId);
+        jsonWriter.writeStringField("importIpv6RoutePolicyId", this.importIpv6RoutePolicyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportRoutePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportRoutePolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImportRoutePolicy.
+     */
+    public static ImportRoutePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportRoutePolicy deserializedImportRoutePolicy = new ImportRoutePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("importIpv4RoutePolicyId".equals(fieldName)) {
+                    deserializedImportRoutePolicy.importIpv4RoutePolicyId = reader.getString();
+                } else if ("importIpv6RoutePolicyId".equals(fieldName)) {
+                    deserializedImportRoutePolicy.importIpv6RoutePolicyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportRoutePolicy;
+        });
     }
 }

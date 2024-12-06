@@ -5,30 +5,35 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IP Extended Community Properties. */
+/**
+ * IP Extended Community Properties.
+ */
 @Fluent
 public final class ActionIpExtendedCommunityProperties extends IpExtendedCommunityAddOperationProperties {
     /*
      * List of IP Extended Community IDs.
      */
-    @JsonProperty(value = "delete")
     private IpExtendedCommunityIdList delete;
 
     /*
      * List of IP Extended Community IDs.
      */
-    @JsonProperty(value = "set")
     private IpExtendedCommunityIdList set;
 
-    /** Creates an instance of ActionIpExtendedCommunityProperties class. */
+    /**
+     * Creates an instance of ActionIpExtendedCommunityProperties class.
+     */
     public ActionIpExtendedCommunityProperties() {
     }
 
     /**
      * Get the delete property: List of IP Extended Community IDs.
-     *
+     * 
      * @return the delete value.
      */
     public IpExtendedCommunityIdList delete() {
@@ -37,7 +42,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
 
     /**
      * Set the delete property: List of IP Extended Community IDs.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the ActionIpExtendedCommunityProperties object itself.
      */
@@ -48,7 +53,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
 
     /**
      * Get the set property: List of IP Extended Community IDs.
-     *
+     * 
      * @return the set value.
      */
     public IpExtendedCommunityIdList set() {
@@ -57,7 +62,7 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
 
     /**
      * Set the set property: List of IP Extended Community IDs.
-     *
+     * 
      * @param set the set value to set.
      * @return the ActionIpExtendedCommunityProperties object itself.
      */
@@ -66,7 +71,9 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionIpExtendedCommunityProperties withAdd(IpExtendedCommunityIdList add) {
         super.withAdd(add);
@@ -75,17 +82,62 @@ public final class ActionIpExtendedCommunityProperties extends IpExtendedCommuni
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (delete() != null) {
             delete().validate();
         }
         if (set() != null) {
             set().validate();
         }
+        if (add() != null) {
+            add().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("add", add());
+        jsonWriter.writeJsonField("delete", this.delete);
+        jsonWriter.writeJsonField("set", this.set);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionIpExtendedCommunityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionIpExtendedCommunityProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionIpExtendedCommunityProperties.
+     */
+    public static ActionIpExtendedCommunityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionIpExtendedCommunityProperties deserializedActionIpExtendedCommunityProperties
+                = new ActionIpExtendedCommunityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("add".equals(fieldName)) {
+                    deserializedActionIpExtendedCommunityProperties.withAdd(IpExtendedCommunityIdList.fromJson(reader));
+                } else if ("delete".equals(fieldName)) {
+                    deserializedActionIpExtendedCommunityProperties.delete = IpExtendedCommunityIdList.fromJson(reader);
+                } else if ("set".equals(fieldName)) {
+                    deserializedActionIpExtendedCommunityProperties.set = IpExtendedCommunityIdList.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionIpExtendedCommunityProperties;
+        });
     }
 }

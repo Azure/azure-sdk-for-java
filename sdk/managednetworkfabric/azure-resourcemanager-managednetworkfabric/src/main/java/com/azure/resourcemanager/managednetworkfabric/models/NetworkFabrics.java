@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkFabrics. */
+/**
+ * Resource collection API of NetworkFabrics.
+ */
 public interface NetworkFabrics {
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -28,9 +30,9 @@ public interface NetworkFabrics {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkFabrics {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkFabrics {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkFabrics {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkFabrics {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkFabrics {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkFabrics {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,9 +136,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -150,9 +152,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,9 +166,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -180,9 +182,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -192,13 +194,13 @@ public interface NetworkFabrics {
      * @return common response for the state updates.
      */
     CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkFabricName,
-        UpdateVersion body);
+        UpgradeNetworkFabricProperties body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -209,13 +211,13 @@ public interface NetworkFabrics {
      * @return common response for the state updates.
      */
     CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkFabricName,
-        UpdateVersion body, Context context);
+        UpgradeNetworkFabricProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,9 +229,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -243,10 +245,10 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -260,10 +262,10 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -278,10 +280,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -295,10 +296,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -313,9 +313,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -329,9 +329,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -346,9 +346,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,9 +360,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -375,9 +375,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,9 +389,9 @@ public interface NetworkFabrics {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -405,9 +405,9 @@ public interface NetworkFabrics {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -418,9 +418,9 @@ public interface NetworkFabrics {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,9 +432,9 @@ public interface NetworkFabrics {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -444,9 +444,9 @@ public interface NetworkFabrics {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -457,7 +457,7 @@ public interface NetworkFabrics {
 
     /**
      * Begins definition for a new NetworkFabric resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkFabric definition.
      */

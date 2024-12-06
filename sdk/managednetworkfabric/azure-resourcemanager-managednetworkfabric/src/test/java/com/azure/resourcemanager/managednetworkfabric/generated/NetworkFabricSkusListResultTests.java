@@ -14,23 +14,22 @@ public final class NetworkFabricSkusListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkFabricSkusListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":844024628,\"maximumServerCount\":1036553043,\"supportedVersions\":[\"sgfy\",\"skyekgafxczv\",\"cckwrtwle\"],\"details\":\"veszrtlhpdhw\",\"provisioningState\":\"Canceled\"},\"id\":\"tacz\",\"name\":\"njfmbbfnvjxit\",\"type\":\"ovnkrtiklsmnihql\"},{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":688911413,\"maximumServerCount\":357291580,\"supportedVersions\":[\"hyxwbgbud\",\"vqdorbccqcd\"],\"details\":\"hojvlirkn\",\"provisioningState\":\"Failed\"},\"id\":\"sawrdtn\",\"name\":\"gzlgpyaixihz\",\"type\":\"jjtsm\"}],\"nextLink\":\"dqftt\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"SingleRack\",\"maxComputeRacks\":1161341993,\"maximumServerCount\":404849195,\"supportedVersions\":[\"qban\",\"sjtgirnbgmgmddo\"],\"details\":\"mynltwmpftmfoeaj\",\"provisioningState\":\"Updating\"},\"id\":\"xwet\",\"name\":\"mfd\",\"type\":\"rvlkpzwbhnrec\"}],\"nextLink\":\"d\"}")
             .toObject(NetworkFabricSkusListResult.class);
-        Assertions.assertEquals(844024628, model.value().get(0).maxComputeRacks());
-        Assertions.assertEquals(1036553043, model.value().get(0).maximumServerCount());
-        Assertions.assertEquals("dqftt", model.nextLink());
+        Assertions.assertEquals(1161341993, model.value().get(0).maxComputeRacks());
+        Assertions.assertEquals(404849195, model.value().get(0).maximumServerCount());
+        Assertions.assertEquals("d", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkFabricSkusListResult model = new NetworkFabricSkusListResult()
-            .withValue(Arrays.asList(
-                new NetworkFabricSkuInner().withMaxComputeRacks(844024628).withMaximumServerCount(1036553043),
-                new NetworkFabricSkuInner().withMaxComputeRacks(688911413).withMaximumServerCount(357291580)))
-            .withNextLink("dqftt");
+            .withValue(Arrays
+                .asList(new NetworkFabricSkuInner().withMaxComputeRacks(1161341993).withMaximumServerCount(404849195)))
+            .withNextLink("d");
         model = BinaryData.fromObject(model).toObject(NetworkFabricSkusListResult.class);
-        Assertions.assertEquals(844024628, model.value().get(0).maxComputeRacks());
-        Assertions.assertEquals(1036553043, model.value().get(0).maximumServerCount());
-        Assertions.assertEquals("dqftt", model.nextLink());
+        Assertions.assertEquals(1161341993, model.value().get(0).maxComputeRacks());
+        Assertions.assertEquals(404849195, model.value().get(0).maximumServerCount());
+        Assertions.assertEquals("d", model.nextLink());
     }
 }

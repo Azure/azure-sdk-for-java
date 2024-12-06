@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Tap Rule Patch properties. */
+/**
+ * Network Tap Rule Patch properties.
+ */
 @Fluent
 public final class NetworkTapRulePatchProperties extends AnnotationResource {
     /*
      * Input method to configure Network Tap Rule.
      */
-    @JsonProperty(value = "configurationType")
     private ConfigurationType configurationType;
 
     /*
      * Network Tap Rules file URL.
      */
-    @JsonProperty(value = "tapRulesUrl")
     private String tapRulesUrl;
 
     /*
      * List of match configurations.
      */
-    @JsonProperty(value = "matchConfigurations")
     private List<NetworkTapRuleMatchConfiguration> matchConfigurations;
 
     /*
      * List of dynamic match configurations.
      */
-    @JsonProperty(value = "dynamicMatchConfigurations")
     private List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations;
 
-    /** Creates an instance of NetworkTapRulePatchProperties class. */
+    /**
+     * Creates an instance of NetworkTapRulePatchProperties class.
+     */
     public NetworkTapRulePatchProperties() {
     }
 
     /**
      * Get the configurationType property: Input method to configure Network Tap Rule.
-     *
+     * 
      * @return the configurationType value.
      */
     public ConfigurationType configurationType() {
@@ -54,7 +57,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Set the configurationType property: Input method to configure Network Tap Rule.
-     *
+     * 
      * @param configurationType the configurationType value to set.
      * @return the NetworkTapRulePatchProperties object itself.
      */
@@ -65,7 +68,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Get the tapRulesUrl property: Network Tap Rules file URL.
-     *
+     * 
      * @return the tapRulesUrl value.
      */
     public String tapRulesUrl() {
@@ -74,7 +77,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Set the tapRulesUrl property: Network Tap Rules file URL.
-     *
+     * 
      * @param tapRulesUrl the tapRulesUrl value to set.
      * @return the NetworkTapRulePatchProperties object itself.
      */
@@ -85,7 +88,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Get the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @return the matchConfigurations value.
      */
     public List<NetworkTapRuleMatchConfiguration> matchConfigurations() {
@@ -94,7 +97,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Set the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the NetworkTapRulePatchProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @return the dynamicMatchConfigurations value.
      */
     public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
@@ -115,7 +118,7 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRulePatchProperties object itself.
      */
@@ -125,7 +128,9 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRulePatchProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -134,17 +139,73 @@ public final class NetworkTapRulePatchProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (matchConfigurations() != null) {
             matchConfigurations().forEach(e -> e.validate());
         }
         if (dynamicMatchConfigurations() != null) {
             dynamicMatchConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeStringField("tapRulesUrl", this.tapRulesUrl);
+        jsonWriter.writeArrayField("matchConfigurations", this.matchConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dynamicMatchConfigurations", this.dynamicMatchConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapRulePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapRulePatchProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkTapRulePatchProperties.
+     */
+    public static NetworkTapRulePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapRulePatchProperties deserializedNetworkTapRulePatchProperties
+                = new NetworkTapRulePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkTapRulePatchProperties.withAnnotation(reader.getString());
+                } else if ("configurationType".equals(fieldName)) {
+                    deserializedNetworkTapRulePatchProperties.configurationType
+                        = ConfigurationType.fromString(reader.getString());
+                } else if ("tapRulesUrl".equals(fieldName)) {
+                    deserializedNetworkTapRulePatchProperties.tapRulesUrl = reader.getString();
+                } else if ("matchConfigurations".equals(fieldName)) {
+                    List<NetworkTapRuleMatchConfiguration> matchConfigurations
+                        = reader.readArray(reader1 -> NetworkTapRuleMatchConfiguration.fromJson(reader1));
+                    deserializedNetworkTapRulePatchProperties.matchConfigurations = matchConfigurations;
+                } else if ("dynamicMatchConfigurations".equals(fieldName)) {
+                    List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations
+                        = reader.readArray(reader1 -> CommonDynamicMatchConfiguration.fromJson(reader1));
+                    deserializedNetworkTapRulePatchProperties.dynamicMatchConfigurations = dynamicMatchConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapRulePatchProperties;
+        });
     }
 }

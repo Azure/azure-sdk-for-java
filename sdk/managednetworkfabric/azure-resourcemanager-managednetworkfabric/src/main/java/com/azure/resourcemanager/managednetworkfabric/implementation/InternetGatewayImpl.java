@@ -152,8 +152,8 @@ public final class InternetGatewayImpl implements InternetGateway, InternetGatew
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.internetGatewayName = Utils.getValueFromIdByName(innerObject.id(), "internetGateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.internetGatewayName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "internetGateways");
     }
 
     public InternetGateway refresh() {

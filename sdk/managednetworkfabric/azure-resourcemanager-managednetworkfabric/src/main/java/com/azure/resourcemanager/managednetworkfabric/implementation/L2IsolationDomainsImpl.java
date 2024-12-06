@@ -131,32 +131,32 @@ public final class L2IsolationDomainsImpl implements L2IsolationDomains {
 
     public PagedIterable<L2IsolationDomain> listByResourceGroup(String resourceGroupName) {
         PagedIterable<L2IsolationDomainInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<L2IsolationDomain> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<L2IsolationDomainInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<L2IsolationDomain> list() {
         PagedIterable<L2IsolationDomainInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<L2IsolationDomain> list(Context context) {
         PagedIterable<L2IsolationDomainInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new L2IsolationDomainImpl(inner1, this.manager()));
     }
 
     public L2IsolationDomain getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l2IsolationDomainName = Utils.getValueFromIdByName(id, "l2IsolationDomains");
+        String l2IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l2IsolationDomains");
         if (l2IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l2IsolationDomains'.", id)));
@@ -165,12 +165,12 @@ public final class L2IsolationDomainsImpl implements L2IsolationDomains {
     }
 
     public Response<L2IsolationDomain> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l2IsolationDomainName = Utils.getValueFromIdByName(id, "l2IsolationDomains");
+        String l2IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l2IsolationDomains");
         if (l2IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l2IsolationDomains'.", id)));
@@ -179,12 +179,12 @@ public final class L2IsolationDomainsImpl implements L2IsolationDomains {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l2IsolationDomainName = Utils.getValueFromIdByName(id, "l2IsolationDomains");
+        String l2IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l2IsolationDomains");
         if (l2IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l2IsolationDomains'.", id)));
@@ -193,12 +193,12 @@ public final class L2IsolationDomainsImpl implements L2IsolationDomains {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String l2IsolationDomainName = Utils.getValueFromIdByName(id, "l2IsolationDomains");
+        String l2IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l2IsolationDomains");
         if (l2IsolationDomainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l2IsolationDomains'.", id)));

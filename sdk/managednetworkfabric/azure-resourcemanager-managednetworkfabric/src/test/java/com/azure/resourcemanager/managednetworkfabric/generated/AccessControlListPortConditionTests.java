@@ -15,27 +15,28 @@ public final class AccessControlListPortConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessControlListPortCondition model = BinaryData.fromString(
-            "{\"flags\":[\"wefqsfapaqtferr\",\"wexjkmfxapjwogq\",\"nobpudcdabtqwpw\",\"awbzasqb\"],\"portType\":\"SourcePort\",\"layer4Protocol\":\"TCP\",\"ports\":[\"yexaoguy\",\"i\",\"ids\",\"ault\"],\"portGroupNames\":[\"jumfqwazlnq\"]}")
+            "{\"flags\":[\"oljxkcgx\"],\"portType\":\"DestinationPort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"gcvizqzdwlvwlyou\",\"fgfb\"],\"portGroupNames\":[\"bdyhgkfminsgowz\",\"ttsttktlahbqact\"]}")
             .toObject(AccessControlListPortCondition.class);
-        Assertions.assertEquals(PortType.SOURCE_PORT, model.portType());
-        Assertions.assertEquals(Layer4Protocol.TCP, model.layer4Protocol());
-        Assertions.assertEquals("yexaoguy", model.ports().get(0));
-        Assertions.assertEquals("jumfqwazlnq", model.portGroupNames().get(0));
-        Assertions.assertEquals("wefqsfapaqtferr", model.flags().get(0));
+        Assertions.assertEquals(PortType.DESTINATION_PORT, model.portType());
+        Assertions.assertEquals(Layer4Protocol.UDP, model.layer4Protocol());
+        Assertions.assertEquals("gcvizqzdwlvwlyou", model.ports().get(0));
+        Assertions.assertEquals("bdyhgkfminsgowz", model.portGroupNames().get(0));
+        Assertions.assertEquals("oljxkcgx", model.flags().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessControlListPortCondition model = new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
-            .withLayer4Protocol(Layer4Protocol.TCP)
-            .withPorts(Arrays.asList("yexaoguy", "i", "ids", "ault"))
-            .withPortGroupNames(Arrays.asList("jumfqwazlnq"))
-            .withFlags(Arrays.asList("wefqsfapaqtferr", "wexjkmfxapjwogq", "nobpudcdabtqwpw", "awbzasqb"));
+        AccessControlListPortCondition model
+            = new AccessControlListPortCondition().withPortType(PortType.DESTINATION_PORT)
+                .withLayer4Protocol(Layer4Protocol.UDP)
+                .withPorts(Arrays.asList("gcvizqzdwlvwlyou", "fgfb"))
+                .withPortGroupNames(Arrays.asList("bdyhgkfminsgowz", "ttsttktlahbqact"))
+                .withFlags(Arrays.asList("oljxkcgx"));
         model = BinaryData.fromObject(model).toObject(AccessControlListPortCondition.class);
-        Assertions.assertEquals(PortType.SOURCE_PORT, model.portType());
-        Assertions.assertEquals(Layer4Protocol.TCP, model.layer4Protocol());
-        Assertions.assertEquals("yexaoguy", model.ports().get(0));
-        Assertions.assertEquals("jumfqwazlnq", model.portGroupNames().get(0));
-        Assertions.assertEquals("wefqsfapaqtferr", model.flags().get(0));
+        Assertions.assertEquals(PortType.DESTINATION_PORT, model.portType());
+        Assertions.assertEquals(Layer4Protocol.UDP, model.layer4Protocol());
+        Assertions.assertEquals("gcvizqzdwlvwlyou", model.ports().get(0));
+        Assertions.assertEquals("bdyhgkfminsgowz", model.portGroupNames().get(0));
+        Assertions.assertEquals("oljxkcgx", model.flags().get(0));
     }
 }

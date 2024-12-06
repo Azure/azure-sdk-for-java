@@ -6,30 +6,37 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configuration to be used to setup the management network. */
+/**
+ * Configuration to be used to setup the management network.
+ */
 @Fluent
-public final class ManagementNetworkConfigurationProperties {
+public final class ManagementNetworkConfigurationProperties
+    implements JsonSerializable<ManagementNetworkConfigurationProperties> {
     /*
      * VPN Configuration properties.
      */
-    @JsonProperty(value = "infrastructureVpnConfiguration", required = true)
     private VpnConfigurationProperties infrastructureVpnConfiguration;
 
     /*
      * VPN Configuration properties.
      */
-    @JsonProperty(value = "workloadVpnConfiguration", required = true)
     private VpnConfigurationProperties workloadVpnConfiguration;
 
-    /** Creates an instance of ManagementNetworkConfigurationProperties class. */
+    /**
+     * Creates an instance of ManagementNetworkConfigurationProperties class.
+     */
     public ManagementNetworkConfigurationProperties() {
     }
 
     /**
      * Get the infrastructureVpnConfiguration property: VPN Configuration properties.
-     *
+     * 
      * @return the infrastructureVpnConfiguration value.
      */
     public VpnConfigurationProperties infrastructureVpnConfiguration() {
@@ -38,7 +45,7 @@ public final class ManagementNetworkConfigurationProperties {
 
     /**
      * Set the infrastructureVpnConfiguration property: VPN Configuration properties.
-     *
+     * 
      * @param infrastructureVpnConfiguration the infrastructureVpnConfiguration value to set.
      * @return the ManagementNetworkConfigurationProperties object itself.
      */
@@ -50,7 +57,7 @@ public final class ManagementNetworkConfigurationProperties {
 
     /**
      * Get the workloadVpnConfiguration property: VPN Configuration properties.
-     *
+     * 
      * @return the workloadVpnConfiguration value.
      */
     public VpnConfigurationProperties workloadVpnConfiguration() {
@@ -59,7 +66,7 @@ public final class ManagementNetworkConfigurationProperties {
 
     /**
      * Set the workloadVpnConfiguration property: VPN Configuration properties.
-     *
+     * 
      * @param workloadVpnConfiguration the workloadVpnConfiguration value to set.
      * @return the ManagementNetworkConfigurationProperties object itself.
      */
@@ -71,25 +78,68 @@ public final class ManagementNetworkConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (infrastructureVpnConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property infrastructureVpnConfiguration in model"
-                    + " ManagementNetworkConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property infrastructureVpnConfiguration in model ManagementNetworkConfigurationProperties"));
         } else {
             infrastructureVpnConfiguration().validate();
         }
         if (workloadVpnConfiguration() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property workloadVpnConfiguration in model"
-                    + " ManagementNetworkConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property workloadVpnConfiguration in model ManagementNetworkConfigurationProperties"));
         } else {
             workloadVpnConfiguration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementNetworkConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("infrastructureVpnConfiguration", this.infrastructureVpnConfiguration);
+        jsonWriter.writeJsonField("workloadVpnConfiguration", this.workloadVpnConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementNetworkConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementNetworkConfigurationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementNetworkConfigurationProperties.
+     */
+    public static ManagementNetworkConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementNetworkConfigurationProperties deserializedManagementNetworkConfigurationProperties
+                = new ManagementNetworkConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("infrastructureVpnConfiguration".equals(fieldName)) {
+                    deserializedManagementNetworkConfigurationProperties.infrastructureVpnConfiguration
+                        = VpnConfigurationProperties.fromJson(reader);
+                } else if ("workloadVpnConfiguration".equals(fieldName)) {
+                    deserializedManagementNetworkConfigurationProperties.workloadVpnConfiguration
+                        = VpnConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementNetworkConfigurationProperties;
+        });
+    }
 }

@@ -13,48 +13,45 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkTaps Create. */
+/**
+ * Samples for NetworkTaps Create.
+ */
 public final class NetworkTapsCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkTaps_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkTaps_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkTaps_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkTapsCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .networkTaps()
+        manager.networkTaps()
             .define("example-networkTap")
             .withRegion("eastuseuap")
             .withExistingResourceGroup("example-rg")
             .withNetworkPacketBrokerId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker")
-            .withDestinations(
-                Arrays
-                    .asList(
-                        new NetworkTapPropertiesDestinationsItem()
-                            .withName("example-destinaionName")
-                            .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                            .withDestinationId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsloationDomains/example-l3Domain/internalNetworks/example-internalNetwork")
-                            .withIsolationDomainProperties(
-                                new IsolationDomainProperties()
-                                    .withEncapsulation(Encapsulation.NONE)
-                                    .withNeighborGroupIds(
-                                        Arrays
-                                            .asList(
-                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")))
-                            .withDestinationTapRuleId(
-                                "/subscriptions/xxxx-xxxx-xxxx-xxxx/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-destinationTapRule")))
+            .withDestinations(Arrays.asList(new NetworkTapPropertiesDestinationsItem()
+                .withName("example-destinaionName")
+                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                .withDestinationId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsloationDomains/example-l3Domain/internalNetworks/example-internalNetwork")
+                .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                    .withNeighborGroupIds(Arrays.asList(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")))
+                .withDestinationTapRuleId(
+                    "/subscriptions/xxxx-xxxx-xxxx-xxxx/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-destinationTapRule")))
             .withTags(mapOf("key6024", "fakeTokenPlaceholder"))
             .withPollingType(PollingType.PULL)
             .withAnnotation("annotation")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

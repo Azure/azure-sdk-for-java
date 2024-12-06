@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfacePatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The NetworkInterfacePatch resource definition. */
+/**
+ * The NetworkInterfacePatch resource definition.
+ */
 @Fluent
-public final class NetworkInterfacePatch {
+public final class NetworkInterfacePatch implements JsonSerializable<NetworkInterfacePatch> {
     /*
      * Network Interface Patch properties.
      */
-    @JsonProperty(value = "properties")
     private NetworkInterfacePatchProperties innerProperties;
 
-    /** Creates an instance of NetworkInterfacePatch class. */
+    /**
+     * Creates an instance of NetworkInterfacePatch class.
+     */
     public NetworkInterfacePatch() {
     }
 
     /**
      * Get the innerProperties property: Network Interface Patch properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkInterfacePatchProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class NetworkInterfacePatch {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -41,7 +48,7 @@ public final class NetworkInterfacePatch {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the NetworkInterfacePatch object itself.
      */
@@ -55,12 +62,49 @@ public final class NetworkInterfacePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfacePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfacePatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfacePatch.
+     */
+    public static NetworkInterfacePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfacePatch deserializedNetworkInterfacePatch = new NetworkInterfacePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedNetworkInterfacePatch.innerProperties
+                        = NetworkInterfacePatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfacePatch;
+        });
     }
 }

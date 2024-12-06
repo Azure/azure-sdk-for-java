@@ -6,48 +6,51 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network and credential configuration currently applied on terminal server. */
+/**
+ * Network and credential configuration currently applied on terminal server.
+ */
 @Fluent
-public final class VpnConfigurationProperties {
+public final class VpnConfigurationProperties implements JsonSerializable<VpnConfigurationProperties> {
     /*
      * ARM Resource ID of the Network To Network Interconnect.
      */
-    @JsonProperty(value = "networkToNetworkInterconnectId")
     private String networkToNetworkInterconnectId;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
     /*
      * Peering option list.
      */
-    @JsonProperty(value = "peeringOption", required = true)
     private PeeringOption peeringOption;
 
     /*
      * option B properties
      */
-    @JsonProperty(value = "optionBProperties")
     private OptionBProperties optionBProperties;
 
     /*
      * option A properties
      */
-    @JsonProperty(value = "optionAProperties")
     private VpnConfigurationPropertiesOptionAProperties optionAProperties;
 
-    /** Creates an instance of VpnConfigurationProperties class. */
+    /**
+     * Creates an instance of VpnConfigurationProperties class.
+     */
     public VpnConfigurationProperties() {
     }
 
     /**
      * Get the networkToNetworkInterconnectId property: ARM Resource ID of the Network To Network Interconnect.
-     *
+     * 
      * @return the networkToNetworkInterconnectId value.
      */
     public String networkToNetworkInterconnectId() {
@@ -56,7 +59,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Set the networkToNetworkInterconnectId property: ARM Resource ID of the Network To Network Interconnect.
-     *
+     * 
      * @param networkToNetworkInterconnectId the networkToNetworkInterconnectId value to set.
      * @return the VpnConfigurationProperties object itself.
      */
@@ -67,7 +70,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -76,7 +79,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Get the peeringOption property: Peering option list.
-     *
+     * 
      * @return the peeringOption value.
      */
     public PeeringOption peeringOption() {
@@ -85,7 +88,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Set the peeringOption property: Peering option list.
-     *
+     * 
      * @param peeringOption the peeringOption value to set.
      * @return the VpnConfigurationProperties object itself.
      */
@@ -96,7 +99,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Get the optionBProperties property: option B properties.
-     *
+     * 
      * @return the optionBProperties value.
      */
     public OptionBProperties optionBProperties() {
@@ -105,7 +108,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Set the optionBProperties property: option B properties.
-     *
+     * 
      * @param optionBProperties the optionBProperties value to set.
      * @return the VpnConfigurationProperties object itself.
      */
@@ -116,7 +119,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Get the optionAProperties property: option A properties.
-     *
+     * 
      * @return the optionAProperties value.
      */
     public VpnConfigurationPropertiesOptionAProperties optionAProperties() {
@@ -125,7 +128,7 @@ public final class VpnConfigurationProperties {
 
     /**
      * Set the optionAProperties property: option A properties.
-     *
+     * 
      * @param optionAProperties the optionAProperties value to set.
      * @return the VpnConfigurationProperties object itself.
      */
@@ -137,13 +140,14 @@ public final class VpnConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (peeringOption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property peeringOption in model VpnConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property peeringOption in model VpnConfigurationProperties"));
         }
         if (optionBProperties() != null) {
             optionBProperties().validate();
@@ -154,4 +158,54 @@ public final class VpnConfigurationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VpnConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("peeringOption", this.peeringOption == null ? null : this.peeringOption.toString());
+        jsonWriter.writeStringField("networkToNetworkInterconnectId", this.networkToNetworkInterconnectId);
+        jsonWriter.writeJsonField("optionBProperties", this.optionBProperties);
+        jsonWriter.writeJsonField("optionAProperties", this.optionAProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnConfigurationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VpnConfigurationProperties.
+     */
+    public static VpnConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnConfigurationProperties deserializedVpnConfigurationProperties = new VpnConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peeringOption".equals(fieldName)) {
+                    deserializedVpnConfigurationProperties.peeringOption = PeeringOption.fromString(reader.getString());
+                } else if ("networkToNetworkInterconnectId".equals(fieldName)) {
+                    deserializedVpnConfigurationProperties.networkToNetworkInterconnectId = reader.getString();
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedVpnConfigurationProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("optionBProperties".equals(fieldName)) {
+                    deserializedVpnConfigurationProperties.optionBProperties = OptionBProperties.fromJson(reader);
+                } else if ("optionAProperties".equals(fieldName)) {
+                    deserializedVpnConfigurationProperties.optionAProperties
+                        = VpnConfigurationPropertiesOptionAProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnConfigurationProperties;
+        });
+    }
 }

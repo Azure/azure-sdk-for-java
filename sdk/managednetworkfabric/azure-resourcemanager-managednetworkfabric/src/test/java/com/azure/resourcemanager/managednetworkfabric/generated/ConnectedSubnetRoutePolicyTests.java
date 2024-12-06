@@ -13,21 +13,21 @@ public final class ConnectedSubnetRoutePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedSubnetRoutePolicy model = BinaryData.fromString(
-            "{\"exportRoutePolicyId\":\"ywsxvjabjqqaxu\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"mc\",\"exportIpv6RoutePolicyId\":\"dndoabhjxw\"}}")
+            "{\"exportRoutePolicyId\":\"fdsajred\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"yshtuwgmev\",\"exportIpv6RoutePolicyId\":\"fpwzyifrkgwltx\"}}")
             .toObject(ConnectedSubnetRoutePolicy.class);
-        Assertions.assertEquals("ywsxvjabjqqaxu", model.exportRoutePolicyId());
-        Assertions.assertEquals("mc", model.exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("dndoabhjxw", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("fdsajred", model.exportRoutePolicyId());
+        Assertions.assertEquals("yshtuwgmev", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("fpwzyifrkgwltx", model.exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedSubnetRoutePolicy model = new ConnectedSubnetRoutePolicy().withExportRoutePolicyId("ywsxvjabjqqaxu")
-            .withExportRoutePolicy(
-                new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("mc").withExportIpv6RoutePolicyId("dndoabhjxw"));
+        ConnectedSubnetRoutePolicy model = new ConnectedSubnetRoutePolicy().withExportRoutePolicyId("fdsajred")
+            .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId("yshtuwgmev")
+                .withExportIpv6RoutePolicyId("fpwzyifrkgwltx"));
         model = BinaryData.fromObject(model).toObject(ConnectedSubnetRoutePolicy.class);
-        Assertions.assertEquals("ywsxvjabjqqaxu", model.exportRoutePolicyId());
-        Assertions.assertEquals("mc", model.exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("dndoabhjxw", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("fdsajred", model.exportRoutePolicyId());
+        Assertions.assertEquals("yshtuwgmev", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("fpwzyifrkgwltx", model.exportRoutePolicy().exportIpv6RoutePolicyId());
     }
 }

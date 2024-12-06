@@ -6,70 +6,52 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkDevicesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"version\":\"lnuzgz\",\"networkDeviceSku\":\"xdusebkc\",\"networkDeviceRole\":\"ToR\",\"networkRackId\":\"punt\",\"managementIpv4Address\":\"masuiqrsnm\",\"managementIpv6Address\":\"ubqwxvsxrbiyzjl\",\"configurationState\":\"Accepted\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"hostName\":\"ukbocsitsxhvsgzp\",\"serialNumber\":\"ieyxjkctyq\",\"annotation\":\"tampq\"},\"location\":\"eftmub\",\"tags\":{\"zeq\":\"oepeqlhbtysy\",\"gyzwfyfdbvoo\":\"ctpqnofkw\",\"iyqmlmw\":\"lmikdsqqykgjjsmv\",\"cvemmriyz\":\"wsmnwbm\"},\"id\":\"vque\",\"name\":\"xplcsinb\",\"type\":\"lolxxhcyn\"}";
+            = "{\"properties\":{\"version\":\"gl\",\"networkDeviceSku\":\"sfgb\",\"networkDeviceRole\":\"ToR\",\"networkRackId\":\"azlycx\",\"managementIpv4Address\":\"brukhqbuoyr\",\"managementIpv6Address\":\"kgqdmvvvjm\",\"configurationState\":\"Accepted\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"hostName\":\"sveamsea\",\"serialNumber\":\"uvhxiohglmufzuuy\",\"annotation\":\"haeem\"},\"location\":\"osdpxtsdyw\",\"tags\":{\"mixaqgfpuhhzwr\":\"fvwgwphwxiav\",\"lixa\":\"jumlkjsvkbt\",\"jmsngmluyr\":\"phkgminhecjgdj\"},\"id\":\"kpismmrmrj\",\"name\":\"jthizsabcylz\",\"type\":\"ietumzenkrdr\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkDevice response = manager.networkDevices()
-            .define("gseqjte")
-            .withRegion("mqaxtmvmyc")
-            .withExistingResourceGroup("zolrvw")
-            .withTags(mapOf("yvn", "axjdqvvyje", "rdvhbgtuhwh", "jngoq"))
-            .withNetworkDeviceSku("bpvsobamtarir")
-            .withHostname("nbxxyfozbgody")
-            .withSerialNumber("jikfrxvl")
-            .withAnnotation("edpnk")
+            .define("ihatajdt")
+            .withRegion("bhgjajkvwkocx")
+            .withExistingResourceGroup("kxsqkuzabrs")
+            .withTags(mapOf("bgvlpg", "zllvna"))
+            .withNetworkDeviceSku("jyiehkxgfuzqqnz")
+            .withHostname("acrktjoygyns")
+            .withSerialNumber("gzbbnuglquarbruv")
+            .withAnnotation("eyxwrmupzpe")
             .create();
 
-        Assertions.assertEquals("eftmub", response.location());
-        Assertions.assertEquals("oepeqlhbtysy", response.tags().get("zeq"));
-        Assertions.assertEquals("xdusebkc", response.networkDeviceSku());
-        Assertions.assertEquals("ukbocsitsxhvsgzp", response.hostname());
-        Assertions.assertEquals("ieyxjkctyq", response.serialNumber());
-        Assertions.assertEquals("tampq", response.annotation());
+        Assertions.assertEquals("osdpxtsdyw", response.location());
+        Assertions.assertEquals("fvwgwphwxiav", response.tags().get("mixaqgfpuhhzwr"));
+        Assertions.assertEquals("sfgb", response.networkDeviceSku());
+        Assertions.assertEquals("sveamsea", response.hostname());
+        Assertions.assertEquals("uvhxiohglmufzuuy", response.serialNumber());
+        Assertions.assertEquals("haeem", response.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

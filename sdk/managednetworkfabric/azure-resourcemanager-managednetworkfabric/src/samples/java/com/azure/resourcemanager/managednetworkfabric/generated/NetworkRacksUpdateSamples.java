@@ -8,26 +8,29 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkRack;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkRacks Update. */
+/**
+ * Samples for NetworkRacks Update.
+ */
 public final class NetworkRacksUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkRacks_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkRacks_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkRacksUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        NetworkRack resource =
-            manager
-                .networkRacks()
-                .getByResourceGroupWithResponse("example-rg", "example-rack", com.azure.core.util.Context.NONE)
-                .getValue();
+        NetworkRack resource = manager.networkRacks()
+            .getByResourceGroupWithResponse("example-rg", "example-rack", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("keyID", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

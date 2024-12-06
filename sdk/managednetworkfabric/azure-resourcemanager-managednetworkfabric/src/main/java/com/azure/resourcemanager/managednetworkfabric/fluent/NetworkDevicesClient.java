@@ -18,13 +18,15 @@ import com.azure.resourcemanager.managednetworkfabric.models.RebootProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
 
-/** An instance of this class provides access to all the operations defined in NetworkDevicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkDevicesClient.
+ */
 public interface NetworkDevicesClient {
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -39,9 +41,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -57,9 +59,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -73,9 +75,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Create Network Device.
-     *
-     * <p>Create a Network Device resource.
-     *
+     * 
+     * Create a Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -91,9 +93,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -108,9 +110,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Gets a Network Device.
-     *
-     * <p>Gets the Network Device resource details.
-     *
+     * 
+     * Gets the Network Device resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,9 +125,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -140,9 +142,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -158,9 +160,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -174,9 +176,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Updates a Network Device.
-     *
-     * <p>Update certain properties of the Network Device resource.
-     *
+     * 
+     * Update certain properties of the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Network Device properties to update.
@@ -192,9 +194,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,9 +209,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -223,9 +225,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,9 +239,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Deletes a Network Device.
-     *
-     * <p>Delete the Network Device resource.
-     *
+     * 
+     * Delete the Network Device resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -252,9 +254,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by resource group.
-     *
-     * <p>List all the Network Device resources in a given resource group.
-     *
+     * 
+     * List all the Network Device resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,9 +268,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by resource group.
-     *
-     * <p>List all the Network Device resources in a given resource group.
-     *
+     * 
+     * List all the Network Device resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +283,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by subscription.
-     *
-     * <p>List all the Network Device resources in a given subscription.
-     *
+     * 
+     * List all the Network Device resources in a given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkDevices as paginated response with {@link PagedIterable}.
@@ -293,9 +295,9 @@ public interface NetworkDevicesClient {
 
     /**
      * List NetworkDevices by subscription.
-     *
-     * <p>List all the Network Device resources in a given subscription.
-     *
+     * 
+     * List all the Network Device resources in a given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,9 +309,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -324,9 +326,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -342,9 +344,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -359,9 +361,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Reboot the Network Device.
-     *
+     * 
+     * Reboot the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -377,9 +379,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,9 +395,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -410,9 +412,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -426,9 +428,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration the Network Device.
-     *
+     * 
+     * Refreshes the configuration the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -443,9 +445,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -461,9 +463,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -480,9 +482,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -497,9 +499,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Administrative state of the Network Device.
-     *
+     * 
+     * Updates the Administrative state of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -515,9 +517,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -532,9 +534,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -550,9 +552,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.
@@ -567,9 +569,9 @@ public interface NetworkDevicesClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the Network Device.
-     *
+     * 
+     * Upgrades the version of the Network Device.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param body Request payload.

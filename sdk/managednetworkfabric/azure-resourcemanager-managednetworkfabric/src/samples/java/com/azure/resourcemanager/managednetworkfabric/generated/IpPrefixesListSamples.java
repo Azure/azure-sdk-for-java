@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for IpPrefixes List. */
+/**
+ * Samples for IpPrefixes List.
+ */
 public final class IpPrefixesListSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * IpPrefixes_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpPrefixes_ListBySubscription_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void ipPrefixesListBySubscriptionMaximumSetGen(

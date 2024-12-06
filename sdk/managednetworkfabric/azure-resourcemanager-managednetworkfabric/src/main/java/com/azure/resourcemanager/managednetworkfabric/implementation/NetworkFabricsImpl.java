@@ -19,7 +19,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionRes
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabric;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabrics;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 
@@ -67,22 +67,22 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
 
     public PagedIterable<NetworkFabric> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetworkFabricInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabric> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<NetworkFabricInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabric> list() {
         PagedIterable<NetworkFabricInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabric> list(Context context) {
         PagedIterable<NetworkFabricInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
     }
 
     public CommonPostActionResponseForDeviceUpdate provision(String resourceGroupName, String networkFabricName) {
@@ -128,7 +128,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkFabricName,
-        UpdateVersion body) {
+        UpgradeNetworkFabricProperties body) {
         CommonPostActionResponseForStateUpdateInner inner
             = this.serviceClient().upgrade(resourceGroupName, networkFabricName, body);
         if (inner != null) {
@@ -139,7 +139,7 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkFabricName,
-        UpdateVersion body, Context context) {
+        UpgradeNetworkFabricProperties body, Context context) {
         CommonPostActionResponseForStateUpdateInner inner
             = this.serviceClient().upgrade(resourceGroupName, networkFabricName, body, context);
         if (inner != null) {
@@ -281,12 +281,12 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public NetworkFabric getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = Utils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
@@ -295,12 +295,12 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public Response<NetworkFabric> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = Utils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
@@ -309,12 +309,12 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = Utils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));
@@ -323,12 +323,12 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricName = Utils.getValueFromIdByName(id, "networkFabrics");
+        String networkFabricName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabrics");
         if (networkFabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkFabrics'.", id)));

@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
@@ -15,33 +18,50 @@ import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingIntervalInSeconds;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The NetworkTapRule resource definition. */
+/**
+ * The NetworkTapRule resource definition.
+ */
 @Fluent
 public final class NetworkTapRuleInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private NetworkTapRuleProperties innerProperties = new NetworkTapRuleProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkTapRuleInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkTapRuleInner class.
+     */
     public NetworkTapRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkTapRuleProperties innerProperties() {
@@ -50,21 +70,55 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRuleInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkTapRuleInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +127,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the networkTapId property: The ARM resource Id of the NetworkTap.
-     *
+     * 
      * @return the networkTapId value.
      */
     public String networkTapId() {
@@ -82,7 +136,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the pollingIntervalInSeconds property: Polling interval in seconds.
-     *
+     * 
      * @return the pollingIntervalInSeconds value.
      */
     public PollingIntervalInSeconds pollingIntervalInSeconds() {
@@ -91,7 +145,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Set the pollingIntervalInSeconds property: Polling interval in seconds.
-     *
+     * 
      * @param pollingIntervalInSeconds the pollingIntervalInSeconds value to set.
      * @return the NetworkTapRuleInner object itself.
      */
@@ -105,7 +159,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the lastSyncedTime property: The last sync timestamp.
-     *
+     * 
      * @return the lastSyncedTime value.
      */
     public OffsetDateTime lastSyncedTime() {
@@ -114,7 +168,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -123,7 +177,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -132,7 +186,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -141,7 +195,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the configurationType property: Input method to configure Network Tap Rule.
-     *
+     * 
      * @return the configurationType value.
      */
     public ConfigurationType configurationType() {
@@ -150,7 +204,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Set the configurationType property: Input method to configure Network Tap Rule.
-     *
+     * 
      * @param configurationType the configurationType value to set.
      * @return the NetworkTapRuleInner object itself.
      */
@@ -164,7 +218,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the tapRulesUrl property: Network Tap Rules file URL.
-     *
+     * 
      * @return the tapRulesUrl value.
      */
     public String tapRulesUrl() {
@@ -173,7 +227,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Set the tapRulesUrl property: Network Tap Rules file URL.
-     *
+     * 
      * @param tapRulesUrl the tapRulesUrl value to set.
      * @return the NetworkTapRuleInner object itself.
      */
@@ -187,7 +241,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @return the matchConfigurations value.
      */
     public List<NetworkTapRuleMatchConfiguration> matchConfigurations() {
@@ -196,7 +250,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Set the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the NetworkTapRuleInner object itself.
      */
@@ -210,7 +264,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @return the dynamicMatchConfigurations value.
      */
     public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
@@ -219,7 +273,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRuleInner object itself.
      */
@@ -234,7 +288,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -243,7 +297,7 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the NetworkTapRuleInner object itself.
      */
@@ -257,17 +311,70 @@ public final class NetworkTapRuleInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model NetworkTapRuleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NetworkTapRuleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkTapRuleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkTapRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkTapRuleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkTapRuleInner.
+     */
+    public static NetworkTapRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkTapRuleInner deserializedNetworkTapRuleInner = new NetworkTapRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkTapRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkTapRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkTapRuleInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkTapRuleInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkTapRuleInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkTapRuleInner.innerProperties = NetworkTapRuleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkTapRuleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkTapRuleInner;
+        });
+    }
 }

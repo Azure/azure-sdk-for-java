@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListPatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Access Control Lists patch resource definition. */
+/**
+ * The Access Control Lists patch resource definition.
+ */
 @Fluent
 public final class AccessControlListPatch extends TagsUpdate {
     /*
      * Access Control Lists patch properties.
      */
-    @JsonProperty(value = "properties")
     private AccessControlListPatchProperties innerProperties;
 
-    /** Creates an instance of AccessControlListPatch class. */
+    /**
+     * Creates an instance of AccessControlListPatch class.
+     */
     public AccessControlListPatch() {
     }
 
     /**
      * Get the innerProperties property: Access Control Lists patch properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccessControlListPatchProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +49,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -50,7 +58,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the AccessControlListPatch object itself.
      */
@@ -64,7 +72,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Get the configurationType property: Input method to configure Access Control List.
-     *
+     * 
      * @return the configurationType value.
      */
     public ConfigurationType configurationType() {
@@ -73,7 +81,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Set the configurationType property: Input method to configure Access Control List.
-     *
+     * 
      * @param configurationType the configurationType value to set.
      * @return the AccessControlListPatch object itself.
      */
@@ -87,7 +95,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Get the aclsUrl property: Access Control List file URL.
-     *
+     * 
      * @return the aclsUrl value.
      */
     public String aclsUrl() {
@@ -96,7 +104,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Set the aclsUrl property: Access Control List file URL.
-     *
+     * 
      * @param aclsUrl the aclsUrl value to set.
      * @return the AccessControlListPatch object itself.
      */
@@ -109,8 +117,33 @@ public final class AccessControlListPatch extends TagsUpdate {
     }
 
     /**
+     * Get the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @return the defaultAction value.
+     */
+    public CommunityActionTypes defaultAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultAction();
+    }
+
+    /**
+     * Set the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @param defaultAction the defaultAction value to set.
+     * @return the AccessControlListPatch object itself.
+     */
+    public AccessControlListPatch withDefaultAction(CommunityActionTypes defaultAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListPatchProperties();
+        }
+        this.innerProperties().withDefaultAction(defaultAction);
+        return this;
+    }
+
+    /**
      * Get the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @return the matchConfigurations value.
      */
     public List<AccessControlListMatchConfiguration> matchConfigurations() {
@@ -119,7 +152,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Set the matchConfigurations property: List of match configurations.
-     *
+     * 
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the AccessControlListPatch object itself.
      */
@@ -134,7 +167,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @return the dynamicMatchConfigurations value.
      */
     public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
@@ -143,7 +176,7 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
-     *
+     * 
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the AccessControlListPatch object itself.
      */
@@ -158,14 +191,54 @@ public final class AccessControlListPatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessControlListPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessControlListPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessControlListPatch.
+     */
+    public static AccessControlListPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessControlListPatch deserializedAccessControlListPatch = new AccessControlListPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccessControlListPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAccessControlListPatch.innerProperties
+                        = AccessControlListPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessControlListPatch;
+        });
     }
 }

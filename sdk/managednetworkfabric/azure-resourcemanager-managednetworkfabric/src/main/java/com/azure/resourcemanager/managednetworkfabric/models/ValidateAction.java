@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Validate action that to be performed. */
+/**
+ * Validate action that to be performed.
+ */
 public final class ValidateAction extends ExpandableStringEnum<ValidateAction> {
-    /** Static value Cabling for ValidateAction. */
+    /**
+     * Static value Cabling for ValidateAction.
+     */
     public static final ValidateAction CABLING = fromString("Cabling");
 
-    /** Static value Configuration for ValidateAction. */
+    /**
+     * Static value Configuration for ValidateAction.
+     */
     public static final ValidateAction CONFIGURATION = fromString("Configuration");
 
-    /** Static value Connectivity for ValidateAction. */
+    /**
+     * Static value Connectivity for ValidateAction.
+     */
     public static final ValidateAction CONNECTIVITY = fromString("Connectivity");
 
     /**
      * Creates a new instance of ValidateAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ValidateAction extends ExpandableStringEnum<ValidateAction> {
 
     /**
      * Creates or finds a ValidateAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValidateAction.
      */
-    @JsonCreator
     public static ValidateAction fromString(String name) {
         return fromString(name, ValidateAction.class);
     }
 
     /**
      * Gets known ValidateAction values.
-     *
+     * 
      * @return known ValidateAction values.
      */
     public static Collection<ValidateAction> values() {

@@ -14,20 +14,20 @@ public final class AggregateRouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AggregateRouteConfiguration model = BinaryData.fromString(
-            "{\"ipv4Routes\":[{\"prefix\":\"qecroodl\"}],\"ipv6Routes\":[{\"prefix\":\"drdaasa\"},{\"prefix\":\"xob\"},{\"prefix\":\"mfkwiyjvzuk\"}]}")
+            "{\"ipv4Routes\":[{\"prefix\":\"i\"},{\"prefix\":\"jpnwynudql\"},{\"prefix\":\"zsauzp\"}],\"ipv6Routes\":[{\"prefix\":\"eehuxiqhzlray\"}]}")
             .toObject(AggregateRouteConfiguration.class);
-        Assertions.assertEquals("qecroodl", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("drdaasa", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("i", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("eehuxiqhzlray", model.ipv6Routes().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AggregateRouteConfiguration model = new AggregateRouteConfiguration()
-            .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("qecroodl")))
-            .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("drdaasa"),
-                new AggregateRoute().withPrefix("xob"), new AggregateRoute().withPrefix("mfkwiyjvzuk")));
+            .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("i"),
+                new AggregateRoute().withPrefix("jpnwynudql"), new AggregateRoute().withPrefix("zsauzp")))
+            .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("eehuxiqhzlray")));
         model = BinaryData.fromObject(model).toObject(AggregateRouteConfiguration.class);
-        Assertions.assertEquals("qecroodl", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("drdaasa", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("i", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("eehuxiqhzlray", model.ipv6Routes().get(0).prefix());
     }
 }

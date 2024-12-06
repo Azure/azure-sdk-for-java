@@ -16,30 +16,33 @@ public final class NeighborGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeighborGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"networkTapIds\":[\"oqueqihkkyowltj\",\"uwhldxwhieproqks\",\"fxmcvprstvk\",\"tbfjtdyotnplf\"],\"networkTapRuleIds\":[\"occqrqxw\",\"tjtdrhutfd\",\"a\",\"txop\"],\"provisioningState\":\"Updating\",\"destination\":{\"ipv4Addresses\":[\"k\",\"d\",\"gssz\"],\"ipv6Addresses\":[\"tkbbxuhar\",\"sirncclabvoy\",\"gsuxxczbmyqj\"]},\"annotation\":\"hdsaidj\"},\"location\":\"ormovdxxurntujmo\",\"tags\":{\"d\":\"nwemhdeeljslkyo\",\"jtv\":\"fzjuegrhrhtsl\"},\"id\":\"j\",\"name\":\"xvgjbfi\",\"type\":\"bpnjodf\"}")
+            "{\"properties\":{\"networkTapIds\":[\"kiiwvmtu\"],\"networkTapRuleIds\":[\"ymdjfua\",\"roqvqpilrgu\",\"canlduwzorxs\"],\"provisioningState\":\"Failed\",\"destination\":{\"ipv4Addresses\":[\"lxymxkqvfqe\",\"dxcltuubwyvpj\",\"owcpjqduqgixexky\",\"fbwljavhuerkjdd\"],\"ipv6Addresses\":[\"liegftcvbi\",\"ftksd\",\"gdnk\",\"fgmwd\"]},\"annotation\":\"eb\"},\"location\":\"czldbglzoutbaaqg\",\"tags\":{\"nzjotvmr\":\"ajclyzgsnorbjg\",\"ayfluiyuosnu\":\"khlobvvjbhvhdi\",\"hbuubpy\":\"dtelvhyibdrqrs\"},\"id\":\"owtjo\",\"name\":\"ztfwfqchvcz\",\"type\":\"vjnn\"}")
             .toObject(NeighborGroupInner.class);
-        Assertions.assertEquals("ormovdxxurntujmo", model.location());
-        Assertions.assertEquals("nwemhdeeljslkyo", model.tags().get("d"));
-        Assertions.assertEquals("k", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("tkbbxuhar", model.destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("hdsaidj", model.annotation());
+        Assertions.assertEquals("czldbglzoutbaaqg", model.location());
+        Assertions.assertEquals("ajclyzgsnorbjg", model.tags().get("nzjotvmr"));
+        Assertions.assertEquals("lxymxkqvfqe", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("liegftcvbi", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("eb", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupInner model = new NeighborGroupInner().withLocation("ormovdxxurntujmo")
-            .withTags(mapOf("d", "nwemhdeeljslkyo", "jtv", "fzjuegrhrhtsl"))
-            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("k", "d", "gssz"))
-                .withIpv6Addresses(Arrays.asList("tkbbxuhar", "sirncclabvoy", "gsuxxczbmyqj")))
-            .withAnnotation("hdsaidj");
+        NeighborGroupInner model = new NeighborGroupInner().withLocation("czldbglzoutbaaqg")
+            .withTags(
+                mapOf("nzjotvmr", "ajclyzgsnorbjg", "ayfluiyuosnu", "khlobvvjbhvhdi", "hbuubpy", "dtelvhyibdrqrs"))
+            .withDestination(new NeighborGroupDestination()
+                .withIpv4Addresses(Arrays.asList("lxymxkqvfqe", "dxcltuubwyvpj", "owcpjqduqgixexky", "fbwljavhuerkjdd"))
+                .withIpv6Addresses(Arrays.asList("liegftcvbi", "ftksd", "gdnk", "fgmwd")))
+            .withAnnotation("eb");
         model = BinaryData.fromObject(model).toObject(NeighborGroupInner.class);
-        Assertions.assertEquals("ormovdxxurntujmo", model.location());
-        Assertions.assertEquals("nwemhdeeljslkyo", model.tags().get("d"));
-        Assertions.assertEquals("k", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("tkbbxuhar", model.destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("hdsaidj", model.annotation());
+        Assertions.assertEquals("czldbglzoutbaaqg", model.location());
+        Assertions.assertEquals("ajclyzgsnorbjg", model.tags().get("nzjotvmr"));
+        Assertions.assertEquals("lxymxkqvfqe", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("liegftcvbi", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("eb", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

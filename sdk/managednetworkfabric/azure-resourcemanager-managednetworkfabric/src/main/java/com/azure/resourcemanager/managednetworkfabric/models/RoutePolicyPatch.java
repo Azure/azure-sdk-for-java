@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyPatchableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Route Policy patch resource definition. */
+/**
+ * The Route Policy patch resource definition.
+ */
 @Fluent
 public final class RoutePolicyPatch extends TagsUpdate {
     /*
      * The RoutePolicy patchable properties.
      */
-    @JsonProperty(value = "properties")
     private RoutePolicyPatchableProperties innerProperties;
 
-    /** Creates an instance of RoutePolicyPatch class. */
+    /**
+     * Creates an instance of RoutePolicyPatch class.
+     */
     public RoutePolicyPatch() {
     }
 
     /**
      * Get the innerProperties property: The RoutePolicy patchable properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoutePolicyPatchableProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutePolicyPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,8 +48,33 @@ public final class RoutePolicyPatch extends TagsUpdate {
     }
 
     /**
+     * Get the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @return the defaultAction value.
+     */
+    public CommunityActionTypes defaultAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultAction();
+    }
+
+    /**
+     * Set the defaultAction property: Default action that needs to be applied when no condition is matched. Example:
+     * Permit | Deny.
+     * 
+     * @param defaultAction the defaultAction value to set.
+     * @return the RoutePolicyPatch object itself.
+     */
+    public RoutePolicyPatch withDefaultAction(CommunityActionTypes defaultAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePolicyPatchableProperties();
+        }
+        this.innerProperties().withDefaultAction(defaultAction);
+        return this;
+    }
+
+    /**
      * Get the statements property: Route Policy statements.
-     *
+     * 
      * @return the statements value.
      */
     public List<RoutePolicyStatementProperties> statements() {
@@ -50,7 +83,7 @@ public final class RoutePolicyPatch extends TagsUpdate {
 
     /**
      * Set the statements property: Route Policy statements.
-     *
+     * 
      * @param statements the statements value to set.
      * @return the RoutePolicyPatch object itself.
      */
@@ -64,14 +97,53 @@ public final class RoutePolicyPatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutePolicyPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutePolicyPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutePolicyPatch.
+     */
+    public static RoutePolicyPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutePolicyPatch deserializedRoutePolicyPatch = new RoutePolicyPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRoutePolicyPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoutePolicyPatch.innerProperties = RoutePolicyPatchableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutePolicyPatch;
+        });
     }
 }

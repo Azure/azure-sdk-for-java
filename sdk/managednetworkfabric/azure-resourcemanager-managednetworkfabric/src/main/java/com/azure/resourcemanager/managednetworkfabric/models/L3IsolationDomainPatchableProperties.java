@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** L3 Isolation Domain Patch Properties defines the patchable properties of the resource. */
+/**
+ * L3 Isolation Domain Patch Properties defines the patchable properties of the resource.
+ */
 @Fluent
-public class L3IsolationDomainPatchableProperties {
+public class L3IsolationDomainPatchableProperties implements JsonSerializable<L3IsolationDomainPatchableProperties> {
     /*
      * Advertise Connected Subnets. Ex: "True" | "False".
      */
-    @JsonProperty(value = "redistributeConnectedSubnets")
     private RedistributeConnectedSubnets redistributeConnectedSubnets;
 
     /*
      * Advertise Static Routes. Ex: "True" | "False".
      */
-    @JsonProperty(value = "redistributeStaticRoutes")
     private RedistributeStaticRoutes redistributeStaticRoutes;
 
     /*
      * Aggregate route configurations.
      */
-    @JsonProperty(value = "aggregateRouteConfiguration")
     private AggregateRouteConfiguration aggregateRouteConfiguration;
 
     /*
      * Connected Subnet RoutePolicy
      */
-    @JsonProperty(value = "connectedSubnetRoutePolicy")
     private ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
 
-    /** Creates an instance of L3IsolationDomainPatchableProperties class. */
+    /**
+     * Creates an instance of L3IsolationDomainPatchableProperties class.
+     */
     public L3IsolationDomainPatchableProperties() {
     }
 
     /**
      * Get the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeConnectedSubnets value.
      */
     public RedistributeConnectedSubnets redistributeConnectedSubnets() {
@@ -49,7 +53,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Set the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
@@ -61,7 +65,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Get the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeStaticRoutes value.
      */
     public RedistributeStaticRoutes redistributeStaticRoutes() {
@@ -70,7 +74,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Set the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeStaticRoutes the redistributeStaticRoutes value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
@@ -82,7 +86,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Get the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @return the aggregateRouteConfiguration value.
      */
     public AggregateRouteConfiguration aggregateRouteConfiguration() {
@@ -91,7 +95,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Set the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
@@ -103,7 +107,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @return the connectedSubnetRoutePolicy value.
      */
     public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
@@ -112,7 +116,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Set the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainPatchableProperties object itself.
      */
@@ -124,7 +128,7 @@ public class L3IsolationDomainPatchableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -134,5 +138,57 @@ public class L3IsolationDomainPatchableProperties {
         if (connectedSubnetRoutePolicy() != null) {
             connectedSubnetRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("redistributeConnectedSubnets",
+            this.redistributeConnectedSubnets == null ? null : this.redistributeConnectedSubnets.toString());
+        jsonWriter.writeStringField("redistributeStaticRoutes",
+            this.redistributeStaticRoutes == null ? null : this.redistributeStaticRoutes.toString());
+        jsonWriter.writeJsonField("aggregateRouteConfiguration", this.aggregateRouteConfiguration);
+        jsonWriter.writeJsonField("connectedSubnetRoutePolicy", this.connectedSubnetRoutePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3IsolationDomainPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3IsolationDomainPatchableProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3IsolationDomainPatchableProperties.
+     */
+    public static L3IsolationDomainPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3IsolationDomainPatchableProperties deserializedL3IsolationDomainPatchableProperties
+                = new L3IsolationDomainPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("redistributeConnectedSubnets".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchableProperties.redistributeConnectedSubnets
+                        = RedistributeConnectedSubnets.fromString(reader.getString());
+                } else if ("redistributeStaticRoutes".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchableProperties.redistributeStaticRoutes
+                        = RedistributeStaticRoutes.fromString(reader.getString());
+                } else if ("aggregateRouteConfiguration".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchableProperties.aggregateRouteConfiguration
+                        = AggregateRouteConfiguration.fromJson(reader);
+                } else if ("connectedSubnetRoutePolicy".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatchableProperties.connectedSubnetRoutePolicy
+                        = ConnectedSubnetRoutePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3IsolationDomainPatchableProperties;
+        });
     }
 }

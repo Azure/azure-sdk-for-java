@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Port Group properties. */
+/**
+ * Port Group properties.
+ */
 @Fluent
-public final class PortGroupProperties {
+public final class PortGroupProperties implements JsonSerializable<PortGroupProperties> {
     /*
      * The name of the port group.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * List of the ports that needs to be matched.
+     * List of the ports that need to be matched.
      */
-    @JsonProperty(value = "ports")
     private List<String> ports;
 
-    /** Creates an instance of PortGroupProperties class. */
+    /**
+     * Creates an instance of PortGroupProperties class.
+     */
     public PortGroupProperties() {
     }
 
     /**
      * Get the name property: The name of the port group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class PortGroupProperties {
 
     /**
      * Set the name property: The name of the port group.
-     *
+     * 
      * @param name the name value to set.
      * @return the PortGroupProperties object itself.
      */
@@ -48,8 +54,8 @@ public final class PortGroupProperties {
     }
 
     /**
-     * Get the ports property: List of the ports that needs to be matched.
-     *
+     * Get the ports property: List of the ports that need to be matched.
+     * 
      * @return the ports value.
      */
     public List<String> ports() {
@@ -57,8 +63,8 @@ public final class PortGroupProperties {
     }
 
     /**
-     * Set the ports property: List of the ports that needs to be matched.
-     *
+     * Set the ports property: List of the ports that need to be matched.
+     * 
      * @param ports the ports value to set.
      * @return the PortGroupProperties object itself.
      */
@@ -69,9 +75,49 @@ public final class PortGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortGroupProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortGroupProperties.
+     */
+    public static PortGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortGroupProperties deserializedPortGroupProperties = new PortGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPortGroupProperties.name = reader.getString();
+                } else if ("ports".equals(fieldName)) {
+                    List<String> ports = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPortGroupProperties.ports = ports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortGroupProperties;
+        });
     }
 }

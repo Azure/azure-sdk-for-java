@@ -14,20 +14,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for L3IsolationDomains Create. */
+/**
+ * Samples for L3IsolationDomains Create.
+ */
 public final class L3IsolationDomainsCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * L3IsolationDomains_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void l3IsolationDomainsCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .l3IsolationDomains()
+        manager.l3IsolationDomains()
             .define("example-l3domain")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
@@ -36,24 +39,20 @@ public final class L3IsolationDomainsCreateSamples {
             .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
             .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
-            .withAggregateRouteConfiguration(
-                new AggregateRouteConfiguration()
-                    .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.0/24")))
-                    .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("3FFE:FFFF:0:CD30::a0/29"))))
-            .withConnectedSubnetRoutePolicy(
-                new ConnectedSubnetRoutePolicy()
-                    .withExportRoutePolicyId(
-                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-                    .withExportRoutePolicy(
-                        new L3ExportRoutePolicy()
-                            .withExportIpv4RoutePolicyId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
-                            .withExportIpv6RoutePolicyId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
+            .withAggregateRouteConfiguration(new AggregateRouteConfiguration()
+                .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.0/24")))
+                .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("3FFE:FFFF:0:CD30::a0/29"))))
+            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicyId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
+                    .withExportIpv6RoutePolicyId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
             .withAnnotation("annotation")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the match configuration that are supported to filter the traffic. */
+/**
+ * Defines the match configuration that are supported to filter the traffic.
+ */
 @Fluent
-public final class AccessControlListMatchConfiguration {
+public final class AccessControlListMatchConfiguration
+    implements JsonSerializable<AccessControlListMatchConfiguration> {
     /*
      * The name of the match configuration.
      */
-    @JsonProperty(value = "matchConfigurationName")
     private String matchConfigurationName;
 
     /*
      * Sequence Number of the match configuration.
      */
-    @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
 
     /*
      * Type of IP Address. IPv4 or IPv6
      */
-    @JsonProperty(value = "ipAddressType")
     private IpAddressType ipAddressType;
 
     /*
      * List of the match conditions.
      */
-    @JsonProperty(value = "matchConditions")
     private List<AccessControlListMatchCondition> matchConditions;
 
     /*
      * List of actions that need to be performed for the matched conditions.
      */
-    @JsonProperty(value = "actions")
     private List<AccessControlListAction> actions;
 
-    /** Creates an instance of AccessControlListMatchConfiguration class. */
+    /**
+     * Creates an instance of AccessControlListMatchConfiguration class.
+     */
     public AccessControlListMatchConfiguration() {
     }
 
     /**
      * Get the matchConfigurationName property: The name of the match configuration.
-     *
+     * 
      * @return the matchConfigurationName value.
      */
     public String matchConfigurationName() {
@@ -56,7 +60,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Set the matchConfigurationName property: The name of the match configuration.
-     *
+     * 
      * @param matchConfigurationName the matchConfigurationName value to set.
      * @return the AccessControlListMatchConfiguration object itself.
      */
@@ -67,7 +71,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Get the sequenceNumber property: Sequence Number of the match configuration.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public Long sequenceNumber() {
@@ -76,7 +80,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Set the sequenceNumber property: Sequence Number of the match configuration.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the AccessControlListMatchConfiguration object itself.
      */
@@ -87,7 +91,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Get the ipAddressType property: Type of IP Address. IPv4 or IPv6.
-     *
+     * 
      * @return the ipAddressType value.
      */
     public IpAddressType ipAddressType() {
@@ -96,7 +100,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Set the ipAddressType property: Type of IP Address. IPv4 or IPv6.
-     *
+     * 
      * @param ipAddressType the ipAddressType value to set.
      * @return the AccessControlListMatchConfiguration object itself.
      */
@@ -107,7 +111,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Get the matchConditions property: List of the match conditions.
-     *
+     * 
      * @return the matchConditions value.
      */
     public List<AccessControlListMatchCondition> matchConditions() {
@@ -116,7 +120,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Set the matchConditions property: List of the match conditions.
-     *
+     * 
      * @param matchConditions the matchConditions value to set.
      * @return the AccessControlListMatchConfiguration object itself.
      */
@@ -128,7 +132,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Get the actions property: List of actions that need to be performed for the matched conditions.
-     *
+     * 
      * @return the actions value.
      */
     public List<AccessControlListAction> actions() {
@@ -137,7 +141,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Set the actions property: List of actions that need to be performed for the matched conditions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AccessControlListMatchConfiguration object itself.
      */
@@ -148,7 +152,7 @@ public final class AccessControlListMatchConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -158,5 +162,61 @@ public final class AccessControlListMatchConfiguration {
         if (actions() != null) {
             actions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("matchConfigurationName", this.matchConfigurationName);
+        jsonWriter.writeNumberField("sequenceNumber", this.sequenceNumber);
+        jsonWriter.writeStringField("ipAddressType", this.ipAddressType == null ? null : this.ipAddressType.toString());
+        jsonWriter.writeArrayField("matchConditions", this.matchConditions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessControlListMatchConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessControlListMatchConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessControlListMatchConfiguration.
+     */
+    public static AccessControlListMatchConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessControlListMatchConfiguration deserializedAccessControlListMatchConfiguration
+                = new AccessControlListMatchConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("matchConfigurationName".equals(fieldName)) {
+                    deserializedAccessControlListMatchConfiguration.matchConfigurationName = reader.getString();
+                } else if ("sequenceNumber".equals(fieldName)) {
+                    deserializedAccessControlListMatchConfiguration.sequenceNumber
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("ipAddressType".equals(fieldName)) {
+                    deserializedAccessControlListMatchConfiguration.ipAddressType
+                        = IpAddressType.fromString(reader.getString());
+                } else if ("matchConditions".equals(fieldName)) {
+                    List<AccessControlListMatchCondition> matchConditions
+                        = reader.readArray(reader1 -> AccessControlListMatchCondition.fromJson(reader1));
+                    deserializedAccessControlListMatchConfiguration.matchConditions = matchConditions;
+                } else if ("actions".equals(fieldName)) {
+                    List<AccessControlListAction> actions
+                        = reader.readArray(reader1 -> AccessControlListAction.fromJson(reader1));
+                    deserializedAccessControlListMatchConfiguration.actions = actions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessControlListMatchConfiguration;
+        });
     }
 }

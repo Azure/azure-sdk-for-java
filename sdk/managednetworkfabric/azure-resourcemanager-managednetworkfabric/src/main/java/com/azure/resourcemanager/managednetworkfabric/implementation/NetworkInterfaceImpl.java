@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
@@ -30,6 +31,10 @@ public final class NetworkInterfaceImpl
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String physicalIdentifier() {
@@ -134,9 +139,9 @@ public final class NetworkInterfaceImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkDeviceName = Utils.getValueFromIdByName(innerObject.id(), "networkDevices");
-        this.networkInterfaceName = Utils.getValueFromIdByName(innerObject.id(), "networkInterfaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkDevices");
+        this.networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkInterfaces");
     }
 
     public NetworkInterface refresh() {

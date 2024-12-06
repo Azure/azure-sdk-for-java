@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Dynamic match configuration object. */
+/**
+ * Dynamic match configuration object.
+ */
 @Fluent
-public final class CommonDynamicMatchConfiguration {
+public final class CommonDynamicMatchConfiguration implements JsonSerializable<CommonDynamicMatchConfiguration> {
     /*
      * List of IP Groups.
      */
-    @JsonProperty(value = "ipGroups")
     private List<IpGroupProperties> ipGroups;
 
     /*
      * List of vlan groups.
      */
-    @JsonProperty(value = "vlanGroups")
     private List<VlanGroupProperties> vlanGroups;
 
     /*
-     * List of the port group.
+     * List of the port groups.
      */
-    @JsonProperty(value = "portGroups")
     private List<PortGroupProperties> portGroups;
 
-    /** Creates an instance of CommonDynamicMatchConfiguration class. */
+    /**
+     * Creates an instance of CommonDynamicMatchConfiguration class.
+     */
     public CommonDynamicMatchConfiguration() {
     }
 
     /**
      * Get the ipGroups property: List of IP Groups.
-     *
+     * 
      * @return the ipGroups value.
      */
     public List<IpGroupProperties> ipGroups() {
@@ -44,7 +49,7 @@ public final class CommonDynamicMatchConfiguration {
 
     /**
      * Set the ipGroups property: List of IP Groups.
-     *
+     * 
      * @param ipGroups the ipGroups value to set.
      * @return the CommonDynamicMatchConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class CommonDynamicMatchConfiguration {
 
     /**
      * Get the vlanGroups property: List of vlan groups.
-     *
+     * 
      * @return the vlanGroups value.
      */
     public List<VlanGroupProperties> vlanGroups() {
@@ -64,7 +69,7 @@ public final class CommonDynamicMatchConfiguration {
 
     /**
      * Set the vlanGroups property: List of vlan groups.
-     *
+     * 
      * @param vlanGroups the vlanGroups value to set.
      * @return the CommonDynamicMatchConfiguration object itself.
      */
@@ -74,8 +79,8 @@ public final class CommonDynamicMatchConfiguration {
     }
 
     /**
-     * Get the portGroups property: List of the port group.
-     *
+     * Get the portGroups property: List of the port groups.
+     * 
      * @return the portGroups value.
      */
     public List<PortGroupProperties> portGroups() {
@@ -83,8 +88,8 @@ public final class CommonDynamicMatchConfiguration {
     }
 
     /**
-     * Set the portGroups property: List of the port group.
-     *
+     * Set the portGroups property: List of the port groups.
+     * 
      * @param portGroups the portGroups value to set.
      * @return the CommonDynamicMatchConfiguration object itself.
      */
@@ -95,7 +100,7 @@ public final class CommonDynamicMatchConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +113,53 @@ public final class CommonDynamicMatchConfiguration {
         if (portGroups() != null) {
             portGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipGroups", this.ipGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vlanGroups", this.vlanGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("portGroups", this.portGroups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonDynamicMatchConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonDynamicMatchConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommonDynamicMatchConfiguration.
+     */
+    public static CommonDynamicMatchConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonDynamicMatchConfiguration deserializedCommonDynamicMatchConfiguration
+                = new CommonDynamicMatchConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipGroups".equals(fieldName)) {
+                    List<IpGroupProperties> ipGroups = reader.readArray(reader1 -> IpGroupProperties.fromJson(reader1));
+                    deserializedCommonDynamicMatchConfiguration.ipGroups = ipGroups;
+                } else if ("vlanGroups".equals(fieldName)) {
+                    List<VlanGroupProperties> vlanGroups
+                        = reader.readArray(reader1 -> VlanGroupProperties.fromJson(reader1));
+                    deserializedCommonDynamicMatchConfiguration.vlanGroups = vlanGroups;
+                } else if ("portGroups".equals(fieldName)) {
+                    List<PortGroupProperties> portGroups
+                        = reader.readArray(reader1 -> PortGroupProperties.fromJson(reader1));
+                    deserializedCommonDynamicMatchConfiguration.portGroups = portGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonDynamicMatchConfiguration;
+        });
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Advertise Connected Subnets. Ex: "True" | "False". */
+/**
+ * Advertise Connected Subnets. Ex: "True" | "False".
+ */
 public final class RedistributeConnectedSubnets extends ExpandableStringEnum<RedistributeConnectedSubnets> {
-    /** Static value True for RedistributeConnectedSubnets. */
+    /**
+     * Static value True for RedistributeConnectedSubnets.
+     */
     public static final RedistributeConnectedSubnets TRUE = fromString("True");
 
-    /** Static value False for RedistributeConnectedSubnets. */
+    /**
+     * Static value False for RedistributeConnectedSubnets.
+     */
     public static final RedistributeConnectedSubnets FALSE = fromString("False");
 
     /**
      * Creates a new instance of RedistributeConnectedSubnets value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class RedistributeConnectedSubnets extends ExpandableStringEnum<Red
 
     /**
      * Creates or finds a RedistributeConnectedSubnets from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RedistributeConnectedSubnets.
      */
-    @JsonCreator
     public static RedistributeConnectedSubnets fromString(String name) {
         return fromString(name, RedistributeConnectedSubnets.class);
     }
 
     /**
      * Gets known RedistributeConnectedSubnets values.
-     *
+     * 
      * @return known RedistributeConnectedSubnets values.
      */
     public static Collection<RedistributeConnectedSubnets> values() {

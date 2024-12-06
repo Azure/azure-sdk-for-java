@@ -6,56 +6,58 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Packet Broker Properties defines the properties of the resource. */
+/**
+ * Network Packet Broker Properties defines the properties of the resource.
+ */
 @Fluent
-public final class NetworkPacketBrokerProperties {
+public final class NetworkPacketBrokerProperties implements JsonSerializable<NetworkPacketBrokerProperties> {
     /*
      * ARM resource ID of the Network Fabric.
      */
-    @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
      * List of ARM resource IDs of Network Devices [NPB].
      */
-    @JsonProperty(value = "networkDeviceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkDeviceIds;
 
     /*
      * List of network interfaces across NPB devices that are used to mirror source traffic.
      */
-    @JsonProperty(value = "sourceInterfaceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> sourceInterfaceIds;
 
     /*
      * List of network Tap IDs configured on NPB.
      */
-    @JsonProperty(value = "networkTapIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkTapIds;
 
     /*
      * List of neighbor group IDs configured on NPB.
      */
-    @JsonProperty(value = "neighborGroupIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> neighborGroupIds;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NetworkPacketBrokerProperties class. */
+    /**
+     * Creates an instance of NetworkPacketBrokerProperties class.
+     */
     public NetworkPacketBrokerProperties() {
     }
 
     /**
      * Get the networkFabricId property: ARM resource ID of the Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     public String networkFabricId() {
@@ -64,7 +66,7 @@ public final class NetworkPacketBrokerProperties {
 
     /**
      * Set the networkFabricId property: ARM resource ID of the Network Fabric.
-     *
+     * 
      * @param networkFabricId the networkFabricId value to set.
      * @return the NetworkPacketBrokerProperties object itself.
      */
@@ -75,7 +77,7 @@ public final class NetworkPacketBrokerProperties {
 
     /**
      * Get the networkDeviceIds property: List of ARM resource IDs of Network Devices [NPB].
-     *
+     * 
      * @return the networkDeviceIds value.
      */
     public List<String> networkDeviceIds() {
@@ -85,7 +87,7 @@ public final class NetworkPacketBrokerProperties {
     /**
      * Get the sourceInterfaceIds property: List of network interfaces across NPB devices that are used to mirror source
      * traffic.
-     *
+     * 
      * @return the sourceInterfaceIds value.
      */
     public List<String> sourceInterfaceIds() {
@@ -94,7 +96,7 @@ public final class NetworkPacketBrokerProperties {
 
     /**
      * Get the networkTapIds property: List of network Tap IDs configured on NPB.
-     *
+     * 
      * @return the networkTapIds value.
      */
     public List<String> networkTapIds() {
@@ -103,7 +105,7 @@ public final class NetworkPacketBrokerProperties {
 
     /**
      * Get the neighborGroupIds property: List of neighbor group IDs configured on NPB.
-     *
+     * 
      * @return the neighborGroupIds value.
      */
     public List<String> neighborGroupIds() {
@@ -112,7 +114,7 @@ public final class NetworkPacketBrokerProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -121,15 +123,69 @@ public final class NetworkPacketBrokerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkFabricId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkFabricId in model NetworkPacketBrokerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricId in model NetworkPacketBrokerProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkPacketBrokerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkPacketBrokerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkPacketBrokerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkPacketBrokerProperties.
+     */
+    public static NetworkPacketBrokerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkPacketBrokerProperties deserializedNetworkPacketBrokerProperties
+                = new NetworkPacketBrokerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkFabricId".equals(fieldName)) {
+                    deserializedNetworkPacketBrokerProperties.networkFabricId = reader.getString();
+                } else if ("networkDeviceIds".equals(fieldName)) {
+                    List<String> networkDeviceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkPacketBrokerProperties.networkDeviceIds = networkDeviceIds;
+                } else if ("sourceInterfaceIds".equals(fieldName)) {
+                    List<String> sourceInterfaceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkPacketBrokerProperties.sourceInterfaceIds = sourceInterfaceIds;
+                } else if ("networkTapIds".equals(fieldName)) {
+                    List<String> networkTapIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkPacketBrokerProperties.networkTapIds = networkTapIds;
+                } else if ("neighborGroupIds".equals(fieldName)) {
+                    List<String> neighborGroupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkPacketBrokerProperties.neighborGroupIds = neighborGroupIds;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkPacketBrokerProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkPacketBrokerProperties;
+        });
+    }
 }

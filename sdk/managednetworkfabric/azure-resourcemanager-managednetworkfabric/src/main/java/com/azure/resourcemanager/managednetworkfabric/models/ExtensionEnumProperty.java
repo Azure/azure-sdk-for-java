@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Extension property. */
+/**
+ * Extension property.
+ */
 @Fluent
-public class ExtensionEnumProperty {
+public class ExtensionEnumProperty implements JsonSerializable<ExtensionEnumProperty> {
     /*
      * Extension. Example: NoExtension | NPB.
      */
-    @JsonProperty(value = "extension")
     private Extension extension;
 
-    /** Creates an instance of ExtensionEnumProperty class. */
+    /**
+     * Creates an instance of ExtensionEnumProperty class.
+     */
     public ExtensionEnumProperty() {
     }
 
     /**
      * Get the extension property: Extension. Example: NoExtension | NPB.
-     *
+     * 
      * @return the extension value.
      */
     public Extension extension() {
@@ -31,7 +38,7 @@ public class ExtensionEnumProperty {
 
     /**
      * Set the extension property: Extension. Example: NoExtension | NPB.
-     *
+     * 
      * @param extension the extension value to set.
      * @return the ExtensionEnumProperty object itself.
      */
@@ -42,9 +49,45 @@ public class ExtensionEnumProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extension", this.extension == null ? null : this.extension.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionEnumProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionEnumProperty if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionEnumProperty.
+     */
+    public static ExtensionEnumProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionEnumProperty deserializedExtensionEnumProperty = new ExtensionEnumProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extension".equals(fieldName)) {
+                    deserializedExtensionEnumProperty.extension = Extension.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionEnumProperty;
+        });
     }
 }

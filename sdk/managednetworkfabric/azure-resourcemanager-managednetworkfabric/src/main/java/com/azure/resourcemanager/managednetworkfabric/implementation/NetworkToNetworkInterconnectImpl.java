@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNetworkInterconnectInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
@@ -39,6 +40,10 @@ public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkI
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public NniType nniType() {
@@ -165,10 +170,10 @@ public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkI
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkFabricName = Utils.getValueFromIdByName(innerObject.id(), "networkFabrics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkFabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFabrics");
         this.networkToNetworkInterconnectName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkToNetworkInterconnects");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkToNetworkInterconnects");
     }
 
     public NetworkToNetworkInterconnect refresh() {

@@ -14,16 +14,16 @@ public final class IpCommunityDeleteOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunityDeleteOperationProperties model
-            = BinaryData.fromString("{\"delete\":{\"ipCommunityIds\":[\"ffgmcuanszeervg\"]}}")
+            = BinaryData.fromString("{\"delete\":{\"ipCommunityIds\":[\"exbvxgxq\"]}}")
                 .toObject(IpCommunityDeleteOperationProperties.class);
-        Assertions.assertEquals("ffgmcuanszeervg", model.delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("exbvxgxq", model.delete().ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpCommunityDeleteOperationProperties model = new IpCommunityDeleteOperationProperties()
-            .withDelete(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("ffgmcuanszeervg")));
+            .withDelete(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("exbvxgxq")));
         model = BinaryData.fromObject(model).toObject(IpCommunityDeleteOperationProperties.class);
-        Assertions.assertEquals("ffgmcuanszeervg", model.delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("exbvxgxq", model.delete().ipCommunityIds().get(0));
     }
 }

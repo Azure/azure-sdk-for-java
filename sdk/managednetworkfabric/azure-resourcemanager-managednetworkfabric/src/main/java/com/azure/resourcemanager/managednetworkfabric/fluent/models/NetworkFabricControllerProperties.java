@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ControllerServices;
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
@@ -12,34 +15,32 @@ import com.azure.resourcemanager.managednetworkfabric.models.IsWorkloadManagemen
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NetworkFabricControllerProperties defines the resource properties. */
+/**
+ * NetworkFabricControllerProperties defines the resource properties.
+ */
 @Fluent
 public final class NetworkFabricControllerProperties extends AnnotationResource {
     /*
      * InfrastructureServices IP ranges.
      */
-    @JsonProperty(value = "infrastructureServices", access = JsonProperty.Access.WRITE_ONLY)
     private ControllerServices infrastructureServices;
 
     /*
      * WorkloadServices IP ranges.
      */
-    @JsonProperty(value = "workloadServices", access = JsonProperty.Access.WRITE_ONLY)
     private ControllerServices workloadServices;
 
     /*
      * Managed Resource Group configuration properties.
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedResourceGroupConfiguration managedResourceGroupConfiguration;
 
     /*
      * The NF-ID will be an input parameter used by the NF to link and get associated with the parent NFC Service.
      */
-    @JsonProperty(value = "networkFabricIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkFabricIds;
 
     /*
@@ -47,68 +48,61 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * for Tenant workloads which are required to access internet or any other MSFT/Public endpoints. This is used for
      * the backward compatibility.
      */
-    @JsonProperty(value = "workloadManagementNetwork", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean workloadManagementNetwork;
 
     /*
      * A workload management network is required for all the tenant (workload) traffic. This traffic is only dedicated
      * for Tenant workloads which are required to access internet or any other MSFT/Public endpoints.
      */
-    @JsonProperty(value = "isWorkloadManagementNetworkEnabled")
     private IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled;
 
     /*
      * List of tenant InternetGateway resource IDs
      */
-    @JsonProperty(value = "tenantInternetGatewayIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tenantInternetGatewayIds;
 
     /*
      * IPv4 Network Fabric Controller Address Space.
      */
-    @JsonProperty(value = "ipv4AddressSpace")
     private String ipv4AddressSpace;
 
     /*
      * IPv6 Network Fabric Controller Address Space.
      */
-    @JsonProperty(value = "ipv6AddressSpace")
     private String ipv6AddressSpace;
 
     /*
      * Network Fabric Controller SKU.
      */
-    @JsonProperty(value = "nfcSku")
     private NfcSku nfcSku;
 
     /*
      * Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
      * this process, the states keep changing based on the status of NFC provisioning.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * As part of an update, the Infrastructure ExpressRoute CircuitID should be provided to create and Provision a
-     * NFC. This Express route is dedicated for Infrastructure services. (This is a Mandatory attribute)
+     * As part of an update, the Infrastructure ExpressRoute CircuitID should be provided to create and Provision a NFC.
+     * This Express route is dedicated for Infrastructure services. (This is a Mandatory attribute)
      */
-    @JsonProperty(value = "infrastructureExpressRouteConnections")
     private List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections;
 
     /*
      * As part of an update, the workload ExpressRoute CircuitID should be provided to create and Provision a NFC. This
      * Express route is dedicated for Workload services. (This is a Mandatory attribute).
      */
-    @JsonProperty(value = "workloadExpressRouteConnections")
     private List<ExpressRouteConnectionInformation> workloadExpressRouteConnections;
 
-    /** Creates an instance of NetworkFabricControllerProperties class. */
+    /**
+     * Creates an instance of NetworkFabricControllerProperties class.
+     */
     public NetworkFabricControllerProperties() {
     }
 
     /**
      * Get the infrastructureServices property: InfrastructureServices IP ranges.
-     *
+     * 
      * @return the infrastructureServices value.
      */
     public ControllerServices infrastructureServices() {
@@ -117,7 +111,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Get the workloadServices property: WorkloadServices IP ranges.
-     *
+     * 
      * @return the workloadServices value.
      */
     public ControllerServices workloadServices() {
@@ -126,7 +120,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Get the managedResourceGroupConfiguration property: Managed Resource Group configuration properties.
-     *
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedResourceGroupConfiguration managedResourceGroupConfiguration() {
@@ -135,7 +129,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Set the managedResourceGroupConfiguration property: Managed Resource Group configuration properties.
-     *
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -148,7 +142,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
     /**
      * Get the networkFabricIds property: The NF-ID will be an input parameter used by the NF to link and get associated
      * with the parent NFC Service.
-     *
+     * 
      * @return the networkFabricIds value.
      */
     public List<String> networkFabricIds() {
@@ -159,7 +153,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Get the workloadManagementNetwork property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
      * any other MSFT/Public endpoints. This is used for the backward compatibility.
-     *
+     * 
      * @return the workloadManagementNetwork value.
      */
     public Boolean workloadManagementNetwork() {
@@ -170,7 +164,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Get the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
      * any other MSFT/Public endpoints.
-     *
+     * 
      * @return the isWorkloadManagementNetworkEnabled value.
      */
     public IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled() {
@@ -181,7 +175,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Set the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
      * any other MSFT/Public endpoints.
-     *
+     * 
      * @param isWorkloadManagementNetworkEnabled the isWorkloadManagementNetworkEnabled value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -193,7 +187,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Get the tenantInternetGatewayIds property: List of tenant InternetGateway resource IDs.
-     *
+     * 
      * @return the tenantInternetGatewayIds value.
      */
     public List<String> tenantInternetGatewayIds() {
@@ -202,7 +196,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Get the ipv4AddressSpace property: IPv4 Network Fabric Controller Address Space.
-     *
+     * 
      * @return the ipv4AddressSpace value.
      */
     public String ipv4AddressSpace() {
@@ -211,7 +205,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Set the ipv4AddressSpace property: IPv4 Network Fabric Controller Address Space.
-     *
+     * 
      * @param ipv4AddressSpace the ipv4AddressSpace value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -222,7 +216,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Get the ipv6AddressSpace property: IPv6 Network Fabric Controller Address Space.
-     *
+     * 
      * @return the ipv6AddressSpace value.
      */
     public String ipv6AddressSpace() {
@@ -231,7 +225,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Set the ipv6AddressSpace property: IPv6 Network Fabric Controller Address Space.
-     *
+     * 
      * @param ipv6AddressSpace the ipv6AddressSpace value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -242,7 +236,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Get the nfcSku property: Network Fabric Controller SKU.
-     *
+     * 
      * @return the nfcSku value.
      */
     public NfcSku nfcSku() {
@@ -251,7 +245,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Set the nfcSku property: Network Fabric Controller SKU.
-     *
+     * 
      * @param nfcSku the nfcSku value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -264,7 +258,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Get the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
      * updating, Succeeded or Failed. During this process, the states keep changing based on the status of NFC
      * provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -275,7 +269,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Get the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure ExpressRoute
      * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Infrastructure
      * services. (This is a Mandatory attribute).
-     *
+     * 
      * @return the infrastructureExpressRouteConnections value.
      */
     public List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections() {
@@ -286,7 +280,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Set the infrastructureExpressRouteConnections property: As part of an update, the Infrastructure ExpressRoute
      * CircuitID should be provided to create and Provision a NFC. This Express route is dedicated for Infrastructure
      * services. (This is a Mandatory attribute).
-     *
+     * 
      * @param infrastructureExpressRouteConnections the infrastructureExpressRouteConnections value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -300,7 +294,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Get the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute CircuitID
      * should be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This is
      * a Mandatory attribute).
-     *
+     * 
      * @return the workloadExpressRouteConnections value.
      */
     public List<ExpressRouteConnectionInformation> workloadExpressRouteConnections() {
@@ -311,7 +305,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * Set the workloadExpressRouteConnections property: As part of an update, the workload ExpressRoute CircuitID
      * should be provided to create and Provision a NFC. This Express route is dedicated for Workload services. (This is
      * a Mandatory attribute).
-     *
+     * 
      * @param workloadExpressRouteConnections the workloadExpressRouteConnections value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
@@ -321,7 +315,9 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFabricControllerProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -330,12 +326,11 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (infrastructureServices() != null) {
             infrastructureServices().validate();
         }
@@ -351,5 +346,94 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
         if (workloadExpressRouteConnections() != null) {
             workloadExpressRouteConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeStringField("isWorkloadManagementNetworkEnabled",
+            this.isWorkloadManagementNetworkEnabled == null
+                ? null
+                : this.isWorkloadManagementNetworkEnabled.toString());
+        jsonWriter.writeStringField("ipv4AddressSpace", this.ipv4AddressSpace);
+        jsonWriter.writeStringField("ipv6AddressSpace", this.ipv6AddressSpace);
+        jsonWriter.writeStringField("nfcSku", this.nfcSku == null ? null : this.nfcSku.toString());
+        jsonWriter.writeArrayField("infrastructureExpressRouteConnections", this.infrastructureExpressRouteConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("workloadExpressRouteConnections", this.workloadExpressRouteConnections,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricControllerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricControllerProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFabricControllerProperties.
+     */
+    public static NetworkFabricControllerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricControllerProperties deserializedNetworkFabricControllerProperties
+                = new NetworkFabricControllerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.withAnnotation(reader.getString());
+                } else if ("infrastructureServices".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.infrastructureServices
+                        = ControllerServices.fromJson(reader);
+                } else if ("workloadServices".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.workloadServices
+                        = ControllerServices.fromJson(reader);
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.managedResourceGroupConfiguration
+                        = ManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("networkFabricIds".equals(fieldName)) {
+                    List<String> networkFabricIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFabricControllerProperties.networkFabricIds = networkFabricIds;
+                } else if ("workloadManagementNetwork".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.workloadManagementNetwork
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isWorkloadManagementNetworkEnabled".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.isWorkloadManagementNetworkEnabled
+                        = IsWorkloadManagementNetworkEnabled.fromString(reader.getString());
+                } else if ("tenantInternetGatewayIds".equals(fieldName)) {
+                    List<String> tenantInternetGatewayIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkFabricControllerProperties.tenantInternetGatewayIds = tenantInternetGatewayIds;
+                } else if ("ipv4AddressSpace".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.ipv4AddressSpace = reader.getString();
+                } else if ("ipv6AddressSpace".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.ipv6AddressSpace = reader.getString();
+                } else if ("nfcSku".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.nfcSku = NfcSku.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkFabricControllerProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("infrastructureExpressRouteConnections".equals(fieldName)) {
+                    List<ExpressRouteConnectionInformation> infrastructureExpressRouteConnections
+                        = reader.readArray(reader1 -> ExpressRouteConnectionInformation.fromJson(reader1));
+                    deserializedNetworkFabricControllerProperties.infrastructureExpressRouteConnections
+                        = infrastructureExpressRouteConnections;
+                } else if ("workloadExpressRouteConnections".equals(fieldName)) {
+                    List<ExpressRouteConnectionInformation> workloadExpressRouteConnections
+                        = reader.readArray(reader1 -> ExpressRouteConnectionInformation.fromJson(reader1));
+                    deserializedNetworkFabricControllerProperties.workloadExpressRouteConnections
+                        = workloadExpressRouteConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricControllerProperties;
+        });
     }
 }

@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OptionB Layer3 Configuration properties. */
+/**
+ * OptionB Layer3 Configuration properties.
+ */
 @Fluent
 public class OptionBLayer3Configuration extends Layer3IpPrefixProperties {
     /*
      * ASN of PE devices for CE/PE connectivity.Example : 28
      */
-    @JsonProperty(value = "peerASN")
     private Long peerAsn;
 
     /*
      * VLAN for CE/PE Layer 3 connectivity.Example : 501
      */
-    @JsonProperty(value = "vlanId")
     private Integer vlanId;
 
     /*
      * ASN of CE devices for CE/PE connectivity.
      */
-    @JsonProperty(value = "fabricASN", access = JsonProperty.Access.WRITE_ONLY)
     private Long fabricAsn;
 
-    /** Creates an instance of OptionBLayer3Configuration class. */
+    /**
+     * Creates an instance of OptionBLayer3Configuration class.
+     */
     public OptionBLayer3Configuration() {
     }
 
     /**
      * Get the peerAsn property: ASN of PE devices for CE/PE connectivity.Example : 28.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -43,7 +47,7 @@ public class OptionBLayer3Configuration extends Layer3IpPrefixProperties {
 
     /**
      * Set the peerAsn property: ASN of PE devices for CE/PE connectivity.Example : 28.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the OptionBLayer3Configuration object itself.
      */
@@ -54,7 +58,7 @@ public class OptionBLayer3Configuration extends Layer3IpPrefixProperties {
 
     /**
      * Get the vlanId property: VLAN for CE/PE Layer 3 connectivity.Example : 501.
-     *
+     * 
      * @return the vlanId value.
      */
     public Integer vlanId() {
@@ -63,7 +67,7 @@ public class OptionBLayer3Configuration extends Layer3IpPrefixProperties {
 
     /**
      * Set the vlanId property: VLAN for CE/PE Layer 3 connectivity.Example : 501.
-     *
+     * 
      * @param vlanId the vlanId value to set.
      * @return the OptionBLayer3Configuration object itself.
      */
@@ -74,35 +78,54 @@ public class OptionBLayer3Configuration extends Layer3IpPrefixProperties {
 
     /**
      * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
-     *
+     * 
      * @return the fabricAsn value.
      */
     public Long fabricAsn() {
         return this.fabricAsn;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the fabricAsn property: ASN of CE devices for CE/PE connectivity.
+     * 
+     * @param fabricAsn the fabricAsn value to set.
+     * @return the OptionBLayer3Configuration object itself.
+     */
+    OptionBLayer3Configuration withFabricAsn(Long fabricAsn) {
+        this.fabricAsn = fabricAsn;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OptionBLayer3Configuration withPrimaryIpv4Prefix(String primaryIpv4Prefix) {
         super.withPrimaryIpv4Prefix(primaryIpv4Prefix);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OptionBLayer3Configuration withPrimaryIpv6Prefix(String primaryIpv6Prefix) {
         super.withPrimaryIpv6Prefix(primaryIpv6Prefix);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OptionBLayer3Configuration withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
         super.withSecondaryIpv4Prefix(secondaryIpv4Prefix);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OptionBLayer3Configuration withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
         super.withSecondaryIpv6Prefix(secondaryIpv6Prefix);
@@ -111,11 +134,63 @@ public class OptionBLayer3Configuration extends Layer3IpPrefixProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryIpv4Prefix", primaryIpv4Prefix());
+        jsonWriter.writeStringField("primaryIpv6Prefix", primaryIpv6Prefix());
+        jsonWriter.writeStringField("secondaryIpv4Prefix", secondaryIpv4Prefix());
+        jsonWriter.writeStringField("secondaryIpv6Prefix", secondaryIpv6Prefix());
+        jsonWriter.writeNumberField("peerASN", this.peerAsn);
+        jsonWriter.writeNumberField("vlanId", this.vlanId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OptionBLayer3Configuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OptionBLayer3Configuration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OptionBLayer3Configuration.
+     */
+    public static OptionBLayer3Configuration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OptionBLayer3Configuration deserializedOptionBLayer3Configuration = new OptionBLayer3Configuration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryIpv4Prefix".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.withPrimaryIpv4Prefix(reader.getString());
+                } else if ("primaryIpv6Prefix".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.withPrimaryIpv6Prefix(reader.getString());
+                } else if ("secondaryIpv4Prefix".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.withSecondaryIpv4Prefix(reader.getString());
+                } else if ("secondaryIpv6Prefix".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.withSecondaryIpv6Prefix(reader.getString());
+                } else if ("peerASN".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.peerAsn = reader.getNullable(JsonReader::getLong);
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.vlanId = reader.getNullable(JsonReader::getInt);
+                } else if ("fabricASN".equals(fieldName)) {
+                    deserializedOptionBLayer3Configuration.fabricAsn = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOptionBLayer3Configuration;
+        });
     }
 }

@@ -59,32 +59,32 @@ public final class NetworkFabricControllersImpl implements NetworkFabricControll
 
     public PagedIterable<NetworkFabricController> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetworkFabricControllerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabricController> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<NetworkFabricControllerInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabricController> list() {
         PagedIterable<NetworkFabricControllerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFabricController> list(Context context) {
         PagedIterable<NetworkFabricControllerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricControllerImpl(inner1, this.manager()));
     }
 
     public NetworkFabricController getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricControllerName = Utils.getValueFromIdByName(id, "networkFabricControllers");
+        String networkFabricControllerName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabricControllers");
         if (networkFabricControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkFabricControllers'.", id)));
@@ -94,12 +94,12 @@ public final class NetworkFabricControllersImpl implements NetworkFabricControll
     }
 
     public Response<NetworkFabricController> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricControllerName = Utils.getValueFromIdByName(id, "networkFabricControllers");
+        String networkFabricControllerName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabricControllers");
         if (networkFabricControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkFabricControllers'.", id)));
@@ -108,12 +108,12 @@ public final class NetworkFabricControllersImpl implements NetworkFabricControll
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricControllerName = Utils.getValueFromIdByName(id, "networkFabricControllers");
+        String networkFabricControllerName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabricControllers");
         if (networkFabricControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkFabricControllers'.", id)));
@@ -122,12 +122,12 @@ public final class NetworkFabricControllersImpl implements NetworkFabricControll
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkFabricControllerName = Utils.getValueFromIdByName(id, "networkFabricControllers");
+        String networkFabricControllerName = ResourceManagerUtils.getValueFromIdByName(id, "networkFabricControllers");
         if (networkFabricControllerName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'networkFabricControllers'.", id)));

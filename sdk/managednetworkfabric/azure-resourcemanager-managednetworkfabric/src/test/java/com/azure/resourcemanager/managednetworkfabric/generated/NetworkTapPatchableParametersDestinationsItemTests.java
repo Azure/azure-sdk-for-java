@@ -16,31 +16,31 @@ public final class NetworkTapPatchableParametersDestinationsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkTapPatchableParametersDestinationsItem model = BinaryData.fromString(
-            "{\"name\":\"dnuehxwltssjdywb\",\"destinationType\":\"Direct\",\"destinationId\":\"erxa\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"xc\",\"mpt\"]},\"destinationTapRuleId\":\"rm\"}")
+            "{\"name\":\"agwiijc\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"whxpsbapial\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"uzudegefxl\"]},\"destinationTapRuleId\":\"ggo\"}")
             .toObject(NetworkTapPatchableParametersDestinationsItem.class);
-        Assertions.assertEquals("dnuehxwltssjdywb", model.name());
-        Assertions.assertEquals(DestinationType.DIRECT, model.destinationType());
-        Assertions.assertEquals("erxa", model.destinationId());
+        Assertions.assertEquals("agwiijc", model.name());
+        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinationType());
+        Assertions.assertEquals("whxpsbapial", model.destinationId());
         Assertions.assertEquals(Encapsulation.NONE, model.isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("xc", model.isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("rm", model.destinationTapRuleId());
+        Assertions.assertEquals("uzudegefxl", model.isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("ggo", model.destinationTapRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkTapPatchableParametersDestinationsItem model
-            = new NetworkTapPatchableParametersDestinationsItem().withName("dnuehxwltssjdywb")
-                .withDestinationType(DestinationType.DIRECT)
-                .withDestinationId("erxa")
+            = new NetworkTapPatchableParametersDestinationsItem().withName("agwiijc")
+                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                .withDestinationId("whxpsbapial")
                 .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-                    .withNeighborGroupIds(Arrays.asList("xc", "mpt")))
-                .withDestinationTapRuleId("rm");
+                    .withNeighborGroupIds(Arrays.asList("uzudegefxl")))
+                .withDestinationTapRuleId("ggo");
         model = BinaryData.fromObject(model).toObject(NetworkTapPatchableParametersDestinationsItem.class);
-        Assertions.assertEquals("dnuehxwltssjdywb", model.name());
-        Assertions.assertEquals(DestinationType.DIRECT, model.destinationType());
-        Assertions.assertEquals("erxa", model.destinationId());
+        Assertions.assertEquals("agwiijc", model.name());
+        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinationType());
+        Assertions.assertEquals("whxpsbapial", model.destinationId());
         Assertions.assertEquals(Encapsulation.NONE, model.isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("xc", model.isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("rm", model.destinationTapRuleId());
+        Assertions.assertEquals("uzudegefxl", model.isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("ggo", model.destinationTapRuleId());
     }
 }

@@ -188,8 +188,8 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkTapRuleName = Utils.getValueFromIdByName(innerObject.id(), "networkTapRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkTapRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkTapRules");
     }
 
     public NetworkTapRule refresh() {

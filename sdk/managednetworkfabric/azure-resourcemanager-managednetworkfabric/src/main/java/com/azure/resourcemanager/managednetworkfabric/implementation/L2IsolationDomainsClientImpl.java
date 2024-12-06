@@ -45,17 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in L2IsolationDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in L2IsolationDomainsClient.
+ */
 public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final L2IsolationDomainsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of L2IsolationDomainsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     L2IsolationDomainsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -180,10 +186,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -191,7 +197,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -226,10 +232,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -238,7 +244,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -272,10 +278,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -295,10 +301,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -320,10 +326,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -340,10 +346,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -361,10 +367,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -382,10 +388,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -404,10 +410,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -424,10 +430,10 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Create L2 Isolation Domain.
-     *
-     * <p>Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
+     * 
+     * Creates layer 2 network connectivity between compute nodes within a rack and across racks.The configuration is
      * applied on the devices only after the isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -445,16 +451,16 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -485,9 +491,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -495,7 +501,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L2IsolationDomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -524,9 +530,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,9 +549,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -562,9 +568,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -579,9 +585,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -589,7 +595,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -624,9 +630,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -635,7 +641,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -669,9 +675,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -691,9 +697,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -715,9 +721,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -734,9 +740,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -754,9 +760,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -774,9 +780,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -795,9 +801,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -814,9 +820,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Updates the L2 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L2 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L2 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body API to update certain properties of the L2 Isolation Domain resource..
@@ -834,9 +840,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,9 +878,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -910,9 +916,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -930,9 +936,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -953,9 +959,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -970,9 +976,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -989,9 +995,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1007,9 +1013,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1026,9 +1032,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,9 +1048,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1059,9 +1065,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1104,9 +1110,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1148,9 +1154,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1174,9 +1180,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1202,9 +1208,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1223,9 +1229,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1246,9 +1252,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1266,9 +1272,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1287,9 +1293,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1306,9 +1312,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -1326,14 +1332,14 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1364,7 +1370,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1372,7 +1378,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1401,7 +1407,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1421,7 +1427,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1443,7 +1449,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,7 +1465,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1476,7 +1482,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1493,7 +1499,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1511,7 +1517,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1527,7 +1533,7 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1544,16 +1550,16 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -1584,17 +1590,17 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -1623,9 +1629,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1647,9 +1653,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1673,9 +1679,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1692,9 +1698,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1712,9 +1718,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1731,9 +1737,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1751,9 +1757,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1769,9 +1775,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1788,9 +1794,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1822,9 +1828,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1858,9 +1864,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1875,9 +1881,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1893,9 +1899,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1909,9 +1915,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1926,9 +1932,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L2 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1954,9 +1960,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1984,9 +1990,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L2 Isolation Domains as paginated response with {@link PagedFlux}.
@@ -1999,9 +2005,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2016,9 +2022,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
@@ -2030,9 +2036,9 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2046,9 +2052,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2074,9 +2079,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2102,9 +2106,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2130,9 +2133,8 @@ public final class L2IsolationDomainsClientImpl implements L2IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

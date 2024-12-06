@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkFabrics RefreshConfiguration. */
+/**
+ * Samples for NetworkFabrics RefreshConfiguration.
+ */
 public final class NetworkFabricsRefreshConfigurationSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_refreshConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkFabrics_refreshConfiguration_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_refreshConfiguration_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricsRefreshConfigurationMaximumSetGen(

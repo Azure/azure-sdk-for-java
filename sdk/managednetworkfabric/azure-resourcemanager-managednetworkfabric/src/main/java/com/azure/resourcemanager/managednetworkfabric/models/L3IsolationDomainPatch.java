@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainPatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The L3 Isolation Domain patch resource definition. */
+/**
+ * The L3 Isolation Domain patch resource definition.
+ */
 @Fluent
 public final class L3IsolationDomainPatch extends TagsUpdate {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private L3IsolationDomainPatchProperties innerProperties;
 
-    /** Creates an instance of L3IsolationDomainPatch class. */
+    /**
+     * Creates an instance of L3IsolationDomainPatch class.
+     */
     public L3IsolationDomainPatch() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private L3IsolationDomainPatchProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L3IsolationDomainPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,7 +48,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Get the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeConnectedSubnets value.
      */
     public RedistributeConnectedSubnets redistributeConnectedSubnets() {
@@ -49,7 +57,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Set the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
@@ -64,7 +72,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Get the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeStaticRoutes value.
      */
     public RedistributeStaticRoutes redistributeStaticRoutes() {
@@ -73,7 +81,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Set the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeStaticRoutes the redistributeStaticRoutes value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
@@ -87,7 +95,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Get the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @return the aggregateRouteConfiguration value.
      */
     public AggregateRouteConfiguration aggregateRouteConfiguration() {
@@ -96,7 +104,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Set the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
@@ -111,7 +119,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @return the connectedSubnetRoutePolicy value.
      */
     public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
@@ -120,7 +128,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Set the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
@@ -135,7 +143,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -144,7 +152,7 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the L3IsolationDomainPatch object itself.
      */
@@ -158,14 +166,54 @@ public final class L3IsolationDomainPatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3IsolationDomainPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3IsolationDomainPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3IsolationDomainPatch.
+     */
+    public static L3IsolationDomainPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3IsolationDomainPatch deserializedL3IsolationDomainPatch = new L3IsolationDomainPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedL3IsolationDomainPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedL3IsolationDomainPatch.innerProperties
+                        = L3IsolationDomainPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3IsolationDomainPatch;
+        });
     }
 }

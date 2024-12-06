@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VlanGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VlanGroupProperties model
-            = BinaryData.fromString("{\"name\":\"xwaxfewzjkj\",\"vlans\":[\"deqvhp\",\"ylkkshkbffmbm\",\"zjrgyww\"]}")
-                .toObject(VlanGroupProperties.class);
-        Assertions.assertEquals("xwaxfewzjkj", model.name());
-        Assertions.assertEquals("deqvhp", model.vlans().get(0));
+        VlanGroupProperties model = BinaryData.fromString("{\"name\":\"raauzzpt\",\"vlans\":[\"ysdzhez\",\"wva\"]}")
+            .toObject(VlanGroupProperties.class);
+        Assertions.assertEquals("raauzzpt", model.name());
+        Assertions.assertEquals("ysdzhez", model.vlans().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VlanGroupProperties model = new VlanGroupProperties().withName("xwaxfewzjkj")
-            .withVlans(Arrays.asList("deqvhp", "ylkkshkbffmbm", "zjrgyww"));
+        VlanGroupProperties model
+            = new VlanGroupProperties().withName("raauzzpt").withVlans(Arrays.asList("ysdzhez", "wva"));
         model = BinaryData.fromObject(model).toObject(VlanGroupProperties.class);
-        Assertions.assertEquals("xwaxfewzjkj", model.name());
-        Assertions.assertEquals("deqvhp", model.vlans().get(0));
+        Assertions.assertEquals("raauzzpt", model.name());
+        Assertions.assertEquals("ysdzhez", model.vlans().get(0));
     }
 }

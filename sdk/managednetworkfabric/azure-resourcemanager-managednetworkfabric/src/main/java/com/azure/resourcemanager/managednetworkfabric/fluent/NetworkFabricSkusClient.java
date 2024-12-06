@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricSkuInner;
 
-/** An instance of this class provides access to all the operations defined in NetworkFabricSkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFabricSkusClient.
+ */
 public interface NetworkFabricSkusClient {
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,9 +32,9 @@ public interface NetworkFabricSkusClient {
 
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,9 +46,9 @@ public interface NetworkFabricSkusClient {
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric SKUs as paginated response with {@link PagedIterable}.
@@ -56,9 +58,9 @@ public interface NetworkFabricSkusClient {
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

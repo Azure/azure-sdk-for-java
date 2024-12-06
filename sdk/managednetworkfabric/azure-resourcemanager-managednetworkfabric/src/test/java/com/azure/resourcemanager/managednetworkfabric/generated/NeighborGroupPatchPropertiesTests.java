@@ -14,21 +14,22 @@ public final class NeighborGroupPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeighborGroupPatchProperties model = BinaryData.fromString(
-            "{\"destination\":{\"ipv4Addresses\":[\"peg\",\"wdabalfdxaglzfyt\"],\"ipv6Addresses\":[\"lqhopxouvmrs\"]},\"annotation\":\"likyypzkgxfxfmyr\"}")
+            "{\"destination\":{\"ipv4Addresses\":[\"zgpmnma\",\"eddqilwgdfpfqfpc\"],\"ipv6Addresses\":[\"clg\"]},\"annotation\":\"vwerfwxbsmtb\"}")
             .toObject(NeighborGroupPatchProperties.class);
-        Assertions.assertEquals("likyypzkgxfxfmyr", model.annotation());
-        Assertions.assertEquals("peg", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("lqhopxouvmrs", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("vwerfwxbsmtb", model.annotation());
+        Assertions.assertEquals("zgpmnma", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("clg", model.destination().ipv6Addresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupPatchProperties model = new NeighborGroupPatchProperties().withAnnotation("likyypzkgxfxfmyr")
-            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("peg", "wdabalfdxaglzfyt"))
-                .withIpv6Addresses(Arrays.asList("lqhopxouvmrs")));
+        NeighborGroupPatchProperties model = new NeighborGroupPatchProperties().withAnnotation("vwerfwxbsmtb")
+            .withDestination(
+                new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("zgpmnma", "eddqilwgdfpfqfpc"))
+                    .withIpv6Addresses(Arrays.asList("clg")));
         model = BinaryData.fromObject(model).toObject(NeighborGroupPatchProperties.class);
-        Assertions.assertEquals("likyypzkgxfxfmyr", model.annotation());
-        Assertions.assertEquals("peg", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("lqhopxouvmrs", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("vwerfwxbsmtb", model.annotation());
+        Assertions.assertEquals("zgpmnma", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("clg", model.destination().ipv6Addresses().get(0));
     }
 }

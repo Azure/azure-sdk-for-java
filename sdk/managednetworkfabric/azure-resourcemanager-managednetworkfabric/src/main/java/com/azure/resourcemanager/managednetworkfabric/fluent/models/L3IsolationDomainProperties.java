@@ -6,6 +6,9 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
@@ -14,66 +17,62 @@ import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRout
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** L3 Isolation Domain Properties defines the properties of the resource. */
+/**
+ * L3 Isolation Domain Properties defines the properties of the resource.
+ */
 @Fluent
 public final class L3IsolationDomainProperties extends AnnotationResource {
     /*
      * ARM Resource ID of the Network Fabric.
      */
-    @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
     /*
      * Advertise Connected Subnets. Ex: "True" | "False".
      */
-    @JsonProperty(value = "redistributeConnectedSubnets")
     private RedistributeConnectedSubnets redistributeConnectedSubnets;
 
     /*
      * Advertise Static Routes. Ex: "True" | "False".
      */
-    @JsonProperty(value = "redistributeStaticRoutes")
     private RedistributeStaticRoutes redistributeStaticRoutes;
 
     /*
      * Aggregate route configurations.
      */
-    @JsonProperty(value = "aggregateRouteConfiguration")
     private AggregateRouteConfiguration aggregateRouteConfiguration;
 
     /*
      * Connected Subnet RoutePolicy
      */
-    @JsonProperty(value = "connectedSubnetRoutePolicy")
     private ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
 
-    /** Creates an instance of L3IsolationDomainProperties class. */
+    /**
+     * Creates an instance of L3IsolationDomainProperties class.
+     */
     public L3IsolationDomainProperties() {
     }
 
     /**
      * Get the networkFabricId property: ARM Resource ID of the Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     public String networkFabricId() {
@@ -82,7 +81,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Set the networkFabricId property: ARM Resource ID of the Network Fabric.
-     *
+     * 
      * @param networkFabricId the networkFabricId value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
@@ -93,7 +92,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -102,7 +101,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -111,7 +110,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -120,7 +119,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeConnectedSubnets value.
      */
     public RedistributeConnectedSubnets redistributeConnectedSubnets() {
@@ -129,7 +128,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Set the redistributeConnectedSubnets property: Advertise Connected Subnets. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
@@ -141,7 +140,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @return the redistributeStaticRoutes value.
      */
     public RedistributeStaticRoutes redistributeStaticRoutes() {
@@ -150,7 +149,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Set the redistributeStaticRoutes property: Advertise Static Routes. Ex: "True" | "False".
-     *
+     * 
      * @param redistributeStaticRoutes the redistributeStaticRoutes value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
@@ -161,7 +160,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @return the aggregateRouteConfiguration value.
      */
     public AggregateRouteConfiguration aggregateRouteConfiguration() {
@@ -170,7 +169,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Set the aggregateRouteConfiguration property: Aggregate route configurations.
-     *
+     * 
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
@@ -182,7 +181,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @return the connectedSubnetRoutePolicy value.
      */
     public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
@@ -191,7 +190,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Set the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
-     *
+     * 
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
@@ -201,7 +200,9 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public L3IsolationDomainProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -210,15 +211,15 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkFabricId in model L3IsolationDomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricId in model L3IsolationDomainProperties"));
         }
         if (aggregateRouteConfiguration() != null) {
             aggregateRouteConfiguration().validate();
@@ -229,4 +230,71 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(L3IsolationDomainProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        jsonWriter.writeStringField("redistributeConnectedSubnets",
+            this.redistributeConnectedSubnets == null ? null : this.redistributeConnectedSubnets.toString());
+        jsonWriter.writeStringField("redistributeStaticRoutes",
+            this.redistributeStaticRoutes == null ? null : this.redistributeStaticRoutes.toString());
+        jsonWriter.writeJsonField("aggregateRouteConfiguration", this.aggregateRouteConfiguration);
+        jsonWriter.writeJsonField("connectedSubnetRoutePolicy", this.connectedSubnetRoutePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3IsolationDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3IsolationDomainProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the L3IsolationDomainProperties.
+     */
+    public static L3IsolationDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3IsolationDomainProperties deserializedL3IsolationDomainProperties = new L3IsolationDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.withAnnotation(reader.getString());
+                } else if ("networkFabricId".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.networkFabricId = reader.getString();
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("redistributeConnectedSubnets".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.redistributeConnectedSubnets
+                        = RedistributeConnectedSubnets.fromString(reader.getString());
+                } else if ("redistributeStaticRoutes".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.redistributeStaticRoutes
+                        = RedistributeStaticRoutes.fromString(reader.getString());
+                } else if ("aggregateRouteConfiguration".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.aggregateRouteConfiguration
+                        = AggregateRouteConfiguration.fromJson(reader);
+                } else if ("connectedSubnetRoutePolicy".equals(fieldName)) {
+                    deserializedL3IsolationDomainProperties.connectedSubnetRoutePolicy
+                        = ConnectedSubnetRoutePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3IsolationDomainProperties;
+        });
+    }
 }

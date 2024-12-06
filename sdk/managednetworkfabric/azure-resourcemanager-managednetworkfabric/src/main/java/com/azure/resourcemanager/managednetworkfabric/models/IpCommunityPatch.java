@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpCommunityPatchableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The IP Community patch resource definition. */
+/**
+ * The IP Community patch resource definition.
+ */
 @Fluent
 public final class IpCommunityPatch extends TagsUpdate {
     /*
      * IP Community patchable properties.
      */
-    @JsonProperty(value = "properties")
     private IpCommunityPatchableProperties innerProperties;
 
-    /** Creates an instance of IpCommunityPatch class. */
+    /**
+     * Creates an instance of IpCommunityPatch class.
+     */
     public IpCommunityPatch() {
     }
 
     /**
      * Get the innerProperties property: IP Community patchable properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpCommunityPatchableProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpCommunityPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +49,7 @@ public final class IpCommunityPatch extends TagsUpdate {
 
     /**
      * Get the ipCommunityRules property: List of IP Community Rules.
-     *
+     * 
      * @return the ipCommunityRules value.
      */
     public List<IpCommunityRule> ipCommunityRules() {
@@ -50,7 +58,7 @@ public final class IpCommunityPatch extends TagsUpdate {
 
     /**
      * Set the ipCommunityRules property: List of IP Community Rules.
-     *
+     * 
      * @param ipCommunityRules the ipCommunityRules value to set.
      * @return the IpCommunityPatch object itself.
      */
@@ -64,14 +72,53 @@ public final class IpCommunityPatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpCommunityPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpCommunityPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpCommunityPatch.
+     */
+    public static IpCommunityPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpCommunityPatch deserializedIpCommunityPatch = new IpCommunityPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIpCommunityPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIpCommunityPatch.innerProperties = IpCommunityPatchableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpCommunityPatch;
+        });
     }
 }

@@ -5,43 +5,75 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ExternalNetwork patchable properties. */
+/**
+ * The ExternalNetwork patchable properties.
+ */
 @Fluent
-public class ExternalNetworkPatchableProperties {
+public class ExternalNetworkPatchableProperties implements JsonSerializable<ExternalNetworkPatchableProperties> {
+    /*
+     * ARM Resource ID of the networkToNetworkInterconnectId of the ExternalNetwork resource.
+     */
+    private String networkToNetworkInterconnectId;
+
     /*
      * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
      * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
 
     /*
      * Import Route Policy either IPv4 or IPv6.
      */
-    @JsonProperty(value = "importRoutePolicy")
     private ImportRoutePolicy importRoutePolicy;
 
     /*
      * Export Route Policy either IPv4 or IPv6.
      */
-    @JsonProperty(value = "exportRoutePolicy")
     private ExportRoutePolicy exportRoutePolicy;
 
-    /** Creates an instance of ExternalNetworkPatchableProperties class. */
+    /**
+     * Creates an instance of ExternalNetworkPatchableProperties class.
+     */
     public ExternalNetworkPatchableProperties() {
+    }
+
+    /**
+     * Get the networkToNetworkInterconnectId property: ARM Resource ID of the networkToNetworkInterconnectId of the
+     * ExternalNetwork resource.
+     * 
+     * @return the networkToNetworkInterconnectId value.
+     */
+    public String networkToNetworkInterconnectId() {
+        return this.networkToNetworkInterconnectId;
+    }
+
+    /**
+     * Set the networkToNetworkInterconnectId property: ARM Resource ID of the networkToNetworkInterconnectId of the
+     * ExternalNetwork resource.
+     * 
+     * @param networkToNetworkInterconnectId the networkToNetworkInterconnectId value to set.
+     * @return the ExternalNetworkPatchableProperties object itself.
+     */
+    public ExternalNetworkPatchableProperties
+        withNetworkToNetworkInterconnectId(String networkToNetworkInterconnectId) {
+        this.networkToNetworkInterconnectId = networkToNetworkInterconnectId;
+        return this;
     }
 
     /**
      * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the importRoutePolicyId value.
      */
     public String importRoutePolicyId() {
@@ -51,7 +83,7 @@ public class ExternalNetworkPatchableProperties {
     /**
      * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the ExternalNetworkPatchableProperties object itself.
      */
@@ -63,7 +95,7 @@ public class ExternalNetworkPatchableProperties {
     /**
      * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the exportRoutePolicyId value.
      */
     public String exportRoutePolicyId() {
@@ -73,7 +105,7 @@ public class ExternalNetworkPatchableProperties {
     /**
      * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ExternalNetworkPatchableProperties object itself.
      */
@@ -84,7 +116,7 @@ public class ExternalNetworkPatchableProperties {
 
     /**
      * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the importRoutePolicy value.
      */
     public ImportRoutePolicy importRoutePolicy() {
@@ -93,7 +125,7 @@ public class ExternalNetworkPatchableProperties {
 
     /**
      * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the ExternalNetworkPatchableProperties object itself.
      */
@@ -104,7 +136,7 @@ public class ExternalNetworkPatchableProperties {
 
     /**
      * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public ExportRoutePolicy exportRoutePolicy() {
@@ -113,7 +145,7 @@ public class ExternalNetworkPatchableProperties {
 
     /**
      * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the ExternalNetworkPatchableProperties object itself.
      */
@@ -124,7 +156,7 @@ public class ExternalNetworkPatchableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -134,5 +166,56 @@ public class ExternalNetworkPatchableProperties {
         if (exportRoutePolicy() != null) {
             exportRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkToNetworkInterconnectId", this.networkToNetworkInterconnectId);
+        jsonWriter.writeStringField("importRoutePolicyId", this.importRoutePolicyId);
+        jsonWriter.writeStringField("exportRoutePolicyId", this.exportRoutePolicyId);
+        jsonWriter.writeJsonField("importRoutePolicy", this.importRoutePolicy);
+        jsonWriter.writeJsonField("exportRoutePolicy", this.exportRoutePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalNetworkPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalNetworkPatchableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalNetworkPatchableProperties.
+     */
+    public static ExternalNetworkPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalNetworkPatchableProperties deserializedExternalNetworkPatchableProperties
+                = new ExternalNetworkPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkToNetworkInterconnectId".equals(fieldName)) {
+                    deserializedExternalNetworkPatchableProperties.networkToNetworkInterconnectId = reader.getString();
+                } else if ("importRoutePolicyId".equals(fieldName)) {
+                    deserializedExternalNetworkPatchableProperties.importRoutePolicyId = reader.getString();
+                } else if ("exportRoutePolicyId".equals(fieldName)) {
+                    deserializedExternalNetworkPatchableProperties.exportRoutePolicyId = reader.getString();
+                } else if ("importRoutePolicy".equals(fieldName)) {
+                    deserializedExternalNetworkPatchableProperties.importRoutePolicy
+                        = ImportRoutePolicy.fromJson(reader);
+                } else if ("exportRoutePolicy".equals(fieldName)) {
+                    deserializedExternalNetworkPatchableProperties.exportRoutePolicy
+                        = ExportRoutePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalNetworkPatchableProperties;
+        });
     }
 }

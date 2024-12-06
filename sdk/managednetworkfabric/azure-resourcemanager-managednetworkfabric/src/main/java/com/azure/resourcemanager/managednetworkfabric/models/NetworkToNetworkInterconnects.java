@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkToNetworkInterconnects. */
+/**
+ * Resource collection API of NetworkToNetworkInterconnects.
+ */
 public interface NetworkToNetworkInterconnects {
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -29,9 +31,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -45,9 +47,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -59,9 +61,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -75,9 +77,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,9 +91,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
-     *
-     * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
-     *
+     * 
+     * Implements Network To Network Interconnects list by Network Fabric GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -105,9 +107,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -122,9 +124,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the NPB Static Route BFD Administrative State.
-     *
+     * 
+     * Updates the NPB Static Route BFD Administrative State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -141,9 +143,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -158,9 +160,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Admin State.
-     *
+     * 
+     * Updates the Admin State.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
@@ -176,9 +178,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -189,9 +191,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Configuration used to setup CE-PE connectivity.
-     *
-     * <p>Implements NetworkToNetworkInterconnects GET method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +205,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -215,9 +217,9 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
-     *
-     * <p>Implements NetworkToNetworkInterconnects DELETE method.
-     *
+     * 
+     * Implements NetworkToNetworkInterconnects DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +230,7 @@ public interface NetworkToNetworkInterconnects {
 
     /**
      * Begins definition for a new NetworkToNetworkInterconnect resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkToNetworkInterconnect definition.
      */

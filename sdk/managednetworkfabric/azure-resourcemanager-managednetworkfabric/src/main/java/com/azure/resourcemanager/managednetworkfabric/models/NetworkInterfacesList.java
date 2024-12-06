@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInterfaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of NetworkInterfaces. */
+/**
+ * List of NetworkInterfaces.
+ */
 @Fluent
-public final class NetworkInterfacesList {
+public final class NetworkInterfacesList implements JsonSerializable<NetworkInterfacesList> {
     /*
      * List of NetworkInterfaces resources.
      */
-    @JsonProperty(value = "value")
     private List<NetworkInterfaceInner> value;
 
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkInterfacesList class. */
+    /**
+     * Creates an instance of NetworkInterfacesList class.
+     */
     public NetworkInterfacesList() {
     }
 
     /**
      * Get the value property: List of NetworkInterfaces resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkInterfaceInner> value() {
@@ -39,7 +45,7 @@ public final class NetworkInterfacesList {
 
     /**
      * Set the value property: List of NetworkInterfaces resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkInterfacesList object itself.
      */
@@ -50,7 +56,7 @@ public final class NetworkInterfacesList {
 
     /**
      * Get the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class NetworkInterfacesList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkInterfacesList object itself.
      */
@@ -70,12 +76,53 @@ public final class NetworkInterfacesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfacesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfacesList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfacesList.
+     */
+    public static NetworkInterfacesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfacesList deserializedNetworkInterfacesList = new NetworkInterfacesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkInterfaceInner> value
+                        = reader.readArray(reader1 -> NetworkInterfaceInner.fromJson(reader1));
+                    deserializedNetworkInterfacesList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkInterfacesList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfacesList;
+        });
     }
 }

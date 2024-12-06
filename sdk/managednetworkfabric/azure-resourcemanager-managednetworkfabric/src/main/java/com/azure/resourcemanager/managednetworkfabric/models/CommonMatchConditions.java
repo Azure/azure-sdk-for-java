@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the common match conditions of the ACL and Network Tap Rule. */
+/**
+ * Defines the common match conditions of the ACL and Network Tap Rule.
+ */
 @Fluent
-public class CommonMatchConditions {
+public class CommonMatchConditions implements JsonSerializable<CommonMatchConditions> {
     /*
      * List of the protocols that need to be matched.
      */
-    @JsonProperty(value = "protocolTypes")
     private List<String> protocolTypes;
 
     /*
      * Vlan match condition that needs to be matched.
      */
-    @JsonProperty(value = "vlanMatchCondition")
     private VlanMatchCondition vlanMatchCondition;
 
     /*
      * IP condition that needs to be matched.
      */
-    @JsonProperty(value = "ipCondition")
     private IpMatchCondition ipCondition;
 
-    /** Creates an instance of CommonMatchConditions class. */
+    /**
+     * Creates an instance of CommonMatchConditions class.
+     */
     public CommonMatchConditions() {
     }
 
     /**
      * Get the protocolTypes property: List of the protocols that need to be matched.
-     *
+     * 
      * @return the protocolTypes value.
      */
     public List<String> protocolTypes() {
@@ -44,7 +49,7 @@ public class CommonMatchConditions {
 
     /**
      * Set the protocolTypes property: List of the protocols that need to be matched.
-     *
+     * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the CommonMatchConditions object itself.
      */
@@ -55,7 +60,7 @@ public class CommonMatchConditions {
 
     /**
      * Get the vlanMatchCondition property: Vlan match condition that needs to be matched.
-     *
+     * 
      * @return the vlanMatchCondition value.
      */
     public VlanMatchCondition vlanMatchCondition() {
@@ -64,7 +69,7 @@ public class CommonMatchConditions {
 
     /**
      * Set the vlanMatchCondition property: Vlan match condition that needs to be matched.
-     *
+     * 
      * @param vlanMatchCondition the vlanMatchCondition value to set.
      * @return the CommonMatchConditions object itself.
      */
@@ -75,7 +80,7 @@ public class CommonMatchConditions {
 
     /**
      * Get the ipCondition property: IP condition that needs to be matched.
-     *
+     * 
      * @return the ipCondition value.
      */
     public IpMatchCondition ipCondition() {
@@ -84,7 +89,7 @@ public class CommonMatchConditions {
 
     /**
      * Set the ipCondition property: IP condition that needs to be matched.
-     *
+     * 
      * @param ipCondition the ipCondition value to set.
      * @return the CommonMatchConditions object itself.
      */
@@ -95,7 +100,7 @@ public class CommonMatchConditions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -105,5 +110,49 @@ public class CommonMatchConditions {
         if (ipCondition() != null) {
             ipCondition().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("protocolTypes", this.protocolTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("vlanMatchCondition", this.vlanMatchCondition);
+        jsonWriter.writeJsonField("ipCondition", this.ipCondition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonMatchConditions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonMatchConditions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommonMatchConditions.
+     */
+    public static CommonMatchConditions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonMatchConditions deserializedCommonMatchConditions = new CommonMatchConditions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocolTypes".equals(fieldName)) {
+                    List<String> protocolTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommonMatchConditions.protocolTypes = protocolTypes;
+                } else if ("vlanMatchCondition".equals(fieldName)) {
+                    deserializedCommonMatchConditions.vlanMatchCondition = VlanMatchCondition.fromJson(reader);
+                } else if ("ipCondition".equals(fieldName)) {
+                    deserializedCommonMatchConditions.ipCondition = IpMatchCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonMatchConditions;
+        });
     }
 }

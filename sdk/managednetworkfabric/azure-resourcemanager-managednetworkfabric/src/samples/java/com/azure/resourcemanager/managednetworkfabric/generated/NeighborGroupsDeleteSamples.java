@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NeighborGroups Delete. */
+/**
+ * Samples for NeighborGroups Delete.
+ */
 public final class NeighborGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NeighborGroups_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NeighborGroups_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NeighborGroups_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void neighborGroupsDeleteMaximumSetGen(

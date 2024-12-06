@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureNetworkFabricManagementServiceApiImpl type. */
+/**
+ * A builder for creating a new instance of the AzureNetworkFabricManagementServiceApiImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { AzureNetworkFabricManagementServiceApiImpl.class })
 public final class AzureNetworkFabricManagementServiceApiBuilder {
     /*
@@ -24,7 +26,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Sets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureNetworkFabricManagementServiceApiBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureNetworkFabricManagementServiceApiBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureNetworkFabricManagementServiceApiBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureNetworkFabricManagementServiceApiBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureNetworkFabricManagementServiceApiBuilder.
      */
@@ -104,7 +106,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureNetworkFabricManagementServiceApiBuilder.
      */
@@ -115,7 +117,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
 
     /**
      * Builds an instance of AzureNetworkFabricManagementServiceApiImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureNetworkFabricManagementServiceApiImpl.
      */
     public AzureNetworkFabricManagementServiceApiImpl buildClient() {
@@ -131,7 +133,7 @@ public final class AzureNetworkFabricManagementServiceApiBuilder {
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureNetworkFabricManagementServiceApiImpl client
             = new AzureNetworkFabricManagementServiceApiImpl(localPipeline, localSerializerAdapter,
-                localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
+                localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkFabricControllersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFabricControllersClient.
+ */
 public final class NetworkFabricControllersClientImpl implements NetworkFabricControllersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkFabricControllersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkFabricControllersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkFabricControllersClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -144,9 +150,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -154,7 +160,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -189,9 +195,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -200,7 +206,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -234,9 +240,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -257,9 +263,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -283,9 +289,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -302,9 +308,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -323,9 +329,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -343,9 +349,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -364,9 +370,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -383,9 +389,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Create Network fabric controller.
-     *
-     * <p>Creates a Network Fabric Controller.
-     *
+     * 
+     * Creates a Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Request payload.
@@ -403,16 +409,16 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFabricControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -443,9 +449,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -453,7 +459,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFabricControllerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -482,9 +488,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -501,9 +507,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -520,9 +526,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Gets a Network Fabric Controller.
-     *
-     * <p>Shows the provisioning status of Network Fabric Controller.
-     *
+     * 
+     * Shows the provisioning status of Network Fabric Controller.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,9 +544,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -548,7 +554,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -583,9 +589,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -594,7 +600,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -628,9 +634,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -651,9 +657,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -677,9 +683,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -696,9 +702,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -717,9 +723,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -737,9 +743,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -758,9 +764,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -777,9 +783,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Updates a Network Fabric Controller.
-     *
-     * <p>Updates are currently not supported for the Network Fabric Controller resource.
-     *
+     * 
+     * Updates are currently not supported for the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param body Network Fabric Controller properties to update.
@@ -797,9 +803,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,9 +841,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -873,9 +879,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -893,9 +899,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -916,9 +922,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -934,9 +940,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -953,9 +959,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -971,9 +977,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -990,9 +996,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1006,9 +1012,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Deletes a Network Fabric Controller.
-     *
-     * <p>Deletes the Network Fabric Controller resource.
-     *
+     * 
+     * Deletes the Network Fabric Controller resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricControllerName Name of the Network Fabric Controller.
      * @param context The context to associate with this operation.
@@ -1023,15 +1029,15 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>>
@@ -1059,16 +1065,16 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>>
@@ -1096,9 +1102,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1113,9 +1119,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1132,9 +1138,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1148,9 +1154,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by resource group.
-     *
-     * <p>Lists all the NetworkFabricControllers thats available in the resource group.
-     *
+     * 
+     * Lists all the NetworkFabricControllers thats available in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1165,13 +1171,13 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listSinglePageAsync() {
@@ -1194,15 +1200,15 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listSinglePageAsync(Context context) {
@@ -1225,9 +1231,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric Controllers as paginated response with {@link PagedFlux}.
@@ -1240,9 +1246,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1257,9 +1263,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
@@ -1271,9 +1277,9 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * List NetworkFabricControllers by subscription.
-     *
-     * <p>Lists all the NetworkFabricControllers by subscription.
-     *
+     * 
+     * Lists all the NetworkFabricControllers by subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1287,14 +1293,13 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1316,15 +1321,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -1345,14 +1349,13 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1374,15 +1377,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricControllerInner>> listBySubscriptionNextSinglePageAsync(String nextLink,

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** An array of destination IPv4 Addresses or IPv6 Addresses. */
+/**
+ * An array of destination IPv4 Addresses or IPv6 Addresses.
+ */
 @Fluent
-public final class NeighborGroupDestination {
+public final class NeighborGroupDestination implements JsonSerializable<NeighborGroupDestination> {
     /*
      * Array of IPv4 Addresses.
      */
-    @JsonProperty(value = "ipv4Addresses")
     private List<String> ipv4Addresses;
 
     /*
      * Array of IPv6 Addresses.
      */
-    @JsonProperty(value = "ipv6Addresses")
     private List<String> ipv6Addresses;
 
-    /** Creates an instance of NeighborGroupDestination class. */
+    /**
+     * Creates an instance of NeighborGroupDestination class.
+     */
     public NeighborGroupDestination() {
     }
 
     /**
      * Get the ipv4Addresses property: Array of IPv4 Addresses.
-     *
+     * 
      * @return the ipv4Addresses value.
      */
     public List<String> ipv4Addresses() {
@@ -38,7 +44,7 @@ public final class NeighborGroupDestination {
 
     /**
      * Set the ipv4Addresses property: Array of IPv4 Addresses.
-     *
+     * 
      * @param ipv4Addresses the ipv4Addresses value to set.
      * @return the NeighborGroupDestination object itself.
      */
@@ -49,7 +55,7 @@ public final class NeighborGroupDestination {
 
     /**
      * Get the ipv6Addresses property: Array of IPv6 Addresses.
-     *
+     * 
      * @return the ipv6Addresses value.
      */
     public List<String> ipv6Addresses() {
@@ -58,7 +64,7 @@ public final class NeighborGroupDestination {
 
     /**
      * Set the ipv6Addresses property: Array of IPv6 Addresses.
-     *
+     * 
      * @param ipv6Addresses the ipv6Addresses value to set.
      * @return the NeighborGroupDestination object itself.
      */
@@ -69,9 +75,52 @@ public final class NeighborGroupDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipv4Addresses", this.ipv4Addresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipv6Addresses", this.ipv6Addresses,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NeighborGroupDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NeighborGroupDestination if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NeighborGroupDestination.
+     */
+    public static NeighborGroupDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NeighborGroupDestination deserializedNeighborGroupDestination = new NeighborGroupDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipv4Addresses".equals(fieldName)) {
+                    List<String> ipv4Addresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNeighborGroupDestination.ipv4Addresses = ipv4Addresses;
+                } else if ("ipv6Addresses".equals(fieldName)) {
+                    List<String> ipv6Addresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNeighborGroupDestination.ipv6Addresses = ipv6Addresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNeighborGroupDestination;
+        });
     }
 }

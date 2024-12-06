@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkPatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The ExternalNetwork patch resource definition. */
+/**
+ * The ExternalNetwork patch resource definition.
+ */
 @Fluent
-public final class ExternalNetworkPatch {
+public final class ExternalNetworkPatch implements JsonSerializable<ExternalNetworkPatch> {
     /*
      * External Network Patch properties.
      */
-    @JsonProperty(value = "properties")
     private ExternalNetworkPatchProperties innerProperties;
 
-    /** Creates an instance of ExternalNetworkPatch class. */
+    /**
+     * Creates an instance of ExternalNetworkPatch class.
+     */
     public ExternalNetworkPatch() {
     }
 
     /**
      * Get the innerProperties property: External Network Patch properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExternalNetworkPatchProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Get the peeringOption property: Peering option list.
-     *
+     * 
      * @return the peeringOption value.
      */
     public PeeringOption peeringOption() {
@@ -41,7 +48,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Set the peeringOption property: Peering option list.
-     *
+     * 
      * @param peeringOption the peeringOption value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -55,7 +62,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Get the optionBProperties property: option B properties object.
-     *
+     * 
      * @return the optionBProperties value.
      */
     public L3OptionBProperties optionBProperties() {
@@ -64,7 +71,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Set the optionBProperties property: option B properties object.
-     *
+     * 
      * @param optionBProperties the optionBProperties value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -78,7 +85,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Get the optionAProperties property: option A properties object.
-     *
+     * 
      * @return the optionAProperties value.
      */
     public ExternalNetworkPatchPropertiesOptionAProperties optionAProperties() {
@@ -87,7 +94,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Set the optionAProperties property: option A properties object.
-     *
+     * 
      * @param optionAProperties the optionAProperties value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -101,9 +108,34 @@ public final class ExternalNetworkPatch {
     }
 
     /**
+     * Get the networkToNetworkInterconnectId property: ARM Resource ID of the networkToNetworkInterconnectId of the
+     * ExternalNetwork resource.
+     * 
+     * @return the networkToNetworkInterconnectId value.
+     */
+    public String networkToNetworkInterconnectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkToNetworkInterconnectId();
+    }
+
+    /**
+     * Set the networkToNetworkInterconnectId property: ARM Resource ID of the networkToNetworkInterconnectId of the
+     * ExternalNetwork resource.
+     * 
+     * @param networkToNetworkInterconnectId the networkToNetworkInterconnectId value to set.
+     * @return the ExternalNetworkPatch object itself.
+     */
+    public ExternalNetworkPatch withNetworkToNetworkInterconnectId(String networkToNetworkInterconnectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExternalNetworkPatchProperties();
+        }
+        this.innerProperties().withNetworkToNetworkInterconnectId(networkToNetworkInterconnectId);
+        return this;
+    }
+
+    /**
      * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the importRoutePolicyId value.
      */
     public String importRoutePolicyId() {
@@ -113,7 +145,7 @@ public final class ExternalNetworkPatch {
     /**
      * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -128,7 +160,7 @@ public final class ExternalNetworkPatch {
     /**
      * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the exportRoutePolicyId value.
      */
     public String exportRoutePolicyId() {
@@ -138,7 +170,7 @@ public final class ExternalNetworkPatch {
     /**
      * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -152,7 +184,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the importRoutePolicy value.
      */
     public ImportRoutePolicy importRoutePolicy() {
@@ -161,7 +193,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -175,7 +207,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public ExportRoutePolicy exportRoutePolicy() {
@@ -184,7 +216,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -198,7 +230,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -207,7 +239,7 @@ public final class ExternalNetworkPatch {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the ExternalNetworkPatch object itself.
      */
@@ -221,12 +253,48 @@ public final class ExternalNetworkPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalNetworkPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalNetworkPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalNetworkPatch.
+     */
+    public static ExternalNetworkPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalNetworkPatch deserializedExternalNetworkPatch = new ExternalNetworkPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedExternalNetworkPatch.innerProperties = ExternalNetworkPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalNetworkPatch;
+        });
     }
 }

@@ -58,31 +58,31 @@ public final class IpPrefixesImpl implements IpPrefixes {
 
     public PagedIterable<IpPrefix> listByResourceGroup(String resourceGroupName) {
         PagedIterable<IpPrefixInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IpPrefix> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<IpPrefixInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IpPrefix> list() {
         PagedIterable<IpPrefixInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IpPrefix> list(Context context) {
         PagedIterable<IpPrefixInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpPrefixImpl(inner1, this.manager()));
     }
 
     public IpPrefix getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipPrefixName = Utils.getValueFromIdByName(id, "ipPrefixes");
+        String ipPrefixName = ResourceManagerUtils.getValueFromIdByName(id, "ipPrefixes");
         if (ipPrefixName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipPrefixes'.", id)));
@@ -91,12 +91,12 @@ public final class IpPrefixesImpl implements IpPrefixes {
     }
 
     public Response<IpPrefix> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipPrefixName = Utils.getValueFromIdByName(id, "ipPrefixes");
+        String ipPrefixName = ResourceManagerUtils.getValueFromIdByName(id, "ipPrefixes");
         if (ipPrefixName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipPrefixes'.", id)));
@@ -105,12 +105,12 @@ public final class IpPrefixesImpl implements IpPrefixes {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipPrefixName = Utils.getValueFromIdByName(id, "ipPrefixes");
+        String ipPrefixName = ResourceManagerUtils.getValueFromIdByName(id, "ipPrefixes");
         if (ipPrefixName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipPrefixes'.", id)));
@@ -119,12 +119,12 @@ public final class IpPrefixesImpl implements IpPrefixes {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipPrefixName = Utils.getValueFromIdByName(id, "ipPrefixes");
+        String ipPrefixName = ResourceManagerUtils.getValueFromIdByName(id, "ipPrefixes");
         if (ipPrefixName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipPrefixes'.", id)));

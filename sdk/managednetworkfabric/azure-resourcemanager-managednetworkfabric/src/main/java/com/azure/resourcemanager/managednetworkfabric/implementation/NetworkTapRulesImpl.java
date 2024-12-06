@@ -63,22 +63,22 @@ public final class NetworkTapRulesImpl implements NetworkTapRules {
 
     public PagedIterable<NetworkTapRule> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetworkTapRuleInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkTapRule> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<NetworkTapRuleInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkTapRule> list() {
         PagedIterable<NetworkTapRuleInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkTapRule> list(Context context) {
         PagedIterable<NetworkTapRuleInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkTapRuleImpl(inner1, this.manager()));
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
@@ -146,12 +146,12 @@ public final class NetworkTapRulesImpl implements NetworkTapRules {
     }
 
     public NetworkTapRule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapRuleName = Utils.getValueFromIdByName(id, "networkTapRules");
+        String networkTapRuleName = ResourceManagerUtils.getValueFromIdByName(id, "networkTapRules");
         if (networkTapRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkTapRules'.", id)));
@@ -160,12 +160,12 @@ public final class NetworkTapRulesImpl implements NetworkTapRules {
     }
 
     public Response<NetworkTapRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapRuleName = Utils.getValueFromIdByName(id, "networkTapRules");
+        String networkTapRuleName = ResourceManagerUtils.getValueFromIdByName(id, "networkTapRules");
         if (networkTapRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkTapRules'.", id)));
@@ -174,12 +174,12 @@ public final class NetworkTapRulesImpl implements NetworkTapRules {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapRuleName = Utils.getValueFromIdByName(id, "networkTapRules");
+        String networkTapRuleName = ResourceManagerUtils.getValueFromIdByName(id, "networkTapRules");
         if (networkTapRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkTapRules'.", id)));
@@ -188,12 +188,12 @@ public final class NetworkTapRulesImpl implements NetworkTapRules {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkTapRuleName = Utils.getValueFromIdByName(id, "networkTapRules");
+        String networkTapRuleName = ResourceManagerUtils.getValueFromIdByName(id, "networkTapRules");
         if (networkTapRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'networkTapRules'.", id)));

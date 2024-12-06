@@ -17,50 +17,45 @@ public final class InternetGatewaysListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewaysListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ipv4Address\":\"valblhtjqv\",\"port\":1207141724,\"type\":\"Workload\",\"networkFabricControllerId\":\"eh\",\"provisioningState\":\"Updating\",\"internetGatewayRuleId\":\"xhzzyse\",\"annotation\":\"sxivzrrryvei\"},\"location\":\"pskdyzatvfuzk\",\"tags\":{\"qdsmjtg\":\"jvvruxwigsyei\"},\"id\":\"qgdgkkile\",\"name\":\"lkcsmknhwtbbae\",\"type\":\"orvvmqfloygbdgw\"},{\"properties\":{\"ipv4Address\":\"gxdgdhpab\",\"port\":1275825078,\"type\":\"Infrastructure\",\"networkFabricControllerId\":\"jddvjsaqw\",\"provisioningState\":\"Canceled\",\"internetGatewayRuleId\":\"wllcolsr\",\"annotation\":\"apte\"},\"location\":\"excgjokjljnhvl\",\"tags\":{\"eeksnbksdqhjvyk\":\"ek\",\"vnwqjwgo\":\"xeslkhhustcpoqm\",\"bkjbz\":\"nlejjjkxybwf\",\"nsxfwu\":\"ensvkzykjtj\"},\"id\":\"hcdpkupnqrmgj\",\"name\":\"bpkuwxeoio\",\"type\":\"fiz\"},{\"properties\":{\"ipv4Address\":\"vkjzwfbcyaykm\",\"port\":313297047,\"type\":\"Infrastructure\",\"networkFabricControllerId\":\"bfw\",\"provisioningState\":\"Succeeded\",\"internetGatewayRuleId\":\"mdew\",\"annotation\":\"sxkrpl\"},\"location\":\"aze\",\"tags\":{\"qwjhqkbiwetpozyc\":\"viyoypsuhbrnnhjx\"},\"id\":\"qiqyhgfsetzlexbs\",\"name\":\"ledynojpz\",\"type\":\"uwfbzkkdtnhqsy\"}],\"nextLink\":\"jselpkpbafvafh\"}")
+            "{\"value\":[{\"properties\":{\"ipv4Address\":\"hbhlvbm\",\"port\":453041096,\"type\":\"Workload\",\"networkFabricControllerId\":\"bsxtkcudfbsfarfs\",\"provisioningState\":\"Accepted\",\"internetGatewayRuleId\":\"kjxnqpvwgfstmhq\",\"annotation\":\"izmdksa\"},\"location\":\"fcluqvo\",\"tags\":{\"w\":\"cjimryvwgcwwpbmz\",\"bvopwndyqle\":\"sydsxwefohe\",\"lowkxxpvb\":\"llklmtk\",\"k\":\"dfjmzsyzfhotlh\"},\"id\":\"yych\",\"name\":\"nsjlpjrtws\",\"type\":\"hv\"},{\"properties\":{\"ipv4Address\":\"icphvtrrmhw\",\"port\":231529095,\"type\":\"Workload\",\"networkFabricControllerId\":\"pyf\",\"provisioningState\":\"Failed\",\"internetGatewayRuleId\":\"vjglrocuyzlwhhme\",\"annotation\":\"ooclutnp\"},\"location\":\"emc\",\"tags\":{\"jxsglhsr\":\"mmyky\",\"ylmbkzudni\":\"rye\",\"tjewlpxuzzj\":\"rfih\",\"otoihiqa\":\"nrefqyh\"},\"id\":\"ydiw\",\"name\":\"brkwpzdqt\",\"type\":\"hcspo\"}],\"nextLink\":\"qaxsipietgbebjf\"}")
             .toObject(InternetGatewaysListResult.class);
-        Assertions.assertEquals("pskdyzatvfuzk", model.value().get(0).location());
-        Assertions.assertEquals("jvvruxwigsyei", model.value().get(0).tags().get("qdsmjtg"));
+        Assertions.assertEquals("fcluqvo", model.value().get(0).location());
+        Assertions.assertEquals("cjimryvwgcwwpbmz", model.value().get(0).tags().get("w"));
         Assertions.assertEquals(GatewayType.WORKLOAD, model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("eh", model.value().get(0).networkFabricControllerId());
-        Assertions.assertEquals("xhzzyse", model.value().get(0).internetGatewayRuleId());
-        Assertions.assertEquals("sxivzrrryvei", model.value().get(0).annotation());
-        Assertions.assertEquals("jselpkpbafvafh", model.nextLink());
+        Assertions.assertEquals("bsxtkcudfbsfarfs", model.value().get(0).networkFabricControllerId());
+        Assertions.assertEquals("kjxnqpvwgfstmhq", model.value().get(0).internetGatewayRuleId());
+        Assertions.assertEquals("izmdksa", model.value().get(0).annotation());
+        Assertions.assertEquals("qaxsipietgbebjf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InternetGatewaysListResult model = new InternetGatewaysListResult().withValue(Arrays.asList(
-            new InternetGatewayInner().withLocation("pskdyzatvfuzk")
-                .withTags(mapOf("qdsmjtg", "jvvruxwigsyei"))
+            new InternetGatewayInner().withLocation("fcluqvo")
+                .withTags(mapOf("w", "cjimryvwgcwwpbmz", "bvopwndyqle", "sydsxwefohe", "lowkxxpvb", "llklmtk", "k",
+                    "dfjmzsyzfhotlh"))
                 .withTypePropertiesType(GatewayType.WORKLOAD)
-                .withNetworkFabricControllerId("eh")
-                .withInternetGatewayRuleId("xhzzyse")
-                .withAnnotation("sxivzrrryvei"),
-            new InternetGatewayInner().withLocation("excgjokjljnhvl")
-                .withTags(mapOf("eeksnbksdqhjvyk", "ek", "vnwqjwgo", "xeslkhhustcpoqm", "bkjbz", "nlejjjkxybwf",
-                    "nsxfwu", "ensvkzykjtj"))
-                .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
-                .withNetworkFabricControllerId("jddvjsaqw")
-                .withInternetGatewayRuleId("wllcolsr")
-                .withAnnotation("apte"),
-            new InternetGatewayInner().withLocation("aze")
-                .withTags(mapOf("qwjhqkbiwetpozyc", "viyoypsuhbrnnhjx"))
-                .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
-                .withNetworkFabricControllerId("bfw")
-                .withInternetGatewayRuleId("mdew")
-                .withAnnotation("sxkrpl")))
-            .withNextLink("jselpkpbafvafh");
+                .withNetworkFabricControllerId("bsxtkcudfbsfarfs")
+                .withInternetGatewayRuleId("kjxnqpvwgfstmhq")
+                .withAnnotation("izmdksa"),
+            new InternetGatewayInner().withLocation("emc")
+                .withTags(mapOf("jxsglhsr", "mmyky", "ylmbkzudni", "rye", "tjewlpxuzzj", "rfih", "otoihiqa", "nrefqyh"))
+                .withTypePropertiesType(GatewayType.WORKLOAD)
+                .withNetworkFabricControllerId("pyf")
+                .withInternetGatewayRuleId("vjglrocuyzlwhhme")
+                .withAnnotation("ooclutnp")))
+            .withNextLink("qaxsipietgbebjf");
         model = BinaryData.fromObject(model).toObject(InternetGatewaysListResult.class);
-        Assertions.assertEquals("pskdyzatvfuzk", model.value().get(0).location());
-        Assertions.assertEquals("jvvruxwigsyei", model.value().get(0).tags().get("qdsmjtg"));
+        Assertions.assertEquals("fcluqvo", model.value().get(0).location());
+        Assertions.assertEquals("cjimryvwgcwwpbmz", model.value().get(0).tags().get("w"));
         Assertions.assertEquals(GatewayType.WORKLOAD, model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("eh", model.value().get(0).networkFabricControllerId());
-        Assertions.assertEquals("xhzzyse", model.value().get(0).internetGatewayRuleId());
-        Assertions.assertEquals("sxivzrrryvei", model.value().get(0).annotation());
-        Assertions.assertEquals("jselpkpbafvafh", model.nextLink());
+        Assertions.assertEquals("bsxtkcudfbsfarfs", model.value().get(0).networkFabricControllerId());
+        Assertions.assertEquals("kjxnqpvwgfstmhq", model.value().get(0).internetGatewayRuleId());
+        Assertions.assertEquals("izmdksa", model.value().get(0).annotation());
+        Assertions.assertEquals("qaxsipietgbebjf", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

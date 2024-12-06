@@ -17,35 +17,45 @@ public final class NeighborGroupsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NeighborGroupsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"networkTapIds\":[\"oksz\",\"nm\",\"wgpterdiuw\",\"i\"],\"networkTapRuleIds\":[\"kwztsdetj\"],\"provisioningState\":\"Failed\",\"destination\":{\"ipv4Addresses\":[\"cq\",\"olzkgys\"],\"ipv6Addresses\":[\"yybzoxlvoc\",\"tvdxxhe\"]},\"annotation\":\"mlil\"},\"location\":\"ghjhjvmabzzbwa\",\"tags\":{\"apr\":\"mdafbgymqt\",\"neychbjizq\":\"ojxrjnbsconxavi\",\"rfbo\":\"sgnwdxzedpq\",\"mlnfyz\":\"xi\"},\"id\":\"vfrbypic\",\"name\":\"bkpdjtaqhsmq\",\"type\":\"zpdgonjhxshthmgp\"}],\"nextLink\":\"qulpt\"}")
+            "{\"value\":[{\"properties\":{\"networkTapIds\":[\"hci\"],\"networkTapRuleIds\":[\"dv\"],\"provisioningState\":\"Deleting\",\"destination\":{\"ipv4Addresses\":[\"qhs\"],\"ipv6Addresses\":[\"fpwpqbyejuwyqwd\",\"igmghginztx\",\"ujkhnjcmrnkfmkh\"]},\"annotation\":\"twmlmhjnqtqeah\"},\"location\":\"dvragpokddxejhh\",\"tags\":{\"tbkewkqynspg\":\"uavt\",\"qokmyrljial\":\"voffbkkwvdxae\"},\"id\":\"bn\",\"name\":\"brqlpbcjtrpz\",\"type\":\"yudivbxnhsqeaeo\"},{\"properties\":{\"networkTapIds\":[\"lwgdhuruz\"],\"networkTapRuleIds\":[\"arogatmolji\"],\"provisioningState\":\"Updating\",\"destination\":{\"ipv4Addresses\":[\"mzvfkneerz\",\"trknsjulu\"],\"ipv6Addresses\":[\"bnhrxlelfjhkeiz\",\"pihtdmiwjekpt\",\"caydbjzcqymlcfnz\",\"mhsurlgwqkpmm\"]},\"annotation\":\"stauolawi\"},\"location\":\"momsgvvj\",\"tags\":{\"q\":\"lrlohewjjmajnkdf\",\"kzfzqxjosho\":\"onswae\",\"znlw\":\"totryegpkhxrme\",\"ze\":\"bfokxkhu\"},\"id\":\"ufgjblcdr\",\"name\":\"yfcemftz\",\"type\":\"yykyalu\"}],\"nextLink\":\"kd\"}")
             .toObject(NeighborGroupsListResult.class);
-        Assertions.assertEquals("ghjhjvmabzzbwa", model.value().get(0).location());
-        Assertions.assertEquals("mdafbgymqt", model.value().get(0).tags().get("apr"));
-        Assertions.assertEquals("cq", model.value().get(0).destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("yybzoxlvoc", model.value().get(0).destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("mlil", model.value().get(0).annotation());
-        Assertions.assertEquals("qulpt", model.nextLink());
+        Assertions.assertEquals("dvragpokddxejhh", model.value().get(0).location());
+        Assertions.assertEquals("uavt", model.value().get(0).tags().get("tbkewkqynspg"));
+        Assertions.assertEquals("qhs", model.value().get(0).destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("fpwpqbyejuwyqwd", model.value().get(0).destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("twmlmhjnqtqeah", model.value().get(0).annotation());
+        Assertions.assertEquals("kd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupsListResult model = new NeighborGroupsListResult()
-            .withValue(Arrays.asList(new NeighborGroupInner().withLocation("ghjhjvmabzzbwa")
-                .withTags(
-                    mapOf("apr", "mdafbgymqt", "neychbjizq", "ojxrjnbsconxavi", "rfbo", "sgnwdxzedpq", "mlnfyz", "xi"))
-                .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("cq", "olzkgys"))
-                    .withIpv6Addresses(Arrays.asList("yybzoxlvoc", "tvdxxhe")))
-                .withAnnotation("mlil")))
-            .withNextLink("qulpt");
+        NeighborGroupsListResult model
+            = new NeighborGroupsListResult()
+                .withValue(Arrays.asList(
+                    new NeighborGroupInner().withLocation("dvragpokddxejhh")
+                        .withTags(mapOf("tbkewkqynspg", "uavt", "qokmyrljial", "voffbkkwvdxae"))
+                        .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("qhs"))
+                            .withIpv6Addresses(Arrays.asList("fpwpqbyejuwyqwd", "igmghginztx", "ujkhnjcmrnkfmkh")))
+                        .withAnnotation("twmlmhjnqtqeah"),
+                    new NeighborGroupInner().withLocation("momsgvvj")
+                        .withTags(mapOf("q", "lrlohewjjmajnkdf", "kzfzqxjosho", "onswae", "znlw", "totryegpkhxrme",
+                            "ze", "bfokxkhu"))
+                        .withDestination(
+                            new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("mzvfkneerz", "trknsjulu"))
+                                .withIpv6Addresses(Arrays.asList("bnhrxlelfjhkeiz", "pihtdmiwjekpt", "caydbjzcqymlcfnz",
+                                    "mhsurlgwqkpmm")))
+                        .withAnnotation("stauolawi")))
+                .withNextLink("kd");
         model = BinaryData.fromObject(model).toObject(NeighborGroupsListResult.class);
-        Assertions.assertEquals("ghjhjvmabzzbwa", model.value().get(0).location());
-        Assertions.assertEquals("mdafbgymqt", model.value().get(0).tags().get("apr"));
-        Assertions.assertEquals("cq", model.value().get(0).destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("yybzoxlvoc", model.value().get(0).destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("mlil", model.value().get(0).annotation());
-        Assertions.assertEquals("qulpt", model.nextLink());
+        Assertions.assertEquals("dvragpokddxejhh", model.value().get(0).location());
+        Assertions.assertEquals("uavt", model.value().get(0).tags().get("tbkewkqynspg"));
+        Assertions.assertEquals("qhs", model.value().get(0).destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("fpwpqbyejuwyqwd", model.value().get(0).destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("twmlmhjnqtqeah", model.value().get(0).annotation());
+        Assertions.assertEquals("kd", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

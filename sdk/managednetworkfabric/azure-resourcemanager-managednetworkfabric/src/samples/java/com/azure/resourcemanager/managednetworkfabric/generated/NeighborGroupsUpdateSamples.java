@@ -10,45 +10,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NeighborGroups Update. */
+/**
+ * Samples for NeighborGroups Update.
+ */
 public final class NeighborGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NeighborGroups_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NeighborGroups_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NeighborGroups_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void neighborGroupsUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        NeighborGroup resource =
-            manager
-                .neighborGroups()
-                .getByResourceGroupWithResponse("example-rg", "example-neighborGroup", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        NeighborGroup resource = manager.neighborGroups()
+            .getByResourceGroupWithResponse("example-rg", "example-neighborGroup", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key8107", "fakeTokenPlaceholder"))
-            .withDestination(
-                new NeighborGroupDestination()
-                    .withIpv4Addresses(
-                        Arrays
-                            .asList(
-                                "10.10.10.10",
-                                "20.10.10.10",
-                                "30.10.10.10",
-                                "40.10.10.10",
-                                "50.10.10.10",
-                                "60.10.10.10",
-                                "70.10.10.10",
-                                "80.10.10.10",
-                                "90.10.10.10"))
-                    .withIpv6Addresses(Arrays.asList("2F::/100")))
+            .withDestination(new NeighborGroupDestination()
+                .withIpv4Addresses(Arrays.asList("10.10.10.10", "20.10.10.10", "30.10.10.10", "40.10.10.10",
+                    "50.10.10.10", "60.10.10.10", "70.10.10.10", "80.10.10.10", "90.10.10.10"))
+                .withIpv6Addresses(Arrays.asList("2F::/100")))
             .withAnnotation("Updating")
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

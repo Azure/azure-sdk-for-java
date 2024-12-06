@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class AggregateRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AggregateRoute model = BinaryData.fromString("{\"prefix\":\"srnawnvzmln\"}").toObject(AggregateRoute.class);
-        Assertions.assertEquals("srnawnvzmln", model.prefix());
+        AggregateRoute model = BinaryData.fromString("{\"prefix\":\"ezxlskihm\"}").toObject(AggregateRoute.class);
+        Assertions.assertEquals("ezxlskihm", model.prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AggregateRoute model = new AggregateRoute().withPrefix("srnawnvzmln");
+        AggregateRoute model = new AggregateRoute().withPrefix("ezxlskihm");
         model = BinaryData.fromObject(model).toObject(AggregateRoute.class);
-        Assertions.assertEquals("srnawnvzmln", model.prefix());
+        Assertions.assertEquals("ezxlskihm", model.prefix());
     }
 }

@@ -16,51 +16,57 @@ public final class NetworkDevicesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDevicesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"p\",\"networkDeviceSku\":\"rwqirvtktyhhmvf\",\"networkDeviceRole\":\"NPB\",\"networkRackId\":\"jajodmkrr\",\"managementIpv4Address\":\"pgqvqo\",\"managementIpv6Address\":\"lujqgi\",\"configurationState\":\"Succeeded\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"hostName\":\"chpqvctsfaeuhww\",\"serialNumber\":\"nstvzuzhasup\",\"annotation\":\"p\"},\"location\":\"pgzvzqazvbka\",\"tags\":{\"s\":\"tgongrua\",\"igbeqn\":\"iysjqhe\",\"yjdeayscseyd\":\"uba\"},\"id\":\"jemexmnv\",\"name\":\"vmuw\",\"type\":\"xlniwmcpm\"},{\"properties\":{\"version\":\"dlhvdv\",\"networkDeviceSku\":\"phbeaeqjz\",\"networkDeviceRole\":\"TS\",\"networkRackId\":\"clacr\",\"managementIpv4Address\":\"zfmunerkelux\",\"managementIpv6Address\":\"hxze\",\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"MAT\",\"hostName\":\"evzske\",\"serialNumber\":\"gwfsgqkstyecupyu\",\"annotation\":\"p\"},\"location\":\"davsjcfmazpz\",\"tags\":{\"izekuvfrj\":\"uzvcmcok\",\"ajbvbn\":\"ucaonz\",\"idgzwdydamis\":\"rdemdidack\",\"xkqejtpjfojiunr\":\"pztdivyk\"},\"id\":\"shxuknsykdtoi\",\"name\":\"oancdrco\",\"type\":\"nvxuldxonckb\"},{\"properties\":{\"version\":\"blfxlupibaqzi\",\"networkDeviceSku\":\"zpzwegh\",\"networkDeviceRole\":\"TS\",\"networkRackId\":\"ogvgfklqiyn\",\"managementIpv4Address\":\"eqelsb\",\"managementIpv6Address\":\"dstrkzxsgtz\",\"configurationState\":\"Succeeded\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"hostName\":\"o\",\"serialNumber\":\"im\",\"annotation\":\"dnox\"},\"location\":\"nrqa\",\"tags\":{\"lousdvrgptqm\":\"nndx\",\"drpizfulgyctsdb\":\"wz\",\"oxrqw\":\"qgkujds\",\"ejdpdfhtwm\":\"eurbtigapdyarik\"},\"id\":\"kfqbriqulwwt\",\"name\":\"jmeqkvy\",\"type\":\"zokpoy\"}],\"nextLink\":\"h\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"mip\",\"networkDeviceSku\":\"liqmvlbhikeaq\",\"networkDeviceRole\":\"CE\",\"networkRackId\":\"pomxpu\",\"managementIpv4Address\":\"tsdfjyieso\",\"managementIpv6Address\":\"iqbuou\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Disabled\",\"hostName\":\"ofjsbgbwwzvdaj\",\"serialNumber\":\"nncfmaciqgjjrlhi\",\"annotation\":\"wixvtbouguxtndop\"},\"location\":\"ttbas\",\"tags\":{\"lndbeaqbkixv\":\"ap\",\"spugzfeuzjljmph\":\"lwynpbbfqvzfj\"},\"id\":\"ky\",\"name\":\"zolgjzmicuydocc\",\"type\":\"xshanzb\"},{\"properties\":{\"version\":\"adh\",\"networkDeviceSku\":\"tecaa\",\"networkDeviceRole\":\"CE\",\"networkRackId\":\"hzniucbda\",\"managementIpv4Address\":\"b\",\"managementIpv6Address\":\"injdllwktlepo\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"MAT\",\"hostName\":\"jgcq\",\"serialNumber\":\"lynkgfcfdruw\",\"annotation\":\"kxx\"},\"location\":\"lhuulriqb\",\"tags\":{\"sxebrslttfyhcdjw\":\"vjgb\",\"agttpufpb\":\"uoard\"},\"id\":\"g\",\"name\":\"rholhujbfwxi\",\"type\":\"lkysolsyjp\"},{\"properties\":{\"version\":\"slwhdmcvhtbb\",\"networkDeviceSku\":\"hfvhuwzbxpcqz\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"tjecohm\",\"managementIpv4Address\":\"vlrrskapbxwieexu\",\"managementIpv6Address\":\"derltfokyksyim\",\"configurationState\":\"Provisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"hostName\":\"xzznnui\",\"serialNumber\":\"rsejegprkj\",\"annotation\":\"wrjmwv\"},\"location\":\"tu\",\"tags\":{\"jgxieqfkyfh\":\"ximwgxqldeko\",\"pbyynvskpajbm\":\"wvjaq\"},\"id\":\"eumexmjbxc\",\"name\":\"ccwkqmtx\",\"type\":\"p\"},{\"properties\":{\"version\":\"iscr\",\"networkDeviceSku\":\"lgftrqrejdaa\",\"networkDeviceRole\":\"NPB\",\"networkRackId\":\"m\",\"managementIpv4Address\":\"ahlfxlmuifmuadj\",\"managementIpv6Address\":\"snc\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"MAT\",\"hostName\":\"gczetybnxg\",\"serialNumber\":\"lcgctjchfjv\",\"annotation\":\"wjzebecuvlb\"},\"location\":\"vwcljkx\",\"tags\":{\"psyxjije\":\"rwoxzg\",\"qwjxi\":\"pdvrbkerdkdkga\",\"ygzqpjoisfmn\":\"dfkcef\",\"ntwhymxymulwiv\":\"ybdjnxumentq\"},\"id\":\"towlhlsycoyb\",\"name\":\"jasqubf\",\"type\":\"j\"}],\"nextLink\":\"whjq\"}")
             .toObject(NetworkDevicesListResult.class);
-        Assertions.assertEquals("pgzvzqazvbka", model.value().get(0).location());
-        Assertions.assertEquals("tgongrua", model.value().get(0).tags().get("s"));
-        Assertions.assertEquals("rwqirvtktyhhmvf", model.value().get(0).networkDeviceSku());
-        Assertions.assertEquals("chpqvctsfaeuhww", model.value().get(0).hostname());
-        Assertions.assertEquals("nstvzuzhasup", model.value().get(0).serialNumber());
-        Assertions.assertEquals("p", model.value().get(0).annotation());
-        Assertions.assertEquals("h", model.nextLink());
+        Assertions.assertEquals("ttbas", model.value().get(0).location());
+        Assertions.assertEquals("ap", model.value().get(0).tags().get("lndbeaqbkixv"));
+        Assertions.assertEquals("liqmvlbhikeaq", model.value().get(0).networkDeviceSku());
+        Assertions.assertEquals("ofjsbgbwwzvdaj", model.value().get(0).hostname());
+        Assertions.assertEquals("nncfmaciqgjjrlhi", model.value().get(0).serialNumber());
+        Assertions.assertEquals("wixvtbouguxtndop", model.value().get(0).annotation());
+        Assertions.assertEquals("whjq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDevicesListResult model = new NetworkDevicesListResult().withValue(Arrays.asList(
-            new NetworkDeviceInner().withLocation("pgzvzqazvbka")
-                .withTags(mapOf("s", "tgongrua", "igbeqn", "iysjqhe", "yjdeayscseyd", "uba"))
-                .withNetworkDeviceSku("rwqirvtktyhhmvf")
-                .withHostname("chpqvctsfaeuhww")
-                .withSerialNumber("nstvzuzhasup")
-                .withAnnotation("p"),
-            new NetworkDeviceInner().withLocation("davsjcfmazpz")
-                .withTags(mapOf("izekuvfrj", "uzvcmcok", "ajbvbn", "ucaonz", "idgzwdydamis", "rdemdidack",
-                    "xkqejtpjfojiunr", "pztdivyk"))
-                .withNetworkDeviceSku("phbeaeqjz")
-                .withHostname("evzske")
-                .withSerialNumber("gwfsgqkstyecupyu")
-                .withAnnotation("p"),
-            new NetworkDeviceInner().withLocation("nrqa")
-                .withTags(mapOf("lousdvrgptqm", "nndx", "drpizfulgyctsdb", "wz", "oxrqw", "qgkujds", "ejdpdfhtwm",
-                    "eurbtigapdyarik"))
-                .withNetworkDeviceSku("zpzwegh")
-                .withHostname("o")
-                .withSerialNumber("im")
-                .withAnnotation("dnox")))
-            .withNextLink("h");
+            new NetworkDeviceInner().withLocation("ttbas")
+                .withTags(mapOf("lndbeaqbkixv", "ap", "spugzfeuzjljmph", "lwynpbbfqvzfj"))
+                .withNetworkDeviceSku("liqmvlbhikeaq")
+                .withHostname("ofjsbgbwwzvdaj")
+                .withSerialNumber("nncfmaciqgjjrlhi")
+                .withAnnotation("wixvtbouguxtndop"),
+            new NetworkDeviceInner().withLocation("lhuulriqb")
+                .withTags(mapOf("sxebrslttfyhcdjw", "vjgb", "agttpufpb", "uoard"))
+                .withNetworkDeviceSku("tecaa")
+                .withHostname("jgcq")
+                .withSerialNumber("lynkgfcfdruw")
+                .withAnnotation("kxx"),
+            new NetworkDeviceInner().withLocation("tu")
+                .withTags(mapOf("jgxieqfkyfh", "ximwgxqldeko", "pbyynvskpajbm", "wvjaq"))
+                .withNetworkDeviceSku("hfvhuwzbxpcqz")
+                .withHostname("xzznnui")
+                .withSerialNumber("rsejegprkj")
+                .withAnnotation("wrjmwv"),
+            new NetworkDeviceInner().withLocation("vwcljkx")
+                .withTags(mapOf("psyxjije", "rwoxzg", "qwjxi", "pdvrbkerdkdkga", "ygzqpjoisfmn", "dfkcef",
+                    "ntwhymxymulwiv", "ybdjnxumentq"))
+                .withNetworkDeviceSku("lgftrqrejdaa")
+                .withHostname("gczetybnxg")
+                .withSerialNumber("lcgctjchfjv")
+                .withAnnotation("wjzebecuvlb")))
+            .withNextLink("whjq");
         model = BinaryData.fromObject(model).toObject(NetworkDevicesListResult.class);
-        Assertions.assertEquals("pgzvzqazvbka", model.value().get(0).location());
-        Assertions.assertEquals("tgongrua", model.value().get(0).tags().get("s"));
-        Assertions.assertEquals("rwqirvtktyhhmvf", model.value().get(0).networkDeviceSku());
-        Assertions.assertEquals("chpqvctsfaeuhww", model.value().get(0).hostname());
-        Assertions.assertEquals("nstvzuzhasup", model.value().get(0).serialNumber());
-        Assertions.assertEquals("p", model.value().get(0).annotation());
-        Assertions.assertEquals("h", model.nextLink());
+        Assertions.assertEquals("ttbas", model.value().get(0).location());
+        Assertions.assertEquals("ap", model.value().get(0).tags().get("lndbeaqbkixv"));
+        Assertions.assertEquals("liqmvlbhikeaq", model.value().get(0).networkDeviceSku());
+        Assertions.assertEquals("ofjsbgbwwzvdaj", model.value().get(0).hostname());
+        Assertions.assertEquals("nncfmaciqgjjrlhi", model.value().get(0).serialNumber());
+        Assertions.assertEquals("wixvtbouguxtndop", model.value().get(0).annotation());
+        Assertions.assertEquals("whjq", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

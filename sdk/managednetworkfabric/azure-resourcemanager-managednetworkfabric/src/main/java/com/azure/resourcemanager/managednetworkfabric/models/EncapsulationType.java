@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Encapsulation Type. */
+/**
+ * Encapsulation Type that needs to be matched.
+ */
 public final class EncapsulationType extends ExpandableStringEnum<EncapsulationType> {
-    /** Static value None for EncapsulationType. */
+    /**
+     * Static value None for EncapsulationType.
+     */
     public static final EncapsulationType NONE = fromString("None");
 
-    /** Static value GTPv1 for EncapsulationType. */
+    /**
+     * Static value GTPv1 for EncapsulationType.
+     */
     public static final EncapsulationType GTPV1 = fromString("GTPv1");
 
     /**
      * Creates a new instance of EncapsulationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EncapsulationType extends ExpandableStringEnum<EncapsulationT
 
     /**
      * Creates or finds a EncapsulationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncapsulationType.
      */
-    @JsonCreator
     public static EncapsulationType fromString(String name) {
         return fromString(name, EncapsulationType.class);
     }
 
     /**
      * Gets known EncapsulationType values.
-     *
+     * 
      * @return known EncapsulationType values.
      */
     public static Collection<EncapsulationType> values() {

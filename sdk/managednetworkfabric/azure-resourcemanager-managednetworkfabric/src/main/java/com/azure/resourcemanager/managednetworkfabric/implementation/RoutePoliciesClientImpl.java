@@ -45,17 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoutePoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoutePoliciesClient.
+ */
 public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoutePoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of RoutePoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoutePoliciesClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -178,9 +184,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -222,9 +228,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -266,9 +272,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -287,9 +293,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -311,9 +317,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -330,9 +336,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -350,9 +356,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -370,9 +376,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -391,9 +397,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -409,9 +415,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Create Route Policy.
-     *
-     * <p>Implements Route Policy PUT method.
-     *
+     * 
+     * Implements Route Policy PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -429,9 +435,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,9 +474,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -506,9 +512,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -524,9 +530,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -543,9 +549,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Gets a Route Policy.
-     *
-     * <p>Implements Route Policy GET method.
-     *
+     * 
+     * Implements Route Policy GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,9 +566,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -604,9 +610,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -648,9 +654,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -669,9 +675,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -693,9 +699,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -712,9 +718,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -732,9 +738,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -752,9 +758,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -773,9 +779,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -791,9 +797,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Updates a Route Policy.
-     *
-     * <p>API to update certain properties of the Route Policy resource.
-     *
+     * 
+     * API to update certain properties of the Route Policy resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Route Policy properties to update.
@@ -811,9 +817,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -848,9 +854,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -886,9 +892,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,9 +911,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -927,9 +933,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -944,9 +950,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -963,9 +969,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -981,9 +987,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1000,9 +1006,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1016,9 +1022,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Deletes a Route Policy.
-     *
-     * <p>Implements Route Policy DELETE method.
-     *
+     * 
+     * Implements Route Policy DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1033,9 +1039,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1067,9 +1073,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1103,9 +1109,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1120,9 +1126,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1138,9 +1144,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1154,9 +1160,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by resource group.
-     *
-     * <p>Implements RoutePolicies list by resource group GET method.
-     *
+     * 
+     * Implements RoutePolicies list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1171,9 +1177,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of RoutePolicies along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1199,9 +1205,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1229,9 +1235,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of RoutePolicies as paginated response with {@link PagedFlux}.
@@ -1244,9 +1250,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1261,9 +1267,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of RoutePolicies as paginated response with {@link PagedIterable}.
@@ -1275,9 +1281,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * List RoutePolicies by subscription.
-     *
-     * <p>Implements RoutePolicies list by subscription GET method.
-     *
+     * 
+     * Implements RoutePolicies list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1291,9 +1297,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1336,9 +1342,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1380,9 +1386,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1406,9 +1412,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1434,9 +1440,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1455,9 +1461,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1478,9 +1484,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1498,9 +1504,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1519,9 +1525,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1538,9 +1544,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Executes enable operation to the underlying resources.
-     *
-     * <p>Updated the admin state for this Route Policy.
-     *
+     * 
+     * Updated the admin state for this Route Policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param body Request payload.
@@ -1558,14 +1564,14 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1596,7 +1602,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1604,7 +1610,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1633,7 +1639,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1653,7 +1659,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1675,7 +1681,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1691,7 +1697,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1708,7 +1714,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1725,7 +1731,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1743,7 +1749,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1758,7 +1764,7 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1775,16 +1781,16 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -1815,17 +1821,17 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -1854,9 +1860,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1878,9 +1884,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1904,9 +1910,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1923,9 +1929,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1943,9 +1949,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1962,9 +1968,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -1982,9 +1988,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2000,9 +2006,9 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param routePolicyName Name of the Route Policy.
      * @param context The context to associate with this operation.
@@ -2019,9 +2025,8 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2047,9 +2052,8 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2075,9 +2079,8 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2103,9 +2106,8 @@ public final class RoutePoliciesClientImpl implements RoutePoliciesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

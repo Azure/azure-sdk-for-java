@@ -45,17 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in L3IsolationDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in L3IsolationDomainsClient.
+ */
 public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final L3IsolationDomainsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of L3IsolationDomainsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     L3IsolationDomainsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -180,11 +186,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -192,7 +198,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -227,11 +233,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -240,7 +246,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -274,11 +280,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -298,11 +304,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -324,11 +330,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -345,11 +351,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -367,11 +373,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -389,11 +395,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -412,11 +418,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -433,11 +439,11 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Create L3 Isolation Domain.
-     *
-     * <p>Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
+     * 
+     * Create isolation domain resources for layer 3 connectivity between compute nodes and for communication with
      * external services .This configuration is applied on the devices only after the creation of networks is completed
      * and isolation domain is enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -455,16 +461,16 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L3IsolationDomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -495,9 +501,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -505,7 +511,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L3IsolationDomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -534,9 +540,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,9 +559,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -572,9 +578,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Gets a L3 Isolation Domain.
-     *
-     * <p>Retrieves details of this L3 Isolation Domain.
-     *
+     * 
+     * Retrieves details of this L3 Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,9 +595,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -599,7 +605,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -634,9 +640,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -645,7 +651,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L3 Isolation Domain resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -679,9 +685,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -701,9 +707,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -725,9 +731,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -744,9 +750,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -764,9 +770,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -784,9 +790,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -805,9 +811,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -824,9 +830,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Updates a L3 Isolation Domain.
-     *
-     * <p>API to update certain properties of the L3 Isolation Domain resource.
-     *
+     * 
+     * API to update certain properties of the L3 Isolation Domain resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body API to update certain properties of the L3 Isolation Domain resource.
@@ -844,9 +850,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -882,9 +888,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -920,9 +926,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -940,9 +946,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -963,9 +969,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,9 +986,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -999,9 +1005,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1017,9 +1023,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1036,9 +1042,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1052,9 +1058,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Deletes a L3 Isolation Domain.
-     *
-     * <p>Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
-     *
+     * 
+     * Deletes layer 3 connectivity between compute nodes by managed by named L3 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1069,9 +1075,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1103,9 +1109,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1139,9 +1145,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1156,9 +1162,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1174,9 +1180,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1190,9 +1196,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by resource group.
-     *
-     * <p>Displays L3IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1207,9 +1213,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L3 Isolation Domains along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1235,9 +1241,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1265,9 +1271,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L3 Isolation Domains as paginated response with {@link PagedFlux}.
@@ -1280,9 +1286,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1297,9 +1303,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
@@ -1311,9 +1317,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * List L3IsolationDomains by subscription.
-     *
-     * <p>Displays L3IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L3IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1327,9 +1333,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1372,9 +1378,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1416,9 +1422,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1442,9 +1448,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1470,9 +1476,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1491,9 +1497,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1514,9 +1520,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1534,9 +1540,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1555,9 +1561,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1574,9 +1580,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * executes enable operation to the underlying resources.
-     *
-     * <p>Enables racks for this Isolation Domain.
-     *
+     * 
+     * Enables racks for this Isolation Domain.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
@@ -1594,14 +1600,14 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1632,7 +1638,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1640,7 +1646,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1669,7 +1675,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1689,7 +1695,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1711,7 +1717,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1727,7 +1733,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1744,7 +1750,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1761,7 +1767,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1779,7 +1785,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1795,7 +1801,7 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1812,16 +1818,16 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -1852,17 +1858,17 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
@@ -1891,9 +1897,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1915,9 +1921,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1941,9 +1947,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1960,9 +1966,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -1980,9 +1986,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1999,9 +2005,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -2019,9 +2025,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2037,9 +2043,9 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -2056,9 +2062,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2084,9 +2089,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2112,9 +2116,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2140,9 +2143,8 @@ public final class L3IsolationDomainsClientImpl implements L3IsolationDomainsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

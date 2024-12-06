@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for NetworkFabrics CommitConfiguration. */
+/**
+ * Samples for NetworkFabrics CommitConfiguration.
+ */
 public final class NetworkFabricsCommitConfigurationSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_CommitConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkFabrics_CommitConfiguration_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_CommitConfiguration_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricsCommitConfigurationMaximumSetGen(

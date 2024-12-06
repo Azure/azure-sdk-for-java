@@ -13,46 +13,46 @@ public final class ExternalNetworkPropertiesOptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalNetworkPropertiesOptionAProperties model = BinaryData.fromString(
-            "{\"mtu\":26197066,\"vlanId\":964103530,\"fabricASN\":3205216102887519977,\"peerASN\":6279545175956457599,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":273654247,\"multiplier\":1068309041},\"ingressAclId\":\"bsr\",\"egressAclId\":\"dylperpilttjzgc\",\"primaryIpv4Prefix\":\"cmfpfbodet\",\"primaryIpv6Prefix\":\"sr\",\"secondaryIpv4Prefix\":\"tshuvftwaivm\",\"secondaryIpv6Prefix\":\"kevz\"}")
+            "{\"mtu\":1690809197,\"vlanId\":1533047162,\"fabricASN\":4871207412853091463,\"peerASN\":1534475859485377043,\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":1116641423,\"multiplier\":1558701655},\"ingressAclId\":\"mzqmzjqrb\",\"egressAclId\":\"vnmdyfoeboj\",\"primaryIpv4Prefix\":\"pp\",\"primaryIpv6Prefix\":\"aohoqkpjtnq\",\"secondaryIpv4Prefix\":\"l\",\"secondaryIpv6Prefix\":\"wkdcwmqs\"}")
             .toObject(ExternalNetworkPropertiesOptionAProperties.class);
-        Assertions.assertEquals("cmfpfbodet", model.primaryIpv4Prefix());
-        Assertions.assertEquals("sr", model.primaryIpv6Prefix());
-        Assertions.assertEquals("tshuvftwaivm", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("kevz", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(26197066, model.mtu());
-        Assertions.assertEquals(964103530, model.vlanId());
-        Assertions.assertEquals(6279545175956457599L, model.peerAsn());
-        Assertions.assertEquals(273654247, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1068309041, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("bsr", model.ingressAclId());
-        Assertions.assertEquals("dylperpilttjzgc", model.egressAclId());
+        Assertions.assertEquals("pp", model.primaryIpv4Prefix());
+        Assertions.assertEquals("aohoqkpjtnq", model.primaryIpv6Prefix());
+        Assertions.assertEquals("l", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("wkdcwmqs", model.secondaryIpv6Prefix());
+        Assertions.assertEquals(1690809197, model.mtu());
+        Assertions.assertEquals(1533047162, model.vlanId());
+        Assertions.assertEquals(1534475859485377043L, model.peerAsn());
+        Assertions.assertEquals(1116641423, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1558701655, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("mzqmzjqrb", model.ingressAclId());
+        Assertions.assertEquals("vnmdyfoeboj", model.egressAclId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalNetworkPropertiesOptionAProperties model
-            = new ExternalNetworkPropertiesOptionAProperties().withPrimaryIpv4Prefix("cmfpfbodet")
-                .withPrimaryIpv6Prefix("sr")
-                .withSecondaryIpv4Prefix("tshuvftwaivm")
-                .withSecondaryIpv6Prefix("kevz")
-                .withMtu(26197066)
-                .withVlanId(964103530)
-                .withPeerAsn(6279545175956457599L)
+            = new ExternalNetworkPropertiesOptionAProperties().withPrimaryIpv4Prefix("pp")
+                .withPrimaryIpv6Prefix("aohoqkpjtnq")
+                .withSecondaryIpv4Prefix("l")
+                .withSecondaryIpv6Prefix("wkdcwmqs")
+                .withMtu(1690809197)
+                .withVlanId(1533047162)
+                .withPeerAsn(1534475859485377043L)
                 .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(273654247).withMultiplier(1068309041))
-                .withIngressAclId("bsr")
-                .withEgressAclId("dylperpilttjzgc");
+                    new BfdConfiguration().withIntervalInMilliSeconds(1116641423).withMultiplier(1558701655))
+                .withIngressAclId("mzqmzjqrb")
+                .withEgressAclId("vnmdyfoeboj");
         model = BinaryData.fromObject(model).toObject(ExternalNetworkPropertiesOptionAProperties.class);
-        Assertions.assertEquals("cmfpfbodet", model.primaryIpv4Prefix());
-        Assertions.assertEquals("sr", model.primaryIpv6Prefix());
-        Assertions.assertEquals("tshuvftwaivm", model.secondaryIpv4Prefix());
-        Assertions.assertEquals("kevz", model.secondaryIpv6Prefix());
-        Assertions.assertEquals(26197066, model.mtu());
-        Assertions.assertEquals(964103530, model.vlanId());
-        Assertions.assertEquals(6279545175956457599L, model.peerAsn());
-        Assertions.assertEquals(273654247, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(1068309041, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals("bsr", model.ingressAclId());
-        Assertions.assertEquals("dylperpilttjzgc", model.egressAclId());
+        Assertions.assertEquals("pp", model.primaryIpv4Prefix());
+        Assertions.assertEquals("aohoqkpjtnq", model.primaryIpv6Prefix());
+        Assertions.assertEquals("l", model.secondaryIpv4Prefix());
+        Assertions.assertEquals("wkdcwmqs", model.secondaryIpv6Prefix());
+        Assertions.assertEquals(1690809197, model.mtu());
+        Assertions.assertEquals(1533047162, model.vlanId());
+        Assertions.assertEquals(1534475859485377043L, model.peerAsn());
+        Assertions.assertEquals(1116641423, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1558701655, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals("mzqmzjqrb", model.ingressAclId());
+        Assertions.assertEquals("vnmdyfoeboj", model.egressAclId());
     }
 }

@@ -5,29 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatchableProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Access Control Lists patch properties. */
+/**
+ * Access Control Lists patch properties.
+ */
 @Fluent
 public final class AccessControlListPatchProperties extends AccessControlListPatchableProperties {
     /*
      * Switch configuration description.
      */
-    @JsonProperty(value = "annotation")
     private String annotation;
 
-    /** Creates an instance of AccessControlListPatchProperties class. */
+    /**
+     * Creates an instance of AccessControlListPatchProperties class.
+     */
     public AccessControlListPatchProperties() {
     }
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -36,7 +43,7 @@ public final class AccessControlListPatchProperties extends AccessControlListPat
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the AccessControlListPatchProperties object itself.
      */
@@ -45,21 +52,36 @@ public final class AccessControlListPatchProperties extends AccessControlListPat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPatchProperties withConfigurationType(ConfigurationType configurationType) {
         super.withConfigurationType(configurationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPatchProperties withAclsUrl(String aclsUrl) {
         super.withAclsUrl(aclsUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AccessControlListPatchProperties withDefaultAction(CommunityActionTypes defaultAction) {
+        super.withDefaultAction(defaultAction);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPatchProperties
         withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
@@ -67,7 +89,9 @@ public final class AccessControlListPatchProperties extends AccessControlListPat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessControlListPatchProperties
         withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
@@ -77,11 +101,78 @@ public final class AccessControlListPatchProperties extends AccessControlListPat
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (matchConfigurations() != null) {
+            matchConfigurations().forEach(e -> e.validate());
+        }
+        if (dynamicMatchConfigurations() != null) {
+            dynamicMatchConfigurations().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            configurationType() == null ? null : configurationType().toString());
+        jsonWriter.writeStringField("aclsUrl", aclsUrl());
+        jsonWriter.writeStringField("defaultAction", defaultAction() == null ? null : defaultAction().toString());
+        jsonWriter.writeArrayField("matchConfigurations", matchConfigurations(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dynamicMatchConfigurations", dynamicMatchConfigurations(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("annotation", this.annotation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessControlListPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessControlListPatchProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessControlListPatchProperties.
+     */
+    public static AccessControlListPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessControlListPatchProperties deserializedAccessControlListPatchProperties
+                = new AccessControlListPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedAccessControlListPatchProperties
+                        .withConfigurationType(ConfigurationType.fromString(reader.getString()));
+                } else if ("aclsUrl".equals(fieldName)) {
+                    deserializedAccessControlListPatchProperties.withAclsUrl(reader.getString());
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedAccessControlListPatchProperties
+                        .withDefaultAction(CommunityActionTypes.fromString(reader.getString()));
+                } else if ("matchConfigurations".equals(fieldName)) {
+                    List<AccessControlListMatchConfiguration> matchConfigurations
+                        = reader.readArray(reader1 -> AccessControlListMatchConfiguration.fromJson(reader1));
+                    deserializedAccessControlListPatchProperties.withMatchConfigurations(matchConfigurations);
+                } else if ("dynamicMatchConfigurations".equals(fieldName)) {
+                    List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations
+                        = reader.readArray(reader1 -> CommonDynamicMatchConfiguration.fromJson(reader1));
+                    deserializedAccessControlListPatchProperties
+                        .withDynamicMatchConfigurations(dynamicMatchConfigurations);
+                } else if ("annotation".equals(fieldName)) {
+                    deserializedAccessControlListPatchProperties.annotation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessControlListPatchProperties;
+        });
     }
 }

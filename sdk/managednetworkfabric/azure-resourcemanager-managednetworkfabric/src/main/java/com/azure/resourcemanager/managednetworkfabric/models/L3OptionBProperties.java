@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Option B configuration. */
+/**
+ * Option B configuration.
+ */
 @Fluent
-public final class L3OptionBProperties {
+public final class L3OptionBProperties implements JsonSerializable<L3OptionBProperties> {
     /*
      * RouteTargets to be applied. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "importRouteTargets")
     private List<String> importRouteTargets;
 
     /*
      * RouteTargets to be applied. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "exportRouteTargets")
     private List<String> exportRouteTargets;
 
     /*
      * RouteTargets to be applied.
      */
-    @JsonProperty(value = "routeTargets")
     private RouteTargetInformation routeTargets;
 
-    /** Creates an instance of L3OptionBProperties class. */
+    /**
+     * Creates an instance of L3OptionBProperties class.
+     */
     public L3OptionBProperties() {
     }
 
     /**
      * Get the importRouteTargets property: RouteTargets to be applied. This is used for the backward compatibility.
-     *
+     * 
      * @return the importRouteTargets value.
      */
     public List<String> importRouteTargets() {
@@ -44,7 +49,7 @@ public final class L3OptionBProperties {
 
     /**
      * Set the importRouteTargets property: RouteTargets to be applied. This is used for the backward compatibility.
-     *
+     * 
      * @param importRouteTargets the importRouteTargets value to set.
      * @return the L3OptionBProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class L3OptionBProperties {
 
     /**
      * Get the exportRouteTargets property: RouteTargets to be applied. This is used for the backward compatibility.
-     *
+     * 
      * @return the exportRouteTargets value.
      */
     public List<String> exportRouteTargets() {
@@ -64,7 +69,7 @@ public final class L3OptionBProperties {
 
     /**
      * Set the exportRouteTargets property: RouteTargets to be applied. This is used for the backward compatibility.
-     *
+     * 
      * @param exportRouteTargets the exportRouteTargets value to set.
      * @return the L3OptionBProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class L3OptionBProperties {
 
     /**
      * Get the routeTargets property: RouteTargets to be applied.
-     *
+     * 
      * @return the routeTargets value.
      */
     public RouteTargetInformation routeTargets() {
@@ -84,7 +89,7 @@ public final class L3OptionBProperties {
 
     /**
      * Set the routeTargets property: RouteTargets to be applied.
-     *
+     * 
      * @param routeTargets the routeTargets value to set.
      * @return the L3OptionBProperties object itself.
      */
@@ -95,12 +100,58 @@ public final class L3OptionBProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (routeTargets() != null) {
             routeTargets().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("importRouteTargets", this.importRouteTargets,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("exportRouteTargets", this.exportRouteTargets,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("routeTargets", this.routeTargets);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3OptionBProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3OptionBProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3OptionBProperties.
+     */
+    public static L3OptionBProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3OptionBProperties deserializedL3OptionBProperties = new L3OptionBProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("importRouteTargets".equals(fieldName)) {
+                    List<String> importRouteTargets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedL3OptionBProperties.importRouteTargets = importRouteTargets;
+                } else if ("exportRouteTargets".equals(fieldName)) {
+                    List<String> exportRouteTargets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedL3OptionBProperties.exportRouteTargets = exportRouteTargets;
+                } else if ("routeTargets".equals(fieldName)) {
+                    deserializedL3OptionBProperties.routeTargets = RouteTargetInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3OptionBProperties;
+        });
     }
 }

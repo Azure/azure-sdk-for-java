@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** option A properties. */
+/**
+ * option A properties.
+ */
 @Fluent
 public final class VpnConfigurationPropertiesOptionAProperties extends OptionAProperties {
     /*
      * IPv4 Address Prefix.
      */
-    @JsonProperty(value = "primaryIpv4Prefix")
     private String primaryIpv4Prefix;
 
     /*
      * IPv6 Address Prefix.
      */
-    @JsonProperty(value = "primaryIpv6Prefix")
     private String primaryIpv6Prefix;
 
     /*
      * Secondary IPv4 Address Prefix.
      */
-    @JsonProperty(value = "secondaryIpv4Prefix")
     private String secondaryIpv4Prefix;
 
     /*
      * Secondary IPv6 Address Prefix.
      */
-    @JsonProperty(value = "secondaryIpv6Prefix")
     private String secondaryIpv6Prefix;
 
-    /** Creates an instance of VpnConfigurationPropertiesOptionAProperties class. */
+    /**
+     * Creates an instance of VpnConfigurationPropertiesOptionAProperties class.
+     */
     public VpnConfigurationPropertiesOptionAProperties() {
     }
 
     /**
      * Get the primaryIpv4Prefix property: IPv4 Address Prefix.
-     *
+     * 
      * @return the primaryIpv4Prefix value.
      */
     public String primaryIpv4Prefix() {
@@ -49,7 +52,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Set the primaryIpv4Prefix property: IPv4 Address Prefix.
-     *
+     * 
      * @param primaryIpv4Prefix the primaryIpv4Prefix value to set.
      * @return the VpnConfigurationPropertiesOptionAProperties object itself.
      */
@@ -60,7 +63,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Get the primaryIpv6Prefix property: IPv6 Address Prefix.
-     *
+     * 
      * @return the primaryIpv6Prefix value.
      */
     public String primaryIpv6Prefix() {
@@ -69,7 +72,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Set the primaryIpv6Prefix property: IPv6 Address Prefix.
-     *
+     * 
      * @param primaryIpv6Prefix the primaryIpv6Prefix value to set.
      * @return the VpnConfigurationPropertiesOptionAProperties object itself.
      */
@@ -80,7 +83,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Get the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
-     *
+     * 
      * @return the secondaryIpv4Prefix value.
      */
     public String secondaryIpv4Prefix() {
@@ -89,7 +92,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Set the secondaryIpv4Prefix property: Secondary IPv4 Address Prefix.
-     *
+     * 
      * @param secondaryIpv4Prefix the secondaryIpv4Prefix value to set.
      * @return the VpnConfigurationPropertiesOptionAProperties object itself.
      */
@@ -100,7 +103,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Get the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
-     *
+     * 
      * @return the secondaryIpv6Prefix value.
      */
     public String secondaryIpv6Prefix() {
@@ -109,7 +112,7 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Set the secondaryIpv6Prefix property: Secondary IPv6 Address Prefix.
-     *
+     * 
      * @param secondaryIpv6Prefix the secondaryIpv6Prefix value to set.
      * @return the VpnConfigurationPropertiesOptionAProperties object itself.
      */
@@ -118,28 +121,36 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnConfigurationPropertiesOptionAProperties withMtu(Integer mtu) {
         super.withMtu(mtu);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnConfigurationPropertiesOptionAProperties withVlanId(Integer vlanId) {
         super.withVlanId(vlanId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnConfigurationPropertiesOptionAProperties withPeerAsn(Long peerAsn) {
         super.withPeerAsn(peerAsn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnConfigurationPropertiesOptionAProperties withBfdConfiguration(BfdConfiguration bfdConfiguration) {
         super.withBfdConfiguration(bfdConfiguration);
@@ -148,11 +159,75 @@ public final class VpnConfigurationPropertiesOptionAProperties extends OptionAPr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (bfdConfiguration() != null) {
+            bfdConfiguration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("mtu", mtu());
+        jsonWriter.writeNumberField("vlanId", vlanId());
+        jsonWriter.writeNumberField("peerASN", peerAsn());
+        jsonWriter.writeJsonField("bfdConfiguration", bfdConfiguration());
+        jsonWriter.writeStringField("primaryIpv4Prefix", this.primaryIpv4Prefix);
+        jsonWriter.writeStringField("primaryIpv6Prefix", this.primaryIpv6Prefix);
+        jsonWriter.writeStringField("secondaryIpv4Prefix", this.secondaryIpv4Prefix);
+        jsonWriter.writeStringField("secondaryIpv6Prefix", this.secondaryIpv6Prefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnConfigurationPropertiesOptionAProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnConfigurationPropertiesOptionAProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnConfigurationPropertiesOptionAProperties.
+     */
+    public static VpnConfigurationPropertiesOptionAProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnConfigurationPropertiesOptionAProperties deserializedVpnConfigurationPropertiesOptionAProperties
+                = new VpnConfigurationPropertiesOptionAProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mtu".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties
+                        .withMtu(reader.getNullable(JsonReader::getInt));
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties
+                        .withVlanId(reader.getNullable(JsonReader::getInt));
+                } else if ("peerASN".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties
+                        .withPeerAsn(reader.getNullable(JsonReader::getLong));
+                } else if ("bfdConfiguration".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties
+                        .withBfdConfiguration(BfdConfiguration.fromJson(reader));
+                } else if ("primaryIpv4Prefix".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties.primaryIpv4Prefix = reader.getString();
+                } else if ("primaryIpv6Prefix".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties.primaryIpv6Prefix = reader.getString();
+                } else if ("secondaryIpv4Prefix".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties.secondaryIpv4Prefix = reader.getString();
+                } else if ("secondaryIpv6Prefix".equals(fieldName)) {
+                    deserializedVpnConfigurationPropertiesOptionAProperties.secondaryIpv6Prefix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnConfigurationPropertiesOptionAProperties;
+        });
     }
 }

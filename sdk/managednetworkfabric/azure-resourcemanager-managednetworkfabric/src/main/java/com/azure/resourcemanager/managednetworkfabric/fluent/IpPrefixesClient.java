@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpPrefixInner;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixPatch;
 
-/** An instance of this class provides access to all the operations defined in IpPrefixesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpPrefixesClient.
+ */
 public interface IpPrefixesClient {
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -35,9 +37,9 @@ public interface IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -53,9 +55,9 @@ public interface IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -69,9 +71,9 @@ public interface IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -86,9 +88,9 @@ public interface IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -103,9 +105,9 @@ public interface IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,9 +120,9 @@ public interface IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -135,9 +137,9 @@ public interface IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -153,9 +155,9 @@ public interface IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -169,9 +171,9 @@ public interface IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -186,9 +188,9 @@ public interface IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,9 +203,9 @@ public interface IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -217,9 +219,9 @@ public interface IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,9 +233,9 @@ public interface IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -246,9 +248,9 @@ public interface IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -260,9 +262,9 @@ public interface IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,9 +277,9 @@ public interface IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
@@ -287,9 +289,9 @@ public interface IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

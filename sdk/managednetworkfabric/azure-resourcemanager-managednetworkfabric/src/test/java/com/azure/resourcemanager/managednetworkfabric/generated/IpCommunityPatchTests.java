@@ -18,39 +18,35 @@ public final class IpCommunityPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpCommunityPatch model = BinaryData.fromString(
-            "{\"properties\":{\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5282438425697483362,\"wellKnownCommunities\":[\"LocalAS\",\"LocalAS\"],\"communityMembers\":[\"gygvfltgvdiho\",\"nkrxwetwkdrcy\",\"ucpcunnuzdqumoen\"]},{\"action\":\"Deny\",\"sequenceNumber\":3818690305014881198,\"wellKnownCommunities\":[\"GShut\",\"Internet\",\"NoAdvertise\",\"Internet\"],\"communityMembers\":[\"knd\",\"elqkaadlkn\",\"foanniyopetx\",\"vcnrly\"]}]},\"tags\":{\"wqpatvbqsdtcj\":\"caephbl\"}}")
+            "{\"properties\":{\"ipCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":8815374333697807058,\"wellKnownCommunities\":[\"NoExport\",\"GShut\",\"LocalAS\",\"Internet\"],\"communityMembers\":[\"wrxaomzisg\",\"rrczezkhhltnj\",\"dhqoawj\"]}]},\"tags\":{\"rrueqthwmg\":\"ueayfbpcmsplb\",\"gdhxi\":\"mbscbbx\",\"opedbwdpyqyybxub\":\"d\"}}")
             .toObject(IpCommunityPatch.class);
-        Assertions.assertEquals("caephbl", model.tags().get("wqpatvbqsdtcj"));
+        Assertions.assertEquals("ueayfbpcmsplb", model.tags().get("rrueqthwmg"));
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(5282438425697483362L, model.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS,
+        Assertions.assertEquals(8815374333697807058L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.NO_EXPORT,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("gygvfltgvdiho", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("wrxaomzisg", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunityPatch model = new IpCommunityPatch().withTags(mapOf("wqpatvbqsdtcj", "caephbl"))
-            .withIpCommunityRules(Arrays.asList(
-                new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
-                    .withSequenceNumber(5282438425697483362L)
-                    .withWellKnownCommunities(
-                        Arrays.asList(WellKnownCommunities.LOCAL_AS, WellKnownCommunities.LOCAL_AS))
-                    .withCommunityMembers(Arrays.asList("gygvfltgvdiho", "nkrxwetwkdrcy", "ucpcunnuzdqumoen")),
-                new IpCommunityRule().withAction(CommunityActionTypes.DENY)
-                    .withSequenceNumber(3818690305014881198L)
-                    .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT, WellKnownCommunities.INTERNET,
-                        WellKnownCommunities.NO_ADVERTISE, WellKnownCommunities.INTERNET))
-                    .withCommunityMembers(Arrays.asList("knd", "elqkaadlkn", "foanniyopetx", "vcnrly"))));
+        IpCommunityPatch model = new IpCommunityPatch()
+            .withTags(mapOf("rrueqthwmg", "ueayfbpcmsplb", "gdhxi", "mbscbbx", "opedbwdpyqyybxub", "d"))
+            .withIpCommunityRules(Arrays.asList(new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(8815374333697807058L)
+                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_EXPORT, WellKnownCommunities.GSHUT,
+                    WellKnownCommunities.LOCAL_AS, WellKnownCommunities.INTERNET))
+                .withCommunityMembers(Arrays.asList("wrxaomzisg", "rrczezkhhltnj", "dhqoawj"))));
         model = BinaryData.fromObject(model).toObject(IpCommunityPatch.class);
-        Assertions.assertEquals("caephbl", model.tags().get("wqpatvbqsdtcj"));
+        Assertions.assertEquals("ueayfbpcmsplb", model.tags().get("rrueqthwmg"));
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipCommunityRules().get(0).action());
-        Assertions.assertEquals(5282438425697483362L, model.ipCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS,
+        Assertions.assertEquals(8815374333697807058L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals(WellKnownCommunities.NO_EXPORT,
             model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
-        Assertions.assertEquals("gygvfltgvdiho", model.ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("wrxaomzisg", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

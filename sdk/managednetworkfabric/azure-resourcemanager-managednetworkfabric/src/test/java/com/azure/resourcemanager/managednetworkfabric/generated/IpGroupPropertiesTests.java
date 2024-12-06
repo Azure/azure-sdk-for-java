@@ -14,21 +14,21 @@ public final class IpGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpGroupProperties model = BinaryData
-            .fromString("{\"name\":\"ihclafzv\",\"ipAddressType\":\"IPv4\",\"ipPrefixes\":[\"rsqqwztcm\",\"qkc\"]}")
+            .fromString("{\"name\":\"lboxqvkjl\",\"ipAddressType\":\"IPv4\",\"ipPrefixes\":[\"dynhdwdigum\"]}")
             .toObject(IpGroupProperties.class);
-        Assertions.assertEquals("ihclafzv", model.name());
+        Assertions.assertEquals("lboxqvkjl", model.name());
         Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
-        Assertions.assertEquals("rsqqwztcm", model.ipPrefixes().get(0));
+        Assertions.assertEquals("dynhdwdigum", model.ipPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpGroupProperties model = new IpGroupProperties().withName("ihclafzv")
+        IpGroupProperties model = new IpGroupProperties().withName("lboxqvkjl")
             .withIpAddressType(IpAddressType.IPV4)
-            .withIpPrefixes(Arrays.asList("rsqqwztcm", "qkc"));
+            .withIpPrefixes(Arrays.asList("dynhdwdigum"));
         model = BinaryData.fromObject(model).toObject(IpGroupProperties.class);
-        Assertions.assertEquals("ihclafzv", model.name());
+        Assertions.assertEquals("lboxqvkjl", model.name());
         Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
-        Assertions.assertEquals("rsqqwztcm", model.ipPrefixes().get(0));
+        Assertions.assertEquals("dynhdwdigum", model.ipPrefixes().get(0));
     }
 }

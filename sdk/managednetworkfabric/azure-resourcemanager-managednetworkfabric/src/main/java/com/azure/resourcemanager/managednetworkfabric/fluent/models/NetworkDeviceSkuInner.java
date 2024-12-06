@@ -6,30 +6,57 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.DeviceInterfaceProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleName;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.SupportedVersionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The NetworkDeviceSku resource definition. */
+/**
+ * The NetworkDeviceSku resource definition.
+ */
 @Fluent
 public final class NetworkDeviceSkuInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private NetworkDeviceSkuProperties innerProperties = new NetworkDeviceSkuProperties();
 
-    /** Creates an instance of NetworkDeviceSkuInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkDeviceSkuInner class.
+     */
     public NetworkDeviceSkuInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkDeviceSkuProperties innerProperties() {
@@ -37,8 +64,47 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the model property: Model of the network device.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -47,7 +113,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Set the model property: Model of the network device.
-     *
+     * 
      * @param model the model value to set.
      * @return the NetworkDeviceSkuInner object itself.
      */
@@ -61,7 +127,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Get the manufacturer property: Manufacturer of the network device.
-     *
+     * 
      * @return the manufacturer value.
      */
     public String manufacturer() {
@@ -70,7 +136,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Set the manufacturer property: Manufacturer of the network device.
-     *
+     * 
      * @param manufacturer the manufacturer value to set.
      * @return the NetworkDeviceSkuInner object itself.
      */
@@ -84,7 +150,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Get the supportedVersions property: List of supported version details of network device.
-     *
+     * 
      * @return the supportedVersions value.
      */
     public List<SupportedVersionProperties> supportedVersions() {
@@ -93,7 +159,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Set the supportedVersions property: List of supported version details of network device.
-     *
+     * 
      * @param supportedVersions the supportedVersions value to set.
      * @return the NetworkDeviceSkuInner object itself.
      */
@@ -107,7 +173,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Get the supportedRoleTypes property: Available roles for the network device.
-     *
+     * 
      * @return the supportedRoleTypes value.
      */
     public List<NetworkDeviceRoleName> supportedRoleTypes() {
@@ -116,7 +182,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Set the supportedRoleTypes property: Available roles for the network device.
-     *
+     * 
      * @param supportedRoleTypes the supportedRoleTypes value to set.
      * @return the NetworkDeviceSkuInner object itself.
      */
@@ -130,7 +196,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Get the interfaces property: List of network device interfaces.
-     *
+     * 
      * @return the interfaces value.
      */
     public List<DeviceInterfaceProperties> interfaces() {
@@ -139,7 +205,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Set the interfaces property: List of network device interfaces.
-     *
+     * 
      * @param interfaces the interfaces value to set.
      * @return the NetworkDeviceSkuInner object itself.
      */
@@ -153,7 +219,7 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -162,17 +228,63 @@ public final class NetworkDeviceSkuInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model NetworkDeviceSkuInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NetworkDeviceSkuInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkDeviceSkuInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkDeviceSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkDeviceSkuInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkDeviceSkuInner.
+     */
+    public static NetworkDeviceSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkDeviceSkuInner deserializedNetworkDeviceSkuInner = new NetworkDeviceSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkDeviceSkuInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkDeviceSkuInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkDeviceSkuInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkDeviceSkuInner.innerProperties = NetworkDeviceSkuProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkDeviceSkuInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkDeviceSkuInner;
+        });
+    }
 }

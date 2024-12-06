@@ -59,32 +59,32 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
 
     public PagedIterable<IpExtendedCommunity> listByResourceGroup(String resourceGroupName) {
         PagedIterable<IpExtendedCommunityInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IpExtendedCommunity> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<IpExtendedCommunityInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IpExtendedCommunity> list() {
         PagedIterable<IpExtendedCommunityInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IpExtendedCommunity> list(Context context) {
         PagedIterable<IpExtendedCommunityInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IpExtendedCommunityImpl(inner1, this.manager()));
     }
 
     public IpExtendedCommunity getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipExtendedCommunityName = Utils.getValueFromIdByName(id, "ipExtendedCommunities");
+        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
         if (ipExtendedCommunityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
@@ -93,12 +93,12 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public Response<IpExtendedCommunity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipExtendedCommunityName = Utils.getValueFromIdByName(id, "ipExtendedCommunities");
+        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
         if (ipExtendedCommunityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
@@ -107,12 +107,12 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipExtendedCommunityName = Utils.getValueFromIdByName(id, "ipExtendedCommunities");
+        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
         if (ipExtendedCommunityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));
@@ -121,12 +121,12 @@ public final class IpExtendedCommunitiesImpl implements IpExtendedCommunities {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String ipExtendedCommunityName = Utils.getValueFromIdByName(id, "ipExtendedCommunities");
+        String ipExtendedCommunityName = ResourceManagerUtils.getValueFromIdByName(id, "ipExtendedCommunities");
         if (ipExtendedCommunityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'ipExtendedCommunities'.", id)));

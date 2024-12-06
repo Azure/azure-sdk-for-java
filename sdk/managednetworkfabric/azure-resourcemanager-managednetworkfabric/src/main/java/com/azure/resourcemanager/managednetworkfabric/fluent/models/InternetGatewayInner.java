@@ -8,33 +8,53 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.GatewayType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Internet Gateway resource definition. */
+/**
+ * The Internet Gateway resource definition.
+ */
 @Fluent
 public final class InternetGatewayInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private InternetGatewayProperties innerProperties = new InternetGatewayProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of InternetGatewayInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InternetGatewayInner class.
+     */
     public InternetGatewayInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InternetGatewayProperties innerProperties() {
@@ -43,21 +63,55 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InternetGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InternetGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +120,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the ipv4Address property: IPv4 Address of Internet Gateway.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -75,7 +129,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the port property: Port number of Internet Gateway.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -84,7 +138,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the type property: Gateway Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public GatewayType typePropertiesType() {
@@ -93,7 +147,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Set the type property: Gateway Type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the InternetGatewayInner object itself.
      */
@@ -107,7 +161,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the networkFabricControllerId property: ARM Resource ID of the Network Fabric Controller.
-     *
+     * 
      * @return the networkFabricControllerId value.
      */
     public String networkFabricControllerId() {
@@ -116,7 +170,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Set the networkFabricControllerId property: ARM Resource ID of the Network Fabric Controller.
-     *
+     * 
      * @param networkFabricControllerId the networkFabricControllerId value to set.
      * @return the InternetGatewayInner object itself.
      */
@@ -130,7 +184,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -139,7 +193,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the internetGatewayRuleId property: ARM Resource ID of the Internet Gateway Rule.
-     *
+     * 
      * @return the internetGatewayRuleId value.
      */
     public String internetGatewayRuleId() {
@@ -148,7 +202,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Set the internetGatewayRuleId property: ARM Resource ID of the Internet Gateway Rule.
-     *
+     * 
      * @param internetGatewayRuleId the internetGatewayRuleId value to set.
      * @return the InternetGatewayInner object itself.
      */
@@ -162,7 +216,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Get the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     public String annotation() {
@@ -171,7 +225,7 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Set the annotation property: Switch configuration description.
-     *
+     * 
      * @param annotation the annotation value to set.
      * @return the InternetGatewayInner object itself.
      */
@@ -185,17 +239,70 @@ public final class InternetGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model InternetGatewayInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model InternetGatewayInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InternetGatewayInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternetGatewayInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternetGatewayInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InternetGatewayInner.
+     */
+    public static InternetGatewayInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternetGatewayInner deserializedInternetGatewayInner = new InternetGatewayInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInternetGatewayInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInternetGatewayInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInternetGatewayInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedInternetGatewayInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInternetGatewayInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInternetGatewayInner.innerProperties = InternetGatewayProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedInternetGatewayInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternetGatewayInner;
+        });
+    }
 }
