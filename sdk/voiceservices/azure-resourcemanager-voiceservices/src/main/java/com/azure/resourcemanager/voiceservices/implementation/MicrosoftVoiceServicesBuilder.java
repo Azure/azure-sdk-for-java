@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the MicrosoftVoiceServicesImpl type. */
+/**
+ * A builder for creating a new instance of the MicrosoftVoiceServicesImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { MicrosoftVoiceServicesImpl.class })
 public final class MicrosoftVoiceServicesBuilder {
     /*
@@ -24,7 +26,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the MicrosoftVoiceServicesBuilder.
      */
@@ -40,7 +42,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the MicrosoftVoiceServicesBuilder.
      */
@@ -56,7 +58,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the MicrosoftVoiceServicesBuilder.
      */
@@ -72,7 +74,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the MicrosoftVoiceServicesBuilder.
      */
@@ -88,7 +90,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the MicrosoftVoiceServicesBuilder.
      */
@@ -104,7 +106,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the MicrosoftVoiceServicesBuilder.
      */
@@ -115,7 +117,7 @@ public final class MicrosoftVoiceServicesBuilder {
 
     /**
      * Builds an instance of MicrosoftVoiceServicesImpl with the provided parameters.
-     *
+     * 
      * @return an instance of MicrosoftVoiceServicesImpl.
      */
     public MicrosoftVoiceServicesImpl buildClient() {
@@ -130,7 +132,7 @@ public final class MicrosoftVoiceServicesBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         MicrosoftVoiceServicesImpl client = new MicrosoftVoiceServicesImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

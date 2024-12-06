@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcegraph.fluent.models.OperationInner;
 import com.azure.resourcemanager.resourcegraph.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationInner model = BinaryData.fromString(
             "{\"name\":\"iwbybrkxvdumjg\",\"display\":{\"provider\":\"wvukx\",\"resource\":\"udccsnhsjc\",\"operation\":\"ejhkry\",\"description\":\"napczwlokjy\"},\"origin\":\"kkvnipjox\"}")
             .toObject(OperationInner.class);
@@ -24,8 +23,8 @@ public final class OperationInnerTests {
         Assertions.assertEquals("kkvnipjox", model.origin());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationInner model = new OperationInner().withName("iwbybrkxvdumjg")
             .withDisplay(new OperationDisplay().withProvider("wvukx")
                 .withResource("udccsnhsjc")

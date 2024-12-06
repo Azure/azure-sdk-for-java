@@ -1,14 +1,57 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-06)
 
-### Features Added
+- Azure Resource Manager ResourceGraph client library for Java. This package contains Microsoft Azure SDK for ResourceGraph Management SDK. Azure Resource Graph API Reference. Package tag package-2021-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+* `models.GraphQueryUpdateParameters` was added
+
+* `models.GraphQueryResource` was added
+
+* `models.GraphQueryListResult` was added
+
+* `models.GraphQueryResource$UpdateStages` was added
+
+* `models.ResultKind` was added
+
+* `models.GraphQueryResource$Definition` was added
+
+* `models.GraphQueryResource$DefinitionStages` was added
+
+* `models.GraphQueryResource$Update` was added
+
+* `models.GraphQueries` was added
+
+#### `models.FacetError` was modified
+
+* `resultType()` was added
+
+#### `models.Facet` was modified
+
+* `resultType()` was added
+
+#### `models.FacetResult` was modified
+
+* `resultType()` was added
+
+#### `ResourceGraphManager` was modified
+
+* `graphQueries()` was added
 
 ## 1.0.0 (2022-11-02)
 
