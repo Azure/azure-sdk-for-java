@@ -6,8 +6,11 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -15,27 +18,26 @@ import java.util.Map;
  * visit the ACSS how-to-guide.
  */
 @Fluent
-public final class UserAssignedServiceIdentity {
+public final class UserAssignedServiceIdentity implements JsonSerializable<UserAssignedServiceIdentity> {
     /*
      * Type of manage identity
      */
-    @JsonProperty(value = "type", required = true)
     private ManagedServiceIdentityType type;
 
     /*
      * User assigned identities dictionary
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of UserAssignedServiceIdentity class. */
+    /**
+     * Creates an instance of UserAssignedServiceIdentity class.
+     */
     public UserAssignedServiceIdentity() {
     }
 
     /**
      * Get the type property: Type of manage identity.
-     *
+     * 
      * @return the type value.
      */
     public ManagedServiceIdentityType type() {
@@ -44,7 +46,7 @@ public final class UserAssignedServiceIdentity {
 
     /**
      * Set the type property: Type of manage identity.
-     *
+     * 
      * @param type the type value to set.
      * @return the UserAssignedServiceIdentity object itself.
      */
@@ -55,7 +57,7 @@ public final class UserAssignedServiceIdentity {
 
     /**
      * Get the userAssignedIdentities property: User assigned identities dictionary.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -64,39 +66,79 @@ public final class UserAssignedServiceIdentity {
 
     /**
      * Set the userAssignedIdentities property: User assigned identities dictionary.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the UserAssignedServiceIdentity object itself.
      */
-    public UserAssignedServiceIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public UserAssignedServiceIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model UserAssignedServiceIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model UserAssignedServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserAssignedServiceIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedServiceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedServiceIdentity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAssignedServiceIdentity.
+     */
+    public static UserAssignedServiceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedServiceIdentity deserializedUserAssignedServiceIdentity = new UserAssignedServiceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedUserAssignedServiceIdentity.type
+                        = ManagedServiceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedUserAssignedServiceIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedServiceIdentity;
+        });
+    }
 }

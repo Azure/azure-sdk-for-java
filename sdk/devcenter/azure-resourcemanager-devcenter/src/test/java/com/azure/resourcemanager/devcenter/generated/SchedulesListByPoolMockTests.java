@@ -12,9 +12,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Schedule;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +25,7 @@ public final class SchedulesListByPoolMockTests {
     @Test
     public void testListByPool() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"pmeyyvpkpatlbijp\",\"timeZone\":\"sksrfhfvolmknbn\",\"state\":\"Disabled\",\"tags\":{\"awz\":\"mmpvf\",\"uiaclkiexhajlfn\":\"gbrt\",\"b\":\"hiqfyuttdiy\"},\"location\":\"n\"},\"id\":\"wmtxkyctwwgz\",\"name\":\"xjlme\",\"type\":\"vogygzyvneez\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"xw\",\"timeZone\":\"fykhvuhxepmru\",\"state\":\"Disabled\",\"tags\":{\"lujdjltymkmv\":\"aobn\",\"pphkixkykxds\":\"uihywart\"},\"location\":\"pemmucfxhik\"},\"id\":\"lrmymyincqlhri\",\"name\":\"wslmiiiovgqcg\",\"type\":\"uugqk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,14 +35,14 @@ public final class SchedulesListByPoolMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Schedule> response = manager.schedules()
-            .listByPool("wex", "mzvlazipbh", "wvqsgny", 2007776080, com.azure.core.util.Context.NONE);
+            .listByPool("oewbid", "vteo", "xvgpiude", 1691899028, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.iterator().next().typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.iterator().next().frequency());
-        Assertions.assertEquals("pmeyyvpkpatlbijp", response.iterator().next().time());
-        Assertions.assertEquals("sksrfhfvolmknbn", response.iterator().next().timeZone());
+        Assertions.assertEquals("xw", response.iterator().next().time());
+        Assertions.assertEquals("fykhvuhxepmru", response.iterator().next().timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.DISABLED, response.iterator().next().state());
-        Assertions.assertEquals("mmpvf", response.iterator().next().tags().get("awz"));
-        Assertions.assertEquals("n", response.iterator().next().location());
+        Assertions.assertEquals("aobn", response.iterator().next().tags().get("lujdjltymkmv"));
+        Assertions.assertEquals("pemmucfxhik", response.iterator().next().location());
     }
 }

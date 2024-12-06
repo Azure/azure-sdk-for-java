@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
  */
 public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkGatewayConnectionStartPacketCapture.json
      */
     /**
@@ -29,7 +29,7 @@ public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
      */
     /**

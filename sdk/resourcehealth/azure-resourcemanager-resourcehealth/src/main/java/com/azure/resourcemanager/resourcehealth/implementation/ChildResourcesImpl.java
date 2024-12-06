@@ -19,8 +19,7 @@ public final class ChildResourcesImpl implements ChildResources {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public ChildResourcesImpl(
-        ChildResourcesClient innerClient,
+    public ChildResourcesImpl(ChildResourcesClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class ChildResourcesImpl implements ChildResources {
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri, String filter, String expand, Context context) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri, filter, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     private ChildResourcesClient serviceClient() {

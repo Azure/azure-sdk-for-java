@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationPackageSupportUrlsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationPackageSupportUrls model =
-            BinaryData
-                .fromString("{\"publicAzure\":\"qduujitcjczdz\",\"governmentCloud\":\"ndhkrw\"}")
+        ApplicationPackageSupportUrls model
+            = BinaryData.fromString("{\"publicAzure\":\"qduujitcjczdz\",\"governmentCloud\":\"ndhkrw\"}")
                 .toObject(ApplicationPackageSupportUrls.class);
         Assertions.assertEquals("qduujitcjczdz", model.publicAzure());
         Assertions.assertEquals("ndhkrw", model.governmentCloud());
@@ -21,8 +20,8 @@ public final class ApplicationPackageSupportUrlsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationPackageSupportUrls model =
-            new ApplicationPackageSupportUrls().withPublicAzure("qduujitcjczdz").withGovernmentCloud("ndhkrw");
+        ApplicationPackageSupportUrls model
+            = new ApplicationPackageSupportUrls().withPublicAzure("qduujitcjczdz").withGovernmentCloud("ndhkrw");
         model = BinaryData.fromObject(model).toObject(ApplicationPackageSupportUrls.class);
         Assertions.assertEquals("qduujitcjczdz", model.publicAzure());
         Assertions.assertEquals("ndhkrw", model.governmentCloud());

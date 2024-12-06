@@ -14,7 +14,6 @@ import java.io.IOException;
  * Encryption scope options to be used when creating a file system.
  */
 public final class FileSystemEncryptionScopeOptions implements JsonSerializable<FileSystemEncryptionScopeOptions> {
-
     /*
      * Optional.  Version 2021-06-08 and later. Specifies the default
      * encryption scope to set on the container and use for all future writes.
@@ -27,6 +26,12 @@ public final class FileSystemEncryptionScopeOptions implements JsonSerializable<
      * container.
      */
     private Boolean encryptionScopeOverridePrevented;
+
+    /**
+     * Creates a new instance of {@link FileSystemEncryptionScopeOptions}.
+     */
+    public FileSystemEncryptionScopeOptions() {
+    }
 
     /**
      * Get the defaultEncryptionScope property: Optional. Version 2021-06-08 and later. Specifies the default encryption
@@ -67,7 +72,8 @@ public final class FileSystemEncryptionScopeOptions implements JsonSerializable<
      * @param encryptionScopeOverridePrevented the encryptionScopeOverridePrevented value to set.
      * @return the updated {@link FileSystemEncryptionScopeOptions}.
      */
-    public FileSystemEncryptionScopeOptions setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+    public FileSystemEncryptionScopeOptions
+        setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
@@ -99,7 +105,8 @@ public final class FileSystemEncryptionScopeOptions implements JsonSerializable<
                 if ("DefaultEncryptionScope".equals(fieldName)) {
                     fileSystemEncryptionScopeOptions.defaultEncryptionScope = reader.getString();
                 } else if ("EncryptionScopeOverridePrevented".equals(fieldName)) {
-                    fileSystemEncryptionScopeOptions.encryptionScopeOverridePrevented = reader.getNullable(JsonReader::getBoolean);
+                    fileSystemEncryptionScopeOptions.encryptionScopeOverridePrevented
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     // Skip unknown values.
                     // If the type supported additional properties, this is where they would be handled.

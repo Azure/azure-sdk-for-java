@@ -5,7 +5,6 @@
 package com.azure.security.confidentialledger.certificate.generated;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -16,35 +15,29 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 class ConfidentialLedgerCertificateClientTestBase extends TestProxyTestBase {
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     protected ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient;
 
     @Override
     protected void beforeTest() {
-        ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder =
-                new ConfidentialLedgerCertificateClientBuilder()
-                        .certificateEndpoint(
-                            ConfidentialLedgerEnvironment.getConfidentialLedgerIdentityUrl())
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder
+            = new ConfidentialLedgerCertificateClientBuilder()
+                .certificateEndpoint(ConfidentialLedgerEnvironment.getConfidentialLedgerIdentityUrl())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            confidentialLedgerCertificateClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            confidentialLedgerCertificateClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
             addSanitizers();
         } else if (getTestMode() == TestMode.RECORD) {
-            confidentialLedgerCertificateClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            confidentialLedgerCertificateClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
             addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
             confidentialLedgerCertificateClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
@@ -53,9 +46,10 @@ class ConfidentialLedgerCertificateClientTestBase extends TestProxyTestBase {
     }
 
     private void addSanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=/ledgerIdentity/)([^/?]+)",
-                "java-sdk-live-tests-ledger", TestProxySanitizerType.URL),
-            new TestProxySanitizer("(?<=/app/users/)([^/?]+)",
-                "d958292f-5b70-4b66-9502-562217cc7eaa", TestProxySanitizerType.URL)));
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("(?<=/ledgerIdentity/)([^/?]+)", "java-sdk-live-tests-ledger",
+                TestProxySanitizerType.URL),
+            new TestProxySanitizer("(?<=/app/users/)([^/?]+)", "d958292f-5b70-4b66-9502-562217cc7eaa",
+                TestProxySanitizerType.URL)));
     }
 }

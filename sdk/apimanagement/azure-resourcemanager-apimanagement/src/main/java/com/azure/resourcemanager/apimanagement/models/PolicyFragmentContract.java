@@ -8,80 +8,90 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner;
 
-/** An immutable client-side representation of PolicyFragmentContract. */
+/**
+ * An immutable client-side representation of PolicyFragmentContract.
+ */
 public interface PolicyFragmentContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the value property: Contents of the policy fragment.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the description property: Policy fragment description.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the format property: Format of the policy fragment content.
-     *
+     * 
      * @return the format value.
      */
     PolicyFragmentContentFormat format();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     PolicyFragmentContractInner innerModel();
 
-    /** The entirety of the PolicyFragmentContract definition. */
+    /**
+     * The entirety of the PolicyFragmentContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The PolicyFragmentContract definition stages. */
+    /**
+     * The PolicyFragmentContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PolicyFragmentContract definition. */
+        /**
+         * The first stage of the PolicyFragmentContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the PolicyFragmentContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the PolicyFragmentContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -93,68 +103,73 @@ public interface PolicyFragmentContract {
          * The stage of the PolicyFragmentContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithValue,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithFormat,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithValue, DefinitionStages.WithDescription,
+            DefinitionStages.WithFormat, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PolicyFragmentContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PolicyFragmentContract create(Context context);
         }
 
-        /** The stage of the PolicyFragmentContract definition allowing to specify value. */
+        /**
+         * The stage of the PolicyFragmentContract definition allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Contents of the policy fragment..
-             *
+             * 
              * @param value Contents of the policy fragment.
              * @return the next definition stage.
              */
             WithCreate withValue(String value);
         }
 
-        /** The stage of the PolicyFragmentContract definition allowing to specify description. */
+        /**
+         * The stage of the PolicyFragmentContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Policy fragment description..
-             *
+             * 
              * @param description Policy fragment description.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the PolicyFragmentContract definition allowing to specify format. */
+        /**
+         * The stage of the PolicyFragmentContract definition allowing to specify format.
+         */
         interface WithFormat {
             /**
              * Specifies the format property: Format of the policy fragment content..
-             *
+             * 
              * @param format Format of the policy fragment content.
              * @return the next definition stage.
              */
             WithCreate withFormat(PolicyFragmentContentFormat format);
         }
 
-        /** The stage of the PolicyFragmentContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the PolicyFragmentContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -163,76 +178,85 @@ public interface PolicyFragmentContract {
 
     /**
      * Begins update for the PolicyFragmentContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PolicyFragmentContract.Update update();
 
-    /** The template for PolicyFragmentContract update. */
-    interface Update
-        extends UpdateStages.WithValue,
-            UpdateStages.WithDescription,
-            UpdateStages.WithFormat,
-            UpdateStages.WithIfMatch {
+    /**
+     * The template for PolicyFragmentContract update.
+     */
+    interface Update extends UpdateStages.WithValue, UpdateStages.WithDescription, UpdateStages.WithFormat,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PolicyFragmentContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PolicyFragmentContract apply(Context context);
     }
 
-    /** The PolicyFragmentContract update stages. */
+    /**
+     * The PolicyFragmentContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PolicyFragmentContract update allowing to specify value. */
+        /**
+         * The stage of the PolicyFragmentContract update allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Contents of the policy fragment..
-             *
+             * 
              * @param value Contents of the policy fragment.
              * @return the next definition stage.
              */
             Update withValue(String value);
         }
 
-        /** The stage of the PolicyFragmentContract update allowing to specify description. */
+        /**
+         * The stage of the PolicyFragmentContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Policy fragment description..
-             *
+             * 
              * @param description Policy fragment description.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the PolicyFragmentContract update allowing to specify format. */
+        /**
+         * The stage of the PolicyFragmentContract update allowing to specify format.
+         */
         interface WithFormat {
             /**
              * Specifies the format property: Format of the policy fragment content..
-             *
+             * 
              * @param format Format of the policy fragment content.
              * @return the next definition stage.
              */
             Update withFormat(PolicyFragmentContentFormat format);
         }
 
-        /** The stage of the PolicyFragmentContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the PolicyFragmentContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -241,14 +265,14 @@ public interface PolicyFragmentContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PolicyFragmentContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -256,7 +280,7 @@ public interface PolicyFragmentContract {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -269,7 +293,7 @@ public interface PolicyFragmentContract {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of resources.

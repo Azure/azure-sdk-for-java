@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ModelInner;
 
-/** An instance of this class provides access to all the operations defined in ModelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ModelsClient.
+ */
 public interface ModelsClient {
     /**
      * List Models.
-     *
+     * 
      * @param location Resource location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,7 +28,7 @@ public interface ModelsClient {
 
     /**
      * List Models.
-     *
+     * 
      * @param location Resource location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

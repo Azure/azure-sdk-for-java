@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIntegrationRuntimeManagedVirtualNetworkReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIntegrationRuntimeManagedVirtualNetworkReference model =
-            BinaryData
-                .fromString("{\"referenceName\":\"regzgyufutrwpwer\",\"type\":\"kzkdhmeott\",\"id\":\"jyosxwwh\"}")
+        ManagedIntegrationRuntimeManagedVirtualNetworkReference model
+            = BinaryData.fromString("{\"referenceName\":\"u\",\"type\":\"njizb\",\"id\":\"woiymrvz\"}")
                 .toObject(ManagedIntegrationRuntimeManagedVirtualNetworkReference.class);
-        Assertions.assertEquals("regzgyufutrwpwer", model.referenceName());
-        Assertions.assertEquals("kzkdhmeott", model.type());
-        Assertions.assertEquals("jyosxwwh", model.id());
+        Assertions.assertEquals("u", model.referenceName());
+        Assertions.assertEquals("njizb", model.type());
+        Assertions.assertEquals("woiymrvz", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIntegrationRuntimeManagedVirtualNetworkReference model =
-            new ManagedIntegrationRuntimeManagedVirtualNetworkReference()
-                .withReferenceName("regzgyufutrwpwer")
-                .withType("kzkdhmeott")
-                .withId("jyosxwwh");
+        ManagedIntegrationRuntimeManagedVirtualNetworkReference model
+            = new ManagedIntegrationRuntimeManagedVirtualNetworkReference().withReferenceName("u")
+                .withType("njizb")
+                .withId("woiymrvz");
         model = BinaryData.fromObject(model).toObject(ManagedIntegrationRuntimeManagedVirtualNetworkReference.class);
-        Assertions.assertEquals("regzgyufutrwpwer", model.referenceName());
-        Assertions.assertEquals("kzkdhmeott", model.type());
-        Assertions.assertEquals("jyosxwwh", model.id());
+        Assertions.assertEquals("u", model.referenceName());
+        Assertions.assertEquals("njizb", model.type());
+        Assertions.assertEquals("woiymrvz", model.id());
     }
 }

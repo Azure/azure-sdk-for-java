@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the network interfaces of a bare metal resource. */
+/**
+ * Specifies the network interfaces of a bare metal resource.
+ */
 @Fluent
-public final class NetworkInterface {
+public final class NetworkInterface implements JsonSerializable<NetworkInterface> {
     /*
      * Specifies the IP address of the network interface.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of NetworkInterface class. */
+    /**
+     * Creates an instance of NetworkInterface class.
+     */
     public NetworkInterface() {
     }
 
     /**
      * Get the ipAddress property: Specifies the IP address of the network interface.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -31,7 +38,7 @@ public final class NetworkInterface {
 
     /**
      * Set the ipAddress property: Specifies the IP address of the network interface.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the NetworkInterface object itself.
      */
@@ -42,9 +49,45 @@ public final class NetworkInterface {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterface from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterface if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterface.
+     */
+    public static NetworkInterface fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterface deserializedNetworkInterface = new NetworkInterface();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedNetworkInterface.ipAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterface;
+        });
     }
 }

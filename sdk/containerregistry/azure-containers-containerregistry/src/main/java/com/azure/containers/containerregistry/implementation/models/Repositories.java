@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** List of repositories. */
+/**
+ * List of repositories.
+ */
 @Fluent
 public final class Repositories implements JsonSerializable<Repositories> {
     /*
@@ -25,12 +27,15 @@ public final class Repositories implements JsonSerializable<Repositories> {
      */
     private String link;
 
-    /** Creates an instance of Repositories class. */
-    public Repositories() {}
+    /**
+     * Creates an instance of Repositories class.
+     */
+    public Repositories() {
+    }
 
     /**
      * Get the repositories property: Repository names.
-     *
+     * 
      * @return the repositories value.
      */
     public List<String> getRepositories() {
@@ -39,7 +44,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
 
     /**
      * Set the repositories property: Repository names.
-     *
+     * 
      * @param repositories the repositories value to set.
      * @return the Repositories object itself.
      */
@@ -50,7 +55,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
 
     /**
      * Get the link property: The link property.
-     *
+     * 
      * @return the link value.
      */
     public String getLink() {
@@ -59,7 +64,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
 
     /**
      * Set the link property: The link property.
-     *
+     * 
      * @param link the link value to set.
      * @return the Repositories object itself.
      */
@@ -68,6 +73,9 @@ public final class Repositories implements JsonSerializable<Repositories> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,31 +86,30 @@ public final class Repositories implements JsonSerializable<Repositories> {
 
     /**
      * Reads an instance of Repositories from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Repositories if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the Repositories.
      */
     public static Repositories fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Repositories deserializedRepositories = new Repositories();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Repositories deserializedRepositories = new Repositories();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("repositories".equals(fieldName)) {
-                            List<String> repositories = reader.readArray(reader1 -> reader1.getString());
-                            deserializedRepositories.repositories = repositories;
-                        } else if ("link".equals(fieldName)) {
-                            deserializedRepositories.link = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("repositories".equals(fieldName)) {
+                    List<String> repositories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRepositories.repositories = repositories;
+                } else if ("link".equals(fieldName)) {
+                    deserializedRepositories.link = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedRepositories;
-                });
+            return deserializedRepositories;
+        });
     }
 }

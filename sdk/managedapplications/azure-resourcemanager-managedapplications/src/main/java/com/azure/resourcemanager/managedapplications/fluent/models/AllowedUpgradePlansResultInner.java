@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.models.Plan;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The array of plan. */
+/**
+ * The array of plan.
+ */
 @Fluent
-public final class AllowedUpgradePlansResultInner {
+public final class AllowedUpgradePlansResultInner implements JsonSerializable<AllowedUpgradePlansResultInner> {
     /*
      * The array of plans.
      */
-    @JsonProperty(value = "value")
     private List<Plan> value;
 
-    /** Creates an instance of AllowedUpgradePlansResultInner class. */
+    /**
+     * Creates an instance of AllowedUpgradePlansResultInner class.
+     */
     public AllowedUpgradePlansResultInner() {
     }
 
     /**
      * Get the value property: The array of plans.
-     *
+     * 
      * @return the value value.
      */
     public List<Plan> value() {
@@ -33,7 +40,7 @@ public final class AllowedUpgradePlansResultInner {
 
     /**
      * Set the value property: The array of plans.
-     *
+     * 
      * @param value the value value to set.
      * @return the AllowedUpgradePlansResultInner object itself.
      */
@@ -44,12 +51,50 @@ public final class AllowedUpgradePlansResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AllowedUpgradePlansResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AllowedUpgradePlansResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AllowedUpgradePlansResultInner.
+     */
+    public static AllowedUpgradePlansResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AllowedUpgradePlansResultInner deserializedAllowedUpgradePlansResultInner
+                = new AllowedUpgradePlansResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<Plan> value = reader.readArray(reader1 -> Plan.fromJson(reader1));
+                    deserializedAllowedUpgradePlansResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAllowedUpgradePlansResultInner;
+        });
     }
 }

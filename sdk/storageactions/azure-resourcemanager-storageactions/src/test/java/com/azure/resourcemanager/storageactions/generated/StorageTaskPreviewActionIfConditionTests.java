@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageTaskPreviewActionIfConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageTaskPreviewActionIfCondition model = BinaryData.fromString("{\"condition\":\"liourqhak\"}")
-            .toObject(StorageTaskPreviewActionIfCondition.class);
-        Assertions.assertEquals("liourqhak", model.condition());
+        StorageTaskPreviewActionIfCondition model
+            = BinaryData.fromString("{\"condition\":\"khaj\"}").toObject(StorageTaskPreviewActionIfCondition.class);
+        Assertions.assertEquals("khaj", model.condition());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageTaskPreviewActionIfCondition model
-            = new StorageTaskPreviewActionIfCondition().withCondition("liourqhak");
+        StorageTaskPreviewActionIfCondition model = new StorageTaskPreviewActionIfCondition().withCondition("khaj");
         model = BinaryData.fromObject(model).toObject(StorageTaskPreviewActionIfCondition.class);
-        Assertions.assertEquals("liourqhak", model.condition());
+        Assertions.assertEquals("khaj", model.condition());
     }
 }

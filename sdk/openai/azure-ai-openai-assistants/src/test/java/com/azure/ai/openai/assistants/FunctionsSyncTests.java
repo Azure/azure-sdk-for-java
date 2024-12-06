@@ -41,13 +41,9 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
             AssistantThread assistantThread = client.createThread(assistantThreadCreationOptions);
 
             // Send first user message
-            client.createMessage(
-                assistantThread.getId(),
-                new ThreadMessageOptions(
-                    MessageRole.USER,
-                    "Assuming both my usually preferred vacation spot and favourite airline carrier, how much would it cost "
-                        + "to fly there in September?"
-                ));
+            client.createMessage(assistantThread.getId(), new ThreadMessageOptions(MessageRole.USER,
+                "Assuming both my usually preferred vacation spot and favourite airline carrier, how much would it cost "
+                    + "to fly there in September?"));
 
             // Create run thread
             ThreadRun run = client.createRun(assistantThread, assistant);
@@ -70,7 +66,8 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
             PageableList<RunStep> runSteps = client.listRunSteps(assistantThread.getId(), run.getId());
             assertFalse(runSteps.getData().isEmpty());
 
-            RunStepToolCallDetails toolCallDetails = (RunStepToolCallDetails) runSteps.getData().get(0).getStepDetails();
+            RunStepToolCallDetails toolCallDetails
+                = (RunStepToolCallDetails) runSteps.getData().get(0).getStepDetails();
             assertFalse(toolCallDetails.getToolCalls().isEmpty());
 
             // cleanup

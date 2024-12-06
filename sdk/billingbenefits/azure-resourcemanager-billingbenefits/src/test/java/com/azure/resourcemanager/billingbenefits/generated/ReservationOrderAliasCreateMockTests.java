@@ -6,11 +6,9 @@ package com.azure.resourcemanager.billingbenefits.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billingbenefits.BillingBenefitsManager;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeProperties;
 import com.azure.resourcemanager.billingbenefits.models.AppliedScopeType;
@@ -22,97 +20,62 @@ import com.azure.resourcemanager.billingbenefits.models.ReservationOrderAliasRes
 import com.azure.resourcemanager.billingbenefits.models.ReservedResourceType;
 import com.azure.resourcemanager.billingbenefits.models.Sku;
 import com.azure.resourcemanager.billingbenefits.models.Term;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ReservationOrderAliasCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"hsd\"},\"location\":\"t\",\"properties\":{\"displayName\":\"ikdowwquuvx\",\"reservationOrderId\":\"clvit\",\"provisioningState\":\"Succeeded\",\"billingScopeId\":\"o\",\"term\":\"P3Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Shared\",\"appliedScopeProperties\":{\"tenantId\":\"hfwdsjnkaljutiis\",\"managementGroupId\":\"cffgdkzzewk\",\"subscriptionId\":\"hqcrailvpnpp\",\"resourceGroupId\":\"flrwd\",\"displayName\":\"dlxyjrxs\"},\"quantity\":1591764317,\"renew\":true,\"reservedResourceType\":\"AzureDataExplorer\",\"reviewDateTime\":\"2021-08-27T23:35:53Z\",\"reservedResourceProperties\":{\"instanceFlexibility\":\"Off\"}},\"id\":\"nedgfbc\",\"name\":\"kcvqvpke\",\"type\":\"dcvd\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"uszdtmhrkwof\"},\"location\":\"voqacpiexpbt\",\"properties\":{\"displayName\":\"bwoenwashrt\",\"reservationOrderId\":\"kcnqxwbpo\",\"provisioningState\":\"Succeeded\",\"billingScopeId\":\"iujwa\",\"term\":\"P1Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopeProperties\":{\"tenantId\":\"yuq\",\"managementGroupId\":\"pqlpq\",\"subscriptionId\":\"ciuqgbdb\",\"resourceGroupId\":\"auvfbtkuwhhmhyk\",\"displayName\":\"oxafn\"},\"quantity\":1456966010,\"renew\":true,\"reservedResourceType\":\"SuseLinux\",\"reviewDateTime\":\"2021-09-25T08:27:56Z\",\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"}},\"id\":\"dyh\",\"name\":\"pkkpw\",\"type\":\"reqnovvqfov\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingBenefitsManager manager = BillingBenefitsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ReservationOrderAliasResponse response = manager.reservationOrderAlias()
+            .create("z", new ReservationOrderAliasRequest().withSku(new Sku().withName("sikvmkqzeqqkdlt"))
+                .withLocation("xmhhvhgureo")
+                .withDisplayName("obdagxtibqdxb")
+                .withBillingScopeId("akbogqxndlkzgxh")
+                .withTerm(Term.P1Y)
+                .withBillingPlan(BillingPlan.P1M)
+                .withAppliedScopeType(AppliedScopeType.SINGLE)
+                .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("xunkbebxmubyynt")
+                    .withManagementGroupId("rbqtkoie")
+                    .withSubscriptionId("eotg")
+                    .withResourceGroupId("l")
+                    .withDisplayName("muwlauwzizxbm"))
+                .withQuantity(2123049773)
+                .withRenew(true)
+                .withReservedResourceType(ReservedResourceType.SQL_DATA_WAREHOUSE)
+                .withReviewDateTime(OffsetDateTime.parse("2021-09-15T06:09:09Z"))
+                .withReservedResourceProperties(new ReservationOrderAliasRequestPropertiesReservedResourceProperties()
+                    .withInstanceFlexibility(InstanceFlexibility.ON)),
+                com.azure.core.util.Context.NONE);
 
-        BillingBenefitsManager manager =
-            BillingBenefitsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ReservationOrderAliasResponse response =
-            manager
-                .reservationOrderAlias()
-                .create(
-                    "wsbpfvm",
-                    new ReservationOrderAliasRequest()
-                        .withSku(new Sku().withName("hrfou"))
-                        .withLocation("taakc")
-                        .withDisplayName("yzvqt")
-                        .withBillingScopeId("ubex")
-                        .withTerm(Term.P1Y)
-                        .withBillingPlan(BillingPlan.P1M)
-                        .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
-                        .withAppliedScopeProperties(
-                            new AppliedScopeProperties()
-                                .withTenantId("jmquxvypomgk")
-                                .withManagementGroupId("kwhojvpaj")
-                                .withSubscriptionId("xysmoc")
-                                .withResourceGroupId("qfqvmkc")
-                                .withDisplayName("zapvhelx"))
-                        .withQuantity(1663002651)
-                        .withRenew(false)
-                        .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
-                        .withReviewDateTime(OffsetDateTime.parse("2021-09-20T17:04:55Z"))
-                        .withReservedResourceProperties(
-                            new ReservationOrderAliasRequestPropertiesReservedResourceProperties()
-                                .withInstanceFlexibility(InstanceFlexibility.OFF)),
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("uszdtmhrkwof", response.sku().name());
-        Assertions.assertEquals("voqacpiexpbt", response.location());
-        Assertions.assertEquals("bwoenwashrt", response.displayName());
-        Assertions.assertEquals("iujwa", response.billingScopeId());
-        Assertions.assertEquals(Term.P1Y, response.term());
+        Assertions.assertEquals("hsd", response.sku().name());
+        Assertions.assertEquals("t", response.location());
+        Assertions.assertEquals("ikdowwquuvx", response.displayName());
+        Assertions.assertEquals("o", response.billingScopeId());
+        Assertions.assertEquals(Term.P3Y, response.term());
         Assertions.assertEquals(BillingPlan.P1M, response.billingPlan());
-        Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, response.appliedScopeType());
-        Assertions.assertEquals("yuq", response.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("pqlpq", response.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("ciuqgbdb", response.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("auvfbtkuwhhmhyk", response.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("oxafn", response.appliedScopeProperties().displayName());
-        Assertions.assertEquals(1456966010, response.quantity());
+        Assertions.assertEquals(AppliedScopeType.SHARED, response.appliedScopeType());
+        Assertions.assertEquals("hfwdsjnkaljutiis", response.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("cffgdkzzewk", response.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("hqcrailvpnpp", response.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("flrwd", response.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("dlxyjrxs", response.appliedScopeProperties().displayName());
+        Assertions.assertEquals(1591764317, response.quantity());
         Assertions.assertEquals(true, response.renew());
-        Assertions.assertEquals(ReservedResourceType.SUSE_LINUX, response.reservedResourceType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T08:27:56Z"), response.reviewDateTime());
-        Assertions.assertEquals(InstanceFlexibility.ON, response.reservedResourceProperties().instanceFlexibility());
+        Assertions.assertEquals(ReservedResourceType.AZURE_DATA_EXPLORER, response.reservedResourceType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T23:35:53Z"), response.reviewDateTime());
+        Assertions.assertEquals(InstanceFlexibility.OFF, response.reservedResourceProperties().instanceFlexibility());
     }
 }

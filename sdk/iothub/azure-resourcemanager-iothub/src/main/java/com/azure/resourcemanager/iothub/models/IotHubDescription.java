@@ -114,12 +114,8 @@ public interface IotHubDescription {
     IotHubDescriptionInner innerModel();
 
     /** The entirety of the IotHubDescription definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /** The IotHubDescription definition stages. */
@@ -173,12 +169,8 @@ public interface IotHubDescription {
          * The stage of the IotHubDescription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithProperties,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithEtag,
+            DefinitionStages.WithProperties, DefinitionStages.WithIdentity, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *

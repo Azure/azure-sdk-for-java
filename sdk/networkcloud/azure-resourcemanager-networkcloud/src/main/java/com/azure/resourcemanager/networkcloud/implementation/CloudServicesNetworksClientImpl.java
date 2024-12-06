@@ -34,29 +34,35 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.CloudServicesNetworksClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetworkInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkList;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkPatchParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CloudServicesNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CloudServicesNetworksClient.
+ */
 public final class CloudServicesNetworksClientImpl implements CloudServicesNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CloudServicesNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of CloudServicesNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CloudServicesNetworksClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy
-                .create(CloudServicesNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CloudServicesNetworksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,245 +73,185 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudCloudSer")
     public interface CloudServicesNetworksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/cloudServicesNetworks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CloudServicesNetworkList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CloudServicesNetworkList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CloudServicesNetworkList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CloudServicesNetworkList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CloudServicesNetworkInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CloudServicesNetworkInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
             @BodyParam("application/json") CloudServicesNetworkInner cloudServicesNetworkParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServicesNetworkName") String cloudServicesNetworkName,
             @BodyParam("application/json") CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CloudServicesNetworkList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CloudServicesNetworkList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> list() {
@@ -314,15 +260,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> list(Context context) {
@@ -331,30 +277,26 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -362,55 +304,36 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,74 +342,60 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName) {
@@ -495,16 +404,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -513,62 +422,48 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided cloud services network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
@@ -576,50 +471,38 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided cloud services network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context);
     }
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -628,17 +511,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return properties of the provided cloud services network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> getByResourceGroupAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<CloudServicesNetworkInner> getByResourceGroupAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, cloudServicesNetworkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
@@ -648,16 +531,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return properties of the provided cloud services network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    public Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context).block();
     }
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -672,9 +555,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -682,64 +565,46 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter cloudServicesNetworkParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter cloudServicesNetworkParameters is required and cannot be null."));
         } else {
             cloudServicesNetworkParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            cloudServicesNetworkParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName,
+                cloudServicesNetworkParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -748,62 +613,45 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter cloudServicesNetworkParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter cloudServicesNetworkParameters is required and cannot be null."));
         } else {
             cloudServicesNetworkParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                cloudServicesNetworkParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkParameters, accept, context);
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -811,31 +659,24 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            cloudServicesNetworkName, cloudServicesNetworkParameters);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -844,33 +685,24 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            cloudServicesNetworkName, cloudServicesNetworkParameters, context);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, context);
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -878,12 +710,11 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters)
@@ -892,9 +723,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -903,25 +734,23 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -929,13 +758,11 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters) {
+    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -943,9 +770,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -954,25 +781,20 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CloudServicesNetworkInner> createOrUpdateAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -980,21 +802,19 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServicesNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+    public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
         return createOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters).block();
     }
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -1003,280 +823,254 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServicesNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkInner cloudServicesNetworkParameters,
-        Context context) {
+    public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkInner cloudServicesNetworkParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, context)
             .block();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, cloudServicesNetworkName, accept, context);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String cloudServicesNetworkName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String cloudServicesNetworkName) {
         return this.beginDeleteAsync(resourceGroupName, cloudServicesNetworkName).getSyncPoller();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String cloudServicesNetworkName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context).getSyncPoller();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
-        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
+        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String cloudServicesNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String cloudServicesNetworkName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String cloudServicesNetworkName) {
-        deleteAsync(resourceGroupName, cloudServicesNetworkName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String cloudServicesNetworkName) {
+        return deleteAsync(resourceGroupName, cloudServicesNetworkName).block();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String cloudServicesNetworkName, Context context) {
-        deleteAsync(resourceGroupName, cloudServicesNetworkName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String cloudServicesNetworkName,
+        Context context) {
+        return deleteAsync(resourceGroupName, cloudServicesNetworkName, context).block();
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1284,60 +1078,44 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkUpdateParameters != null) {
             cloudServicesNetworkUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            cloudServicesNetworkName,
-                            cloudServicesNetworkUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName,
+                cloudServicesNetworkUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1346,58 +1124,43 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String cloudServicesNetworkName, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (cloudServicesNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter cloudServicesNetworkName is required and cannot be null."));
         }
         if (cloudServicesNetworkUpdateParameters != null) {
             cloudServicesNetworkUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                cloudServicesNetworkName,
-                cloudServicesNetworkUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, accept, context);
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1405,61 +1168,50 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+        String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkUpdateParameters);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
+        beginUpdateAsync(String resourceGroupName, String cloudServicesNetworkName) {
         final CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkUpdateParameters);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1468,57 +1220,47 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context);
-        return this
-            .client
-            .<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CloudServicesNetworkInner.class,
-                CloudServicesNetworkInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkUpdateParameters, context);
+        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, context);
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
-        String resourceGroupName, String cloudServicesNetworkName) {
+    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
+        beginUpdate(String resourceGroupName, String cloudServicesNetworkName) {
         final CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters)
+        return this.beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters)
             .getSyncPoller();
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1527,26 +1269,24 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
+        String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
         return this
-            .beginUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context)
+            .beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1554,12 +1294,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> updateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
+    private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters)
             .last()
@@ -1568,17 +1306,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName) {
@@ -1590,10 +1328,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1602,33 +1340,28 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CloudServicesNetworkInner> updateAsync(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName) {
@@ -1638,10 +1371,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1650,28 +1383,24 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloudServicesNetworkInner update(
-        String resourceGroupName,
-        String cloudServicesNetworkName,
-        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters,
-        Context context) {
+    public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName,
+        CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, context)
             .block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1679,76 +1408,55 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1756,63 +1464,43 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CloudServicesNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CloudServicesNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

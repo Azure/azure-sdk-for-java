@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * 'true'. Setting this property to 'true' will generate an additional column in the property events table in ADX.
  */
 public final class RecordPropertyAndItemRemovals extends ExpandableStringEnum<RecordPropertyAndItemRemovals> {
-    /** Static value true for RecordPropertyAndItemRemovals. */
+    /**
+     * Static value true for RecordPropertyAndItemRemovals.
+     */
     public static final RecordPropertyAndItemRemovals TRUE = fromString("true");
 
-    /** Static value false for RecordPropertyAndItemRemovals. */
+    /**
+     * Static value false for RecordPropertyAndItemRemovals.
+     */
     public static final RecordPropertyAndItemRemovals FALSE = fromString("false");
 
     /**
      * Creates a new instance of RecordPropertyAndItemRemovals value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class RecordPropertyAndItemRemovals extends ExpandableStringEnum<Re
 
     /**
      * Creates or finds a RecordPropertyAndItemRemovals from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordPropertyAndItemRemovals.
      */
-    @JsonCreator
     public static RecordPropertyAndItemRemovals fromString(String name) {
         return fromString(name, RecordPropertyAndItemRemovals.class);
     }
 
     /**
      * Gets known RecordPropertyAndItemRemovals values.
-     *
+     * 
      * @return known RecordPropertyAndItemRemovals values.
      */
     public static Collection<RecordPropertyAndItemRemovals> values() {

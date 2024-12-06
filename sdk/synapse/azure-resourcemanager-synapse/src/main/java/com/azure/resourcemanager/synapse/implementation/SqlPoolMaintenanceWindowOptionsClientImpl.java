@@ -25,26 +25,28 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowOptionsC
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowOptionsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowOptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowOptionsClient.
+ */
 public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolMaintenanceWindowOptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolMaintenanceWindowOptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolMaintenanceWindowOptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolMaintenanceWindowOptionsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlPoolMaintenanceWindowOptionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolMaintenanceWindowOptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,29 +57,23 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolMaintenanceWindowOptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/maintenanceWindowOptions/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenanceWindowOptions/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceWindowOptionsInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<MaintenanceWindowOptionsInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @QueryParam("maintenanceWindowOptionsName") String maintenanceWindowOptionsName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -86,22 +82,18 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's available maintenance windows along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
+    private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -114,35 +106,22 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (maintenanceWindowOptionsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter maintenanceWindowOptionsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter maintenanceWindowOptionsName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            maintenanceWindowOptionsName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -152,26 +131,18 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's available maintenance windows along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowOptionsName,
-        Context context) {
+    private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -184,32 +155,21 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (maintenanceWindowOptionsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter maintenanceWindowOptionsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter maintenanceWindowOptionsName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                maintenanceWindowOptionsName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, maintenanceWindowOptionsName, accept, context);
     }
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -220,17 +180,17 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @return list of SQL pool's available maintenance windows on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MaintenanceWindowOptionsInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
+    private Mono<MaintenanceWindowOptionsInner> getAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowOptionsName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -242,22 +202,17 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @return list of SQL pool's available maintenance windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceWindowOptionsInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowOptionsName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName, context)
-            .block();
+    public Response<MaintenanceWindowOptionsInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowOptionsName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName,
+            context).block();
     }
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -268,10 +223,9 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @return list of SQL pool's available maintenance windows.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceWindowOptionsInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
-        return getWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName, Context.NONE)
-            .getValue();
+    public MaintenanceWindowOptionsInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowOptionsName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName,
+            Context.NONE).getValue();
     }
 }

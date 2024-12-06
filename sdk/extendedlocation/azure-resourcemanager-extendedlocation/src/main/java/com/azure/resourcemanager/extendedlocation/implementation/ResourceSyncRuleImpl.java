@@ -100,25 +100,21 @@ public final class ResourceSyncRuleImpl
     }
 
     public ResourceSyncRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceSyncRules()
-                .createOrUpdate(resourceGroupName, resourceName, childResourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceSyncRules()
+            .createOrUpdate(resourceGroupName, resourceName, childResourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ResourceSyncRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceSyncRules()
-                .createOrUpdate(resourceGroupName, resourceName, childResourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceSyncRules()
+            .createOrUpdate(resourceGroupName, resourceName, childResourceName, this.innerModel(), context);
         return this;
     }
 
-    ResourceSyncRuleImpl(
-        String name, com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
+    ResourceSyncRuleImpl(String name,
+        com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
         this.innerObject = new ResourceSyncRuleInner();
         this.serviceManager = serviceManager;
         this.childResourceName = name;
@@ -130,50 +126,41 @@ public final class ResourceSyncRuleImpl
     }
 
     public ResourceSyncRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceSyncRules()
-                .update(resourceGroupName, resourceName, childResourceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceSyncRules()
+            .update(resourceGroupName, resourceName, childResourceName, updateParameters, Context.NONE);
         return this;
     }
 
     public ResourceSyncRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceSyncRules()
-                .update(resourceGroupName, resourceName, childResourceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceSyncRules()
+            .update(resourceGroupName, resourceName, childResourceName, updateParameters, context);
         return this;
     }
 
-    ResourceSyncRuleImpl(
-        ResourceSyncRuleInner innerObject,
+    ResourceSyncRuleImpl(ResourceSyncRuleInner innerObject,
         com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "customLocations");
-        this.childResourceName = Utils.getValueFromIdByName(innerObject.id(), "resourceSyncRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customLocations");
+        this.childResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceSyncRules");
     }
 
     public ResourceSyncRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceSyncRules()
-                .getWithResponse(resourceGroupName, resourceName, childResourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceSyncRules()
+            .getWithResponse(resourceGroupName, resourceName, childResourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceSyncRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceSyncRules()
-                .getWithResponse(resourceGroupName, resourceName, childResourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceSyncRules()
+            .getWithResponse(resourceGroupName, resourceName, childResourceName, context)
+            .getValue();
         return this;
     }
 

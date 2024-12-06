@@ -6,46 +6,50 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ApiTagResourceContractProperties;
 import com.azure.resourcemanager.apimanagement.models.OperationTagResourceContractProperties;
 import com.azure.resourcemanager.apimanagement.models.ProductTagResourceContractProperties;
 import com.azure.resourcemanager.apimanagement.models.TagResourceContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** TagResource contract properties. */
+/**
+ * TagResource contract properties.
+ */
 @Fluent
-public final class TagResourceContractInner {
+public final class TagResourceContractInner implements JsonSerializable<TagResourceContractInner> {
     /*
      * Tag associated with the resource.
      */
-    @JsonProperty(value = "tag", required = true)
     private TagResourceContractProperties tag;
 
     /*
      * API associated with the tag.
      */
-    @JsonProperty(value = "api")
     private ApiTagResourceContractProperties api;
 
     /*
      * Operation associated with the tag.
      */
-    @JsonProperty(value = "operation")
     private OperationTagResourceContractProperties operation;
 
     /*
      * Product associated with the tag.
      */
-    @JsonProperty(value = "product")
     private ProductTagResourceContractProperties product;
 
-    /** Creates an instance of TagResourceContractInner class. */
+    /**
+     * Creates an instance of TagResourceContractInner class.
+     */
     public TagResourceContractInner() {
     }
 
     /**
      * Get the tag property: Tag associated with the resource.
-     *
+     * 
      * @return the tag value.
      */
     public TagResourceContractProperties tag() {
@@ -54,7 +58,7 @@ public final class TagResourceContractInner {
 
     /**
      * Set the tag property: Tag associated with the resource.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the TagResourceContractInner object itself.
      */
@@ -65,7 +69,7 @@ public final class TagResourceContractInner {
 
     /**
      * Get the api property: API associated with the tag.
-     *
+     * 
      * @return the api value.
      */
     public ApiTagResourceContractProperties api() {
@@ -74,7 +78,7 @@ public final class TagResourceContractInner {
 
     /**
      * Set the api property: API associated with the tag.
-     *
+     * 
      * @param api the api value to set.
      * @return the TagResourceContractInner object itself.
      */
@@ -85,7 +89,7 @@ public final class TagResourceContractInner {
 
     /**
      * Get the operation property: Operation associated with the tag.
-     *
+     * 
      * @return the operation value.
      */
     public OperationTagResourceContractProperties operation() {
@@ -94,7 +98,7 @@ public final class TagResourceContractInner {
 
     /**
      * Set the operation property: Operation associated with the tag.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the TagResourceContractInner object itself.
      */
@@ -105,7 +109,7 @@ public final class TagResourceContractInner {
 
     /**
      * Get the product property: Product associated with the tag.
-     *
+     * 
      * @return the product value.
      */
     public ProductTagResourceContractProperties product() {
@@ -114,7 +118,7 @@ public final class TagResourceContractInner {
 
     /**
      * Set the product property: Product associated with the tag.
-     *
+     * 
      * @param product the product value to set.
      * @return the TagResourceContractInner object itself.
      */
@@ -125,14 +129,13 @@ public final class TagResourceContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tag() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tag in model TagResourceContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tag in model TagResourceContractInner"));
         } else {
             tag().validate();
         }
@@ -148,4 +151,52 @@ public final class TagResourceContractInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TagResourceContractInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tag", this.tag);
+        jsonWriter.writeJsonField("api", this.api);
+        jsonWriter.writeJsonField("operation", this.operation);
+        jsonWriter.writeJsonField("product", this.product);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagResourceContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagResourceContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TagResourceContractInner.
+     */
+    public static TagResourceContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagResourceContractInner deserializedTagResourceContractInner = new TagResourceContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tag".equals(fieldName)) {
+                    deserializedTagResourceContractInner.tag = TagResourceContractProperties.fromJson(reader);
+                } else if ("api".equals(fieldName)) {
+                    deserializedTagResourceContractInner.api = ApiTagResourceContractProperties.fromJson(reader);
+                } else if ("operation".equals(fieldName)) {
+                    deserializedTagResourceContractInner.operation
+                        = OperationTagResourceContractProperties.fromJson(reader);
+                } else if ("product".equals(fieldName)) {
+                    deserializedTagResourceContractInner.product
+                        = ProductTagResourceContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagResourceContractInner;
+        });
+    }
 }

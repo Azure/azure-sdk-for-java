@@ -9,7 +9,9 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class PoolsRunHealthChecksSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_RunHealthChecks.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_RunHealthChecks.
+     * json
      */
     /**
      * Sample code: Pools_RefreshStatus.

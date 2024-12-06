@@ -21,7 +21,7 @@ public final class CheckVirtualNetworkSubnetUsagesExecuteWithResponseMockTests {
     @Test
     public void testExecuteWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"ltyjedexxmlfmk\",\"subscriptionId\":\"cazuaw\",\"delegatedSubnetsUsage\":[{\"subnetName\":\"puamwabzxr\",\"usage\":3578038999561407028}]}";
+            = "{\"location\":\"hlf\",\"subscriptionId\":\"wpchwahf\",\"delegatedSubnetsUsage\":[{\"subnetName\":\"nfepgf\",\"usage\":1851396648069747872},{\"subnetName\":\"l\",\"usage\":1627173261577825656},{\"subnetName\":\"xykxhdj\",\"usage\":6091189064792747688}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class CheckVirtualNetworkSubnetUsagesExecuteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkSubnetUsageResult response = manager.checkVirtualNetworkSubnetUsages()
-            .executeWithResponse("juj",
-                new VirtualNetworkSubnetUsageParameter().withVirtualNetworkResourceId("ckpzvcpopmxeln"),
+            .executeWithResponse("eazulcs",
+                new VirtualNetworkSubnetUsageParameter().withVirtualNetworkResourceId("hwwn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

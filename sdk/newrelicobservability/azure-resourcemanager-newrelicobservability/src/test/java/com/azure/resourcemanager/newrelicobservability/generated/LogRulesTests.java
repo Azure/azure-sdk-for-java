@@ -30,10 +30,12 @@ public final class LogRulesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogRules model = new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
-            .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-            .withSendActivityLogs(SendActivityLogsStatus.ENABLED).withFilteringTags(
-                Arrays.asList(new FilteringTag().withName("cohoq").withValue("wvl").withAction(TagAction.EXCLUDE),
+        LogRules model
+            = new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("cohoq").withValue("wvl").withAction(TagAction.EXCLUDE),
                     new FilteringTag().withName("w").withValue("eun").withAction(TagAction.EXCLUDE),
                     new FilteringTag().withName("gyxzk").withValue("ocukoklyax").withAction(TagAction.INCLUDE),
                     new FilteringTag().withName("uqszfk").withValue("ypewrmjmwvvjekt").withAction(TagAction.INCLUDE)));

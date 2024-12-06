@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the agent pool. */
+/**
+ * The provisioning state of the agent pool.
+ */
 public final class AgentPoolProvisioningState extends ExpandableStringEnum<AgentPoolProvisioningState> {
-    /** Static value Accepted for AgentPoolProvisioningState. */
+    /**
+     * Static value Accepted for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Canceled for AgentPoolProvisioningState. */
+    /**
+     * Static value Canceled for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for AgentPoolProvisioningState. */
+    /**
+     * Static value Deleting for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Failed for AgentPoolProvisioningState. */
+    /**
+     * Static value Failed for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState FAILED = fromString("Failed");
 
-    /** Static value InProgress for AgentPoolProvisioningState. */
+    /**
+     * Static value InProgress for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for AgentPoolProvisioningState. */
+    /**
+     * Static value Succeeded for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Updating for AgentPoolProvisioningState. */
+    /**
+     * Static value Updating for AgentPoolProvisioningState.
+     */
     public static final AgentPoolProvisioningState UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of AgentPoolProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class AgentPoolProvisioningState extends ExpandableStringEnum<Agent
 
     /**
      * Creates or finds a AgentPoolProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentPoolProvisioningState.
      */
-    @JsonCreator
     public static AgentPoolProvisioningState fromString(String name) {
         return fromString(name, AgentPoolProvisioningState.class);
     }
 
     /**
      * Gets known AgentPoolProvisioningState values.
-     *
+     * 
      * @return known AgentPoolProvisioningState values.
      */
     public static Collection<AgentPoolProvisioningState> values() {

@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFlatten
 @Fluent
 public class WorkspaceConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceConnectionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceConnectionInner.class);
 
     /*
      * Category of the workspace connection.

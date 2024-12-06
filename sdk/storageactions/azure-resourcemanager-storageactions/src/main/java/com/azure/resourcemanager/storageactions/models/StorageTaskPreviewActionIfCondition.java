@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents storage task preview action condition.
  */
 @Fluent
-public final class StorageTaskPreviewActionIfCondition {
+public final class StorageTaskPreviewActionIfCondition
+    implements JsonSerializable<StorageTaskPreviewActionIfCondition> {
     /*
      * Storage task condition to bes tested for a match.
      */
-    @JsonProperty(value = "condition")
     private String condition;
 
     /**
@@ -50,5 +54,42 @@ public final class StorageTaskPreviewActionIfCondition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("condition", this.condition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskPreviewActionIfCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskPreviewActionIfCondition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskPreviewActionIfCondition.
+     */
+    public static StorageTaskPreviewActionIfCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskPreviewActionIfCondition deserializedStorageTaskPreviewActionIfCondition
+                = new StorageTaskPreviewActionIfCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("condition".equals(fieldName)) {
+                    deserializedStorageTaskPreviewActionIfCondition.condition = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskPreviewActionIfCondition;
+        });
     }
 }

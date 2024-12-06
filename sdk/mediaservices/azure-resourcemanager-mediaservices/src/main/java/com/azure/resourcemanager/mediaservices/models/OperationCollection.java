@@ -7,18 +7,20 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of OperationCollection. */
+/**
+ * An immutable client-side representation of OperationCollection.
+ */
 public interface OperationCollection {
     /**
      * Gets the value property: A collection of Operation items.
-     *
+     * 
      * @return the value value.
      */
     List<Operation> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationCollectionInner innerModel();

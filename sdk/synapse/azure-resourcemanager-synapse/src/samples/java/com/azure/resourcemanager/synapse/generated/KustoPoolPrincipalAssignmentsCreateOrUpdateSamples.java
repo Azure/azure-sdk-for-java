@@ -7,20 +7,22 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.synapse.models.PrincipalType;
 
-/** Samples for KustoPoolPrincipalAssignments CreateOrUpdate. */
+/**
+ * Samples for KustoPoolPrincipalAssignments CreateOrUpdate.
+ */
 public final class KustoPoolPrincipalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsCreateOrUpdate.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * KustoPoolPrincipalAssignmentsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoPoolPrincipalAssignmentsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void kustoPoolPrincipalAssignmentsCreateOrUpdate(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolPrincipalAssignments()
+    public static void
+        kustoPoolPrincipalAssignmentsCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.kustoPoolPrincipalAssignments()
             .define("kustoprincipal1")
             .withExistingKustoPool("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest")
             .withPrincipalId("87654321-1234-1234-1234-123456789123")

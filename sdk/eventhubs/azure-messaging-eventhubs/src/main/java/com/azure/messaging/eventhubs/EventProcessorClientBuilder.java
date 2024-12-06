@@ -121,12 +121,9 @@ import java.util.function.Supplier;
  * @see EventHubConsumerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
-public class EventProcessorClientBuilder implements
-    TokenCredentialTrait<EventProcessorClientBuilder>,
-    AzureNamedKeyCredentialTrait<EventProcessorClientBuilder>,
-    ConnectionStringTrait<EventProcessorClientBuilder>,
-    AzureSasCredentialTrait<EventProcessorClientBuilder>,
-    AmqpTrait<EventProcessorClientBuilder>,
+public class EventProcessorClientBuilder implements TokenCredentialTrait<EventProcessorClientBuilder>,
+    AzureNamedKeyCredentialTrait<EventProcessorClientBuilder>, ConnectionStringTrait<EventProcessorClientBuilder>,
+    AzureSasCredentialTrait<EventProcessorClientBuilder>, AmqpTrait<EventProcessorClientBuilder>,
     ConfigurationTrait<EventProcessorClientBuilder> {
 
     /**
@@ -522,8 +519,8 @@ public class EventProcessorClientBuilder implements
     public EventProcessorClientBuilder loadBalancingUpdateInterval(Duration loadBalancingUpdateInterval) {
         Objects.requireNonNull(loadBalancingUpdateInterval, "'loadBalancingUpdateInterval' cannot be null");
         if (loadBalancingUpdateInterval.isZero() || loadBalancingUpdateInterval.isNegative()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'loadBalancingUpdateInterval' "
-                + "should be a positive duration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'loadBalancingUpdateInterval' " + "should be a positive duration"));
         }
         this.loadBalancingUpdateInterval = loadBalancingUpdateInterval;
         return this;
@@ -543,13 +540,13 @@ public class EventProcessorClientBuilder implements
      * @throws IllegalArgumentException if {@code partitionOwnershipExpirationInterval} is zero or a negative
      *     duration.
      */
-    public EventProcessorClientBuilder partitionOwnershipExpirationInterval(
-        Duration partitionOwnershipExpirationInterval) {
-        Objects.requireNonNull(partitionOwnershipExpirationInterval, "'partitionOwnershipExpirationInterval' cannot "
-            + "be null");
+    public EventProcessorClientBuilder
+        partitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
+        Objects.requireNonNull(partitionOwnershipExpirationInterval,
+            "'partitionOwnershipExpirationInterval' cannot " + "be null");
         if (partitionOwnershipExpirationInterval.isZero() || partitionOwnershipExpirationInterval.isNegative()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionOwnershipExpirationInterval' "
-                + "should be a positive duration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'partitionOwnershipExpirationInterval' " + "should be a positive duration"));
         }
         this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
         return this;
@@ -566,8 +563,8 @@ public class EventProcessorClientBuilder implements
      * @throws NullPointerException if {@code loadBalancingStrategy} is {@code null}.
      */
     public EventProcessorClientBuilder loadBalancingStrategy(LoadBalancingStrategy loadBalancingStrategy) {
-        this.loadBalancingStrategy = Objects.requireNonNull(loadBalancingStrategy, "'loadBalancingStrategy' cannot be"
-            + " null");
+        this.loadBalancingStrategy
+            = Objects.requireNonNull(loadBalancingStrategy, "'loadBalancingStrategy' cannot be" + " null");
         return this;
     }
 
@@ -721,8 +718,8 @@ public class EventProcessorClientBuilder implements
      *
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
-    public EventProcessorClientBuilder processPartitionInitialization(
-        Consumer<InitializationContext> initializePartition) {
+    public EventProcessorClientBuilder
+        processPartitionInitialization(Consumer<InitializationContext> initializePartition) {
         this.processPartitionInitialization = initializePartition;
         return this;
     }
@@ -772,11 +769,11 @@ public class EventProcessorClientBuilder implements
      *
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
-    public EventProcessorClientBuilder initialPartitionEventPosition(
-        Map<String, EventPosition> initialPartitionEventPosition) {
+    public EventProcessorClientBuilder
+        initialPartitionEventPosition(Map<String, EventPosition> initialPartitionEventPosition) {
 
-        this.initialPartitionEventPosition = Objects.requireNonNull(initialPartitionEventPosition,
-            "'initialPartitionEventPosition' cannot be null.");
+        this.initialPartitionEventPosition
+            = Objects.requireNonNull(initialPartitionEventPosition, "'initialPartitionEventPosition' cannot be null.");
         return this;
     }
 
@@ -795,10 +792,10 @@ public class EventProcessorClientBuilder implements
      * @return The updated {@link EventProcessorClientBuilder} instance.
      * @throws NullPointerException if {@code initialEventPositionProvider} is null.
      */
-    public EventProcessorClientBuilder initialPartitionEventPosition(
-        Function<String, EventPosition> initialEventPositionProvider) {
-        this.initialEventPositionProvider = Objects.requireNonNull(initialEventPositionProvider,
-            "'initialEventPositionProvider' cannot be null.");
+    public EventProcessorClientBuilder
+        initialPartitionEventPosition(Function<String, EventPosition> initialEventPositionProvider) {
+        this.initialEventPositionProvider
+            = Objects.requireNonNull(initialEventPositionProvider, "'initialEventPositionProvider' cannot be null.");
         return this;
     }
 
@@ -826,13 +823,13 @@ public class EventProcessorClientBuilder implements
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 
         if (processEvent == null && processEventBatch == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Either processEvent or processEventBatch "
-                + "has to be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Either processEvent or processEventBatch " + "has to be set"));
         }
 
         if (processEvent != null && processEventBatch != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both processEvent and processEventBatch "
-                + "cannot be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Both processEvent and processEventBatch " + "cannot be set"));
         }
 
         if (loadBalancingUpdateInterval == null) {
@@ -843,23 +840,23 @@ public class EventProcessorClientBuilder implements
             partitionOwnershipExpirationInterval = DEFAULT_OWNERSHIP_EXPIRATION_INTERVAL;
         }
 
-        final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions()
-            .setConsumerGroup(consumerGroup)
-            .setBatchReceiveMode(processEventBatch != null)
-            .setConsumerGroup(consumerGroup)
-            .setLoadBalancingStrategy(loadBalancingStrategy)
-            .setLoadBalancerUpdateInterval(loadBalancingUpdateInterval)
-            .setMaxBatchSize(maxBatchSize)
-            .setMaxWaitTime(maxWaitTime)
-            .setPartitionOwnershipExpirationInterval(partitionOwnershipExpirationInterval)
-            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
+        final EventProcessorClientOptions processorOptions
+            = new EventProcessorClientOptions().setConsumerGroup(consumerGroup)
+                .setBatchReceiveMode(processEventBatch != null)
+                .setConsumerGroup(consumerGroup)
+                .setLoadBalancingStrategy(loadBalancingStrategy)
+                .setLoadBalancerUpdateInterval(loadBalancingUpdateInterval)
+                .setMaxBatchSize(maxBatchSize)
+                .setMaxWaitTime(maxWaitTime)
+                .setPartitionOwnershipExpirationInterval(partitionOwnershipExpirationInterval)
+                .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
         int numberOfTimesSet = 0;
 
         if (initialPartitionEventPosition != null) {
             numberOfTimesSet++;
-            processorOptions.setInitialEventPositionProvider(
-                partitionId -> initialPartitionEventPosition.get(partitionId));
+            processorOptions
+                .setInitialEventPositionProvider(partitionId -> initialPartitionEventPosition.get(partitionId));
         }
 
         if (initialEventPositionProvider != null) {
@@ -869,15 +866,15 @@ public class EventProcessorClientBuilder implements
 
         if (numberOfTimesSet > 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Only 1 overload for initialEventPositionProvider can be set.  The overload is set "
-                    + numberOfTimesSet + " times."));
+                "Only 1 overload for initialEventPositionProvider can be set.  The overload is set " + numberOfTimesSet
+                    + " times."));
         }
 
         // Create a copy of the options, so it does not change if another processor is created from the same instance.
         final EventHubClientBuilder builder = copyOptions(eventHubClientBuilder);
 
-        return new EventProcessorClient(builder, getPartitionProcessorSupplier(), checkpointStore,
-            processError, eventHubClientBuilder.createTracer(), processorOptions);
+        return new EventProcessorClient(builder, getPartitionProcessorSupplier(), checkpointStore, processError,
+            eventHubClientBuilder.createTracer(), eventHubClientBuilder.createMeter(), processorOptions);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
@@ -924,8 +921,7 @@ public class EventProcessorClientBuilder implements
     }
 
     private static EventHubClientBuilder copyOptions(EventHubClientBuilder source) {
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .clientOptions(source.getClientOptions())
+        final EventHubClientBuilder builder = new EventHubClientBuilder().clientOptions(source.getClientOptions())
             .configuration(source.getConfiguration())
             .consumerGroup(source.getConsumerGroup())
             .proxyOptions(source.getProxyOptions())

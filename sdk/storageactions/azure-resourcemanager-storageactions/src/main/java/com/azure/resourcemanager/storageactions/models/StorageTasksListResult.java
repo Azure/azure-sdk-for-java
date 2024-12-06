@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * The response from the List Storage Tasks operation.
+ * The response from the List Storage Task operation.
  */
 @Immutable
-public final class StorageTasksListResult {
+public final class StorageTasksListResult implements JsonSerializable<StorageTasksListResult> {
     /*
      * Gets the list of storage tasks and their properties.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageTaskInner> value;
 
     /*
-     * Request URL that can be used to query next page of storage tasks. Returned when total number of requested
-     * storage tasks exceed maximum page size.
+     * Request URL that can be used to query next page of storage tasks. Returned when total number of requested storage
+     * tasks exceed maximum page size.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -61,5 +63,43 @@ public final class StorageTasksListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTasksListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTasksListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTasksListResult.
+     */
+    public static StorageTasksListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTasksListResult deserializedStorageTasksListResult = new StorageTasksListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StorageTaskInner> value = reader.readArray(reader1 -> StorageTaskInner.fromJson(reader1));
+                    deserializedStorageTasksListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStorageTasksListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTasksListResult;
+        });
     }
 }

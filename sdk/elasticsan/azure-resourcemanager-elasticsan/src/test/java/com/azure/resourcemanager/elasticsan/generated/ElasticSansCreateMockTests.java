@@ -6,18 +6,18 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
+import com.azure.resourcemanager.elasticsan.models.ScaleUpProperties;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,51 +25,55 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ElasticSansCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"nayrhyrnxxmueedn\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":199665361160492882,\"extendedCapacitySizeTiB\":3509094090426959627,\"totalVolumeSizeGiB\":5152017214547708245,\"volumeGroupCount\":4376097280926060724,\"totalIops\":2777563543070243433,\"totalMBps\":6465025791585269802,\"totalSizeTiB\":643354499607232618,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gpiohgwxrtfudxe\",\"xg\",\"qagvrvm\"]},\"id\":\"k\",\"name\":\"kghimdblxgwimfnj\",\"type\":\"fjxwmsz\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"eyfkzikfja\"]},\"id\":\"eaivxwczel\",\"name\":\"c\",\"type\":\"r\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"eae\",\"tags\":{\"an\":\"bfatklddxbjhwu\",\"youlp\":\"zjosp\"},\"id\":\"rvxaglrvimjwosy\",\"name\":\"xitc\",\"type\":\"kfcktqum\"}";
+            = "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"mnzgmwznmabi\",\"nsorgjhxbldt\",\"wwrlkdmtncv\",\"kotl\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":4662524940731727545,\"extendedCapacitySizeTiB\":8614672168967170032,\"totalVolumeSizeGiB\":4987957604610375925,\"volumeGroupCount\":4877471072225031792,\"totalIops\":3528662492556478567,\"totalMBps\":7818158463712312814,\"totalSizeTiB\":8180810548190524314,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cikhnv\",\"amqgxqquezikyw\",\"gxk\",\"lla\"]},\"id\":\"elwuipi\",\"name\":\"cjzkzivgvvcna\",\"type\":\"rhyrnxxmueed\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"tkwqqtchealm\",\"mtdaa\",\"gdv\"]},\"id\":\"gpiohgwxrtfudxe\",\"name\":\"xg\",\"type\":\"qagvrvm\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"himdbl\",\"gwimfn\"]},\"id\":\"fjxwmsz\",\"name\":\"kfoqreyfkzikfj\",\"type\":\"wneaiv\"}],\"publicNetworkAccess\":\"Disabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":4458311958924430551,\"increaseCapacityUnitByTiB\":1107964176928344291,\"capacityUnitScaleUpLimitTiB\":3578444818865680080,\"autoScalePolicyEnforcement\":\"None\"}}},\"location\":\"nwabfatkldd\",\"tags\":{\"youlp\":\"hwuaanozjosp\",\"xitc\":\"rvxaglrvimjwosy\",\"ekkezzikhlyfjh\":\"kfcktqum\"},\"id\":\"gqggebdunygae\",\"name\":\"idb\",\"type\":\"fatpxllrxcyjmoa\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticSanManager manager = ElasticSanManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSan response = manager.elasticSans()
+            .define("qyib")
+            .withRegion("ubjibww")
+            .withExistingResourceGroup("m")
+            .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
+            .withBaseSizeTiB(6217672492639104016L)
+            .withExtendedCapacitySizeTiB(4808196089345937384L)
+            .withTags(
+                mapOf("kn", "ohqkvpuvksgpls", "synljphuopxodl", "n", "sjswsrms", "iyntorzihle", "ox", "yzrpzbchckqqzq"))
+            .withAvailabilityZones(Arrays.asList("szdtmhrkwof", "yvoqa", "piexpbtgiw"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAutoScaleProperties(new AutoScaleProperties()
+                .withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(8598185540275371348L)
+                    .withIncreaseCapacityUnitByTiB(1710903714386145180L)
+                    .withCapacityUnitScaleUpLimitTiB(9086145037828754941L)
+                    .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.DISABLED)))
+            .create();
 
-        ElasticSan response
-            = manager.elasticSans().define("ox").withRegion("oocrkvcikhnv").withExistingResourceGroup("yzrpzbchckqqzq")
-                .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
-                .withBaseSizeTiB(2524267370563779328L).withExtendedCapacitySizeTiB(287834891121165780L)
-                .withTags(mapOf("gxk", "qgxqquezikyw")).withAvailabilityZones(Arrays.asList("zynkedya"))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED).create();
-
-        Assertions.assertEquals("eae", response.location());
-        Assertions.assertEquals("bfatklddxbjhwu", response.tags().get("an"));
+        Assertions.assertEquals("nwabfatkldd", response.location());
+        Assertions.assertEquals("hwuaanozjosp", response.tags().get("youlp"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("nayrhyrnxxmueedn", response.availabilityZones().get(0));
-        Assertions.assertEquals(199665361160492882L, response.baseSizeTiB());
-        Assertions.assertEquals(3509094090426959627L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals("mnzgmwznmabi", response.availabilityZones().get(0));
+        Assertions.assertEquals(4662524940731727545L, response.baseSizeTiB());
+        Assertions.assertEquals(8614672168967170032L, response.extendedCapacitySizeTiB());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(4458311958924430551L,
+            response.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(1107964176928344291L,
+            response.autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
+        Assertions.assertEquals(3578444818865680080L,
+            response.autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
+        Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
+            response.autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
     }
 
     // Use "Map.of" if available

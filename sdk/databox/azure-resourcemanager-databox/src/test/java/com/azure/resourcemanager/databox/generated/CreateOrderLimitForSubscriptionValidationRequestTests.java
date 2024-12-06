@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateOrderLimitForSubscriptionValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateOrderLimitForSubscriptionValidationRequest model =
-            BinaryData
-                .fromString("{\"validationType\":\"ValidateCreateOrderLimit\",\"deviceType\":\"DataBoxHeavy\"}")
-                .toObject(CreateOrderLimitForSubscriptionValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.deviceType());
+        CreateOrderLimitForSubscriptionValidationRequest model = BinaryData
+            .fromString("{\"validationType\":\"ValidateCreateOrderLimit\",\"deviceType\":\"DataBoxCustomerDisk\"}")
+            .toObject(CreateOrderLimitForSubscriptionValidationRequest.class);
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateOrderLimitForSubscriptionValidationRequest model =
-            new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX_HEAVY);
+        CreateOrderLimitForSubscriptionValidationRequest model
+            = new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX_CUSTOMER_DISK);
         model = BinaryData.fromObject(model).toObject(CreateOrderLimitForSubscriptionValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
     }
 }

@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectedItemOperationStatus. */
+/**
+ * Resource collection API of ProtectedItemOperationStatus.
+ */
 public interface ProtectedItemOperationStatus {
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -24,14 +26,14 @@ public interface ProtectedItemOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context);
+    Response<OperationStatus> getWithResponse(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId, Context context);
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.

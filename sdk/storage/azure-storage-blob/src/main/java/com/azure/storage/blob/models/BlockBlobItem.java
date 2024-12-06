@@ -70,7 +70,8 @@ public class BlockBlobItem {
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
         final String versionId) {
-        this(eTag, lastModified, contentMd5, (Boolean) isServerEncrypted, encryptionKeySha256, encryptionScope, versionId);
+        this(eTag, lastModified, contentMd5, (Boolean) isServerEncrypted, encryptionKeySha256, encryptionScope,
+            versionId);
     }
 
     /**
@@ -85,8 +86,8 @@ public class BlockBlobItem {
      * @param versionId The version identifier of the block blob.
      */
     public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-                         final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
-                         final String versionId) {
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -97,6 +98,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the eTag of the block blob.
+     *
      * @return the eTag of the block blob
      */
     public String getETag() {
@@ -104,6 +107,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the last time the block blob was modified.
+     *
      * @return the last time the block blob was modified
      */
     public OffsetDateTime getLastModified() {
@@ -111,6 +116,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the encryption status of the block blob on the server.
+     *
      * @return the encryption status of the block blob on the server
      */
     public Boolean isServerEncrypted() {
@@ -118,6 +125,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the key used to encrypt the block blob.
+     *
      * @return the key used to encrypt the block blob
      */
     public String getEncryptionKeySha256() {
@@ -125,6 +134,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the encryption scope used to encrypt the block blob.
+     *
      * @return the encryption scope used to encrypt the block blob
      */
     public String getEncryptionScope() {
@@ -132,6 +143,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the MD5 of the block blob's content.
+     *
      * @return the MD5 of the block blob's comment
      */
     public byte[] getContentMd5() {
@@ -139,6 +152,8 @@ public class BlockBlobItem {
     }
 
     /**
+     * Gets the version identifier of the block blob.
+     *
      * @return the version identifier of the block blob
      */
     public String getVersionId() {

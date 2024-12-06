@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Configuration for HTTP or HTTPS requests. */
+/**
+ * Configuration for HTTP or HTTPS requests.
+ */
 @Fluent
-public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguration {
+public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguration
+    implements JsonSerializable<ConnectivityCheckRequestProtocolConfigurationHttpConfiguration> {
     /*
      * The HTTP method to be used.
      */
-    @JsonProperty(value = "method")
     private Method method;
 
     /*
      * List of HTTP status codes considered valid for the request response.
      */
-    @JsonProperty(value = "validStatusCodes")
     private List<Long> validStatusCodes;
 
     /*
      * List of headers to be included in the request.
      */
-    @JsonProperty(value = "headers")
     private List<HttpHeader> headers;
 
-    /** Creates an instance of ConnectivityCheckRequestProtocolConfigurationHttpConfiguration class. */
+    /**
+     * Creates an instance of ConnectivityCheckRequestProtocolConfigurationHttpConfiguration class.
+     */
     public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration() {
     }
 
     /**
      * Get the method property: The HTTP method to be used.
-     *
+     * 
      * @return the method value.
      */
     public Method method() {
@@ -44,7 +50,7 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
 
     /**
      * Set the method property: The HTTP method to be used.
-     *
+     * 
      * @param method the method value to set.
      * @return the ConnectivityCheckRequestProtocolConfigurationHttpConfiguration object itself.
      */
@@ -55,7 +61,7 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
 
     /**
      * Get the validStatusCodes property: List of HTTP status codes considered valid for the request response.
-     *
+     * 
      * @return the validStatusCodes value.
      */
     public List<Long> validStatusCodes() {
@@ -64,19 +70,19 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
 
     /**
      * Set the validStatusCodes property: List of HTTP status codes considered valid for the request response.
-     *
+     * 
      * @param validStatusCodes the validStatusCodes value to set.
      * @return the ConnectivityCheckRequestProtocolConfigurationHttpConfiguration object itself.
      */
-    public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration withValidStatusCodes(
-        List<Long> validStatusCodes) {
+    public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration
+        withValidStatusCodes(List<Long> validStatusCodes) {
         this.validStatusCodes = validStatusCodes;
         return this;
     }
 
     /**
      * Get the headers property: List of headers to be included in the request.
-     *
+     * 
      * @return the headers value.
      */
     public List<HttpHeader> headers() {
@@ -85,7 +91,7 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
 
     /**
      * Set the headers property: List of headers to be included in the request.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the ConnectivityCheckRequestProtocolConfigurationHttpConfiguration object itself.
      */
@@ -96,12 +102,62 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+        jsonWriter.writeArrayField("validStatusCodes", this.validStatusCodes,
+            (writer, element) -> writer.writeLong(element));
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityCheckRequestProtocolConfigurationHttpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityCheckRequestProtocolConfigurationHttpConfiguration if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ConnectivityCheckRequestProtocolConfigurationHttpConfiguration.
+     */
+    public static ConnectivityCheckRequestProtocolConfigurationHttpConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityCheckRequestProtocolConfigurationHttpConfiguration deserializedConnectivityCheckRequestProtocolConfigurationHttpConfiguration
+                = new ConnectivityCheckRequestProtocolConfigurationHttpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("method".equals(fieldName)) {
+                    deserializedConnectivityCheckRequestProtocolConfigurationHttpConfiguration.method
+                        = Method.fromString(reader.getString());
+                } else if ("validStatusCodes".equals(fieldName)) {
+                    List<Long> validStatusCodes = reader.readArray(reader1 -> reader1.getLong());
+                    deserializedConnectivityCheckRequestProtocolConfigurationHttpConfiguration.validStatusCodes
+                        = validStatusCodes;
+                } else if ("headers".equals(fieldName)) {
+                    List<HttpHeader> headers = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                    deserializedConnectivityCheckRequestProtocolConfigurationHttpConfiguration.headers = headers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityCheckRequestProtocolConfigurationHttpConfiguration;
+        });
     }
 }

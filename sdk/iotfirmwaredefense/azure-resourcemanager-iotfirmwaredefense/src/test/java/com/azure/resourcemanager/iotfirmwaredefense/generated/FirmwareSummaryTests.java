@@ -26,9 +26,12 @@ public final class FirmwareSummaryTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FirmwareSummary model = new FirmwareSummary().withExtractedSize(5328487592567211708L)
-            .withFileSize(8973268749707616780L).withExtractedFileCount(4408315824184510745L)
-            .withComponentCount(4532260686626458912L).withBinaryCount(3431496164141244398L)
-            .withAnalysisTimeSeconds(7532014789770741104L).withRootFileSystems(2762302346763758082L);
+            .withFileSize(8973268749707616780L)
+            .withExtractedFileCount(4408315824184510745L)
+            .withComponentCount(4532260686626458912L)
+            .withBinaryCount(3431496164141244398L)
+            .withAnalysisTimeSeconds(7532014789770741104L)
+            .withRootFileSystems(2762302346763758082L);
         model = BinaryData.fromObject(model).toObject(FirmwareSummary.class);
         Assertions.assertEquals(5328487592567211708L, model.extractedSize());
         Assertions.assertEquals(8973268749707616780L, model.fileSize());

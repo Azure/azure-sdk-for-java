@@ -9,7 +9,8 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
      * VolumeGroups_Get_MinimumSet_Gen.json
      */
     /**
@@ -18,12 +19,14 @@ public final class VolumeGroupsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsGetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
-            com.azure.core.util.Context.NONE);
+        manager.volumeGroups()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
      * VolumeGroups_Get_MaximumSet_Gen.json
      */
     /**
@@ -32,7 +35,8 @@ public final class VolumeGroupsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
-            com.azure.core.util.Context.NONE);
+        manager.volumeGroups()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
+                com.azure.core.util.Context.NONE);
     }
 }

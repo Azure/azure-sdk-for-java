@@ -22,8 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRuleInner, LoadBalancerImpl, LoadBalancer>
-    implements LoadBalancerOutboundRule,
-    LoadBalancerOutboundRule.Definition<LoadBalancerImpl>,
+    implements LoadBalancerOutboundRule, LoadBalancerOutboundRule.Definition<LoadBalancerImpl>,
     LoadBalancerOutboundRule.Update<LoadBalancerImpl> {
 
     LoadBalancerOutboundRuleImpl(OutboundRuleInner inner, LoadBalancerImpl parent) {
@@ -39,11 +38,11 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
     @Override
     public Map<String, LoadBalancerFrontend> frontends() {
         Map<String, LoadBalancerFrontend> nameToFrontEndMap = new TreeMap<>();
-        if (this.innerModel().frontendIpConfigurations() != null && !this.innerModel().frontendIpConfigurations().isEmpty()) {
+        if (this.innerModel().frontendIpConfigurations() != null
+            && !this.innerModel().frontendIpConfigurations().isEmpty()) {
             for (SubResource frontendIpConfiguration : this.innerModel().frontendIpConfigurations()) {
-                LoadBalancerFrontend frontend = this.parent()
-                    .frontends()
-                    .get(ResourceUtils.nameFromResourceId(frontendIpConfiguration.id()));
+                LoadBalancerFrontend frontend
+                    = this.parent().frontends().get(ResourceUtils.nameFromResourceId(frontendIpConfiguration.id()));
                 nameToFrontEndMap.put(frontend.name(), frontend);
             }
         }
@@ -52,8 +51,7 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
 
     @Override
     public LoadBalancerBackend backend() {
-        return this
-            .parent()
+        return this.parent()
             .backends()
             .get(ResourceUtils.nameFromResourceId(this.innerModel().backendAddressPool().id()));
     }
@@ -96,8 +94,8 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
         // Ensure existence of backend, creating one if needed
         this.parent().defineBackend(name).attach();
 
-        SubResource backendRef =
-            new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
+        SubResource backendRef
+            = new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
         this.innerModel().withBackendAddressPool(backendRef);
         return this;
     }

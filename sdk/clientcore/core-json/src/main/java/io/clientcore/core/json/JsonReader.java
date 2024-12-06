@@ -418,7 +418,7 @@ public abstract class JsonReader implements Closeable {
      */
     private void appendJson(StringBuilder buffer, JsonToken token) throws IOException {
         // TODO (alzimmer): Think of making this a protected method. This will allow for optimizations such as where
-        //  Jackson can read text directly into a StringBuilder which removes a String copy.
+        // Jackson can read text directly into a StringBuilder which removes a String copy.
         if (token == JsonToken.FIELD_NAME) {
             buffer.append("\"");
             ENCODER.quoteAsString(getFieldName(), buffer);
@@ -605,8 +605,10 @@ public abstract class JsonReader implements Closeable {
         } else if (token == JsonToken.NUMBER) {
             String numberText = getText();
 
-            if ("INF".equals(numberText) || "Infinity".equals(numberText)
-                || "-INF".equals(numberText) || "-Infinity".equals(numberText)
+            if ("INF".equals(numberText)
+                || "Infinity".equals(numberText)
+                || "-INF".equals(numberText)
+                || "-Infinity".equals(numberText)
                 || "NaN".equals(numberText)) {
                 // Return special Double values as text as not all implementations of JsonReader may be able to handle
                 // them as Doubles when parsing generically.

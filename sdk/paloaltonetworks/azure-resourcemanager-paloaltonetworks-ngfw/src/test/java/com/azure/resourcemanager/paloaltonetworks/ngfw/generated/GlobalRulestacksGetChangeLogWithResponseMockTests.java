@@ -44,12 +44,14 @@ public final class GlobalRulestacksGetChangeLogWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Changelog response = manager.globalRulestacks()
-            .getChangeLogWithResponse("jiuqhibtozi", com.azure.core.util.Context.NONE).getValue();
+            .getChangeLogWithResponse("jiuqhibtozi", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("wjedmurrxxgew", response.changes().get(0));
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T20:24:57Z"), response.lastCommitted());

@@ -14,8 +14,8 @@ public final class AzureResourceSkuImpl implements AzureResourceSku {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    AzureResourceSkuImpl(
-        AzureResourceSkuInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    AzureResourceSkuImpl(AzureResourceSkuInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

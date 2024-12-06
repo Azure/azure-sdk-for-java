@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** All encryption configuration for a resource. */
+/**
+ * All encryption configuration for a resource.
+ */
 @Fluent
-public final class EncryptionProperties {
+public final class EncryptionProperties implements JsonSerializable<EncryptionProperties> {
     /*
      * All Customer-managed key encryption properties for the resource.
      */
-    @JsonProperty(value = "customerManagedKeyEncryption")
     private CustomerManagedKeyEncryptionProperties customerManagedKeyEncryption;
 
     /**
+     * Creates an instance of EncryptionProperties class.
+     */
+    public EncryptionProperties() {
+    }
+
+    /**
      * Get the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
-     *
+     * 
      * @return the customerManagedKeyEncryption value.
      */
     public CustomerManagedKeyEncryptionProperties customerManagedKeyEncryption() {
@@ -27,24 +38,61 @@ public final class EncryptionProperties {
 
     /**
      * Set the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
-     *
+     * 
      * @param customerManagedKeyEncryption the customerManagedKeyEncryption value to set.
      * @return the EncryptionProperties object itself.
      */
-    public EncryptionProperties withCustomerManagedKeyEncryption(
-        CustomerManagedKeyEncryptionProperties customerManagedKeyEncryption) {
+    public EncryptionProperties
+        withCustomerManagedKeyEncryption(CustomerManagedKeyEncryptionProperties customerManagedKeyEncryption) {
         this.customerManagedKeyEncryption = customerManagedKeyEncryption;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (customerManagedKeyEncryption() != null) {
             customerManagedKeyEncryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customerManagedKeyEncryption", this.customerManagedKeyEncryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionProperties.
+     */
+    public static EncryptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionProperties deserializedEncryptionProperties = new EncryptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customerManagedKeyEncryption".equals(fieldName)) {
+                    deserializedEncryptionProperties.customerManagedKeyEncryption
+                        = CustomerManagedKeyEncryptionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionProperties;
+        });
     }
 }

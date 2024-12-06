@@ -10,11 +10,9 @@ import com.azure.resourcemanager.appconfiguration.fluent.models.DeletedConfigura
 public final class DeletedConfigurationStorePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeletedConfigurationStoreProperties model =
-            BinaryData
-                .fromString(
-                    "{\"configurationStoreId\":\"epcyvahfnlj\",\"location\":\"qxj\",\"deletionDate\":\"2021-01-29T11:34:22Z\",\"scheduledPurgeDate\":\"2021-01-04T05:40:41Z\",\"tags\":{\"yoxgvcltbgsnc\":\"dokgjl\",\"htxfvgxbfsmxnehm\":\"hkjeszzhbi\"},\"purgeProtectionEnabled\":false}")
-                .toObject(DeletedConfigurationStoreProperties.class);
+        DeletedConfigurationStoreProperties model = BinaryData.fromString(
+            "{\"configurationStoreId\":\"mv\",\"location\":\"kgpwoz\",\"deletionDate\":\"2021-12-04T01:13:33Z\",\"scheduledPurgeDate\":\"2021-08-14T18:03:09Z\",\"tags\":{\"waboe\":\"jyofdxluusdtto\",\"bxwyjsflhhcaa\":\"qvkelnsm\"},\"purgeProtectionEnabled\":true}")
+            .toObject(DeletedConfigurationStoreProperties.class);
     }
 
     @org.junit.jupiter.api.Test

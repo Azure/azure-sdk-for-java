@@ -53,6 +53,7 @@ class AzurePasswordlessPropertiesUtilsTest {
         source.credential.setUsername("credential-username-A");
         source.credential.setPassword("credential-password-A");
         source.credential.setManagedIdentityEnabled(true);
+        source.credential.setTokenCredentialBeanName("my-token-credential");
 
         final PasswordlessPropertiesB target = new PasswordlessPropertiesB();
         AzurePasswordlessPropertiesUtils.copyAzureCommonProperties(source, target);
@@ -68,6 +69,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("credential-client-cert-password-A", target.credential.getClientCertificatePassword());
         assertEquals("credential-username-A", target.credential.getUsername());
         assertEquals("credential-password-A", target.credential.getPassword());
+        assertTrue(target.credential.isManagedIdentityEnabled());
+        assertEquals("my-token-credential", target.credential.getTokenCredentialBeanName());
 
     }
 
@@ -98,6 +101,7 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("credential-client-cert-password-B", target.credential.getClientCertificatePassword());
         assertEquals("credential-username-B", target.credential.getUsername());
         assertEquals("credential-password-B", target.credential.getPassword());
+        assertTrue(target.credential.isManagedIdentityEnabled());
 
         AzurePropertiesA source = new AzurePropertiesA();
         source.client.setApplicationId("client-application-id-A");
@@ -107,6 +111,7 @@ class AzurePasswordlessPropertiesUtilsTest {
         source.retry.getExponential().setMaxRetries(13);
         source.retry.getExponential().setMaxDelay(Duration.ofSeconds(14));
         source.credential.setClientId("credential-client-id-A");
+        source.credential.setTokenCredentialBeanName("my-token-credential");
 
         AzurePasswordlessPropertiesUtils.copyAzureCommonProperties(source, target);
 
@@ -117,6 +122,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-A", target.credential.getClientId());
+        assertEquals("my-token-credential", target.credential.getTokenCredentialBeanName());
+//        assertTrue(target.credential.isManagedIdentityEnabled());
         assertNull(target.credential.getClientSecret());
         assertNull(target.credential.getClientCertificatePath());
         assertNull(target.credential.getClientCertificatePassword());
@@ -174,6 +181,7 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("credential-client-cert-password-B", target.credential.getClientCertificatePassword());
         assertEquals("credential-username-B", target.credential.getUsername());
         assertEquals("credential-password-B", target.credential.getPassword());
+        assertTrue(target.credential.isManagedIdentityEnabled());
         assertTrue(target.isPasswordlessEnabled());
         assertEquals("fake-scopes", target.getScopes());
 

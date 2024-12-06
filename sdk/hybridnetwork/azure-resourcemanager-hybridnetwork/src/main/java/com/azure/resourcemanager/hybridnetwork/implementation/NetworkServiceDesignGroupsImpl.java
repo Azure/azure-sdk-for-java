@@ -51,8 +51,8 @@ public final class NetworkServiceDesignGroupsImpl implements NetworkServiceDesig
 
     public Response<NetworkServiceDesignGroup> getWithResponse(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, Context context) {
-        Response<NetworkServiceDesignGroupInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            publisherName, networkServiceDesignGroupName, context);
+        Response<NetworkServiceDesignGroupInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkServiceDesignGroupImpl(inner.getValue(), this.manager()));

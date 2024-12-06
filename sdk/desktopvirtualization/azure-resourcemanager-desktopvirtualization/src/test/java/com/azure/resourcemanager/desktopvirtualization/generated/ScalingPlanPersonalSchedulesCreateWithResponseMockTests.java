@@ -6,11 +6,9 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedule;
@@ -18,116 +16,86 @@ import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOpe
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.StartupBehavior;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScalingPlanPersonalSchedulesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"daysOfWeek\":[\"Tuesday\"],\"rampUpStartTime\":{\"hour\":1740485415,\"minute\":1580981613},\"rampUpAutoStartHosts\":\"None\",\"rampUpStartVMOnConnect\":\"Enable\",\"rampUpActionOnDisconnect\":\"Deallocate\",\"rampUpMinutesToWaitOnDisconnect\":425650083,\"rampUpActionOnLogoff\":\"Deallocate\",\"rampUpMinutesToWaitOnLogoff\":1409401531,\"peakStartTime\":{\"hour\":1569096648,\"minute\":1529419314},\"peakStartVMOnConnect\":\"Disable\",\"peakActionOnDisconnect\":\"Hibernate\",\"peakMinutesToWaitOnDisconnect\":233230140,\"peakActionOnLogoff\":\"None\",\"peakMinutesToWaitOnLogoff\":2042229356,\"rampDownStartTime\":{\"hour\":1674537674,\"minute\":717249946},\"rampDownStartVMOnConnect\":\"Disable\",\"rampDownActionOnDisconnect\":\"Deallocate\",\"rampDownMinutesToWaitOnDisconnect\":1772909914,\"rampDownActionOnLogoff\":\"Deallocate\",\"rampDownMinutesToWaitOnLogoff\":70597241,\"offPeakStartTime\":{\"hour\":990938401,\"minute\":1699692322},\"offPeakStartVMOnConnect\":\"Enable\",\"offPeakActionOnDisconnect\":\"Hibernate\",\"offPeakMinutesToWaitOnDisconnect\":1400894548,\"offPeakActionOnLogoff\":\"None\",\"offPeakMinutesToWaitOnLogoff\":1125182676},\"id\":\"xqvapcohh\",\"name\":\"ucqpqojxcxzrz\",\"type\":\"cgdz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"daysOfWeek\":[\"Thursday\",\"Saturday\"],\"rampUpStartTime\":{\"hour\":474729802,\"minute\":513283107},\"rampUpAutoStartHosts\":\"All\",\"rampUpStartVMOnConnect\":\"Enable\",\"rampUpActionOnDisconnect\":\"None\",\"rampUpMinutesToWaitOnDisconnect\":120570270,\"rampUpActionOnLogoff\":\"Deallocate\",\"rampUpMinutesToWaitOnLogoff\":1801029414,\"peakStartTime\":{\"hour\":2013893290,\"minute\":728731016},\"peakStartVMOnConnect\":\"Disable\",\"peakActionOnDisconnect\":\"None\",\"peakMinutesToWaitOnDisconnect\":956531866,\"peakActionOnLogoff\":\"Deallocate\",\"peakMinutesToWaitOnLogoff\":1159295504,\"rampDownStartTime\":{\"hour\":881600617,\"minute\":323271862},\"rampDownStartVMOnConnect\":\"Disable\",\"rampDownActionOnDisconnect\":\"Hibernate\",\"rampDownMinutesToWaitOnDisconnect\":643996998,\"rampDownActionOnLogoff\":\"None\",\"rampDownMinutesToWaitOnLogoff\":1995436037,\"offPeakStartTime\":{\"hour\":429676827,\"minute\":550582192},\"offPeakStartVMOnConnect\":\"Disable\",\"offPeakActionOnDisconnect\":\"Hibernate\",\"offPeakMinutesToWaitOnDisconnect\":420064622,\"offPeakActionOnLogoff\":\"Hibernate\",\"offPeakMinutesToWaitOnLogoff\":617111065},\"id\":\"iroqbosh\",\"name\":\"ragapyyrmfsvbp\",\"type\":\"vbopfppdbwnu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DesktopVirtualizationManager manager = DesktopVirtualizationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ScalingPlanPersonalSchedule response = manager.scalingPlanPersonalSchedules()
+            .define("gdhxi")
+            .withExistingScalingPlan("rrueqthwmg", "mbscbbx")
+            .withDaysOfWeek(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.THURSDAY, DayOfWeek.TUESDAY, DayOfWeek.TUESDAY))
+            .withRampUpStartTime(new Time().withHour(1096839019).withMinute(896412004))
+            .withRampUpAutoStartHosts(StartupBehavior.ALL)
+            .withRampUpStartVMOnConnect(SetStartVMOnConnect.DISABLE)
+            .withRampUpActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withRampUpMinutesToWaitOnDisconnect(1122142083)
+            .withRampUpActionOnLogoff(SessionHandlingOperation.HIBERNATE)
+            .withRampUpMinutesToWaitOnLogoff(1483648250)
+            .withPeakStartTime(new Time().withHour(935812516).withMinute(686332411))
+            .withPeakStartVMOnConnect(SetStartVMOnConnect.ENABLE)
+            .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withPeakMinutesToWaitOnDisconnect(912585397)
+            .withPeakActionOnLogoff(SessionHandlingOperation.HIBERNATE)
+            .withPeakMinutesToWaitOnLogoff(939528719)
+            .withRampDownStartTime(new Time().withHour(1438564589).withMinute(1525948244))
+            .withRampDownStartVMOnConnect(SetStartVMOnConnect.DISABLE)
+            .withRampDownActionOnDisconnect(SessionHandlingOperation.HIBERNATE)
+            .withRampDownMinutesToWaitOnDisconnect(757969717)
+            .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withRampDownMinutesToWaitOnLogoff(883742006)
+            .withOffPeakStartTime(new Time().withHour(1335444948).withMinute(1699509778))
+            .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
+            .withOffPeakActionOnDisconnect(SessionHandlingOperation.DEALLOCATE)
+            .withOffPeakMinutesToWaitOnDisconnect(1120950278)
+            .withOffPeakActionOnLogoff(SessionHandlingOperation.NONE)
+            .withOffPeakMinutesToWaitOnLogoff(49618457)
+            .create();
 
-        DesktopVirtualizationManager manager =
-            DesktopVirtualizationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ScalingPlanPersonalSchedule response =
-            manager
-                .scalingPlanPersonalSchedules()
-                .define("tlyo")
-                .withExistingScalingPlan("xbannovvoxc", "ytprwnwvroev")
-                .withDaysOfWeek(
-                    Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY))
-                .withRampUpStartTime(new Time().withHour(725083050).withMinute(1442660338))
-                .withRampUpAutoStartHosts(StartupBehavior.NONE)
-                .withRampUpStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                .withRampUpActionOnDisconnect(SessionHandlingOperation.HIBERNATE)
-                .withRampUpMinutesToWaitOnDisconnect(251649293)
-                .withRampUpActionOnLogoff(SessionHandlingOperation.HIBERNATE)
-                .withRampUpMinutesToWaitOnLogoff(1458275962)
-                .withPeakStartTime(new Time().withHour(952405971).withMinute(1835764964))
-                .withPeakStartVMOnConnect(SetStartVMOnConnect.ENABLE)
-                .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
-                .withPeakMinutesToWaitOnDisconnect(61809023)
-                .withPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                .withPeakMinutesToWaitOnLogoff(552291505)
-                .withRampDownStartTime(new Time().withHour(796000684).withMinute(312997434))
-                .withRampDownStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                .withRampDownActionOnDisconnect(SessionHandlingOperation.NONE)
-                .withRampDownMinutesToWaitOnDisconnect(1195443779)
-                .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                .withRampDownMinutesToWaitOnLogoff(1597074926)
-                .withOffPeakStartTime(new Time().withHour(1352836682).withMinute(315314299))
-                .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                .withOffPeakActionOnDisconnect(SessionHandlingOperation.NONE)
-                .withOffPeakMinutesToWaitOnDisconnect(265709427)
-                .withOffPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                .withOffPeakMinutesToWaitOnLogoff(347000614)
-                .create();
-
-        Assertions.assertEquals(DayOfWeek.THURSDAY, response.daysOfWeek().get(0));
-        Assertions.assertEquals(474729802, response.rampUpStartTime().hour());
-        Assertions.assertEquals(513283107, response.rampUpStartTime().minute());
-        Assertions.assertEquals(StartupBehavior.ALL, response.rampUpAutoStartHosts());
+        Assertions.assertEquals(DayOfWeek.TUESDAY, response.daysOfWeek().get(0));
+        Assertions.assertEquals(1740485415, response.rampUpStartTime().hour());
+        Assertions.assertEquals(1580981613, response.rampUpStartTime().minute());
+        Assertions.assertEquals(StartupBehavior.NONE, response.rampUpAutoStartHosts());
         Assertions.assertEquals(SetStartVMOnConnect.ENABLE, response.rampUpStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.NONE, response.rampUpActionOnDisconnect());
-        Assertions.assertEquals(120570270, response.rampUpMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, response.rampUpActionOnDisconnect());
+        Assertions.assertEquals(425650083, response.rampUpMinutesToWaitOnDisconnect());
         Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, response.rampUpActionOnLogoff());
-        Assertions.assertEquals(1801029414, response.rampUpMinutesToWaitOnLogoff());
-        Assertions.assertEquals(2013893290, response.peakStartTime().hour());
-        Assertions.assertEquals(728731016, response.peakStartTime().minute());
+        Assertions.assertEquals(1409401531, response.rampUpMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1569096648, response.peakStartTime().hour());
+        Assertions.assertEquals(1529419314, response.peakStartTime().minute());
         Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.peakStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.NONE, response.peakActionOnDisconnect());
-        Assertions.assertEquals(956531866, response.peakMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, response.peakActionOnLogoff());
-        Assertions.assertEquals(1159295504, response.peakMinutesToWaitOnLogoff());
-        Assertions.assertEquals(881600617, response.rampDownStartTime().hour());
-        Assertions.assertEquals(323271862, response.rampDownStartTime().minute());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, response.peakActionOnDisconnect());
+        Assertions.assertEquals(233230140, response.peakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, response.peakActionOnLogoff());
+        Assertions.assertEquals(2042229356, response.peakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1674537674, response.rampDownStartTime().hour());
+        Assertions.assertEquals(717249946, response.rampDownStartTime().minute());
         Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.rampDownStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, response.rampDownActionOnDisconnect());
-        Assertions.assertEquals(643996998, response.rampDownMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.NONE, response.rampDownActionOnLogoff());
-        Assertions.assertEquals(1995436037, response.rampDownMinutesToWaitOnLogoff());
-        Assertions.assertEquals(429676827, response.offPeakStartTime().hour());
-        Assertions.assertEquals(550582192, response.offPeakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.offPeakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, response.rampDownActionOnDisconnect());
+        Assertions.assertEquals(1772909914, response.rampDownMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, response.rampDownActionOnLogoff());
+        Assertions.assertEquals(70597241, response.rampDownMinutesToWaitOnLogoff());
+        Assertions.assertEquals(990938401, response.offPeakStartTime().hour());
+        Assertions.assertEquals(1699692322, response.offPeakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, response.offPeakStartVMOnConnect());
         Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, response.offPeakActionOnDisconnect());
-        Assertions.assertEquals(420064622, response.offPeakMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, response.offPeakActionOnLogoff());
-        Assertions.assertEquals(617111065, response.offPeakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1400894548, response.offPeakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, response.offPeakActionOnLogoff());
+        Assertions.assertEquals(1125182676, response.offPeakMinutesToWaitOnLogoff());
     }
 }

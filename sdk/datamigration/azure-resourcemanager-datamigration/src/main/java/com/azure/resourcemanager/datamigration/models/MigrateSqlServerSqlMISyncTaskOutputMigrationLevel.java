@@ -5,89 +5,102 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The MigrateSqlServerSqlMISyncTaskOutputMigrationLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("MigrationLevelOutput")
+/**
+ * The MigrateSqlServerSqlMISyncTaskOutputMigrationLevel model.
+ */
 @Immutable
 public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends MigrateSqlServerSqlMISyncTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "MigrationLevelOutput";
+
+    /*
      * Count of databases
      */
-    @JsonProperty(value = "databaseCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer databaseCount;
 
     /*
      * Current state of migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Source server name
      */
-    @JsonProperty(value = "sourceServerName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerName;
 
     /*
      * Source server version
      */
-    @JsonProperty(value = "sourceServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerVersion;
 
     /*
      * Source server brand version
      */
-    @JsonProperty(value = "sourceServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceServerBrandVersion;
 
     /*
      * Target server name
      */
-    @JsonProperty(value = "targetServerName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerName;
 
     /*
      * Target server version
      */
-    @JsonProperty(value = "targetServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerVersion;
 
     /*
      * Target server brand version
      */
-    @JsonProperty(value = "targetServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerBrandVersion;
 
     /*
      * Number of database level errors
      */
-    @JsonProperty(value = "databaseErrorCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer databaseErrorCount;
 
-    /** Creates an instance of MigrateSqlServerSqlMISyncTaskOutputMigrationLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlMISyncTaskOutputMigrationLevel class.
+     */
     public MigrateSqlServerSqlMISyncTaskOutputMigrationLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the databaseCount property: Count of databases.
-     *
+     * 
      * @return the databaseCount value.
      */
     public Integer databaseCount() {
@@ -96,7 +109,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the state property: Current state of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -105,7 +118,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the startedOn property: Migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -114,7 +127,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the endedOn property: Migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -123,7 +136,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the sourceServerName property: Source server name.
-     *
+     * 
      * @return the sourceServerName value.
      */
     public String sourceServerName() {
@@ -132,7 +145,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the sourceServerVersion property: Source server version.
-     *
+     * 
      * @return the sourceServerVersion value.
      */
     public String sourceServerVersion() {
@@ -141,7 +154,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the sourceServerBrandVersion property: Source server brand version.
-     *
+     * 
      * @return the sourceServerBrandVersion value.
      */
     public String sourceServerBrandVersion() {
@@ -150,7 +163,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the targetServerName property: Target server name.
-     *
+     * 
      * @return the targetServerName value.
      */
     public String targetServerName() {
@@ -159,7 +172,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the targetServerVersion property: Target server version.
-     *
+     * 
      * @return the targetServerVersion value.
      */
     public String targetServerVersion() {
@@ -168,7 +181,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the targetServerBrandVersion property: Target server brand version.
-     *
+     * 
      * @return the targetServerBrandVersion value.
      */
     public String targetServerBrandVersion() {
@@ -177,7 +190,7 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
 
     /**
      * Get the databaseErrorCount property: Number of database level errors.
-     *
+     * 
      * @return the databaseErrorCount value.
      */
     public Integer databaseErrorCount() {
@@ -185,12 +198,91 @@ public final class MigrateSqlServerSqlMISyncTaskOutputMigrationLevel extends Mig
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMISyncTaskOutputMigrationLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMISyncTaskOutputMigrationLevel if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMISyncTaskOutputMigrationLevel.
+     */
+    public static MigrateSqlServerSqlMISyncTaskOutputMigrationLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMISyncTaskOutputMigrationLevel deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel
+                = new MigrateSqlServerSqlMISyncTaskOutputMigrationLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.resultType = reader.getString();
+                } else if ("databaseCount".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.databaseCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.state
+                        = MigrationState.fromString(reader.getString());
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sourceServerName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.sourceServerName = reader.getString();
+                } else if ("sourceServerVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.sourceServerVersion
+                        = reader.getString();
+                } else if ("sourceServerBrandVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.sourceServerBrandVersion
+                        = reader.getString();
+                } else if ("targetServerName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.targetServerName = reader.getString();
+                } else if ("targetServerVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.targetServerVersion
+                        = reader.getString();
+                } else if ("targetServerBrandVersion".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.targetServerBrandVersion
+                        = reader.getString();
+                } else if ("databaseErrorCount".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel.databaseErrorCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMISyncTaskOutputMigrationLevel;
+        });
     }
 }

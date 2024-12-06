@@ -32,12 +32,12 @@ public final class RoomParticipant {
         this.role = ParticipantRole.ATTENDEE;
     }
 
-       /**
-     * Set the role property: The role of a room participant. The default value is Attendee.
-     *
-     * @param role the role value to set.
-     * @return the RoomParticipant object itself.
-     */
+    /**
+    * Set the role property: The role of a room participant. The default value is Attendee.
+    *
+    * @param role the role value to set.
+    * @return the RoomParticipant object itself.
+    */
     public RoomParticipant setRole(ParticipantRole role) {
         if (role == null) {
             this.role = ParticipantRole.ATTENDEE;

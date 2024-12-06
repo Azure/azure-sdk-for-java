@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.BmcKeySetsClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.BmcKeySetInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.BmcKeySet;
 import com.azure.resourcemanager.networkcloud.models.BmcKeySets;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 
 public final class BmcKeySetsImpl implements BmcKeySets {
     private static final ClientLogger LOGGER = new ClientLogger(BmcKeySetsImpl.class);
@@ -21,32 +23,29 @@ public final class BmcKeySetsImpl implements BmcKeySets {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public BmcKeySetsImpl(
-        BmcKeySetsClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public BmcKeySetsImpl(BmcKeySetsClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<BmcKeySet> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<BmcKeySetInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new BmcKeySetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BmcKeySetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BmcKeySet> listByCluster(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<BmcKeySetInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new BmcKeySetImpl(inner1, this.manager()));
+        PagedIterable<BmcKeySetInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BmcKeySetImpl(inner1, this.manager()));
     }
 
-    public Response<BmcKeySet> getWithResponse(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
-        Response<BmcKeySetInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, bmcKeySetName, context);
+    public Response<BmcKeySet> getWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
+        Context context) {
+        Response<BmcKeySetInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, bmcKeySetName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BmcKeySetImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,116 +61,100 @@ public final class BmcKeySetsImpl implements BmcKeySets {
         }
     }
 
-    public void delete(String resourceGroupName, String clusterName, String bmcKeySetName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, bmcKeySetName);
+    public OperationStatusResult delete(String resourceGroupName, String clusterName, String bmcKeySetName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, clusterName, bmcKeySetName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String clusterName, String bmcKeySetName, Context context) {
-        this.serviceClient().delete(resourceGroupName, clusterName, bmcKeySetName, context);
+    public OperationStatusResult delete(String resourceGroupName, String clusterName, String bmcKeySetName,
+        Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, clusterName, bmcKeySetName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public BmcKeySet getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String bmcKeySetName = Utils.getValueFromIdByName(id, "bmcKeySets");
+        String bmcKeySetName = ResourceManagerUtils.getValueFromIdByName(id, "bmcKeySets");
         if (bmcKeySetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, bmcKeySetName, Context.NONE).getValue();
     }
 
     public Response<BmcKeySet> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String bmcKeySetName = Utils.getValueFromIdByName(id, "bmcKeySets");
+        String bmcKeySetName = ResourceManagerUtils.getValueFromIdByName(id, "bmcKeySets");
         if (bmcKeySetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, bmcKeySetName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String bmcKeySetName = Utils.getValueFromIdByName(id, "bmcKeySets");
+        String bmcKeySetName = ResourceManagerUtils.getValueFromIdByName(id, "bmcKeySets");
         if (bmcKeySetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
         }
-        this.delete(resourceGroupName, clusterName, bmcKeySetName, Context.NONE);
+        return this.delete(resourceGroupName, clusterName, bmcKeySetName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String bmcKeySetName = Utils.getValueFromIdByName(id, "bmcKeySets");
+        String bmcKeySetName = ResourceManagerUtils.getValueFromIdByName(id, "bmcKeySets");
         if (bmcKeySetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'bmcKeySets'.", id)));
         }
-        this.delete(resourceGroupName, clusterName, bmcKeySetName, context);
+        return this.delete(resourceGroupName, clusterName, bmcKeySetName, context);
     }
 
     private BmcKeySetsClient serviceClient() {

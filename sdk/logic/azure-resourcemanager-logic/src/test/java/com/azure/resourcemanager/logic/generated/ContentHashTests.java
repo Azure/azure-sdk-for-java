@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ContentHashTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentHash model =
-            BinaryData.fromString("{\"algorithm\":\"kn\",\"value\":\"scwsv\"}").toObject(ContentHash.class);
-        Assertions.assertEquals("kn", model.algorithm());
-        Assertions.assertEquals("scwsv", model.value());
+        ContentHash model = BinaryData.fromString("{\"algorithm\":\"szzcmrvexztv\",\"value\":\"qgsfraoyzkoow\"}")
+            .toObject(ContentHash.class);
+        Assertions.assertEquals("szzcmrvexztv", model.algorithm());
+        Assertions.assertEquals("qgsfraoyzkoow", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentHash model = new ContentHash().withAlgorithm("kn").withValue("scwsv");
+        ContentHash model = new ContentHash().withAlgorithm("szzcmrvexztv").withValue("qgsfraoyzkoow");
         model = BinaryData.fromObject(model).toObject(ContentHash.class);
-        Assertions.assertEquals("kn", model.algorithm());
-        Assertions.assertEquals("scwsv", model.value());
+        Assertions.assertEquals("szzcmrvexztv", model.algorithm());
+        Assertions.assertEquals("qgsfraoyzkoow", model.value());
     }
 }

@@ -6,38 +6,43 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the Backend WebProxy Server to use in the Request to Backend. */
+/**
+ * Details of the Backend WebProxy Server to use in the Request to Backend.
+ */
 @Fluent
-public final class BackendProxyContract {
+public final class BackendProxyContract implements JsonSerializable<BackendProxyContract> {
     /*
      * WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all
      * fragments and query strings.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Username to connect to the WebProxy server
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Password to connect to the WebProxy Server
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of BackendProxyContract class. */
+    /**
+     * Creates an instance of BackendProxyContract class.
+     */
     public BackendProxyContract() {
     }
 
     /**
      * Get the url property: WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri
      * instance, including all fragments and query strings.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -47,7 +52,7 @@ public final class BackendProxyContract {
     /**
      * Set the url property: WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri
      * instance, including all fragments and query strings.
-     *
+     * 
      * @param url the url value to set.
      * @return the BackendProxyContract object itself.
      */
@@ -58,7 +63,7 @@ public final class BackendProxyContract {
 
     /**
      * Get the username property: Username to connect to the WebProxy server.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -67,7 +72,7 @@ public final class BackendProxyContract {
 
     /**
      * Set the username property: Username to connect to the WebProxy server.
-     *
+     * 
      * @param username the username value to set.
      * @return the BackendProxyContract object itself.
      */
@@ -78,7 +83,7 @@ public final class BackendProxyContract {
 
     /**
      * Get the password property: Password to connect to the WebProxy Server.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -87,7 +92,7 @@ public final class BackendProxyContract {
 
     /**
      * Set the password property: Password to connect to the WebProxy Server.
-     *
+     * 
      * @param password the password value to set.
      * @return the BackendProxyContract object itself.
      */
@@ -98,16 +103,58 @@ public final class BackendProxyContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model BackendProxyContract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model BackendProxyContract"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackendProxyContract.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendProxyContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendProxyContract if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackendProxyContract.
+     */
+    public static BackendProxyContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendProxyContract deserializedBackendProxyContract = new BackendProxyContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedBackendProxyContract.url = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedBackendProxyContract.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedBackendProxyContract.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendProxyContract;
+        });
+    }
 }

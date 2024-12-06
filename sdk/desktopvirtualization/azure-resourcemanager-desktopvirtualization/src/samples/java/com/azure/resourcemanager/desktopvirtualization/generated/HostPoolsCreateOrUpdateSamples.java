@@ -20,20 +20,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for HostPools CreateOrUpdate. */
+/**
+ * Samples for HostPools CreateOrUpdate.
+ */
 public final class HostPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/HostPool_Create.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * HostPool_Create.json
      */
     /**
      * Sample code: HostPool_Create.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
-    public static void hostPoolCreate(
-        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager
-            .hostPools()
+    public static void
+        hostPoolCreate(com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
+        manager.hostPools()
             .define("hostPool1")
             .withRegion("centralus")
             .withExistingResourceGroup("resourceGroup1")
@@ -46,8 +49,7 @@ public final class HostPoolsCreateOrUpdateSamples {
             .withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType.AUTOMATIC)
             .withMaxSessionLimit(999999)
             .withRegistrationInfo(
-                new RegistrationInfoInner()
-                    .withExpirationTime(OffsetDateTime.parse("2020-10-01T14:01:54.9571247Z"))
+                new RegistrationInfoInner().withExpirationTime(OffsetDateTime.parse("2020-10-01T14:01:54.9571247Z"))
                     .withRegistrationTokenOperation(RegistrationTokenOperation.UPDATE))
             .withVmTemplate("{json:json}")
             .withSsoadfsAuthority("https://adfs")
@@ -55,16 +57,12 @@ public final class HostPoolsCreateOrUpdateSamples {
             .withSsoClientSecretKeyVaultPath("https://keyvault/secret")
             .withSsoSecretType(SsoSecretType.SHARED_KEY)
             .withStartVMOnConnect(false)
-            .withAgentUpdate(
-                new AgentUpdateProperties()
-                    .withType(SessionHostComponentUpdateType.SCHEDULED)
-                    .withUseSessionHostLocalTime(false)
-                    .withMaintenanceWindowTimeZone("Alaskan Standard Time")
-                    .withMaintenanceWindows(
-                        Arrays
-                            .asList(
-                                new MaintenanceWindowProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
-                                new MaintenanceWindowProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
+            .withAgentUpdate(new AgentUpdateProperties().withType(SessionHostComponentUpdateType.SCHEDULED)
+                .withUseSessionHostLocalTime(false)
+                .withMaintenanceWindowTimeZone("Alaskan Standard Time")
+                .withMaintenanceWindows(
+                    Arrays.asList(new MaintenanceWindowProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
+                        new MaintenanceWindowProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
             .create();
     }
 

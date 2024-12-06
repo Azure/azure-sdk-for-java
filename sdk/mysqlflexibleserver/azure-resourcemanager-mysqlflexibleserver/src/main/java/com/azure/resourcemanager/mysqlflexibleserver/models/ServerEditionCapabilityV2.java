@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Server edition capabilities.
  */
 @Immutable
-public final class ServerEditionCapabilityV2 {
+public final class ServerEditionCapabilityV2 implements JsonSerializable<ServerEditionCapabilityV2> {
     /*
      * Server edition name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Default Sku name
      */
-    @JsonProperty(value = "defaultSku", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultSku;
 
     /*
      * Default storage size
      */
-    @JsonProperty(value = "defaultStorageSize", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultStorageSize;
 
     /*
      * A list of supported storage editions
      */
-    @JsonProperty(value = "supportedStorageEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageEditionCapability> supportedStorageEditions;
 
     /*
      * A list of supported Skus
      */
-    @JsonProperty(value = "supportedSkus", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapabilityV2> supportedSkus;
 
     /**
@@ -106,5 +105,52 @@ public final class ServerEditionCapabilityV2 {
         if (supportedSkus() != null) {
             supportedSkus().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerEditionCapabilityV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerEditionCapabilityV2 if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerEditionCapabilityV2.
+     */
+    public static ServerEditionCapabilityV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerEditionCapabilityV2 deserializedServerEditionCapabilityV2 = new ServerEditionCapabilityV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServerEditionCapabilityV2.name = reader.getString();
+                } else if ("defaultSku".equals(fieldName)) {
+                    deserializedServerEditionCapabilityV2.defaultSku = reader.getString();
+                } else if ("defaultStorageSize".equals(fieldName)) {
+                    deserializedServerEditionCapabilityV2.defaultStorageSize = reader.getNullable(JsonReader::getInt);
+                } else if ("supportedStorageEditions".equals(fieldName)) {
+                    List<StorageEditionCapability> supportedStorageEditions
+                        = reader.readArray(reader1 -> StorageEditionCapability.fromJson(reader1));
+                    deserializedServerEditionCapabilityV2.supportedStorageEditions = supportedStorageEditions;
+                } else if ("supportedSkus".equals(fieldName)) {
+                    List<SkuCapabilityV2> supportedSkus
+                        = reader.readArray(reader1 -> SkuCapabilityV2.fromJson(reader1));
+                    deserializedServerEditionCapabilityV2.supportedSkus = supportedSkus;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerEditionCapabilityV2;
+        });
     }
 }

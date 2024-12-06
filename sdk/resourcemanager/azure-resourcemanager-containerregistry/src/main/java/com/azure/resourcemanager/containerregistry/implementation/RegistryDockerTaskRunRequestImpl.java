@@ -13,10 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RegistryDockerTaskRunRequestImpl
-    implements RegistryDockerTaskRunRequest,
-        RegistryDockerTaskRunRequest.Definition,
-        HasInnerModel<DockerBuildRequest> {
+class RegistryDockerTaskRunRequestImpl implements RegistryDockerTaskRunRequest, RegistryDockerTaskRunRequest.Definition,
+    HasInnerModel<DockerBuildRequest> {
 
     private DockerBuildRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;
@@ -84,8 +82,8 @@ class RegistryDockerTaskRunRequestImpl
     }
 
     @Override
-    public RegistryDockerTaskRunRequestImpl withOverridingArguments(
-        Map<String, OverridingArgument> overridingArguments) {
+    public RegistryDockerTaskRunRequestImpl
+        withOverridingArguments(Map<String, OverridingArgument> overridingArguments) {
         if (overridingArguments.size() == 0) {
             return this;
         }
@@ -102,8 +100,8 @@ class RegistryDockerTaskRunRequestImpl
     }
 
     @Override
-    public DefinitionStages.DockerTaskRunRequestStepAttachable withOverridingArgument(
-        String name, OverridingArgument overridingArgument) {
+    public DefinitionStages.DockerTaskRunRequestStepAttachable withOverridingArgument(String name,
+        OverridingArgument overridingArgument) {
         if (this.inner.arguments() == null) {
             this.inner.withArguments(new ArrayList<Argument>());
         }

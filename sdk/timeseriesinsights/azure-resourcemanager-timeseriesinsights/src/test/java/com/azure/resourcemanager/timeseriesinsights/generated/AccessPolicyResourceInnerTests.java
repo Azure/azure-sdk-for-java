@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalObjectId\":\"nqecanoaeup\",\"description\":\"yhltrpmopjmcm\",\"roles\":[\"Reader\"]},\"id\":\"kthfui\",\"name\":\"aodsfcpkv\",\"type\":\"odpuozmyzydag\"}")
-                .toObject(AccessPolicyResourceInner.class);
-        Assertions.assertEquals("nqecanoaeup", model.principalObjectId());
-        Assertions.assertEquals("yhltrpmopjmcm", model.description());
+        AccessPolicyResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"principalObjectId\":\"edckzywbiexzfey\",\"description\":\"axibxujw\",\"roles\":[\"Reader\",\"Contributor\",\"Reader\",\"Contributor\"]},\"id\":\"uzyoxaep\",\"name\":\"kzjancuxrhdwbav\",\"type\":\"bniwdj\"}")
+            .toObject(AccessPolicyResourceInner.class);
+        Assertions.assertEquals("edckzywbiexzfey", model.principalObjectId());
+        Assertions.assertEquals("axibxujw", model.description());
         Assertions.assertEquals(AccessPolicyRole.READER, model.roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyResourceInner model =
-            new AccessPolicyResourceInner()
-                .withPrincipalObjectId("nqecanoaeup")
-                .withDescription("yhltrpmopjmcm")
-                .withRoles(Arrays.asList(AccessPolicyRole.READER));
+        AccessPolicyResourceInner model = new AccessPolicyResourceInner().withPrincipalObjectId("edckzywbiexzfey")
+            .withDescription("axibxujw")
+            .withRoles(Arrays.asList(AccessPolicyRole.READER, AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.READER,
+                AccessPolicyRole.CONTRIBUTOR));
         model = BinaryData.fromObject(model).toObject(AccessPolicyResourceInner.class);
-        Assertions.assertEquals("nqecanoaeup", model.principalObjectId());
-        Assertions.assertEquals("yhltrpmopjmcm", model.description());
+        Assertions.assertEquals("edckzywbiexzfey", model.principalObjectId());
+        Assertions.assertEquals("axibxujw", model.description());
         Assertions.assertEquals(AccessPolicyRole.READER, model.roles().get(0));
     }
 }

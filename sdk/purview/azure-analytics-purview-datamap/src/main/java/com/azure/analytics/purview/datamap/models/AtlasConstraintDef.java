@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,7 +23,7 @@ public final class AtlasConstraintDef implements JsonSerializable<AtlasConstrain
      * The parameters of the constraint definition.
      */
     @Generated
-    private Map<String, Object> params;
+    private Map<String, BinaryData> params;
 
     /*
      * The type of the constraint.
@@ -43,7 +44,7 @@ public final class AtlasConstraintDef implements JsonSerializable<AtlasConstrain
      * @return the params value.
      */
     @Generated
-    public Map<String, Object> getParams() {
+    public Map<String, BinaryData> getParams() {
         return this.params;
     }
 
@@ -54,7 +55,7 @@ public final class AtlasConstraintDef implements JsonSerializable<AtlasConstrain
      * @return the AtlasConstraintDef object itself.
      */
     @Generated
-    public AtlasConstraintDef setParams(Map<String, Object> params) {
+    public AtlasConstraintDef setParams(Map<String, BinaryData> params) {
         this.params = params;
         return this;
     }
@@ -88,7 +89,8 @@ public final class AtlasConstraintDef implements JsonSerializable<AtlasConstrain
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("params", this.params, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("params", this.params,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
@@ -110,7 +112,8 @@ public final class AtlasConstraintDef implements JsonSerializable<AtlasConstrain
                 reader.nextToken();
 
                 if ("params".equals(fieldName)) {
-                    Map<String, Object> params = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> params = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasConstraintDef.params = params;
                 } else if ("type".equals(fieldName)) {
                     deserializedAtlasConstraintDef.type = reader.getString();

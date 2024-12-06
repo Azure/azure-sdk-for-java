@@ -19,14 +19,14 @@ import com.azure.resourcemanager.machinelearningservices.models.UpdateWorkspaceQ
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QuotasImpl implements Quotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotasImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QuotasImpl.class);
 
     private final QuotasClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public QuotasImpl(
-        QuotasClient innerClient,
+    public QuotasImpl(QuotasClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -41,15 +41,12 @@ public final class QuotasImpl implements Quotas {
         }
     }
 
-    public Response<UpdateWorkspaceQuotasResult> updateWithResponse(
-        String location, QuotaUpdateParameters parameters, Context context) {
-        Response<UpdateWorkspaceQuotasResultInner> inner =
-            this.serviceClient().updateWithResponse(location, parameters, context);
+    public Response<UpdateWorkspaceQuotasResult> updateWithResponse(String location, QuotaUpdateParameters parameters,
+        Context context) {
+        Response<UpdateWorkspaceQuotasResultInner> inner
+            = this.serviceClient().updateWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UpdateWorkspaceQuotasResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

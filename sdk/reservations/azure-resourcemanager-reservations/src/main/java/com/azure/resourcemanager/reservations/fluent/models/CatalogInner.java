@@ -5,94 +5,89 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.CatalogMsrp;
 import com.azure.resourcemanager.reservations.models.ReservationBillingPlan;
 import com.azure.resourcemanager.reservations.models.ReservationTerm;
 import com.azure.resourcemanager.reservations.models.SkuCapability;
 import com.azure.resourcemanager.reservations.models.SkuProperty;
 import com.azure.resourcemanager.reservations.models.SkuRestriction;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Product details of a type of resource. */
+/**
+ * Product details of a type of resource.
+ */
 @Fluent
-public final class CatalogInner {
+public final class CatalogInner implements JsonSerializable<CatalogInner> {
     /*
      * The type of resource the sku applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The name of sku
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The billing plan options available for this sku.
      */
-    @JsonProperty(value = "billingPlans")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<ReservationBillingPlan>> billingPlans;
 
     /*
      * Available reservation terms for this resource
      */
-    @JsonProperty(value = "terms", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReservationTerm> terms;
 
     /*
      * The locations property.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * The skuProperties property.
      */
-    @JsonProperty(value = "skuProperties", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuProperty> skuProperties;
 
     /*
      * Pricing information about the sku
      */
-    @JsonProperty(value = "msrp", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogMsrp msrp;
 
     /*
      * The restrictions property.
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuRestriction> restrictions;
 
     /*
      * The tier of this sku
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /*
      * The size of this sku
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * The capabilities property.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
-    /** Creates an instance of CatalogInner class. */
+    /**
+     * Creates an instance of CatalogInner class.
+     */
     public CatalogInner() {
     }
 
     /**
      * Get the resourceType property: The type of resource the sku applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -101,7 +96,7 @@ public final class CatalogInner {
 
     /**
      * Get the name property: The name of sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -110,7 +105,7 @@ public final class CatalogInner {
 
     /**
      * Get the billingPlans property: The billing plan options available for this sku.
-     *
+     * 
      * @return the billingPlans value.
      */
     public Map<String, List<ReservationBillingPlan>> billingPlans() {
@@ -119,7 +114,7 @@ public final class CatalogInner {
 
     /**
      * Set the billingPlans property: The billing plan options available for this sku.
-     *
+     * 
      * @param billingPlans the billingPlans value to set.
      * @return the CatalogInner object itself.
      */
@@ -130,7 +125,7 @@ public final class CatalogInner {
 
     /**
      * Get the terms property: Available reservation terms for this resource.
-     *
+     * 
      * @return the terms value.
      */
     public List<ReservationTerm> terms() {
@@ -139,7 +134,7 @@ public final class CatalogInner {
 
     /**
      * Get the locations property: The locations property.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -148,7 +143,7 @@ public final class CatalogInner {
 
     /**
      * Get the skuProperties property: The skuProperties property.
-     *
+     * 
      * @return the skuProperties value.
      */
     public List<SkuProperty> skuProperties() {
@@ -157,7 +152,7 @@ public final class CatalogInner {
 
     /**
      * Get the msrp property: Pricing information about the sku.
-     *
+     * 
      * @return the msrp value.
      */
     public CatalogMsrp msrp() {
@@ -166,7 +161,7 @@ public final class CatalogInner {
 
     /**
      * Get the restrictions property: The restrictions property.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<SkuRestriction> restrictions() {
@@ -175,7 +170,7 @@ public final class CatalogInner {
 
     /**
      * Get the tier property: The tier of this sku.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -184,7 +179,7 @@ public final class CatalogInner {
 
     /**
      * Get the size property: The size of this sku.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -193,7 +188,7 @@ public final class CatalogInner {
 
     /**
      * Get the capabilities property: The capabilities property.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -202,7 +197,7 @@ public final class CatalogInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -218,5 +213,70 @@ public final class CatalogInner {
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("billingPlans", this.billingPlans, (writer, element) -> writer.writeArray(element,
+            (writer1, element1) -> writer1.writeString(element1 == null ? null : element1.toString())));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CatalogInner.
+     */
+    public static CatalogInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogInner deserializedCatalogInner = new CatalogInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedCatalogInner.resourceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCatalogInner.name = reader.getString();
+                } else if ("billingPlans".equals(fieldName)) {
+                    Map<String, List<ReservationBillingPlan>> billingPlans = reader.readMap(reader1 -> reader1
+                        .readArray(reader2 -> ReservationBillingPlan.fromString(reader2.getString())));
+                    deserializedCatalogInner.billingPlans = billingPlans;
+                } else if ("terms".equals(fieldName)) {
+                    List<ReservationTerm> terms
+                        = reader.readArray(reader1 -> ReservationTerm.fromString(reader1.getString()));
+                    deserializedCatalogInner.terms = terms;
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCatalogInner.locations = locations;
+                } else if ("skuProperties".equals(fieldName)) {
+                    List<SkuProperty> skuProperties = reader.readArray(reader1 -> SkuProperty.fromJson(reader1));
+                    deserializedCatalogInner.skuProperties = skuProperties;
+                } else if ("msrp".equals(fieldName)) {
+                    deserializedCatalogInner.msrp = CatalogMsrp.fromJson(reader);
+                } else if ("restrictions".equals(fieldName)) {
+                    List<SkuRestriction> restrictions = reader.readArray(reader1 -> SkuRestriction.fromJson(reader1));
+                    deserializedCatalogInner.restrictions = restrictions;
+                } else if ("tier".equals(fieldName)) {
+                    deserializedCatalogInner.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedCatalogInner.size = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
+                    deserializedCatalogInner.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogInner;
+        });
     }
 }

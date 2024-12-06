@@ -24,7 +24,7 @@ public final class ProjectsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"fhpfeoajvgcxtx\",\"devCenterId\":\"sheafid\",\"description\":\"ugsresmkssjhoi\",\"maxDevBoxesPerUser\":1860922663,\"displayName\":\"kfwegprhptillu\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"33aca8d9-af7d-410a-a7df-c181671cf56f\",\"tenantId\":\"05b07aa8-ebf0-4fc7-a1ef-631ec133b099\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"drizetpwbr\":{\"principalId\":\"9c9d673f-ec10-4055-9883-73322fa644fb\",\"clientId\":\"f8979141-112a-4d59-bbd6-cdb0342b04e7\"},\"libph\":{\"principalId\":\"481a310d-fd2b-401e-953a-61bf10453ec5\",\"clientId\":\"8812447e-eb1c-4798-b799-0033ffe71847\"},\"mizak\":{\"principalId\":\"be72649b-c04b-40e0-bfef-2b7341cbeb30\",\"clientId\":\"4f2f7a8e-01fe-4fff-a54a-25661032d6ee\"},\"nkjpdnjzha\":{\"principalId\":\"0cf0a3a7-96c7-42ff-8143-e65927ea4452\",\"clientId\":\"6cbf52bd-6406-488d-bcee-aa04439d2152\"}}},\"location\":\"ylhjlm\",\"tags\":{\"eecjmeis\":\"xprimrsop\"},\"id\":\"stvasylwxdzaumw\",\"name\":\"oohgu\",\"type\":\"fuzboyjathwtzolb\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"nwiaaomyl\",\"devCenterId\":\"azul\",\"description\":\"ethwwnpjhlfz\",\"maxDevBoxesPerUser\":1188676468,\"displayName\":\"hwahfbousn\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"7e2628a9-d584-4930-b29d-efc42d52a038\",\"tenantId\":\"2db593fb-b19f-4e7a-a216-ef5f0c5f69c8\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"xykxhdj\":{\"principalId\":\"10320ab8-6c7b-458e-ae98-26a3cadb3319\",\"clientId\":\"bdfb8e97-2aef-42da-b499-b006103a02b3\"},\"mmbcxfhbcp\":{\"principalId\":\"eec4abb6-1646-4ea5-b488-f5fc5cd97570\",\"clientId\":\"aba277e8-2cf0-4230-be78-6759da1b8b2c\"},\"vxcjzhqizxfpxtgq\":{\"principalId\":\"7ceecdbb-6842-482e-a120-b323c831fd64\",\"clientId\":\"eaf42e55-ca8a-488b-9b62-d6df83ba1dca\"}}},\"location\":\"javftjuhdqa\",\"tags\":{\"hfcf\":\"tgguwpijrajcivmm\",\"nzqodfvpg\":\"wrxgkneuvy\"},\"id\":\"hoxgsgbpf\",\"name\":\"zdjtxvzflbqv\",\"type\":\"aqvlgafcqusr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class ProjectsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Project> response
-            = manager.projects().listByResourceGroup("kvbwnhhtqlgeh", 1013925837, com.azure.core.util.Context.NONE);
+            = manager.projects().listByResourceGroup("talhsnvkcdmxzr", 1745804403, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ylhjlm", response.iterator().next().location());
-        Assertions.assertEquals("xprimrsop", response.iterator().next().tags().get("eecjmeis"));
+        Assertions.assertEquals("javftjuhdqa", response.iterator().next().location());
+        Assertions.assertEquals("tgguwpijrajcivmm", response.iterator().next().tags().get("hfcf"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("sheafid", response.iterator().next().devCenterId());
-        Assertions.assertEquals("ugsresmkssjhoi", response.iterator().next().description());
-        Assertions.assertEquals(1860922663, response.iterator().next().maxDevBoxesPerUser());
-        Assertions.assertEquals("kfwegprhptillu", response.iterator().next().displayName());
+        Assertions.assertEquals("azul", response.iterator().next().devCenterId());
+        Assertions.assertEquals("ethwwnpjhlfz", response.iterator().next().description());
+        Assertions.assertEquals(1188676468, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("hwahfbousn", response.iterator().next().displayName());
         Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
             response.iterator().next().catalogSettings().catalogItemSyncTypes().get(0));
     }

@@ -34,6 +34,6 @@ public interface WebTestLocations {
      * @return a list of web test locations available to this Application Insights component as paginated response with
      *     {@link PagedIterable}.
      */
-    PagedIterable<ApplicationInsightsComponentWebTestLocation> list(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<ApplicationInsightsComponentWebTestLocation> list(String resourceGroupName, String resourceName,
+        Context context);
 }

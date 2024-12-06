@@ -20,8 +20,8 @@ public interface ComponentQuotaStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component daily data volume cap status along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentQuotaStatus> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentQuotaStatus> getWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.

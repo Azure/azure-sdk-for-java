@@ -5,23 +5,36 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SkuResourceProperties model. */
+/**
+ * The SkuResourceProperties model.
+ */
 @Fluent
 public final class SkuResourceProperties extends ResourceTypeSku {
-    /** Creates an instance of SkuResourceProperties class. */
+    /**
+     * Creates an instance of SkuResourceProperties class.
+     */
     public SkuResourceProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SkuResourceProperties withSkuSettings(List<SkuSetting> skuSettings) {
         super.withSkuSettings(skuSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SkuResourceProperties withProvisioningState(ProvisioningState provisioningState) {
         super.withProvisioningState(provisioningState);
@@ -30,11 +43,62 @@ public final class SkuResourceProperties extends ResourceTypeSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (skuSettings() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property skuSettings in model SkuResourceProperties"));
+        } else {
+            skuSettings().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SkuResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("skuSettings", skuSettings(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState",
+            provisioningState() == null ? null : provisioningState().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuResourceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuResourceProperties.
+     */
+    public static SkuResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuResourceProperties deserializedSkuResourceProperties = new SkuResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skuSettings".equals(fieldName)) {
+                    List<SkuSetting> skuSettings = reader.readArray(reader1 -> SkuSetting.fromJson(reader1));
+                    deserializedSkuResourceProperties.withSkuSettings(skuSettings);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSkuResourceProperties
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuResourceProperties;
+        });
     }
 }

@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.AlertErrorDetails;
 import com.azure.resourcemanager.databoxedge.models.AlertSeverity;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Properties of alert. */
+/**
+ * Properties of alert.
+ */
 @Immutable
-public final class AlertProperties {
+public final class AlertProperties implements JsonSerializable<AlertProperties> {
     /*
      * Alert title.
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * Alert type.
      */
-    @JsonProperty(value = "alertType", access = JsonProperty.Access.WRITE_ONLY)
     private String alertType;
 
     /*
      * UTC time when the alert appeared.
      */
-    @JsonProperty(value = "appearedAtDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime appearedAtDateTime;
 
     /*
      * Alert recommendation.
      */
-    @JsonProperty(value = "recommendation", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendation;
 
     /*
      * Severity of the alert.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private AlertSeverity severity;
 
     /*
      * Error details of the alert.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private AlertErrorDetails errorDetails;
 
     /*
      * Alert details.
      */
-    @JsonProperty(value = "detailedInformation", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> detailedInformation;
 
-    /** Creates an instance of AlertProperties class. */
+    /**
+     * Creates an instance of AlertProperties class.
+     */
     public AlertProperties() {
     }
 
     /**
      * Get the title property: Alert title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -73,7 +73,7 @@ public final class AlertProperties {
 
     /**
      * Get the alertType property: Alert type.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -82,7 +82,7 @@ public final class AlertProperties {
 
     /**
      * Get the appearedAtDateTime property: UTC time when the alert appeared.
-     *
+     * 
      * @return the appearedAtDateTime value.
      */
     public OffsetDateTime appearedAtDateTime() {
@@ -91,7 +91,7 @@ public final class AlertProperties {
 
     /**
      * Get the recommendation property: Alert recommendation.
-     *
+     * 
      * @return the recommendation value.
      */
     public String recommendation() {
@@ -100,7 +100,7 @@ public final class AlertProperties {
 
     /**
      * Get the severity property: Severity of the alert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -109,7 +109,7 @@ public final class AlertProperties {
 
     /**
      * Get the errorDetails property: Error details of the alert.
-     *
+     * 
      * @return the errorDetails value.
      */
     public AlertErrorDetails errorDetails() {
@@ -118,7 +118,7 @@ public final class AlertProperties {
 
     /**
      * Get the detailedInformation property: Alert details.
-     *
+     * 
      * @return the detailedInformation value.
      */
     public Map<String, String> detailedInformation() {
@@ -127,12 +127,61 @@ public final class AlertProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errorDetails() != null) {
             errorDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertProperties.
+     */
+    public static AlertProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProperties deserializedAlertProperties = new AlertProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedAlertProperties.title = reader.getString();
+                } else if ("alertType".equals(fieldName)) {
+                    deserializedAlertProperties.alertType = reader.getString();
+                } else if ("appearedAtDateTime".equals(fieldName)) {
+                    deserializedAlertProperties.appearedAtDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedAlertProperties.recommendation = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedAlertProperties.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedAlertProperties.errorDetails = AlertErrorDetails.fromJson(reader);
+                } else if ("detailedInformation".equals(fieldName)) {
+                    Map<String, String> detailedInformation = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAlertProperties.detailedInformation = detailedInformation;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProperties;
+        });
     }
 }

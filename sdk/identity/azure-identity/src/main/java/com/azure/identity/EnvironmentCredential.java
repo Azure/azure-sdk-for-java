@@ -57,8 +57,7 @@ import reactor.core.publisher.Mono;
  *
  * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
  * <pre>
- * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.environmentcredential.construct -->
  *
@@ -78,7 +77,8 @@ public class EnvironmentCredential implements TokenCredential {
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
         Configuration configuration = identityClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+            ? Configuration.getGlobalConfiguration().clone()
+            : identityClientOptions.getConfiguration();
         TokenCredential targetCredential = null;
         this.identityClientOptions = identityClientOptions;
 
@@ -89,7 +89,8 @@ public class EnvironmentCredential implements TokenCredential {
         String certPassword = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
-        String sendCertificateChain = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN, "false");
+        String sendCertificateChain
+            = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN, "false");
 
         if (CoreUtils.isNullOrEmpty(identityClientOptions.getAdditionallyAllowedTenants())) {
             identityClientOptions
@@ -103,8 +104,8 @@ public class EnvironmentCredential implements TokenCredential {
                 if (verifyNotNull(clientSecret)) {
                     // 1.1 Attempt ClientSecretCredential
                     LOGGER.info("Azure Identity => EnvironmentCredential invoking ClientSecretCredential");
-                    targetCredential = new ClientSecretCredential(tenantId, clientId, clientSecret,
-                        identityClientOptions);
+                    targetCredential
+                        = new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     LOGGER.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
@@ -114,14 +115,15 @@ public class EnvironmentCredential implements TokenCredential {
                     }
 
                     targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, certPassword,
-                            identityClientOptions);
+                        identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found
-                    LoggingUtil.logError(LOGGER, identityClientOptions,
-                        () -> String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
-                        + "ClientSecretCredential or ClientCertificateCredential. Missing required environment "
-                        + "variable either %s or %s", Configuration.PROPERTY_AZURE_CLIENT_SECRET,
-                        Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH));
+                    LoggingUtil
+                        .logError(LOGGER, identityClientOptions,
+                            () -> String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
+                                + "ClientSecretCredential or ClientCertificateCredential. Missing required environment "
+                                + "variable either %s or %s", Configuration.PROPERTY_AZURE_CLIENT_SECRET,
+                                Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH));
                 }
             } else if (verifyNotNull(clientSecret) || verifyNotNull(certPath)) {
                 // 1.4 Log error if secret / cert is found but tenant is missing
@@ -135,13 +137,13 @@ public class EnvironmentCredential implements TokenCredential {
             if (targetCredential == null && verifyNotNull(username, password)) {
                 // 2.1 - both username and password found
                 LOGGER.info("Azure Identity => EnvironmentCredential invoking UsernamePasswordCredential");
-                targetCredential = new UsernamePasswordCredential(clientId, tenantId, username, password,
-                    identityClientOptions);
+                targetCredential
+                    = new UsernamePasswordCredential(clientId, tenantId, username, password, identityClientOptions);
             } else if (verifyNotNull(username) ^ verifyNotNull(password)) {
                 // 2.2 - only one is found, likely missing the other
-                LoggingUtil.logError(LOGGER, identityClientOptions,
-                    () -> String.format("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
-                    + "UsernamePasswordCredential. Missing required environment variable %s",
+                LoggingUtil.logError(LOGGER, identityClientOptions, () -> String.format(
+                    "Azure Identity => ERROR in EnvironmentCredential: Failed to create a "
+                        + "UsernamePasswordCredential. Missing required environment variable %s",
                     username == null ? Configuration.PROPERTY_AZURE_USERNAME : Configuration.PROPERTY_AZURE_PASSWORD));
             }
 
@@ -159,8 +161,9 @@ public class EnvironmentCredential implements TokenCredential {
         } else {
             // 4 - not even clientId is available
             LoggingUtil.logError(LOGGER, identityClientOptions,
-                () -> String.format("Azure Identity => ERROR in EnvironmentCredential:"
-                        + " Missing required environment variable %s", Configuration.PROPERTY_AZURE_CLIENT_ID));
+                () -> String.format(
+                    "Azure Identity => ERROR in EnvironmentCredential:" + " Missing required environment variable %s",
+                    Configuration.PROPERTY_AZURE_CLIENT_ID));
         }
         tokenCredential = targetCredential;
     }
@@ -169,11 +172,10 @@ public class EnvironmentCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (tokenCredential == null) {
             return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
-                new CredentialUnavailableException(
-                    "EnvironmentCredential authentication unavailable."
-                        + " Environment variables are not fully configured."
-                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
-                        + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot")));
+                new CredentialUnavailableException("EnvironmentCredential authentication unavailable."
+                    + " Environment variables are not fully configured."
+                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                    + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot")));
         } else {
             return tokenCredential.getToken(request);
         }
@@ -183,18 +185,17 @@ public class EnvironmentCredential implements TokenCredential {
     public AccessToken getTokenSync(TokenRequestContext request) {
         if (tokenCredential == null) {
             throw LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
-                new CredentialUnavailableException(
-                    "EnvironmentCredential authentication unavailable."
-                        + " Environment variables are not fully configured."
-                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
-                        + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot"));
+                new CredentialUnavailableException("EnvironmentCredential authentication unavailable."
+                    + " Environment variables are not fully configured."
+                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                    + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot"));
         } else {
             return tokenCredential.getTokenSync(request);
         }
     }
 
     private boolean verifyNotNull(String... configs) {
-        for (String config: configs) {
+        for (String config : configs) {
             if (config == null) {
                 return false;
             }

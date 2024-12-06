@@ -52,6 +52,8 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     }
 
     /**
+     * Get if the user is anonymous
+     *
      * @return True if the user is anonymous, for example when joining a meeting with a share link.
      */
     public boolean isAnonymous() {
@@ -113,9 +115,7 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
             return false;
         }
 
-        return getRawId() == null
-            || thatId.getRawId() == null
-            || thatId.getRawId().equals(this.getRawId());
+        return getRawId() == null || thatId.getRawId() == null || thatId.getRawId().equals(this.getRawId());
     }
 
     @Override

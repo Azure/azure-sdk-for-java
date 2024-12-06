@@ -293,12 +293,8 @@ public interface Cluster {
     ClusterInner innerModel();
 
     /** The entirety of the Cluster definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /** The Cluster definition stages. */
@@ -353,29 +349,17 @@ public interface Cluster {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithZones,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithTrustedExternalTenants,
-                DefinitionStages.WithOptimizedAutoscale,
-                DefinitionStages.WithEnableDiskEncryption,
-                DefinitionStages.WithEnableStreamingIngest,
-                DefinitionStages.WithVirtualNetworkConfiguration,
-                DefinitionStages.WithKeyVaultProperties,
-                DefinitionStages.WithEnablePurge,
-                DefinitionStages.WithLanguageExtensions,
-                DefinitionStages.WithEnableDoubleEncryption,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithAllowedIpRangeList,
-                DefinitionStages.WithEngineType,
-                DefinitionStages.WithAcceptedAudiences,
-                DefinitionStages.WithEnableAutoStop,
-                DefinitionStages.WithRestrictOutboundNetworkAccess,
-                DefinitionStages.WithAllowedFqdnList,
-                DefinitionStages.WithPublicIpType,
-                DefinitionStages.WithVirtualClusterGraduationProperties,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithTags, DefinitionStages.WithZones, DefinitionStages.WithIdentity,
+            DefinitionStages.WithTrustedExternalTenants, DefinitionStages.WithOptimizedAutoscale,
+            DefinitionStages.WithEnableDiskEncryption, DefinitionStages.WithEnableStreamingIngest,
+            DefinitionStages.WithVirtualNetworkConfiguration, DefinitionStages.WithKeyVaultProperties,
+            DefinitionStages.WithEnablePurge, DefinitionStages.WithLanguageExtensions,
+            DefinitionStages.WithEnableDoubleEncryption, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithAllowedIpRangeList, DefinitionStages.WithEngineType,
+            DefinitionStages.WithAcceptedAudiences, DefinitionStages.WithEnableAutoStop,
+            DefinitionStages.WithRestrictOutboundNetworkAccess, DefinitionStages.WithAllowedFqdnList,
+            DefinitionStages.WithPublicIpType, DefinitionStages.WithVirtualClusterGraduationProperties,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -671,29 +655,15 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithZones,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithTrustedExternalTenants,
-            UpdateStages.WithOptimizedAutoscale,
-            UpdateStages.WithEnableDiskEncryption,
-            UpdateStages.WithEnableStreamingIngest,
-            UpdateStages.WithVirtualNetworkConfiguration,
-            UpdateStages.WithKeyVaultProperties,
-            UpdateStages.WithEnablePurge,
-            UpdateStages.WithLanguageExtensions,
-            UpdateStages.WithEnableDoubleEncryption,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithAllowedIpRangeList,
-            UpdateStages.WithEngineType,
-            UpdateStages.WithAcceptedAudiences,
-            UpdateStages.WithEnableAutoStop,
-            UpdateStages.WithRestrictOutboundNetworkAccess,
-            UpdateStages.WithAllowedFqdnList,
-            UpdateStages.WithPublicIpType,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithZones,
+        UpdateStages.WithIdentity, UpdateStages.WithTrustedExternalTenants, UpdateStages.WithOptimizedAutoscale,
+        UpdateStages.WithEnableDiskEncryption, UpdateStages.WithEnableStreamingIngest,
+        UpdateStages.WithVirtualNetworkConfiguration, UpdateStages.WithKeyVaultProperties, UpdateStages.WithEnablePurge,
+        UpdateStages.WithLanguageExtensions, UpdateStages.WithEnableDoubleEncryption,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithAllowedIpRangeList, UpdateStages.WithEngineType,
+        UpdateStages.WithAcceptedAudiences, UpdateStages.WithEnableAutoStop,
+        UpdateStages.WithRestrictOutboundNetworkAccess, UpdateStages.WithAllowedFqdnList, UpdateStages.WithPublicIpType,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

@@ -66,29 +66,25 @@ public final class DocumentationContractImpl
     }
 
     public DocumentationContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDocumentations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, documentationId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDocumentations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, documentationId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DocumentationContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDocumentations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, documentationId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDocumentations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, documentationId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    DocumentationContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    DocumentationContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new DocumentationContractInner();
         this.serviceManager = serviceManager;
         this.documentationId = name;
@@ -102,54 +98,45 @@ public final class DocumentationContractImpl
     }
 
     public DocumentationContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDocumentations()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, documentationId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDocumentations()
+            .updateWithResponse(resourceGroupName, serviceName, documentationId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DocumentationContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDocumentations()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, documentationId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDocumentations()
+            .updateWithResponse(resourceGroupName, serviceName, documentationId, updateIfMatch, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    DocumentationContractImpl(
-        DocumentationContractInner innerObject,
+    DocumentationContractImpl(DocumentationContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.documentationId = Utils.getValueFromIdByName(innerObject.id(), "documentations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.documentationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "documentations");
     }
 
     public DocumentationContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDocumentations()
-                .getWithResponse(resourceGroupName, serviceName, documentationId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDocumentations()
+            .getWithResponse(resourceGroupName, serviceName, documentationId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DocumentationContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDocumentations()
-                .getWithResponse(resourceGroupName, serviceName, documentationId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDocumentations()
+            .getWithResponse(resourceGroupName, serviceName, documentationId, context)
+            .getValue();
         return this;
     }
 

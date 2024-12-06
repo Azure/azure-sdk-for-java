@@ -14,6 +14,7 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
             listDataFeedRunner(inputDataFeedList -> {
-                DataFeed[] dataFeedList  = new DataFeed[2];
+                DataFeed[] dataFeedList = new DataFeed[2];
                 dataFeedList[0] = client.createDataFeed(inputDataFeedList.get(0)).block();
                 dataFeedList[1] = client.createDataFeed(inputDataFeedList.get(1)).block();
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
@@ -74,9 +75,9 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 expectedDataFeedIdList.set(Arrays.asList(dataFeedList[0].getId(), dataFeedList[1].getId()));
 
                 // Act
-                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-                    .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY)
-                        .setName("java_"))))
+                StepVerifier
+                    .create(client.listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(
+                        new ListDataFeedFilter().setDataFeedGranularityType(DAILY).setName("java_"))))
                     .thenConsumeWhile(actualDataFeedList::add)
                     .expectComplete()
                     .verify(DEFAULT_TIMEOUT);
@@ -98,8 +99,9 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             });
         } finally {
             if (!CoreUtils.isNullOrEmpty(expectedDataFeedIdList.get())) {
-                expectedDataFeedIdList.get().forEach(dataFeedId ->
-                    StepVerifier.create(client.deleteDataFeed(dataFeedId)).expectComplete()
+                expectedDataFeedIdList.get()
+                    .forEach(dataFeedId -> StepVerifier.create(client.deleteDataFeed(dataFeedId))
+                        .expectComplete()
                         .verify(DEFAULT_TIMEOUT));
             }
         }
@@ -136,32 +138,27 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed)
-                    .block();
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed).block();
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
 
-
                 // Act & Assert
-                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-                        .setListDataFeedFilter(new ListDataFeedFilter()
-                        .setCreator(createdDataFeed.getCreator()))).byPage().take(4))
-                    .thenConsumeWhile(dataFeedPagedResponse -> {
+                StepVerifier.create(client
+                    .listDataFeeds(new ListDataFeedOptions()
+                        .setListDataFeedFilter(new ListDataFeedFilter().setCreator(createdDataFeed.getCreator())))
+                    .byPage()
+                    .take(4)).thenConsumeWhile(dataFeedPagedResponse -> {
                         dataFeedPagedResponse.getValue()
                             .forEach(dataFeed -> createdDataFeed.getCreator().equals(dataFeed.getCreator()));
                         return true;
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                    }).expectComplete().verify(DEFAULT_TIMEOUT);
             }, POSTGRE_SQL_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -203,10 +200,9 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listDataFeeds(
-            new ListDataFeedOptions()
-                .setListDataFeedFilter(new ListDataFeedFilter()
-                    .setDataFeedSourceType(AZURE_BLOB))))
+        StepVerifier
+            .create(client.listDataFeeds(new ListDataFeedOptions()
+                .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedSourceType(AZURE_BLOB))))
             .thenConsumeWhile(dataFeed -> AZURE_BLOB.equals(dataFeed.getSourceType()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -223,16 +219,14 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listDataFeeds(
-            new ListDataFeedOptions()
-                .setListDataFeedFilter(new ListDataFeedFilter()
-                    .setDataFeedStatus(ACTIVE))).byPage().take(4))
-            .thenConsumeWhile(dataFeedPagedResponse -> {
+        StepVerifier.create(client
+            .listDataFeeds(
+                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)))
+            .byPage()
+            .take(4)).thenConsumeWhile(dataFeedPagedResponse -> {
                 dataFeedPagedResponse.getValue().forEach(dataFeed -> ACTIVE.equals(dataFeed.getStatus()));
                 return true;
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -246,8 +240,12 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-            .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY))).byPage().take(4))
+        StepVerifier
+            .create(client
+                .listDataFeeds(new ListDataFeedOptions()
+                    .setListDataFeedFilter(new ListDataFeedFilter().setDataFeedGranularityType(DAILY)))
+                .byPage()
+                .take(4))
             .thenConsumeWhile(dataFeedPagedResponse -> {
                 dataFeedPagedResponse.getValue()
                     .forEach(dataFeed -> DAILY.equals(dataFeed.getGranularity().getGranularityType()));
@@ -275,9 +273,9 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
                 // Act & Assert
-                StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions()
-                    .setListDataFeedFilter(new ListDataFeedFilter()
-                        .setName(filterName))))
+                StepVerifier
+                    .create(client.listDataFeeds(
+                        new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setName(filterName))))
                     .assertNext(dataFeed -> {
                         dataFeedId.set(dataFeed.getId());
                         assertEquals(filterName, dataFeed.getName());
@@ -288,9 +286,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -304,7 +300,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedNullId() {
         // Arrange
-        client = getNonRecordAdminClient().buildAsyncClient();
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(null))
@@ -320,7 +317,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void getDataFeedInvalidId() {
         // Arrange
-        client = getNonRecordAdminClient().buildAsyncClient();
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.getDataFeed(INCORRECT_UUID))
@@ -351,17 +349,15 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                         assertEquals(dataFeedResponse.getStatusCode(), HttpResponseStatus.OK.code());
                         validateDataFeedResult(createdDataFeed, dataFeedResponse.getValue(), SQL_SERVER_DB);
                     });
-                    // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
-                    //  subscribing to the reactive API call.
-//                    .expectComplete()
-//                    .verify(DEFAULT_TIMEOUT);
+                // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
+                //  subscribing to the reactive API call.
+                //                    .expectComplete()
+                //                    .verify(DEFAULT_TIMEOUT);
             }, SQL_SERVER_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -378,23 +374,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, SQL_SERVER_DB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), SQL_SERVER_DB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, SQL_SERVER_DB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), SQL_SERVER_DB);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -409,23 +401,20 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_BLOB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_BLOB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_BLOB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_BLOB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -440,22 +429,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_COSMOS_DB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_COSMOS_DB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_COSMOS_DB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_COSMOS_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -470,22 +456,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_APP_INSIGHTS);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_APP_INSIGHTS);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_APP_INSIGHTS);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_APP_INSIGHTS);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -500,22 +483,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_EXPLORER);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_DATA_EXPLORER);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_EXPLORER);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_DATA_EXPLORER);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -530,23 +510,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_TABLE);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_TABLE);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_TABLE);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_TABLE);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -561,23 +537,20 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, INFLUX_DB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), INFLUX_DB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, INFLUX_DB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), INFLUX_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -592,24 +565,20 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, MONGO_DB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), MONGO_DB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, MONGO_DB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), MONGO_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -624,23 +593,20 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), MYSQL_DB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), MYSQL_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -655,24 +621,20 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, POSTGRE_SQL_DB);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), POSTGRE_SQL_DB);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, POSTGRE_SQL_DB);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), POSTGRE_SQL_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -687,23 +649,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_DATA_LAKE_STORAGE_GEN2);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_DATA_LAKE_STORAGE_GEN2);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -718,23 +676,19 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_LOG_ANALYTICS);
-                    })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT), AZURE_LOG_ANALYTICS);
+            // Act & Assert
+            creatDataFeedRunner(expectedDataFeed -> StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                .assertNext(createdDataFeed -> {
+                    assertNotNull(createdDataFeed);
+                    dataFeedId.set(createdDataFeed.getId());
+                    validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_LOG_ANALYTICS);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT), AZURE_LOG_ANALYTICS);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }
@@ -748,7 +702,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     @DoNotRecord
     public void deleteIncorrectDataFeedId() {
         // Arrange
-        client = getNonRecordAdminClient().buildAsyncClient();
+        client = getNonRecordAdminClient().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client.deleteDataFeed(INCORRECT_UUID))
@@ -779,7 +734,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 .expectErrorSatisfies(throwable -> {
                     assertEquals(MetricsAdvisorResponseException.class, throwable.getClass());
                     final MetricsAdvisorError errorCode = ((MetricsAdvisorResponseException) throwable).getValue();
-                    assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
+                    assertEquals("datafeedId is invalid.", errorCode.getMessage());
                 })
                 .verify(DEFAULT_TIMEOUT);
         }, SQL_SERVER_DB);
@@ -799,8 +754,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             creatDataFeedRunner(expectedDataFeed -> {
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed)
-                    .block();
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed).block();
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -818,9 +772,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
 
-                StepVerifier.create(deleteDataFeed)
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(deleteDataFeed).expectComplete().verify(DEFAULT_TIMEOUT);
             }
         }
     }

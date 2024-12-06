@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class OsDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OsDisk model =
-            BinaryData
-                .fromString(
-                    "{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":4536236454028205710}")
-                .toObject(OsDisk.class);
+        OsDisk model = BinaryData
+            .fromString(
+                "{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":564508410758471876}")
+            .toObject(OsDisk.class);
         Assertions.assertEquals(OsDiskCreateOption.EPHEMERAL, model.createOption());
         Assertions.assertEquals(OsDiskDeleteOption.DELETE, model.deleteOption());
-        Assertions.assertEquals(4536236454028205710L, model.diskSizeGB());
+        Assertions.assertEquals(564508410758471876L, model.diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OsDisk model =
-            new OsDisk()
-                .withCreateOption(OsDiskCreateOption.EPHEMERAL)
-                .withDeleteOption(OsDiskDeleteOption.DELETE)
-                .withDiskSizeGB(4536236454028205710L);
+        OsDisk model = new OsDisk().withCreateOption(OsDiskCreateOption.EPHEMERAL)
+            .withDeleteOption(OsDiskDeleteOption.DELETE)
+            .withDiskSizeGB(564508410758471876L);
         model = BinaryData.fromObject(model).toObject(OsDisk.class);
         Assertions.assertEquals(OsDiskCreateOption.EPHEMERAL, model.createOption());
         Assertions.assertEquals(OsDiskDeleteOption.DELETE, model.deleteOption());
-        Assertions.assertEquals(4536236454028205710L, model.diskSizeGB());
+        Assertions.assertEquals(564508410758471876L, model.diskSizeGB());
     }
 }

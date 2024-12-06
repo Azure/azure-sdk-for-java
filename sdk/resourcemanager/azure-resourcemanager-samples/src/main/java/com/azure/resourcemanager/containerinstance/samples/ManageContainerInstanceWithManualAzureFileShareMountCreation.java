@@ -48,21 +48,20 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             //=============================================================
             // Create a new storage account and an Azure file share resource
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(saName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .create();
 
             StorageAccountKey storageAccountKey = storageAccount.getKeys().get(0);
 
-            ShareClient shareClient = new ShareClientBuilder()
-                .connectionString(ResourceManagerUtils.getStorageConnectionString(
-                    saName,
-                    storageAccountKey.value(),
-                    azureResourceManager.containerGroups().manager().environment()
-                ))
-                .shareName(shareName)
-                .buildClient();
+            ShareClient shareClient
+                = new ShareClientBuilder()
+                    .connectionString(ResourceManagerUtils.getStorageConnectionString(saName, storageAccountKey.value(),
+                        azureResourceManager.containerGroups().manager().environment()))
+                    .shareName(shareName)
+                    .buildClient();
             shareClient.create();
 
             //=============================================================
@@ -70,21 +69,22 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             //   using public Docker image "seanmckenna/aci-hellofiles" which mounts the file share created previously
             //   as read/write shared container volume.
 
-            ContainerGroup containerGroup = azureResourceManager.containerGroups().define(aciName)
+            ContainerGroup containerGroup = azureResourceManager.containerGroups()
+                .define(aciName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withLinux()
                 .withPublicImageRegistryOnly()
                 .defineVolume(volumeMountName)
-                    .withExistingReadWriteAzureFileShare(shareName)
-                    .withStorageAccountName(saName)
-                    .withStorageAccountKey(storageAccountKey.value())
-                    .attach()
+                .withExistingReadWriteAzureFileShare(shareName)
+                .withStorageAccountName(saName)
+                .withStorageAccountKey(storageAccountKey.value())
+                .attach()
                 .defineContainerInstance(aciName)
-                    .withImage(containerImageName)
-                    .withExternalTcpPort(80)
-                    .withVolumeMountSetting(volumeMountName, "/aci/logs/")
-                    .attach()
+                .withImage(containerImageName)
+                .withExternalTcpPort(80)
+                .withVolumeMountSetting(volumeMountName, "/aci/logs/")
+                .attach()
                 .withDnsPrefix(aciName)
                 .create();
 
@@ -149,8 +149,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

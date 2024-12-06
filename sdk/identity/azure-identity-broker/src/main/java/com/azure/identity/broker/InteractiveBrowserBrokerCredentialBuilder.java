@@ -3,7 +3,6 @@
 
 package com.azure.identity.broker;
 
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -39,6 +38,12 @@ import java.util.function.Function;
  * <!-- end com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.construct -->
  */
 public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowserCredentialBuilder {
+    /**
+     * Creates a new instance of {@link InteractiveBrowserBrokerCredentialBuilder}.
+     */
+    public InteractiveBrowserBrokerCredentialBuilder() {
+    }
+
     /**
      * Sets the parent window handle used by the broker. For use on Windows only.
      *
@@ -121,7 +126,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
         super.browserCustomizationOptions(browserCustomizationOptions);
         return this;
     }
@@ -256,7 +262,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         super.additionallyAllowedTenants(additionallyAllowedTenants);
         return this;
     }
@@ -301,7 +308,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         super.tokenCachePersistenceOptions(tokenCachePersistenceOptions);
         return this;
     }

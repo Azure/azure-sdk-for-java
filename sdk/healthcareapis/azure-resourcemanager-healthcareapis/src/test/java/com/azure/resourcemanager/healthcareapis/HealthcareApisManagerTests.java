@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class HealthcareApisManagerTests extends TestBase {
+public class HealthcareApisManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -34,13 +34,11 @@ public class HealthcareApisManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        healthcareApisManager = HealthcareApisManager
-            .configure()
+        healthcareApisManager = HealthcareApisManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class HealthcareApisManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -72,18 +67,23 @@ public class HealthcareApisManagerTests extends TestBase {
         try {
             String randomPadding = randomPadding();
             String workspaceName = "workspace" + randomPadding;
-            // @embedStart
+            // @embedmeStart
             workspace = healthcareApisManager.workspaces()
                 .define(workspaceName)
                 .withExistingResourceGroup(resourceGroupName)
                 .withRegion(REGION)
                 .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
-            Assertions.assertEquals(workspace.name(), healthcareApisManager.workspaces().getById(workspace.id()).name());
-            Assertions.assertTrue(healthcareApisManager.workspaces().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(workspace.name(),
+                healthcareApisManager.workspaces().getById(workspace.id()).name());
+            Assertions.assertTrue(healthcareApisManager.workspaces()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (workspace != null) {
                 healthcareApisManager.workspaces().deleteById(workspace.id());

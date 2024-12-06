@@ -8,45 +8,47 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MetricsConfigurations. */
+/**
+ * Resource collection API of MetricsConfigurations.
+ */
 public interface MetricsConfigurations {
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName);
 
     /**
      * List metrics configurations of the cluster.
-     *
-     * <p>Get a list of metrics configurations for the provided cluster.
-     *
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<ClusterMetricsConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -56,14 +58,14 @@ public interface MetricsConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metrics configuration of the provided cluster along with {@link Response}.
      */
-    Response<ClusterMetricsConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context);
+    Response<ClusterMetricsConfiguration> getWithResponse(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -76,23 +78,24 @@ public interface MetricsConfigurations {
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String clusterName, String metricsConfigurationName);
+    OperationStatusResult delete(String resourceGroupName, String clusterName, String metricsConfigurationName);
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param metricsConfigurationName The name of the metrics configuration for the cluster.
@@ -100,14 +103,16 @@ public interface MetricsConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String clusterName, String metricsConfigurationName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String clusterName, String metricsConfigurationName,
+        Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,9 +123,9 @@ public interface MetricsConfigurations {
 
     /**
      * Retrieve the metrics configuration of the cluster.
-     *
-     * <p>Get metrics configuration of the provided cluster.
-     *
+     * 
+     * Get metrics configuration of the provided cluster.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,32 +137,34 @@ public interface MetricsConfigurations {
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the metrics configuration of the cluster.
-     *
-     * <p>Delete the metrics configuration of the provided cluster.
-     *
+     * 
+     * Delete the metrics configuration of the provided cluster.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new ClusterMetricsConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ClusterMetricsConfiguration definition.
      */

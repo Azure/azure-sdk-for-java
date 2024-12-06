@@ -8,11 +8,11 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanAccountAssociationInner;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanAccountAssociation;
+import java.util.Collections;
+import java.util.Map;
 
-public final class CommitmentPlanAccountAssociationImpl
-    implements CommitmentPlanAccountAssociation,
-        CommitmentPlanAccountAssociation.Definition,
-        CommitmentPlanAccountAssociation.Update {
+public final class CommitmentPlanAccountAssociationImpl implements CommitmentPlanAccountAssociation,
+    CommitmentPlanAccountAssociation.Definition, CommitmentPlanAccountAssociation.Update {
     private CommitmentPlanAccountAssociationInner innerObject;
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
@@ -37,6 +37,15 @@ public final class CommitmentPlanAccountAssociationImpl
         return this.innerModel().etag();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String accountId() {
         return this.innerModel().accountId();
     }
@@ -59,39 +68,31 @@ public final class CommitmentPlanAccountAssociationImpl
 
     private String commitmentPlanAssociationName;
 
-    public CommitmentPlanAccountAssociationImpl withExistingCommitmentPlan(
-        String resourceGroupName, String commitmentPlanName) {
+    public CommitmentPlanAccountAssociationImpl withExistingCommitmentPlan(String resourceGroupName,
+        String commitmentPlanName) {
         this.resourceGroupName = resourceGroupName;
         this.commitmentPlanName = commitmentPlanName;
         return this;
     }
 
     public CommitmentPlanAccountAssociation create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .createOrUpdateAssociation(
-                    resourceGroupName,
-                    commitmentPlanName,
-                    commitmentPlanAssociationName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .createOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public CommitmentPlanAccountAssociation create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .createOrUpdateAssociation(
-                    resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .createOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+                this.innerModel(), context);
         return this;
     }
 
-    CommitmentPlanAccountAssociationImpl(
-        String name, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    CommitmentPlanAccountAssociationImpl(String name,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = new CommitmentPlanAccountAssociationInner();
         this.serviceManager = serviceManager;
         this.commitmentPlanAssociationName = name;
@@ -102,58 +103,50 @@ public final class CommitmentPlanAccountAssociationImpl
     }
 
     public CommitmentPlanAccountAssociation apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .createOrUpdateAssociation(
-                    resourceGroupName,
-                    commitmentPlanName,
-                    commitmentPlanAssociationName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .createOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public CommitmentPlanAccountAssociation apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .createOrUpdateAssociation(
-                    resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .createOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+                this.innerModel(), context);
         return this;
     }
 
-    CommitmentPlanAccountAssociationImpl(
-        CommitmentPlanAccountAssociationInner innerObject,
+    CommitmentPlanAccountAssociationImpl(CommitmentPlanAccountAssociationInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.commitmentPlanName = Utils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
-        this.commitmentPlanAssociationName = Utils.getValueFromIdByName(innerObject.id(), "accountAssociations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
+        this.commitmentPlanAssociationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accountAssociations");
     }
 
     public CommitmentPlanAccountAssociation refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .getAssociationWithResponse(
-                    resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .getAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CommitmentPlanAccountAssociation refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommitmentPlans()
-                .getAssociationWithResponse(
-                    resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommitmentPlans()
+            .getAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context)
+            .getValue();
+        return this;
+    }
+
+    public CommitmentPlanAccountAssociationImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
         return this;
     }
 

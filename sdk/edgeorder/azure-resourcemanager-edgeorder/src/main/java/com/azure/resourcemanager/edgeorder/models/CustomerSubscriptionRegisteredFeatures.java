@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents subscription registered features. */
+/**
+ * Represents subscription registered features.
+ */
 @Fluent
-public final class CustomerSubscriptionRegisteredFeatures {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerSubscriptionRegisteredFeatures.class);
-
+public final class CustomerSubscriptionRegisteredFeatures
+    implements JsonSerializable<CustomerSubscriptionRegisteredFeatures> {
     /*
      * Name of subscription registered feature
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * State of subscription registered feature
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /**
+     * Creates an instance of CustomerSubscriptionRegisteredFeatures class.
+     */
+    public CustomerSubscriptionRegisteredFeatures() {
+    }
+
+    /**
      * Get the name property: Name of subscription registered feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class CustomerSubscriptionRegisteredFeatures {
 
     /**
      * Set the name property: Name of subscription registered feature.
-     *
+     * 
      * @param name the name value to set.
      * @return the CustomerSubscriptionRegisteredFeatures object itself.
      */
@@ -48,7 +55,7 @@ public final class CustomerSubscriptionRegisteredFeatures {
 
     /**
      * Get the state property: State of subscription registered feature.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -57,7 +64,7 @@ public final class CustomerSubscriptionRegisteredFeatures {
 
     /**
      * Set the state property: State of subscription registered feature.
-     *
+     * 
      * @param state the state value to set.
      * @return the CustomerSubscriptionRegisteredFeatures object itself.
      */
@@ -68,9 +75,49 @@ public final class CustomerSubscriptionRegisteredFeatures {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("state", this.state);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerSubscriptionRegisteredFeatures from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerSubscriptionRegisteredFeatures if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomerSubscriptionRegisteredFeatures.
+     */
+    public static CustomerSubscriptionRegisteredFeatures fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerSubscriptionRegisteredFeatures deserializedCustomerSubscriptionRegisteredFeatures
+                = new CustomerSubscriptionRegisteredFeatures();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCustomerSubscriptionRegisteredFeatures.name = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedCustomerSubscriptionRegisteredFeatures.state = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerSubscriptionRegisteredFeatures;
+        });
     }
 }

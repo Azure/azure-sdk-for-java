@@ -31,6 +31,12 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     private CommunicationIdentifier createdBy;
 
     /**
+     * Creates a new instance of {@link ChatThreadProperties}.
+     */
+    public ChatThreadProperties() {
+    }
+
+    /**
      * Get the id property: Chat thread id.
      *
      * @return the id value.
@@ -154,7 +160,8 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                         properties.setCreatedOn(OffsetDateTime.parse(value));
                     }
                 } else if ("createdBy".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
                 } else {
                     reader.skipChildren();

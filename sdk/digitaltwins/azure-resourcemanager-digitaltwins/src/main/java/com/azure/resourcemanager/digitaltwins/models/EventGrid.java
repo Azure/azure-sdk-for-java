@@ -5,41 +5,68 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties related to EventGrid. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("EventGrid")
+/**
+ * Properties related to EventGrid.
+ */
 @Fluent
 public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
     /*
+     * The type of Digital Twins endpoint
+     */
+    private EndpointType endpointType = EndpointType.EVENT_GRID;
+
+    /*
      * EventGrid Topic Endpoint.
      */
-    @JsonProperty(value = "TopicEndpoint", required = true)
     private String topicEndpoint;
 
     /*
      * EventGrid secondary accesskey. Will be obfuscated during read.
      */
-    @JsonProperty(value = "accessKey1", required = true)
     private String accessKey1;
 
     /*
      * EventGrid secondary accesskey. Will be obfuscated during read.
      */
-    @JsonProperty(value = "accessKey2")
     private String accessKey2;
 
-    /** Creates an instance of EventGrid class. */
+    /*
+     * Time when the Endpoint was added to DigitalTwinsInstance.
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * The provisioning state.
+     */
+    private EndpointProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of EventGrid class.
+     */
     public EventGrid() {
     }
 
     /**
+     * Get the endpointType property: The type of Digital Twins endpoint.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the topicEndpoint property: EventGrid Topic Endpoint.
-     *
+     * 
      * @return the topicEndpoint value.
      */
     public String topicEndpoint() {
@@ -48,7 +75,7 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the topicEndpoint property: EventGrid Topic Endpoint.
-     *
+     * 
      * @param topicEndpoint the topicEndpoint value to set.
      * @return the EventGrid object itself.
      */
@@ -59,7 +86,7 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the accessKey1 property: EventGrid secondary accesskey. Will be obfuscated during read.
-     *
+     * 
      * @return the accessKey1 value.
      */
     public String accessKey1() {
@@ -68,7 +95,7 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the accessKey1 property: EventGrid secondary accesskey. Will be obfuscated during read.
-     *
+     * 
      * @param accessKey1 the accessKey1 value to set.
      * @return the EventGrid object itself.
      */
@@ -79,7 +106,7 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the accessKey2 property: EventGrid secondary accesskey. Will be obfuscated during read.
-     *
+     * 
      * @return the accessKey2 value.
      */
     public String accessKey2() {
@@ -88,7 +115,7 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the accessKey2 property: EventGrid secondary accesskey. Will be obfuscated during read.
-     *
+     * 
      * @param accessKey2 the accessKey2 value to set.
      * @return the EventGrid object itself.
      */
@@ -97,28 +124,56 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the createdTime property: Time when the Endpoint was added to DigitalTwinsInstance.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime createdTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public EndpointProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGrid withAuthenticationType(AuthenticationType authenticationType) {
         super.withAuthenticationType(authenticationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGrid withDeadLetterSecret(String deadLetterSecret) {
         super.withDeadLetterSecret(deadLetterSecret);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGrid withDeadLetterUri(String deadLetterUri) {
         super.withDeadLetterUri(deadLetterUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGrid withIdentity(ManagedIdentityReference identity) {
         super.withIdentity(identity);
@@ -127,23 +182,87 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (topicEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property topicEndpoint in model EventGrid"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property topicEndpoint in model EventGrid"));
         }
         if (accessKey1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property accessKey1 in model EventGrid"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property accessKey1 in model EventGrid"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGrid.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType",
+            authenticationType() == null ? null : authenticationType().toString());
+        jsonWriter.writeStringField("deadLetterSecret", deadLetterSecret());
+        jsonWriter.writeStringField("deadLetterUri", deadLetterUri());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("TopicEndpoint", this.topicEndpoint);
+        jsonWriter.writeStringField("accessKey1", this.accessKey1);
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("accessKey2", this.accessKey2);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventGrid from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventGrid if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventGrid.
+     */
+    public static EventGrid fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventGrid deserializedEventGrid = new EventGrid();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedEventGrid.provisioningState = EndpointProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedEventGrid.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedEventGrid.withAuthenticationType(AuthenticationType.fromString(reader.getString()));
+                } else if ("deadLetterSecret".equals(fieldName)) {
+                    deserializedEventGrid.withDeadLetterSecret(reader.getString());
+                } else if ("deadLetterUri".equals(fieldName)) {
+                    deserializedEventGrid.withDeadLetterUri(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedEventGrid.withIdentity(ManagedIdentityReference.fromJson(reader));
+                } else if ("TopicEndpoint".equals(fieldName)) {
+                    deserializedEventGrid.topicEndpoint = reader.getString();
+                } else if ("accessKey1".equals(fieldName)) {
+                    deserializedEventGrid.accessKey1 = reader.getString();
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedEventGrid.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("accessKey2".equals(fieldName)) {
+                    deserializedEventGrid.accessKey2 = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventGrid;
+        });
+    }
 }

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for ProductWiki Get. */
+/**
+ * Samples for ProductWiki Get.
+ */
 public final class ProductWikiGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetProductWiki.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetProductWiki.json
      */
     /**
      * Sample code: ApiManagementGetProductWiki.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetProductWiki(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .productWikis()
+    public static void
+        apiManagementGetProductWiki(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productWikis()
             .getWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", com.azure.core.util.Context.NONE);
     }
 }

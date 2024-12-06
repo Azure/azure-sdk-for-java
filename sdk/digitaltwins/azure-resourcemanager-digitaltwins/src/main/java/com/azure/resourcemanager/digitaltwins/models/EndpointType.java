@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of Digital Twins endpoint. */
+/**
+ * The type of Digital Twins endpoint.
+ */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
-    /** Static value EventHub for EndpointType. */
+    /**
+     * Static value EventHub for EndpointType.
+     */
     public static final EndpointType EVENT_HUB = fromString("EventHub");
 
-    /** Static value EventGrid for EndpointType. */
+    /**
+     * Static value EventGrid for EndpointType.
+     */
     public static final EndpointType EVENT_GRID = fromString("EventGrid");
 
-    /** Static value ServiceBus for EndpointType. */
+    /**
+     * Static value ServiceBus for EndpointType.
+     */
     public static final EndpointType SERVICE_BUS = fromString("ServiceBus");
 
     /**
      * Creates a new instance of EndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Creates or finds a EndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
-    @JsonCreator
     public static EndpointType fromString(String name) {
         return fromString(name, EndpointType.class);
     }
 
     /**
      * Gets known EndpointType values.
-     *
+     * 
      * @return known EndpointType values.
      */
     public static Collection<EndpointType> values() {

@@ -13,15 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReceivedSharesDelete {
     public static void main(String[] args) {
-        ReceivedSharesClient receivedSharesClient =
-                new ReceivedSharesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("accountName.purview.azure.com/share")
-                        .buildClient();
+        ReceivedSharesClient receivedSharesClient
+            = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("accountName.purview.azure.com/share")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesdeletereceivedshare.receivedsharesdelete
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> response =
-                receivedSharesClient.beginDeleteReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
+        SyncPoller<BinaryData, Void> response
+            = receivedSharesClient.beginDeleteReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
         // END:com.azure.analytics.purview.sharing.generated.receivedsharesdeletereceivedshare.receivedsharesdelete
     }
 }

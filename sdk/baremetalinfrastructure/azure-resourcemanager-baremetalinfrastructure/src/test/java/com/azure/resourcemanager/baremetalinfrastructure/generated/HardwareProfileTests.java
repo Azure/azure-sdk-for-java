@@ -10,9 +10,8 @@ import com.azure.resourcemanager.baremetalinfrastructure.models.HardwareProfile;
 public final class HardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareProfile model =
-            BinaryData
-                .fromString("{\"hardwareType\":\"SDFLEX\",\"azureBareMetalInstanceSize\":\"S672om\"}")
+        HardwareProfile model
+            = BinaryData.fromString("{\"hardwareType\":\"SDFLEX\",\"azureBareMetalInstanceSize\":\"S672om\"}")
                 .toObject(HardwareProfile.class);
     }
 

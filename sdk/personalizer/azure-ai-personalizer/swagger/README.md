@@ -19,7 +19,7 @@ autorest
 ```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.39'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.personalizer
@@ -120,4 +120,51 @@ directive:
     from: SlotReward
     to: PersonalizerSlotReward
 - generate-samples: true
+```
+
+### Replace Uri with Url
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.PersonalizerServiceProperties.properties.logMirrorSasUri["x-ms-client-name"] = "logMirrorSasUrl";
+```
+
+### Rename enableOfflineExperimentation to offlineExperimentationEnabled
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.PersonalizerEvaluationOptions.properties.enableOfflineExperimentation["x-ms-client-name"] = "offlineExperimentationEnabled";
+```
+
+### Fix for ApiVersion in parameterized host
+
+```yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-parameterized-host"]
+  transform: >
+    $.hostTemplate = "{Endpoint}/personalizer/{ApiVersion}";
+    $.parameters.push({
+      "name": "ApiVersion",
+      "description": "Supported Cognitive Services API version.",
+      "x-ms-parameter-location": "client",
+      "required": true,
+      "type": "string",
+      "in": "path",
+      "x-ms-skip-url-encoding": true
+    });
+```
+
+```yaml
+directive:
+- from: swagger-document
+  where: $
+  transform: >
+    delete $.basePath;
 ```

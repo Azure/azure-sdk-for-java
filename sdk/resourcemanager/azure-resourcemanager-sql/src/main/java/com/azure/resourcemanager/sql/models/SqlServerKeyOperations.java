@@ -17,10 +17,8 @@ public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerK
     SqlServerKeyOperations.DefinitionStages.WithSqlServer define();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlServerKeyOperationsDefinition
-        extends SqlServerKeyOperations.DefinitionStages.WithSqlServer,
-            SqlServerKeyOperations.DefinitionStages.WithServerKeyType,
-            SqlServerKeyOperations.DefinitionStages.WithCreate {
+    interface SqlServerKeyOperationsDefinition extends SqlServerKeyOperations.DefinitionStages.WithSqlServer,
+        SqlServerKeyOperations.DefinitionStages.WithServerKeyType, SqlServerKeyOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Server Key definition stages. */
@@ -34,8 +32,8 @@ public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerK
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServer(
-                String resourceGroupName, String sqlServerName);
+            SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServer(String resourceGroupName,
+                String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Server Key.
@@ -66,8 +64,7 @@ public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerK
         }
 
         /** The final stage of the SQL Server Key definition. */
-        interface WithCreate
-            extends Creatable<SqlServerKey> {
+        interface WithCreate extends Creatable<SqlServerKey> {
         }
     }
 

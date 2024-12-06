@@ -30,7 +30,7 @@ public final class TableTransactionResult {
      * to each transaction action.
      */
     public TableTransactionResult(List<TableTransactionAction> transactionActions,
-                                  List<TableTransactionActionResponse> transactionActionResponses) {
+        List<TableTransactionActionResponse> transactionActionResponses) {
         this.transactionActionResponses = transactionActionResponses;
         this.lookupMap = new HashMap<>();
 

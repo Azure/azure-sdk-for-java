@@ -12,27 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeEnableinteractivequeryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeEnableinteractivequeryInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Failed\",\"name\":\"bgdlfgtdysna\",\"properties\":\"dataflq\",\"error\":\"tqhamzjrw\"}")
-                .toObject(IntegrationRuntimeEnableinteractivequeryInner.class);
-        Assertions.assertEquals(WorkspaceStatus.FAILED, model.status());
-        Assertions.assertEquals("bgdlfgtdysna", model.name());
-        Assertions.assertEquals("tqhamzjrw", model.error());
+        IntegrationRuntimeEnableinteractivequeryInner model = BinaryData.fromString(
+            "{\"status\":\"Succeeded\",\"name\":\"folpymwamxqzra\",\"properties\":\"datagdphtvdula\",\"error\":\"lejchcsr\"}")
+            .toObject(IntegrationRuntimeEnableinteractivequeryInner.class);
+        Assertions.assertEquals(WorkspaceStatus.SUCCEEDED, model.status());
+        Assertions.assertEquals("folpymwamxqzra", model.name());
+        Assertions.assertEquals("lejchcsr", model.error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeEnableinteractivequeryInner model =
-            new IntegrationRuntimeEnableinteractivequeryInner()
-                .withStatus(WorkspaceStatus.FAILED)
-                .withName("bgdlfgtdysna")
-                .withProperties("dataflq")
-                .withError("tqhamzjrw");
+        IntegrationRuntimeEnableinteractivequeryInner model
+            = new IntegrationRuntimeEnableinteractivequeryInner().withStatus(WorkspaceStatus.SUCCEEDED)
+                .withName("folpymwamxqzra")
+                .withProperties("datagdphtvdula")
+                .withError("lejchcsr");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeEnableinteractivequeryInner.class);
-        Assertions.assertEquals(WorkspaceStatus.FAILED, model.status());
-        Assertions.assertEquals("bgdlfgtdysna", model.name());
-        Assertions.assertEquals("tqhamzjrw", model.error());
+        Assertions.assertEquals(WorkspaceStatus.SUCCEEDED, model.status());
+        Assertions.assertEquals("folpymwamxqzra", model.name());
+        Assertions.assertEquals("lejchcsr", model.error());
     }
 }

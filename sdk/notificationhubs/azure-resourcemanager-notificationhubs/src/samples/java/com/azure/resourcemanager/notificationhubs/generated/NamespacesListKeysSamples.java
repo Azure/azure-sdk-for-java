@@ -19,7 +19,8 @@ public final class NamespacesListKeysSamples {
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void namespacesListKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().listKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .listKeysWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }

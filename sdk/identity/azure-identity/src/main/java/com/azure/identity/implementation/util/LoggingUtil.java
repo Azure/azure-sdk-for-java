@@ -25,8 +25,7 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      */
     public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
-        logger.log(LogLevel.VERBOSE, () -> String.format(
-            "Azure Identity => getToken() result for scopes [%s]: SUCCESS",
+        logger.log(LogLevel.VERBOSE, () -> String.format("Azure Identity => getToken() result for scopes [%s]: SUCCESS",
             CoreUtils.stringJoin(", ", context.getScopes())));
     }
 
@@ -39,7 +38,7 @@ public final class LoggingUtil {
     public static void logTokenError(ClientLogger logger, IdentityClientOptions options, TokenRequestContext context,
         Throwable error) {
         logError(logger, options, () -> String.format("Azure Identity => ERROR in getToken() call for scopes [%s]: %s",
-                CoreUtils.stringJoin(", ", context.getScopes()), error == null ? "" : error.getMessage()));
+            CoreUtils.stringJoin(", ", context.getScopes()), error == null ? "" : error.getMessage()));
     }
 
     /**
@@ -88,7 +87,7 @@ public final class LoggingUtil {
     }
 
     public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
-                                       IdentityClientOptions options, CredentialUnavailableException exception) {
+        IdentityClientOptions options, CredentialUnavailableException exception) {
         logger.log(options.getIdentityLogOptionsImpl().getRuntimeExceptionLogLevel(), exception::getMessage, exception);
         return exception;
     }

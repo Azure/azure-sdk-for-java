@@ -6,27 +6,34 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Maps fields in Profile to their corresponding StrongIds in Related Profile. */
+/**
+ * Maps fields in Profile to their corresponding StrongIds in Related Profile.
+ */
 @Fluent
-public final class RelationshipTypeMapping {
+public final class RelationshipTypeMapping implements JsonSerializable<RelationshipTypeMapping> {
     /*
      * Maps a profile property with the StrongId of related profile. This is an array to support StrongIds that are
      * composite key as well.
      */
-    @JsonProperty(value = "fieldMappings", required = true)
     private List<RelationshipTypeFieldMapping> fieldMappings;
 
-    /** Creates an instance of RelationshipTypeMapping class. */
+    /**
+     * Creates an instance of RelationshipTypeMapping class.
+     */
     public RelationshipTypeMapping() {
     }
 
     /**
      * Get the fieldMappings property: Maps a profile property with the StrongId of related profile. This is an array to
      * support StrongIds that are composite key as well.
-     *
+     * 
      * @return the fieldMappings value.
      */
     public List<RelationshipTypeFieldMapping> fieldMappings() {
@@ -36,7 +43,7 @@ public final class RelationshipTypeMapping {
     /**
      * Set the fieldMappings property: Maps a profile property with the StrongId of related profile. This is an array to
      * support StrongIds that are composite key as well.
-     *
+     * 
      * @param fieldMappings the fieldMappings value to set.
      * @return the RelationshipTypeMapping object itself.
      */
@@ -47,19 +54,57 @@ public final class RelationshipTypeMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fieldMappings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fieldMappings in model RelationshipTypeMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fieldMappings in model RelationshipTypeMapping"));
         } else {
             fieldMappings().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelationshipTypeMapping.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipTypeMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipTypeMapping if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipTypeMapping.
+     */
+    public static RelationshipTypeMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipTypeMapping deserializedRelationshipTypeMapping = new RelationshipTypeMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fieldMappings".equals(fieldName)) {
+                    List<RelationshipTypeFieldMapping> fieldMappings
+                        = reader.readArray(reader1 -> RelationshipTypeFieldMapping.fromJson(reader1));
+                    deserializedRelationshipTypeMapping.fieldMappings = fieldMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipTypeMapping;
+        });
+    }
 }

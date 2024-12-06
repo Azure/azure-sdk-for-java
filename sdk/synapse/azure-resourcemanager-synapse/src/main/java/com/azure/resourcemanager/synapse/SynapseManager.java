@@ -182,7 +182,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SynapseManager. Azure Synapse Analytics Management Client. */
+/**
+ * Entry point to SynapseManager.
+ * Azure Synapse Analytics Management Client.
+ */
 public final class SynapseManager {
     private AzureADOnlyAuthentications azureADOnlyAuthentications;
 
@@ -274,8 +277,7 @@ public final class SynapseManager {
 
     private WorkspaceManagedSqlServerRecoverableSqlPools workspaceManagedSqlServerRecoverableSqlPools;
 
-    private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
-        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+    private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
 
     private Workspaces workspaces;
 
@@ -340,18 +342,16 @@ public final class SynapseManager {
     private SynapseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new SynapseManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new SynapseManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Synapse service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Synapse service API instance.
@@ -364,7 +364,7 @@ public final class SynapseManager {
 
     /**
      * Creates an instance of Synapse service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Synapse service API instance.
@@ -377,14 +377,16 @@ public final class SynapseManager {
 
     /**
      * Gets a Configurable instance that can be used to create SynapseManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SynapseManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -456,8 +458,8 @@ public final class SynapseManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -474,8 +476,8 @@ public final class SynapseManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -495,15 +497,13 @@ public final class SynapseManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.synapse")
                 .append("/")
-                .append("1.0.0-beta.7");
+                .append("1.0.0-beta.8");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -528,51 +528,41 @@ public final class SynapseManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SynapseManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of AzureADOnlyAuthentications. It manages AzureADOnlyAuthentication.
-     *
+     * 
      * @return Resource collection API of AzureADOnlyAuthentications.
      */
     public AzureADOnlyAuthentications azureADOnlyAuthentications() {
         if (this.azureADOnlyAuthentications == null) {
-            this.azureADOnlyAuthentications =
-                new AzureADOnlyAuthenticationsImpl(clientObject.getAzureADOnlyAuthentications(), this);
+            this.azureADOnlyAuthentications
+                = new AzureADOnlyAuthenticationsImpl(clientObject.getAzureADOnlyAuthentications(), this);
         }
         return azureADOnlyAuthentications;
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -584,7 +574,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IpFirewallRules. It manages IpFirewallRuleInfo.
-     *
+     * 
      * @return Resource collection API of IpFirewallRules.
      */
     public IpFirewallRules ipFirewallRules() {
@@ -596,7 +586,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Keys. It manages Key.
-     *
+     * 
      * @return Resource collection API of Keys.
      */
     public Keys keys() {
@@ -608,46 +598,46 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkResourcesOperations.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResourcesOperations.
      */
     public PrivateLinkResourcesOperations privateLinkResourcesOperations() {
         if (this.privateLinkResourcesOperations == null) {
-            this.privateLinkResourcesOperations =
-                new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
+            this.privateLinkResourcesOperations
+                = new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
         }
         return privateLinkResourcesOperations;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkHubPrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkHubPrivateLinkResources.
      */
     public PrivateLinkHubPrivateLinkResources privateLinkHubPrivateLinkResources() {
         if (this.privateLinkHubPrivateLinkResources == null) {
-            this.privateLinkHubPrivateLinkResources =
-                new PrivateLinkHubPrivateLinkResourcesImpl(clientObject.getPrivateLinkHubPrivateLinkResources(), this);
+            this.privateLinkHubPrivateLinkResources = new PrivateLinkHubPrivateLinkResourcesImpl(
+                clientObject.getPrivateLinkHubPrivateLinkResources(), this);
         }
         return privateLinkHubPrivateLinkResources;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkHubs. It manages PrivateLinkHub.
-     *
+     * 
      * @return Resource collection API of PrivateLinkHubs.
      */
     public PrivateLinkHubs privateLinkHubs() {
@@ -659,21 +649,20 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnectionsPrivateLinkHubs.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnectionsPrivateLinkHubs.
      */
     public PrivateEndpointConnectionsPrivateLinkHubs privateEndpointConnectionsPrivateLinkHubs() {
         if (this.privateEndpointConnectionsPrivateLinkHubs == null) {
-            this.privateEndpointConnectionsPrivateLinkHubs =
-                new PrivateEndpointConnectionsPrivateLinkHubsImpl(
-                    clientObject.getPrivateEndpointConnectionsPrivateLinkHubs(), this);
+            this.privateEndpointConnectionsPrivateLinkHubs = new PrivateEndpointConnectionsPrivateLinkHubsImpl(
+                clientObject.getPrivateEndpointConnectionsPrivateLinkHubs(), this);
         }
         return privateEndpointConnectionsPrivateLinkHubs;
     }
 
     /**
      * Gets the resource collection API of SqlPools. It manages SqlPool.
-     *
+     * 
      * @return Resource collection API of SqlPools.
      */
     public SqlPools sqlPools() {
@@ -685,59 +674,59 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolMetadataSyncConfigs.
-     *
+     * 
      * @return Resource collection API of SqlPoolMetadataSyncConfigs.
      */
     public SqlPoolMetadataSyncConfigs sqlPoolMetadataSyncConfigs() {
         if (this.sqlPoolMetadataSyncConfigs == null) {
-            this.sqlPoolMetadataSyncConfigs =
-                new SqlPoolMetadataSyncConfigsImpl(clientObject.getSqlPoolMetadataSyncConfigs(), this);
+            this.sqlPoolMetadataSyncConfigs
+                = new SqlPoolMetadataSyncConfigsImpl(clientObject.getSqlPoolMetadataSyncConfigs(), this);
         }
         return sqlPoolMetadataSyncConfigs;
     }
 
     /**
      * Gets the resource collection API of SqlPoolOperationResults.
-     *
+     * 
      * @return Resource collection API of SqlPoolOperationResults.
      */
     public SqlPoolOperationResults sqlPoolOperationResults() {
         if (this.sqlPoolOperationResults == null) {
-            this.sqlPoolOperationResults =
-                new SqlPoolOperationResultsImpl(clientObject.getSqlPoolOperationResults(), this);
+            this.sqlPoolOperationResults
+                = new SqlPoolOperationResultsImpl(clientObject.getSqlPoolOperationResults(), this);
         }
         return sqlPoolOperationResults;
     }
 
     /**
      * Gets the resource collection API of SqlPoolGeoBackupPolicies. It manages GeoBackupPolicy.
-     *
+     * 
      * @return Resource collection API of SqlPoolGeoBackupPolicies.
      */
     public SqlPoolGeoBackupPolicies sqlPoolGeoBackupPolicies() {
         if (this.sqlPoolGeoBackupPolicies == null) {
-            this.sqlPoolGeoBackupPolicies =
-                new SqlPoolGeoBackupPoliciesImpl(clientObject.getSqlPoolGeoBackupPolicies(), this);
+            this.sqlPoolGeoBackupPolicies
+                = new SqlPoolGeoBackupPoliciesImpl(clientObject.getSqlPoolGeoBackupPolicies(), this);
         }
         return sqlPoolGeoBackupPolicies;
     }
 
     /**
      * Gets the resource collection API of SqlPoolDataWarehouseUserActivities.
-     *
+     * 
      * @return Resource collection API of SqlPoolDataWarehouseUserActivities.
      */
     public SqlPoolDataWarehouseUserActivities sqlPoolDataWarehouseUserActivities() {
         if (this.sqlPoolDataWarehouseUserActivities == null) {
-            this.sqlPoolDataWarehouseUserActivities =
-                new SqlPoolDataWarehouseUserActivitiesImpl(clientObject.getSqlPoolDataWarehouseUserActivities(), this);
+            this.sqlPoolDataWarehouseUserActivities = new SqlPoolDataWarehouseUserActivitiesImpl(
+                clientObject.getSqlPoolDataWarehouseUserActivities(), this);
         }
         return sqlPoolDataWarehouseUserActivities;
     }
 
     /**
      * Gets the resource collection API of SqlPoolRestorePoints.
-     *
+     * 
      * @return Resource collection API of SqlPoolRestorePoints.
      */
     public SqlPoolRestorePoints sqlPoolRestorePoints() {
@@ -749,72 +738,72 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolReplicationLinks.
-     *
+     * 
      * @return Resource collection API of SqlPoolReplicationLinks.
      */
     public SqlPoolReplicationLinks sqlPoolReplicationLinks() {
         if (this.sqlPoolReplicationLinks == null) {
-            this.sqlPoolReplicationLinks =
-                new SqlPoolReplicationLinksImpl(clientObject.getSqlPoolReplicationLinks(), this);
+            this.sqlPoolReplicationLinks
+                = new SqlPoolReplicationLinksImpl(clientObject.getSqlPoolReplicationLinks(), this);
         }
         return sqlPoolReplicationLinks;
     }
 
     /**
      * Gets the resource collection API of SqlPoolMaintenanceWindows.
-     *
+     * 
      * @return Resource collection API of SqlPoolMaintenanceWindows.
      */
     public SqlPoolMaintenanceWindows sqlPoolMaintenanceWindows() {
         if (this.sqlPoolMaintenanceWindows == null) {
-            this.sqlPoolMaintenanceWindows =
-                new SqlPoolMaintenanceWindowsImpl(clientObject.getSqlPoolMaintenanceWindows(), this);
+            this.sqlPoolMaintenanceWindows
+                = new SqlPoolMaintenanceWindowsImpl(clientObject.getSqlPoolMaintenanceWindows(), this);
         }
         return sqlPoolMaintenanceWindows;
     }
 
     /**
      * Gets the resource collection API of SqlPoolMaintenanceWindowOptions.
-     *
+     * 
      * @return Resource collection API of SqlPoolMaintenanceWindowOptions.
      */
     public SqlPoolMaintenanceWindowOptions sqlPoolMaintenanceWindowOptions() {
         if (this.sqlPoolMaintenanceWindowOptions == null) {
-            this.sqlPoolMaintenanceWindowOptions =
-                new SqlPoolMaintenanceWindowOptionsImpl(clientObject.getSqlPoolMaintenanceWindowOptions(), this);
+            this.sqlPoolMaintenanceWindowOptions
+                = new SqlPoolMaintenanceWindowOptionsImpl(clientObject.getSqlPoolMaintenanceWindowOptions(), this);
         }
         return sqlPoolMaintenanceWindowOptions;
     }
 
     /**
      * Gets the resource collection API of SqlPoolTransparentDataEncryptions. It manages TransparentDataEncryption.
-     *
+     * 
      * @return Resource collection API of SqlPoolTransparentDataEncryptions.
      */
     public SqlPoolTransparentDataEncryptions sqlPoolTransparentDataEncryptions() {
         if (this.sqlPoolTransparentDataEncryptions == null) {
-            this.sqlPoolTransparentDataEncryptions =
-                new SqlPoolTransparentDataEncryptionsImpl(clientObject.getSqlPoolTransparentDataEncryptions(), this);
+            this.sqlPoolTransparentDataEncryptions
+                = new SqlPoolTransparentDataEncryptionsImpl(clientObject.getSqlPoolTransparentDataEncryptions(), this);
         }
         return sqlPoolTransparentDataEncryptions;
     }
 
     /**
      * Gets the resource collection API of SqlPoolBlobAuditingPolicies. It manages SqlPoolBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of SqlPoolBlobAuditingPolicies.
      */
     public SqlPoolBlobAuditingPolicies sqlPoolBlobAuditingPolicies() {
         if (this.sqlPoolBlobAuditingPolicies == null) {
-            this.sqlPoolBlobAuditingPolicies =
-                new SqlPoolBlobAuditingPoliciesImpl(clientObject.getSqlPoolBlobAuditingPolicies(), this);
+            this.sqlPoolBlobAuditingPolicies
+                = new SqlPoolBlobAuditingPoliciesImpl(clientObject.getSqlPoolBlobAuditingPolicies(), this);
         }
         return sqlPoolBlobAuditingPolicies;
     }
 
     /**
      * Gets the resource collection API of SqlPoolOperations.
-     *
+     * 
      * @return Resource collection API of SqlPoolOperations.
      */
     public SqlPoolOperations sqlPoolOperations() {
@@ -826,7 +815,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolUsages.
-     *
+     * 
      * @return Resource collection API of SqlPoolUsages.
      */
     public SqlPoolUsages sqlPoolUsages() {
@@ -838,34 +827,33 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolSensitivityLabels. It manages SensitivityLabel.
-     *
+     * 
      * @return Resource collection API of SqlPoolSensitivityLabels.
      */
     public SqlPoolSensitivityLabels sqlPoolSensitivityLabels() {
         if (this.sqlPoolSensitivityLabels == null) {
-            this.sqlPoolSensitivityLabels =
-                new SqlPoolSensitivityLabelsImpl(clientObject.getSqlPoolSensitivityLabels(), this);
+            this.sqlPoolSensitivityLabels
+                = new SqlPoolSensitivityLabelsImpl(clientObject.getSqlPoolSensitivityLabels(), this);
         }
         return sqlPoolSensitivityLabels;
     }
 
     /**
      * Gets the resource collection API of SqlPoolRecommendedSensitivityLabels.
-     *
+     * 
      * @return Resource collection API of SqlPoolRecommendedSensitivityLabels.
      */
     public SqlPoolRecommendedSensitivityLabels sqlPoolRecommendedSensitivityLabels() {
         if (this.sqlPoolRecommendedSensitivityLabels == null) {
-            this.sqlPoolRecommendedSensitivityLabels =
-                new SqlPoolRecommendedSensitivityLabelsImpl(
-                    clientObject.getSqlPoolRecommendedSensitivityLabels(), this);
+            this.sqlPoolRecommendedSensitivityLabels = new SqlPoolRecommendedSensitivityLabelsImpl(
+                clientObject.getSqlPoolRecommendedSensitivityLabels(), this);
         }
         return sqlPoolRecommendedSensitivityLabels;
     }
 
     /**
      * Gets the resource collection API of SqlPoolSchemas.
-     *
+     * 
      * @return Resource collection API of SqlPoolSchemas.
      */
     public SqlPoolSchemas sqlPoolSchemas() {
@@ -877,7 +865,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolTables.
-     *
+     * 
      * @return Resource collection API of SqlPoolTables.
      */
     public SqlPoolTables sqlPoolTables() {
@@ -889,7 +877,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolTableColumns.
-     *
+     * 
      * @return Resource collection API of SqlPoolTableColumns.
      */
     public SqlPoolTableColumns sqlPoolTableColumns() {
@@ -901,53 +889,52 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolConnectionPolicies.
-     *
+     * 
      * @return Resource collection API of SqlPoolConnectionPolicies.
      */
     public SqlPoolConnectionPolicies sqlPoolConnectionPolicies() {
         if (this.sqlPoolConnectionPolicies == null) {
-            this.sqlPoolConnectionPolicies =
-                new SqlPoolConnectionPoliciesImpl(clientObject.getSqlPoolConnectionPolicies(), this);
+            this.sqlPoolConnectionPolicies
+                = new SqlPoolConnectionPoliciesImpl(clientObject.getSqlPoolConnectionPolicies(), this);
         }
         return sqlPoolConnectionPolicies;
     }
 
     /**
      * Gets the resource collection API of SqlPoolVulnerabilityAssessments. It manages SqlPoolVulnerabilityAssessment.
-     *
+     * 
      * @return Resource collection API of SqlPoolVulnerabilityAssessments.
      */
     public SqlPoolVulnerabilityAssessments sqlPoolVulnerabilityAssessments() {
         if (this.sqlPoolVulnerabilityAssessments == null) {
-            this.sqlPoolVulnerabilityAssessments =
-                new SqlPoolVulnerabilityAssessmentsImpl(clientObject.getSqlPoolVulnerabilityAssessments(), this);
+            this.sqlPoolVulnerabilityAssessments
+                = new SqlPoolVulnerabilityAssessmentsImpl(clientObject.getSqlPoolVulnerabilityAssessments(), this);
         }
         return sqlPoolVulnerabilityAssessments;
     }
 
     /**
      * Gets the resource collection API of SqlPoolVulnerabilityAssessmentScans.
-     *
+     * 
      * @return Resource collection API of SqlPoolVulnerabilityAssessmentScans.
      */
     public SqlPoolVulnerabilityAssessmentScans sqlPoolVulnerabilityAssessmentScans() {
         if (this.sqlPoolVulnerabilityAssessmentScans == null) {
-            this.sqlPoolVulnerabilityAssessmentScans =
-                new SqlPoolVulnerabilityAssessmentScansImpl(
-                    clientObject.getSqlPoolVulnerabilityAssessmentScans(), this);
+            this.sqlPoolVulnerabilityAssessmentScans = new SqlPoolVulnerabilityAssessmentScansImpl(
+                clientObject.getSqlPoolVulnerabilityAssessmentScans(), this);
         }
         return sqlPoolVulnerabilityAssessmentScans;
     }
 
     /**
      * Gets the resource collection API of SqlPoolSecurityAlertPolicies. It manages SqlPoolSecurityAlertPolicy.
-     *
+     * 
      * @return Resource collection API of SqlPoolSecurityAlertPolicies.
      */
     public SqlPoolSecurityAlertPolicies sqlPoolSecurityAlertPolicies() {
         if (this.sqlPoolSecurityAlertPolicies == null) {
-            this.sqlPoolSecurityAlertPolicies =
-                new SqlPoolSecurityAlertPoliciesImpl(clientObject.getSqlPoolSecurityAlertPolicies(), this);
+            this.sqlPoolSecurityAlertPolicies
+                = new SqlPoolSecurityAlertPoliciesImpl(clientObject.getSqlPoolSecurityAlertPolicies(), this);
         }
         return sqlPoolSecurityAlertPolicies;
     }
@@ -955,14 +942,13 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of SqlPoolVulnerabilityAssessmentRuleBaselines. It manages
      * SqlPoolVulnerabilityAssessmentRuleBaseline.
-     *
+     * 
      * @return Resource collection API of SqlPoolVulnerabilityAssessmentRuleBaselines.
      */
     public SqlPoolVulnerabilityAssessmentRuleBaselines sqlPoolVulnerabilityAssessmentRuleBaselines() {
         if (this.sqlPoolVulnerabilityAssessmentRuleBaselines == null) {
-            this.sqlPoolVulnerabilityAssessmentRuleBaselines =
-                new SqlPoolVulnerabilityAssessmentRuleBaselinesImpl(
-                    clientObject.getSqlPoolVulnerabilityAssessmentRuleBaselines(), this);
+            this.sqlPoolVulnerabilityAssessmentRuleBaselines = new SqlPoolVulnerabilityAssessmentRuleBaselinesImpl(
+                clientObject.getSqlPoolVulnerabilityAssessmentRuleBaselines(), this);
         }
         return sqlPoolVulnerabilityAssessmentRuleBaselines;
     }
@@ -970,21 +956,20 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of ExtendedSqlPoolBlobAuditingPolicies. It manages
      * ExtendedSqlPoolBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of ExtendedSqlPoolBlobAuditingPolicies.
      */
     public ExtendedSqlPoolBlobAuditingPolicies extendedSqlPoolBlobAuditingPolicies() {
         if (this.extendedSqlPoolBlobAuditingPolicies == null) {
-            this.extendedSqlPoolBlobAuditingPolicies =
-                new ExtendedSqlPoolBlobAuditingPoliciesImpl(
-                    clientObject.getExtendedSqlPoolBlobAuditingPolicies(), this);
+            this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesImpl(
+                clientObject.getExtendedSqlPoolBlobAuditingPolicies(), this);
         }
         return extendedSqlPoolBlobAuditingPolicies;
     }
 
     /**
      * Gets the resource collection API of DataMaskingPolicies. It manages DataMaskingPolicy.
-     *
+     * 
      * @return Resource collection API of DataMaskingPolicies.
      */
     public DataMaskingPolicies dataMaskingPolicies() {
@@ -996,7 +981,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of DataMaskingRules. It manages DataMaskingRule.
-     *
+     * 
      * @return Resource collection API of DataMaskingRules.
      */
     public DataMaskingRules dataMaskingRules() {
@@ -1008,7 +993,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolColumns.
-     *
+     * 
      * @return Resource collection API of SqlPoolColumns.
      */
     public SqlPoolColumns sqlPoolColumns() {
@@ -1020,7 +1005,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolWorkloadGroups. It manages WorkloadGroup.
-     *
+     * 
      * @return Resource collection API of SqlPoolWorkloadGroups.
      */
     public SqlPoolWorkloadGroups sqlPoolWorkloadGroups() {
@@ -1032,13 +1017,13 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolWorkloadClassifiers. It manages WorkloadClassifier.
-     *
+     * 
      * @return Resource collection API of SqlPoolWorkloadClassifiers.
      */
     public SqlPoolWorkloadClassifiers sqlPoolWorkloadClassifiers() {
         if (this.sqlPoolWorkloadClassifiers == null) {
-            this.sqlPoolWorkloadClassifiers =
-                new SqlPoolWorkloadClassifiersImpl(clientObject.getSqlPoolWorkloadClassifiers(), this);
+            this.sqlPoolWorkloadClassifiers
+                = new SqlPoolWorkloadClassifiersImpl(clientObject.getSqlPoolWorkloadClassifiers(), this);
         }
         return sqlPoolWorkloadClassifiers;
     }
@@ -1046,14 +1031,13 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerBlobAuditingPolicies. It manages
      * ServerBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerBlobAuditingPolicies.
      */
     public WorkspaceManagedSqlServerBlobAuditingPolicies workspaceManagedSqlServerBlobAuditingPolicies() {
         if (this.workspaceManagedSqlServerBlobAuditingPolicies == null) {
-            this.workspaceManagedSqlServerBlobAuditingPolicies =
-                new WorkspaceManagedSqlServerBlobAuditingPoliciesImpl(
-                    clientObject.getWorkspaceManagedSqlServerBlobAuditingPolicies(), this);
+            this.workspaceManagedSqlServerBlobAuditingPolicies = new WorkspaceManagedSqlServerBlobAuditingPoliciesImpl(
+                clientObject.getWorkspaceManagedSqlServerBlobAuditingPolicies(), this);
         }
         return workspaceManagedSqlServerBlobAuditingPolicies;
     }
@@ -1061,14 +1045,14 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerExtendedBlobAuditingPolicies. It manages
      * ExtendedServerBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerExtendedBlobAuditingPolicies.
      */
     public WorkspaceManagedSqlServerExtendedBlobAuditingPolicies
         workspaceManagedSqlServerExtendedBlobAuditingPolicies() {
         if (this.workspaceManagedSqlServerExtendedBlobAuditingPolicies == null) {
-            this.workspaceManagedSqlServerExtendedBlobAuditingPolicies =
-                new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl(
+            this.workspaceManagedSqlServerExtendedBlobAuditingPolicies
+                = new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl(
                     clientObject.getWorkspaceManagedSqlServerExtendedBlobAuditingPolicies(), this);
         }
         return workspaceManagedSqlServerExtendedBlobAuditingPolicies;
@@ -1077,13 +1061,13 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerSecurityAlertPolicies. It manages
      * ServerSecurityAlertPolicy.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerSecurityAlertPolicies.
      */
     public WorkspaceManagedSqlServerSecurityAlertPolicies workspaceManagedSqlServerSecurityAlertPolicies() {
         if (this.workspaceManagedSqlServerSecurityAlertPolicies == null) {
-            this.workspaceManagedSqlServerSecurityAlertPolicies =
-                new WorkspaceManagedSqlServerSecurityAlertPoliciesImpl(
+            this.workspaceManagedSqlServerSecurityAlertPolicies
+                = new WorkspaceManagedSqlServerSecurityAlertPoliciesImpl(
                     clientObject.getWorkspaceManagedSqlServerSecurityAlertPolicies(), this);
         }
         return workspaceManagedSqlServerSecurityAlertPolicies;
@@ -1092,13 +1076,13 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerVulnerabilityAssessments. It manages
      * ServerVulnerabilityAssessment.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerVulnerabilityAssessments.
      */
     public WorkspaceManagedSqlServerVulnerabilityAssessments workspaceManagedSqlServerVulnerabilityAssessments() {
         if (this.workspaceManagedSqlServerVulnerabilityAssessments == null) {
-            this.workspaceManagedSqlServerVulnerabilityAssessments =
-                new WorkspaceManagedSqlServerVulnerabilityAssessmentsImpl(
+            this.workspaceManagedSqlServerVulnerabilityAssessments
+                = new WorkspaceManagedSqlServerVulnerabilityAssessmentsImpl(
                     clientObject.getWorkspaceManagedSqlServerVulnerabilityAssessments(), this);
         }
         return workspaceManagedSqlServerVulnerabilityAssessments;
@@ -1107,55 +1091,53 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerEncryptionProtectors. It manages
      * EncryptionProtector.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerEncryptionProtectors.
      */
     public WorkspaceManagedSqlServerEncryptionProtectors workspaceManagedSqlServerEncryptionProtectors() {
         if (this.workspaceManagedSqlServerEncryptionProtectors == null) {
-            this.workspaceManagedSqlServerEncryptionProtectors =
-                new WorkspaceManagedSqlServerEncryptionProtectorsImpl(
-                    clientObject.getWorkspaceManagedSqlServerEncryptionProtectors(), this);
+            this.workspaceManagedSqlServerEncryptionProtectors = new WorkspaceManagedSqlServerEncryptionProtectorsImpl(
+                clientObject.getWorkspaceManagedSqlServerEncryptionProtectors(), this);
         }
         return workspaceManagedSqlServerEncryptionProtectors;
     }
 
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerUsages.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerUsages.
      */
     public WorkspaceManagedSqlServerUsages workspaceManagedSqlServerUsages() {
         if (this.workspaceManagedSqlServerUsages == null) {
-            this.workspaceManagedSqlServerUsages =
-                new WorkspaceManagedSqlServerUsagesImpl(clientObject.getWorkspaceManagedSqlServerUsages(), this);
+            this.workspaceManagedSqlServerUsages
+                = new WorkspaceManagedSqlServerUsagesImpl(clientObject.getWorkspaceManagedSqlServerUsages(), this);
         }
         return workspaceManagedSqlServerUsages;
     }
 
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerRecoverableSqlPools.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerRecoverableSqlPools.
      */
     public WorkspaceManagedSqlServerRecoverableSqlPools workspaceManagedSqlServerRecoverableSqlPools() {
         if (this.workspaceManagedSqlServerRecoverableSqlPools == null) {
-            this.workspaceManagedSqlServerRecoverableSqlPools =
-                new WorkspaceManagedSqlServerRecoverableSqlPoolsImpl(
-                    clientObject.getWorkspaceManagedSqlServerRecoverableSqlPools(), this);
+            this.workspaceManagedSqlServerRecoverableSqlPools = new WorkspaceManagedSqlServerRecoverableSqlPoolsImpl(
+                clientObject.getWorkspaceManagedSqlServerRecoverableSqlPools(), this);
         }
         return workspaceManagedSqlServerRecoverableSqlPools;
     }
 
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings.
      */
     public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
         workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings() {
         if (this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings == null) {
-            this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings =
-                new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl(
+            this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
+                = new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl(
                     clientObject.getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings(), this);
         }
         return workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
@@ -1163,7 +1145,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Workspaces. It manages Workspace.
-     *
+     * 
      * @return Resource collection API of Workspaces.
      */
     public Workspaces workspaces() {
@@ -1175,7 +1157,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceAadAdmins.
-     *
+     * 
      * @return Resource collection API of WorkspaceAadAdmins.
      */
     public WorkspaceAadAdmins workspaceAadAdmins() {
@@ -1187,7 +1169,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceSqlAadAdmins.
-     *
+     * 
      * @return Resource collection API of WorkspaceSqlAadAdmins.
      */
     public WorkspaceSqlAadAdmins workspaceSqlAadAdmins() {
@@ -1199,34 +1181,33 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceManagedIdentitySqlControlSettings.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedIdentitySqlControlSettings.
      */
     public WorkspaceManagedIdentitySqlControlSettings workspaceManagedIdentitySqlControlSettings() {
         if (this.workspaceManagedIdentitySqlControlSettings == null) {
-            this.workspaceManagedIdentitySqlControlSettings =
-                new WorkspaceManagedIdentitySqlControlSettingsImpl(
-                    clientObject.getWorkspaceManagedIdentitySqlControlSettings(), this);
+            this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsImpl(
+                clientObject.getWorkspaceManagedIdentitySqlControlSettings(), this);
         }
         return workspaceManagedIdentitySqlControlSettings;
     }
 
     /**
      * Gets the resource collection API of RestorableDroppedSqlPools.
-     *
+     * 
      * @return Resource collection API of RestorableDroppedSqlPools.
      */
     public RestorableDroppedSqlPools restorableDroppedSqlPools() {
         if (this.restorableDroppedSqlPools == null) {
-            this.restorableDroppedSqlPools =
-                new RestorableDroppedSqlPoolsImpl(clientObject.getRestorableDroppedSqlPools(), this);
+            this.restorableDroppedSqlPools
+                = new RestorableDroppedSqlPoolsImpl(clientObject.getRestorableDroppedSqlPools(), this);
         }
         return restorableDroppedSqlPools;
     }
 
     /**
      * Gets the resource collection API of BigDataPools. It manages BigDataPoolResourceInfo.
-     *
+     * 
      * @return Resource collection API of BigDataPools.
      */
     public BigDataPools bigDataPools() {
@@ -1238,7 +1219,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Libraries.
-     *
+     * 
      * @return Resource collection API of Libraries.
      */
     public Libraries libraries() {
@@ -1250,7 +1231,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of LibrariesOperations.
-     *
+     * 
      * @return Resource collection API of LibrariesOperations.
      */
     public LibrariesOperations librariesOperations() {
@@ -1262,7 +1243,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimes. It manages IntegrationRuntimeResource.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimes.
      */
     public IntegrationRuntimes integrationRuntimes() {
@@ -1274,113 +1255,111 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeNodeIpAddressOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeNodeIpAddressOperations.
      */
     public IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations() {
         if (this.integrationRuntimeNodeIpAddressOperations == null) {
-            this.integrationRuntimeNodeIpAddressOperations =
-                new IntegrationRuntimeNodeIpAddressOperationsImpl(
-                    clientObject.getIntegrationRuntimeNodeIpAddressOperations(), this);
+            this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsImpl(
+                clientObject.getIntegrationRuntimeNodeIpAddressOperations(), this);
         }
         return integrationRuntimeNodeIpAddressOperations;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeObjectMetadatas.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeObjectMetadatas.
      */
     public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
         if (this.integrationRuntimeObjectMetadatas == null) {
-            this.integrationRuntimeObjectMetadatas =
-                new IntegrationRuntimeObjectMetadatasImpl(clientObject.getIntegrationRuntimeObjectMetadatas(), this);
+            this.integrationRuntimeObjectMetadatas
+                = new IntegrationRuntimeObjectMetadatasImpl(clientObject.getIntegrationRuntimeObjectMetadatas(), this);
         }
         return integrationRuntimeObjectMetadatas;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeNodes.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeNodes.
      */
     public IntegrationRuntimeNodes integrationRuntimeNodes() {
         if (this.integrationRuntimeNodes == null) {
-            this.integrationRuntimeNodes =
-                new IntegrationRuntimeNodesImpl(clientObject.getIntegrationRuntimeNodes(), this);
+            this.integrationRuntimeNodes
+                = new IntegrationRuntimeNodesImpl(clientObject.getIntegrationRuntimeNodes(), this);
         }
         return integrationRuntimeNodes;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeCredentials.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeCredentials.
      */
     public IntegrationRuntimeCredentials integrationRuntimeCredentials() {
         if (this.integrationRuntimeCredentials == null) {
-            this.integrationRuntimeCredentials =
-                new IntegrationRuntimeCredentialsImpl(clientObject.getIntegrationRuntimeCredentials(), this);
+            this.integrationRuntimeCredentials
+                = new IntegrationRuntimeCredentialsImpl(clientObject.getIntegrationRuntimeCredentials(), this);
         }
         return integrationRuntimeCredentials;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeConnectionInfos.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeConnectionInfos.
      */
     public IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos() {
         if (this.integrationRuntimeConnectionInfos == null) {
-            this.integrationRuntimeConnectionInfos =
-                new IntegrationRuntimeConnectionInfosImpl(clientObject.getIntegrationRuntimeConnectionInfos(), this);
+            this.integrationRuntimeConnectionInfos
+                = new IntegrationRuntimeConnectionInfosImpl(clientObject.getIntegrationRuntimeConnectionInfos(), this);
         }
         return integrationRuntimeConnectionInfos;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeAuthKeysOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeAuthKeysOperations.
      */
     public IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations() {
         if (this.integrationRuntimeAuthKeysOperations == null) {
-            this.integrationRuntimeAuthKeysOperations =
-                new IntegrationRuntimeAuthKeysOperationsImpl(
-                    clientObject.getIntegrationRuntimeAuthKeysOperations(), this);
+            this.integrationRuntimeAuthKeysOperations = new IntegrationRuntimeAuthKeysOperationsImpl(
+                clientObject.getIntegrationRuntimeAuthKeysOperations(), this);
         }
         return integrationRuntimeAuthKeysOperations;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeMonitoringDatas.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeMonitoringDatas.
      */
     public IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas() {
         if (this.integrationRuntimeMonitoringDatas == null) {
-            this.integrationRuntimeMonitoringDatas =
-                new IntegrationRuntimeMonitoringDatasImpl(clientObject.getIntegrationRuntimeMonitoringDatas(), this);
+            this.integrationRuntimeMonitoringDatas
+                = new IntegrationRuntimeMonitoringDatasImpl(clientObject.getIntegrationRuntimeMonitoringDatas(), this);
         }
         return integrationRuntimeMonitoringDatas;
     }
 
     /**
      * Gets the resource collection API of IntegrationRuntimeStatusOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeStatusOperations.
      */
     public IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations() {
         if (this.integrationRuntimeStatusOperations == null) {
-            this.integrationRuntimeStatusOperations =
-                new IntegrationRuntimeStatusOperationsImpl(clientObject.getIntegrationRuntimeStatusOperations(), this);
+            this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsImpl(
+                clientObject.getIntegrationRuntimeStatusOperations(), this);
         }
         return integrationRuntimeStatusOperations;
     }
 
     /**
      * Gets the resource collection API of Gets.
-     *
+     * 
      * @return Resource collection API of Gets.
      */
     public Gets gets() {
@@ -1392,7 +1371,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SparkConfigurations.
-     *
+     * 
      * @return Resource collection API of SparkConfigurations.
      */
     public SparkConfigurations sparkConfigurations() {
@@ -1404,20 +1383,20 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SparkConfigurationsOperations.
-     *
+     * 
      * @return Resource collection API of SparkConfigurationsOperations.
      */
     public SparkConfigurationsOperations sparkConfigurationsOperations() {
         if (this.sparkConfigurationsOperations == null) {
-            this.sparkConfigurationsOperations =
-                new SparkConfigurationsOperationsImpl(clientObject.getSparkConfigurationsOperations(), this);
+            this.sparkConfigurationsOperations
+                = new SparkConfigurationsOperationsImpl(clientObject.getSparkConfigurationsOperations(), this);
         }
         return sparkConfigurationsOperations;
     }
 
     /**
      * Gets the resource collection API of KustoOperations.
-     *
+     * 
      * @return Resource collection API of KustoOperations.
      */
     public KustoOperations kustoOperations() {
@@ -1429,7 +1408,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPools. It manages KustoPool.
-     *
+     * 
      * @return Resource collection API of KustoPools.
      */
     public KustoPools kustoPools() {
@@ -1441,13 +1420,13 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolChildResources.
-     *
+     * 
      * @return Resource collection API of KustoPoolChildResources.
      */
     public KustoPoolChildResources kustoPoolChildResources() {
         if (this.kustoPoolChildResources == null) {
-            this.kustoPoolChildResources =
-                new KustoPoolChildResourcesImpl(clientObject.getKustoPoolChildResources(), this);
+            this.kustoPoolChildResources
+                = new KustoPoolChildResourcesImpl(clientObject.getKustoPoolChildResources(), this);
         }
         return kustoPoolChildResources;
     }
@@ -1455,21 +1434,20 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of KustoPoolAttachedDatabaseConfigurations. It manages
      * AttachedDatabaseConfiguration.
-     *
+     * 
      * @return Resource collection API of KustoPoolAttachedDatabaseConfigurations.
      */
     public KustoPoolAttachedDatabaseConfigurations kustoPoolAttachedDatabaseConfigurations() {
         if (this.kustoPoolAttachedDatabaseConfigurations == null) {
-            this.kustoPoolAttachedDatabaseConfigurations =
-                new KustoPoolAttachedDatabaseConfigurationsImpl(
-                    clientObject.getKustoPoolAttachedDatabaseConfigurations(), this);
+            this.kustoPoolAttachedDatabaseConfigurations = new KustoPoolAttachedDatabaseConfigurationsImpl(
+                clientObject.getKustoPoolAttachedDatabaseConfigurations(), this);
         }
         return kustoPoolAttachedDatabaseConfigurations;
     }
 
     /**
      * Gets the resource collection API of KustoPoolDatabases.
-     *
+     * 
      * @return Resource collection API of KustoPoolDatabases.
      */
     public KustoPoolDatabases kustoPoolDatabases() {
@@ -1481,26 +1459,26 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolDataConnections.
-     *
+     * 
      * @return Resource collection API of KustoPoolDataConnections.
      */
     public KustoPoolDataConnections kustoPoolDataConnections() {
         if (this.kustoPoolDataConnections == null) {
-            this.kustoPoolDataConnections =
-                new KustoPoolDataConnectionsImpl(clientObject.getKustoPoolDataConnections(), this);
+            this.kustoPoolDataConnections
+                = new KustoPoolDataConnectionsImpl(clientObject.getKustoPoolDataConnections(), this);
         }
         return kustoPoolDataConnections;
     }
 
     /**
      * Gets the resource collection API of KustoPoolPrincipalAssignments. It manages ClusterPrincipalAssignment.
-     *
+     * 
      * @return Resource collection API of KustoPoolPrincipalAssignments.
      */
     public KustoPoolPrincipalAssignments kustoPoolPrincipalAssignments() {
         if (this.kustoPoolPrincipalAssignments == null) {
-            this.kustoPoolPrincipalAssignments =
-                new KustoPoolPrincipalAssignmentsImpl(clientObject.getKustoPoolPrincipalAssignments(), this);
+            this.kustoPoolPrincipalAssignments
+                = new KustoPoolPrincipalAssignmentsImpl(clientObject.getKustoPoolPrincipalAssignments(), this);
         }
         return kustoPoolPrincipalAssignments;
     }
@@ -1508,35 +1486,35 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of KustoPoolDatabasePrincipalAssignments. It manages
      * DatabasePrincipalAssignment.
-     *
+     * 
      * @return Resource collection API of KustoPoolDatabasePrincipalAssignments.
      */
     public KustoPoolDatabasePrincipalAssignments kustoPoolDatabasePrincipalAssignments() {
         if (this.kustoPoolDatabasePrincipalAssignments == null) {
-            this.kustoPoolDatabasePrincipalAssignments =
-                new KustoPoolDatabasePrincipalAssignmentsImpl(
-                    clientObject.getKustoPoolDatabasePrincipalAssignments(), this);
+            this.kustoPoolDatabasePrincipalAssignments = new KustoPoolDatabasePrincipalAssignmentsImpl(
+                clientObject.getKustoPoolDatabasePrincipalAssignments(), this);
         }
         return kustoPoolDatabasePrincipalAssignments;
     }
 
     /**
      * Gets the resource collection API of KustoPoolPrivateLinkResourcesOperations.
-     *
+     * 
      * @return Resource collection API of KustoPoolPrivateLinkResourcesOperations.
      */
     public KustoPoolPrivateLinkResourcesOperations kustoPoolPrivateLinkResourcesOperations() {
         if (this.kustoPoolPrivateLinkResourcesOperations == null) {
-            this.kustoPoolPrivateLinkResourcesOperations =
-                new KustoPoolPrivateLinkResourcesOperationsImpl(
-                    clientObject.getKustoPoolPrivateLinkResourcesOperations(), this);
+            this.kustoPoolPrivateLinkResourcesOperations = new KustoPoolPrivateLinkResourcesOperationsImpl(
+                clientObject.getKustoPoolPrivateLinkResourcesOperations(), this);
         }
         return kustoPoolPrivateLinkResourcesOperations;
     }
 
     /**
-     * @return Wrapped service client SynapseManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client SynapseManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client SynapseManagementClient.
      */
     public SynapseManagementClient serviceClient() {
         return this.clientObject;

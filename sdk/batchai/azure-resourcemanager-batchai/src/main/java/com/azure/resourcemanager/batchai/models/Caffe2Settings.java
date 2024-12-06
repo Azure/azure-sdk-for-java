@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Caffe2 job settings. */
 @Fluent
 public final class Caffe2Settings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Caffe2Settings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Caffe2Settings.class);
 
     /*
      * The python script to execute.
@@ -99,10 +100,8 @@ public final class Caffe2Settings {
      */
     public void validate() {
         if (pythonScriptFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonScriptFilePath in model Caffe2Settings"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property pythonScriptFilePath in model Caffe2Settings"));
         }
     }
 }

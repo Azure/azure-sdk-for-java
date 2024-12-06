@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Wiki documentation details. */
+/**
+ * Wiki documentation details.
+ */
 @Fluent
-public final class WikiDocumentationContract {
+public final class WikiDocumentationContract implements JsonSerializable<WikiDocumentationContract> {
     /*
      * Documentation Identifier
      */
-    @JsonProperty(value = "documentationId")
     private String documentationId;
 
-    /** Creates an instance of WikiDocumentationContract class. */
+    /**
+     * Creates an instance of WikiDocumentationContract class.
+     */
     public WikiDocumentationContract() {
     }
 
     /**
      * Get the documentationId property: Documentation Identifier.
-     *
+     * 
      * @return the documentationId value.
      */
     public String documentationId() {
@@ -31,7 +38,7 @@ public final class WikiDocumentationContract {
 
     /**
      * Set the documentationId property: Documentation Identifier.
-     *
+     * 
      * @param documentationId the documentationId value to set.
      * @return the WikiDocumentationContract object itself.
      */
@@ -42,9 +49,45 @@ public final class WikiDocumentationContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("documentationId", this.documentationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WikiDocumentationContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WikiDocumentationContract if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WikiDocumentationContract.
+     */
+    public static WikiDocumentationContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WikiDocumentationContract deserializedWikiDocumentationContract = new WikiDocumentationContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("documentationId".equals(fieldName)) {
+                    deserializedWikiDocumentationContract.documentationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWikiDocumentationContract;
+        });
     }
 }

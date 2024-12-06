@@ -8,12 +8,15 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.CloudHsmClusterInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.BackupRequestProperties;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.BackupResult;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmCluster;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPatchParameters;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPatchParametersProperties;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterProperties;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterSku;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.RestoreRequestProperties;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.RestoreResult;
 import java.util.Collections;
 import java.util.Map;
 
@@ -47,12 +50,12 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
         }
     }
 
-    public CloudHsmClusterSku sku() {
-        return this.innerModel().sku();
-    }
-
     public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public CloudHsmClusterSku sku() {
+        return this.innerModel().sku();
     }
 
     public SystemData systemData() {
@@ -95,14 +98,16 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster create() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().createOrUpdate(resourceGroupName,
-            cloudHsmClusterName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .createOrUpdate(resourceGroupName, cloudHsmClusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CloudHsmCluster create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().createOrUpdate(resourceGroupName,
-            cloudHsmClusterName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .createOrUpdate(resourceGroupName, cloudHsmClusterName, this.innerModel(), context);
         return this;
     }
 
@@ -119,14 +124,16 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster apply() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().update(resourceGroupName,
-            cloudHsmClusterName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .update(resourceGroupName, cloudHsmClusterName, updateBody, Context.NONE);
         return this;
     }
 
     public CloudHsmCluster apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters().update(resourceGroupName,
-            cloudHsmClusterName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .update(resourceGroupName, cloudHsmClusterName, updateBody, context);
         return this;
     }
 
@@ -139,15 +146,56 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
     }
 
     public CloudHsmCluster refresh() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CloudHsmCluster refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, context)
+            .getValue();
         return this;
+    }
+
+    public BackupResult validateBackupProperties() {
+        return serviceManager.cloudHsmClusters().validateBackupProperties(resourceGroupName, cloudHsmClusterName);
+    }
+
+    public BackupResult validateBackupProperties(BackupRequestProperties backupRequestProperties, Context context) {
+        return serviceManager.cloudHsmClusters()
+            .validateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties, context);
+    }
+
+    public BackupResult backup() {
+        return serviceManager.cloudHsmClusters().backup(resourceGroupName, cloudHsmClusterName);
+    }
+
+    public BackupResult backup(BackupRequestProperties backupRequestProperties, Context context) {
+        return serviceManager.cloudHsmClusters()
+            .backup(resourceGroupName, cloudHsmClusterName, backupRequestProperties, context);
+    }
+
+    public RestoreResult validateRestoreProperties() {
+        return serviceManager.cloudHsmClusters().validateRestoreProperties(resourceGroupName, cloudHsmClusterName);
+    }
+
+    public RestoreResult validateRestoreProperties(RestoreRequestProperties restoreRequestProperties, Context context) {
+        return serviceManager.cloudHsmClusters()
+            .validateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, context);
+    }
+
+    public RestoreResult restore(RestoreRequestProperties restoreRequestProperties) {
+        return serviceManager.cloudHsmClusters()
+            .restore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties);
+    }
+
+    public RestoreResult restore(RestoreRequestProperties restoreRequestProperties, Context context) {
+        return serviceManager.cloudHsmClusters()
+            .restore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, context);
     }
 
     public CloudHsmClusterImpl withRegion(Region location) {
@@ -170,16 +218,6 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
         }
     }
 
-    public CloudHsmClusterImpl withSku(CloudHsmClusterSku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateBody.withSku(sku);
-            return this;
-        }
-    }
-
     public CloudHsmClusterImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
@@ -190,13 +228,13 @@ public final class CloudHsmClusterImpl implements CloudHsmCluster, CloudHsmClust
         }
     }
 
-    public CloudHsmClusterImpl withProperties(CloudHsmClusterProperties properties) {
-        this.innerModel().withProperties(properties);
+    public CloudHsmClusterImpl withSku(CloudHsmClusterSku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 
-    public CloudHsmClusterImpl withProperties(CloudHsmClusterPatchParametersProperties properties) {
-        this.updateBody.withProperties(properties);
+    public CloudHsmClusterImpl withProperties(CloudHsmClusterProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

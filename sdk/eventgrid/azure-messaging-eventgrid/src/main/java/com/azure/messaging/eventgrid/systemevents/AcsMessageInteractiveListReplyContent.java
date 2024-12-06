@@ -28,7 +28,7 @@ public final class AcsMessageInteractiveListReplyContent
     private String title;
 
     /*
-     * The sescription of the selected row
+     * The description of the selected row
      */
     private String description;
 
@@ -79,7 +79,7 @@ public final class AcsMessageInteractiveListReplyContent
     }
 
     /**
-     * Get the description property: The sescription of the selected row.
+     * Get the description property: The description of the selected row.
      * 
      * @return the description value.
      */
@@ -88,7 +88,7 @@ public final class AcsMessageInteractiveListReplyContent
     }
 
     /**
-     * Set the description property: The sescription of the selected row.
+     * Set the description property: The description of the selected row.
      * 
      * @param description the description value to set.
      * @return the AcsMessageInteractiveListReplyContent object itself.
@@ -98,6 +98,9 @@ public final class AcsMessageInteractiveListReplyContent
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

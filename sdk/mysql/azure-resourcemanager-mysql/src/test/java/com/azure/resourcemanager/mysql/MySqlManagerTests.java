@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 import java.util.UUID;
 
-public class MySqlManagerTests extends TestBase {
+public class MySqlManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.EUROPE_WEST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -47,13 +47,11 @@ public class MySqlManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        mysqlManager = MySqlManager
-            .configure()
+        mysqlManager = MySqlManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -64,10 +62,7 @@ public class MySqlManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -86,30 +81,27 @@ public class MySqlManagerTests extends TestBase {
         try {
             String serverName = "mysql" + randomPadding;
             String adminName = "sqlAdmin" + randomPadding;
-            String adminPwd = "sqlAdmin"
-                + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
+            String adminPwd
+                = "sqlAdmin" + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = mysqlManager.servers()
                 .define(serverName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withProperties(
-                    new ServerPropertiesForDefaultCreate()
-                        .withAdministratorLogin(adminName)
-                        .withAdministratorLoginPassword(adminPwd)
-                        .withSslEnforcement(SslEnforcementEnum.DISABLED)
-                        .withStorageProfile(new StorageProfile()
-                            .withBackupRetentionDays(7)
-                            .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
-                            .withStorageMB(128000))
-                        .withVersion(ServerVersion.FIVE_SEVEN)
-                        .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
-                        .withInfrastructureEncryption(InfrastructureEncryption.DISABLED)
-                )
+                .withProperties(new ServerPropertiesForDefaultCreate().withAdministratorLogin(adminName)
+                    .withAdministratorLoginPassword(adminPwd)
+                    .withSslEnforcement(SslEnforcementEnum.DISABLED)
+                    .withStorageProfile(new StorageProfile().withBackupRetentionDays(7)
+                        .withGeoRedundantBackup(GeoRedundantBackup.ENABLED)
+                        .withStorageMB(128000))
+                    .withVersion(ServerVersion.FIVE_SEVEN)
+                    .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
+                    .withInfrastructureEncryption(InfrastructureEncryption.DISABLED))
                 .withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED))
                 .withSku(new Sku().withName("GP_Gen5_2")
                     .withTier(SkuTier.GENERAL_PURPOSE)
-                    .withCapacity(2).withFamily("Gen5"))
+                    .withCapacity(2)
+                    .withFamily("Gen5"))
                 .create();
             // @embedmeEnd
             server.refresh();

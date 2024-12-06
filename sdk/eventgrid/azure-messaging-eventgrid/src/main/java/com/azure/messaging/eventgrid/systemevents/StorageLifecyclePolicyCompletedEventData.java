@@ -23,6 +23,11 @@ public final class StorageLifecyclePolicyCompletedEventData
     private String scheduleTime;
 
     /*
+     * Policy run status of an account in a Blob Management cycle.
+     */
+    private StorageLifecyclePolicyRunSummary policyRunSummary;
+
+    /*
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     private StorageLifecyclePolicyActionSummaryDetail deleteSummary;
@@ -31,6 +36,11 @@ public final class StorageLifecyclePolicyCompletedEventData
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     private StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary;
+
+    /*
+     * Execution statistics of a specific policy action in a Blob Management cycle.
+     */
+    private StorageLifecyclePolicyActionSummaryDetail tierToColdSummary;
 
     /*
      * Execution statistics of a specific policy action in a Blob Management cycle.
@@ -60,6 +70,27 @@ public final class StorageLifecyclePolicyCompletedEventData
      */
     public StorageLifecyclePolicyCompletedEventData setScheduleTime(String scheduleTime) {
         this.scheduleTime = scheduleTime;
+        return this;
+    }
+
+    /**
+     * Get the policyRunSummary property: Policy run status of an account in a Blob Management cycle.
+     * 
+     * @return the policyRunSummary value.
+     */
+    public StorageLifecyclePolicyRunSummary getPolicyRunSummary() {
+        return this.policyRunSummary;
+    }
+
+    /**
+     * Set the policyRunSummary property: Policy run status of an account in a Blob Management cycle.
+     * 
+     * @param policyRunSummary the policyRunSummary value to set.
+     * @return the StorageLifecyclePolicyCompletedEventData object itself.
+     */
+    public StorageLifecyclePolicyCompletedEventData
+        setPolicyRunSummary(StorageLifecyclePolicyRunSummary policyRunSummary) {
+        this.policyRunSummary = policyRunSummary;
         return this;
     }
 
@@ -106,6 +137,27 @@ public final class StorageLifecyclePolicyCompletedEventData
     }
 
     /**
+     * Get the tierToColdSummary property: Execution statistics of a specific policy action in a Blob Management cycle.
+     * 
+     * @return the tierToColdSummary value.
+     */
+    public StorageLifecyclePolicyActionSummaryDetail getTierToColdSummary() {
+        return this.tierToColdSummary;
+    }
+
+    /**
+     * Set the tierToColdSummary property: Execution statistics of a specific policy action in a Blob Management cycle.
+     * 
+     * @param tierToColdSummary the tierToColdSummary value to set.
+     * @return the StorageLifecyclePolicyCompletedEventData object itself.
+     */
+    public StorageLifecyclePolicyCompletedEventData
+        setTierToColdSummary(StorageLifecyclePolicyActionSummaryDetail tierToColdSummary) {
+        this.tierToColdSummary = tierToColdSummary;
+        return this;
+    }
+
+    /**
      * Get the tierToArchiveSummary property: Execution statistics of a specific policy action in a Blob Management
      * cycle.
      * 
@@ -128,12 +180,17 @@ public final class StorageLifecyclePolicyCompletedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scheduleTime", this.scheduleTime);
+        jsonWriter.writeJsonField("policyRunSummary", this.policyRunSummary);
         jsonWriter.writeJsonField("deleteSummary", this.deleteSummary);
         jsonWriter.writeJsonField("tierToCoolSummary", this.tierToCoolSummary);
+        jsonWriter.writeJsonField("tierToColdSummary", this.tierToColdSummary);
         jsonWriter.writeJsonField("tierToArchiveSummary", this.tierToArchiveSummary);
         return jsonWriter.writeEndObject();
     }
@@ -156,11 +213,17 @@ public final class StorageLifecyclePolicyCompletedEventData
 
                 if ("scheduleTime".equals(fieldName)) {
                     deserializedStorageLifecyclePolicyCompletedEventData.scheduleTime = reader.getString();
+                } else if ("policyRunSummary".equals(fieldName)) {
+                    deserializedStorageLifecyclePolicyCompletedEventData.policyRunSummary
+                        = StorageLifecyclePolicyRunSummary.fromJson(reader);
                 } else if ("deleteSummary".equals(fieldName)) {
                     deserializedStorageLifecyclePolicyCompletedEventData.deleteSummary
                         = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToCoolSummary".equals(fieldName)) {
                     deserializedStorageLifecyclePolicyCompletedEventData.tierToCoolSummary
+                        = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
+                } else if ("tierToColdSummary".equals(fieldName)) {
+                    deserializedStorageLifecyclePolicyCompletedEventData.tierToColdSummary
                         = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToArchiveSummary".equals(fieldName)) {
                     deserializedStorageLifecyclePolicyCompletedEventData.tierToArchiveSummary

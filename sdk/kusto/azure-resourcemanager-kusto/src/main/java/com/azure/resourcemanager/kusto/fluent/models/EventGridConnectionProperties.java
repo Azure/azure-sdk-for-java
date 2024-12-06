@@ -358,22 +358,16 @@ public final class EventGridConnectionProperties {
      */
     public void validate() {
         if (storageAccountResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountResourceId in model EventGridConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccountResourceId in model EventGridConnectionProperties"));
         }
         if (eventHubResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubResourceId in model EventGridConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property eventHubResourceId in model EventGridConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroup in model EventGridConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property consumerGroup in model EventGridConnectionProperties"));
         }
     }
 

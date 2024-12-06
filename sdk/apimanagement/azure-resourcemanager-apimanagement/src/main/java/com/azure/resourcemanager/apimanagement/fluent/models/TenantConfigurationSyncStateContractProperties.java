@@ -5,71 +5,72 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Tenant Configuration Synchronization State. */
+/**
+ * Tenant Configuration Synchronization State.
+ */
 @Fluent
-public final class TenantConfigurationSyncStateContractProperties {
+public final class TenantConfigurationSyncStateContractProperties
+    implements JsonSerializable<TenantConfigurationSyncStateContractProperties> {
     /*
      * The name of Git branch.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The latest commit Id.
      */
-    @JsonProperty(value = "commitId")
     private String commitId;
 
     /*
      * value indicating if last sync was save (true) or deploy (false) operation.
      */
-    @JsonProperty(value = "isExport")
     private Boolean isExport;
 
     /*
      * value indicating if last synchronization was later than the configuration change.
      */
-    @JsonProperty(value = "isSynced")
     private Boolean isSynced;
 
     /*
      * value indicating whether Git configuration access is enabled.
      */
-    @JsonProperty(value = "isGitEnabled")
     private Boolean isGitEnabled;
 
     /*
      * The date of the latest synchronization. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
      * specified by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "syncDate")
     private OffsetDateTime syncDate;
 
     /*
-     * The date of the latest configuration change. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ`
-     * as specified by the ISO 8601 standard.
-     *
+     * The date of the latest configuration change. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+     * specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "configurationChangeDate")
     private OffsetDateTime configurationChangeDate;
 
     /*
      * Most recent tenant configuration operation identifier
      */
-    @JsonProperty(value = "lastOperationId")
     private String lastOperationId;
 
-    /** Creates an instance of TenantConfigurationSyncStateContractProperties class. */
+    /**
+     * Creates an instance of TenantConfigurationSyncStateContractProperties class.
+     */
     public TenantConfigurationSyncStateContractProperties() {
     }
 
     /**
      * Get the branch property: The name of Git branch.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -78,7 +79,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Set the branch property: The name of Git branch.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -89,7 +90,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Get the commitId property: The latest commit Id.
-     *
+     * 
      * @return the commitId value.
      */
     public String commitId() {
@@ -98,7 +99,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Set the commitId property: The latest commit Id.
-     *
+     * 
      * @param commitId the commitId value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -109,7 +110,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Get the isExport property: value indicating if last sync was save (true) or deploy (false) operation.
-     *
+     * 
      * @return the isExport value.
      */
     public Boolean isExport() {
@@ -118,7 +119,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Set the isExport property: value indicating if last sync was save (true) or deploy (false) operation.
-     *
+     * 
      * @param isExport the isExport value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -129,7 +130,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Get the isSynced property: value indicating if last synchronization was later than the configuration change.
-     *
+     * 
      * @return the isSynced value.
      */
     public Boolean isSynced() {
@@ -138,7 +139,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Set the isSynced property: value indicating if last synchronization was later than the configuration change.
-     *
+     * 
      * @param isSynced the isSynced value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -149,7 +150,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Get the isGitEnabled property: value indicating whether Git configuration access is enabled.
-     *
+     * 
      * @return the isGitEnabled value.
      */
     public Boolean isGitEnabled() {
@@ -158,7 +159,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Set the isGitEnabled property: value indicating whether Git configuration access is enabled.
-     *
+     * 
      * @param isGitEnabled the isGitEnabled value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -170,7 +171,7 @@ public final class TenantConfigurationSyncStateContractProperties {
     /**
      * Get the syncDate property: The date of the latest synchronization. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the syncDate value.
      */
     public OffsetDateTime syncDate() {
@@ -180,7 +181,7 @@ public final class TenantConfigurationSyncStateContractProperties {
     /**
      * Set the syncDate property: The date of the latest synchronization. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param syncDate the syncDate value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -192,7 +193,7 @@ public final class TenantConfigurationSyncStateContractProperties {
     /**
      * Get the configurationChangeDate property: The date of the latest configuration change. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the configurationChangeDate value.
      */
     public OffsetDateTime configurationChangeDate() {
@@ -202,19 +203,19 @@ public final class TenantConfigurationSyncStateContractProperties {
     /**
      * Set the configurationChangeDate property: The date of the latest configuration change. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param configurationChangeDate the configurationChangeDate value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
-    public TenantConfigurationSyncStateContractProperties withConfigurationChangeDate(
-        OffsetDateTime configurationChangeDate) {
+    public TenantConfigurationSyncStateContractProperties
+        withConfigurationChangeDate(OffsetDateTime configurationChangeDate) {
         this.configurationChangeDate = configurationChangeDate;
         return this;
     }
 
     /**
      * Get the lastOperationId property: Most recent tenant configuration operation identifier.
-     *
+     * 
      * @return the lastOperationId value.
      */
     public String lastOperationId() {
@@ -223,7 +224,7 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Set the lastOperationId property: Most recent tenant configuration operation identifier.
-     *
+     * 
      * @param lastOperationId the lastOperationId value to set.
      * @return the TenantConfigurationSyncStateContractProperties object itself.
      */
@@ -234,9 +235,76 @@ public final class TenantConfigurationSyncStateContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("commitId", this.commitId);
+        jsonWriter.writeBooleanField("isExport", this.isExport);
+        jsonWriter.writeBooleanField("isSynced", this.isSynced);
+        jsonWriter.writeBooleanField("isGitEnabled", this.isGitEnabled);
+        jsonWriter.writeStringField("syncDate",
+            this.syncDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.syncDate));
+        jsonWriter.writeStringField("configurationChangeDate",
+            this.configurationChangeDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.configurationChangeDate));
+        jsonWriter.writeStringField("lastOperationId", this.lastOperationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TenantConfigurationSyncStateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TenantConfigurationSyncStateContractProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TenantConfigurationSyncStateContractProperties.
+     */
+    public static TenantConfigurationSyncStateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TenantConfigurationSyncStateContractProperties deserializedTenantConfigurationSyncStateContractProperties
+                = new TenantConfigurationSyncStateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("branch".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.branch = reader.getString();
+                } else if ("commitId".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.commitId = reader.getString();
+                } else if ("isExport".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.isExport
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSynced".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.isSynced
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isGitEnabled".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.isGitEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("syncDate".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.syncDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("configurationChangeDate".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.configurationChangeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastOperationId".equals(fieldName)) {
+                    deserializedTenantConfigurationSyncStateContractProperties.lastOperationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTenantConfigurationSyncStateContractProperties;
+        });
     }
 }

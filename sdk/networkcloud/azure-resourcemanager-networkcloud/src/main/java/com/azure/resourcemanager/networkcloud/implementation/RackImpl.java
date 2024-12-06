@@ -118,20 +118,16 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .createOrUpdate(resourceGroupName, rackName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .createOrUpdate(resourceGroupName, rackName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Rack create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .createOrUpdate(resourceGroupName, rackName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .createOrUpdate(resourceGroupName, rackName, this.innerModel(), context);
         return this;
     }
 
@@ -147,47 +143,39 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .update(resourceGroupName, rackName, updateRackUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .update(resourceGroupName, rackName, updateRackUpdateParameters, Context.NONE);
         return this;
     }
 
     public Rack apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .update(resourceGroupName, rackName, updateRackUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .update(resourceGroupName, rackName, updateRackUpdateParameters, context);
         return this;
     }
 
     RackImpl(RackInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.rackName = Utils.getValueFromIdByName(innerObject.id(), "racks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.rackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "racks");
     }
 
     public Rack refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .getByResourceGroupWithResponse(resourceGroupName, rackName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .getByResourceGroupWithResponse(resourceGroupName, rackName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Rack refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .getByResourceGroupWithResponse(resourceGroupName, rackName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .getByResourceGroupWithResponse(resourceGroupName, rackName, context)
+            .getValue();
         return this;
     }
 

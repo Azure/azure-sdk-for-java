@@ -61,9 +61,9 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -71,9 +71,9 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DatabaseAccountGetResultsInner class.
@@ -140,13 +140,13 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -160,13 +160,13 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -931,8 +931,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -941,8 +941,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
@@ -981,13 +981,38 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePerRegionPerPartitionAutoscale();
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (identity() != null) {
             identity().validate();
         }

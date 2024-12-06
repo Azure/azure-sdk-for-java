@@ -14,50 +14,51 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Bots Create. */
+/**
+ * Samples for Bots Create.
+ */
 public final class BotsCreateSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CreateBot.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/CreateBot.json
      */
     /**
      * Sample code: Create Bot.
-     *
+     * 
      * @param manager Entry point to BotServiceManager.
      */
     public static void createBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .bots()
+        manager.bots()
             .define("samplebotname")
             .withRegion("West US")
             .withExistingResourceGroup("OneResourceGroupName")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(
-                new BotProperties()
-                    .withDisplayName("The Name of the bot")
-                    .withDescription("The description of the bot")
-                    .withIconUrl("http://myicon")
-                    .withEndpoint("http://mybot.coffee")
-                    .withMsaAppType(MsaAppType.USER_ASSIGNED_MSI)
-                    .withMsaAppId("exampleappid")
-                    .withMsaAppTenantId("exampleapptenantid")
-                    .withMsaAppMsiResourceId(
-                        "/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId")
-                    .withDeveloperAppInsightKey("appinsightskey")
-                    .withDeveloperAppInsightsApiKey("appinsightsapikey")
-                    .withDeveloperAppInsightsApplicationId("appinsightsappid")
-                    .withLuisAppIds(Arrays.asList("luisappid1", "luisappid2"))
-                    .withLuisKey("luiskey")
-                    .withIsCmekEnabled(true)
-                    .withCmekKeyVaultUrl("https://myCmekKey")
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withDisableLocalAuth(true)
-                    .withSchemaTransformationVersion("1.0"))
+            .withProperties(new BotProperties().withDisplayName("The Name of the bot")
+                .withDescription("The description of the bot")
+                .withIconUrl("http://myicon")
+                .withEndpoint("http://mybot.coffee")
+                .withMsaAppType(MsaAppType.USER_ASSIGNED_MSI)
+                .withMsaAppId("exampleappid")
+                .withMsaAppTenantId("exampleapptenantid")
+                .withMsaAppMsiResourceId(
+                    "/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId")
+                .withDeveloperAppInsightKey("fakeTokenPlaceholder")
+                .withDeveloperAppInsightsApiKey("fakeTokenPlaceholder")
+                .withDeveloperAppInsightsApplicationId("appinsightsappid")
+                .withLuisAppIds(Arrays.asList("luisappid1", "luisappid2"))
+                .withLuisKey("fakeTokenPlaceholder")
+                .withIsCmekEnabled(true)
+                .withCmekKeyVaultUrl("fakeTokenPlaceholder")
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withDisableLocalAuth(true)
+                .withSchemaTransformationVersion("1.0"))
             .withSku(new Sku().withName(SkuName.S1))
             .withKind(Kind.SDK)
             .withEtag("etag1")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

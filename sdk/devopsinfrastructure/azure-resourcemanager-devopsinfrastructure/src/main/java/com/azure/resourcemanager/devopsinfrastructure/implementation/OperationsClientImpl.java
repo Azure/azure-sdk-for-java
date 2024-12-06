@@ -42,22 +42,22 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(DevOpsInfrastructureClientImpl client) {
+    OperationsClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientOperations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")
@@ -181,8 +181,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -209,8 +207,6 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

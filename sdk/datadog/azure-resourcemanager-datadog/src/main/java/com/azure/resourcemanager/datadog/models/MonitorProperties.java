@@ -114,8 +114,8 @@ public final class MonitorProperties {
      * @param datadogOrganizationProperties the datadogOrganizationProperties value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withDatadogOrganizationProperties(
-        DatadogOrganizationProperties datadogOrganizationProperties) {
+    public MonitorProperties
+        withDatadogOrganizationProperties(DatadogOrganizationProperties datadogOrganizationProperties) {
         this.datadogOrganizationProperties = datadogOrganizationProperties;
         return this;
     }

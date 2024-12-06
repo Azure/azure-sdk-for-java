@@ -12,18 +12,18 @@ public final class CustomClrSerializationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomClrSerialization model = BinaryData.fromString(
-            "{\"type\":\"CustomClr\",\"properties\":{\"serializationDllPath\":\"suiizynkedyat\",\"serializationClassName\":\"yhqmibzyhwi\"}}")
+            "{\"type\":\"CustomClr\",\"properties\":{\"serializationDllPath\":\"lwwrl\",\"serializationClassName\":\"m\"}}")
             .toObject(CustomClrSerialization.class);
-        Assertions.assertEquals("suiizynkedyat", model.serializationDllPath());
-        Assertions.assertEquals("yhqmibzyhwi", model.serializationClassName());
+        Assertions.assertEquals("lwwrl", model.serializationDllPath());
+        Assertions.assertEquals("m", model.serializationClassName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomClrSerialization model = new CustomClrSerialization().withSerializationDllPath("suiizynkedyat")
-            .withSerializationClassName("yhqmibzyhwi");
+        CustomClrSerialization model
+            = new CustomClrSerialization().withSerializationDllPath("lwwrl").withSerializationClassName("m");
         model = BinaryData.fromObject(model).toObject(CustomClrSerialization.class);
-        Assertions.assertEquals("suiizynkedyat", model.serializationDllPath());
-        Assertions.assertEquals("yhqmibzyhwi", model.serializationClassName());
+        Assertions.assertEquals("lwwrl", model.serializationDllPath());
+        Assertions.assertEquals("m", model.serializationClassName());
     }
 }

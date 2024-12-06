@@ -27,22 +27,17 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncAllFeaturesFromUrl() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
 
-        List<VisualFeatures> visualFeatures =  Arrays.asList(
-                VisualFeatures.SMART_CROPS,
-                VisualFeatures.CAPTION,
-                VisualFeatures.DENSE_CAPTIONS,
-                VisualFeatures.OBJECTS,
-                VisualFeatures.PEOPLE,
-                VisualFeatures.READ,
-                VisualFeatures.TAGS);
+        List<VisualFeatures> visualFeatures
+            = Arrays.asList(VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+                VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS);
 
-        ImageAnalysisOptions options = new ImageAnalysisOptions()
-            .setLanguage("en")
+        ImageAnalysisOptions options = new ImageAnalysisOptions().setLanguage("en")
             .setGenderNeutralCaption(true)
             .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
             .setModelVersion("latest");
@@ -56,49 +51,45 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
         List<Entry<String, String>> queryParams = new ArrayList<>();
         queryParams.add(new SimpleEntry<>("key1", "value1"));
         queryParams.add(new SimpleEntry<>("key2", "value2"));
-        createClientForStandardAnalysis(sync, queryParams);
+        createClient(false, true, sync, queryParams);
 
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
         ImageAnalysisOptions options = null;
 
-        List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.CAPTION);
+        List<VisualFeatures> visualFeatures = Arrays.asList(VisualFeatures.CAPTION);
         doAnalysis(methodName + ":Caption", sync, false, imageSource, visualFeatures, options, null);
 
-        visualFeatures =  Arrays.asList(VisualFeatures.READ);
+        visualFeatures = Arrays.asList(VisualFeatures.READ);
         doAnalysis(methodName + ":Read", sync, false, imageSource, visualFeatures, options, null);
 
-        visualFeatures =  Arrays.asList(VisualFeatures.TAGS);
+        visualFeatures = Arrays.asList(VisualFeatures.TAGS);
         doAnalysis(methodName + ":Tags", sync, false, imageSource, visualFeatures, options, null);
     }
 
     @Test
     public void testAnalyzeSyncAllFeaturesFromFileWithResponse() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
         String imageSource = imageFile;
 
-        List<VisualFeatures> visualFeatures =  Arrays.asList(
-                VisualFeatures.SMART_CROPS,
-                VisualFeatures.CAPTION,
-                VisualFeatures.DENSE_CAPTIONS,
-                VisualFeatures.OBJECTS,
-                VisualFeatures.PEOPLE,
-                VisualFeatures.READ,
-                VisualFeatures.TAGS);
+        List<VisualFeatures> visualFeatures
+            = Arrays.asList(VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+                VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS);
 
-        ImageAnalysisOptions options = new ImageAnalysisOptions()
-            .setLanguage("en")
+        ImageAnalysisOptions options = new ImageAnalysisOptions().setLanguage("en")
             .setGenderNeutralCaption(true)
             .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))
             .setModelVersion("latest");
 
-        RequestOptions requestOptions = new RequestOptions()
-            .addHeader(HttpHeaderName.fromString("YourHeaderName"), "YourHeaderValue")
-            .addQueryParam("key1", "value1")
-            .addQueryParam("key2", "value2");
+        RequestOptions requestOptions
+            = new RequestOptions().addHeader(HttpHeaderName.fromString("YourHeaderName"), "YourHeaderValue")
+                .addQueryParam("key1", "value1")
+                .addQueryParam("key2", "value2");
 
         doAnalysis(methodName, sync, true, imageSource, visualFeatures, options, requestOptions);
     }
@@ -106,11 +97,12 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncSingleFeatureFromUrlWithResponse() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(false, true, sync, null);
 
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
         String imageSource = imageUrl;
-        List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.TAGS);
+        List<VisualFeatures> visualFeatures = Arrays.asList(VisualFeatures.TAGS);
 
         doAnalysis(methodName, sync, true, imageSource, visualFeatures, null, null);
     }
@@ -124,11 +116,12 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
     @Test
     public void testAnalyzeSyncImageUrlDoesNotExist() {
 
-        createClientForStandardAnalysis(sync);
+        createClient(true, true, sync, null);
 
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
         String imageSource = "https://www.this.is.a.bad.url.com/for/sure.jpg";
-        List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.CAPTION);
+        List<VisualFeatures> visualFeatures = Arrays.asList(VisualFeatures.CAPTION);
         ImageAnalysisOptions options = null;
 
         doAnalysisWithError(methodName, sync, imageSource, visualFeatures, options, 400, "image url is not accessible");

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastColumn model =
-            BinaryData.fromString("{\"name\":\"ktrmgucnapkt\",\"type\":\"ellwptfdy\"}").toObject(ForecastColumn.class);
-        Assertions.assertEquals("ktrmgucnapkt", model.name());
-        Assertions.assertEquals("ellwptfdy", model.type());
+        ForecastColumn model = BinaryData.fromString("{\"name\":\"uutlwxezwzhok\",\"type\":\"wnhhtqlgehgppip\"}")
+            .toObject(ForecastColumn.class);
+        Assertions.assertEquals("uutlwxezwzhok", model.name());
+        Assertions.assertEquals("wnhhtqlgehgppip", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastColumn model = new ForecastColumn().withName("ktrmgucnapkt").withType("ellwptfdy");
+        ForecastColumn model = new ForecastColumn().withName("uutlwxezwzhok").withType("wnhhtqlgehgppip");
         model = BinaryData.fromObject(model).toObject(ForecastColumn.class);
-        Assertions.assertEquals("ktrmgucnapkt", model.name());
-        Assertions.assertEquals("ellwptfdy", model.type());
+        Assertions.assertEquals("uutlwxezwzhok", model.name());
+        Assertions.assertEquals("wnhhtqlgehgppip", model.type());
     }
 }

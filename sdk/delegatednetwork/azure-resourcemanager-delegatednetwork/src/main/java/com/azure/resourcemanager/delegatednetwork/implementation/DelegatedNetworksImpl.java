@@ -19,8 +19,7 @@ public final class DelegatedNetworksImpl implements DelegatedNetworks {
 
     private final com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager;
 
-    public DelegatedNetworksImpl(
-        DelegatedNetworksClient innerClient,
+    public DelegatedNetworksImpl(DelegatedNetworksClient innerClient,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,23 +27,23 @@ public final class DelegatedNetworksImpl implements DelegatedNetworks {
 
     public PagedIterable<DelegatedController> list() {
         PagedIterable<DelegatedControllerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DelegatedController> list(Context context) {
         PagedIterable<DelegatedControllerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DelegatedController> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DelegatedControllerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DelegatedController> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<DelegatedControllerInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
+        PagedIterable<DelegatedControllerInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedControllerImpl(inner1, this.manager()));
     }
 
     private DelegatedNetworksClient serviceClient() {

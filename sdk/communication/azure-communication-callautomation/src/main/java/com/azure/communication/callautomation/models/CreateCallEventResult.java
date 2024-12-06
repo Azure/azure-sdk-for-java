@@ -47,7 +47,8 @@ public final class CreateCallEventResult {
     }
 
     /**
-     * 
+     * Gets the create call failure event.
+     *
      * @return the create call failure event.
      */
     public CreateCallFailed getFailureResult() {

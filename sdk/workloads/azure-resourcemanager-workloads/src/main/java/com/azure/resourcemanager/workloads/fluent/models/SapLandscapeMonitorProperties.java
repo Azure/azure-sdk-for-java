@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorMetricThresholds;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorPropertiesGrouping;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Gets or sets the properties for Sap Landscape Monitor Dashboard. */
+/**
+ * Gets or sets the properties for Sap Landscape Monitor Dashboard.
+ */
 @Fluent
-public final class SapLandscapeMonitorProperties {
+public final class SapLandscapeMonitorProperties implements JsonSerializable<SapLandscapeMonitorProperties> {
     /*
      * State of provisioning of the SAP monitor.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private SapLandscapeMonitorProvisioningState provisioningState;
 
     /*
      * Gets or sets the SID groupings by landscape and Environment.
      */
-    @JsonProperty(value = "grouping")
     private SapLandscapeMonitorPropertiesGrouping grouping;
 
     /*
      * Gets or sets the list Top Metric Thresholds for SAP Landscape Monitor Dashboard
      */
-    @JsonProperty(value = "topMetricsThresholds")
     private List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds;
 
-    /** Creates an instance of SapLandscapeMonitorProperties class. */
+    /**
+     * Creates an instance of SapLandscapeMonitorProperties class.
+     */
     public SapLandscapeMonitorProperties() {
     }
 
     /**
      * Get the provisioningState property: State of provisioning of the SAP monitor.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapLandscapeMonitorProvisioningState provisioningState() {
@@ -47,7 +52,7 @@ public final class SapLandscapeMonitorProperties {
 
     /**
      * Get the grouping property: Gets or sets the SID groupings by landscape and Environment.
-     *
+     * 
      * @return the grouping value.
      */
     public SapLandscapeMonitorPropertiesGrouping grouping() {
@@ -56,7 +61,7 @@ public final class SapLandscapeMonitorProperties {
 
     /**
      * Set the grouping property: Gets or sets the SID groupings by landscape and Environment.
-     *
+     * 
      * @param grouping the grouping value to set.
      * @return the SapLandscapeMonitorProperties object itself.
      */
@@ -68,7 +73,7 @@ public final class SapLandscapeMonitorProperties {
     /**
      * Get the topMetricsThresholds property: Gets or sets the list Top Metric Thresholds for SAP Landscape Monitor
      * Dashboard.
-     *
+     * 
      * @return the topMetricsThresholds value.
      */
     public List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds() {
@@ -78,19 +83,19 @@ public final class SapLandscapeMonitorProperties {
     /**
      * Set the topMetricsThresholds property: Gets or sets the list Top Metric Thresholds for SAP Landscape Monitor
      * Dashboard.
-     *
+     * 
      * @param topMetricsThresholds the topMetricsThresholds value to set.
      * @return the SapLandscapeMonitorProperties object itself.
      */
-    public SapLandscapeMonitorProperties withTopMetricsThresholds(
-        List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds) {
+    public SapLandscapeMonitorProperties
+        withTopMetricsThresholds(List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds) {
         this.topMetricsThresholds = topMetricsThresholds;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -100,5 +105,52 @@ public final class SapLandscapeMonitorProperties {
         if (topMetricsThresholds() != null) {
             topMetricsThresholds().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("grouping", this.grouping);
+        jsonWriter.writeArrayField("topMetricsThresholds", this.topMetricsThresholds,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapLandscapeMonitorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapLandscapeMonitorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapLandscapeMonitorProperties.
+     */
+    public static SapLandscapeMonitorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapLandscapeMonitorProperties deserializedSapLandscapeMonitorProperties
+                = new SapLandscapeMonitorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorProperties.provisioningState
+                        = SapLandscapeMonitorProvisioningState.fromString(reader.getString());
+                } else if ("grouping".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorProperties.grouping
+                        = SapLandscapeMonitorPropertiesGrouping.fromJson(reader);
+                } else if ("topMetricsThresholds".equals(fieldName)) {
+                    List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds
+                        = reader.readArray(reader1 -> SapLandscapeMonitorMetricThresholds.fromJson(reader1));
+                    deserializedSapLandscapeMonitorProperties.topMetricsThresholds = topMetricsThresholds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapLandscapeMonitorProperties;
+        });
     }
 }

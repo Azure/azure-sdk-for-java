@@ -4,23 +4,25 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for BillingRoleAssignments DeleteByBillingProfile. */
+/**
+ * Samples for BillingRoleAssignments DeleteByBillingProfile.
+ */
 public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingProfileRoleAssignmentDelete.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingRoleAssignmentDeleteByBillingProfile.json
      */
     /**
-     * Sample code: BillingProfileRoleAssignmentDelete.
-     *
+     * Sample code: BillingRoleAssignmentDeleteByBillingProfile.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void billingProfileRoleAssignmentDelete(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingRoleAssignments()
+    public static void
+        billingRoleAssignmentDeleteByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingRoleAssignments()
             .deleteByBillingProfileWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{billingRoleAssignmentName}",
+                "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30",
+                "BKM6-54VH-BG7-PGB", "10000000-aaaa-bbbb-cccc-100000000000_6fd330f6-7d26-4aff-b9cf-7bd699f965b9",
                 com.azure.core.util.Context.NONE);
     }
 }

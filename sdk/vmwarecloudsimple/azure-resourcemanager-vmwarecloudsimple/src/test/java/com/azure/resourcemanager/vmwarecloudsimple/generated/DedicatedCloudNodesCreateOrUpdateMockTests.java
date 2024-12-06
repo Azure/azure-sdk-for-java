@@ -6,15 +6,12 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudNode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.Sku;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -22,85 +19,56 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DedicatedCloudNodesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"availabilityZoneId\":\"bkiw\",\"availabilityZoneName\":\"qnyophzfyls\",\"cloudRackName\":\"rpfbcunezz\",\"created\":\"2021-01-26T14:06:14Z\",\"nodesCount\":1261110082,\"placementGroupId\":\"lfwyfwlwxjwetn\",\"placementGroupName\":\"ihclafzv\",\"privateCloudId\":\"lpt\",\"privateCloudName\":\"qqwzt\",\"provisioningState\":\"Succeeded\",\"purchaseId\":\"67b3971f-6e42-4385-bd21-fdda3b8524e0\",\"skuDescription\":{\"id\":\"chcxwaxfewzj\",\"name\":\"jexfdeqvhp\"},\"status\":\"used\",\"vmwareClusterName\":\"ksh\"},\"sku\":{\"capacity\":\"f\",\"description\":\"mxzjrgywwpgjx\",\"family\":\"ptfujgicgaaoept\",\"name\":\"aqutdewemxswvruu\",\"tier\":\"zjgehkfkim\"},\"location\":\"tixo\",\"tags\":{\"qepqwhixmon\":\"qyinl\",\"xgvelfclduccbird\":\"tshi\",\"jizcilnghgs\":\"vuwcobiegstmnin\"},\"id\":\"ejjtbxqmul\",\"name\":\"xlxqzvn\",\"type\":\"rsbycucrwn\"}";
 
-        String responseStr =
-            "{\"properties\":{\"availabilityZoneId\":\"mrsreuzvxurisjnh\",\"availabilityZoneName\":\"txifqj\",\"cloudRackName\":\"xmrhu\",\"created\":\"2021-07-06T09:24:09Z\",\"nodesCount\":1892822249,\"placementGroupId\":\"cesutrgjupauut\",\"placementGroupName\":\"oqh\",\"privateCloudId\":\"ejqgw\",\"privateCloudName\":\"nfqn\",\"provisioningState\":\"Succeeded\",\"purchaseId\":\"79ead826-9daa-4fee-91d8-a0aa2c95978f\",\"skuDescription\":{\"id\":\"slirciz\",\"name\":\"xvydfceacvlhvygd\"},\"status\":\"unused\",\"vmwareClusterName\":\"mrtwna\"},\"sku\":{\"capacity\":\"lbiw\",\"description\":\"jgcyztsfmznba\",\"family\":\"ph\",\"name\":\"hqnrn\",\"tier\":\"x\"},\"location\":\"huwrykqgaifm\",\"tags\":{\"dvk\":\"lb\",\"srhnjivo\":\"bejdznxcv\"},\"id\":\"v\",\"name\":\"novqfzge\",\"type\":\"jdftuljltd\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        VMwareCloudSimpleManager manager = VMwareCloudSimpleManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DedicatedCloudNode response = manager.dedicatedCloudNodes()
+            .define("ihknsmjbl")
+            .withRegion("cmjdmspof")
+            .withExistingResourceGroup("sphaivmxyasflvg")
+            .withTags(mapOf("gbzjedmstkv", "uhrylniofr", "xbcuiiznkt", "l"))
+            .withSku(new Sku().withCapacity("qihebw")
+                .withDescription("wbzuwfmdurage")
+                .withFamily("zvcjfelisdjubggb")
+                .withName("igkxkbsazga")
+                .withTier("acy"))
+            .withAvailabilityZoneId("jhlnymzotqyryu")
+            .withNodesCount(1408862324)
+            .withPlacementGroupId("peujlzqn")
+            .withPurchaseId(UUID.fromString("b485f092-9c08-438d-8422-9bb874589201"))
+            .withIdPropertiesId("mwwinhehfqpofv")
+            .withNamePropertiesName("bcblemb")
+            .withReferer("gzwywak")
+            .create();
 
-        VMwareCloudSimpleManager manager =
-            VMwareCloudSimpleManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DedicatedCloudNode response =
-            manager
-                .dedicatedCloudNodes()
-                .define("rghxjb")
-                .withRegion("qvpn")
-                .withExistingResourceGroup("sxkkg")
-                .withTags(mapOf("n", "jviylwdshfs", "rymsgaojfmw", "bgye", "hirctymoxoftpipi", "cotmr"))
-                .withSku(
-                    new Sku()
-                        .withCapacity("rvk")
-                        .withDescription("ovjzhpjbibgjmfx")
-                        .withFamily("vfcluyovwxnbkfe")
-                        .withName("zxscyhwzdgirujb")
-                        .withTier("omvzzbtd"))
-                .withAvailabilityZoneId("qxvcxgfrpdsofb")
-                .withNodesCount(412423571)
-                .withPlacementGroupId("jsrtk")
-                .withPurchaseId(UUID.fromString("d8795052-f497-48ad-a2ea-332417ff1fcb"))
-                .withIdPropertiesId("tqmieox")
-                .withNamePropertiesName("rgguf")
-                .withReferer("h")
-                .create();
-
-        Assertions.assertEquals("huwrykqgaifm", response.location());
-        Assertions.assertEquals("lb", response.tags().get("dvk"));
-        Assertions.assertEquals("lbiw", response.sku().capacity());
-        Assertions.assertEquals("jgcyztsfmznba", response.sku().description());
-        Assertions.assertEquals("ph", response.sku().family());
-        Assertions.assertEquals("hqnrn", response.sku().name());
-        Assertions.assertEquals("x", response.sku().tier());
-        Assertions.assertEquals("mrsreuzvxurisjnh", response.availabilityZoneId());
-        Assertions.assertEquals(1892822249, response.nodesCount());
-        Assertions.assertEquals("cesutrgjupauut", response.placementGroupId());
-        Assertions.assertEquals(UUID.fromString("79ead826-9daa-4fee-91d8-a0aa2c95978f"), response.purchaseId());
-        Assertions.assertEquals("slirciz", response.idPropertiesId());
-        Assertions.assertEquals("xvydfceacvlhvygd", response.namePropertiesName());
+        Assertions.assertEquals("tixo", response.location());
+        Assertions.assertEquals("qyinl", response.tags().get("qepqwhixmon"));
+        Assertions.assertEquals("f", response.sku().capacity());
+        Assertions.assertEquals("mxzjrgywwpgjx", response.sku().description());
+        Assertions.assertEquals("ptfujgicgaaoept", response.sku().family());
+        Assertions.assertEquals("aqutdewemxswvruu", response.sku().name());
+        Assertions.assertEquals("zjgehkfkim", response.sku().tier());
+        Assertions.assertEquals("bkiw", response.availabilityZoneId());
+        Assertions.assertEquals(1261110082, response.nodesCount());
+        Assertions.assertEquals("lfwyfwlwxjwetn", response.placementGroupId());
+        Assertions.assertEquals(UUID.fromString("67b3971f-6e42-4385-bd21-fdda3b8524e0"), response.purchaseId());
+        Assertions.assertEquals("chcxwaxfewzj", response.idPropertiesId());
+        Assertions.assertEquals("jexfdeqvhp", response.namePropertiesName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

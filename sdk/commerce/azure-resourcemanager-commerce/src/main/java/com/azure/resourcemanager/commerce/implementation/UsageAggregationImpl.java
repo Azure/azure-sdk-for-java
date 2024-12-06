@@ -15,8 +15,8 @@ public final class UsageAggregationImpl implements UsageAggregation {
 
     private final com.azure.resourcemanager.commerce.UsageManager serviceManager;
 
-    UsageAggregationImpl(
-        UsageAggregationInner innerObject, com.azure.resourcemanager.commerce.UsageManager serviceManager) {
+    UsageAggregationImpl(UsageAggregationInner innerObject,
+        com.azure.resourcemanager.commerce.UsageManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

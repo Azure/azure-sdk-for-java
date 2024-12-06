@@ -21,11 +21,13 @@ import com.azure.resourcemanager.apimanagement.models.UsersGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersGetResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in UsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsersClient.
+ */
 public interface UsersClient {
     /**
      * Lists a collection of registered users in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,17 +40,17 @@ public interface UsersClient {
 
     /**
      * Lists a collection of registered users in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;|
-     *     registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| groups | expand | | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;| registrationDate | filter | ge,
+     * le, eq, ne, gt, lt | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
+     * endswith |&lt;/br&gt;| groups | expand | | |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param expandGroups Detailed Group in response.
@@ -59,18 +61,12 @@ public interface UsersClient {
      * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        Context context);
+    PagedIterable<UserContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups, Context context);
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -81,12 +77,12 @@ public interface UsersClient {
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    UsersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String userId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -99,7 +95,7 @@ public interface UsersClient {
 
     /**
      * Gets the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -114,7 +110,7 @@ public interface UsersClient {
 
     /**
      * Gets the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -128,7 +124,7 @@ public interface UsersClient {
 
     /**
      * Creates or Updates a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -142,18 +138,12 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        UserCreateParameters parameters,
-        Boolean notify,
-        String ifMatch,
-        Context context);
+    UsersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName, String userId,
+        UserCreateParameters parameters, Boolean notify, String ifMatch, Context context);
 
     /**
      * Creates or Updates a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -164,17 +154,17 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String userId, UserCreateParameters parameters);
+    UserContractInner createOrUpdate(String resourceGroupName, String serviceName, String userId,
+        UserCreateParameters parameters);
 
     /**
      * Updates the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,22 +173,17 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        UserUpdateParameters parameters,
-        Context context);
+    UsersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        UserUpdateParameters parameters, Context context);
 
     /**
      * Updates the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -206,21 +191,21 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserContractInner update(
-        String resourceGroupName, String serviceName, String userId, String ifMatch, UserUpdateParameters parameters);
+    UserContractInner update(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        UserUpdateParameters parameters);
 
     /**
      * Deletes specific user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param deleteSubscriptions Whether to delete user's subscription or not.
      * @param notify Send an Account Closed Email notification to the User.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,24 +213,17 @@ public interface UsersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Boolean notify,
-        AppType appType,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);
 
     /**
      * Deletes specific user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +234,7 @@ public interface UsersClient {
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
      * portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -267,13 +245,13 @@ public interface UsersClient {
      * @return generate SSO Url operations response details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateSsoUrlResultInner> generateSsoUrlWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    Response<GenerateSsoUrlResultInner> generateSsoUrlWithResponse(String resourceGroupName, String serviceName,
+        String userId, Context context);
 
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
      * portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -287,7 +265,7 @@ public interface UsersClient {
 
     /**
      * Gets the Shared Access Authorization Token for the User.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -299,12 +277,12 @@ public interface UsersClient {
      * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserTokenResultInner> getSharedAccessTokenWithResponse(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters, Context context);
+    Response<UserTokenResultInner> getSharedAccessTokenWithResponse(String resourceGroupName, String serviceName,
+        String userId, UserTokenParameters parameters, Context context);
 
     /**
      * Gets the Shared Access Authorization Token for the User.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -315,6 +293,6 @@ public interface UsersClient {
      * @return the Shared Access Authorization Token for the User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserTokenResultInner getSharedAccessToken(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters);
+    UserTokenResultInner getSharedAccessToken(String resourceGroupName, String serviceName, String userId,
+        UserTokenParameters parameters);
 }

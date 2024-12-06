@@ -57,7 +57,7 @@ public class RestProxyTracingTests {
     @SyncAsyncTest
     public void restProxySuccess() throws Exception {
         SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(Context.NONE),
-            () -> testInterface.testMethodReturnsMonoVoid(Context.NONE).block());
+            () -> testInterface.testMethodReturnsMonoVoid(Context.NONE));
 
         assertEquals(2, tracer.getSpans().size());
         Span restProxy = tracer.getSpans().get(0);
@@ -73,7 +73,7 @@ public class RestProxyTracingTests {
     public void restProxyNested() throws Exception {
         Context outerSpan = tracer.start("outer", Context.NONE);
         SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(outerSpan),
-            () -> testInterface.testMethodReturnsMonoVoid(outerSpan).block());
+            () -> testInterface.testMethodReturnsMonoVoid(outerSpan));
         tracer.end(null, null, outerSpan);
 
         assertEquals(3, tracer.getSpans().size());

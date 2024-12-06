@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.EventModelInner;
 
-/** An instance of this class provides access to all the operations defined in EventsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventsClient.
+ */
 public interface EventsClient {
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -28,14 +30,14 @@ public interface EventsClient {
      * @return the details of the event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String eventName, Context context);
+    Response<EventModelInner> getWithResponse(String resourceGroupName, String vaultName, String eventName,
+        Context context);
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -49,9 +51,9 @@ public interface EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,9 +66,9 @@ public interface EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -78,6 +80,6 @@ public interface EventsClient {
      * @return the list of events in the given vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventModelInner> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<EventModelInner> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context);
 }

@@ -285,4 +285,25 @@ public interface MongoCluster {
      * @return the connection strings for the given mongo cluster.
      */
     ListConnectionStringsResult listConnectionStrings();
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void promote(PromoteReplicaRequest body);
+
+    /**
+     * Promotes a replica mongo cluster to a primary role.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void promote(PromoteReplicaRequest body, Context context);
 }

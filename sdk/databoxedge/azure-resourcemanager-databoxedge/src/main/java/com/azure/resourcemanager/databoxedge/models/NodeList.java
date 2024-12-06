@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.NodeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of Nodes. */
+/**
+ * Collection of Nodes.
+ */
 @Immutable
-public final class NodeList {
+public final class NodeList implements JsonSerializable<NodeList> {
     /*
      * The list of Nodes.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<NodeInner> value;
 
-    /** Creates an instance of NodeList class. */
+    /**
+     * Creates an instance of NodeList class.
+     */
     public NodeList() {
     }
 
     /**
      * Get the value property: The list of Nodes.
-     *
+     * 
      * @return the value value.
      */
     public List<NodeInner> value() {
@@ -33,12 +40,48 @@ public final class NodeList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the NodeList.
+     */
+    public static NodeList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NodeList deserializedNodeList = new NodeList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NodeInner> value = reader.readArray(reader1 -> NodeInner.fromJson(reader1));
+                    deserializedNodeList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNodeList;
+        });
     }
 }

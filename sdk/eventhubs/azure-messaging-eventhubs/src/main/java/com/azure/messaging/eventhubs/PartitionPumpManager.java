@@ -3,13 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
 import com.azure.messaging.eventhubs.implementation.ReactorShim;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
+import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
@@ -24,9 +24,12 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -60,7 +64,7 @@ class PartitionPumpManager {
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final int prefetch;
-    private final EventHubsTracer tracer;
+    private final EventHubsConsumerInstrumentation instrumentation;
     private final EventProcessorClientOptions options;
 
     /**
@@ -71,11 +75,12 @@ class PartitionPumpManager {
      * PartitionProcessor} when new partition pumps are started.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessorClient}.
-     * @param tracer Tracing helper.
+     * @param instrumentation Tracing and metrics helper.
      * @param options Configuration options.
      */
     PartitionPumpManager(CheckpointStore checkpointStore, Supplier<PartitionProcessor> partitionProcessorFactory,
-        EventHubClientBuilder eventHubClientBuilder, EventHubsTracer tracer, EventProcessorClientOptions options) {
+        EventHubClientBuilder eventHubClientBuilder, EventHubsConsumerInstrumentation instrumentation,
+        EventProcessorClientOptions options) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
@@ -83,25 +88,27 @@ class PartitionPumpManager {
         this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
             ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
             : eventHubClientBuilder.getPrefetchCount();
-        this.tracer = tracer;
+        this.instrumentation = instrumentation;
     }
 
     /**
      * Stops all partition pumps that are actively consuming events. This method is invoked when the {@link
      * EventProcessorClient} is requested to stop.
      */
-    void stopAllPartitionPumps() {
-        this.partitionPumps.forEach((partitionId, eventHubConsumer) -> {
-            try {
-                eventHubConsumer.close();
-            } catch (Exception ex) {
-                LOGGER.atWarning()
+    Mono<Void> stopAllPartitionPumps() {
+        List<String> partitionIds = new ArrayList<>(partitionPumps.keySet());
+        return Flux.fromIterable(partitionIds).flatMap(partitionId -> {
+            final PartitionPump pump = partitionPumps.remove(partitionId);
+            return pump.closeAsync()
+                .doOnError(ex -> LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_KEY, partitionId)
-                    .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex);
-            } finally {
-                partitionPumps.remove(partitionId);
-            }
-        });
+                    .addKeyValue(SIGNAL_TYPE_KEY, SignalType.ON_ERROR)
+                    .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex))
+                .doOnCancel(() -> LOGGER.atWarning()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .addKeyValue(SIGNAL_TYPE_KEY, SignalType.CANCEL)
+                    .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION));
+        }).then();
     }
 
     /**
@@ -153,9 +160,7 @@ class PartitionPumpManager {
         final String partitionId = claimedOwnership.getPartitionId();
 
         if (partitionPumps.containsKey(partitionId)) {
-            LOGGER.atVerbose()
-                .addKeyValue(PARTITION_ID_KEY, partitionId)
-                .log("Consumer is already running.");
+            LOGGER.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Consumer is already running.");
 
             return;
         }
@@ -175,16 +180,14 @@ class PartitionPumpManager {
                 .addKeyValue("eventPosition", startFromEventPosition)
                 .log("Starting event processing.");
 
-            ReceiveOptions receiveOptions = new ReceiveOptions()
-                .setOwnerLevel(0L)
+            ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(options.isTrackLastEnqueuedEventProperties());
 
-            Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
-                MAXIMUM_QUEUE_SIZE, "partition-pump-" + partitionId);
+            Scheduler scheduler
+                = Schedulers.newBoundedElastic(schedulerSize, MAXIMUM_QUEUE_SIZE, "partition-pump-" + partitionId);
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
                 .createConsumer(claimedOwnership.getConsumerGroup(), prefetch, true);
-            PartitionPump partitionPump = new PartitionPump(partitionId, eventHubConsumer,
-                scheduler);
+            PartitionPump partitionPump = new PartitionPump(partitionId, eventHubConsumer, scheduler);
 
             partitionPumps.put(partitionId, partitionPump);
             //@formatter:off
@@ -238,8 +241,7 @@ class PartitionPumpManager {
             throw LOGGER.atError()
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .log(new PartitionProcessorException(
-                    "Error occurred while starting partition pump for partition " + partitionId,
-                    ex));
+                    "Error occurred while starting partition pump for partition " + partitionId, ex));
         }
     }
 
@@ -265,36 +267,31 @@ class PartitionPumpManager {
             }
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
-            throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
-                throwable));
+            throw LOGGER
+                .logExceptionAsError(new PartitionProcessorException("Error in event processing callback", throwable));
         }
     }
 
     private void processEvents(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
         PartitionPump partitionPump, List<PartitionEvent> partitionEventBatch) {
-        Throwable exception = null;
-        Context span = null;
-        AutoCloseable scope = null;
+        InstrumentationScope scope = null;
 
         try {
             if (options.isBatchReceiveMode()) {
                 LastEnqueuedEventProperties[] lastEnqueuedEventProperties = new LastEnqueuedEventProperties[1];
-                List<EventData> eventDataList = partitionEventBatch.stream()
-                    .map(partitionEvent -> {
-                        lastEnqueuedEventProperties[0] = partitionEvent.getLastEnqueuedEventProperties();
-                        return partitionEvent.getData();
-                    })
-                    .collect(Collectors.toList());
+                List<EventData> eventDataList = partitionEventBatch.stream().map(partitionEvent -> {
+                    lastEnqueuedEventProperties[0] = partitionEvent.getLastEnqueuedEventProperties();
+                    return partitionEvent.getData();
+                }).collect(Collectors.toList());
 
                 // It's possible when using windowTimeout that in the timeframe, there weren't any events received.
-                LastEnqueuedEventProperties enqueuedEventProperties =
-                    updateOrGetLastEnqueuedEventProperties(partitionPump, lastEnqueuedEventProperties[0]);
+                LastEnqueuedEventProperties enqueuedEventProperties
+                    = updateOrGetLastEnqueuedEventProperties(partitionPump, lastEnqueuedEventProperties[0]);
 
-                EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
-                    checkpointStore, enqueuedEventProperties);
+                EventBatchContext eventBatchContext
+                    = new EventBatchContext(partitionContext, eventDataList, checkpointStore, enqueuedEventProperties);
 
-                span = tracer.startProcessSpan("EventHubs.process", eventDataList, Context.NONE);
-                scope = tracer.makeSpanCurrent(span);
+                scope = instrumentation.startProcess(eventBatchContext);
                 if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
                     LOGGER.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
@@ -311,29 +308,33 @@ class PartitionPumpManager {
                         .log("Completed processing event batch.");
                 }
             } else {
-                EventData eventData = (partitionEventBatch.size() == 1
-                    ? partitionEventBatch.get(0).getData() : null);
+                EventData eventData = (partitionEventBatch.size() == 1 ? partitionEventBatch.get(0).getData() : null);
                 LastEnqueuedEventProperties lastEnqueuedEventProperties = (partitionEventBatch.size() == 1
-                    ? partitionEventBatch.get(0).getLastEnqueuedEventProperties() : null);
+                    ? partitionEventBatch.get(0).getLastEnqueuedEventProperties()
+                    : null);
 
                 // Get the last value we've seen if the current value from this is null.
-                LastEnqueuedEventProperties enqueuedEventProperties =
-                    updateOrGetLastEnqueuedEventProperties(partitionPump, lastEnqueuedEventProperties);
+                LastEnqueuedEventProperties enqueuedEventProperties
+                    = updateOrGetLastEnqueuedEventProperties(partitionPump, lastEnqueuedEventProperties);
 
-                EventContext eventContext = new EventContext(partitionContext, eventData, checkpointStore,
-                    enqueuedEventProperties);
-                span = tracer.startProcessSpan("EventHubs.process", eventData, Context.NONE);
-                scope = tracer.makeSpanCurrent(span);
+                EventContext eventContext
+                    = new EventContext(partitionContext, eventData, checkpointStore, enqueuedEventProperties);
+
+                scope = instrumentation.startProcess(eventContext);
 
                 processEvent(partitionContext, partitionProcessor, eventContext);
             }
         } catch (Throwable throwable) {
-            exception = throwable;
+            if (scope != null) {
+                scope.setError(throwable);
+            }
             /* user code for event processing threw an exception - log and bubble up */
-            throw LOGGER.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
-                throwable));
+            throw LOGGER
+                .logExceptionAsError(new PartitionProcessorException("Error in event processing callback", throwable));
         } finally {
-            tracer.endSpan(exception, span, scope);
+            if (scope != null) {
+                scope.close();
+            }
         }
     }
 
@@ -407,8 +408,7 @@ class PartitionPumpManager {
     private void cleanup(PartitionOwnership claimedOwnership, PartitionPump partitionPump) {
         try {
             // close the consumer
-            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
-                .log("Closing consumer.");
+            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId()).log("Closing consumer.");
 
             partitionPump.close();
         } finally {

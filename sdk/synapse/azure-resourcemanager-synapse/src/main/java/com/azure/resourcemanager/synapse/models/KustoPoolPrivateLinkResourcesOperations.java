@@ -7,26 +7,28 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of KustoPoolPrivateLinkResourcesOperations. */
+/**
+ * Resource collection API of KustoPoolPrivateLinkResourcesOperations.
+ */
 public interface KustoPoolPrivateLinkResourcesOperations {
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto Private Link Resources operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto Private Link Resources operation response as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<KustoPoolPrivateLinkResources> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName);
+    PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName);
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -34,9 +36,9 @@ public interface KustoPoolPrivateLinkResourcesOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto Private Link Resources operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto Private Link Resources operation response as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<KustoPoolPrivateLinkResources> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context);
+    PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context);
 }

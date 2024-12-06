@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ReplicationPromoteOption extends ExpandableStringEnum<Replica
      * @param name a name to look for.
      * @return the corresponding ReplicationPromoteOption.
      */
-    @JsonCreator
     public static ReplicationPromoteOption fromString(String name) {
         return fromString(name, ReplicationPromoteOption.class);
     }

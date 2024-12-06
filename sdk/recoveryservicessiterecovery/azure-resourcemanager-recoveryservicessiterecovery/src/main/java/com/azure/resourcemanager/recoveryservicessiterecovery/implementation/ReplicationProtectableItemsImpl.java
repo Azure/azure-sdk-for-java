@@ -29,23 +29,26 @@ public final class ReplicationProtectableItemsImpl implements ReplicationProtect
 
     public PagedIterable<ProtectableItem> listByReplicationProtectionContainers(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName) {
-        PagedIterable<ProtectableItemInner> inner = this.serviceClient().listByReplicationProtectionContainers(
-            resourceName, resourceGroupName, fabricName, protectionContainerName);
+        PagedIterable<ProtectableItemInner> inner = this.serviceClient()
+            .listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName,
+                protectionContainerName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectableItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProtectableItem> listByReplicationProtectionContainers(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String filter, String take,
         String skipToken, Context context) {
-        PagedIterable<ProtectableItemInner> inner = this.serviceClient().listByReplicationProtectionContainers(
-            resourceName, resourceGroupName, fabricName, protectionContainerName, filter, take, skipToken, context);
+        PagedIterable<ProtectableItemInner> inner = this.serviceClient()
+            .listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                filter, take, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectableItemImpl(inner1, this.manager()));
     }
 
     public Response<ProtectableItem> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, String protectableItemName, Context context) {
-        Response<ProtectableItemInner> inner = this.serviceClient().getWithResponse(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, protectableItemName, context);
+        Response<ProtectableItemInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, protectableItemName,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectableItemImpl(inner.getValue(), this.manager()));
@@ -56,8 +59,8 @@ public final class ReplicationProtectableItemsImpl implements ReplicationProtect
 
     public ProtectableItem get(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, String protectableItemName) {
-        ProtectableItemInner inner = this.serviceClient().get(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, protectableItemName);
+        ProtectableItemInner inner = this.serviceClient()
+            .get(resourceName, resourceGroupName, fabricName, protectionContainerName, protectableItemName);
         if (inner != null) {
             return new ProtectableItemImpl(inner, this.manager());
         } else {

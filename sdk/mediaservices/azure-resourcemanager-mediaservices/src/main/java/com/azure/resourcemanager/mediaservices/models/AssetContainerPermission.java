@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The permissions to set on the SAS URL. */
+/**
+ * The permissions to set on the SAS URL.
+ */
 public final class AssetContainerPermission extends ExpandableStringEnum<AssetContainerPermission> {
-    /** Static value Read for AssetContainerPermission. */
+    /**
+     * Static value Read for AssetContainerPermission.
+     */
     public static final AssetContainerPermission READ = fromString("Read");
 
-    /** Static value ReadWrite for AssetContainerPermission. */
+    /**
+     * Static value ReadWrite for AssetContainerPermission.
+     */
     public static final AssetContainerPermission READ_WRITE = fromString("ReadWrite");
 
-    /** Static value ReadWriteDelete for AssetContainerPermission. */
+    /**
+     * Static value ReadWriteDelete for AssetContainerPermission.
+     */
     public static final AssetContainerPermission READ_WRITE_DELETE = fromString("ReadWriteDelete");
 
     /**
      * Creates a new instance of AssetContainerPermission value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AssetContainerPermission extends ExpandableStringEnum<AssetCo
 
     /**
      * Creates or finds a AssetContainerPermission from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AssetContainerPermission.
      */
-    @JsonCreator
     public static AssetContainerPermission fromString(String name) {
         return fromString(name, AssetContainerPermission.class);
     }
 
     /**
      * Gets known AssetContainerPermission values.
-     *
+     * 
      * @return known AssetContainerPermission values.
      */
     public static Collection<AssetContainerPermission> values() {

@@ -213,8 +213,8 @@ public final class ApplicationInsightsComponentExportRequest {
      * @param destinationStorageSubscriptionId the destinationStorageSubscriptionId value to set.
      * @return the ApplicationInsightsComponentExportRequest object itself.
      */
-    public ApplicationInsightsComponentExportRequest withDestinationStorageSubscriptionId(
-        String destinationStorageSubscriptionId) {
+    public ApplicationInsightsComponentExportRequest
+        withDestinationStorageSubscriptionId(String destinationStorageSubscriptionId) {
         this.destinationStorageSubscriptionId = destinationStorageSubscriptionId;
         return this;
     }
@@ -234,8 +234,8 @@ public final class ApplicationInsightsComponentExportRequest {
      * @param destinationStorageLocationId the destinationStorageLocationId value to set.
      * @return the ApplicationInsightsComponentExportRequest object itself.
      */
-    public ApplicationInsightsComponentExportRequest withDestinationStorageLocationId(
-        String destinationStorageLocationId) {
+    public ApplicationInsightsComponentExportRequest
+        withDestinationStorageLocationId(String destinationStorageLocationId) {
         this.destinationStorageLocationId = destinationStorageLocationId;
         return this;
     }

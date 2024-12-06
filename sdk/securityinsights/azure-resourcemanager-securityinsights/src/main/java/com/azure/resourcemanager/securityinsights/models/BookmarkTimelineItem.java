@@ -5,69 +5,85 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Represents bookmark timeline item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Bookmark")
+/**
+ * Represents bookmark timeline item.
+ */
 @Fluent
 public final class BookmarkTimelineItem extends EntityTimelineItem {
     /*
+     * The entity query kind type.
+     */
+    private EntityTimelineKind kind = EntityTimelineKind.BOOKMARK;
+
+    /*
      * The bookmark azure resource id.
      */
-    @JsonProperty(value = "azureResourceId", required = true)
     private String azureResourceId;
 
     /*
      * The bookmark display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The notes of the bookmark
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
     /*
      * The bookmark end time.
      */
-    @JsonProperty(value = "endTimeUtc")
     private OffsetDateTime endTimeUtc;
 
     /*
      * The bookmark start time.
      */
-    @JsonProperty(value = "startTimeUtc")
     private OffsetDateTime startTimeUtc;
 
     /*
      * The bookmark event time.
      */
-    @JsonProperty(value = "eventTime")
     private OffsetDateTime eventTime;
 
     /*
      * Describes a user that created the bookmark
      */
-    @JsonProperty(value = "createdBy")
     private UserInfo createdBy;
 
     /*
      * List of labels relevant to this bookmark
      */
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /**
+     * Creates an instance of BookmarkTimelineItem class.
+     */
+    public BookmarkTimelineItem() {
+    }
+
+    /**
+     * Get the kind property: The entity query kind type.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityTimelineKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the azureResourceId property: The bookmark azure resource id.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -76,7 +92,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the azureResourceId property: The bookmark azure resource id.
-     *
+     * 
      * @param azureResourceId the azureResourceId value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -87,7 +103,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the displayName property: The bookmark display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -96,7 +112,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the displayName property: The bookmark display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -107,7 +123,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the notes property: The notes of the bookmark.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -116,7 +132,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the notes property: The notes of the bookmark.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -127,7 +143,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the endTimeUtc property: The bookmark end time.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -136,7 +152,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the endTimeUtc property: The bookmark end time.
-     *
+     * 
      * @param endTimeUtc the endTimeUtc value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -147,7 +163,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the startTimeUtc property: The bookmark start time.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -156,7 +172,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the startTimeUtc property: The bookmark start time.
-     *
+     * 
      * @param startTimeUtc the startTimeUtc value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -167,7 +183,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the eventTime property: The bookmark event time.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -176,7 +192,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the eventTime property: The bookmark event time.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -187,7 +203,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the createdBy property: Describes a user that created the bookmark.
-     *
+     * 
      * @return the createdBy value.
      */
     public UserInfo createdBy() {
@@ -196,7 +212,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the createdBy property: Describes a user that created the bookmark.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -207,7 +223,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the labels property: List of labels relevant to this bookmark.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -216,7 +232,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the labels property: List of labels relevant to this bookmark.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the BookmarkTimelineItem object itself.
      */
@@ -227,17 +243,15 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (azureResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureResourceId in model BookmarkTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureResourceId in model BookmarkTimelineItem"));
         }
         if (createdBy() != null) {
             createdBy().validate();
@@ -245,4 +259,72 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BookmarkTimelineItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("notes", this.notes);
+        jsonWriter.writeStringField("endTimeUtc",
+            this.endTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTimeUtc));
+        jsonWriter.writeStringField("startTimeUtc",
+            this.startTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimeUtc));
+        jsonWriter.writeStringField("eventTime",
+            this.eventTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventTime));
+        jsonWriter.writeJsonField("createdBy", this.createdBy);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BookmarkTimelineItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BookmarkTimelineItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BookmarkTimelineItem.
+     */
+    public static BookmarkTimelineItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BookmarkTimelineItem deserializedBookmarkTimelineItem = new BookmarkTimelineItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureResourceId".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.azureResourceId = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.kind = EntityTimelineKind.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.displayName = reader.getString();
+                } else if ("notes".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.notes = reader.getString();
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventTime".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.eventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedBookmarkTimelineItem.createdBy = UserInfo.fromJson(reader);
+                } else if ("labels".equals(fieldName)) {
+                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBookmarkTimelineItem.labels = labels;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBookmarkTimelineItem;
+        });
+    }
 }

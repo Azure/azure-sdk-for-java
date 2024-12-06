@@ -4,6 +4,7 @@
 package com.azure.maps.geolocation.samples;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.maps.geolocation.GeolocationAsyncClient;
@@ -33,7 +34,7 @@ public class GetLocationSample {
         // locations where the application is being viewed from.
         System.out.println("Get Location Sync Client");
         // BEGIN: com.azure.maps.geolocation.sync.get_ip_to_location
-        client.getLocation("131.107.0.89");
+        client.getLocation(InetAddress.getByName("131.107.0.89"));
         // END: com.azure.maps.geolocation.sync.get_ip_to_location
 
         // Authenticates using subscription key
@@ -56,7 +57,7 @@ public class GetLocationSample {
         // locations where the application is being viewed from.
         System.out.println("Get Location Async Client");
         // BEGIN: com.azure.maps.geolocation.async.get_ip_to_location
-        asyncClient.getLocation("131.107.0.89");
+        asyncClient.getLocation(InetAddress.getByName("131.107.0.89"));
         // END: com.azure.maps.geolocation.async.get_ip_to_location
     }
 }

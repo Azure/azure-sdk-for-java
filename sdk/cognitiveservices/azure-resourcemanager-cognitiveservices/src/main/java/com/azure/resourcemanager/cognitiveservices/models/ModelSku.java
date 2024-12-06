@@ -5,50 +5,60 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Describes an available Cognitive Services Model SKU. */
+/**
+ * Describes an available Cognitive Services Model SKU.
+ */
 @Fluent
-public final class ModelSku {
+public final class ModelSku implements JsonSerializable<ModelSku> {
     /*
      * The name of the model SKU.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The usage name of the model SKU.
      */
-    @JsonProperty(value = "usageName")
     private String usageName;
 
     /*
      * The datetime of deprecation of the model SKU.
      */
-    @JsonProperty(value = "deprecationDate")
     private OffsetDateTime deprecationDate;
 
     /*
      * The capacity configuration.
      */
-    @JsonProperty(value = "capacity")
     private CapacityConfig capacity;
 
     /*
      * The list of rateLimit.
      */
-    @JsonProperty(value = "rateLimits")
     private List<CallRateLimit> rateLimits;
 
-    /** Creates an instance of ModelSku class. */
+    /*
+     * The list of billing meter info.
+     */
+    private List<BillingMeterInfo> cost;
+
+    /**
+     * Creates an instance of ModelSku class.
+     */
     public ModelSku() {
     }
 
     /**
      * Get the name property: The name of the model SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +67,7 @@ public final class ModelSku {
 
     /**
      * Set the name property: The name of the model SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the ModelSku object itself.
      */
@@ -68,7 +78,7 @@ public final class ModelSku {
 
     /**
      * Get the usageName property: The usage name of the model SKU.
-     *
+     * 
      * @return the usageName value.
      */
     public String usageName() {
@@ -77,7 +87,7 @@ public final class ModelSku {
 
     /**
      * Set the usageName property: The usage name of the model SKU.
-     *
+     * 
      * @param usageName the usageName value to set.
      * @return the ModelSku object itself.
      */
@@ -88,7 +98,7 @@ public final class ModelSku {
 
     /**
      * Get the deprecationDate property: The datetime of deprecation of the model SKU.
-     *
+     * 
      * @return the deprecationDate value.
      */
     public OffsetDateTime deprecationDate() {
@@ -97,7 +107,7 @@ public final class ModelSku {
 
     /**
      * Set the deprecationDate property: The datetime of deprecation of the model SKU.
-     *
+     * 
      * @param deprecationDate the deprecationDate value to set.
      * @return the ModelSku object itself.
      */
@@ -108,7 +118,7 @@ public final class ModelSku {
 
     /**
      * Get the capacity property: The capacity configuration.
-     *
+     * 
      * @return the capacity value.
      */
     public CapacityConfig capacity() {
@@ -117,7 +127,7 @@ public final class ModelSku {
 
     /**
      * Set the capacity property: The capacity configuration.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ModelSku object itself.
      */
@@ -128,7 +138,7 @@ public final class ModelSku {
 
     /**
      * Get the rateLimits property: The list of rateLimit.
-     *
+     * 
      * @return the rateLimits value.
      */
     public List<CallRateLimit> rateLimits() {
@@ -137,7 +147,7 @@ public final class ModelSku {
 
     /**
      * Set the rateLimits property: The list of rateLimit.
-     *
+     * 
      * @param rateLimits the rateLimits value to set.
      * @return the ModelSku object itself.
      */
@@ -147,8 +157,28 @@ public final class ModelSku {
     }
 
     /**
+     * Get the cost property: The list of billing meter info.
+     * 
+     * @return the cost value.
+     */
+    public List<BillingMeterInfo> cost() {
+        return this.cost;
+    }
+
+    /**
+     * Set the cost property: The list of billing meter info.
+     * 
+     * @param cost the cost value to set.
+     * @return the ModelSku object itself.
+     */
+    public ModelSku withCost(List<BillingMeterInfo> cost) {
+        this.cost = cost;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -158,5 +188,63 @@ public final class ModelSku {
         if (rateLimits() != null) {
             rateLimits().forEach(e -> e.validate());
         }
+        if (cost() != null) {
+            cost().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("usageName", this.usageName);
+        jsonWriter.writeStringField("deprecationDate",
+            this.deprecationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deprecationDate));
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        jsonWriter.writeArrayField("rateLimits", this.rateLimits, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cost", this.cost, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModelSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModelSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ModelSku.
+     */
+    public static ModelSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModelSku deserializedModelSku = new ModelSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedModelSku.name = reader.getString();
+                } else if ("usageName".equals(fieldName)) {
+                    deserializedModelSku.usageName = reader.getString();
+                } else if ("deprecationDate".equals(fieldName)) {
+                    deserializedModelSku.deprecationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedModelSku.capacity = CapacityConfig.fromJson(reader);
+                } else if ("rateLimits".equals(fieldName)) {
+                    List<CallRateLimit> rateLimits = reader.readArray(reader1 -> CallRateLimit.fromJson(reader1));
+                    deserializedModelSku.rateLimits = rateLimits;
+                } else if ("cost".equals(fieldName)) {
+                    List<BillingMeterInfo> cost = reader.readArray(reader1 -> BillingMeterInfo.fromJson(reader1));
+                    deserializedModelSku.cost = cost;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModelSku;
+        });
     }
 }

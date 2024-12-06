@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.managementgroups.generated;
 
-/** Samples for Entities List. */
+/**
+ * Samples for Entities List.
+ */
 public final class EntitiesListSamples {
     /*
-     * x-ms-original-file: specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetEntities.json
+     * x-ms-original-file:
+     * specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetEntities.json
      */
     /**
      * Sample code: GetEntities.
-     *
+     * 
      * @param manager Entry point to ManagementGroupsManager.
      */
     public static void getEntities(com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {

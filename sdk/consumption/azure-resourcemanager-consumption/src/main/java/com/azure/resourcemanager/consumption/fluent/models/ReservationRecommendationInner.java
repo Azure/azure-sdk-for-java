@@ -6,60 +6,78 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.LegacyReservationRecommendation;
 import com.azure.resourcemanager.consumption.models.ModernReservationRecommendation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.resourcemanager.consumption.models.ReservationRecommendationKind;
+import java.io.IOException;
 import java.util.Map;
 
-/** A reservation recommendation resource. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = ReservationRecommendationInner.class)
-@JsonTypeName("ReservationRecommendation")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "legacy", value = LegacyReservationRecommendation.class),
-    @JsonSubTypes.Type(name = "modern", value = ModernReservationRecommendation.class)
-})
+/**
+ * A reservation recommendation resource.
+ */
 @Immutable
 public class ReservationRecommendationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationRecommendationInner.class);
+    /*
+     * Specifies the kind of reservation recommendation.
+     */
+    private ReservationRecommendationKind kind = ReservationRecommendationKind.fromString("ReservationRecommendation");
 
     /*
      * The etag for the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Resource location
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Resource sku
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private String sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ReservationRecommendationInner class.
+     */
+    public ReservationRecommendationInner() {
+    }
+
+    /**
+     * Get the kind property: Specifies the kind of reservation recommendation.
+     * 
+     * @return the kind value.
+     */
+    public ReservationRecommendationKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the etag property: The etag for the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -67,8 +85,19 @@ public class ReservationRecommendationInner extends ProxyResource {
     }
 
     /**
+     * Set the etag property: The etag for the resource.
+     * 
+     * @param etag the etag value to set.
+     * @return the ReservationRecommendationInner object itself.
+     */
+    ReservationRecommendationInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -76,8 +105,19 @@ public class ReservationRecommendationInner extends ProxyResource {
     }
 
     /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the ReservationRecommendationInner object itself.
+     */
+    ReservationRecommendationInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -85,8 +125,19 @@ public class ReservationRecommendationInner extends ProxyResource {
     }
 
     /**
+     * Set the location property: Resource location.
+     * 
+     * @param location the location value to set.
+     * @return the ReservationRecommendationInner object itself.
+     */
+    ReservationRecommendationInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the sku property: Resource sku.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -94,10 +145,132 @@ public class ReservationRecommendationInner extends ProxyResource {
     }
 
     /**
+     * Set the sku property: Resource sku.
+     * 
+     * @param sku the sku value to set.
+     * @return the ReservationRecommendationInner object itself.
+     */
+    ReservationRecommendationInner withSku(String sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationRecommendationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationRecommendationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReservationRecommendationInner.
+     */
+    public static ReservationRecommendationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("legacy".equals(discriminatorValue)) {
+                    return LegacyReservationRecommendation.fromJson(readerToUse.reset());
+                } else if ("modern".equals(discriminatorValue)) {
+                    return ModernReservationRecommendation.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ReservationRecommendationInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationRecommendationInner deserializedReservationRecommendationInner
+                = new ReservationRecommendationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.kind
+                        = ReservationRecommendationKind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedReservationRecommendationInner.tags = tags;
+                } else if ("location".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.location = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedReservationRecommendationInner.sku = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationRecommendationInner;
+        });
     }
 }

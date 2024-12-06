@@ -37,14 +37,22 @@ public final class LocalRulestackResourceUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalRulestackResourceUpdateProperties model = new LocalRulestackResourceUpdateProperties()
-            .withPanEtag("juwasqvdaeyyguxa").withPanLocation("sqzhzbezkg").withScope(ScopeType.GLOBAL)
-            .withAssociatedSubscriptions(Arrays.asList("xasicddyvvjskg", "mocwa", "pqg")).withDescription("jeaahhvjhh")
-            .withDefaultMode(DefaultMode.FIREWALL).withMinAppIdVersion("ybbjjidjksyx")
-            .withSecurityServices(new SecurityServices().withVulnerabilityProfile("vxevblb")
-                .withAntiSpywareProfile("dnlj").withAntiVirusProfile("geuaulx").withUrlFilteringProfile("smjbnkppxyn")
-                .withFileBlockingProfile("lsvxeizz").withDnsSubscription("klnsrmffey")
-                .withOutboundUnTrustCertificate("ckt").withOutboundTrustCertificate("ymerteeammxq"));
+        LocalRulestackResourceUpdateProperties model
+            = new LocalRulestackResourceUpdateProperties().withPanEtag("juwasqvdaeyyguxa")
+                .withPanLocation("sqzhzbezkg")
+                .withScope(ScopeType.GLOBAL)
+                .withAssociatedSubscriptions(Arrays.asList("xasicddyvvjskg", "mocwa", "pqg"))
+                .withDescription("jeaahhvjhh")
+                .withDefaultMode(DefaultMode.FIREWALL)
+                .withMinAppIdVersion("ybbjjidjksyx")
+                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("vxevblb")
+                    .withAntiSpywareProfile("dnlj")
+                    .withAntiVirusProfile("geuaulx")
+                    .withUrlFilteringProfile("smjbnkppxyn")
+                    .withFileBlockingProfile("lsvxeizz")
+                    .withDnsSubscription("klnsrmffey")
+                    .withOutboundUnTrustCertificate("ckt")
+                    .withOutboundTrustCertificate("ymerteeammxq"));
         model = BinaryData.fromObject(model).toObject(LocalRulestackResourceUpdateProperties.class);
         Assertions.assertEquals("juwasqvdaeyyguxa", model.panEtag());
         Assertions.assertEquals("sqzhzbezkg", model.panLocation());

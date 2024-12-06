@@ -10,54 +10,187 @@ $PackageRepositoryUri = "https://repo1.maven.org/maven2"
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 . "$PSScriptRoot/docs/Docs-Onboarding.ps1"
 
-function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
-{
-  $projectPath = Join-Path $pkgPath "pom.xml"
-  if (Test-Path $projectPath)
-  {
-    $projectData = New-Object -TypeName XML
-    $projectData.load($projectPath)
-
-    if ($projectData.project.psobject.properties.name -notcontains "artifactId" -or !$projectData.project.artifactId) {
-      Write-Host "$projectPath doesn't have a defined artifactId so skipping this pom."
-      return $null
-    }
-
-    if ($projectData.project.psobject.properties.name -notcontains "version" -or !$projectData.project.version) {
-      Write-Host "$projectPath doesn't have a defined version so skipping this pom."
-      return $null
-    }
-
-    if ($projectData.project.psobject.properties.name -notcontains "groupid" -or !$projectData.project.groupId) {
-      Write-Host "$projectPath doesn't have a defined groupId so skipping this pom."
-      return $null
-    }
-
-    $projectPkgName = $projectData.project.artifactId
-    $pkgVersion = $projectData.project.version
-    $pkgGroup = $projectData.project.groupId
-
-    $pkgProp = [PackageProps]::new($projectPkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
-    if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
-    {
-      $pkgProp.SdkType = "mgmt"
-    }
-    elseif ($projectPkgName -match "spring")
-    {
-      $pkgProp.SdkType = "spring"
-    }
-    else
-    {
-      $pkgProp.SdkType = "client"
-    }
-    $pkgProp.IsNewSdk = $False
-    if ($pkgGroup) {
-      $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
-    }
-    $pkgProp.ArtifactName = $projectPkgName
-    return $pkgProp
+# When getting all of the package properties, if Get-AllPackageInfoFromRepo exists
+# then it's called instead of Get-PkgPropsForEntireService.
+function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
+  $SdkType = $Env:SdkType
+  if ($SdkType) {
+    Write-Host "SdkType env var was set to '$SdkType'"
+  } else {
+    $SdkType = "client"
+    Write-Host "SdkType env var was not set, default to 'client'"
   }
-  return $null
+  Write-Host "Processing SdkType=$SdkType"
+
+  $allPackageProps = @()
+  $sdkRoot = Join-Path $RepoRoot "sdk"
+  $ymlFiles = @()
+
+  if ($serviceDirectory) {
+    $searchPath = Join-Path $sdkRoot $serviceDirectory
+    Write-Host "searchPath=$searchPath"
+    [array]$ymlFiles = Get-ChildItem -Path $searchPath "ci*.yml" | Where-Object { $_.PSIsContainer -eq $false}
+  } else {
+    # The reason for the exclude folders are POM only releases (nothing is built) or
+    # the service directory sits outside of the engineering system
+    # 1. boms - BOMs are POM only releases. Also, their versions aren't version controlled.
+    # 2. parents - parents are POM only releases which are version controlled
+    # 3. resourcemanagerhybrid - intermediate version of resourcemanager that was
+    #    a one time release which sits outside of the engineering system
+    $excludeFolders = "boms", "resourcemanagerhybrid", "parents"
+    [array]$ymlFiles = Get-ChildItem -Path $sdkRoot -Include "ci*.yml" -Recurse -Depth 3 | Where-Object { $_.PSIsContainer -eq $false -and $_.DirectoryName -notmatch ($excludeFolders -join "|") }
+  }
+
+  foreach ($ymlFile in $ymlFiles)
+  {
+    # For each yml file do the following:
+    # 1. Load the yml file.
+    # 2. Get the Artifacts and AdditionalModules for the yml file.
+    # 3. Get the path to the yml
+    # 4. From the path in #1, recursively get a list of all pom.xml with depth 1. This
+    #    will take care of the cases where the pom.xml is sitting next to the ci.yml, in
+    #    the case where the ci.yml is in the sdk/<ServiceDirectory>/<LibraryDirectory>,
+    #    as well as the case where the ci.yml is in the sdk/<ServiceDirectory>
+    # 5. For each pom file, check and see if its group:artifact matches a name/groupId in
+    #    the ci.yml's Artifacts list.
+    # 6a. If #5 has a match, create the PackageProp and add it to the list
+    # 6b. If #5 doesn't have a match, then skip it. This is the case where it's either
+    #     an AdditionalModule or something from another track.
+    Write-Host "Processing $ymlFile"
+    $ymlFileContent = LoadFrom-Yaml $ymlFile
+    $YmlFileSdkType = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "SDKType")
+    $ymlDir = Split-Path -Path $ymlFile -Parent
+    # the default, if not set in the yml file, is client
+    if (-not $YmlFileSdkType) {
+      $YmlFileSdkType = "client"
+    }
+    if ($YmlFileSdkType -ne $SdkType) {
+      Write-Host "SdkType in yml file is '$YmlFileSdkType' which is not '$SdkType', skipping..."
+      continue
+    }
+    # ServiceDirectory
+    $serviceDirFromYml = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "ServiceDirectory")
+    if (-not $serviceDirFromYml) {
+      # Log the error and skip this yml file here if there's no ServiceDirectory entry
+      LogWarning "$ymlFile does not have a ServiceDirectory entry, skipping..."
+      continue
+    }
+    else {
+      # If the serviceDirectory parameter was passed in, ensure that the ServiceDirectory
+      # entry in the ci*.yml file matches the one passed in.
+      if ($serviceDirectory) {
+        if ($serviceDirectory -ne $serviceDirFromYml) {
+          LogWarning "$ymlFile's ServiceDirectory entry does not match the serviceDirectory parameter: '$serviceDirectory'"
+        }
+      }
+      # Check whether or not the yml's serviceDirectory matches the actual path of
+      # the yml file relative to the sdkRoot
+      # Note: Need to strip off the directory seperator character which is based upon the OS
+      $computedServiceDirectory = $ymlDir.Replace($sdkRoot + [System.IO.Path]::DirectorySeparatorChar, "")
+      # .Replace and -replace have different behaviors. .Replace will not replace a backslash meaning
+      # that "foo\bar".Replace("\\","/") would result in foo\bar instead of foo/bar which is why
+      # -replace needs to be used
+      $computedServiceDirectory = $computedServiceDirectory -replace "\\", "/"
+      if ($serviceDirFromYml -ne $computedServiceDirectory) {
+        LogWarning "$ymlFile error: ServiceDirectory in the yml file, '$serviceDirFromYml' doesn't match the path relative from the sdkRoot '$computedServiceDirectory'"
+      }
+    }
+    # At this point the SdkType is correct.
+    # 1. Create a hash set from the list of artifact for this service directory, for
+    #    the SdkType. This is done to ensure that only PackageInfo files are created
+    #    for the correct set of Artifacts
+    # 2. Save off AdditionalModules to add to the AdditionalValidationPackages entry
+    $ArtifactsHashSet = New-Object 'System.Collections.Generic.HashSet[String]'
+    $artifacts = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "Artifacts")
+    $additionalModules = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "AdditionalModules")
+    foreach ($artifact in $artifacts)
+    {
+      $hashKey = "$($artifact.groupId):$($artifact.name)"
+      if (-not $ArtifactsHashSet.Add($hashKey)) {
+        LogWarning "ymlFile: $ymlFile contains a duplicate artifact $hashKey"
+      }
+    }
+    # Grab all the pom files in the yml file's directory and subdirectory depth of 1
+    # because they're either going to be in the same directory as the yml files or 1
+    # level lower. The repository can have sdk/SD1/ci.yml and sdk/SD1/Lib1/ci.yml files
+    # each processing more different Artifacts and this is the reason that the ArtifactsHash
+    # is necessary to verify.
+    # Note: depth of 0 is the current directory, depth of 1 is current and the first level
+    # of subdirectories. In the case where we have a ci.yml file for a single library the
+    # library's pom file will sit next to yml file. In the case where the ci*.yml file is in
+    # the root of the service directory, the pom files should be the immediate subdirectories.
+    [array]$pomFiles = Get-ChildItem -Path $ymlDir -Recurse -Depth 1 -File -Filter "pom.xml"
+    foreach ($pomFile in $pomFiles) {
+      $xmlPomFile = New-Object xml
+      $xmlPomFile.Load($pomFile)
+
+      if ($xmlPomFile.project.psobject.properties.name -notcontains "artifactId" -or !$xmlPomFile.project.artifactId) {
+        Write-Host "$pomFile doesn't have a defined artifactId so skipping this pom."
+        continue
+      }
+
+      if ($xmlPomFile.project.psobject.properties.name -notcontains "version" -or !$xmlPomFile.project.version) {
+        Write-Host "$pomFile doesn't have a defined version so skipping this pom."
+        continue
+      }
+
+      if ($xmlPomFile.project.psobject.properties.name -notcontains "groupid" -or !$xmlPomFile.project.groupId) {
+        Write-Host "$pomFile doesn't have a defined groupId so skipping this pom."
+        continue
+      }
+
+      # The case where ArtifactsHashSet won't contain the key from the pom.xml file is when
+      # the pom file being processed is one of the intermediate poms in the hierarchy. An
+      # example would be sdk/core/pom.xml which just contains the module listings
+      $keyFromPom = "$($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId)"
+      if (-not $ArtifactsHashSet.Contains($keyFromPom))
+      {
+        Write-Host "$ymlFile does not contain $($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId), skipping"
+        continue
+      }
+      # At this point everything is valid
+      # 1. Create the packageProps
+      # 2. Set the SdkType
+      # 3. Set isNewSdk
+      # 4. Set the artifactName
+      # 5. Set AdditionalValidationPackages to the AdditionalModules from the yml file
+      $groupId = $xmlPomFile.project.groupId
+      $artifactId = $xmlPomFile.project.artifactId
+      $version = $xmlPomFile.project.version
+      $pomFileDir = Split-Path -Path $pomFile -Parent
+      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId)
+      if ($artifactId -match "mgmt" -or $artifactId -match "resourcemanager")
+      {
+        $pkgProp.SdkType = "mgmt"
+      }
+      elseif ($artifactId -match "spring")
+      {
+        $pkgProp.SdkType = "spring"
+      }
+      else
+      {
+        $pkgProp.SdkType = "client"
+      }
+      $pkgProp.IsNewSdk = $False
+      if ($groupId) {
+        $pkgProp.IsNewSdk = $groupId.StartsWith("com.azure") -or $groupId.StartsWith("io.clientcore")
+      }
+      $pkgProp.ArtifactName = $artifactId
+      if ($additionalModules) {
+        # $additionalModules' type is System.Object[] where the objects are are
+        # hashtables containing two values, the name and the groupId. Create a
+        # list of the AdditionalModules and set the PackageProp.AdditionalValidationPackages
+        # to that list
+        $additionalModulesList = @()
+        foreach ($additionalModule in $additionalModules) {
+          $additionalModulesList += "$($additionalModule['groupId']):$($additionalModule['name'])"
+        }
+        $pkgProp.AdditionalValidationPackages = $additionalModulesList
+      }
+      $allPackageProps += $pkgProp
+    }
+  }
+  return $allPackageProps
 }
 
 # Returns the maven (really sonatype) publish status of a package id and version.
@@ -377,91 +510,6 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
     LegacyReadMeLocation  = 'docs-ref-services/legacy'
     Suffix = ''
   }
-}
-
-# Defined in common.ps1 as:
-# $ValidateDocsMsPackagesFn = "Validate-${Language}-DocMsPackages"
-function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
-  # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
-  if (!$PackageInfos) {
-    $PackageInfos = @($PackageInfo)
-  }
-
-  # The install-rex-validation-tool.yml will install the java2docfx jar file into the Build.BinariesDirectory
-  # which is a DevOps variable for the directory. In PS that variable is BUILD_BINARIESDIRECTORY.
-  # The reason why this is necessary is that the command for java2docfx is in the following format:
-  # java –jar java2docfx-1.0.0.jar.jar --packagesJsonFile "C\temp\package.json"
-  # or
-  # java –jar java2docfx-1.0.0.jar --package "<GroupId>:<ArtifactId>:<Version>"
-  # which means we need to know where, exactly, because the java command requires the full path
-  # to the jar file as an argument
-  $java2docfxJar = $null
-  if (!$Env:BUILD_BINARIESDIRECTORY) {
-    LogError "Env:BUILD_BINARIESDIRECTORY is not set and this is where the java2docfx jar file should be installed."
-    return $false
-  }
-  $java2docfxDir = Join-Path $Env:BUILD_BINARIESDIRECTORY "java2docfx"
-  if (!(Test-Path $java2docfxDir)) {
-    LogError "There should be a java2docfx directory under Env:BUILD_BINARIESDIRECTORY. Ensure that the /eng/pipelines/templates/steps/install-rex-validation-tool.yml template was run prior to whatever step is running this."
-    return $false
-  }
-  $java2docfxJarLoc = @(Get-ChildItem -Path $java2docfxDir -File -Filter "java2docfx*.jar")
-  if (!$java2docfxJarLoc) {
-    LogError "The java2docfx jar file should be installed in $java2docfxDir and is not there."
-    return $false
-  } else {
-    # In theory, this shouldn't happen as the install-rex-validation-tool.yml is the only thing
-    # that'll ever install the jar
-    if ($java2docfxJarLoc.Count -gt 1) {
-        Write-Host "There were $($java2docfxJarLoc.Count) java2docfx jar files found in $Build_BinariesDirectory, using the first one"
-    }
-    $java2docfxJar = $java2docfxJarLoc[0]
-    Write-Host "java2docfx jar location=$java2docfxJar"
-  }
-
-  $allSuccess = $true
-  $originLocation = Get-Location
-  foreach ($packageInfo in $PackageInfos) {
-    $artifact = "$($packageInfo.Group):$($packageInfo.Name):$($packageInfo.Version)"
-    $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "$($packageInfo.Group)-$($packageInfo.Name)-$($packageInfo.Version)"
-    New-Item $tempDirectory -ItemType Directory | Out-Null
-    # Set the location to the temp directory. The reason being is that it'll effectively be empty, no
-    # other jars, no POM files aka nothing Java related to pick up.
-    Set-Location $tempDirectory
-    try {
-      Write-Host "Calling java2docfx for $artifact"
-      Write-Host "java -jar ""$java2docfxJar"" -p ""$artifact"""
-      $java2docfxResults = java `
-      -jar "$java2docfxJar"`
-      -p "$artifact"
-      # JRS-TODO: The -o option is something I'm currently questioning the behavior of but
-      # I can do some initial testing without that option being set
-      # -p "$artifact" `
-      # -o "$tempDirectory"
-
-      if ($LASTEXITCODE -ne 0) {
-        LogWarning "java2docfx failed for $artifact"
-        $java2docfxResults | Write-Host
-        $allSuccess = $false
-      }
-    }
-    catch {
-      LogError "Exception while trying to download: $artifact"
-      LogError $_
-      LogError $_.ScriptStackTrace
-      $allSuccess = $false
-    }
-    finally {
-      # Ensure that the origianl location is restored
-      Set-Location $originLocation
-      # everything is contained within the temp directory, clean it up every time
-      if (Test-Path $tempDirectory) {
-        Remove-Item $tempDirectory -Recurse -Force
-      }
-    }
-  }
-
-  return $allSuccess
 }
 
 function Get-java-EmitterName() {

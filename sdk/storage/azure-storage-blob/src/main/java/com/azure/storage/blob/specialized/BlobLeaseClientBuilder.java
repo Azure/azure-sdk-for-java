@@ -81,12 +81,20 @@ public final class BlobLeaseClientBuilder {
     private BlobServiceVersion serviceVersion;
 
     /**
+     * Creates a {@link BlobLeaseClientBuilder}.
+     */
+    public BlobLeaseClientBuilder() {
+    }
+
+    /**
      * Creates a {@link BlobLeaseClient} based on the configurations set in the builder.
      *
      * @return a {@link BlobLeaseClient} based on the configurations in this builder.
      */
     public BlobLeaseClient buildClient() {
-        return new BlobLeaseClient(buildAsyncClient());
+        BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
+        return new BlobLeaseClient(pipeline, url, containerName, blobName, getLeaseId(), isBlob, accountName,
+            version.getVersion());
     }
 
     /**
@@ -96,7 +104,8 @@ public final class BlobLeaseClientBuilder {
      */
     public BlobLeaseAsyncClient buildAsyncClient() {
         BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
-        return new BlobLeaseAsyncClient(pipeline, url, containerName, blobName, getLeaseId(), isBlob, accountName, version.getVersion());
+        return new BlobLeaseAsyncClient(pipeline, url, containerName, blobName, getLeaseId(), isBlob, accountName,
+            version.getVersion());
     }
 
     /**

@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of static delivery attribute mapping.
  */
 @Fluent
-public final class StaticDeliveryAttributeMappingProperties {
+public final class StaticDeliveryAttributeMappingProperties
+    implements JsonSerializable<StaticDeliveryAttributeMappingProperties> {
     /*
      * Value of the delivery attribute.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Boolean flag to tell if the attribute contains sensitive information .
      */
-    @JsonProperty(value = "isSecret")
     private Boolean isSecret;
 
     /**
@@ -76,5 +79,46 @@ public final class StaticDeliveryAttributeMappingProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeBooleanField("isSecret", this.isSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticDeliveryAttributeMappingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticDeliveryAttributeMappingProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticDeliveryAttributeMappingProperties.
+     */
+    public static StaticDeliveryAttributeMappingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticDeliveryAttributeMappingProperties deserializedStaticDeliveryAttributeMappingProperties
+                = new StaticDeliveryAttributeMappingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedStaticDeliveryAttributeMappingProperties.value = reader.getString();
+                } else if ("isSecret".equals(fieldName)) {
+                    deserializedStaticDeliveryAttributeMappingProperties.isSecret
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticDeliveryAttributeMappingProperties;
+        });
     }
 }

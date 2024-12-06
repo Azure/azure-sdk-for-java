@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.CustomRolloutInner;
 
-/** An instance of this class provides access to all the operations defined in CustomRolloutsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomRolloutsClient.
+ */
 public interface CustomRolloutsClient {
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -29,7 +31,7 @@ public interface CustomRolloutsClient {
 
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +44,7 @@ public interface CustomRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -53,12 +55,12 @@ public interface CustomRolloutsClient {
      * @return rollout details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomRolloutInner> createOrUpdateWithResponse(
-        String providerNamespace, String rolloutName, CustomRolloutInner properties, Context context);
+    Response<CustomRolloutInner> createOrUpdateWithResponse(String providerNamespace, String rolloutName,
+        CustomRolloutInner properties, Context context);
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -72,7 +74,7 @@ public interface CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,7 +86,7 @@ public interface CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

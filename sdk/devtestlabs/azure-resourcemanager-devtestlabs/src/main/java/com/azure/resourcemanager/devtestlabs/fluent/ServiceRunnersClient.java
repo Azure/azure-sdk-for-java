@@ -25,8 +25,8 @@ public interface ServiceRunnersClient {
      * @return service runner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceRunnerInner> getWithResponse(
-        String resourceGroupName, String labName, String name, Context context);
+    Response<ServiceRunnerInner> getWithResponse(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Get service runner.
@@ -56,8 +56,8 @@ public interface ServiceRunnersClient {
      * @return a container for a managed identity to execute DevTest lab services along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceRunnerInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, ServiceRunnerInner serviceRunner, Context context);
+    Response<ServiceRunnerInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        ServiceRunnerInner serviceRunner, Context context);
 
     /**
      * Create or replace an existing service runner.
@@ -72,8 +72,8 @@ public interface ServiceRunnersClient {
      * @return a container for a managed identity to execute DevTest lab services.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceRunnerInner createOrUpdate(
-        String resourceGroupName, String labName, String name, ServiceRunnerInner serviceRunner);
+    ServiceRunnerInner createOrUpdate(String resourceGroupName, String labName, String name,
+        ServiceRunnerInner serviceRunner);
 
     /**
      * Delete service runner.

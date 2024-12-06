@@ -19,7 +19,23 @@ public class RenderCustomization extends Customization {
         // customize map tile size
         customizeMapTileSize(models);
 
+        customizeRegionCopyrights(models);
+
         models.getClass("TilesetID").rename("TilesetId");
+    }
+
+    private void customizeRegionCopyrights(PackageCustomization models) {
+        models.getClass("RegionCopyrights").customizeAst(ast -> {
+
+            ast.getClassByName("RegionCopyrights").ifPresent(clazz -> {
+              /*  clazz.getMethodsByName("setBounds").forEach(Node::remove);
+                clazz.getMethodsByName("setCenter").forEach(Node::remove);*/
+
+                clazz.getMethodsByName("fromJson").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{ return jsonReader.readObject(reader -> { reader.nextToken(); reader.nextToken(); RegionCopyrights deserializedRegionCopyrights = new RegionCopyrights(); while (reader.nextToken() != JsonToken.END_OBJECT) { String fieldName = reader.getFieldName(); reader.nextToken(); if (\"copyrights\".equals(fieldName)) {List<String> copyrights = reader.readArray(reader1 -> reader1.getString());deserializedRegionCopyrights.copyrights = copyrights;} else if (\"country\".equals(fieldName)) {deserializedRegionCopyrights.country = RegionCopyrightsCountry.fromJson(reader);} else {reader.skipChildren();}} return deserializedRegionCopyrights;});}"));
+                });
+            });
+        });
     }
 
     // Customizes the MapTileset class

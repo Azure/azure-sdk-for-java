@@ -6,32 +6,38 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body to get the datacenter address. */
+/**
+ * Request body to get the datacenter address.
+ */
 @Fluent
-public final class DatacenterAddressRequest {
+public final class DatacenterAddressRequest implements JsonSerializable<DatacenterAddressRequest> {
     /*
      * Storage location. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
      */
-    @JsonProperty(value = "storageLocation", required = true)
     private String storageLocation;
 
     /*
      * Sku Name for which the data center address requested.
      */
-    @JsonProperty(value = "skuName", required = true)
     private SkuName skuName;
 
-    /** Creates an instance of DatacenterAddressRequest class. */
+    /**
+     * Creates an instance of DatacenterAddressRequest class.
+     */
     public DatacenterAddressRequest() {
     }
 
     /**
      * Get the storageLocation property: Storage location. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @return the storageLocation value.
      */
     public String storageLocation() {
@@ -41,7 +47,7 @@ public final class DatacenterAddressRequest {
     /**
      * Set the storageLocation property: Storage location. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @param storageLocation the storageLocation value to set.
      * @return the DatacenterAddressRequest object itself.
      */
@@ -52,7 +58,7 @@ public final class DatacenterAddressRequest {
 
     /**
      * Get the skuName property: Sku Name for which the data center address requested.
-     *
+     * 
      * @return the skuName value.
      */
     public SkuName skuName() {
@@ -61,7 +67,7 @@ public final class DatacenterAddressRequest {
 
     /**
      * Set the skuName property: Sku Name for which the data center address requested.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the DatacenterAddressRequest object itself.
      */
@@ -72,23 +78,61 @@ public final class DatacenterAddressRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageLocation in model DatacenterAddressRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageLocation in model DatacenterAddressRequest"));
         }
         if (skuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property skuName in model DatacenterAddressRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property skuName in model DatacenterAddressRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatacenterAddressRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageLocation", this.storageLocation);
+        jsonWriter.writeStringField("skuName", this.skuName == null ? null : this.skuName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatacenterAddressRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatacenterAddressRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatacenterAddressRequest.
+     */
+    public static DatacenterAddressRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatacenterAddressRequest deserializedDatacenterAddressRequest = new DatacenterAddressRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageLocation".equals(fieldName)) {
+                    deserializedDatacenterAddressRequest.storageLocation = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedDatacenterAddressRequest.skuName = SkuName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatacenterAddressRequest;
+        });
+    }
 }

@@ -5,23 +5,32 @@
 package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents the updatable properties of the virtual network link. */
+/**
+ * Represents the updatable properties of the virtual network link.
+ */
 @Fluent
-public final class VirtualNetworkLinkPatchProperties {
+public final class VirtualNetworkLinkPatchProperties implements JsonSerializable<VirtualNetworkLinkPatchProperties> {
     /*
      * Metadata attached to the virtual network link.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /**
+     * Creates an instance of VirtualNetworkLinkPatchProperties class.
+     */
+    public VirtualNetworkLinkPatchProperties() {
+    }
+
+    /**
      * Get the metadata property: Metadata attached to the virtual network link.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -30,7 +39,7 @@ public final class VirtualNetworkLinkPatchProperties {
 
     /**
      * Set the metadata property: Metadata attached to the virtual network link.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the VirtualNetworkLinkPatchProperties object itself.
      */
@@ -41,9 +50,47 @@ public final class VirtualNetworkLinkPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkLinkPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkLinkPatchProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkLinkPatchProperties.
+     */
+    public static VirtualNetworkLinkPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkLinkPatchProperties deserializedVirtualNetworkLinkPatchProperties
+                = new VirtualNetworkLinkPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkLinkPatchProperties.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkLinkPatchProperties;
+        });
     }
 }

@@ -76,13 +76,12 @@ public class EventGridTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .retryPolicy(new RetryPolicy());
-            syncBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .retryPolicy(new RetryPolicy());
+            builder.addPolicy(interceptorManager.getRecordPolicy()).retryPolicy(new RetryPolicy());
+            syncBuilder.addPolicy(interceptorManager.getRecordPolicy()).retryPolicy(new RetryPolicy());
         }
         setupSanitizers();
     }
+
     void setupSanitizers() {
         if (!interceptorManager.isLiveMode()) {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
@@ -101,10 +100,7 @@ public class EventGridTestBase extends TestProxyTestBase {
                     put("Field2", "Value2");
                     put("Field3", "Value3");
                 }
-            }),
-            "1.0")
-            .setEventTime(testResourceNamer.now())
-            .setId(testResourceNamer.randomUuid());
+            }), "1.0").setEventTime(testResourceNamer.now()).setId(testResourceNamer.randomUuid());
         return event;
     }
 
@@ -128,10 +124,9 @@ public class EventGridTestBase extends TestProxyTestBase {
                     put("Field2", "Value2");
                     put("Field3", "Value3");
                 }
-            }), CloudEventDataFormat.JSON, "application/json")
-            .setSubject("Test")
-            .setTime(testResourceNamer.now())
-            .setId(testResourceNamer.randomUuid());
+            }), CloudEventDataFormat.JSON, "application/json").setSubject("Test")
+                .setTime(testResourceNamer.now())
+                .setId(testResourceNamer.randomUuid());
     }
 
     String getEndpoint(String liveEnvName) {
@@ -152,10 +147,9 @@ public class EventGridTestBase extends TestProxyTestBase {
         return key;
     }
 
-
     private HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
-        AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false);
+        AssertingHttpClientBuilder builder
+            = new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false);
         if (sync) {
             builder.assertSync();
         } else {

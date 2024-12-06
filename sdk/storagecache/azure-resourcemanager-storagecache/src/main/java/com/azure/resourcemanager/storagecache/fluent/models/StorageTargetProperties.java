@@ -6,6 +6,10 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
@@ -14,66 +18,58 @@ import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the Storage Target.
  */
 @Fluent
-public final class StorageTargetProperties {
+public final class StorageTargetProperties implements JsonSerializable<StorageTargetProperties> {
     /*
      * List of cache namespace junctions to target for namespace associations.
      */
-    @JsonProperty(value = "junctions")
     private List<NamespaceJunction> junctions;
 
     /*
      * Type of the Storage Target.
      */
-    @JsonProperty(value = "targetType", required = true)
     private StorageTargetType targetType;
 
     /*
-     * ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+     * ARM provisioning state, see
+     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateType provisioningState;
 
     /*
      * Storage target operational state.
      */
-    @JsonProperty(value = "state")
     private OperationalStateType state;
 
     /*
      * Properties when targetType is nfs3.
      */
-    @JsonProperty(value = "nfs3")
     private Nfs3Target nfs3;
 
     /*
      * Properties when targetType is clfs.
      */
-    @JsonProperty(value = "clfs")
     private ClfsTarget clfs;
 
     /*
      * Properties when targetType is unknown.
      */
-    @JsonProperty(value = "unknown")
     private UnknownTarget unknown;
 
     /*
      * Properties when targetType is blobNfs.
      */
-    @JsonProperty(value = "blobNfs")
     private BlobNfsTarget blobNfs;
 
     /*
      * The percentage of cache space allocated for this storage target
      */
-    @JsonProperty(value = "allocationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer allocationPercentage;
 
     /**
@@ -270,4 +266,66 @@ public final class StorageTargetProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTargetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetType", this.targetType == null ? null : this.targetType.toString());
+        jsonWriter.writeArrayField("junctions", this.junctions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("nfs3", this.nfs3);
+        jsonWriter.writeJsonField("clfs", this.clfs);
+        jsonWriter.writeJsonField("unknown", this.unknown);
+        jsonWriter.writeJsonField("blobNfs", this.blobNfs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTargetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTargetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTargetProperties.
+     */
+    public static StorageTargetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTargetProperties deserializedStorageTargetProperties = new StorageTargetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetType".equals(fieldName)) {
+                    deserializedStorageTargetProperties.targetType = StorageTargetType.fromString(reader.getString());
+                } else if ("junctions".equals(fieldName)) {
+                    List<NamespaceJunction> junctions
+                        = reader.readArray(reader1 -> NamespaceJunction.fromJson(reader1));
+                    deserializedStorageTargetProperties.junctions = junctions;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageTargetProperties.provisioningState
+                        = ProvisioningStateType.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedStorageTargetProperties.state = OperationalStateType.fromString(reader.getString());
+                } else if ("nfs3".equals(fieldName)) {
+                    deserializedStorageTargetProperties.nfs3 = Nfs3Target.fromJson(reader);
+                } else if ("clfs".equals(fieldName)) {
+                    deserializedStorageTargetProperties.clfs = ClfsTarget.fromJson(reader);
+                } else if ("unknown".equals(fieldName)) {
+                    deserializedStorageTargetProperties.unknown = UnknownTarget.fromJson(reader);
+                } else if ("blobNfs".equals(fieldName)) {
+                    deserializedStorageTargetProperties.blobNfs = BlobNfsTarget.fromJson(reader);
+                } else if ("allocationPercentage".equals(fieldName)) {
+                    deserializedStorageTargetProperties.allocationPercentage = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTargetProperties;
+        });
+    }
 }

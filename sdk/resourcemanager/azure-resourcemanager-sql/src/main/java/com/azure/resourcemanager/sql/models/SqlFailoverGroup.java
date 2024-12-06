@@ -15,12 +15,8 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Failover Group. */
 @Fluent
-public interface SqlFailoverGroup
-    extends Resource,
-        HasInnerModel<FailoverGroupInner>,
-        HasResourceGroup,
-        Refreshable<SqlFailoverGroup>,
-        Updatable<SqlFailoverGroup.Update> {
+public interface SqlFailoverGroup extends Resource, HasInnerModel<FailoverGroupInner>, HasResourceGroup,
+    Refreshable<SqlFailoverGroup>, Updatable<SqlFailoverGroup.Update> {
 
     /** @return name of the SQL Server to which this Failover Group belongs */
     String sqlServerName();
@@ -60,12 +56,9 @@ public interface SqlFailoverGroup
     Mono<Void> deleteAsync();
 
     /** The template for a SQL Failover Group update operation, containing all the settings that can be modified. */
-    interface Update
-        extends SqlFailoverGroup.UpdateStages.WithReadWriteEndpointPolicy,
-            SqlFailoverGroup.UpdateStages.WithReadOnlyEndpointPolicy,
-            SqlFailoverGroup.UpdateStages.WithDatabase,
-            Resource.UpdateWithTags<SqlFailoverGroup.Update>,
-            Appliable<SqlFailoverGroup> {
+    interface Update extends SqlFailoverGroup.UpdateStages.WithReadWriteEndpointPolicy,
+        SqlFailoverGroup.UpdateStages.WithReadOnlyEndpointPolicy, SqlFailoverGroup.UpdateStages.WithDatabase,
+        Resource.UpdateWithTags<SqlFailoverGroup.Update>, Appliable<SqlFailoverGroup> {
     }
 
     /** Grouping of all the SQL Virtual Network Rule update stages. */
@@ -79,8 +72,8 @@ public interface SqlFailoverGroup
              *     read-write endpoint
              * @return the next stage of the definition
              */
-            SqlFailoverGroup.Update withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(
-                int gracePeriodInMinutes);
+            SqlFailoverGroup.Update
+                withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(int gracePeriodInMinutes);
 
             /**
              * Sets the SQL Failover Group read-write endpoint failover policy as "Manual".

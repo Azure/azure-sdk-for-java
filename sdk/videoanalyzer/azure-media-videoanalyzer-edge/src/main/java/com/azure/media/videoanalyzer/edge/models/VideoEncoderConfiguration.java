@@ -5,50 +5,56 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class representing the MPEG4 Configuration. */
+/**
+ * Class representing the MPEG4 Configuration.
+ */
 @Fluent
-public final class VideoEncoderConfiguration {
+public final class VideoEncoderConfiguration implements JsonSerializable<VideoEncoderConfiguration> {
     /*
      * The video codec used by the Media Profile.
      */
-    @JsonProperty(value = "encoding")
     private VideoEncoding encoding;
 
     /*
      * Relative value representing the quality of the video.
      */
-    @JsonProperty(value = "quality")
     private Float quality;
 
     /*
      * The Video Resolution.
      */
-    @JsonProperty(value = "resolution")
     private VideoResolution resolution;
 
     /*
      * The Video's rate control.
      */
-    @JsonProperty(value = "rateControl")
     private RateControl rateControl;
 
     /*
      * The H264 Configuration.
      */
-    @JsonProperty(value = "h264")
     private H264Configuration h264;
 
     /*
      * The H264 Configuration.
      */
-    @JsonProperty(value = "mpeg4")
     private Mpeg4Configuration mpeg4;
 
     /**
+     * Creates an instance of VideoEncoderConfiguration class.
+     */
+    public VideoEncoderConfiguration() {
+    }
+
+    /**
      * Get the encoding property: The video codec used by the Media Profile.
-     *
+     * 
      * @return the encoding value.
      */
     public VideoEncoding getEncoding() {
@@ -57,7 +63,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Set the encoding property: The video codec used by the Media Profile.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the VideoEncoderConfiguration object itself.
      */
@@ -68,7 +74,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Get the quality property: Relative value representing the quality of the video.
-     *
+     * 
      * @return the quality value.
      */
     public Float getQuality() {
@@ -77,7 +83,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Set the quality property: Relative value representing the quality of the video.
-     *
+     * 
      * @param quality the quality value to set.
      * @return the VideoEncoderConfiguration object itself.
      */
@@ -88,7 +94,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Get the resolution property: The Video Resolution.
-     *
+     * 
      * @return the resolution value.
      */
     public VideoResolution getResolution() {
@@ -97,7 +103,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Set the resolution property: The Video Resolution.
-     *
+     * 
      * @param resolution the resolution value to set.
      * @return the VideoEncoderConfiguration object itself.
      */
@@ -108,7 +114,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Get the rateControl property: The Video's rate control.
-     *
+     * 
      * @return the rateControl value.
      */
     public RateControl getRateControl() {
@@ -117,7 +123,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Set the rateControl property: The Video's rate control.
-     *
+     * 
      * @param rateControl the rateControl value to set.
      * @return the VideoEncoderConfiguration object itself.
      */
@@ -128,7 +134,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Get the h264 property: The H264 Configuration.
-     *
+     * 
      * @return the h264 value.
      */
     public H264Configuration getH264() {
@@ -137,7 +143,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Set the h264 property: The H264 Configuration.
-     *
+     * 
      * @param h264 the h264 value to set.
      * @return the VideoEncoderConfiguration object itself.
      */
@@ -148,7 +154,7 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Get the mpeg4 property: The H264 Configuration.
-     *
+     * 
      * @return the mpeg4 value.
      */
     public Mpeg4Configuration getMpeg4() {
@@ -157,12 +163,63 @@ public final class VideoEncoderConfiguration {
 
     /**
      * Set the mpeg4 property: The H264 Configuration.
-     *
+     * 
      * @param mpeg4 the mpeg4 value to set.
      * @return the VideoEncoderConfiguration object itself.
      */
     public VideoEncoderConfiguration setMpeg4(Mpeg4Configuration mpeg4) {
         this.mpeg4 = mpeg4;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        jsonWriter.writeNumberField("quality", this.quality);
+        jsonWriter.writeJsonField("resolution", this.resolution);
+        jsonWriter.writeJsonField("rateControl", this.rateControl);
+        jsonWriter.writeJsonField("h264", this.h264);
+        jsonWriter.writeJsonField("mpeg4", this.mpeg4);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VideoEncoderConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VideoEncoderConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VideoEncoderConfiguration.
+     */
+    public static VideoEncoderConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VideoEncoderConfiguration deserializedVideoEncoderConfiguration = new VideoEncoderConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encoding".equals(fieldName)) {
+                    deserializedVideoEncoderConfiguration.encoding = VideoEncoding.fromString(reader.getString());
+                } else if ("quality".equals(fieldName)) {
+                    deserializedVideoEncoderConfiguration.quality = reader.getNullable(JsonReader::getFloat);
+                } else if ("resolution".equals(fieldName)) {
+                    deserializedVideoEncoderConfiguration.resolution = VideoResolution.fromJson(reader);
+                } else if ("rateControl".equals(fieldName)) {
+                    deserializedVideoEncoderConfiguration.rateControl = RateControl.fromJson(reader);
+                } else if ("h264".equals(fieldName)) {
+                    deserializedVideoEncoderConfiguration.h264 = H264Configuration.fromJson(reader);
+                } else if ("mpeg4".equals(fieldName)) {
+                    deserializedVideoEncoderConfiguration.mpeg4 = Mpeg4Configuration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVideoEncoderConfiguration;
+        });
     }
 }

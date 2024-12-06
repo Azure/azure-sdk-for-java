@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.webpubsub.fluent.models.CustomDomainInner;
 
-/** An instance of this class provides access to all the operations defined in WebPubSubCustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebPubSubCustomDomainsClient.
+ */
 public interface WebPubSubCustomDomainsClient {
     /**
      * List all custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface WebPubSubCustomDomainsClient {
 
     /**
      * List all custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface WebPubSubCustomDomainsClient {
 
     /**
      * Get a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -55,12 +57,12 @@ public interface WebPubSubCustomDomainsClient {
      * @return a custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomDomainInner> getWithResponse(
-        String resourceGroupName, String resourceName, String name, Context context);
+    Response<CustomDomainInner> getWithResponse(String resourceGroupName, String resourceName, String name,
+        Context context);
 
     /**
      * Get a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -74,27 +76,27 @@ public interface WebPubSubCustomDomainsClient {
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a custom domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters);
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String name, CustomDomainInner parameters);
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,32 +104,32 @@ public interface WebPubSubCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of a custom domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters, Context context);
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String name, CustomDomainInner parameters, Context context);
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner createOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters);
+    CustomDomainInner createOrUpdate(String resourceGroupName, String resourceName, String name,
+        CustomDomainInner parameters);
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,12 +137,12 @@ public interface WebPubSubCustomDomainsClient {
      * @return a custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner createOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters, Context context);
+    CustomDomainInner createOrUpdate(String resourceGroupName, String resourceName, String name,
+        CustomDomainInner parameters, Context context);
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -154,7 +156,7 @@ public interface WebPubSubCustomDomainsClient {
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -165,12 +167,12 @@ public interface WebPubSubCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name,
+        Context context);
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -183,7 +185,7 @@ public interface WebPubSubCustomDomainsClient {
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.

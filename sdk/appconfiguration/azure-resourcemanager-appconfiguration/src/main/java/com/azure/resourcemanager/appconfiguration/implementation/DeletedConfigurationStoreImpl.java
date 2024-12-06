@@ -15,8 +15,7 @@ public final class DeletedConfigurationStoreImpl implements DeletedConfiguration
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    DeletedConfigurationStoreImpl(
-        DeletedConfigurationStoreInner innerObject,
+    DeletedConfigurationStoreImpl(DeletedConfigurationStoreInner innerObject,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

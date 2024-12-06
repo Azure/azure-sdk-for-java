@@ -39,6 +39,6 @@ public interface WebTestLocationsClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApplicationInsightsComponentWebTestLocationInner> list(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<ApplicationInsightsComponentWebTestLocationInner> list(String resourceGroupName, String resourceName,
+        Context context);
 }

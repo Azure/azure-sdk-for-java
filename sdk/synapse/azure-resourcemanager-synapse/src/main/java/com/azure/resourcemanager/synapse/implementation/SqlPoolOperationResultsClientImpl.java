@@ -30,23 +30,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient.
+ */
 public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolOperationResultsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SqlPoolOperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolOperationResultsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,29 +62,22 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolOperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/operationResults/{operationId}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResult(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResult(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -90,19 +88,15 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the status of a SQL pool operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResultWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
+    private Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResultWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -120,27 +114,17 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLocationHeaderResult(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.getLocationHeaderResult(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, operationId, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -152,19 +136,15 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the status of a SQL pool operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResultWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResultWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,24 +162,15 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getLocationHeaderResult(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                operationId,
-                accept,
-                context);
+        return service.getLocationHeaderResult(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, operationId, accept, context);
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -212,19 +183,17 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResultAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getLocationHeaderResultWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, operationId);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getLocationHeaderResultWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, operationId);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -239,20 +208,17 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
     private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResultAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getLocationHeaderResultWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, operationId, context);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getLocationHeaderResultWithResponseAsync(resourceGroupName,
+            workspaceName, sqlPoolName, operationId, context);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -263,18 +229,17 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the {@link SyncPoller} for polling of the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
-        return this
-            .beginGetLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId)
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId) {
+        return this.beginGetLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId)
             .getSyncPoller();
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -286,8 +251,8 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the {@link SyncPoller} for polling of the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId, Context context) {
         return this
             .beginGetLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId, context)
             .getSyncPoller();
@@ -295,9 +260,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -308,18 +273,17 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the status of a SQL pool operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> getLocationHeaderResultAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
-        return beginGetLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId)
-            .last()
+    private Mono<SqlPoolInner> getLocationHeaderResultAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String operationId) {
+        return beginGetLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -331,8 +295,8 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the status of a SQL pool operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> getLocationHeaderResultAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
+    private Mono<SqlPoolInner> getLocationHeaderResultAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String operationId, Context context) {
         return beginGetLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -340,9 +304,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -353,16 +317,16 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
+    public SqlPoolInner getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId) {
         return getLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId).block();
     }
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -374,8 +338,8 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @return the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
+    public SqlPoolInner getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId, Context context) {
         return getLocationHeaderResultAsync(resourceGroupName, workspaceName, sqlPoolName, operationId, context)
             .block();
     }

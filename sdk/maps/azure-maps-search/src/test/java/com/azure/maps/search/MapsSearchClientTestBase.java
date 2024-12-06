@@ -44,8 +44,8 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
 
     MapsSearchClientBuilder getMapsSearchAsyncClientBuilder(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
-        MapsSearchClientBuilder builder = modifyBuilder(httpClient, new MapsSearchClientBuilder()).serviceVersion(
-            serviceVersion);
+        MapsSearchClientBuilder builder
+            = modifyBuilder(httpClient, new MapsSearchClientBuilder()).serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
@@ -68,8 +68,8 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
+            customMatchers
+                .add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
@@ -85,8 +85,8 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY")));
         }
 
-        return builder.httpClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return builder
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     static void validateGetPolygons(Boundary response) {

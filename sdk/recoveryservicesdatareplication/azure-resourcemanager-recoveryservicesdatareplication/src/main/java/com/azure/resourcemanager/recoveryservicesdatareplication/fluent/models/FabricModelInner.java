@@ -7,33 +7,53 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricModelProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricModelSystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Fabric model. */
+/**
+ * Fabric model.
+ */
 @Fluent
 public final class FabricModelInner extends Resource {
     /*
      * Fabric model properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private FabricModelProperties properties;
 
     /*
      * The systemData property.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private FabricModelSystemData systemData;
 
-    /** Creates an instance of FabricModelInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FabricModelInner class.
+     */
     public FabricModelInner() {
     }
 
     /**
      * Get the properties property: Fabric model properties.
-     *
+     * 
      * @return the properties value.
      */
     public FabricModelProperties properties() {
@@ -42,7 +62,7 @@ public final class FabricModelInner extends Resource {
 
     /**
      * Set the properties property: Fabric model properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FabricModelInner object itself.
      */
@@ -53,21 +73,55 @@ public final class FabricModelInner extends Resource {
 
     /**
      * Get the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     public FabricModelSystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FabricModelInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FabricModelInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,14 +130,13 @@ public final class FabricModelInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model FabricModelInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model FabricModelInner"));
         } else {
             properties().validate();
         }
@@ -93,4 +146,56 @@ public final class FabricModelInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FabricModelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FabricModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FabricModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FabricModelInner.
+     */
+    public static FabricModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FabricModelInner deserializedFabricModelInner = new FabricModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFabricModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFabricModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFabricModelInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFabricModelInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFabricModelInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFabricModelInner.properties = FabricModelProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFabricModelInner.systemData = FabricModelSystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFabricModelInner;
+        });
+    }
 }

@@ -6,43 +6,47 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Certificate configuration which consist of non-trusted intermediates and root certificates. */
+/**
+ * Certificate configuration which consist of non-trusted intermediates and root certificates.
+ */
 @Fluent
-public final class CertificateConfiguration {
+public final class CertificateConfiguration implements JsonSerializable<CertificateConfiguration> {
     /*
      * Base64 Encoded certificate.
      */
-    @JsonProperty(value = "encodedCertificate")
     private String encodedCertificate;
 
     /*
      * Certificate Password.
      */
-    @JsonProperty(value = "certificatePassword")
     private String certificatePassword;
 
     /*
      * The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and
      * CertificateAuthority are valid locations.
      */
-    @JsonProperty(value = "storeName", required = true)
     private CertificateConfigurationStoreName storeName;
 
     /*
      * Certificate information.
      */
-    @JsonProperty(value = "certificate")
     private CertificateInformation certificate;
 
-    /** Creates an instance of CertificateConfiguration class. */
+    /**
+     * Creates an instance of CertificateConfiguration class.
+     */
     public CertificateConfiguration() {
     }
 
     /**
      * Get the encodedCertificate property: Base64 Encoded certificate.
-     *
+     * 
      * @return the encodedCertificate value.
      */
     public String encodedCertificate() {
@@ -51,7 +55,7 @@ public final class CertificateConfiguration {
 
     /**
      * Set the encodedCertificate property: Base64 Encoded certificate.
-     *
+     * 
      * @param encodedCertificate the encodedCertificate value to set.
      * @return the CertificateConfiguration object itself.
      */
@@ -62,7 +66,7 @@ public final class CertificateConfiguration {
 
     /**
      * Get the certificatePassword property: Certificate Password.
-     *
+     * 
      * @return the certificatePassword value.
      */
     public String certificatePassword() {
@@ -71,7 +75,7 @@ public final class CertificateConfiguration {
 
     /**
      * Set the certificatePassword property: Certificate Password.
-     *
+     * 
      * @param certificatePassword the certificatePassword value to set.
      * @return the CertificateConfiguration object itself.
      */
@@ -83,7 +87,7 @@ public final class CertificateConfiguration {
     /**
      * Get the storeName property: The System.Security.Cryptography.x509certificates.StoreName certificate store
      * location. Only Root and CertificateAuthority are valid locations.
-     *
+     * 
      * @return the storeName value.
      */
     public CertificateConfigurationStoreName storeName() {
@@ -93,7 +97,7 @@ public final class CertificateConfiguration {
     /**
      * Set the storeName property: The System.Security.Cryptography.x509certificates.StoreName certificate store
      * location. Only Root and CertificateAuthority are valid locations.
-     *
+     * 
      * @param storeName the storeName value to set.
      * @return the CertificateConfiguration object itself.
      */
@@ -104,7 +108,7 @@ public final class CertificateConfiguration {
 
     /**
      * Get the certificate property: Certificate information.
-     *
+     * 
      * @return the certificate value.
      */
     public CertificateInformation certificate() {
@@ -113,7 +117,7 @@ public final class CertificateConfiguration {
 
     /**
      * Set the certificate property: Certificate information.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the CertificateConfiguration object itself.
      */
@@ -124,15 +128,14 @@ public final class CertificateConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storeName in model CertificateConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storeName in model CertificateConfiguration"));
         }
         if (certificate() != null) {
             certificate().validate();
@@ -140,4 +143,51 @@ public final class CertificateConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storeName", this.storeName == null ? null : this.storeName.toString());
+        jsonWriter.writeStringField("encodedCertificate", this.encodedCertificate);
+        jsonWriter.writeStringField("certificatePassword", this.certificatePassword);
+        jsonWriter.writeJsonField("certificate", this.certificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateConfiguration.
+     */
+    public static CertificateConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateConfiguration deserializedCertificateConfiguration = new CertificateConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storeName".equals(fieldName)) {
+                    deserializedCertificateConfiguration.storeName
+                        = CertificateConfigurationStoreName.fromString(reader.getString());
+                } else if ("encodedCertificate".equals(fieldName)) {
+                    deserializedCertificateConfiguration.encodedCertificate = reader.getString();
+                } else if ("certificatePassword".equals(fieldName)) {
+                    deserializedCertificateConfiguration.certificatePassword = reader.getString();
+                } else if ("certificate".equals(fieldName)) {
+                    deserializedCertificateConfiguration.certificate = CertificateInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateConfiguration;
+        });
+    }
 }

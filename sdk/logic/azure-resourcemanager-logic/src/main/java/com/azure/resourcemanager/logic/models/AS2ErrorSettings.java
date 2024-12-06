@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement error settings. */
+/**
+ * The AS2 agreement error settings.
+ */
 @Fluent
-public final class AS2ErrorSettings {
+public final class AS2ErrorSettings implements JsonSerializable<AS2ErrorSettings> {
     /*
      * The value indicating whether to suspend duplicate message.
      */
-    @JsonProperty(value = "suspendDuplicateMessage", required = true)
     private boolean suspendDuplicateMessage;
 
     /*
      * The value indicating whether to resend message If MDN is not received.
      */
-    @JsonProperty(value = "resendIfMDNNotReceived", required = true)
     private boolean resendIfMdnNotReceived;
 
-    /** Creates an instance of AS2ErrorSettings class. */
+    /**
+     * Creates an instance of AS2ErrorSettings class.
+     */
     public AS2ErrorSettings() {
     }
 
     /**
      * Get the suspendDuplicateMessage property: The value indicating whether to suspend duplicate message.
-     *
+     * 
      * @return the suspendDuplicateMessage value.
      */
     public boolean suspendDuplicateMessage() {
@@ -37,7 +43,7 @@ public final class AS2ErrorSettings {
 
     /**
      * Set the suspendDuplicateMessage property: The value indicating whether to suspend duplicate message.
-     *
+     * 
      * @param suspendDuplicateMessage the suspendDuplicateMessage value to set.
      * @return the AS2ErrorSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class AS2ErrorSettings {
 
     /**
      * Get the resendIfMdnNotReceived property: The value indicating whether to resend message If MDN is not received.
-     *
+     * 
      * @return the resendIfMdnNotReceived value.
      */
     public boolean resendIfMdnNotReceived() {
@@ -57,7 +63,7 @@ public final class AS2ErrorSettings {
 
     /**
      * Set the resendIfMdnNotReceived property: The value indicating whether to resend message If MDN is not received.
-     *
+     * 
      * @param resendIfMdnNotReceived the resendIfMdnNotReceived value to set.
      * @return the AS2ErrorSettings object itself.
      */
@@ -68,9 +74,49 @@ public final class AS2ErrorSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("suspendDuplicateMessage", this.suspendDuplicateMessage);
+        jsonWriter.writeBooleanField("resendIfMDNNotReceived", this.resendIfMdnNotReceived);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2ErrorSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2ErrorSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2ErrorSettings.
+     */
+    public static AS2ErrorSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2ErrorSettings deserializedAS2ErrorSettings = new AS2ErrorSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("suspendDuplicateMessage".equals(fieldName)) {
+                    deserializedAS2ErrorSettings.suspendDuplicateMessage = reader.getBoolean();
+                } else if ("resendIfMDNNotReceived".equals(fieldName)) {
+                    deserializedAS2ErrorSettings.resendIfMdnNotReceived = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2ErrorSettings;
+        });
     }
 }

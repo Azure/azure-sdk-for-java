@@ -28,27 +28,24 @@ public final class LabelsImpl implements Labels {
     }
 
     public PagedIterable<LabelResource> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<LabelResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
+        PagedIterable<LabelResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LabelResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<LabelResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
+    public PagedIterable<LabelResource> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<LabelResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
     }
 
-    public Response<LabelResource> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String labelName, Context context) {
-        Response<LabelResourceInner> inner =
-            this.serviceClient().getByWorkspaceWithResponse(resourceGroupName, workspaceName, labelName, context);
+    public Response<LabelResource> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String labelName, Context context) {
+        Response<LabelResourceInner> inner
+            = this.serviceClient().getByWorkspaceWithResponse(resourceGroupName, workspaceName, labelName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LabelResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -73,14 +70,10 @@ public final class LabelsImpl implements Labels {
         }
     }
 
-    public LabelResource createAndUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelResourceInner labelResource,
-        Context context) {
-        LabelResourceInner inner =
-            this.serviceClient().createAndUpdate(resourceGroupName, workspaceName, labelName, labelResource, context);
+    public LabelResource createAndUpdate(String resourceGroupName, String workspaceName, String labelName,
+        LabelResourceInner labelResource, Context context) {
+        LabelResourceInner inner
+            = this.serviceClient().createAndUpdate(resourceGroupName, workspaceName, labelName, labelResource, context);
         if (inner != null) {
             return new LabelResourceImpl(inner, this.manager());
         } else {
@@ -88,21 +81,12 @@ public final class LabelsImpl implements Labels {
         }
     }
 
-    public Response<LabelResource> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelPatchResource labelPatchResource,
-        Context context) {
-        Response<LabelResourceInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, workspaceName, labelName, labelPatchResource, context);
+    public Response<LabelResource> updateWithResponse(String resourceGroupName, String workspaceName, String labelName,
+        LabelPatchResource labelPatchResource, Context context) {
+        Response<LabelResourceInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, workspaceName, labelName, labelPatchResource, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LabelResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

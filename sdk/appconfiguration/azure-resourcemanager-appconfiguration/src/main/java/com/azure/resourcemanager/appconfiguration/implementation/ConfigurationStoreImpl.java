@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appconfiguration.models.ApiKey;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStore;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStoreUpdateParameters;
 import com.azure.resourcemanager.appconfiguration.models.CreateMode;
+import com.azure.resourcemanager.appconfiguration.models.DataPlaneProxyProperties;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
@@ -110,6 +111,10 @@ public final class ConfigurationStoreImpl
         return this.innerModel().enablePurgeProtection();
     }
 
+    public DataPlaneProxyProperties dataPlaneProxy() {
+        return this.innerModel().dataPlaneProxy();
+    }
+
     public CreateMode createMode() {
         return this.innerModel().createMode();
     }
@@ -146,25 +151,21 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStore create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationStores()
-                .create(resourceGroupName, configStoreName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationStores()
+            .create(resourceGroupName, configStoreName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConfigurationStore create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationStores()
-                .create(resourceGroupName, configStoreName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationStores()
+            .create(resourceGroupName, configStoreName, this.innerModel(), context);
         return this;
     }
 
-    ConfigurationStoreImpl(
-        String name, com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
+    ConfigurationStoreImpl(String name,
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = new ConfigurationStoreInner();
         this.serviceManager = serviceManager;
         this.configStoreName = name;
@@ -176,49 +177,40 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStore apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationStores()
-                .update(resourceGroupName, configStoreName, updateConfigStoreUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationStores()
+            .update(resourceGroupName, configStoreName, updateConfigStoreUpdateParameters, Context.NONE);
         return this;
     }
 
     public ConfigurationStore apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationStores()
-                .update(resourceGroupName, configStoreName, updateConfigStoreUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationStores()
+            .update(resourceGroupName, configStoreName, updateConfigStoreUpdateParameters, context);
         return this;
     }
 
-    ConfigurationStoreImpl(
-        ConfigurationStoreInner innerObject,
+    ConfigurationStoreImpl(ConfigurationStoreInner innerObject,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configStoreName = Utils.getValueFromIdByName(innerObject.id(), "configurationStores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.configStoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationStores");
     }
 
     public ConfigurationStore refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationStores()
-                .getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationStores()
+            .getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationStore refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationStores()
-                .getByResourceGroupWithResponse(resourceGroupName, configStoreName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationStores()
+            .getByResourceGroupWithResponse(resourceGroupName, configStoreName, context)
+            .getValue();
         return this;
     }
 
@@ -230,16 +222,14 @@ public final class ConfigurationStoreImpl
         return serviceManager.configurationStores().listKeys(resourceGroupName, configStoreName, skipToken, context);
     }
 
-    public Response<ApiKey> regenerateKeyWithResponse(
-        RegenerateKeyParameters regenerateKeyParameters, Context context) {
-        return serviceManager
-            .configurationStores()
+    public Response<ApiKey> regenerateKeyWithResponse(RegenerateKeyParameters regenerateKeyParameters,
+        Context context) {
+        return serviceManager.configurationStores()
             .regenerateKeyWithResponse(resourceGroupName, configStoreName, regenerateKeyParameters, context);
     }
 
     public ApiKey regenerateKey(RegenerateKeyParameters regenerateKeyParameters) {
-        return serviceManager
-            .configurationStores()
+        return serviceManager.configurationStores()
             .regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
     }
 
@@ -324,6 +314,16 @@ public final class ConfigurationStoreImpl
             return this;
         } else {
             this.updateConfigStoreUpdateParameters.withEnablePurgeProtection(enablePurgeProtection);
+            return this;
+        }
+    }
+
+    public ConfigurationStoreImpl withDataPlaneProxy(DataPlaneProxyProperties dataPlaneProxy) {
+        if (isInCreateMode()) {
+            this.innerModel().withDataPlaneProxy(dataPlaneProxy);
+            return this;
+        } else {
+            this.updateConfigStoreUpdateParameters.withDataPlaneProxy(dataPlaneProxy);
             return this;
         }
     }

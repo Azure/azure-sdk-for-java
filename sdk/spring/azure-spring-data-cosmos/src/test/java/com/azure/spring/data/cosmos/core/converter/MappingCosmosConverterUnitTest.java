@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.convert.ObjectMapperFactory;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.azure.spring.data.cosmos.domain.BigJavaMathTypes;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
 import com.azure.spring.data.cosmos.domain.Person;
@@ -98,6 +99,29 @@ public class MappingCosmosConverterUnitTest {
         assertThat(memo.getId()).isEqualTo(TestConstants.ID_1);
         assertThat(memo.getMessage()).isEqualTo(TestConstants.MESSAGE);
         assertThat(memo.getDate().getTime()).isEqualTo(date);
+    }
+
+    @Test
+    public void canWritePojoWithBigJavaMathTypes() {
+        final BigJavaMathTypes javaMathTypes = new BigJavaMathTypes(TestConstants.ID_1, TestConstants.BIG_DECIMAL, TestConstants.BIG_INTEGER);
+        final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(javaMathTypes);
+
+        assertThat(jsonNode.get(TestConstants.PROPERTY_ID).asText()).isEqualTo(javaMathTypes.getId());
+        assertThat(jsonNode.get(TestConstants.PROPERTY_BIG_DECIMAL).decimalValue()).isEqualTo(javaMathTypes.getBigDecimal());
+        assertThat(jsonNode.get(TestConstants.PROPERTY_BIG_INTEGER).bigIntegerValue()).isEqualTo(javaMathTypes.getBigInteger());
+    }
+
+    @Test
+    public void canReadPojoWithBigJavaMathTypes() {
+        final ObjectNode jsonObject = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        jsonObject.put(TestConstants.PROPERTY_ID, TestConstants.ID_1);
+        jsonObject.put(TestConstants.PROPERTY_BIG_DECIMAL, TestConstants.BIG_DECIMAL);
+        jsonObject.put(TestConstants.PROPERTY_BIG_INTEGER, TestConstants.BIG_INTEGER);
+
+        final BigJavaMathTypes memo = mappingCosmosConverter.read(BigJavaMathTypes.class, jsonObject);
+        assertThat(memo.getId()).isEqualTo(TestConstants.ID_1);
+        assertThat(memo.getBigDecimal()).isEqualTo(TestConstants.BIG_DECIMAL);
+        assertThat(memo.getBigInteger()).isEqualTo(TestConstants.BIG_INTEGER);
     }
 
     @Test

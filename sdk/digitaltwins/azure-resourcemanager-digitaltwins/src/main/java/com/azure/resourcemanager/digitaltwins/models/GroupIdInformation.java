@@ -6,39 +6,41 @@ package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationInner;
 
-/** An immutable client-side representation of GroupIdInformation. */
+/**
+ * An immutable client-side representation of GroupIdInformation.
+ */
 public interface GroupIdInformation {
     /**
      * Gets the properties property: The group information properties.
-     *
+     * 
      * @return the properties value.
      */
     GroupIdInformationProperties properties();
 
     /**
      * Gets the id property: The resource identifier.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationInner object.
-     *
+     * 
      * @return the inner object.
      */
     GroupIdInformationInner innerModel();

@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The KPI GroupBy field metadata. */
+/**
+ * The KPI GroupBy field metadata.
+ */
 @Fluent
-public final class KpiGroupByMetadata {
+public final class KpiGroupByMetadata implements JsonSerializable<KpiGroupByMetadata> {
     /*
      * The display name.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * The name of the field.
      */
-    @JsonProperty(value = "fieldName")
     private String fieldName;
 
     /*
      * The type of the field.
      */
-    @JsonProperty(value = "fieldType")
     private String fieldType;
 
-    /** Creates an instance of KpiGroupByMetadata class. */
+    /**
+     * Creates an instance of KpiGroupByMetadata class.
+     */
     public KpiGroupByMetadata() {
     }
 
     /**
      * Get the displayName property: The display name.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -46,7 +49,7 @@ public final class KpiGroupByMetadata {
 
     /**
      * Set the displayName property: The display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the KpiGroupByMetadata object itself.
      */
@@ -57,7 +60,7 @@ public final class KpiGroupByMetadata {
 
     /**
      * Get the fieldName property: The name of the field.
-     *
+     * 
      * @return the fieldName value.
      */
     public String fieldName() {
@@ -66,7 +69,7 @@ public final class KpiGroupByMetadata {
 
     /**
      * Set the fieldName property: The name of the field.
-     *
+     * 
      * @param fieldName the fieldName value to set.
      * @return the KpiGroupByMetadata object itself.
      */
@@ -77,7 +80,7 @@ public final class KpiGroupByMetadata {
 
     /**
      * Get the fieldType property: The type of the field.
-     *
+     * 
      * @return the fieldType value.
      */
     public String fieldType() {
@@ -86,7 +89,7 @@ public final class KpiGroupByMetadata {
 
     /**
      * Set the fieldType property: The type of the field.
-     *
+     * 
      * @param fieldType the fieldType value to set.
      * @return the KpiGroupByMetadata object itself.
      */
@@ -97,9 +100,52 @@ public final class KpiGroupByMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("fieldName", this.fieldName);
+        jsonWriter.writeStringField("fieldType", this.fieldType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiGroupByMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiGroupByMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KpiGroupByMetadata.
+     */
+    public static KpiGroupByMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiGroupByMetadata deserializedKpiGroupByMetadata = new KpiGroupByMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String jsonFieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(jsonFieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKpiGroupByMetadata.displayName = displayName;
+                } else if ("fieldName".equals(jsonFieldName)) {
+                    deserializedKpiGroupByMetadata.fieldName = reader.getString();
+                } else if ("fieldType".equals(jsonFieldName)) {
+                    deserializedKpiGroupByMetadata.fieldType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiGroupByMetadata;
+        });
     }
 }

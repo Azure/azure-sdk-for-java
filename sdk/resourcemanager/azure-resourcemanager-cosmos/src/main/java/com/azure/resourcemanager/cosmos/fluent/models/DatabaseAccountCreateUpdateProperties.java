@@ -49,7 +49,7 @@ public final class DatabaseAccountCreateUpdateProperties
     /*
      * The offer type for the database
      */
-    private String databaseAccountOfferType = "Standard";
+    private final String databaseAccountOfferType = "Standard";
 
     /*
      * List of IpRules.
@@ -192,7 +192,7 @@ public final class DatabaseAccountCreateUpdateProperties
     private MinimalTlsVersion minimalTlsVersion;
 
     /*
-     * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
+     * Flag to indicate enabling/disabling of Burst Capacity feature on the account
      */
     private Boolean enableBurstCapacity;
 
@@ -201,6 +201,11 @@ public final class DatabaseAccountCreateUpdateProperties
      * provides troubleshooting guidance.
      */
     private String customerManagedKeyStatus;
+
+    /*
+     * Flag to indicate enabling/disabling of PerRegionPerPartitionAutoscale feature on the account
+     */
+    private Boolean enablePerRegionPerPartitionAutoscale;
 
     /**
      * Creates an instance of DatabaseAccountCreateUpdateProperties class.
@@ -257,17 +262,6 @@ public final class DatabaseAccountCreateUpdateProperties
      */
     public String databaseAccountOfferType() {
         return this.databaseAccountOfferType;
-    }
-
-    /**
-     * Set the databaseAccountOfferType property: The offer type for the database.
-     * 
-     * @param databaseAccountOfferType the databaseAccountOfferType value to set.
-     * @return the DatabaseAccountCreateUpdateProperties object itself.
-     */
-    public DatabaseAccountCreateUpdateProperties withDatabaseAccountOfferType(String databaseAccountOfferType) {
-        this.databaseAccountOfferType = databaseAccountOfferType;
-        return this;
     }
 
     /**
@@ -828,8 +822,8 @@ public final class DatabaseAccountCreateUpdateProperties
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -838,8 +832,8 @@ public final class DatabaseAccountCreateUpdateProperties
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
@@ -868,6 +862,29 @@ public final class DatabaseAccountCreateUpdateProperties
      */
     public DatabaseAccountCreateUpdateProperties withCustomerManagedKeyStatus(String customerManagedKeyStatus) {
         this.customerManagedKeyStatus = customerManagedKeyStatus;
+        return this;
+    }
+
+    /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.enablePerRegionPerPartitionAutoscale;
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountCreateUpdateProperties object itself.
+     */
+    public DatabaseAccountCreateUpdateProperties
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        this.enablePerRegionPerPartitionAutoscale = enablePerRegionPerPartitionAutoscale;
         return this;
     }
 
@@ -964,6 +981,7 @@ public final class DatabaseAccountCreateUpdateProperties
             this.minimalTlsVersion == null ? null : this.minimalTlsVersion.toString());
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("customerManagedKeyStatus", this.customerManagedKeyStatus);
+        jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
         return jsonWriter.writeEndObject();
     }
 
@@ -1073,6 +1091,9 @@ public final class DatabaseAccountCreateUpdateProperties
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("customerManagedKeyStatus".equals(fieldName)) {
                     deserializedDatabaseAccountCreateUpdateProperties.customerManagedKeyStatus = reader.getString();
+                } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateProperties.enablePerRegionPerPartitionAutoscale
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

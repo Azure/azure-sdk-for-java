@@ -11,6 +11,33 @@
 - [ListByVirtualNetwork](#dnsforwardingrulesets_listbyvirtualnetwork)
 - [Update](#dnsforwardingrulesets_update)
 
+## DnsResolverDomainLists
+
+- [CreateOrUpdate](#dnsresolverdomainlists_createorupdate)
+- [Delete](#dnsresolverdomainlists_delete)
+- [GetByResourceGroup](#dnsresolverdomainlists_getbyresourcegroup)
+- [List](#dnsresolverdomainlists_list)
+- [ListByResourceGroup](#dnsresolverdomainlists_listbyresourcegroup)
+- [Update](#dnsresolverdomainlists_update)
+
+## DnsResolverPolicies
+
+- [CreateOrUpdate](#dnsresolverpolicies_createorupdate)
+- [Delete](#dnsresolverpolicies_delete)
+- [GetByResourceGroup](#dnsresolverpolicies_getbyresourcegroup)
+- [List](#dnsresolverpolicies_list)
+- [ListByResourceGroup](#dnsresolverpolicies_listbyresourcegroup)
+- [ListByVirtualNetwork](#dnsresolverpolicies_listbyvirtualnetwork)
+- [Update](#dnsresolverpolicies_update)
+
+## DnsResolverPolicyVirtualNetworkLinks
+
+- [CreateOrUpdate](#dnsresolverpolicyvirtualnetworklinks_createorupdate)
+- [Delete](#dnsresolverpolicyvirtualnetworklinks_delete)
+- [Get](#dnsresolverpolicyvirtualnetworklinks_get)
+- [List](#dnsresolverpolicyvirtualnetworklinks_list)
+- [Update](#dnsresolverpolicyvirtualnetworklinks_update)
+
 ## DnsResolvers
 
 - [CreateOrUpdate](#dnsresolvers_createorupdate)
@@ -20,6 +47,14 @@
 - [ListByResourceGroup](#dnsresolvers_listbyresourcegroup)
 - [ListByVirtualNetwork](#dnsresolvers_listbyvirtualnetwork)
 - [Update](#dnsresolvers_update)
+
+## DnsSecurityRules
+
+- [CreateOrUpdate](#dnssecurityrules_createorupdate)
+- [Delete](#dnssecurityrules_delete)
+- [Get](#dnssecurityrules_get)
+- [List](#dnssecurityrules_list)
+- [Update](#dnssecurityrules_update)
 
 ## ForwardingRules
 
@@ -60,35 +95,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DnsForwardingRulesets CreateOrUpdate. */
+/**
+ * Samples for DnsForwardingRulesets CreateOrUpdate.
+ */
 public final class DnsForwardingRulesetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_Put.json
      */
     /**
      * Sample code: Upsert DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void upsertDNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .dnsForwardingRulesets()
+        manager.dnsForwardingRulesets()
             .define("samplednsForwardingRuleset")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withDnsResolverOutboundEndpoints(
-                Arrays
-                    .asList(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver/outboundEndpoints/sampleOutboundEndpoint0"),
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver/outboundEndpoints/sampleOutboundEndpoint1")))
-            .withTags(mapOf("key1", "value1"))
+            .withDnsResolverOutboundEndpoints(Arrays.asList(new SubResource().withId(
+                "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver/outboundEndpoints/sampleOutboundEndpoint0"),
+                new SubResource().withId(
+                    "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver/outboundEndpoints/sampleOutboundEndpoint1")))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -105,22 +139,23 @@ public final class DnsForwardingRulesetsCreateOrUpdateSamples {
 ### DnsForwardingRulesets_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsForwardingRulesets Delete. */
+/**
+ * Samples for DnsForwardingRulesets Delete.
+ */
 public final class DnsForwardingRulesetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_Delete.json
      */
     /**
      * Sample code: Delete DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void deleteDNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .dnsForwardingRulesets()
-            .delete("sampleResourceGroup", "samplednsForwardingRulesetName", null, Context.NONE);
+        manager.dnsForwardingRulesets()
+            .delete("sampleResourceGroup", "samplednsForwardingRulesetName", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -128,22 +163,24 @@ public final class DnsForwardingRulesetsDeleteSamples {
 ### DnsForwardingRulesets_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsForwardingRulesets GetByResourceGroup. */
+/**
+ * Samples for DnsForwardingRulesets GetByResourceGroup.
+ */
 public final class DnsForwardingRulesetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Get.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_Get.json
      */
     /**
      * Sample code: Retrieve DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void retrieveDNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .dnsForwardingRulesets()
-            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", Context.NONE);
+        manager.dnsForwardingRulesets()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -151,21 +188,23 @@ public final class DnsForwardingRulesetsGetByResourceGroupSamples {
 ### DnsForwardingRulesets_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsForwardingRulesets List. */
+/**
+ * Samples for DnsForwardingRulesets List.
+ */
 public final class DnsForwardingRulesetsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_ListBySubscription.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by subscription.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSForwardingRulesetsBySubscription(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsForwardingRulesets().list(null, Context.NONE);
+    public static void
+        listDNSForwardingRulesetsBySubscription(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsForwardingRulesets().list(null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -173,21 +212,24 @@ public final class DnsForwardingRulesetsListSamples {
 ### DnsForwardingRulesets_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsForwardingRulesets ListByResourceGroup. */
+/**
+ * Samples for DnsForwardingRulesets ListByResourceGroup.
+ */
 public final class DnsForwardingRulesetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_ListByResourceGroup.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by resource group.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSForwardingRulesetsByResourceGroup(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsForwardingRulesets().listByResourceGroup("sampleResourceGroup", null, Context.NONE);
+    public static void
+        listDNSForwardingRulesetsByResourceGroup(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsForwardingRulesets()
+            .listByResourceGroup("sampleResourceGroup", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -195,23 +237,25 @@ public final class DnsForwardingRulesetsListByResourceGroupSamples {
 ### DnsForwardingRulesets_ListByVirtualNetwork
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsForwardingRulesets ListByVirtualNetwork. */
+/**
+ * Samples for DnsForwardingRulesets ListByVirtualNetwork.
+ */
 public final class DnsForwardingRulesetsListByVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_ListByVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_ListByVirtualNetwork.json
      */
     /**
      * Sample code: List DNS forwarding rulesets by virtual network.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSForwardingRulesetsByVirtualNetwork(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .dnsForwardingRulesets()
-            .listByVirtualNetwork("sampleResourceGroup", "sampleVirtualNetwork", null, Context.NONE);
+    public static void
+        listDNSForwardingRulesetsByVirtualNetwork(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsForwardingRulesets()
+            .listByVirtualNetwork("sampleResourceGroup", "sampleVirtualNetwork", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -219,30 +263,600 @@ public final class DnsForwardingRulesetsListByVirtualNetworkSamples {
 ### DnsForwardingRulesets_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRuleset;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DnsForwardingRulesets Update. */
+/**
+ * Samples for DnsForwardingRulesets Update.
+ */
 public final class DnsForwardingRulesetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsForwardingRuleset_Patch.json
      */
     /**
      * Sample code: Update DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void updateDNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        DnsForwardingRuleset resource =
-            manager
-                .dnsForwardingRulesets()
-                .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+        DnsForwardingRuleset resource = manager.dnsForwardingRulesets()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsResolverDomainLists_CreateOrUpdate
+
+```java
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsResolverDomainLists CreateOrUpdate.
+ */
+public final class DnsResolverDomainListsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverDomainList_Put.json
+     */
+    /**
+     * Sample code: Upsert DNS resolver domain list.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void upsertDNSResolverDomainList(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverDomainLists()
+            .define("sampleDnsResolverDomainList")
+            .withRegion("westus2")
+            .withExistingResourceGroup("sampleResourceGroup")
+            .withDomains(Arrays.asList("contoso.com"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsResolverDomainLists_Delete
+
+```java
+/**
+ * Samples for DnsResolverDomainLists Delete.
+ */
+public final class DnsResolverDomainListsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverDomainList_Delete.json
+     */
+    /**
+     * Sample code: Delete DNS resolver domain list.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void deleteDNSResolverDomainList(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverDomainLists()
+            .delete("sampleResourceGroup", "sampleDnsResolverDomainList", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverDomainLists_GetByResourceGroup
+
+```java
+/**
+ * Samples for DnsResolverDomainLists GetByResourceGroup.
+ */
+public final class DnsResolverDomainListsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverDomainList_Get.json
+     */
+    /**
+     * Sample code: Retrieve DNS resolver domain list.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void retrieveDNSResolverDomainList(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverDomainLists()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolverDomainList",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverDomainLists_List
+
+```java
+/**
+ * Samples for DnsResolverDomainLists List.
+ */
+public final class DnsResolverDomainListsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverDomainList_ListBySubscription.json
+     */
+    /**
+     * Sample code: List DNS resolver domain lists by subscription.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        listDNSResolverDomainListsBySubscription(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverDomainLists().list(null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverDomainLists_ListByResourceGroup
+
+```java
+/**
+ * Samples for DnsResolverDomainLists ListByResourceGroup.
+ */
+public final class DnsResolverDomainListsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverDomainList_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: List DNS resolver domain lists by resource group.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        listDNSResolverDomainListsByResourceGroup(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverDomainLists()
+            .listByResourceGroup("sampleResourceGroup", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverDomainLists_Update
+
+```java
+import com.azure.resourcemanager.dnsresolver.models.DnsResolverDomainList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsResolverDomainLists Update.
+ */
+public final class DnsResolverDomainListsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverDomainList_Patch.json
+     */
+    /**
+     * Sample code: Update DNS resolver domain list.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void updateDNSResolverDomainList(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        DnsResolverDomainList resource = manager.dnsResolverDomainLists()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolverDomainList",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withDomains(Arrays.asList("contoso.com"))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsResolverPolicies_CreateOrUpdate
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsResolverPolicies CreateOrUpdate.
+ */
+public final class DnsResolverPoliciesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_Put.json
+     */
+    /**
+     * Sample code: Upsert DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void upsertDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicies()
+            .define("sampleDnsResolverPolicy")
+            .withRegion("westus2")
+            .withExistingResourceGroup("sampleResourceGroup")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsResolverPolicies_Delete
+
+```java
+/**
+ * Samples for DnsResolverPolicies Delete.
+ */
+public final class DnsResolverPoliciesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_Delete.json
+     */
+    /**
+     * Sample code: Delete DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void deleteDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicies()
+            .delete("sampleResourceGroup", "sampleDnsResolverPolicy", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicies_GetByResourceGroup
+
+```java
+/**
+ * Samples for DnsResolverPolicies GetByResourceGroup.
+ */
+public final class DnsResolverPoliciesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_Get.json
+     */
+    /**
+     * Sample code: Retrieve DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void retrieveDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicies()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolverPolicy",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicies_List
+
+```java
+/**
+ * Samples for DnsResolverPolicies List.
+ */
+public final class DnsResolverPoliciesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_ListBySubscription.json
+     */
+    /**
+     * Sample code: List DNS resolver policies by subscription.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        listDNSResolverPoliciesBySubscription(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicies().list(null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicies_ListByResourceGroup
+
+```java
+/**
+ * Samples for DnsResolverPolicies ListByResourceGroup.
+ */
+public final class DnsResolverPoliciesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: List DNS resolver policies by resource group.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        listDNSResolverPoliciesByResourceGroup(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicies()
+            .listByResourceGroup("sampleResourceGroup", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicies_ListByVirtualNetwork
+
+```java
+/**
+ * Samples for DnsResolverPolicies ListByVirtualNetwork.
+ */
+public final class DnsResolverPoliciesListByVirtualNetworkSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_ListByVirtualNetwork.json
+     */
+    /**
+     * Sample code: List DNS resolver policies by virtual network.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        listDNSResolverPoliciesByVirtualNetwork(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicies()
+            .listByVirtualNetwork("sampleResourceGroup", "sampleVirtualNetwork", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicies_Update
+
+```java
+import com.azure.resourcemanager.dnsresolver.models.DnsResolverPolicy;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsResolverPolicies Update.
+ */
+public final class DnsResolverPoliciesUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicy_Patch.json
+     */
+    /**
+     * Sample code: Update DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void updateDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        DnsResolverPolicy resource = manager.dnsResolverPolicies()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolverPolicy",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsResolverPolicyVirtualNetworkLinks_CreateOrUpdate
+
+```java
+import com.azure.core.management.SubResource;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsResolverPolicyVirtualNetworkLinks CreateOrUpdate.
+ */
+public final class DnsResolverPolicyVirtualNetworkLinksCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicyVirtualNetworkLink_Put.json
+     */
+    /**
+     * Sample code: Upsert DNS resolver policy virtual network link.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        upsertDNSResolverPolicyVirtualNetworkLink(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicyVirtualNetworkLinks()
+            .define("sampleVirtualNetworkLink")
+            .withRegion("westus2")
+            .withExistingDnsResolverPolicy("sampleResourceGroup", "sampleDnsResolverPolicy")
+            .withVirtualNetwork(new SubResource().withId(
+                "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsResolverPolicyVirtualNetworkLinks_Delete
+
+```java
+/**
+ * Samples for DnsResolverPolicyVirtualNetworkLinks Delete.
+ */
+public final class DnsResolverPolicyVirtualNetworkLinksDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicyVirtualNetworkLink_Delete.json
+     */
+    /**
+     * Sample code: Delete DNS resolver policy virtual network link.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        deleteDNSResolverPolicyVirtualNetworkLink(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicyVirtualNetworkLinks()
+            .delete("sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicyVirtualNetworkLinks_Get
+
+```java
+/**
+ * Samples for DnsResolverPolicyVirtualNetworkLinks Get.
+ */
+public final class DnsResolverPolicyVirtualNetworkLinksGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicyVirtualNetworkLink_Get.json
+     */
+    /**
+     * Sample code: Retrieve DNS resolver policy virtual network link.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        retrieveDNSResolverPolicyVirtualNetworkLink(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicyVirtualNetworkLinks()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicyVirtualNetworkLinks_List
+
+```java
+/**
+ * Samples for DnsResolverPolicyVirtualNetworkLinks List.
+ */
+public final class DnsResolverPolicyVirtualNetworkLinksListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicyVirtualNetworkLink_List.json
+     */
+    /**
+     * Sample code: List DNS resolver policy virtual network links by DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void listDNSResolverPolicyVirtualNetworkLinksByDNSResolverPolicy(
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolverPolicyVirtualNetworkLinks()
+            .list("sampleResourceGroup", "sampleDnsResolverPolicy", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsResolverPolicyVirtualNetworkLinks_Update
+
+```java
+import com.azure.resourcemanager.dnsresolver.models.DnsResolverPolicyVirtualNetworkLink;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsResolverPolicyVirtualNetworkLinks Update.
+ */
+public final class DnsResolverPolicyVirtualNetworkLinksUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolverPolicyVirtualNetworkLink_Patch.json
+     */
+    /**
+     * Sample code: Update DNS resolver policy virtual network link.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        updateDNSResolverPolicyVirtualNetworkLink(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        DnsResolverPolicyVirtualNetworkLink resource = manager.dnsResolverPolicyVirtualNetworkLinks()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -263,30 +877,32 @@ import com.azure.core.management.SubResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DnsResolvers CreateOrUpdate. */
+/**
+ * Samples for DnsResolvers CreateOrUpdate.
+ */
 public final class DnsResolversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_Put.
+     * json
      */
     /**
      * Sample code: Upsert DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void upsertDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .dnsResolvers()
+        manager.dnsResolvers()
             .define("sampleDnsResolver")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withVirtualNetwork(
-                new SubResource()
-                    .withId(
-                        "/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
-            .withTags(mapOf("key1", "value1"))
+            .withVirtualNetwork(new SubResource().withId(
+                "/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -303,20 +919,23 @@ public final class DnsResolversCreateOrUpdateSamples {
 ### DnsResolvers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsResolvers Delete. */
+/**
+ * Samples for DnsResolvers Delete.
+ */
 public final class DnsResolversDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolver_Delete.json
      */
     /**
      * Sample code: Delete DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void deleteDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsResolvers().delete("sampleResourceGroup", "sampleDnsResolver", null, Context.NONE);
+        manager.dnsResolvers()
+            .delete("sampleResourceGroup", "sampleDnsResolver", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -324,20 +943,24 @@ public final class DnsResolversDeleteSamples {
 ### DnsResolvers_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsResolvers GetByResourceGroup. */
+/**
+ * Samples for DnsResolvers GetByResourceGroup.
+ */
 public final class DnsResolversGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Get.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DnsResolver_Get.
+     * json
      */
     /**
      * Sample code: Retrieve DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void retrieveDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsResolvers().getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolver", Context.NONE);
+        manager.dnsResolvers()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolver",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -345,21 +968,23 @@ public final class DnsResolversGetByResourceGroupSamples {
 ### DnsResolvers_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsResolvers List. */
+/**
+ * Samples for DnsResolvers List.
+ */
 public final class DnsResolversListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolver_ListBySubscription.json
      */
     /**
      * Sample code: List DNS resolvers by subscription.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSResolversBySubscription(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsResolvers().list(null, Context.NONE);
+    public static void
+        listDNSResolversBySubscription(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolvers().list(null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -367,21 +992,23 @@ public final class DnsResolversListSamples {
 ### DnsResolvers_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsResolvers ListByResourceGroup. */
+/**
+ * Samples for DnsResolvers ListByResourceGroup.
+ */
 public final class DnsResolversListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolver_ListByResourceGroup.json
      */
     /**
      * Sample code: List DNS resolvers by resource group.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSResolversByResourceGroup(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsResolvers().listByResourceGroup("sampleResourceGroup", null, Context.NONE);
+    public static void
+        listDNSResolversByResourceGroup(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolvers().listByResourceGroup("sampleResourceGroup", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -389,21 +1016,25 @@ public final class DnsResolversListByResourceGroupSamples {
 ### DnsResolvers_ListByVirtualNetwork
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DnsResolvers ListByVirtualNetwork. */
+/**
+ * Samples for DnsResolvers ListByVirtualNetwork.
+ */
 public final class DnsResolversListByVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListByVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolver_ListByVirtualNetwork.json
      */
     /**
      * Sample code: List DNS resolvers by virtual network.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listDNSResolversByVirtualNetwork(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.dnsResolvers().listByVirtualNetwork("sampleResourceGroup", "sampleVirtualNetwork", null, Context.NONE);
+    public static void
+        listDNSResolversByVirtualNetwork(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsResolvers()
+            .listByVirtualNetwork("sampleResourceGroup", "sampleVirtualNetwork", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -411,30 +1042,213 @@ public final class DnsResolversListByVirtualNetworkSamples {
 ### DnsResolvers_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolver;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DnsResolvers Update. */
+/**
+ * Samples for DnsResolvers Update.
+ */
 public final class DnsResolversUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsResolver_Patch.json
      */
     /**
      * Sample code: Update DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void updateDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        DnsResolver resource =
-            manager
-                .dnsResolvers()
-                .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolver", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+        DnsResolver resource = manager.dnsResolvers()
+            .getByResourceGroupWithResponse("sampleResourceGroup", "sampleDnsResolver",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsSecurityRules_CreateOrUpdate
+
+```java
+import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.dnsresolver.models.ActionType;
+import com.azure.resourcemanager.dnsresolver.models.BlockResponseCode;
+import com.azure.resourcemanager.dnsresolver.models.DnsSecurityRuleAction;
+import com.azure.resourcemanager.dnsresolver.models.DnsSecurityRuleState;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsSecurityRules CreateOrUpdate.
+ */
+public final class DnsSecurityRulesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsSecurityRule_Put.json
+     */
+    /**
+     * Sample code: Upsert DNS security rule.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void upsertDNSSecurityRule(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsSecurityRules()
+            .define("sampleDnsSecurityRule")
+            .withRegion("westus2")
+            .withExistingDnsResolverPolicy("sampleResourceGroup", "sampleDnsResolverPolicy")
+            .withPriority(100)
+            .withAction(new DnsSecurityRuleAction().withActionType(ActionType.BLOCK)
+                .withBlockResponseCode(BlockResponseCode.SERVFAIL))
+            .withDnsResolverDomainLists(Arrays.asList(new SubResource().withId(
+                "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList")))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withDnsSecurityRuleState(DnsSecurityRuleState.ENABLED)
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DnsSecurityRules_Delete
+
+```java
+/**
+ * Samples for DnsSecurityRules Delete.
+ */
+public final class DnsSecurityRulesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsSecurityRule_Delete.json
+     */
+    /**
+     * Sample code: Delete DNS security rule for DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        deleteDNSSecurityRuleForDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsSecurityRules()
+            .delete("sampleResourceGroup", "sampleDnsDnsResolverPolicy", "sampleDnsSecurityRule", null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsSecurityRules_Get
+
+```java
+/**
+ * Samples for DnsSecurityRules Get.
+ */
+public final class DnsSecurityRulesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsSecurityRule_Get.json
+     */
+    /**
+     * Sample code: Retrieve DNS security rule for DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        retrieveDNSSecurityRuleForDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsSecurityRules()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolverPolicy", "sampleDnsSecurityRule",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsSecurityRules_List
+
+```java
+/**
+ * Samples for DnsSecurityRules List.
+ */
+public final class DnsSecurityRulesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsSecurityRule_List.json
+     */
+    /**
+     * Sample code: List DNS security rules by DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        listDNSSecurityRulesByDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.dnsSecurityRules()
+            .list("sampleResourceGroup", "sampleDnsResolverPolicy", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DnsSecurityRules_Update
+
+```java
+import com.azure.resourcemanager.dnsresolver.models.DnsSecurityRule;
+import com.azure.resourcemanager.dnsresolver.models.DnsSecurityRuleState;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DnsSecurityRules Update.
+ */
+public final class DnsSecurityRulesUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * DnsSecurityRule_Patch.json
+     */
+    /**
+     * Sample code: Update DNS security rule for DNS resolver policy.
+     * 
+     * @param manager Entry point to DnsResolverManager.
+     */
+    public static void
+        updateDNSSecurityRuleForDNSResolverPolicy(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        DnsSecurityRule resource = manager.dnsSecurityRules()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolverPolicy", "sampleDnsSecurityRule",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withDnsSecurityRuleState(DnsSecurityRuleState.DISABLED)
+            .apply();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -457,33 +1271,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ForwardingRules CreateOrUpdate. */
+/**
+ * Samples for ForwardingRules CreateOrUpdate.
+ */
 public final class ForwardingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * ForwardingRule_Put.json
      */
     /**
      * Sample code: Upsert forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void upsertForwardingRuleInADNSForwardingRuleset(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .forwardingRules()
+    public static void
+        upsertForwardingRuleInADNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.forwardingRules()
             .define("sampleForwardingRule")
             .withExistingDnsForwardingRuleset("sampleResourceGroup", "sampleDnsForwardingRuleset")
             .withDomainName("contoso.com.")
-            .withTargetDnsServers(
-                Arrays
-                    .asList(
-                        new TargetDnsServer().withIpAddress("10.0.0.1").withPort(53),
-                        new TargetDnsServer().withIpAddress("10.0.0.2").withPort(53)))
+            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("10.0.0.1").withPort(53),
+                new TargetDnsServer().withIpAddress("10.0.0.2").withPort(53)))
             .withMetadata(mapOf("additionalProp1", "value1"))
             .withForwardingRuleState(ForwardingRuleState.ENABLED)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -500,24 +1315,25 @@ public final class ForwardingRulesCreateOrUpdateSamples {
 ### ForwardingRules_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ForwardingRules Delete. */
+/**
+ * Samples for ForwardingRules Delete.
+ */
 public final class ForwardingRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * ForwardingRule_Delete.json
      */
     /**
      * Sample code: Delete forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void deleteForwardingRuleInADNSForwardingRuleset(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .forwardingRules()
-            .deleteWithResponse(
-                "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", null, Context.NONE);
+    public static void
+        deleteForwardingRuleInADNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.forwardingRules()
+            .deleteWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -525,23 +1341,25 @@ public final class ForwardingRulesDeleteSamples {
 ### ForwardingRules_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ForwardingRules Get. */
+/**
+ * Samples for ForwardingRules Get.
+ */
 public final class ForwardingRulesGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Get.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * ForwardingRule_Get.json
      */
     /**
      * Sample code: Retrieve forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void retrieveForwardingRuleInADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .forwardingRules()
-            .getWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", Context.NONE);
+        manager.forwardingRules()
+            .getWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -549,21 +1367,24 @@ public final class ForwardingRulesGetSamples {
 ### ForwardingRules_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ForwardingRules List. */
+/**
+ * Samples for ForwardingRules List.
+ */
 public final class ForwardingRulesListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_List.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * ForwardingRule_List.json
      */
     /**
      * Sample code: List forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listForwardingRulesInADNSForwardingRuleset(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.forwardingRules().list("sampleResourceGroup", "sampleDnsForwardingRuleset", null, Context.NONE);
+    public static void
+        listForwardingRulesInADNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.forwardingRules()
+            .list("sampleResourceGroup", "sampleDnsForwardingRuleset", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -571,37 +1392,38 @@ public final class ForwardingRulesListSamples {
 ### ForwardingRules_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRule;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ForwardingRules Update. */
+/**
+ * Samples for ForwardingRules Update.
+ */
 public final class ForwardingRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * ForwardingRule_Patch.json
      */
     /**
      * Sample code: Update forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void updateForwardingRuleInADNSForwardingRuleset(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        ForwardingRule resource =
-            manager
-                .forwardingRules()
-                .getWithResponse(
-                    "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        updateForwardingRuleInADNSForwardingRuleset(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        ForwardingRule resource = manager.forwardingRules()
+            .getWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withMetadata(mapOf("additionalProp2", "value2"))
             .withForwardingRuleState(ForwardingRuleState.DISABLED)
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -625,36 +1447,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for InboundEndpoints CreateOrUpdate. */
+/**
+ * Samples for InboundEndpoints CreateOrUpdate.
+ */
 public final class InboundEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * InboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert inbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void upsertInboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .inboundEndpoints()
+    public static void
+        upsertInboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.inboundEndpoints()
             .define("sampleInboundEndpoint")
             .withRegion("westus2")
             .withExistingDnsResolver("sampleResourceGroup", "sampleDnsResolver")
-            .withIpConfigurations(
-                Arrays
-                    .asList(
-                        new IpConfiguration()
-                            .withSubnet(
-                                new SubResource()
-                                    .withId(
-                                        "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
-                            .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
-            .withTags(mapOf("key1", "value1"))
+            .withIpConfigurations(Arrays.asList(new IpConfiguration().withSubnet(new SubResource().withId(
+                "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
+                .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -671,23 +1491,25 @@ public final class InboundEndpointsCreateOrUpdateSamples {
 ### InboundEndpoints_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for InboundEndpoints Delete. */
+/**
+ * Samples for InboundEndpoints Delete.
+ */
 public final class InboundEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * InboundEndpoint_Delete.json
      */
     /**
      * Sample code: Delete inbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void deleteInboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .inboundEndpoints()
-            .delete("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint", null, Context.NONE);
+    public static void
+        deleteInboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.inboundEndpoints()
+            .delete("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -695,23 +1517,25 @@ public final class InboundEndpointsDeleteSamples {
 ### InboundEndpoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for InboundEndpoints Get. */
+/**
+ * Samples for InboundEndpoints Get.
+ */
 public final class InboundEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Get.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * InboundEndpoint_Get.json
      */
     /**
      * Sample code: Retrieve inbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void retrieveInboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .inboundEndpoints()
-            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint", Context.NONE);
+    public static void
+        retrieveInboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.inboundEndpoints()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -719,21 +1543,24 @@ public final class InboundEndpointsGetSamples {
 ### InboundEndpoints_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for InboundEndpoints List. */
+/**
+ * Samples for InboundEndpoints List.
+ */
 public final class InboundEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_List.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * InboundEndpoint_List.json
      */
     /**
      * Sample code: List inbound endpoints by DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listInboundEndpointsByDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.inboundEndpoints().list("sampleResourceGroup", "sampleDnsResolver", null, Context.NONE);
+    public static void
+        listInboundEndpointsByDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.inboundEndpoints()
+            .list("sampleResourceGroup", "sampleDnsResolver", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -741,31 +1568,34 @@ public final class InboundEndpointsListSamples {
 ### InboundEndpoints_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.InboundEndpoint;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for InboundEndpoints Update. */
+/**
+ * Samples for InboundEndpoints Update.
+ */
 public final class InboundEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * InboundEndpoint_Patch.json
      */
     /**
      * Sample code: Update inbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void updateInboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        InboundEndpoint resource =
-            manager
-                .inboundEndpoints()
-                .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+    public static void
+        updateInboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        InboundEndpoint resource = manager.inboundEndpoints()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleInboundEndpoint",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -786,31 +1616,33 @@ import com.azure.core.management.SubResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for OutboundEndpoints CreateOrUpdate. */
+/**
+ * Samples for OutboundEndpoints CreateOrUpdate.
+ */
 public final class OutboundEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * OutboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert outbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void upsertOutboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .outboundEndpoints()
+    public static void
+        upsertOutboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.outboundEndpoints()
             .define("sampleOutboundEndpoint")
             .withRegion("westus2")
             .withExistingDnsResolver("sampleResourceGroup", "sampleDnsResolver")
-            .withSubnet(
-                new SubResource()
-                    .withId(
-                        "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
-            .withTags(mapOf("key1", "value1"))
+            .withSubnet(new SubResource().withId(
+                "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -827,23 +1659,25 @@ public final class OutboundEndpointsCreateOrUpdateSamples {
 ### OutboundEndpoints_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for OutboundEndpoints Delete. */
+/**
+ * Samples for OutboundEndpoints Delete.
+ */
 public final class OutboundEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * OutboundEndpoint_Delete.json
      */
     /**
      * Sample code: Delete outbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void deleteOutboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .outboundEndpoints()
-            .delete("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", null, Context.NONE);
+    public static void
+        deleteOutboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.outboundEndpoints()
+            .delete("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -851,23 +1685,25 @@ public final class OutboundEndpointsDeleteSamples {
 ### OutboundEndpoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for OutboundEndpoints Get. */
+/**
+ * Samples for OutboundEndpoints Get.
+ */
 public final class OutboundEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Get.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * OutboundEndpoint_Get.json
      */
     /**
      * Sample code: Retrieve outbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void retrieveOutboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .outboundEndpoints()
-            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", Context.NONE);
+    public static void
+        retrieveOutboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.outboundEndpoints()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -875,21 +1711,24 @@ public final class OutboundEndpointsGetSamples {
 ### OutboundEndpoints_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for OutboundEndpoints List. */
+/**
+ * Samples for OutboundEndpoints List.
+ */
 public final class OutboundEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_List.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * OutboundEndpoint_List.json
      */
     /**
      * Sample code: List outbound endpoints by DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void listOutboundEndpointsByDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.outboundEndpoints().list("sampleResourceGroup", "sampleDnsResolver", null, Context.NONE);
+    public static void
+        listOutboundEndpointsByDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.outboundEndpoints()
+            .list("sampleResourceGroup", "sampleDnsResolver", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -897,31 +1736,34 @@ public final class OutboundEndpointsListSamples {
 ### OutboundEndpoints_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.OutboundEndpoint;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for OutboundEndpoints Update. */
+/**
+ * Samples for OutboundEndpoints Update.
+ */
 public final class OutboundEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * OutboundEndpoint_Patch.json
      */
     /**
      * Sample code: Update outbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void updateOutboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        OutboundEndpoint resource =
-            manager
-                .outboundEndpoints()
-                .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+    public static void
+        updateOutboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        OutboundEndpoint resource = manager.outboundEndpoints()
+            .getWithResponse("sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -942,30 +1784,32 @@ import com.azure.core.management.SubResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworkLinks CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworkLinks CreateOrUpdate.
+ */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * VirtualNetworkLink_Put.json
      */
     /**
      * Sample code: Upsert virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void upsertVirtualNetworkLinkToADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .virtualNetworkLinks()
+        manager.virtualNetworkLinks()
             .define("sampleVirtualNetworkLink")
             .withExistingDnsForwardingRuleset("sampleResourceGroup", "sampleDnsForwardingRuleset")
-            .withVirtualNetwork(
-                new SubResource()
-                    .withId(
-                        "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withVirtualNetwork(new SubResource().withId(
+                "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
             .withMetadata(mapOf("additionalProp1", "value1"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -982,24 +1826,25 @@ public final class VirtualNetworkLinksCreateOrUpdateSamples {
 ### VirtualNetworkLinks_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkLinks Delete. */
+/**
+ * Samples for VirtualNetworkLinks Delete.
+ */
 public final class VirtualNetworkLinksDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Delete.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * VirtualNetworkLink_Delete.json
      */
     /**
      * Sample code: Delete virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void deleteVirtualNetworkLinkToADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .virtualNetworkLinks()
-            .delete(
-                "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", null, Context.NONE);
+        manager.virtualNetworkLinks()
+            .delete("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1007,24 +1852,25 @@ public final class VirtualNetworkLinksDeleteSamples {
 ### VirtualNetworkLinks_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkLinks Get. */
+/**
+ * Samples for VirtualNetworkLinks Get.
+ */
 public final class VirtualNetworkLinksGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Get.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * VirtualNetworkLink_Get.json
      */
     /**
      * Sample code: Retrieve virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void retrieveVirtualNetworkLinkToADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .virtualNetworkLinks()
-            .getWithResponse(
-                "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", Context.NONE);
+        manager.virtualNetworkLinks()
+            .getWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1032,21 +1878,24 @@ public final class VirtualNetworkLinksGetSamples {
 ### VirtualNetworkLinks_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkLinks List. */
+/**
+ * Samples for VirtualNetworkLinks List.
+ */
 public final class VirtualNetworkLinksListSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_List.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * VirtualNetworkLink_List.json
      */
     /**
      * Sample code: List virtual network links to a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void listVirtualNetworkLinksToADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager.virtualNetworkLinks().list("sampleResourceGroup", "sampleDnsForwardingRuleset", null, Context.NONE);
+        manager.virtualNetworkLinks()
+            .list("sampleResourceGroup", "sampleDnsForwardingRuleset", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1054,32 +1903,34 @@ public final class VirtualNetworkLinksListSamples {
 ### VirtualNetworkLinks_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLink;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworkLinks Update. */
+/**
+ * Samples for VirtualNetworkLinks Update.
+ */
 public final class VirtualNetworkLinksUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Patch.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
+     * VirtualNetworkLink_Patch.json
      */
     /**
      * Sample code: Update virtual network link to a DNS forwarding ruleset.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void updateVirtualNetworkLinkToADNSForwardingRuleset(
         com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        VirtualNetworkLink resource =
-            manager
-                .virtualNetworkLinks()
-                .getWithResponse(
-                    "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink", Context.NONE)
-                .getValue();
+        VirtualNetworkLink resource = manager.virtualNetworkLinks()
+            .getWithResponse("sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleVirtualNetworkLink",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withMetadata(mapOf("additionalProp1", "value1")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

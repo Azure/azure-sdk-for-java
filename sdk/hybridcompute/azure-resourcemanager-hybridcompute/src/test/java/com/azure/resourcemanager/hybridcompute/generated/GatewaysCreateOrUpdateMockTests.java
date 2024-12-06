@@ -25,7 +25,7 @@ public final class GatewaysCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"qbawpcbbnzqcykn\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"fyuicdh\",\"allowedFeatures\":[\"ybww\"]},\"location\":\"d\",\"tags\":{\"plfmuvapckccrrvw\":\"idmhmwf\"},\"id\":\"yoxoy\",\"name\":\"ukphaimmoiroq\",\"type\":\"oshbragapyy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"rblmli\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"hspnxwqagnepz\",\"allowedFeatures\":[\"lsbs\",\"qqqagwwrxaomzi\",\"glrrczez\"]},\"location\":\"hltnjadhqoawjq\",\"tags\":{\"yrrueqth\":\"eayfbpcmspl\",\"mbscbbx\":\"mg\",\"d\":\"gdhxi\",\"dnafcbqwre\":\"opedbwdpyqyybxub\"},\"id\":\"jelaqacigele\",\"name\":\"hdbvqvwzkjop\",\"type\":\"beonrlkwzdq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,18 @@ public final class GatewaysCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Gateway response = manager.gateways()
-            .define("qxypokkhminq")
-            .withRegion("tprwnw")
-            .withExistingResourceGroup("vkyfedevjbosl")
-            .withTags(mapOf("tlyo", "ev", "bcrymodizrx", "rrrouuxvnsa", "pmkmlmvevfx", "lobdxna"))
+            .define("lhkgmnsghp")
+            .withRegion("csypobkdqzrdzsyl")
+            .withExistingResourceGroup("ypnyghshxc")
+            .withTags(mapOf("aurkihcirlde", "gtrczzydmxzjijpv", "urnnqbnqbpiz", "xrdcoxnbkkja"))
             .withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("qdtvqecrqctmxx", "tddmf", "huytxzvtzn", "pxbannovvoxc"))
+            .withAllowedFeatures(Arrays.asList("fwmkoisqcssffxui"))
             .create();
 
-        Assertions.assertEquals("d", response.location());
-        Assertions.assertEquals("idmhmwf", response.tags().get("plfmuvapckccrrvw"));
+        Assertions.assertEquals("hltnjadhqoawjq", response.location());
+        Assertions.assertEquals("eayfbpcmspl", response.tags().get("yrrueqth"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("ybww", response.allowedFeatures().get(0));
+        Assertions.assertEquals("lsbs", response.allowedFeatures().get(0));
     }
 
     // Use "Map.of" if available

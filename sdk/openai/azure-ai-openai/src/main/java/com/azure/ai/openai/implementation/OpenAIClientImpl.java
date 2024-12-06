@@ -6,7 +6,9 @@ package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -373,6 +375,270 @@ public final class OpenAIClientImpl {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData embeddingsOptions, RequestOptions requestOptions,
             Context context);
+
+        @Get("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> uploadFile(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+            Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> uploadFileSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteFile(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getFile(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files/{fileId}/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getFileContent(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/files/{fileId}/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/batches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listBatches(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/batches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listBatchesSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/batches")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createBatch(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createBatchRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/batches")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createBatchSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createBatchRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/batches/{batchId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getBatch(@HostParam("endpoint") String endpoint,
+            @PathParam("batchId") String batchId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/batches/{batchId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getBatchSync(@HostParam("endpoint") String endpoint, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/batches/{batchId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelBatch(@HostParam("endpoint") String endpoint,
+            @PathParam("batchId") String batchId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/batches/{batchId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelBatchSync(@HostParam("endpoint") String endpoint,
+            @PathParam("batchId") String batchId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/uploads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createUpload(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+
+        @Post("/uploads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createUploadSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/uploads/{upload_id}/parts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> addUploadPart(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/uploads/{upload_id}/parts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> addUploadPartSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/complete")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> completeUpload(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/complete")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> completeUploadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelUpload(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelUploadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -380,9 +646,11 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -410,9 +678,11 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -438,7 +708,8 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -468,7 +739,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -496,7 +768,8 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -526,7 +799,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -552,9 +826,11 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -581,9 +857,11 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -609,7 +887,8 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -632,7 +911,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -659,7 +939,8 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -682,7 +963,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -711,7 +993,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     prompt (Required): [
      *         String (Required)
@@ -734,13 +1017,19 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     best_of: Integer (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
+     *     seed: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -802,7 +1091,17 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
+     *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -828,9 +1127,17 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
+     *     system_fingerprint: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -862,7 +1169,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     prompt (Required): [
      *         String (Required)
@@ -885,13 +1193,19 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     best_of: Integer (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
+     *     seed: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -953,7 +1267,17 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
+     *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -979,9 +1303,17 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
+     *     system_fingerprint: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1012,7 +1344,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Required): [
      *          (Required){
@@ -1023,11 +1356,12 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             name: String (Required)
      *             description: String (Optional)
-     *             parameters: Object (Optional)
+     *             parameters: BinaryData (Optional)
      *         }
      *     ]
      *     function_call: BinaryData (Optional)
      *     max_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
@@ -1041,10 +1375,13 @@ public final class OpenAIClientImpl {
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
-     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
+     *             type: String(azure_search/azure_cosmos_db/elasticsearch/pinecone/mongo_db) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1067,12 +1404,15 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
+     *     parallel_tool_calls: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -1080,6 +1420,7 @@ public final class OpenAIClientImpl {
      *          (Required){
      *             message (Optional): {
      *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -1099,6 +1440,7 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                         }
      *                     ]
      *                     intent: String (Optional)
@@ -1109,12 +1451,12 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                             search_queries (Required): [
      *                                 String (Required)
      *                             ]
      *                             data_source_index: int (Required)
      *                             original_search_score: Double (Optional)
-     *                             rerank_score: Double (Optional)
      *                             filter_reason: String(score/rerank) (Optional)
      *                         }
      *                     ]
@@ -1139,12 +1481,12 @@ public final class OpenAIClientImpl {
      *                         ]
      *                     }
      *                 ]
+     *                 refusal (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
      *             }
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
-     *             finish_details (Optional): {
-     *                 type: String (Required)
-     *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
@@ -1184,7 +1526,17 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
+     *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             enhancements (Optional): {
@@ -1233,9 +1585,16 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1267,7 +1626,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Required): [
      *          (Required){
@@ -1278,11 +1638,12 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             name: String (Required)
      *             description: String (Optional)
-     *             parameters: Object (Optional)
+     *             parameters: BinaryData (Optional)
      *         }
      *     ]
      *     function_call: BinaryData (Optional)
      *     max_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
@@ -1296,10 +1657,13 @@ public final class OpenAIClientImpl {
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
-     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
+     *             type: String(azure_search/azure_cosmos_db/elasticsearch/pinecone/mongo_db) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1322,12 +1686,15 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
+     *     parallel_tool_calls: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -1335,6 +1702,7 @@ public final class OpenAIClientImpl {
      *          (Required){
      *             message (Optional): {
      *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -1354,6 +1722,7 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                         }
      *                     ]
      *                     intent: String (Optional)
@@ -1364,12 +1733,12 @@ public final class OpenAIClientImpl {
      *                             url: String (Optional)
      *                             filepath: String (Optional)
      *                             chunk_id: String (Optional)
+     *                             rerank_score: Double (Optional)
      *                             search_queries (Required): [
      *                                 String (Required)
      *                             ]
      *                             data_source_index: int (Required)
      *                             original_search_score: Double (Optional)
-     *                             rerank_score: Double (Optional)
      *                             filter_reason: String(score/rerank) (Optional)
      *                         }
      *                     ]
@@ -1394,12 +1763,12 @@ public final class OpenAIClientImpl {
      *                         ]
      *                     }
      *                 ]
+     *                 refusal (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
      *             }
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
-     *             finish_details (Optional): {
-     *                 type: String (Required)
-     *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
@@ -1439,7 +1808,17 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
+     *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             enhancements (Optional): {
@@ -1488,9 +1867,16 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1519,7 +1905,8 @@ public final class OpenAIClientImpl {
      * Creates an image given a prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     prompt: String (Required)
@@ -1530,11 +1917,13 @@ public final class OpenAIClientImpl {
      *     style: String(natural/vivid) (Optional)
      *     user: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     created: long (Required)
      *     data (Required): [
@@ -1574,7 +1963,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1601,7 +1991,8 @@ public final class OpenAIClientImpl {
      * Creates an image given a prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     prompt: String (Required)
@@ -1612,11 +2003,13 @@ public final class OpenAIClientImpl {
      *     style: String(natural/vivid) (Optional)
      *     user: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     created: long (Required)
      *     data (Required): [
@@ -1656,7 +2049,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1681,7 +2075,8 @@ public final class OpenAIClientImpl {
      * Generates text-to-speech audio from the input text.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     input: String (Required)
      *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
@@ -1689,13 +2084,16 @@ public final class OpenAIClientImpl {
      *     speed: Double (Optional)
      *     model: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1722,7 +2120,8 @@ public final class OpenAIClientImpl {
      * Generates text-to-speech audio from the input text.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     input: String (Required)
      *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
@@ -1730,13 +2129,16 @@ public final class OpenAIClientImpl {
      *     speed: Double (Optional)
      *     model: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1762,7 +2164,8 @@ public final class OpenAIClientImpl {
      * Return the embeddings for a given prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     user: String (Optional)
      *     model: String (Optional)
@@ -1773,11 +2176,13 @@ public final class OpenAIClientImpl {
      *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     data (Required): [
      *          (Required){
@@ -1785,6 +2190,7 @@ public final class OpenAIClientImpl {
      *                 double (Required)
      *             ]
      *             index: int (Required)
+     *             object: String (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -1792,7 +2198,8 @@ public final class OpenAIClientImpl {
      *         total_tokens: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1823,7 +2230,8 @@ public final class OpenAIClientImpl {
      * Return the embeddings for a given prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     user: String (Optional)
      *     model: String (Optional)
@@ -1834,11 +2242,13 @@ public final class OpenAIClientImpl {
      *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     data (Required): [
      *          (Required){
@@ -1846,6 +2256,7 @@ public final class OpenAIClientImpl {
      *                 double (Required)
      *             ]
      *             index: int (Required)
+     *             object: String (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -1853,7 +2264,8 @@ public final class OpenAIClientImpl {
      *         total_tokens: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1876,5 +2288,1351 @@ public final class OpenAIClientImpl {
         final String accept = "application/json";
         return service.getEmbeddingsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, embeddingsOptions, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files
+     * matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants",
+     * "assistants_output", "batch", "batch_output", "vision".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             object: String (Required)
+     *             id: String (Required)
+     *             bytes: int (Required)
+     *             filename: String (Required)
+     *             created_at: long (Required)
+     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *             status_details: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listFiles(this.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of previously uploaded files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files
+     * matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants",
+     * "assistants_output", "batch", "batch_output", "vision".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             object: String (Required)
+     *             id: String (Required)
+     *             bytes: int (Required)
+     *             filename: String (Required)
+     *             created_at: long (Required)
+     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *             status_details: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of previously uploaded files along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listFilesSync(this.getEndpoint(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.uploadFile(this.getEndpoint(), contentType, accept,
+            uploadFileRequest, requestOptions, context));
+    }
+
+    /**
+     * Uploads a file for use by other operations.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.uploadFileSync(this.getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteFile(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Delete a previously uploaded file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a status response from a file deletion operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getFile(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     bytes: int (Required)
+     *     filename: String (Required)
+     *     created_at: long (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an assistant that can call the model and use tools along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * byte[]
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getFileContent(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * byte[]
+     * }
+     * </pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets a list of all batches owned by the Azure OpenAI resource.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
+     * request.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             endpoint: String (Optional)
+     *             errors (Optional): {
+     *                 object: String (Required)
+     *                 data (Optional): [
+     *                      (Optional){
+     *                         code: String (Optional)
+     *                         message: String (Optional)
+     *                         param: String (Optional)
+     *                         line: Integer (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             input_file_id: String (Required)
+     *             completion_window: String (Optional)
+     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *             output_file_id: String (Optional)
+     *             error_file_id: String (Optional)
+     *             created_at: Long (Optional)
+     *             in_progress_at: Long (Optional)
+     *             expires_at: Long (Optional)
+     *             finalizing_at: Long (Optional)
+     *             completed_at: Long (Optional)
+     *             failed_at: Long (Optional)
+     *             expired_at: Long (Optional)
+     *             cancelling_at: Long (Optional)
+     *             cancelled_at: Long (Optional)
+     *             request_counts (Optional): {
+     *                 total: Integer (Optional)
+     *                 completed: Integer (Optional)
+     *                 failed: Integer (Optional)
+     *             }
+     *             metadata (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Optional)
+     *     last_id: String (Optional)
+     *     has_more: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of all batches owned by the Azure OpenAI resource along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listBatchesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listBatches(this.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of all batches owned by the Azure OpenAI resource.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
+     * request.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             endpoint: String (Optional)
+     *             errors (Optional): {
+     *                 object: String (Required)
+     *                 data (Optional): [
+     *                      (Optional){
+     *                         code: String (Optional)
+     *                         message: String (Optional)
+     *                         param: String (Optional)
+     *                         line: Integer (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             input_file_id: String (Required)
+     *             completion_window: String (Optional)
+     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *             output_file_id: String (Optional)
+     *             error_file_id: String (Optional)
+     *             created_at: Long (Optional)
+     *             in_progress_at: Long (Optional)
+     *             expires_at: Long (Optional)
+     *             finalizing_at: Long (Optional)
+     *             completed_at: Long (Optional)
+     *             failed_at: Long (Optional)
+     *             expired_at: Long (Optional)
+     *             cancelling_at: Long (Optional)
+     *             cancelled_at: Long (Optional)
+     *             request_counts (Optional): {
+     *                 total: Integer (Optional)
+     *                 completed: Integer (Optional)
+     *                 failed: Integer (Optional)
+     *             }
+     *             metadata (Optional): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Optional)
+     *     last_id: String (Optional)
+     *     has_more: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of all batches owned by the Azure OpenAI resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listBatchesWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listBatchesSync(this.getEndpoint(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates and executes a batch from an uploaded file of requests.
+     * Response includes details of the enqueued job including job status.
+     * The ID of the result file is added to the response once complete.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     endpoint: String (Required)
+     *     input_file_id: String (Required)
+     *     completion_window: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     endpoint: String (Optional)
+     *     errors (Optional): {
+     *         object: String (Required)
+     *         data (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 param: String (Optional)
+     *                 line: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     input_file_id: String (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *     output_file_id: String (Optional)
+     *     error_file_id: String (Optional)
+     *     created_at: Long (Optional)
+     *     in_progress_at: Long (Optional)
+     *     expires_at: Long (Optional)
+     *     finalizing_at: Long (Optional)
+     *     completed_at: Long (Optional)
+     *     failed_at: Long (Optional)
+     *     expired_at: Long (Optional)
+     *     cancelling_at: Long (Optional)
+     *     cancelled_at: Long (Optional)
+     *     request_counts (Optional): {
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param createBatchRequest The specification of the batch to create and execute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Batch object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createBatchWithResponseAsync(BinaryData createBatchRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createBatch(this.getEndpoint(), contentType, accept,
+            createBatchRequest, requestOptions, context));
+    }
+
+    /**
+     * Creates and executes a batch from an uploaded file of requests.
+     * Response includes details of the enqueued job including job status.
+     * The ID of the result file is added to the response once complete.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     endpoint: String (Required)
+     *     input_file_id: String (Required)
+     *     completion_window: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     endpoint: String (Optional)
+     *     errors (Optional): {
+     *         object: String (Required)
+     *         data (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 param: String (Optional)
+     *                 line: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     input_file_id: String (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *     output_file_id: String (Optional)
+     *     error_file_id: String (Optional)
+     *     created_at: Long (Optional)
+     *     in_progress_at: Long (Optional)
+     *     expires_at: Long (Optional)
+     *     finalizing_at: Long (Optional)
+     *     completed_at: Long (Optional)
+     *     failed_at: Long (Optional)
+     *     expired_at: Long (Optional)
+     *     cancelling_at: Long (Optional)
+     *     cancelled_at: Long (Optional)
+     *     request_counts (Optional): {
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param createBatchRequest The specification of the batch to create and execute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Batch object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createBatchWithResponse(BinaryData createBatchRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createBatchSync(this.getEndpoint(), contentType, accept, createBatchRequest, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Gets details for a single batch specified by the given batchID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     endpoint: String (Optional)
+     *     errors (Optional): {
+     *         object: String (Required)
+     *         data (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 param: String (Optional)
+     *                 line: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     input_file_id: String (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *     output_file_id: String (Optional)
+     *     error_file_id: String (Optional)
+     *     created_at: Long (Optional)
+     *     in_progress_at: Long (Optional)
+     *     expires_at: Long (Optional)
+     *     finalizing_at: Long (Optional)
+     *     completed_at: Long (Optional)
+     *     failed_at: Long (Optional)
+     *     expired_at: Long (Optional)
+     *     cancelling_at: Long (Optional)
+     *     cancelled_at: Long (Optional)
+     *     request_counts (Optional): {
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param batchId The identifier of the batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return details for a single batch specified by the given batchID along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBatchWithResponseAsync(String batchId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getBatch(this.getEndpoint(), batchId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets details for a single batch specified by the given batchID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     endpoint: String (Optional)
+     *     errors (Optional): {
+     *         object: String (Required)
+     *         data (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 param: String (Optional)
+     *                 line: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     input_file_id: String (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *     output_file_id: String (Optional)
+     *     error_file_id: String (Optional)
+     *     created_at: Long (Optional)
+     *     in_progress_at: Long (Optional)
+     *     expires_at: Long (Optional)
+     *     finalizing_at: Long (Optional)
+     *     completed_at: Long (Optional)
+     *     failed_at: Long (Optional)
+     *     expired_at: Long (Optional)
+     *     cancelling_at: Long (Optional)
+     *     cancelled_at: Long (Optional)
+     *     request_counts (Optional): {
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param batchId The identifier of the batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return details for a single batch specified by the given batchID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getBatchSync(this.getEndpoint(), batchId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets details for a single batch specified by the given batchID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     endpoint: String (Optional)
+     *     errors (Optional): {
+     *         object: String (Required)
+     *         data (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 param: String (Optional)
+     *                 line: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     input_file_id: String (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *     output_file_id: String (Optional)
+     *     error_file_id: String (Optional)
+     *     created_at: Long (Optional)
+     *     in_progress_at: Long (Optional)
+     *     expires_at: Long (Optional)
+     *     finalizing_at: Long (Optional)
+     *     completed_at: Long (Optional)
+     *     failed_at: Long (Optional)
+     *     expired_at: Long (Optional)
+     *     cancelling_at: Long (Optional)
+     *     cancelled_at: Long (Optional)
+     *     request_counts (Optional): {
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param batchId The identifier of the batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return details for a single batch specified by the given batchID along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelBatchWithResponseAsync(String batchId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.cancelBatch(this.getEndpoint(), batchId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets details for a single batch specified by the given batchID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     endpoint: String (Optional)
+     *     errors (Optional): {
+     *         object: String (Required)
+     *         data (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 message: String (Optional)
+     *                 param: String (Optional)
+     *                 line: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     input_file_id: String (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
+     *     output_file_id: String (Optional)
+     *     error_file_id: String (Optional)
+     *     created_at: Long (Optional)
+     *     in_progress_at: Long (Optional)
+     *     expires_at: Long (Optional)
+     *     finalizing_at: Long (Optional)
+     *     completed_at: Long (Optional)
+     *     failed_at: Long (Optional)
+     *     expired_at: Long (Optional)
+     *     cancelling_at: Long (Optional)
+     *     cancelled_at: Long (Optional)
+     *     request_counts (Optional): {
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param batchId The identifier of the batch.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return details for a single batch specified by the given batchID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelBatchSync(this.getEndpoint(), batchId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most 8 GB in
+     * total and expires after an hour after you create it.
+     * 
+     * Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is
+     * usable in the rest of our platform as a regular File object.
+     * 
+     * For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported
+     * MIME types for your use case.
+     * 
+     * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
+     * File.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     filename: String (Required)
+     *     purpose: String(assistants/batch/fine-tune/vision) (Required)
+     *     bytes: int (Required)
+     *     mime_type: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String(batch/batch_output/fine-tune/fine-tune-results/assistants/assistants_output/vision) (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestBody The request body for the operation options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createUploadWithResponseAsync(BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createUpload(this.getEndpoint(), contentType, accept,
+            requestBody, requestOptions, context));
+    }
+
+    /**
+     * Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most 8 GB in
+     * total and expires after an hour after you create it.
+     * 
+     * Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is
+     * usable in the rest of our platform as a regular File object.
+     * 
+     * For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported
+     * MIME types for your use case.
+     * 
+     * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
+     * File.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     filename: String (Required)
+     *     purpose: String(assistants/batch/fine-tune/vision) (Required)
+     *     bytes: int (Required)
+     *     mime_type: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String(batch/batch_output/fine-tune/fine-tune-results/assistants/assistants_output/vision) (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestBody The request body for the operation options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createUploadSync(this.getEndpoint(), contentType, accept, requestBody, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+     * 
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+     * 
+     * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
+     * complete the Upload.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     upload_id: String (Required)
+     *     object: String (Required)
+     *     azure_block_id: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body data payload for the operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> addUploadPartWithResponseAsync(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.addUploadPart(this.getEndpoint(), contentType, uploadId, accept,
+            requestBody, requestOptions, context));
+    }
+
+    /**
+     * Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+     * 
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+     * 
+     * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
+     * complete the Upload.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     upload_id: String (Required)
+     *     object: String (Required)
+     *     azure_block_id: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body data payload for the operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.addUploadPartSync(this.getEndpoint(), contentType, uploadId, accept, requestBody, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Completes the Upload.
+     * 
+     * Within the returned Upload object, there is a nested File object that is ready to use in the rest of the
+     * platform.
+     * 
+     * You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+     * 
+     * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
+     * Upload object. No Parts may be added after an Upload is completed.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     part_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     md5: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String(batch/batch_output/fine-tune/fine-tune-results/assistants/assistants_output/vision) (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body for the completion operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> completeUploadWithResponseAsync(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.completeUpload(this.getEndpoint(), uploadId, contentType, accept,
+            requestBody, requestOptions, context));
+    }
+
+    /**
+     * Completes the Upload.
+     * 
+     * Within the returned Upload object, there is a nested File object that is ready to use in the rest of the
+     * platform.
+     * 
+     * You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+     * 
+     * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
+     * Upload object. No Parts may be added after an Upload is completed.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     part_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     md5: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String(batch/batch_output/fine-tune/fine-tune-results/assistants/assistants_output/vision) (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body for the completion operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> completeUploadWithResponse(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.completeUploadSync(this.getEndpoint(), uploadId, contentType, accept, requestBody,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String(batch/batch_output/fine-tune/fine-tune-results/assistants/assistants_output/vision) (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelUploadWithResponseAsync(String uploadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.cancelUpload(this.getEndpoint(), uploadId, accept, requestOptions, context));
+    }
+
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String(batch/batch_output/fine-tune/fine-tune-results/assistants/assistants_output/vision) (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelUploadSync(this.getEndpoint(), uploadId, accept, requestOptions, Context.NONE);
     }
 }

@@ -85,7 +85,7 @@ public final class TextDocumentInput {
 
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "Text = %s, Id = %s, Language = %s",
-            this.getText(), this.getId(), this.getLanguage());
+        return String.format(Locale.ROOT, "Text = %s, Id = %s, Language = %s", this.getText(), this.getId(),
+            this.getLanguage());
     }
 }

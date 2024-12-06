@@ -17,8 +17,7 @@ public final class ValidateOperationResultImpl implements ValidateOperationResul
 
     private final com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager;
 
-    ValidateOperationResultImpl(
-        ValidateOperationResultInner innerObject,
+    ValidateOperationResultImpl(ValidateOperationResultInner innerObject,
         com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

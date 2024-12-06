@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for WorkspaceManagedSqlServerUsages List. */
+/**
+ * Samples for WorkspaceManagedSqlServerUsages List.
+ */
 public final class WorkspaceManagedSqlServerUsagesListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerUsages.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ListWorkspaceManagedSqlServerUsages.json
      */
     /**
      * Sample code: List usages metric for the workspace managed sql server.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void listUsagesMetricForTheWorkspaceManagedSqlServer(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
+    public static void
+        listUsagesMetricForTheWorkspaceManagedSqlServer(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager.workspaceManagedSqlServerUsages().list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DeliveryMode extends ExpandableStringEnum<DeliveryMode> {
      * @param name a name to look for.
      * @return the corresponding DeliveryMode.
      */
-    @JsonCreator
     public static DeliveryMode fromString(String name) {
         return fromString(name, DeliveryMode.class);
     }

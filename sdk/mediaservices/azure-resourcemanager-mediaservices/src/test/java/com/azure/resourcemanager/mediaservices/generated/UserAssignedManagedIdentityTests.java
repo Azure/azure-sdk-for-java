@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mediaservices.models.UserAssignedManagedIdentit
 public final class UserAssignedManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"clientId\":\"43d3df7b-b36f-4b1c-9751-ee0202131d62\",\"principalId\":\"eb322375-25ac-40ea-9b59-09bcfbdf36ec\"}")
-                .toObject(UserAssignedManagedIdentity.class);
+        UserAssignedManagedIdentity model = BinaryData.fromString(
+            "{\"clientId\":\"a299d4d2-7480-41d8-b5d5-5ec0b14bdf33\",\"principalId\":\"e9169843-9b3d-49f0-b1a8-edf9274b429e\"}")
+            .toObject(UserAssignedManagedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

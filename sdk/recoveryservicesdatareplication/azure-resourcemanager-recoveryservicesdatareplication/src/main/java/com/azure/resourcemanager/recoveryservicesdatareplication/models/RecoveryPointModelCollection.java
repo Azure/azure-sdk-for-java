@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.RecoveryPointModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Recovery point model collection. */
+/**
+ * Recovery point model collection.
+ */
 @Fluent
-public final class RecoveryPointModelCollection {
+public final class RecoveryPointModelCollection implements JsonSerializable<RecoveryPointModelCollection> {
     /*
      * Gets or sets the list of recovery points.
      */
-    @JsonProperty(value = "value")
     private List<RecoveryPointModelInner> value;
 
     /*
      * Gets or sets the value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RecoveryPointModelCollection class. */
+    /**
+     * Creates an instance of RecoveryPointModelCollection class.
+     */
     public RecoveryPointModelCollection() {
     }
 
     /**
      * Get the value property: Gets or sets the list of recovery points.
-     *
+     * 
      * @return the value value.
      */
     public List<RecoveryPointModelInner> value() {
@@ -39,7 +45,7 @@ public final class RecoveryPointModelCollection {
 
     /**
      * Set the value property: Gets or sets the list of recovery points.
-     *
+     * 
      * @param value the value value to set.
      * @return the RecoveryPointModelCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class RecoveryPointModelCollection {
 
     /**
      * Get the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class RecoveryPointModelCollection {
 
     /**
      * Set the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RecoveryPointModelCollection object itself.
      */
@@ -70,12 +76,53 @@ public final class RecoveryPointModelCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointModelCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointModelCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointModelCollection.
+     */
+    public static RecoveryPointModelCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointModelCollection deserializedRecoveryPointModelCollection = new RecoveryPointModelCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RecoveryPointModelInner> value
+                        = reader.readArray(reader1 -> RecoveryPointModelInner.fromJson(reader1));
+                    deserializedRecoveryPointModelCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRecoveryPointModelCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointModelCollection;
+        });
     }
 }

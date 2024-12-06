@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":8540357974239086249,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"hfphwpnulaiywze\"},\"location\":\"whslwkoj\",\"tags\":{\"nnfhyetefypo\":\"ndnpdwrpqafgfug\"},\"id\":\"octfjgtixrjvzuyt\",\"name\":\"rmlmuowo\",\"type\":\"bauiropi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":8259010476237708124,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"ngnbdxxew\"},\"location\":\"invudbch\",\"tags\":{\"crqctmxxdtddmflh\":\"tvq\",\"voxczytpr\":\"ytxzvtznapxbanno\"},\"id\":\"nwvroevytlyokrr\",\"name\":\"o\",\"type\":\"uxvnsasbcrymodi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("ttaboidvmfqh", "pubowsepdfg", "mtdherngb", "c", "uahokq",
+            .getWithResponse("nsduugwbsre", "rfqkfuar", "nlvhhtklnvnafvv", "yfedevjbo", "lcqxypokk",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("whslwkoj", response.location());
-        Assertions.assertEquals("ndnpdwrpqafgfug", response.tags().get("nnfhyetefypo"));
-        Assertions.assertEquals(8540357974239086249L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.quotaType());
-        Assertions.assertEquals("hfphwpnulaiywze", response.quotaTarget());
+        Assertions.assertEquals("invudbch", response.location());
+        Assertions.assertEquals("tvq", response.tags().get("crqctmxxdtddmflh"));
+        Assertions.assertEquals(8259010476237708124L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.quotaType());
+        Assertions.assertEquals("ngnbdxxew", response.quotaTarget());
     }
 }

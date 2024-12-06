@@ -6,23 +6,48 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.AdvancedSchedule;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the schedule. */
+/**
+ * Definition of the schedule.
+ */
 @Fluent
 public final class ScheduleInner extends ProxyResource {
     /*
      * Gets or sets the properties of the schedule.
      */
-    @JsonProperty(value = "properties")
     private ScheduleProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScheduleInner class.
+     */
+    public ScheduleInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the schedule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleProperties innerProperties() {
@@ -30,8 +55,38 @@ public final class ScheduleInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -40,7 +95,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScheduleInner object itself.
      */
@@ -54,7 +109,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the startTimeOffsetMinutes property: Gets the start time's offset in minutes.
-     *
+     * 
      * @return the startTimeOffsetMinutes value.
      */
     public Double startTimeOffsetMinutes() {
@@ -63,7 +118,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -72,7 +127,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the ScheduleInner object itself.
      */
@@ -86,7 +141,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the expiryTimeOffsetMinutes property: Gets or sets the expiry time's offset in minutes.
-     *
+     * 
      * @return the expiryTimeOffsetMinutes value.
      */
     public Double expiryTimeOffsetMinutes() {
@@ -95,7 +150,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the expiryTimeOffsetMinutes property: Gets or sets the expiry time's offset in minutes.
-     *
+     * 
      * @param expiryTimeOffsetMinutes the expiryTimeOffsetMinutes value to set.
      * @return the ScheduleInner object itself.
      */
@@ -109,7 +164,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the isEnabled property: Gets or sets a value indicating whether this schedule is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -118,7 +173,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the isEnabled property: Gets or sets a value indicating whether this schedule is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ScheduleInner object itself.
      */
@@ -132,7 +187,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the nextRun property: Gets or sets the next run time of the schedule.
-     *
+     * 
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
@@ -141,7 +196,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the nextRun property: Gets or sets the next run time of the schedule.
-     *
+     * 
      * @param nextRun the nextRun value to set.
      * @return the ScheduleInner object itself.
      */
@@ -155,7 +210,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the nextRunOffsetMinutes property: Gets or sets the next run time's offset in minutes.
-     *
+     * 
      * @return the nextRunOffsetMinutes value.
      */
     public Double nextRunOffsetMinutes() {
@@ -164,7 +219,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the nextRunOffsetMinutes property: Gets or sets the next run time's offset in minutes.
-     *
+     * 
      * @param nextRunOffsetMinutes the nextRunOffsetMinutes value to set.
      * @return the ScheduleInner object itself.
      */
@@ -178,7 +233,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @return the interval value.
      */
     public Object interval() {
@@ -187,7 +242,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ScheduleInner object itself.
      */
@@ -201,7 +256,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -210,7 +265,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleInner object itself.
      */
@@ -224,7 +279,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -233,7 +288,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleInner object itself.
      */
@@ -247,7 +302,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the advancedSchedule property: Gets or sets the advanced schedule.
-     *
+     * 
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
@@ -256,7 +311,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the advancedSchedule property: Gets or sets the advanced schedule.
-     *
+     * 
      * @param advancedSchedule the advancedSchedule value to set.
      * @return the ScheduleInner object itself.
      */
@@ -270,7 +325,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -279,7 +334,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the ScheduleInner object itself.
      */
@@ -293,7 +348,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -302,7 +357,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the ScheduleInner object itself.
      */
@@ -316,7 +371,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -325,7 +380,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduleInner object itself.
      */
@@ -339,12 +394,55 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleInner.
+     */
+    public static ScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleInner deserializedScheduleInner = new ScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduleInner.innerProperties = ScheduleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleInner;
+        });
     }
 }

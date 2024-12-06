@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -22,9 +23,8 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.HashMap;
@@ -60,14 +60,12 @@ public class ManagementChannel implements EventHubManagementNode {
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementChannel.class);
     private final TokenCredential tokenProvider;
-    private final Mono<RequestResponseChannel> channelMono;
+    private final ChannelCacheWrapper channelCache;
     private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
-    private final ReplayProcessor<AmqpEndpointState> endpointStateProcessor = ReplayProcessor.cacheLast();
-    private final FluxSink<AmqpEndpointState> endpointStateSink =
-        endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().replay().latest();
     private final Disposable subscription;
 
     private volatile boolean isDisposed;
@@ -75,37 +73,36 @@ public class ManagementChannel implements EventHubManagementNode {
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
-     * @param responseChannelMono Mono that completes with a new {@link RequestResponseChannel}.
+     * @param channelCache a cache that if needed obtain and cache the {@link RequestResponseChannel}.
      * @param eventHubName The name of the Event Hub.
      * @param credential Credential to authorize user for access to the Event Hub.
      * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
      * @param messageSerializer Maps responses from the management channel.
      */
-    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        Scheduler scheduler) {
+    ManagementChannel(ChannelCacheWrapper channelCache, String eventHubName, TokenCredential credential,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Scheduler scheduler) {
 
-        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
-            "'tokenManagerProvider' cannot be null.");
+        this.tokenManagerProvider
+            = Objects.requireNonNull(tokenManagerProvider, "'tokenManagerProvider' cannot be null.");
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
+        this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
         //@formatter:off
-        this.subscription = responseChannelMono
-            .flatMapMany(e -> e.getEndpointStates().distinctUntilChanged())
-            .subscribe(e -> {
-                LOGGER.info("Management endpoint state: {}", e);
-                endpointStateSink.next(e);
+        this.subscription = channelCache.get()
+            .flatMapMany(channel -> channel.getEndpointStates().distinctUntilChanged())
+            .subscribe(s -> {
+                LOGGER.info("Management endpoint state: {}", s);
+                endpointStates.emitNext(s, Sinks.EmitFailureHandler.FAIL_FAST);
             }, error -> {
                     LOGGER.error("Exception occurred:", error);
-                    endpointStateSink.error(error);
+                    endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
                     close();
                 }, () -> {
                     LOGGER.info("Complete.");
-                    endpointStateSink.complete();
+                    endpointStates.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
                     close();
                 });
         //@formatter:on
@@ -118,7 +115,7 @@ public class ManagementChannel implements EventHubManagementNode {
      */
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStateProcessor;
+        return endpointStates.asFlux();
     }
 
     /**
@@ -158,19 +155,18 @@ public class ManagementChannel implements EventHubManagementNode {
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(channel -> channel.sendWithAck(request)
-                .handle((message, sink) -> {
-                    if (RequestResponseUtils.isSuccessful(message)) {
-                        sink.next(messageSerializer.deserialize(message, responseType));
-                    } else {
-                        final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-                        final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                        final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
-                            statusDescription, channel.getErrorContext());
+            return channelCache.get().flatMap(channel -> channel.sendWithAck(request).handle((message, sink) -> {
+                if (RequestResponseUtils.isSuccessful(message)) {
+                    sink.next(messageSerializer.deserialize(message, responseType));
+                } else {
+                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                        statusDescription, channel.getErrorContext());
 
-                        sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
-                    }
-                }));
+                    sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
+                }
+            }));
         });
     }
 
@@ -186,8 +182,6 @@ public class ManagementChannel implements EventHubManagementNode {
         isDisposed = true;
         subscription.dispose();
 
-        if (channelMono instanceof Disposable) {
-            ((Disposable) channelMono).dispose();
-        }
+        channelCache.dispose();
     }
 }

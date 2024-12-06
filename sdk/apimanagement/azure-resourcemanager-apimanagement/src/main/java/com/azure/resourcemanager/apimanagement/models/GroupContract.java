@@ -7,39 +7,41 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 
-/** An immutable client-side representation of GroupContract. */
+/**
+ * An immutable client-side representation of GroupContract.
+ */
 public interface GroupContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the displayName property: Group name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: Group description. Can contain HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     String description();
@@ -47,14 +49,14 @@ public interface GroupContract {
     /**
      * Gets the builtIn property: true if the group is one of the three system groups (Administrators, Developers, or
      * Guests); otherwise false.
-     *
+     * 
      * @return the builtIn value.
      */
     Boolean builtIn();
 
     /**
      * Gets the typePropertiesType property: Group type.
-     *
+     * 
      * @return the typePropertiesType value.
      */
     GroupType typePropertiesType();
@@ -63,41 +65,49 @@ public interface GroupContract {
      * Gets the externalId property: For external groups, this property contains the id of the group from the external
      * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
-     *
+     * 
      * @return the externalId value.
      */
     String externalId();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     GroupContractInner innerModel();
 
-    /** The entirety of the GroupContract definition. */
+    /**
+     * The entirety of the GroupContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The GroupContract definition stages. */
+    /**
+     * The GroupContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the GroupContract definition. */
+        /**
+         * The first stage of the GroupContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the GroupContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the GroupContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -109,84 +119,90 @@ public interface GroupContract {
          * The stage of the GroupContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithType,
-                DefinitionStages.WithExternalId,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithDescription,
+            DefinitionStages.WithType, DefinitionStages.WithExternalId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             GroupContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             GroupContract create(Context context);
         }
 
-        /** The stage of the GroupContract definition allowing to specify displayName. */
+        /**
+         * The stage of the GroupContract definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: Group name..
-             *
+             * 
              * @param displayName Group name.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
 
-        /** The stage of the GroupContract definition allowing to specify description. */
+        /**
+         * The stage of the GroupContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Group description..
-             *
+             * 
              * @param description Group description.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the GroupContract definition allowing to specify type. */
+        /**
+         * The stage of the GroupContract definition allowing to specify type.
+         */
         interface WithType {
             /**
              * Specifies the type property: Group type..
-             *
+             * 
              * @param type Group type.
              * @return the next definition stage.
              */
             WithCreate withType(GroupType type);
         }
 
-        /** The stage of the GroupContract definition allowing to specify externalId. */
+        /**
+         * The stage of the GroupContract definition allowing to specify externalId.
+         */
         interface WithExternalId {
             /**
              * Specifies the externalId property: Identifier of the external groups, this property contains the id of
              * the group from the external identity provider, e.g. for Azure Active Directory
              * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null..
-             *
+             * 
              * @param externalId Identifier of the external groups, this property contains the id of the group from the
-             *     external identity provider, e.g. for Azure Active Directory
-             *     `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
+             * external identity provider, e.g. for Azure Active Directory
+             * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
              * @return the next definition stage.
              */
             WithCreate withExternalId(String externalId);
         }
 
-        /** The stage of the GroupContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the GroupContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -195,92 +211,102 @@ public interface GroupContract {
 
     /**
      * Begins update for the GroupContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     GroupContract.Update update();
 
-    /** The template for GroupContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithType,
-            UpdateStages.WithExternalId,
-            UpdateStages.WithIfMatch {
+    /**
+     * The template for GroupContract update.
+     */
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithDescription, UpdateStages.WithType,
+        UpdateStages.WithExternalId, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         GroupContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         GroupContract apply(Context context);
     }
 
-    /** The GroupContract update stages. */
+    /**
+     * The GroupContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the GroupContract update allowing to specify displayName. */
+        /**
+         * The stage of the GroupContract update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: Group name..
-             *
+             * 
              * @param displayName Group name.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
 
-        /** The stage of the GroupContract update allowing to specify description. */
+        /**
+         * The stage of the GroupContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Group description..
-             *
+             * 
              * @param description Group description.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the GroupContract update allowing to specify type. */
+        /**
+         * The stage of the GroupContract update allowing to specify type.
+         */
         interface WithType {
             /**
              * Specifies the type property: Group type..
-             *
+             * 
              * @param type Group type.
              * @return the next definition stage.
              */
             Update withType(GroupType type);
         }
 
-        /** The stage of the GroupContract update allowing to specify externalId. */
+        /**
+         * The stage of the GroupContract update allowing to specify externalId.
+         */
         interface WithExternalId {
             /**
              * Specifies the externalId property: Identifier of the external groups, this property contains the id of
              * the group from the external identity provider, e.g. for Azure Active Directory
              * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null..
-             *
+             * 
              * @param externalId Identifier of the external groups, this property contains the id of the group from the
-             *     external identity provider, e.g. for Azure Active Directory
-             *     `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
+             * external identity provider, e.g. for Azure Active Directory
+             * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
              * @return the next definition stage.
              */
             Update withExternalId(String externalId);
         }
 
-        /** The stage of the GroupContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the GroupContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -289,14 +315,14 @@ public interface GroupContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     GroupContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

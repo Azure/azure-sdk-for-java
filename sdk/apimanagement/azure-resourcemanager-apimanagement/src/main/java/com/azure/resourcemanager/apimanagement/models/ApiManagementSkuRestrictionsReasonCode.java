@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The reason for restriction. */
+/**
+ * The reason for restriction.
+ */
 public enum ApiManagementSkuRestrictionsReasonCode {
-    /** Enum value QuotaId. */
+    /**
+     * Enum value QuotaId.
+     */
     QUOTA_ID("QuotaId"),
 
-    /** Enum value NotAvailableForSubscription. */
+    /**
+     * Enum value NotAvailableForSubscription.
+     */
     NOT_AVAILABLE_FOR_SUBSCRIPTION("NotAvailableForSubscription");
 
-    /** The actual serialized value for a ApiManagementSkuRestrictionsReasonCode instance. */
+    /**
+     * The actual serialized value for a ApiManagementSkuRestrictionsReasonCode instance.
+     */
     private final String value;
 
     ApiManagementSkuRestrictionsReasonCode(String value) {
@@ -24,11 +29,10 @@ public enum ApiManagementSkuRestrictionsReasonCode {
 
     /**
      * Parses a serialized value to a ApiManagementSkuRestrictionsReasonCode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ApiManagementSkuRestrictionsReasonCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static ApiManagementSkuRestrictionsReasonCode fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum ApiManagementSkuRestrictionsReasonCode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -11,7 +11,7 @@ public final class VirtualNetworkSubnetUsageResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkSubnetUsageResultInner model = BinaryData.fromString(
-            "{\"location\":\"cdpu\",\"subscriptionId\":\"zgmwznmabikns\",\"delegatedSubnetsUsage\":[{\"subnetName\":\"hxbld\",\"usage\":3033706853935881392}]}")
+            "{\"location\":\"y\",\"subscriptionId\":\"yrnxxmueedn\",\"delegatedSubnetsUsage\":[{\"subnetName\":\"stkwqqtch\",\"usage\":416295343158305691},{\"subnetName\":\"mtdaa\",\"usage\":8743531212516395266}]}")
             .toObject(VirtualNetworkSubnetUsageResultInner.class);
     }
 

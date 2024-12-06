@@ -46,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WeatherTestBase extends TestProxyTestBase {
     WeatherClientBuilder getWeatherAsyncClientBuilder(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
-        WeatherClientBuilder builder = modifyBuilder(httpClient, new WeatherClientBuilder()).serviceVersion(
-            serviceVersion);
+        WeatherClientBuilder builder
+            = modifyBuilder(httpClient, new WeatherClientBuilder()).serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
@@ -65,8 +65,8 @@ public class WeatherTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
+            customMatchers
+                .add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
@@ -84,8 +84,8 @@ public class WeatherTestBase extends TestProxyTestBase {
                 .weatherClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
-        return builder.httpClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return builder
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     static void validateGetHourlyForecast(HourlyForecastResult expected, HourlyForecastResult actual) {

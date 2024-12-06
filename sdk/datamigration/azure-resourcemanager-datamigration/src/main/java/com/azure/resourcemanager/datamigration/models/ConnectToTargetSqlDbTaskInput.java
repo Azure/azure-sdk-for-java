@@ -6,24 +6,31 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for the task that validates connection to SQL DB and target server requirements. */
+/**
+ * Input for the task that validates connection to SQL DB and target server requirements.
+ */
 @Fluent
-public final class ConnectToTargetSqlDbTaskInput {
+public final class ConnectToTargetSqlDbTaskInput implements JsonSerializable<ConnectToTargetSqlDbTaskInput> {
     /*
      * Connection information for target SQL DB
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private SqlConnectionInfo targetConnectionInfo;
 
-    /** Creates an instance of ConnectToTargetSqlDbTaskInput class. */
+    /**
+     * Creates an instance of ConnectToTargetSqlDbTaskInput class.
+     */
     public ConnectToTargetSqlDbTaskInput() {
     }
 
     /**
      * Get the targetConnectionInfo property: Connection information for target SQL DB.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public SqlConnectionInfo targetConnectionInfo() {
@@ -32,7 +39,7 @@ public final class ConnectToTargetSqlDbTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Connection information for target SQL DB.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the ConnectToTargetSqlDbTaskInput object itself.
      */
@@ -43,19 +50,56 @@ public final class ConnectToTargetSqlDbTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model ConnectToTargetSqlDbTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model ConnectToTargetSqlDbTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetSqlDbTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToTargetSqlDbTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToTargetSqlDbTaskInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectToTargetSqlDbTaskInput.
+     */
+    public static ConnectToTargetSqlDbTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToTargetSqlDbTaskInput deserializedConnectToTargetSqlDbTaskInput
+                = new ConnectToTargetSqlDbTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbTaskInput.targetConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToTargetSqlDbTaskInput;
+        });
+    }
 }

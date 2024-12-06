@@ -30,6 +30,12 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     private MediaStreamingStatusDetails mediaStreamingStatusDetails;
 
     /**
+     * Creates an instance of {@link MediaStreamingUpdate}.
+     */
+    public MediaStreamingUpdate() {
+    }
+
+    /**
      * Get the contentType property: The contentType property.
      *
      * @return the contentType value.
@@ -84,8 +90,8 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
      * @param mediaStreamingStatusDetails the mediaStreamingStatusDetails value to set.
      * @return the MediaStreamingUpdate object itself.
      */
-    public MediaStreamingUpdate setMediaStreamingStatusDetails(
-            MediaStreamingStatusDetails mediaStreamingStatusDetails) {
+    public MediaStreamingUpdate
+        setMediaStreamingStatusDetails(MediaStreamingStatusDetails mediaStreamingStatusDetails) {
         this.mediaStreamingStatusDetails = mediaStreamingStatusDetails;
         return this;
     }
@@ -97,8 +103,10 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("contentType", contentType);
-        jsonWriter.writeStringField("mediaStreamingStatus", mediaStreamingStatus != null ? mediaStreamingStatus.toString() : null);
-        jsonWriter.writeStringField("mediaStreamingStatusDetails", mediaStreamingStatusDetails != null ? mediaStreamingStatusDetails.toString() : null);
+        jsonWriter.writeStringField("mediaStreamingStatus",
+            mediaStreamingStatus != null ? mediaStreamingStatus.toString() : null);
+        jsonWriter.writeStringField("mediaStreamingStatusDetails",
+            mediaStreamingStatusDetails != null ? mediaStreamingStatusDetails.toString() : null);
         return jsonWriter.writeEndObject();
     }
 
@@ -117,7 +125,7 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("contentType".equals(fieldName)) {
-                    event.contentType =  reader.getString();
+                    event.contentType = reader.getString();
                 } else if ("mediaStreamingStatus".equals(fieldName)) {
                     event.mediaStreamingStatus = MediaStreamingStatus.fromString(reader.getString());
                 } else if ("mediaStreamingStatusDetails".equals(fieldName)) {

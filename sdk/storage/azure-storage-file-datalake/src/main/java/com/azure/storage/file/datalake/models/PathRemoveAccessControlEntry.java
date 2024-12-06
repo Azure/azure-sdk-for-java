@@ -88,7 +88,6 @@ public class PathRemoveAccessControlEntry {
         return this;
     }
 
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -106,7 +105,7 @@ public class PathRemoveAccessControlEntry {
 
     /**
      * Parses the provided string into a {@code PathAccessControlEntry}.
-     *
+     * <p>
      * Must be of the format "[scope:][type]:[id]".
      *
      * @param str The string representation of the ACL.
@@ -128,7 +127,8 @@ public class PathRemoveAccessControlEntry {
             indexOffset = 1;
         }
         res.accessControlType = AccessControlType.fromString(parts[indexOffset]);
-        res.entityId = ((1 + indexOffset) < parts.length) && !parts[1 + indexOffset].equals("") ? parts[1 + indexOffset] : null;
+        res.entityId
+            = ((1 + indexOffset) < parts.length) && !parts[1 + indexOffset].equals("") ? parts[1 + indexOffset] : null;
         return res;
     }
 

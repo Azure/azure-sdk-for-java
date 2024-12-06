@@ -33,8 +33,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
- * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
@@ -51,6 +50,7 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     public AzureCliCredentialBuilder() {
         super();
     }
+
     /**
      * Sets the tenant ID of the application.
      *
@@ -75,11 +75,11 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
         return this;
     }
 
-     /**
-     * Creates a new {@link AzureCliCredential} with the current configurations.
-     *
-     * @return a {@link AzureCliCredential} with the current configurations.
-     */
+    /**
+    * Creates a new {@link AzureCliCredential} with the current configurations.
+    *
+    * @return a {@link AzureCliCredential} with the current configurations.
+    */
     public AzureCliCredential build() {
         return new AzureCliCredential(tenantId, identityClientOptions);
     }
@@ -95,8 +95,8 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      */
     @SuppressWarnings("unchecked")
     public AzureCliCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -111,7 +111,8 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      */
     @SuppressWarnings("unchecked")
     public AzureCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 }

@@ -20,6 +20,7 @@ public class UndeleteBlobContainerOptions {
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
+     * @throws NullPointerException If {@code deletedContainerName} or {@code deletedContainerVersion} is null.
      */
     public UndeleteBlobContainerOptions(String deletedContainerName, String deletedContainerVersion) {
         StorageImplUtils.assertNotNull("deletedContainerName", deletedContainerName);

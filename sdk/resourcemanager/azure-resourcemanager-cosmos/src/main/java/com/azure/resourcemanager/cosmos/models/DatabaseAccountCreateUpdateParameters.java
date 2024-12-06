@@ -35,9 +35,9 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     private DatabaseAccountCreateUpdateProperties innerProperties = new DatabaseAccountCreateUpdateProperties();
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -45,9 +45,9 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DatabaseAccountCreateUpdateParameters class.
@@ -105,13 +105,13 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -125,13 +125,13 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -207,20 +207,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      */
     public String databaseAccountOfferType() {
         return this.innerProperties() == null ? null : this.innerProperties().databaseAccountOfferType();
-    }
-
-    /**
-     * Set the databaseAccountOfferType property: The offer type for the database.
-     * 
-     * @param databaseAccountOfferType the databaseAccountOfferType value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withDatabaseAccountOfferType(String databaseAccountOfferType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withDatabaseAccountOfferType(databaseAccountOfferType);
-        return this;
     }
 
     /**
@@ -859,8 +845,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -869,8 +855,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -909,13 +895,38 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePerRegionPerPartitionAutoscale();
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (identity() != null) {
             identity().validate();
         }

@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionsListByClusterSamples {
      */
     public static void getsListOfPrivateEndpointConnectionsOnACluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().listByCluster("TestResourceGroup", "testcluster",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .listByCluster("TestResourceGroup", "testcluster", com.azure.core.util.Context.NONE);
     }
 }

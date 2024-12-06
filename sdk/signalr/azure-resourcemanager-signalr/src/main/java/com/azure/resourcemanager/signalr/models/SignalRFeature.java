@@ -6,13 +6,18 @@ package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Feature of a resource, which controls the runtime behavior. */
+/**
+ * Feature of a resource, which controls the runtime behavior.
+ */
 @Fluent
-public final class SignalRFeature {
+public final class SignalRFeature implements JsonSerializable<SignalRFeature> {
     /*
      * FeatureFlags is the supported features of Azure SignalR service.
      * - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend
@@ -25,39 +30,37 @@ public final class SignalRFeature {
      * self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be
      * charged. Values allowed: "true"/"false", to enable/disable live trace feature.
      */
-    @JsonProperty(value = "flag", required = true)
     private FeatureFlags flag;
 
     /*
-     * Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/
-     * for allowed values.
+     * Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/ for
+     * allowed values.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Optional properties related to this feature.
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of SignalRFeature class. */
+    /**
+     * Creates an instance of SignalRFeature class.
+     */
     public SignalRFeature() {
     }
 
     /**
-     * Get the flag property: FeatureFlags is the supported features of Azure SignalR service. - ServiceMode: Flag for
-     * backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless": your
-     * application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and
-     * Serverless mode but not recommended; "PredefinedOnly": for future use. - EnableConnectivityLogs: "true"/"false",
-     * to enable/disable the connectivity log category respectively. - EnableMessagingLogs: "true"/"false", to
-     * enable/disable the connectivity log category respectively. - EnableLiveTrace: Live Trace allows you to know
-     * what's happening inside Azure SignalR service, it will give you live traces in real time, it will be helpful when
-     * you developing your own Azure SignalR based web application or self-troubleshooting some issues. Please note that
-     * live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false", to
-     * enable/disable live trace feature.
-     *
+     * Get the flag property: FeatureFlags is the supported features of Azure SignalR service.
+     * - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend
+     * server; "Serverless": your application doesn't have a backend server; "Classic": for backward compatibility.
+     * Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
+     * - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+     * - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+     * - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you
+     * live traces in real time, it will be helpful when you developing your own Azure SignalR based web application or
+     * self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be
+     * charged. Values allowed: "true"/"false", to enable/disable live trace feature.
+     * 
      * @return the flag value.
      */
     public FeatureFlags flag() {
@@ -65,17 +68,17 @@ public final class SignalRFeature {
     }
 
     /**
-     * Set the flag property: FeatureFlags is the supported features of Azure SignalR service. - ServiceMode: Flag for
-     * backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless": your
-     * application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and
-     * Serverless mode but not recommended; "PredefinedOnly": for future use. - EnableConnectivityLogs: "true"/"false",
-     * to enable/disable the connectivity log category respectively. - EnableMessagingLogs: "true"/"false", to
-     * enable/disable the connectivity log category respectively. - EnableLiveTrace: Live Trace allows you to know
-     * what's happening inside Azure SignalR service, it will give you live traces in real time, it will be helpful when
-     * you developing your own Azure SignalR based web application or self-troubleshooting some issues. Please note that
-     * live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false", to
-     * enable/disable live trace feature.
-     *
+     * Set the flag property: FeatureFlags is the supported features of Azure SignalR service.
+     * - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend
+     * server; "Serverless": your application doesn't have a backend server; "Classic": for backward compatibility.
+     * Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
+     * - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+     * - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+     * - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you
+     * live traces in real time, it will be helpful when you developing your own Azure SignalR based web application or
+     * self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be
+     * charged. Values allowed: "true"/"false", to enable/disable live trace feature.
+     * 
      * @param flag the flag value to set.
      * @return the SignalRFeature object itself.
      */
@@ -87,7 +90,7 @@ public final class SignalRFeature {
     /**
      * Get the value property: Value of the feature flag. See Azure SignalR service document
      * https://docs.microsoft.com/azure/azure-signalr/ for allowed values.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -97,7 +100,7 @@ public final class SignalRFeature {
     /**
      * Set the value property: Value of the feature flag. See Azure SignalR service document
      * https://docs.microsoft.com/azure/azure-signalr/ for allowed values.
-     *
+     * 
      * @param value the value value to set.
      * @return the SignalRFeature object itself.
      */
@@ -108,7 +111,7 @@ public final class SignalRFeature {
 
     /**
      * Get the properties property: Optional properties related to this feature.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -117,7 +120,7 @@ public final class SignalRFeature {
 
     /**
      * Set the properties property: Optional properties related to this feature.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SignalRFeature object itself.
      */
@@ -128,21 +131,63 @@ public final class SignalRFeature {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (flag() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property flag in model SignalRFeature"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property flag in model SignalRFeature"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SignalRFeature"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SignalRFeature"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SignalRFeature.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("flag", this.flag == null ? null : this.flag.toString());
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignalRFeature from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignalRFeature if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SignalRFeature.
+     */
+    public static SignalRFeature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignalRFeature deserializedSignalRFeature = new SignalRFeature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("flag".equals(fieldName)) {
+                    deserializedSignalRFeature.flag = FeatureFlags.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedSignalRFeature.value = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSignalRFeature.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignalRFeature;
+        });
+    }
 }

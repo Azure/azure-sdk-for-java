@@ -13,18 +13,12 @@ import io.clientcore.core.json.implementation.jackson.core.util.JacksonFeature;
  *
  * @since 2.12
  */
-public enum StreamReadCapability
-    implements JacksonFeature
-{
+public enum StreamReadCapability implements JacksonFeature {
     /**
      * Capability that indicates that data format can expose multiple properties
      * with same name ("duplicates") within one Object context.
      * This is usually not enabled, except for formats like {@code xml} that
      * have content model that does not map cleanly to JSON-based token stream.
-     *<p>
-     * Capability may be used for allowing secondary mapping of such duplicates
-     * in case of using Tree Model (see {@link TreeNode}), or "untyped" databinding
-     * (mapping content as generic {@link java.lang.Object}).
      *<p>
      * Capability is currently only enabled for XML format backend.
      */
@@ -48,8 +42,7 @@ public enum StreamReadCapability
      *<p>
      * This capability is true for many textual formats like CSV, Properties and XML.
      */
-    UNTYPED_SCALARS(false),
-    ;
+    UNTYPED_SCALARS(false),;
 
     /**
      * Whether feature is enabled or disabled by default.
@@ -58,15 +51,23 @@ public enum StreamReadCapability
 
     private final int _mask;
 
-    private StreamReadCapability(boolean defaultState) {
+    StreamReadCapability(boolean defaultState) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
+
     @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
     @Override
-    public int getMask() { return _mask; }
+    public int getMask() {
+        return _mask;
+    }
 }

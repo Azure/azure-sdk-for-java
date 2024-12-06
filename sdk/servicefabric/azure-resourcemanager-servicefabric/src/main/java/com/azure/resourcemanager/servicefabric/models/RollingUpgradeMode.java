@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class RollingUpgradeMode extends ExpandableStringEnum<RollingUpgrad
      * @param name a name to look for.
      * @return the corresponding RollingUpgradeMode.
      */
-    @JsonCreator
     public static RollingUpgradeMode fromString(String name) {
         return fromString(name, RollingUpgradeMode.class);
     }

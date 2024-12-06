@@ -12,31 +12,34 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.BmcKeySetInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.BmcKeySetPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in BmcKeySetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BmcKeySetsClient.
+ */
 public interface BmcKeySetsClient {
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName);
 
     /**
      * List baseboard management controller key sets of the cluster.
-     *
-     * <p>Get a list of baseboard management controller key sets for the provided cluster.
-     *
+     * 
+     * Get a list of baseboard management controller key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -44,16 +47,16 @@ public interface BmcKeySetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -64,14 +67,14 @@ public interface BmcKeySetsClient {
      * @return baseboard management controller key set of the provided cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BmcKeySetInner> getWithResponse(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context);
+    Response<BmcKeySetInner> getWithResponse(String resourceGroupName, String clusterName, String bmcKeySetName,
+        Context context);
 
     /**
      * Retrieve the baseboard management controller key set of the cluster.
-     *
-     * <p>Get baseboard management controller key set of the provided cluster.
-     *
+     * 
+     * Get baseboard management controller key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -85,9 +88,9 @@ public interface BmcKeySetsClient {
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -98,14 +101,14 @@ public interface BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters);
+    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters);
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -117,18 +120,14 @@ public interface BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
-        Context context);
+    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters, Context context);
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -139,14 +138,14 @@ public interface BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BmcKeySetInner createOrUpdate(
-        String resourceGroupName, String clusterName, String bmcKeySetName, BmcKeySetInner bmcKeySetParameters);
+    BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetInner bmcKeySetParameters);
 
     /**
      * Create or update the baseboard management controller key set of the cluster.
-     *
-     * <p>Create a new baseboard management controller key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new baseboard management controller key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -158,84 +157,84 @@ public interface BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BmcKeySetInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetInner bmcKeySetParameters,
+    BmcKeySetInner createOrUpdate(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetInner bmcKeySetParameters, Context context);
+
+    /**
+     * Delete the baseboard management controller key set of the cluster.
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String clusterName, String bmcKeySetName);
+
+    /**
+     * Delete the baseboard management controller key set of the cluster.
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String clusterName, String bmcKeySetName, Context context);
+
+    /**
+     * Delete the baseboard management controller key set of the cluster.
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner delete(String resourceGroupName, String clusterName, String bmcKeySetName);
+
+    /**
+     * Delete the baseboard management controller key set of the cluster.
+     * 
+     * Delete the baseboard management controller key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bmcKeySetName The name of the baseboard management controller key set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner delete(String resourceGroupName, String clusterName, String bmcKeySetName,
         Context context);
 
     /**
-     * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String bmcKeySetName);
-
-    /**
-     * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String bmcKeySetName, Context context);
-
-    /**
-     * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String clusterName, String bmcKeySetName);
-
-    /**
-     * Delete the baseboard management controller key set of the cluster.
-     *
-     * <p>Delete the baseboard management controller key set of the provided cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bmcKeySetName The name of the baseboard management controller key set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String clusterName, String bmcKeySetName, Context context);
-
-    /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -245,15 +244,15 @@ public interface BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(
-        String resourceGroupName, String clusterName, String bmcKeySetName);
+    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName, String clusterName,
+        String bmcKeySetName);
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -265,19 +264,15 @@ public interface BmcKeySetsClient {
      * @return the {@link SyncPoller} for polling of bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<BmcKeySetInner>, BmcKeySetInner> beginUpdate(String resourceGroupName, String clusterName,
+        String bmcKeySetName, BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context);
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -291,10 +286,10 @@ public interface BmcKeySetsClient {
 
     /**
      * Patch baseboard management controller key set of the cluster.
-     *
-     * <p>Patch properties of baseboard management controller key set for the provided cluster, or update the tags
+     * 
+     * Patch properties of baseboard management controller key set for the provided cluster, or update the tags
      * associated with it. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bmcKeySetName The name of the baseboard management controller key set.
@@ -306,10 +301,6 @@ public interface BmcKeySetsClient {
      * @return bmcKeySet represents the baseboard management controller key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BmcKeySetInner update(
-        String resourceGroupName,
-        String clusterName,
-        String bmcKeySetName,
-        BmcKeySetPatchParameters bmcKeySetUpdateParameters,
-        Context context);
+    BmcKeySetInner update(String resourceGroupName, String clusterName, String bmcKeySetName,
+        BmcKeySetPatchParameters bmcKeySetUpdateParameters, Context context);
 }

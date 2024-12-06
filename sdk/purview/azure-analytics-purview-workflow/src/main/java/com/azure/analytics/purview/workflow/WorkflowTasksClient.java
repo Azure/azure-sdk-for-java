@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowTasksClientBuilder.class)
 public final class WorkflowTasksClient {
-    @Generated private final WorkflowTasksImpl serviceClient;
+    @Generated
+    private final WorkflowTasksImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowTasksClient class.

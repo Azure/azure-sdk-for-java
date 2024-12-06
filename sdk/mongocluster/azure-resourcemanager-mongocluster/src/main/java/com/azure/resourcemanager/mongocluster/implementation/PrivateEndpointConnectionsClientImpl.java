@@ -50,25 +50,25 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsClientImpl(DocumentDBClientImpl client) {
+    PrivateEndpointConnectionsClientImpl(MongoClusterManagementClientImpl client) {
         this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientPrivateEndpointConnections to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for MongoClusterManagementClientPrivateEndpointConnections to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientPriv")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface PrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections")
@@ -934,8 +934,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * List existing private connections
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -965,8 +963,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * List existing private connections
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

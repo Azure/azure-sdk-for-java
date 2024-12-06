@@ -6,28 +6,49 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ParameterContract;
 import com.azure.resourcemanager.apimanagement.models.RequestContract;
 import com.azure.resourcemanager.apimanagement.models.ResponseContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** API Operation details. */
+/**
+ * API Operation details.
+ */
 @Fluent
 public final class OperationContractInner extends ProxyResource {
     /*
      * Properties of the Operation Contract.
      */
-    @JsonProperty(value = "properties")
     private OperationContractProperties innerProperties;
 
-    /** Creates an instance of OperationContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OperationContractInner class.
+     */
     public OperationContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Operation Contract.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationContractProperties innerProperties() {
@@ -35,8 +56,38 @@ public final class OperationContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Operation Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -45,7 +96,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: Operation Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationContractInner object itself.
      */
@@ -60,7 +111,7 @@ public final class OperationContractInner extends ProxyResource {
     /**
      * Get the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
      * by only them.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -70,7 +121,7 @@ public final class OperationContractInner extends ProxyResource {
     /**
      * Set the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
      * by only them.
-     *
+     * 
      * @param method the method value to set.
      * @return the OperationContractInner object itself.
      */
@@ -85,7 +136,7 @@ public final class OperationContractInner extends ProxyResource {
     /**
      * Get the urlTemplate property: Relative URL template identifying the target resource for this operation. May
      * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-     *
+     * 
      * @return the urlTemplate value.
      */
     public String urlTemplate() {
@@ -95,7 +146,7 @@ public final class OperationContractInner extends ProxyResource {
     /**
      * Set the urlTemplate property: Relative URL template identifying the target resource for this operation. May
      * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-     *
+     * 
      * @param urlTemplate the urlTemplate value to set.
      * @return the OperationContractInner object itself.
      */
@@ -109,7 +160,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Get the templateParameters property: Collection of URL template parameters.
-     *
+     * 
      * @return the templateParameters value.
      */
     public List<ParameterContract> templateParameters() {
@@ -118,7 +169,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Set the templateParameters property: Collection of URL template parameters.
-     *
+     * 
      * @param templateParameters the templateParameters value to set.
      * @return the OperationContractInner object itself.
      */
@@ -132,7 +183,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the operation. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -141,7 +192,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the operation. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationContractInner object itself.
      */
@@ -155,7 +206,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Get the request property: An entity containing request details.
-     *
+     * 
      * @return the request value.
      */
     public RequestContract request() {
@@ -164,7 +215,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Set the request property: An entity containing request details.
-     *
+     * 
      * @param request the request value to set.
      * @return the OperationContractInner object itself.
      */
@@ -178,7 +229,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Get the responses property: Array of Operation responses.
-     *
+     * 
      * @return the responses value.
      */
     public List<ResponseContract> responses() {
@@ -187,7 +238,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Set the responses property: Array of Operation responses.
-     *
+     * 
      * @param responses the responses value to set.
      * @return the OperationContractInner object itself.
      */
@@ -201,7 +252,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Get the policies property: Operation Policies.
-     *
+     * 
      * @return the policies value.
      */
     public String policies() {
@@ -210,7 +261,7 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Set the policies property: Operation Policies.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the OperationContractInner object itself.
      */
@@ -224,12 +275,55 @@ public final class OperationContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationContractInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationContractInner.
+     */
+    public static OperationContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationContractInner deserializedOperationContractInner = new OperationContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOperationContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationContractInner.innerProperties = OperationContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationContractInner;
+        });
     }
 }

@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportBlobListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportBlobList model =
-            BinaryData
-                .fromString("{\"blobPath\":[\"vbqid\"],\"blobPathPrefix\":[\"jzyulpk\",\"dj\"]}")
-                .toObject(ExportBlobList.class);
-        Assertions.assertEquals("vbqid", model.blobPath().get(0));
-        Assertions.assertEquals("jzyulpk", model.blobPathPrefix().get(0));
+        ExportBlobList model = BinaryData.fromString(
+            "{\"blobPath\":[\"ybkzgcwr\",\"clxxwrljdo\",\"skcqvkocrcjd\",\"wtnhxbnjbiksqr\"],\"blobPathPrefix\":[\"sainqpjwnzl\",\"jfm\",\"pee\",\"vmgxsab\"]}")
+            .toObject(ExportBlobList.class);
+        Assertions.assertEquals("ybkzgcwr", model.blobPath().get(0));
+        Assertions.assertEquals("sainqpjwnzl", model.blobPathPrefix().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportBlobList model =
-            new ExportBlobList()
-                .withBlobPath(Arrays.asList("vbqid"))
-                .withBlobPathPrefix(Arrays.asList("jzyulpk", "dj"));
+        ExportBlobList model = new ExportBlobList()
+            .withBlobPath(Arrays.asList("ybkzgcwr", "clxxwrljdo", "skcqvkocrcjd", "wtnhxbnjbiksqr"))
+            .withBlobPathPrefix(Arrays.asList("sainqpjwnzl", "jfm", "pee", "vmgxsab"));
         model = BinaryData.fromObject(model).toObject(ExportBlobList.class);
-        Assertions.assertEquals("vbqid", model.blobPath().get(0));
-        Assertions.assertEquals("jzyulpk", model.blobPathPrefix().get(0));
+        Assertions.assertEquals("ybkzgcwr", model.blobPath().get(0));
+        Assertions.assertEquals("sainqpjwnzl", model.blobPathPrefix().get(0));
     }
 }

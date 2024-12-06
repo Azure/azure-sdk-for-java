@@ -16,10 +16,8 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure AD application. */
 @Fluent
-public interface ActiveDirectoryApplication
-    extends ActiveDirectoryObject,
-        HasInnerModel<MicrosoftGraphApplicationInner>,
-        Updatable<ActiveDirectoryApplication.Update> {
+public interface ActiveDirectoryApplication extends ActiveDirectoryObject,
+    HasInnerModel<MicrosoftGraphApplicationInner>, Updatable<ActiveDirectoryApplication.Update> {
     /** @return the application ID */
     String applicationId();
 
@@ -158,14 +156,8 @@ public interface ActiveDirectoryApplication
          * An application definition with sufficient inputs to create a new application in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<ActiveDirectoryApplication>,
-                WithSignOnUrl,
-                WithIdentifierUrl,
-                WithReplyUrl,
-                WithCredential,
-                WithAccountType,
-                WithMultiTenant {
+        interface WithCreate extends Creatable<ActiveDirectoryApplication>, WithSignOnUrl, WithIdentifierUrl,
+            WithReplyUrl, WithCredential, WithAccountType, WithMultiTenant {
         }
     }
 
@@ -228,8 +220,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.DefinitionStages.Blank<? extends Update>
-                defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<? extends Update> defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -288,13 +279,8 @@ public interface ActiveDirectoryApplication
     }
 
     /** The template for an application update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ActiveDirectoryApplication>,
-            UpdateStages.WithSignOnUrl,
-            UpdateStages.WithIdentifierUrl,
-            UpdateStages.WithReplyUrl,
-            UpdateStages.WithCredential,
-            UpdateStages.WithAccountType,
-            UpdateStages.WithMultiTenant {
+    interface Update extends Appliable<ActiveDirectoryApplication>, UpdateStages.WithSignOnUrl,
+        UpdateStages.WithIdentifierUrl, UpdateStages.WithReplyUrl, UpdateStages.WithCredential,
+        UpdateStages.WithAccountType, UpdateStages.WithMultiTenant {
     }
 }

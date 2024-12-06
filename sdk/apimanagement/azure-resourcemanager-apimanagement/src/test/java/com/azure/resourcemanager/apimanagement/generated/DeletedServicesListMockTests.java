@@ -6,68 +6,38 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.DeletedServiceContract;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DeletedServicesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"serviceId\":\"quo\",\"scheduledPurgeDate\":\"2021-04-14T08:30:31Z\",\"deletionDate\":\"2021-12-07T17:56:58Z\"},\"location\":\"muzembqqiehdhjof\",\"id\":\"wwnaxoxlo\",\"name\":\"xgslqc\",\"type\":\"u\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"serviceId\":\"ajqhsnsejplis\",\"scheduledPurgeDate\":\"2021-11-06T01:30:49Z\",\"deletionDate\":\"2021-10-06T12:39:15Z\"},\"location\":\"bkdw\",\"id\":\"fjwxgvtkjctvrpea\",\"name\":\"zzkvfc\",\"type\":\"ozvqxsphtraitr\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DeletedServiceContract> response
+            = manager.deletedServices().list(com.azure.core.util.Context.NONE);
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DeletedServiceContract> response =
-            manager.deletedServices().list(com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ajqhsnsejplis", response.iterator().next().serviceId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-06T01:30:49Z"), response.iterator().next().scheduledPurgeDate());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-10-06T12:39:15Z"), response.iterator().next().deletionDate());
+        Assertions.assertEquals("quo", response.iterator().next().serviceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T08:30:31Z"),
+            response.iterator().next().scheduledPurgeDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T17:56:58Z"),
+            response.iterator().next().deletionDate());
     }
 }

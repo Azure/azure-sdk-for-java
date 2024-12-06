@@ -31,6 +31,11 @@ public final class KeyVaultCertificates implements AzureCertificates {
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
+     * Stores the certificate chains by alias.
+     */
+    private final Map<String, Certificate[]> certificateChains = new HashMap<>();
+
+    /**
      * Stores the certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
@@ -49,7 +54,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
         this.refreshInterval = refreshInterval;
 
-        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, disableChallengeResourceVerification);
+        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+            disableChallengeResourceVerification);
     }
 
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
@@ -109,19 +115,27 @@ public final class KeyVaultCertificates implements AzureCertificates {
     @Override
     public Map<String, Certificate> getCertificates() {
         refreshCertificatesIfNeeded();
-
         return certificates;
     }
 
     /**
-     * Get certificates.
+     * Get certificate chains.
+     * @return certificate chains
+     */
+    @Override
+    public Map<String, Certificate[]> getCertificateChains() {
+        refreshCertificatesIfNeeded();
+        return certificateChains;
+    }
+
+    /**
+     * Get certificate keys.
      *
      * @return Certificate keys.
      */
     @Override
     public Map<String, Key> getCertificateKeys() {
         refreshCertificatesIfNeeded();
-
         return certificateKeys;
     }
 
@@ -136,29 +150,29 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     /**
-     * Refresh certificates. Including certificates, aliases, certificate keys.
+     * Refresh certificates. Including certificates, aliases, certificate keys, certificate chains.
      */
     public synchronized void refreshCertificates() {
         // When refreshing certificates, the update of the 3 variables should be an atomic operation.
         aliases = keyVaultClient.getAliases();
         certificateKeys.clear();
         certificates.clear();
+        certificateChains.clear();
 
-        Optional.ofNullable(aliases)
-            .orElse(Collections.emptyList())
-            .forEach(alias -> {
-                Key key = keyVaultClient.getKey(alias, null);
-
-                if (!Objects.isNull(key)) {
-                    certificateKeys.put(alias, key);
-                }
-
-                Certificate certificate = keyVaultClient.getCertificate(alias);
-
-                if (!Objects.isNull(certificate)) {
-                    certificates.put(alias, certificate);
-                }
-            });
+        Optional.ofNullable(aliases).orElse(Collections.emptyList()).forEach(alias -> {
+            Key key = keyVaultClient.getKey(alias, null);
+            if (!Objects.isNull(key)) {
+                certificateKeys.put(alias, key);
+            }
+            Certificate certificate = keyVaultClient.getCertificate(alias);
+            if (!Objects.isNull(certificate)) {
+                certificates.put(alias, certificate);
+            }
+            Certificate[] certificateChain = keyVaultClient.getCertificateChain(alias);
+            if (!Objects.isNull(certificateChain)) {
+                certificateChains.put(alias, certificateChain);
+            }
+        });
 
         lastRefreshTime = new Date();
     }
@@ -172,7 +186,6 @@ public final class KeyVaultCertificates implements AzureCertificates {
      */
     public String refreshAndGetAliasByCertificate(Certificate certificate) {
         refreshCertificates();
-
         return getCertificates().entrySet()
             .stream()
             .filter(entry -> certificate.equals(entry.getValue()))
@@ -192,8 +205,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         if (aliases != null) {
             aliases.remove(alias);
         }
-
         certificates.remove(alias);
+        certificateChains.remove(alias);
         certificateKeys.remove(alias);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class CatalogSyncType extends ExpandableStringEnum<CatalogSyncType>
      * @param name a name to look for.
      * @return the corresponding CatalogSyncType.
      */
-    @JsonCreator
     public static CatalogSyncType fromString(String name) {
         return fromString(name, CatalogSyncType.class);
     }

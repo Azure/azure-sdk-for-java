@@ -33,22 +33,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RestProxyImplTests {
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface {
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
-                                  @HeaderParam("Content-Type") String contentType,
-                                  @HeaderParam("Content-Length") Long contentLength, Context context
-        );
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
+            Context context);
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         void testVoidMethod(Context context);
     }
 
     @Test
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
         testInterface.testVoidMethod(Context.none());
@@ -59,13 +56,12 @@ public class RestProxyImplTests {
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes),
-            (long) bytes.length), "application/json", (long) bytes.length, Context.none());
+        Response<Void> response
+            = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
+                "application/json", (long) bytes.length, Context.none());
 
         assertEquals(200, response.getStatusCode());
     }
@@ -75,7 +71,7 @@ public class RestProxyImplTests {
 
         @Override
         public Response<?> send(HttpRequest request) {
-            boolean success = request.getUrl().getPath().equals("/my/url/path");
+            boolean success = request.getUri().getPath().equals("/my/uri/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));

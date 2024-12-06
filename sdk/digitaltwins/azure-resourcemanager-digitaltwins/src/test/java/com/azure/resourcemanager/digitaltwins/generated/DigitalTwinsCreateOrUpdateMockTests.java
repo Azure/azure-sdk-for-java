@@ -6,17 +6,20 @@ package com.azure.resourcemanager.digitaltwins.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
+import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.digitaltwins.models.ConnectionProperties;
+import com.azure.resourcemanager.digitaltwins.models.ConnectionPropertiesPrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentity;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
+import com.azure.resourcemanager.digitaltwins.models.PrivateEndpoint;
+import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.digitaltwins.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,68 +27,67 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DigitalTwinsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"createdTime\":\"2021-06-05T14:00:36Z\",\"lastUpdatedTime\":\"2021-08-12T00:08:05Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"jvp\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Approved\",\"privateEndpoint\":{},\"groupIds\":[\"ocmbqfqvmkcxoza\",\"vhelxprglyatdd\",\"kcbcue\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xgc\"}},\"id\":\"ibrhosxsdqr\",\"name\":\"zoymibmrqyibahw\",\"type\":\"luszdtmhrkwof\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"piexpbtgiw\",\"tenantId\":\"oenwashr\",\"userAssignedIdentities\":{\"i\":{\"clientId\":\"cnqxwbpokulpi\",\"principalId\":\"waasip\"},\"fbtkuwhhmhyk\":{\"clientId\":\"byuqerpqlp\",\"principalId\":\"cciuqgbdbutau\"}}},\"location\":\"oxafn\",\"tags\":{\"bpkkpwdre\":\"pichkoymkcdy\",\"suwsyrsnds\":\"novvqfovljxy\"},\"id\":\"tgadgvraeaen\",\"name\":\"qnzarrwl\",\"type\":\"uu\"}";
 
-        String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-11-19T04:43:06Z\",\"lastUpdatedTime\":\"2021-01-21T23:49:51Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"ow\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ualupjmkh\",\"tenantId\":\"obbc\",\"userAssignedIdentities\":{}},\"location\":\"tjrip\",\"tags\":{\"vlvqhjkbegi\":\"pbewtghfgblcgwx\",\"mxiebw\":\"t\",\"gwyzm\":\"aloayqcgwrtzju\"},\"id\":\"txon\",\"name\":\"mtsavjcbpwxqp\",\"type\":\"rknftguvriuhprwm\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        AzureDigitalTwinsManager manager =
-            AzureDigitalTwinsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DigitalTwinsDescription response =
-            manager
-                .digitalTwins()
-                .define("auhashsfwx")
-                .withRegion("jgjrwjueiotwm")
-                .withExistingResourceGroup("zbaliourqha")
-                .withTags(mapOf("it", "tdx", "hniskxfbkpyc", "nrjawgqwg"))
+        DigitalTwinsDescription response
+            = manager.digitalTwins()
+                .define("xbxwa")
+                .withRegion("fouyf")
+                .withExistingResourceGroup("kwobdagxtibq")
+                .withTags(mapOf("vqtmnub", "kcpwiy"))
                 .withIdentity(
-                    new DigitalTwinsIdentity()
-                        .withType(DigitalTwinsIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withPrivateEndpointConnections(Arrays.asList())
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf(
+                            "cvqvpkeqdcv", new UserAssignedIdentity(), "dldwmgxc", new UserAssignedIdentity(),
+                            "yqsluic", new UserAssignedIdentity(), "vmwy", new UserAssignedIdentity())))
+                .withPrivateEndpointConnections(Arrays.asList(
+                    new PrivateEndpointConnectionInner()
+                        .withProperties(new ConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                            .withGroupIds(Arrays.asList("kbebxmubyyntwlrb", "tkoievseotgq", "l"))
+                            .withPrivateLinkServiceConnectionState(
+                                new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                                    .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                                    .withDescription("u"))),
+                    new PrivateEndpointConnectionInner()
+                        .withProperties(new ConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                            .withGroupIds(Arrays.asList("gohdneuelfphsd", "htozfikdow", "quuvxzxcl", "ithhqzon"))
+                            .withPrivateLinkServiceConnectionState(
+                                new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                                    .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
+                                    .withDescription("gbhcohfwdsj")))))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
                 .create();
 
-        Assertions.assertEquals("tjrip", response.location());
-        Assertions.assertEquals("pbewtghfgblcgwx", response.tags().get("vlvqhjkbegi"));
+        Assertions.assertEquals("oxafn", response.location());
+        Assertions.assertEquals("pichkoymkcdy", response.tags().get("bpkkpwdre"));
         Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ocmbqfqvmkcxoza",
+            response.privateEndpointConnections().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+            response.privateEndpointConnections().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("xgc",
+            response.privateEndpointConnections()
+                .get(0)
+                .properties()
+                .privateLinkServiceConnectionState()
+                .description());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

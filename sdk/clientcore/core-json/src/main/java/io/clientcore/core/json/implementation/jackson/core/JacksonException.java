@@ -11,32 +11,29 @@ package io.clientcore.core.json.implementation.jackson.core;
  *
  * @since 2.12
  */
-public abstract class JacksonException extends java.io.IOException
-{
+public abstract class JacksonException extends java.io.IOException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
 
     protected JacksonException(String msg) {
         super(msg);
     }
 
-    protected JacksonException(Throwable t) {
-        super(t);
-    }
-
     protected JacksonException(String msg, Throwable rootCause) {
         super(msg, rootCause);
         // 23-Sep-2020, tatu: before 2.12, had null checks for some reason...
-        //   But I don't think that is actually required; Javadocs for
-        //   `java.lang.Throwable` constructor claim {@code null} is fine.
-/*        if (rootCause != null) {
-            initCause(rootCause);
-        }*/
+        // But I don't think that is actually required; Javadocs for
+        // `java.lang.Throwable` constructor claim {@code null} is fine.
+        /*
+         * if (rootCause != null) {
+         * initCause(rootCause);
+         * }
+         */
     }
 
     /*
-    /**********************************************************************
-    /* Extended API
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Extended API
+     * /**********************************************************************
      */
 
     /**
@@ -51,16 +48,6 @@ public abstract class JacksonException extends java.io.IOException
      *    available; {@code null} otherwise.
      */
     public abstract JsonLocation getLocation();
-
-    /**
-     * Method that allows accessing the original "message" argument,
-     * without additional decorations (like location information)
-     * that overridden {@link #getMessage} adds.
-     *
-     * @return Original, unmodified {@code message} argument used to construct
-     *    this exception instance
-     */
-    public abstract String getOriginalMessage();
 
     /**
      * Method that allows accessing underlying processor that triggered

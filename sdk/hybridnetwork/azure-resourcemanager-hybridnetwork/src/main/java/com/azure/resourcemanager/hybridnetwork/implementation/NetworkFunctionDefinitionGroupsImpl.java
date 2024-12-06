@@ -52,8 +52,8 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
 
     public Response<NetworkFunctionDefinitionGroup> getWithResponse(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, Context context) {
-        Response<NetworkFunctionDefinitionGroupInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            publisherName, networkFunctionDefinitionGroupName, context);
+        Response<NetworkFunctionDefinitionGroupInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkFunctionDefinitionGroupImpl(inner.getValue(), this.manager()));

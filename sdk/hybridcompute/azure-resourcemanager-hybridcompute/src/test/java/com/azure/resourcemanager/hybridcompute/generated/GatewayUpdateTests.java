@@ -14,22 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"allowedFeatures\":[\"elsfeaen\"]},\"tags\":{\"xbjhwuaanozjosph\":\"fatkld\",\"ag\":\"oulpjrv\",\"cktqumiekkezzi\":\"rvimjwosytxitcsk\",\"bdunygaeqid\":\"hlyfjhdgqgg\"}}")
+        GatewayUpdate model = BinaryData
+            .fromString("{\"properties\":{\"allowedFeatures\":[\"aehtwd\",\"r\",\"tswiby\"]},\"tags\":{\"h\":\"l\"}}")
             .toObject(GatewayUpdate.class);
-        Assertions.assertEquals("fatkld", model.tags().get("xbjhwuaanozjosph"));
-        Assertions.assertEquals("elsfeaen", model.allowedFeatures().get(0));
+        Assertions.assertEquals("l", model.tags().get("h"));
+        Assertions.assertEquals("aehtwd", model.allowedFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayUpdate model = new GatewayUpdate()
-            .withTags(mapOf("xbjhwuaanozjosph", "fatkld", "ag", "oulpjrv", "cktqumiekkezzi", "rvimjwosytxitcsk",
-                "bdunygaeqid", "hlyfjhdgqgg"))
-            .withAllowedFeatures(Arrays.asList("elsfeaen"));
+        GatewayUpdate model
+            = new GatewayUpdate().withTags(mapOf("h", "l")).withAllowedFeatures(Arrays.asList("aehtwd", "r", "tswiby"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdate.class);
-        Assertions.assertEquals("fatkld", model.tags().get("xbjhwuaanozjosph"));
-        Assertions.assertEquals("elsfeaen", model.allowedFeatures().get(0));
+        Assertions.assertEquals("l", model.tags().get("h"));
+        Assertions.assertEquals("aehtwd", model.allowedFeatures().get(0));
     }
 
     // Use "Map.of" if available

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logz.fluent.models.LogzSingleSignOnResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnsClient.
+ */
 public interface SingleSignOnsClient {
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface SingleSignOnsClient {
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface SingleSignOnsClient {
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -54,12 +56,12 @@ public interface SingleSignOnsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName);
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -72,15 +74,12 @@ public interface SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        LogzSingleSignOnResourceInner body,
+        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body,
         Context context);
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -90,12 +89,12 @@ public interface SingleSignOnsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogzSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    LogzSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName);
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -107,16 +106,12 @@ public interface SingleSignOnsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogzSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        LogzSingleSignOnResourceInner body,
-        Context context);
+    LogzSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName, String configurationName,
+        LogzSingleSignOnResourceInner body, Context context);
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -127,12 +122,12 @@ public interface SingleSignOnsClient {
      * @return the Logz single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogzSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<LogzSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.

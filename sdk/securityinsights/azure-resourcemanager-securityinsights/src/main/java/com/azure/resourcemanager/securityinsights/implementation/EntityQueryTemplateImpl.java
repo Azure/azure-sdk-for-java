@@ -7,14 +7,14 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryTemplateInner;
 import com.azure.resourcemanager.securityinsights.models.EntityQueryTemplate;
+import com.azure.resourcemanager.securityinsights.models.EntityQueryTemplateKind;
 
 public final class EntityQueryTemplateImpl implements EntityQueryTemplate {
     private EntityQueryTemplateInner innerObject;
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    EntityQueryTemplateImpl(
-        EntityQueryTemplateInner innerObject,
+    EntityQueryTemplateImpl(EntityQueryTemplateInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -30,6 +30,10 @@ public final class EntityQueryTemplateImpl implements EntityQueryTemplate {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public EntityQueryTemplateKind kind() {
+        return this.innerModel().kind();
     }
 
     public SystemData systemData() {

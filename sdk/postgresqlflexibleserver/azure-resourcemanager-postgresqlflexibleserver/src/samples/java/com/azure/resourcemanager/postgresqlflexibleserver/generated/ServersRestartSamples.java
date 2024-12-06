@@ -12,7 +12,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParamete
  */
 public final class ServersRestartSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerRestart.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ServerRestart.json
      */
     /**
      * Sample code: ServerRestart.
@@ -24,7 +26,9 @@ public final class ServersRestartSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerRestartWithFailover.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ServerRestartWithFailover.json
      */
     /**
      * Sample code: ServerRestartWithFailover.

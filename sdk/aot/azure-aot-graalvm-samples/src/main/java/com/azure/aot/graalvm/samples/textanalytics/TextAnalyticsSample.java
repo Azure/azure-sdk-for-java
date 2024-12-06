@@ -12,7 +12,7 @@ import com.azure.core.credential.AzureKeyCredential;
 /**
  * A GraalVM sample to demonstrate analyzing sentiment of a sentence using Azure Text Analytics.
  */
-public class TextAnalyticsSample {
+public final class TextAnalyticsSample {
     private static final String AZURE_TEXT_ANALYTICS_KEY = System.getenv("AZURE_TEXT_ANALYTICS_KEY");
     private static final String AZURE_TEXT_ANALYTICS_ENDPOINT = System.getenv("AZURE_TEXT_ANALYTICS_ENDPOINT");
 
@@ -25,8 +25,8 @@ public class TextAnalyticsSample {
         System.out.println("================================================================");
 
         // Instantiate a client that will be used to call the service.
-        TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential(AZURE_TEXT_ANALYTICS_KEY))
+        TextAnalyticsClient client
+            = new TextAnalyticsClientBuilder().credential(new AzureKeyCredential(AZURE_TEXT_ANALYTICS_KEY))
                 .endpoint(AZURE_TEXT_ANALYTICS_ENDPOINT)
                 .buildClient();
 
@@ -36,17 +36,22 @@ public class TextAnalyticsSample {
         final DocumentSentiment documentSentiment = client.analyzeSentiment(document);
         SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
-                "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
-                documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
+            "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+            documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
 
         documentSentiment.getSentences().forEach(sentenceSentiment -> {
             SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
-            System.out.printf("Recognized sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
-                    sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
+            System.out.printf(
+                "Recognized sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(),
+                sentenceScores.getNegative());
         });
 
         System.out.println("\n================================================================");
         System.out.println(" Text Analytics Sample Complete");
         System.out.println("================================================================");
+    }
+
+    private TextAnalyticsSample() {
     }
 }

@@ -7,6 +7,7 @@ import com.azure.ai.anomalydetector.implementation.UnivariatesImpl;
 import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
 import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -19,7 +20,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
 
 /**
  * Initializes a new instance of the synchronous AnomalyDetectorClient type.
@@ -49,7 +49,8 @@ public final class UnivariateClient {
      * user an overall status of the time series.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -65,11 +66,13 @@ public final class UnivariateClient {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
@@ -94,7 +97,8 @@ public final class UnivariateClient {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -118,7 +122,8 @@ public final class UnivariateClient {
      * and based on all data to determine whether the last point is anomalous.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -134,11 +139,13 @@ public final class UnivariateClient {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
@@ -150,7 +157,8 @@ public final class UnivariateClient {
      *     isPositiveAnomaly: boolean (Required)
      *     severity: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -173,7 +181,8 @@ public final class UnivariateClient {
      * Evaluate the change point score of every series point.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -187,11 +196,13 @@ public final class UnivariateClient {
      *     stableTrendWindow: Integer (Optional)
      *     threshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: Integer (Optional)
      *     isChangePoint (Optional): [
@@ -201,7 +212,8 @@ public final class UnivariateClient {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

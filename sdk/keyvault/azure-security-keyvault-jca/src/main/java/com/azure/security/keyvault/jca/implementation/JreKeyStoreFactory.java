@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -28,10 +27,10 @@ public final class JreKeyStoreFactory {
     private static final Path STORE_PATH = Paths.get(JAVA_HOME).resolve("lib").resolve("security");
     private static final Path DEFAULT_STORE = STORE_PATH.resolve("cacerts");
     private static final Path JSSE_DEFAULT_STORE = STORE_PATH.resolve("jssecacerts");
-    private static final String KEY_STORE_PASSWORD = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
+    private static final String KEY_STORE_PASSWORD
+        = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
     private static final Logger LOGGER = Logger.getLogger(JreKeyStoreFactory.class.getName());
     private static final KeyStore JRE_KEY_STORE = getJreKeyStore();
-
 
     private JreKeyStoreFactory() {
 
@@ -42,9 +41,8 @@ public final class JreKeyStoreFactory {
      * @return the JRE key store.
      */
     public static KeyStore getDefaultKeyStore() {
-        return  JRE_KEY_STORE;
+        return JRE_KEY_STORE;
     }
-
 
     private static KeyStore getJreKeyStore() {
         KeyStore defaultKeyStore = null;
@@ -76,18 +74,14 @@ public final class JreKeyStoreFactory {
 
     private static Path getConfiguredKeyStorePath() {
         String configuredKeyStorePath = privilegedGetProperty("javax.net.ssl.keyStore", "");
-        return Optional.of(configuredKeyStorePath)
-            .filter(path -> !path.isEmpty())
-            .map(Paths::get)
-            .orElse(null);
+        return Optional.of(configuredKeyStorePath).filter(path -> !path.isEmpty()).map(Paths::get).orElse(null);
     }
 
     @SuppressWarnings("removal")
-    private static String  privilegedGetProperty(String theProp, String defaultVal) {
-        return java.security.AccessController.doPrivileged(
-            (PrivilegedAction<String>) () -> {
-                String value = System.getProperty(theProp, "");
-                return (value.isEmpty()) ? defaultVal : value;
-            });
+    private static String privilegedGetProperty(String theProp, String defaultVal) {
+        return java.security.AccessController.doPrivileged((PrivilegedAction<String>) () -> {
+            String value = System.getProperty(theProp, "");
+            return (value.isEmpty()) ? defaultVal : value;
+        });
     }
 }

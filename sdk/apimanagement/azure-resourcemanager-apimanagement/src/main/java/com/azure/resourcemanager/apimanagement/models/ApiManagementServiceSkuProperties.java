@@ -6,30 +6,36 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** API Management service resource SKU properties. */
+/**
+ * API Management service resource SKU properties.
+ */
 @Fluent
-public final class ApiManagementServiceSkuProperties {
+public final class ApiManagementServiceSkuProperties implements JsonSerializable<ApiManagementServiceSkuProperties> {
     /*
      * Name of the Sku.
      */
-    @JsonProperty(value = "name", required = true)
     private SkuType name;
 
     /*
      * Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as 0.
      */
-    @JsonProperty(value = "capacity", required = true)
     private int capacity;
 
-    /** Creates an instance of ApiManagementServiceSkuProperties class. */
+    /**
+     * Creates an instance of ApiManagementServiceSkuProperties class.
+     */
     public ApiManagementServiceSkuProperties() {
     }
 
     /**
      * Get the name property: Name of the Sku.
-     *
+     * 
      * @return the name value.
      */
     public SkuType name() {
@@ -38,7 +44,7 @@ public final class ApiManagementServiceSkuProperties {
 
     /**
      * Set the name property: Name of the Sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApiManagementServiceSkuProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class ApiManagementServiceSkuProperties {
     /**
      * Get the capacity property: Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU
      * capacity must be specified as 0.
-     *
+     * 
      * @return the capacity value.
      */
     public int capacity() {
@@ -60,7 +66,7 @@ public final class ApiManagementServiceSkuProperties {
     /**
      * Set the capacity property: Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU
      * capacity must be specified as 0.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ApiManagementServiceSkuProperties object itself.
      */
@@ -71,17 +77,57 @@ public final class ApiManagementServiceSkuProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ApiManagementServiceSkuProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ApiManagementServiceSkuProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiManagementServiceSkuProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeIntField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceSkuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceSkuProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiManagementServiceSkuProperties.
+     */
+    public static ApiManagementServiceSkuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceSkuProperties deserializedApiManagementServiceSkuProperties
+                = new ApiManagementServiceSkuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApiManagementServiceSkuProperties.name = SkuType.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedApiManagementServiceSkuProperties.capacity = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceSkuProperties;
+        });
+    }
 }

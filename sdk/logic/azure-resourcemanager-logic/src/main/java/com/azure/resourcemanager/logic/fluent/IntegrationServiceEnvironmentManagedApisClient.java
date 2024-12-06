@@ -20,7 +20,7 @@ import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironme
 public interface IntegrationServiceEnvironmentManagedApisClient {
     /**
      * Gets the integration service environment managed Apis.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,12 +29,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the integration service environment managed Apis as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationServiceEnvironmentManagedApiInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName);
+    PagedIterable<IntegrationServiceEnvironmentManagedApiInner> list(String resourceGroup,
+        String integrationServiceEnvironmentName);
 
     /**
      * Gets the integration service environment managed Apis.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -44,12 +44,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the integration service environment managed Apis as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationServiceEnvironmentManagedApiInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context);
+    PagedIterable<IntegrationServiceEnvironmentManagedApiInner> list(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context);
 
     /**
      * Gets the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -60,12 +60,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the integration service environment managed Api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationServiceEnvironmentManagedApiInner> getWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+    Response<IntegrationServiceEnvironmentManagedApiInner> getWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, String apiName, Context context);
 
     /**
      * Gets the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -75,12 +75,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the integration service environment managed Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationServiceEnvironmentManagedApiInner get(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName);
+    IntegrationServiceEnvironmentManagedApiInner get(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName);
 
     /**
      * Puts the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -92,15 +92,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationServiceEnvironmentManagedApiInner>, IntegrationServiceEnvironmentManagedApiInner>
-        beginPut(
-            String resourceGroup,
-            String integrationServiceEnvironmentName,
-            String apiName,
+        beginPut(String resourceGroup, String integrationServiceEnvironmentName, String apiName,
             IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi);
 
     /**
      * Puts the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -113,16 +110,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationServiceEnvironmentManagedApiInner>, IntegrationServiceEnvironmentManagedApiInner>
-        beginPut(
-            String resourceGroup,
-            String integrationServiceEnvironmentName,
-            String apiName,
-            IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
-            Context context);
+        beginPut(String resourceGroup, String integrationServiceEnvironmentName, String apiName,
+            IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi, Context context);
 
     /**
      * Puts the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -133,15 +126,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the integration service environment managed api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationServiceEnvironmentManagedApiInner put(
-        String resourceGroup,
-        String integrationServiceEnvironmentName,
-        String apiName,
-        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi);
+    IntegrationServiceEnvironmentManagedApiInner put(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName, IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi);
 
     /**
      * Puts the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -153,16 +143,13 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the integration service environment managed api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationServiceEnvironmentManagedApiInner put(
-        String resourceGroup,
-        String integrationServiceEnvironmentName,
-        String apiName,
-        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
+    IntegrationServiceEnvironmentManagedApiInner put(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName, IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
         Context context);
 
     /**
      * Deletes the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -172,12 +159,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName);
 
     /**
      * Deletes the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -188,12 +175,12 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName, Context context);
 
     /**
      * Deletes the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -206,7 +193,7 @@ public interface IntegrationServiceEnvironmentManagedApisClient {
 
     /**
      * Deletes the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.

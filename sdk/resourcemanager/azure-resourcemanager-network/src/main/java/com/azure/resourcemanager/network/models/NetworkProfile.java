@@ -15,11 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.util.List;
 
 /** An immutable client-side representation of NetworkProfile. */
-public interface NetworkProfile extends
-    GroupableResource<NetworkManager, NetworkProfileInner>,
-    Refreshable<NetworkProfile>,
-    Updatable<NetworkProfile.Update>,
-    UpdatableWithTags<NetworkProfile> {
+public interface NetworkProfile extends GroupableResource<NetworkManager, NetworkProfileInner>,
+    Refreshable<NetworkProfile>, Updatable<NetworkProfile.Update>, UpdatableWithTags<NetworkProfile> {
 
     /**
      * Gets the containerNetworkInterfaceConfigurations property: List of chid container network interface
@@ -30,27 +27,23 @@ public interface NetworkProfile extends
     List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations();
 
     /** The entirety of the NetworkProfile definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithContainerNetworkInterfaceConfigurations,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithContainerNetworkInterfaceConfigurations, DefinitionStages.WithCreate {
     }
+
     /** The NetworkProfile definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of the NetworkProfile definition.
          */
-        interface Blank extends
-            GroupableResource.DefinitionWithRegion<NetworkProfile.DefinitionStages.WithGroup> {
+        interface Blank extends GroupableResource.DefinitionWithRegion<NetworkProfile.DefinitionStages.WithGroup> {
         }
 
         /**
          * The stage of the NetworkProfile definition allowing to specify parent resource.
          */
         interface WithGroup extends
-            GroupableResource.DefinitionStages.WithGroup
-                <NetworkProfile.DefinitionStages.WithContainerNetworkInterfaceConfigurations> {
+            GroupableResource.DefinitionStages.WithGroup<NetworkProfile.DefinitionStages.WithContainerNetworkInterfaceConfigurations> {
         }
 
         /**
@@ -58,8 +51,7 @@ public interface NetworkProfile extends
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends Creatable<NetworkProfile>,
-            Resource.DefinitionWithTags<NetworkProfile.DefinitionStages.WithCreate> {
+            extends Creatable<NetworkProfile>, Resource.DefinitionWithTags<NetworkProfile.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -76,8 +68,8 @@ public interface NetworkProfile extends
              * @param subnetName the name of the subnet
              * @return the next stage
              */
-            WithCreate withContainerNetworkInterfaceConfiguration(
-                String name, String ipConfigName, String virtualNetworkId, String subnetName);
+            WithCreate withContainerNetworkInterfaceConfiguration(String name, String ipConfigName,
+                String virtualNetworkId, String subnetName);
 
             /**
              * Specifies the network interface configuration for container.
@@ -87,14 +79,11 @@ public interface NetworkProfile extends
              * @param subnet the Subnet resource
              * @return the next stage
              */
-            WithCreate withContainerNetworkInterfaceConfiguration(
-                String name, String ipConfigName, Subnet subnet);
+            WithCreate withContainerNetworkInterfaceConfiguration(String name, String ipConfigName, Subnet subnet);
         }
     }
 
     /** The template for NetworkProfile update. */
-    interface Update extends
-        Appliable<NetworkProfile>,
-        Resource.UpdateWithTags<NetworkProfile.Update> {
+    interface Update extends Appliable<NetworkProfile>, Resource.UpdateWithTags<NetworkProfile.Update> {
     }
 }

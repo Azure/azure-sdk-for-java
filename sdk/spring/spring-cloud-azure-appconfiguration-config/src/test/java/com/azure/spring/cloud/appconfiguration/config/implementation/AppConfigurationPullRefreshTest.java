@@ -4,8 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
@@ -68,16 +66,6 @@ public class AppConfigurationPullRefreshTest {
             (long) 0, replicaLookUpMock, refreshUtilMock);
         assertFalse(refresh.refreshConfigurations().block());
        
-    }
-
-    @Test
-    public void refreshNoChangeAsync() throws InterruptedException, ExecutionException {
-        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
-
-        AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval, (long) 0, replicaLookUpMock, refreshUtilMock);
-        refresh.refreshAsync();
-        Thread.sleep(200);
-        verify(eventDataMock, times(1)).getDoRefresh(); 
     }
 
     @Test

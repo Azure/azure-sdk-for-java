@@ -7,8 +7,16 @@ package com.azure.resourcemanager.orbital.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.orbital.fluent.models.ContactProfileInner;
 import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
+import com.azure.resourcemanager.orbital.models.ContactProfileLink;
+import com.azure.resourcemanager.orbital.models.ContactProfileLinkChannel;
 import com.azure.resourcemanager.orbital.models.ContactProfileListResult;
+import com.azure.resourcemanager.orbital.models.ContactProfileThirdPartyConfiguration;
+import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesNetworkConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
+import com.azure.resourcemanager.orbital.models.Direction;
+import com.azure.resourcemanager.orbital.models.EndPoint;
+import com.azure.resourcemanager.orbital.models.Polarization;
+import com.azure.resourcemanager.orbital.models.Protocol;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,79 +25,386 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactProfileListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactProfileListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"creating\",\"minimumViableContactDuration\":\"leggzfbu\",\"minimumElevationDegrees\":78.875084,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"x\",\"thirdPartyConfigurations\":[],\"links\":[]},\"location\":\"eiithlvmez\",\"tags\":{\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\",\"dng\":\"nvudwtiukb\",\"g\":\"pocipazyxoegu\"},\"id\":\"npiucgygevqznty\",\"name\":\"mrbpizcdrqj\",\"type\":\"dpydn\"},{\"properties\":{\"provisioningState\":\"updating\",\"minimumViableContactDuration\":\"de\",\"minimumElevationDegrees\":59.384357,\"autoTrackingConfiguration\":\"xBand\",\"eventHubUri\":\"w\",\"thirdPartyConfigurations\":[],\"links\":[]},\"location\":\"jttgzf\",\"tags\":{\"eamdp\":\"hcbkhajde\",\"wkgshwa\":\"agalpbuxwgipwhon\",\"bin\":\"kix\",\"iyqzrnk\":\"eputtmrywnuzoqf\"},\"id\":\"qvyxlwhzlsicoho\",\"name\":\"qnwvlrya\",\"type\":\"w\"}],\"nextLink\":\"eun\"}")
-                .toObject(ContactProfileListResult.class);
-        Assertions.assertEquals("eiithlvmez", model.value().get(0).location());
-        Assertions.assertEquals("hxmzsbbzoggig", model.value().get(0).tags().get("xwburvjxxjns"));
-        Assertions
-            .assertEquals(
-                ContactProfilesPropertiesProvisioningState.CREATING, model.value().get(0).provisioningState());
-        Assertions.assertEquals("leggzfbu", model.value().get(0).minimumViableContactDuration());
-        Assertions.assertEquals(78.875084F, model.value().get(0).minimumElevationDegrees());
+        ContactProfileListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"minimumViableContactDuration\":\"ujmkcjhwqy\",\"minimumElevationDegrees\":1.7570734,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"wj\",\"networkConfiguration\":{\"subnetId\":\"wgdrjervnaenqp\"},\"thirdPartyConfigurations\":[{\"providerName\":\"ndoygmifthnzdnd\",\"missionConfiguration\":\"l\"},{\"providerName\":\"nayqi\",\"missionConfiguration\":\"ynduha\"},{\"providerName\":\"hqlkthumaqo\",\"missionConfiguration\":\"bgycduiertgccym\"},{\"providerName\":\"aolps\",\"missionConfiguration\":\"lqlfm\"}],\"links\":[{\"name\":\"n\",\"polarization\":\"LHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":55.65765,\"eirpdBW\":81.210945,\"channels\":[{\"name\":\"iydmcwyhzdxs\",\"centerFrequencyMHz\":80.603836,\"bandwidthMHz\":20.36894,\"endPoint\":{\"ipAddress\":\"bzmnvdfznud\",\"endPointName\":\"od\",\"port\":\"xzb\",\"protocol\":\"UDP\"}},{\"name\":\"blylpstdbh\",\"centerFrequencyMHz\":21.126366,\"bandwidthMHz\":76.3956,\"endPoint\":{\"ipAddress\":\"rzdzucerscdnt\",\"endPointName\":\"evfiwjmygt\",\"port\":\"sslswtmweriof\",\"protocol\":\"TCP\"}},{\"name\":\"yqsemwa\",\"centerFrequencyMHz\":5.657935,\"bandwidthMHz\":18.444378,\"endPoint\":{\"ipAddress\":\"tshhszhedp\",\"endPointName\":\"vwiwubmwmbesld\",\"port\":\"k\",\"protocol\":\"UDP\"}},{\"name\":\"tppjflcx\",\"centerFrequencyMHz\":80.7271,\"bandwidthMHz\":66.58158,\"endPoint\":{\"ipAddress\":\"okonzmnsikvmkqz\",\"endPointName\":\"qqkdltfzxmhhvhgu\",\"port\":\"eodkwobda\",\"protocol\":\"UDP\"}}]},{\"name\":\"tibqdxbxwakb\",\"polarization\":\"linearHorizontal\",\"direction\":\"Uplink\",\"gainOverTemperature\":69.47182,\"eirpdBW\":79.54939,\"channels\":[{\"name\":\"zgx\",\"centerFrequencyMHz\":85.23063,\"bandwidthMHz\":22.702295,\"endPoint\":{\"ipAddress\":\"iplbpodxunkbebxm\",\"endPointName\":\"byyntwlrbqt\",\"port\":\"oievseotgqrlltm\",\"protocol\":\"UDP\"}},{\"name\":\"lauwzizxbmpgcjef\",\"centerFrequencyMHz\":95.06782,\"bandwidthMHz\":21.135498,\"endPoint\":{\"ipAddress\":\"uvpb\",\"endPointName\":\"tdum\",\"port\":\"rp\",\"protocol\":\"TCP\"}},{\"name\":\"ebmnzbtbhjpglk\",\"centerFrequencyMHz\":82.34188,\"bandwidthMHz\":49.83795,\"endPoint\":{\"ipAddress\":\"hdneuelfph\",\"endPointName\":\"dyhtozfikdowwquu\",\"port\":\"xzxcl\",\"protocol\":\"TCP\"}}]},{\"name\":\"thhqzonosggbh\",\"polarization\":\"LHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":61.219753,\"eirpdBW\":33.099705,\"channels\":[{\"name\":\"n\",\"centerFrequencyMHz\":65.78154,\"bandwidthMHz\":25.078642,\"endPoint\":{\"ipAddress\":\"jutiiswacff\",\"endPointName\":\"dkzzewkfvhqcrail\",\"port\":\"pnppfuf\",\"protocol\":\"UDP\"}},{\"name\":\"wdmhdlxyjrxs\",\"centerFrequencyMHz\":94.25893,\"bandwidthMHz\":37.06115,\"endPoint\":{\"ipAddress\":\"fcnihgwq\",\"endPointName\":\"pnedgf\",\"port\":\"cvkcvqvpkeqdcv\",\"protocol\":\"TCP\"}},{\"name\":\"hvoodsotbobzd\",\"centerFrequencyMHz\":29.276281,\"bandwidthMHz\":26.7008,\"endPoint\":{\"ipAddress\":\"j\",\"endPointName\":\"vnhdldwmgxcxr\",\"port\":\"lpmutwuoegrpkhj\",\"protocol\":\"TCP\"}},{\"name\":\"iyq\",\"centerFrequencyMHz\":99.57627,\"bandwidthMHz\":28.484118,\"endPoint\":{\"ipAddress\":\"i\",\"endPointName\":\"pdggkzzlvm\",\"port\":\"mpaxmodfvuefywsb\",\"protocol\":\"TCP\"}}]}]},\"location\":\"mwyhr\",\"tags\":{\"yzvqt\":\"yftaakcpw\",\"zksmondj\":\"nubexk\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"},{\"properties\":{\"provisioningState\":\"failed\",\"minimumViableContactDuration\":\"ocmbqfqvmkcxoza\",\"minimumElevationDegrees\":56.86097,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"prglya\",\"networkConfiguration\":{\"subnetId\":\"dd\"},\"thirdPartyConfigurations\":[{\"providerName\":\"bcuejrjxgci\",\"missionConfiguration\":\"ibrhosxsdqr\"},{\"providerName\":\"zoymibmrqyibahw\",\"missionConfiguration\":\"luszdtmhrkwof\"},{\"providerName\":\"yvoqa\",\"missionConfiguration\":\"piexpbtgiw\"},{\"providerName\":\"wo\",\"missionConfiguration\":\"nwashrtd\"}],\"links\":[{\"name\":\"cnqxwbpokulpi\",\"polarization\":\"RHCP\",\"direction\":\"Uplink\",\"gainOverTemperature\":47.424603,\"eirpdBW\":85.214745,\"channels\":[{\"name\":\"qiiobyuqer\",\"centerFrequencyMHz\":59.630554,\"bandwidthMHz\":6.2912345,\"endPoint\":{\"ipAddress\":\"pqwcciuqgbdbutau\",\"endPointName\":\"fbtkuwhhmhyk\",\"port\":\"joxafnndlpi\",\"protocol\":\"UDP\"}},{\"name\":\"koymkcd\",\"centerFrequencyMHz\":1.9727468,\"bandwidthMHz\":52.415318,\"endPoint\":{\"ipAddress\":\"pkkpw\",\"endPointName\":\"reqnovvqfov\",\"port\":\"jxywsuws\",\"protocol\":\"UDP\"}},{\"name\":\"s\",\"centerFrequencyMHz\":58.6494,\"bandwidthMHz\":74.82819,\"endPoint\":{\"ipAddress\":\"ytgadgvraeaene\",\"endPointName\":\"nzar\",\"port\":\"wlquuijfqkace\",\"protocol\":\"TCP\"}}]},{\"name\":\"ipfpubji\",\"polarization\":\"linearHorizontal\",\"direction\":\"Uplink\",\"gainOverTemperature\":5.9326353,\"eirpdBW\":86.60929,\"channels\":[{\"name\":\"qkvpuvksgplsakn\",\"centerFrequencyMHz\":0.79660416,\"bandwidthMHz\":68.44677,\"endPoint\":{\"ipAddress\":\"synljphuopxodl\",\"endPointName\":\"iyntorzihle\",\"port\":\"sjswsrms\",\"protocol\":\"UDP\"}},{\"name\":\"zrpzb\",\"centerFrequencyMHz\":73.3367,\"bandwidthMHz\":81.935295,\"endPoint\":{\"ipAddress\":\"kqqzqioxiysu\",\"endPointName\":\"i\",\"port\":\"ynkedyatrwyhqmib\",\"protocol\":\"UDP\"}},{\"name\":\"hwit\",\"centerFrequencyMHz\":65.06971,\"bandwidthMHz\":81.76519,\"endPoint\":{\"ipAddress\":\"pyy\",\"endPointName\":\"pcdpumnz\",\"port\":\"mwzn\",\"protocol\":\"TCP\"}},{\"name\":\"biknsorgjhxbld\",\"centerFrequencyMHz\":27.161957,\"bandwidthMHz\":66.445755,\"endPoint\":{\"ipAddress\":\"wrlkdmtn\",\"endPointName\":\"vokotllxdyh\",\"port\":\"syocogjltdtbnnha\",\"protocol\":\"UDP\"}}]},{\"name\":\"ocrkvcikh\",\"polarization\":\"RHCP\",\"direction\":\"Uplink\",\"gainOverTemperature\":16.389334,\"eirpdBW\":55.93623,\"channels\":[{\"name\":\"qqu\",\"centerFrequencyMHz\":43.360477,\"bandwidthMHz\":10.328889,\"endPoint\":{\"ipAddress\":\"kywggxkallatmel\",\"endPointName\":\"uipiccjzk\",\"port\":\"ivgvvcna\",\"protocol\":\"UDP\"}}]}]},\"location\":\"yrnxxmueedn\",\"tags\":{\"tkwqqtchealm\":\"v\",\"gdv\":\"mtdaa\"},\"id\":\"vgpiohgwxrt\",\"name\":\"udxepxgyqagv\",\"type\":\"vmnpkukghimdblx\"},{\"properties\":{\"provisioningState\":\"updating\",\"minimumViableContactDuration\":\"fnjhfjxwmszkkfo\",\"minimumElevationDegrees\":56.352932,\"autoTrackingConfiguration\":\"sBand\",\"eventHubUri\":\"zi\",\"networkConfiguration\":{\"subnetId\":\"fjawneaivxwczel\"},\"thirdPartyConfigurations\":[{\"providerName\":\"r\",\"missionConfiguration\":\"lsfeaenwabfatkld\"},{\"providerName\":\"xbjhwuaanozjosph\",\"missionConfiguration\":\"oulpjrv\"}],\"links\":[{\"name\":\"glrvimjwosytxi\",\"polarization\":\"linearHorizontal\",\"direction\":\"Uplink\",\"gainOverTemperature\":73.11868,\"eirpdBW\":4.9390373,\"channels\":[{\"name\":\"qumiek\",\"centerFrequencyMHz\":8.023405,\"bandwidthMHz\":74.09953,\"endPoint\":{\"ipAddress\":\"zikhl\",\"endPointName\":\"fjhdg\",\"port\":\"gge\",\"protocol\":\"TCP\"}}]}]},\"location\":\"nyga\",\"tags\":{\"fatpxllrxcyjmoa\":\"db\"},\"id\":\"su\",\"name\":\"arm\",\"type\":\"wdmjsjqbjhhyx\"},{\"properties\":{\"provisioningState\":\"deleting\",\"minimumViableContactDuration\":\"yc\",\"minimumElevationDegrees\":68.70334,\"autoTrackingConfiguration\":\"xBand\",\"eventHubUri\":\"xkgymareqnajxqu\",\"networkConfiguration\":{\"subnetId\":\"jhkycub\"},\"thirdPartyConfigurations\":[{\"providerName\":\"gssofwq\",\"missionConfiguration\":\"zqalkrmnjijpx\"},{\"providerName\":\"cqqudf\",\"missionConfiguration\":\"byxbaaabjy\"},{\"providerName\":\"ayffim\",\"missionConfiguration\":\"zrtuzq\"},{\"providerName\":\"gsexne\",\"missionConfiguration\":\"fdnw\"}],\"links\":[{\"name\":\"mewzsyyc\",\"polarization\":\"LHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":89.182625,\"eirpdBW\":81.26643,\"channels\":[{\"name\":\"ud\",\"centerFrequencyMHz\":92.32651,\"bandwidthMHz\":10.957659,\"endPoint\":{\"ipAddress\":\"xtrthz\",\"endPointName\":\"aytdwkqbrq\",\"port\":\"bpaxhexiilivpdt\",\"protocol\":\"TCP\"}},{\"name\":\"r\",\"centerFrequencyMHz\":83.604706,\"bandwidthMHz\":1.2664497,\"endPoint\":{\"ipAddress\":\"qoaxoruzfgs\",\"endPointName\":\"uyfxrxxleptramxj\",\"port\":\"zwl\",\"protocol\":\"UDP\"}}]},{\"name\":\"wxuqlcvydypatdoo\",\"polarization\":\"LHCP\",\"direction\":\"Uplink\",\"gainOverTemperature\":52.902954,\"eirpdBW\":20.04649,\"channels\":[{\"name\":\"kooebwnu\",\"centerFrequencyMHz\":25.77629,\"bandwidthMHz\":54.985764,\"endPoint\":{\"ipAddress\":\"mmsbvdkcrodtjin\",\"endPointName\":\"wj\",\"port\":\"fltkacjv\",\"protocol\":\"TCP\"}},{\"name\":\"kdlfoa\",\"centerFrequencyMHz\":79.17313,\"bandwidthMHz\":38.711143,\"endPoint\":{\"ipAddress\":\"kfpagao\",\"endPointName\":\"pulpqblylsyxk\",\"port\":\"jnsjervtiagxsd\",\"protocol\":\"UDP\"}},{\"name\":\"uem\",\"centerFrequencyMHz\":28.800655,\"bandwidthMHz\":65.141945,\"endPoint\":{\"ipAddress\":\"zkfzbeyv\",\"endPointName\":\"nqicvinvkjjxdxrb\",\"port\":\"ukzclewyhmlwpaz\",\"protocol\":\"TCP\"}}]}]},\"location\":\"ofncckwyfzqwhxxb\",\"tags\":{\"zfeqztppri\":\"a\"},\"id\":\"lxorjaltolmncws\",\"name\":\"bqwcsdbnwdcf\",\"type\":\"ucqdpfuvglsb\"}],\"nextLink\":\"ca\"}")
+            .toObject(ContactProfileListResult.class);
+        Assertions.assertEquals("mwyhr", model.value().get(0).location());
+        Assertions.assertEquals("yftaakcpw", model.value().get(0).tags().get("yzvqt"));
+        Assertions.assertEquals(ContactProfilesPropertiesProvisioningState.SUCCEEDED,
+            model.value().get(0).provisioningState());
+        Assertions.assertEquals("ujmkcjhwqy", model.value().get(0).minimumViableContactDuration());
+        Assertions.assertEquals(1.7570734F, model.value().get(0).minimumElevationDegrees());
         Assertions.assertEquals(AutoTrackingConfiguration.DISABLED, model.value().get(0).autoTrackingConfiguration());
-        Assertions.assertEquals("x", model.value().get(0).eventHubUri());
+        Assertions.assertEquals("wj", model.value().get(0).eventHubUri());
+        Assertions.assertEquals("wgdrjervnaenqp", model.value().get(0).networkConfiguration().subnetId());
+        Assertions.assertEquals("ndoygmifthnzdnd",
+            model.value().get(0).thirdPartyConfigurations().get(0).providerName());
+        Assertions.assertEquals("l", model.value().get(0).thirdPartyConfigurations().get(0).missionConfiguration());
+        Assertions.assertEquals("n", model.value().get(0).links().get(0).name());
+        Assertions.assertEquals(Polarization.LHCP, model.value().get(0).links().get(0).polarization());
+        Assertions.assertEquals(Direction.DOWNLINK, model.value().get(0).links().get(0).direction());
+        Assertions.assertEquals(55.65765F, model.value().get(0).links().get(0).gainOverTemperature());
+        Assertions.assertEquals(81.210945F, model.value().get(0).links().get(0).eirpdBW());
+        Assertions.assertEquals("iydmcwyhzdxs", model.value().get(0).links().get(0).channels().get(0).name());
+        Assertions.assertEquals(80.603836f, model.value().get(0).links().get(0).channels().get(0).centerFrequencyMHz());
+        Assertions.assertEquals(20.36894f, model.value().get(0).links().get(0).channels().get(0).bandwidthMHz());
+        Assertions.assertEquals("bzmnvdfznud",
+            model.value().get(0).links().get(0).channels().get(0).endPoint().ipAddress());
+        Assertions.assertEquals("od", model.value().get(0).links().get(0).channels().get(0).endPoint().endPointName());
+        Assertions.assertEquals("xzb", model.value().get(0).links().get(0).channels().get(0).endPoint().port());
+        Assertions.assertEquals(Protocol.UDP,
+            model.value().get(0).links().get(0).channels().get(0).endPoint().protocol());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactProfileListResult model =
-            new ContactProfileListResult()
+        ContactProfileListResult model
+            = new ContactProfileListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new ContactProfileInner()
-                                .withLocation("eiithlvmez")
-                                .withTags(
-                                    mapOf(
-                                        "xwburvjxxjns",
-                                        "hxmzsbbzoggig",
-                                        "ou",
-                                        "ydptkoen",
-                                        "dng",
-                                        "nvudwtiukb",
-                                        "g",
-                                        "pocipazyxoegu"))
-                                .withProvisioningState(ContactProfilesPropertiesProvisioningState.CREATING)
-                                .withMinimumViableContactDuration("leggzfbu")
-                                .withMinimumElevationDegrees(78.875084F)
+                            new ContactProfileInner().withLocation("mwyhr")
+                                .withTags(mapOf("yzvqt", "yftaakcpw", "zksmondj", "nubexk"))
+                                .withProvisioningState(ContactProfilesPropertiesProvisioningState.SUCCEEDED)
+                                .withMinimumViableContactDuration("ujmkcjhwqy")
+                                .withMinimumElevationDegrees(1.7570734F)
                                 .withAutoTrackingConfiguration(AutoTrackingConfiguration.DISABLED)
-                                .withEventHubUri("x")
-                                .withThirdPartyConfigurations(Arrays.asList())
-                                .withLinks(Arrays.asList()),
-                            new ContactProfileInner()
-                                .withLocation("jttgzf")
-                                .withTags(
-                                    mapOf(
-                                        "eamdp",
-                                        "hcbkhajde",
-                                        "wkgshwa",
-                                        "agalpbuxwgipwhon",
-                                        "bin",
-                                        "kix",
-                                        "iyqzrnk",
-                                        "eputtmrywnuzoqf"))
+                                .withEventHubUri("wj")
+                                .withNetworkConfiguration(
+                                    new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("wgdrjervnaenqp"))
+                                .withThirdPartyConfigurations(Arrays.asList(
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("ndoygmifthnzdnd")
+                                        .withMissionConfiguration("l"),
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("nayqi")
+                                        .withMissionConfiguration("ynduha"),
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("hqlkthumaqo")
+                                        .withMissionConfiguration("bgycduiertgccym"),
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("aolps")
+                                        .withMissionConfiguration("lqlfm")))
+                                .withLinks(
+                                    Arrays
+                                        .asList(
+                                            new ContactProfileLink().withName("n")
+                                                .withPolarization(Polarization.LHCP)
+                                                .withDirection(Direction.DOWNLINK)
+                                                .withGainOverTemperature(55.65765F)
+                                                .withEirpdBW(81.210945F)
+                                                .withChannels(
+                                                    Arrays.asList(
+                                                        new ContactProfileLinkChannel().withName("iydmcwyhzdxs")
+                                                            .withCenterFrequencyMHz(80.603836f)
+                                                            .withBandwidthMHz(20.36894f)
+                                                            .withEndPoint(new EndPoint().withIpAddress("bzmnvdfznud")
+                                                                .withEndPointName("od")
+                                                                .withPort("xzb")
+                                                                .withProtocol(Protocol.UDP)),
+                                                        new ContactProfileLinkChannel().withName("blylpstdbh")
+                                                            .withCenterFrequencyMHz(21.126366f)
+                                                            .withBandwidthMHz(76.3956f)
+                                                            .withEndPoint(new EndPoint().withIpAddress("rzdzucerscdnt")
+                                                                .withEndPointName("evfiwjmygt")
+                                                                .withPort("sslswtmweriof")
+                                                                .withProtocol(Protocol.TCP)),
+                                                        new ContactProfileLinkChannel().withName("yqsemwa")
+                                                            .withCenterFrequencyMHz(5.657935f)
+                                                            .withBandwidthMHz(18.444378f)
+                                                            .withEndPoint(new EndPoint().withIpAddress("tshhszhedp")
+                                                                .withEndPointName("vwiwubmwmbesld")
+                                                                .withPort("k")
+                                                                .withProtocol(Protocol.UDP)),
+                                                        new ContactProfileLinkChannel().withName("tppjflcx")
+                                                            .withCenterFrequencyMHz(80.7271f)
+                                                            .withBandwidthMHz(66.58158f)
+                                                            .withEndPoint(new EndPoint()
+                                                                .withIpAddress("okonzmnsikvmkqz")
+                                                                .withEndPointName("qqkdltfzxmhhvhgu")
+                                                                .withPort("eodkwobda")
+                                                                .withProtocol(Protocol.UDP)))),
+                                            new ContactProfileLink().withName("tibqdxbxwakb")
+                                                .withPolarization(Polarization.LINEAR_HORIZONTAL)
+                                                .withDirection(Direction.UPLINK)
+                                                .withGainOverTemperature(69.47182F)
+                                                .withEirpdBW(79.54939F)
+                                                .withChannels(Arrays.asList(
+                                                    new ContactProfileLinkChannel().withName("zgx")
+                                                        .withCenterFrequencyMHz(85.23063f)
+                                                        .withBandwidthMHz(22.702295f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("iplbpodxunkbebxm")
+                                                            .withEndPointName("byyntwlrbqt")
+                                                            .withPort("oievseotgqrlltm")
+                                                            .withProtocol(Protocol.UDP)),
+                                                    new ContactProfileLinkChannel().withName("lauwzizxbmpgcjef")
+                                                        .withCenterFrequencyMHz(95.06782f)
+                                                        .withBandwidthMHz(21.135498f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("uvpb")
+                                                            .withEndPointName("tdum")
+                                                            .withPort("rp")
+                                                            .withProtocol(Protocol.TCP)),
+                                                    new ContactProfileLinkChannel().withName("ebmnzbtbhjpglk")
+                                                        .withCenterFrequencyMHz(82.34188f)
+                                                        .withBandwidthMHz(49.83795f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("hdneuelfph")
+                                                            .withEndPointName("dyhtozfikdowwquu")
+                                                            .withPort("xzxcl")
+                                                            .withProtocol(Protocol.TCP)))),
+                                            new ContactProfileLink().withName("thhqzonosggbh")
+                                                .withPolarization(Polarization.LHCP)
+                                                .withDirection(Direction.DOWNLINK)
+                                                .withGainOverTemperature(61.219753F)
+                                                .withEirpdBW(33.099705F)
+                                                .withChannels(Arrays.asList(
+                                                    new ContactProfileLinkChannel().withName("n")
+                                                        .withCenterFrequencyMHz(65.78154f)
+                                                        .withBandwidthMHz(25.078642f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("jutiiswacff")
+                                                            .withEndPointName("dkzzewkfvhqcrail")
+                                                            .withPort("pnppfuf")
+                                                            .withProtocol(Protocol.UDP)),
+                                                    new ContactProfileLinkChannel().withName("wdmhdlxyjrxs")
+                                                        .withCenterFrequencyMHz(94.25893f)
+                                                        .withBandwidthMHz(37.06115f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("fcnihgwq")
+                                                            .withEndPointName("pnedgf")
+                                                            .withPort("cvkcvqvpkeqdcv")
+                                                            .withProtocol(Protocol.TCP)),
+                                                    new ContactProfileLinkChannel().withName("hvoodsotbobzd")
+                                                        .withCenterFrequencyMHz(29.276281f)
+                                                        .withBandwidthMHz(26.7008f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("j")
+                                                            .withEndPointName("vnhdldwmgxcxr")
+                                                            .withPort("lpmutwuoegrpkhj")
+                                                            .withProtocol(Protocol.TCP)),
+                                                    new ContactProfileLinkChannel().withName("iyq")
+                                                        .withCenterFrequencyMHz(99.57627f)
+                                                        .withBandwidthMHz(28.484118f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("i")
+                                                            .withEndPointName("pdggkzzlvm")
+                                                            .withPort("mpaxmodfvuefywsb")
+                                                            .withProtocol(Protocol.TCP)))))),
+                            new ContactProfileInner().withLocation("yrnxxmueedn")
+                                .withTags(mapOf("tkwqqtchealm", "v", "gdv", "mtdaa"))
+                                .withProvisioningState(ContactProfilesPropertiesProvisioningState.FAILED)
+                                .withMinimumViableContactDuration("ocmbqfqvmkcxoza")
+                                .withMinimumElevationDegrees(56.86097F)
+                                .withAutoTrackingConfiguration(AutoTrackingConfiguration.DISABLED)
+                                .withEventHubUri("prglya")
+                                .withNetworkConfiguration(
+                                    new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("dd"))
+                                .withThirdPartyConfigurations(Arrays.asList(
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("bcuejrjxgci")
+                                        .withMissionConfiguration("ibrhosxsdqr"),
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("zoymibmrqyibahw")
+                                        .withMissionConfiguration("luszdtmhrkwof"),
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("yvoqa")
+                                        .withMissionConfiguration("piexpbtgiw"),
+                                    new ContactProfileThirdPartyConfiguration().withProviderName("wo")
+                                        .withMissionConfiguration("nwashrtd")))
+                                .withLinks(Arrays.asList(
+                                    new ContactProfileLink().withName("cnqxwbpokulpi")
+                                        .withPolarization(Polarization.RHCP)
+                                        .withDirection(Direction.UPLINK)
+                                        .withGainOverTemperature(47.424603F)
+                                        .withEirpdBW(85.214745F)
+                                        .withChannels(Arrays.asList(
+                                            new ContactProfileLinkChannel().withName("qiiobyuqer")
+                                                .withCenterFrequencyMHz(59.630554f)
+                                                .withBandwidthMHz(6.2912345f)
+                                                .withEndPoint(new EndPoint().withIpAddress("pqwcciuqgbdbutau")
+                                                    .withEndPointName("fbtkuwhhmhyk")
+                                                    .withPort("joxafnndlpi")
+                                                    .withProtocol(Protocol.UDP)),
+                                            new ContactProfileLinkChannel().withName("koymkcd")
+                                                .withCenterFrequencyMHz(1.9727468f)
+                                                .withBandwidthMHz(52.415318f)
+                                                .withEndPoint(new EndPoint().withIpAddress("pkkpw")
+                                                    .withEndPointName("reqnovvqfov")
+                                                    .withPort("jxywsuws")
+                                                    .withProtocol(Protocol.UDP)),
+                                            new ContactProfileLinkChannel().withName("s")
+                                                .withCenterFrequencyMHz(58.6494f)
+                                                .withBandwidthMHz(74.82819f)
+                                                .withEndPoint(new EndPoint().withIpAddress("ytgadgvraeaene")
+                                                    .withEndPointName("nzar")
+                                                    .withPort("wlquuijfqkace")
+                                                    .withProtocol(Protocol.TCP)))),
+                                    new ContactProfileLink()
+                                        .withName("ipfpubji")
+                                        .withPolarization(Polarization.LINEAR_HORIZONTAL)
+                                        .withDirection(Direction.UPLINK)
+                                        .withGainOverTemperature(5.9326353F)
+                                        .withEirpdBW(86.60929F)
+                                        .withChannels(Arrays.asList(
+                                            new ContactProfileLinkChannel().withName("qkvpuvksgplsakn")
+                                                .withCenterFrequencyMHz(0.79660416f)
+                                                .withBandwidthMHz(68.44677f)
+                                                .withEndPoint(new EndPoint().withIpAddress("synljphuopxodl")
+                                                    .withEndPointName("iyntorzihle")
+                                                    .withPort("sjswsrms")
+                                                    .withProtocol(Protocol.UDP)),
+                                            new ContactProfileLinkChannel().withName("zrpzb")
+                                                .withCenterFrequencyMHz(73.3367f)
+                                                .withBandwidthMHz(81.935295f)
+                                                .withEndPoint(new EndPoint().withIpAddress("kqqzqioxiysu")
+                                                    .withEndPointName("i")
+                                                    .withPort("ynkedyatrwyhqmib")
+                                                    .withProtocol(Protocol.UDP)),
+                                            new ContactProfileLinkChannel().withName("hwit")
+                                                .withCenterFrequencyMHz(65.06971f)
+                                                .withBandwidthMHz(81.76519f)
+                                                .withEndPoint(new EndPoint().withIpAddress("pyy")
+                                                    .withEndPointName("pcdpumnz")
+                                                    .withPort("mwzn")
+                                                    .withProtocol(Protocol.TCP)),
+                                            new ContactProfileLinkChannel().withName("biknsorgjhxbld")
+                                                .withCenterFrequencyMHz(27.161957f)
+                                                .withBandwidthMHz(66.445755f)
+                                                .withEndPoint(new EndPoint().withIpAddress("wrlkdmtn")
+                                                    .withEndPointName("vokotllxdyh")
+                                                    .withPort("syocogjltdtbnnha")
+                                                    .withProtocol(Protocol.UDP)))),
+                                    new ContactProfileLink().withName("ocrkvcikh")
+                                        .withPolarization(Polarization.RHCP)
+                                        .withDirection(Direction.UPLINK)
+                                        .withGainOverTemperature(16.389334F)
+                                        .withEirpdBW(55.93623F)
+                                        .withChannels(Arrays.asList(new ContactProfileLinkChannel().withName("qqu")
+                                            .withCenterFrequencyMHz(43.360477f)
+                                            .withBandwidthMHz(10.328889f)
+                                            .withEndPoint(new EndPoint().withIpAddress("kywggxkallatmel")
+                                                .withEndPointName("uipiccjzk")
+                                                .withPort("ivgvvcna")
+                                                .withProtocol(Protocol.UDP)))))),
+                            new ContactProfileInner().withLocation("nyga")
+                                .withTags(mapOf("fatpxllrxcyjmoa", "db"))
                                 .withProvisioningState(ContactProfilesPropertiesProvisioningState.UPDATING)
-                                .withMinimumViableContactDuration("de")
-                                .withMinimumElevationDegrees(59.384357F)
+                                .withMinimumViableContactDuration("fnjhfjxwmszkkfo")
+                                .withMinimumElevationDegrees(56.352932F)
+                                .withAutoTrackingConfiguration(AutoTrackingConfiguration.S_BAND)
+                                .withEventHubUri("zi")
+                                .withNetworkConfiguration(
+                                    new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("fjawneaivxwczel"))
+                                .withThirdPartyConfigurations(
+                                    Arrays.asList(
+                                        new ContactProfileThirdPartyConfiguration().withProviderName("r")
+                                            .withMissionConfiguration("lsfeaenwabfatkld"),
+                                        new ContactProfileThirdPartyConfiguration().withProviderName("xbjhwuaanozjosph")
+                                            .withMissionConfiguration("oulpjrv")))
+                                .withLinks(
+                                    Arrays
+                                        .asList(
+                                            new ContactProfileLink().withName("glrvimjwosytxi")
+                                                .withPolarization(Polarization.LINEAR_HORIZONTAL)
+                                                .withDirection(Direction.UPLINK)
+                                                .withGainOverTemperature(73.11868F)
+                                                .withEirpdBW(4.9390373F)
+                                                .withChannels(
+                                                    Arrays.asList(new ContactProfileLinkChannel().withName("qumiek")
+                                                        .withCenterFrequencyMHz(8.023405f)
+                                                        .withBandwidthMHz(74.09953f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("zikhl")
+                                                            .withEndPointName("fjhdg")
+                                                            .withPort("gge")
+                                                            .withProtocol(Protocol.TCP)))))),
+                            new ContactProfileInner().withLocation("ofncckwyfzqwhxxb")
+                                .withTags(mapOf("zfeqztppri", "a"))
+                                .withProvisioningState(ContactProfilesPropertiesProvisioningState.DELETING)
+                                .withMinimumViableContactDuration("yc")
+                                .withMinimumElevationDegrees(68.70334F)
                                 .withAutoTrackingConfiguration(AutoTrackingConfiguration.X_BAND)
-                                .withEventHubUri("w")
-                                .withThirdPartyConfigurations(Arrays.asList())
-                                .withLinks(Arrays.asList())));
+                                .withEventHubUri("xkgymareqnajxqu")
+                                .withNetworkConfiguration(new ContactProfilesPropertiesNetworkConfiguration()
+                                    .withSubnetId("jhkycub"))
+                                .withThirdPartyConfigurations(Arrays
+                                    .asList(
+                                        new ContactProfileThirdPartyConfiguration().withProviderName("gssofwq")
+                                            .withMissionConfiguration("zqalkrmnjijpx"),
+                                        new ContactProfileThirdPartyConfiguration().withProviderName("cqqudf")
+                                            .withMissionConfiguration("byxbaaabjy"),
+                                        new ContactProfileThirdPartyConfiguration().withProviderName("ayffim")
+                                            .withMissionConfiguration("zrtuzq"),
+                                        new ContactProfileThirdPartyConfiguration().withProviderName("gsexne")
+                                            .withMissionConfiguration("fdnw")))
+                                .withLinks(
+                                    Arrays
+                                        .asList(
+                                            new ContactProfileLink().withName("mewzsyyc")
+                                                .withPolarization(Polarization.LHCP)
+                                                .withDirection(Direction.DOWNLINK)
+                                                .withGainOverTemperature(89.182625F)
+                                                .withEirpdBW(81.26643F)
+                                                .withChannels(
+                                                    Arrays.asList(
+                                                        new ContactProfileLinkChannel().withName("ud")
+                                                            .withCenterFrequencyMHz(92.32651f)
+                                                            .withBandwidthMHz(10.957659f)
+                                                            .withEndPoint(new EndPoint().withIpAddress("xtrthz")
+                                                                .withEndPointName("aytdwkqbrq")
+                                                                .withPort("bpaxhexiilivpdt")
+                                                                .withProtocol(Protocol.TCP)),
+                                                        new ContactProfileLinkChannel().withName("r")
+                                                            .withCenterFrequencyMHz(83.604706f)
+                                                            .withBandwidthMHz(1.2664497f)
+                                                            .withEndPoint(new EndPoint().withIpAddress("qoaxoruzfgs")
+                                                                .withEndPointName("uyfxrxxleptramxj")
+                                                                .withPort("zwl")
+                                                                .withProtocol(Protocol.UDP)))),
+                                            new ContactProfileLink().withName("wxuqlcvydypatdoo")
+                                                .withPolarization(Polarization.LHCP)
+                                                .withDirection(Direction.UPLINK)
+                                                .withGainOverTemperature(52.902954F)
+                                                .withEirpdBW(20.04649F)
+                                                .withChannels(Arrays.asList(
+                                                    new ContactProfileLinkChannel().withName("kooebwnu")
+                                                        .withCenterFrequencyMHz(25.77629f)
+                                                        .withBandwidthMHz(54.985764f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("mmsbvdkcrodtjin")
+                                                            .withEndPointName("wj")
+                                                            .withPort("fltkacjv")
+                                                            .withProtocol(Protocol.TCP)),
+                                                    new ContactProfileLinkChannel().withName("kdlfoa")
+                                                        .withCenterFrequencyMHz(79.17313f)
+                                                        .withBandwidthMHz(38.711143f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("kfpagao")
+                                                            .withEndPointName("pulpqblylsyxk")
+                                                            .withPort("jnsjervtiagxsd")
+                                                            .withProtocol(Protocol.UDP)),
+                                                    new ContactProfileLinkChannel().withName("uem")
+                                                        .withCenterFrequencyMHz(28.800655f)
+                                                        .withBandwidthMHz(65.141945f)
+                                                        .withEndPoint(new EndPoint().withIpAddress("zkfzbeyv")
+                                                            .withEndPointName("nqicvinvkjjxdxrb")
+                                                            .withPort("ukzclewyhmlwpaz")
+                                                            .withProtocol(Protocol.TCP))))))));
         model = BinaryData.fromObject(model).toObject(ContactProfileListResult.class);
-        Assertions.assertEquals("eiithlvmez", model.value().get(0).location());
-        Assertions.assertEquals("hxmzsbbzoggig", model.value().get(0).tags().get("xwburvjxxjns"));
-        Assertions
-            .assertEquals(
-                ContactProfilesPropertiesProvisioningState.CREATING, model.value().get(0).provisioningState());
-        Assertions.assertEquals("leggzfbu", model.value().get(0).minimumViableContactDuration());
-        Assertions.assertEquals(78.875084F, model.value().get(0).minimumElevationDegrees());
+        Assertions.assertEquals("mwyhr", model.value().get(0).location());
+        Assertions.assertEquals("yftaakcpw", model.value().get(0).tags().get("yzvqt"));
+        Assertions.assertEquals(ContactProfilesPropertiesProvisioningState.SUCCEEDED,
+            model.value().get(0).provisioningState());
+        Assertions.assertEquals("ujmkcjhwqy", model.value().get(0).minimumViableContactDuration());
+        Assertions.assertEquals(1.7570734F, model.value().get(0).minimumElevationDegrees());
         Assertions.assertEquals(AutoTrackingConfiguration.DISABLED, model.value().get(0).autoTrackingConfiguration());
-        Assertions.assertEquals("x", model.value().get(0).eventHubUri());
+        Assertions.assertEquals("wj", model.value().get(0).eventHubUri());
+        Assertions.assertEquals("wgdrjervnaenqp", model.value().get(0).networkConfiguration().subnetId());
+        Assertions.assertEquals("ndoygmifthnzdnd",
+            model.value().get(0).thirdPartyConfigurations().get(0).providerName());
+        Assertions.assertEquals("l", model.value().get(0).thirdPartyConfigurations().get(0).missionConfiguration());
+        Assertions.assertEquals("n", model.value().get(0).links().get(0).name());
+        Assertions.assertEquals(Polarization.LHCP, model.value().get(0).links().get(0).polarization());
+        Assertions.assertEquals(Direction.DOWNLINK, model.value().get(0).links().get(0).direction());
+        Assertions.assertEquals(55.65765F, model.value().get(0).links().get(0).gainOverTemperature());
+        Assertions.assertEquals(81.210945F, model.value().get(0).links().get(0).eirpdBW());
+        Assertions.assertEquals("iydmcwyhzdxs", model.value().get(0).links().get(0).channels().get(0).name());
+        Assertions.assertEquals(80.603836f, model.value().get(0).links().get(0).channels().get(0).centerFrequencyMHz());
+        Assertions.assertEquals(20.36894f, model.value().get(0).links().get(0).channels().get(0).bandwidthMHz());
+        Assertions.assertEquals("bzmnvdfznud",
+            model.value().get(0).links().get(0).channels().get(0).endPoint().ipAddress());
+        Assertions.assertEquals("od", model.value().get(0).links().get(0).channels().get(0).endPoint().endPointName());
+        Assertions.assertEquals("xzb", model.value().get(0).links().get(0).channels().get(0).endPoint().port());
+        Assertions.assertEquals(Protocol.UDP,
+            model.value().get(0).links().get(0).channels().get(0).endPoint().protocol());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

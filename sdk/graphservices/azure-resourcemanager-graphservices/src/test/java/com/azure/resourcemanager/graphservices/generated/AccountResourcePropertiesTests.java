@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountResourceProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Failed\",\"appId\":\"expa\",\"billingPlanId\":\"akhmsbzjhcrz\"}")
-                .toObject(AccountResourceProperties.class);
+        AccountResourceProperties model = BinaryData
+            .fromString("{\"provisioningState\":\"Failed\",\"appId\":\"expa\",\"billingPlanId\":\"akhmsbzjhcrz\"}")
+            .toObject(AccountResourceProperties.class);
         Assertions.assertEquals("expa", model.appId());
     }
 

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseCo
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionProperties;
 
-public final class TimeSeriesDatabaseConnectionImpl
-    implements TimeSeriesDatabaseConnection,
-        TimeSeriesDatabaseConnection.Definition,
-        TimeSeriesDatabaseConnection.Update {
+public final class TimeSeriesDatabaseConnectionImpl implements TimeSeriesDatabaseConnection,
+    TimeSeriesDatabaseConnection.Definition, TimeSeriesDatabaseConnection.Update {
     private TimeSeriesDatabaseConnectionInner innerObject;
 
     private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
@@ -56,35 +54,31 @@ public final class TimeSeriesDatabaseConnectionImpl
 
     private String timeSeriesDatabaseConnectionName;
 
-    public TimeSeriesDatabaseConnectionImpl withExistingDigitalTwinsInstance(
-        String resourceGroupName, String resourceName) {
+    public TimeSeriesDatabaseConnectionImpl withExistingDigitalTwinsInstance(String resourceGroupName,
+        String resourceName) {
         this.resourceGroupName = resourceGroupName;
         this.resourceName = resourceName;
         return this;
     }
 
     public TimeSeriesDatabaseConnection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTimeSeriesDatabaseConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTimeSeriesDatabaseConnections()
+            .createOrUpdate(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public TimeSeriesDatabaseConnection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTimeSeriesDatabaseConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTimeSeriesDatabaseConnections()
+            .createOrUpdate(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(),
+                context);
         return this;
     }
 
-    TimeSeriesDatabaseConnectionImpl(
-        String name, com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
+    TimeSeriesDatabaseConnectionImpl(String name,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = new TimeSeriesDatabaseConnectionInner();
         this.serviceManager = serviceManager;
         this.timeSeriesDatabaseConnectionName = name;
@@ -95,53 +89,44 @@ public final class TimeSeriesDatabaseConnectionImpl
     }
 
     public TimeSeriesDatabaseConnection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTimeSeriesDatabaseConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTimeSeriesDatabaseConnections()
+            .createOrUpdate(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public TimeSeriesDatabaseConnection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTimeSeriesDatabaseConnections()
-                .createOrUpdate(
-                    resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTimeSeriesDatabaseConnections()
+            .createOrUpdate(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, this.innerModel(),
+                context);
         return this;
     }
 
-    TimeSeriesDatabaseConnectionImpl(
-        TimeSeriesDatabaseConnectionInner innerObject,
+    TimeSeriesDatabaseConnectionImpl(TimeSeriesDatabaseConnectionInner innerObject,
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
-        this.timeSeriesDatabaseConnectionName =
-            Utils.getValueFromIdByName(innerObject.id(), "timeSeriesDatabaseConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "digitalTwinsInstances");
+        this.timeSeriesDatabaseConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "timeSeriesDatabaseConnections");
     }
 
     public TimeSeriesDatabaseConnection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTimeSeriesDatabaseConnections()
-                .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTimeSeriesDatabaseConnections()
+            .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TimeSeriesDatabaseConnection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTimeSeriesDatabaseConnections()
-                .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTimeSeriesDatabaseConnections()
+            .getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context)
+            .getValue();
         return this;
     }
 

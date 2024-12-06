@@ -6,25 +6,52 @@ package com.azure.resourcemanager.defendereasm.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.defendereasm.models.ResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Task details. */
+/**
+ * Task details.
+ */
 @Fluent
 public final class TaskResourceInner extends ProxyResource {
     /*
      * Task properties
      */
-    @JsonProperty(value = "properties")
     private TaskResourceProperties innerProperties;
 
-    /** Creates an instance of TaskResourceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of TaskResourceInner class.
+     */
     public TaskResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Task properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TaskResourceProperties innerProperties() {
@@ -32,8 +59,47 @@ public final class TaskResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the startedAt property: The time the task started.
-     *
+     * 
      * @return the startedAt value.
      */
     public String startedAt() {
@@ -42,7 +108,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the startedAt property: The time the task started.
-     *
+     * 
      * @param startedAt the startedAt value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -56,7 +122,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the completedAt property: The time the task completed.
-     *
+     * 
      * @return the completedAt value.
      */
     public String completedAt() {
@@ -65,7 +131,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the completedAt property: The time the task completed.
-     *
+     * 
      * @param completedAt the completedAt value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -79,7 +145,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the lastPolledAt property: The last time the task was polled.
-     *
+     * 
      * @return the lastPolledAt value.
      */
     public String lastPolledAt() {
@@ -88,7 +154,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the lastPolledAt property: The last time the task was polled.
-     *
+     * 
      * @param lastPolledAt the lastPolledAt value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -102,7 +168,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the state property: the state the task is in.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -111,7 +177,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the state property: the state the task is in.
-     *
+     * 
      * @param state the state value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -125,7 +191,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the phase property: the phase the task is in.
-     *
+     * 
      * @return the phase value.
      */
     public String phase() {
@@ -134,7 +200,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the phase property: the phase the task is in.
-     *
+     * 
      * @param phase the phase value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -148,7 +214,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the reason property: The reason the task was moved into its current state, if the task wasn't completed.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -157,7 +223,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the reason property: The reason the task was moved into its current state, if the task wasn't completed.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -171,7 +237,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the metadata property: The reason the task was moved into its current state, if the task wasn't completed.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -180,7 +246,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Set the metadata property: The reason the task was moved into its current state, if the task wasn't completed.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the TaskResourceInner object itself.
      */
@@ -194,7 +260,7 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceState provisioningState() {
@@ -203,12 +269,57 @@ public final class TaskResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskResourceInner.
+     */
+    public static TaskResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskResourceInner deserializedTaskResourceInner = new TaskResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTaskResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTaskResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTaskResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTaskResourceInner.innerProperties = TaskResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTaskResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskResourceInner;
+        });
     }
 }

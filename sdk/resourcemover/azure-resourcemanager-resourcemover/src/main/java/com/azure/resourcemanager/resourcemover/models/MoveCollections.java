@@ -46,8 +46,8 @@ public interface MoveCollections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the move collection along with {@link Response}.
      */
-    Response<MoveCollection> getByResourceGroupWithResponse(
-        String resourceGroupName, String moveCollectionName, Context context);
+    Response<MoveCollection> getByResourceGroupWithResponse(String resourceGroupName, String moveCollectionName,
+        Context context);
 
     /**
      * Gets the move collection.
@@ -123,8 +123,8 @@ public interface MoveCollections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    OperationStatus initiateMove(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context);
+    OperationStatus initiateMove(String resourceGroupName, String moveCollectionName, ResourceMoveRequest body,
+        Context context);
 
     /**
      * Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
@@ -243,8 +243,8 @@ public interface MoveCollections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    OperationStatus bulkRemove(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context);
+    OperationStatus bulkRemove(String resourceGroupName, String moveCollectionName, BulkRemoveRequest body,
+        Context context);
 
     /**
      * Get all Move Collections.
@@ -309,8 +309,8 @@ public interface MoveCollections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return required for resources collection along with {@link Response}.
      */
-    Response<RequiredForResourcesCollection> listRequiredForWithResponse(
-        String resourceGroupName, String moveCollectionName, String sourceId, Context context);
+    Response<RequiredForResourcesCollection> listRequiredForWithResponse(String resourceGroupName,
+        String moveCollectionName, String sourceId, Context context);
 
     /**
      * List of the move resources for which an arm resource is required for.
@@ -323,8 +323,8 @@ public interface MoveCollections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return required for resources collection.
      */
-    RequiredForResourcesCollection listRequiredFor(
-        String resourceGroupName, String moveCollectionName, String sourceId);
+    RequiredForResourcesCollection listRequiredFor(String resourceGroupName, String moveCollectionName,
+        String sourceId);
 
     /**
      * Gets the move collection.

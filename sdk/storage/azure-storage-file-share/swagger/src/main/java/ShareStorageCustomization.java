@@ -43,6 +43,8 @@ public class ShareStorageCustomization extends Customization {
                 .getClass("FilesAndDirectoriesListSegment"));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
+
+        addMissingHashMapImport(customization.getPackage("com.azure.storage.file.share.implementation.models"));
     }
 
     // ShareFileRangeList has special serialization behaviors which Swagger cannot define correctly. It has a single
@@ -253,10 +255,8 @@ public class ShareStorageCustomization extends Customization {
     }
 
     private static void addErrorMappingToSyncMethod(MethodDeclaration method) {
-        BlockStmt body = method.getBody().get();
-
-        // Turn the last statement into a BlockStmt that will be used as the try block.
-        BlockStmt tryBlock = new BlockStmt(new NodeList<>(body.getStatement(body.getStatements().size() - 1)));
+        // Turn the entire method into a BlockStmt that will be used as the try block.
+        BlockStmt tryBlock = method.getBody().get();
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
             "throw ModelHelper.mapToShareStorageException(internalException);")));
         Parameter catchParameter = new Parameter().setType("ShareStorageExceptionInternal")
@@ -265,6 +265,13 @@ public class ShareStorageCustomization extends Customization {
         TryStmt tryCatchMap = new TryStmt(tryBlock, new NodeList<>(catchClause), null);
 
         // Replace the last statement with the try-catch block.
-        body.getStatements().set(body.getStatements().size() - 1, tryCatchMap);
+        method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
+    }
+
+    // Temporary fix to a bug in Autorest.
+    private static void addMissingHashMapImport(PackageCustomization implementationModels) {
+        for (String className : Arrays.asList("FilesDownloadHeaders", "FilesGetPropertiesHeaders", "DirectoriesGetPropertiesHeaders", "SharesGetPropertiesHeaders")) {
+            implementationModels.getClass(className).addImports("java.util.HashMap");
+        }
     }
 }

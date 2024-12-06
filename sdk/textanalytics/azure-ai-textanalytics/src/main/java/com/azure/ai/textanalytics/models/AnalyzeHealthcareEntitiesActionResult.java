@@ -15,8 +15,8 @@ public final class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsAc
     private AnalyzeHealthcareEntitiesResultCollection documentsResults;
 
     static {
-        AnalyzeHealthcareEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        AnalyzeHealthcareEntitiesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

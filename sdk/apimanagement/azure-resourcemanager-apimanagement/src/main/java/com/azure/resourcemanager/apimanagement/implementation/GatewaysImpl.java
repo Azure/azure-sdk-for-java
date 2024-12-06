@@ -30,26 +30,26 @@ public final class GatewaysImpl implements Gateways {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public GatewaysImpl(
-        GatewaysClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public GatewaysImpl(GatewaysClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<GatewayContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<GatewayContractInner> inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GatewayContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<GatewayContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
+    public PagedIterable<GatewayContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<GatewayContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
     }
 
-    public GatewaysGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context) {
+    public GatewaysGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, context);
     }
 
@@ -57,15 +57,12 @@ public final class GatewaysImpl implements Gateways {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId);
     }
 
-    public Response<GatewayContract> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context) {
-        GatewaysGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, gatewayId, context);
+    public Response<GatewayContract> getWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        Context context) {
+        GatewaysGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, gatewayId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GatewayContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -81,8 +78,8 @@ public final class GatewaysImpl implements Gateways {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, gatewayId, ifMatch, context);
     }
 
@@ -90,15 +87,12 @@ public final class GatewaysImpl implements Gateways {
         this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, ifMatch);
     }
 
-    public Response<GatewayKeysContract> listKeysWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context) {
-        GatewaysListKeysResponse inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, serviceName, gatewayId, context);
+    public Response<GatewayKeysContract> listKeysWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context) {
+        GatewaysListKeysResponse inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, serviceName, gatewayId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GatewayKeysContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -114,50 +108,33 @@ public final class GatewaysImpl implements Gateways {
         }
     }
 
-    public Response<Void> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayKeyRegenerationRequestContract parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> regenerateKeyWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayKeyRegenerationRequestContract parameters, Context context) {
+        return this.serviceClient()
             .regenerateKeyWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
     }
 
-    public void regenerateKey(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
+    public void regenerateKey(String resourceGroupName, String serviceName, String gatewayId,
         GatewayKeyRegenerationRequestContract parameters) {
         this.serviceClient().regenerateKey(resourceGroupName, serviceName, gatewayId, parameters);
     }
 
-    public Response<GatewayTokenContract> generateTokenWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayTokenRequestContract parameters,
-        Context context) {
-        Response<GatewayTokenContractInner> inner =
-            this
-                .serviceClient()
-                .generateTokenWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
+    public Response<GatewayTokenContract> generateTokenWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayTokenRequestContract parameters, Context context) {
+        Response<GatewayTokenContractInner> inner = this.serviceClient()
+            .generateTokenWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GatewayTokenContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public GatewayTokenContract generateToken(
-        String resourceGroupName, String serviceName, String gatewayId, GatewayTokenRequestContract parameters) {
-        GatewayTokenContractInner inner =
-            this.serviceClient().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
+    public GatewayTokenContract generateToken(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayTokenRequestContract parameters) {
+        GatewayTokenContractInner inner
+            = this.serviceClient().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
         if (inner != null) {
             return new GatewayTokenContractImpl(inner, this.manager());
         } else {
@@ -166,106 +143,78 @@ public final class GatewaysImpl implements Gateways {
     }
 
     public GatewayContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, gatewayId, Context.NONE).getValue();
     }
 
     public Response<GatewayContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, gatewayId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, gatewayId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, gatewayId, ifMatch, context);
     }

@@ -23,7 +23,7 @@ public final class PartnerTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicInner model = BinaryData.fromString(
-            "{\"properties\":{\"partnerRegistrationImmutableId\":\"544ec14c-b34c-439f-ab86-65f0291da90b\",\"source\":\"aglkafhon\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"zxrvxcus\":{\"description\":\"kpzvcpopmxelnwc\",\"displayName\":\"yjede\",\"documentationUrl\":\"mlfmkqs\",\"dataSchemaUrl\":\"zuawxtzxpuamwa\"},\"ljhlnymzotq\":{\"description\":\"phai\",\"displayName\":\"xyasflvgsgzw\",\"documentationUrl\":\"akoi\",\"dataSchemaUrl\":\"nsmjbl\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-08-01T01:33:07Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"qqvxmvwfgtayxons\",\"messageForActivation\":\"e\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"hcvsqltnzoi\",\"tenantId\":\"sxgnx\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"nmpqoxwdofdb\",\"clientId\":\"qxeiiqbimhtmwwi\"},\"embnkbw\":{\"principalId\":\"f\",\"clientId\":\"ofvwbcb\"},\"izvcjfe\":{\"principalId\":\"vxkdivqihebwtswb\",\"clientId\":\"wfmdurage\"}}},\"location\":\"isdju\",\"tags\":{\"bsazgakg\":\"bqigkx\"},\"id\":\"cyrcmjdmspo\",\"name\":\"apvu\",\"type\":\"rylniofrzg\"}")
+            "{\"properties\":{\"partnerRegistrationImmutableId\":\"124c4595-80f5-41d3-8318-3471070116d9\",\"source\":\"aglkafhon\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"zxrvxcus\":{\"description\":\"kpzvcpopmxelnwc\",\"displayName\":\"yjede\",\"documentationUrl\":\"mlfmkqs\",\"dataSchemaUrl\":\"zuawxtzxpuamwa\"},\"ljhlnymzotq\":{\"description\":\"phai\",\"displayName\":\"xyasflvgsgzw\",\"documentationUrl\":\"akoi\",\"dataSchemaUrl\":\"nsmjbl\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-08-01T01:33:07Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"qqvxmvwfgtayxons\",\"messageForActivation\":\"e\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"hcvsqltnzoi\",\"tenantId\":\"sxgnx\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"nmpqoxwdofdb\",\"clientId\":\"qxeiiqbimhtmwwi\"},\"embnkbw\":{\"principalId\":\"f\",\"clientId\":\"ofvwbcb\"},\"izvcjfe\":{\"principalId\":\"vxkdivqihebwtswb\",\"clientId\":\"wfmdurage\"}}},\"location\":\"isdju\",\"tags\":{\"bsazgakg\":\"bqigkx\"},\"id\":\"cyrcmjdmspo\",\"name\":\"apvu\",\"type\":\"rylniofrzg\"}")
             .toObject(PartnerTopicInner.class);
         Assertions.assertEquals("isdju", model.location());
         Assertions.assertEquals("bqigkx", model.tags().get("bsazgakg"));
@@ -32,7 +32,7 @@ public final class PartnerTopicInnerTests {
         Assertions.assertEquals("sxgnx", model.identity().tenantId());
         Assertions.assertEquals("nmpqoxwdofdb", model.identity().userAssignedIdentities().get("h").principalId());
         Assertions.assertEquals("qxeiiqbimhtmwwi", model.identity().userAssignedIdentities().get("h").clientId());
-        Assertions.assertEquals(UUID.fromString("544ec14c-b34c-439f-ab86-65f0291da90b"),
+        Assertions.assertEquals(UUID.fromString("124c4595-80f5-41d3-8318-3471070116d9"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("aglkafhon", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
@@ -59,7 +59,7 @@ public final class PartnerTopicInnerTests {
                     new UserIdentityProperties().withPrincipalId("nmpqoxwdofdb").withClientId("qxeiiqbimhtmwwi"),
                     "embnkbw", new UserIdentityProperties().withPrincipalId("f").withClientId("ofvwbcb"), "izvcjfe",
                     new UserIdentityProperties().withPrincipalId("vxkdivqihebwtswb").withClientId("wfmdurage"))))
-            .withPartnerRegistrationImmutableId(UUID.fromString("544ec14c-b34c-439f-ab86-65f0291da90b"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("124c4595-80f5-41d3-8318-3471070116d9"))
             .withSource("aglkafhon")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                 .withInlineEventTypes(mapOf("zxrvxcus",
@@ -84,7 +84,7 @@ public final class PartnerTopicInnerTests {
         Assertions.assertEquals("sxgnx", model.identity().tenantId());
         Assertions.assertEquals("nmpqoxwdofdb", model.identity().userAssignedIdentities().get("h").principalId());
         Assertions.assertEquals("qxeiiqbimhtmwwi", model.identity().userAssignedIdentities().get("h").clientId());
-        Assertions.assertEquals(UUID.fromString("544ec14c-b34c-439f-ab86-65f0291da90b"),
+        Assertions.assertEquals(UUID.fromString("124c4595-80f5-41d3-8318-3471070116d9"),
             model.partnerRegistrationImmutableId());
         Assertions.assertEquals("aglkafhon", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());

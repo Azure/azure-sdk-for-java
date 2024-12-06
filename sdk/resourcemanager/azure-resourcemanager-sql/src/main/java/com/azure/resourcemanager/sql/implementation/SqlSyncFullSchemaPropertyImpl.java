@@ -21,9 +21,8 @@ public class SqlSyncFullSchemaPropertyImpl extends WrapperImpl<SyncFullSchemaPro
 
     @Override
     public List<SyncFullSchemaTable> tables() {
-        return Collections
-            .unmodifiableList(
-                this.innerModel().tables() != null ? this.innerModel().tables() : new ArrayList<SyncFullSchemaTable>());
+        return Collections.unmodifiableList(
+            this.innerModel().tables() != null ? this.innerModel().tables() : new ArrayList<SyncFullSchemaTable>());
     }
 
     @Override

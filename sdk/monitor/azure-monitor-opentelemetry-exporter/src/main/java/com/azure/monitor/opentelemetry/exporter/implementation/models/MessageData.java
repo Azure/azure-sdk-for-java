@@ -46,7 +46,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Get the message property: Trace message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -55,7 +55,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Set the message property: Trace message.
-     *
+     * 
      * @param message the message value to set.
      * @return the MessageData object itself.
      */
@@ -66,7 +66,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Get the severityLevel property: Trace severity level.
-     *
+     * 
      * @return the severityLevel value.
      */
     public SeverityLevel getSeverityLevel() {
@@ -75,7 +75,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Set the severityLevel property: Trace severity level.
-     *
+     * 
      * @param severityLevel the severityLevel value to set.
      * @return the MessageData object itself.
      */
@@ -86,7 +86,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -95,7 +95,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MessageData object itself.
      */
@@ -106,7 +106,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Get the measurements property: Collection of custom measurements.
-     *
+     * 
      * @return the measurements value.
      */
     public Map<String, Double> getMeasurements() {
@@ -115,7 +115,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Set the measurements property: Collection of custom measurements.
-     *
+     * 
      * @param measurements the measurements value to set.
      * @return the MessageData object itself.
      */
@@ -142,8 +142,8 @@ public final class MessageData extends MonitorDomain {
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -154,7 +154,7 @@ public final class MessageData extends MonitorDomain {
 
     /**
      * Reads an instance of MessageData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MessageData if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -176,9 +176,11 @@ public final class MessageData extends MonitorDomain {
                 } else if ("severityLevel".equals(fieldName)) {
                     deserializedMessageData.severityLevel = SeverityLevel.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
-                    deserializedMessageData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMessageData.properties = properties;
                 } else if ("measurements".equals(fieldName)) {
-                    deserializedMessageData.measurements = reader.readMap(JsonReader::getDouble);
+                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedMessageData.measurements = measurements;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

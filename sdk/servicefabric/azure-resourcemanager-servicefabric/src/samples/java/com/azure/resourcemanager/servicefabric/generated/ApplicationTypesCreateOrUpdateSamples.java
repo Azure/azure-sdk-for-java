@@ -22,7 +22,10 @@ public final class ApplicationTypesCreateOrUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void putAnApplicationType(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypes().define("myAppType").withExistingCluster("resRg", "myCluster").withTags(mapOf())
+        manager.applicationTypes()
+            .define("myAppType")
+            .withExistingCluster("resRg", "myCluster")
+            .withTags(mapOf())
             .create();
     }
 

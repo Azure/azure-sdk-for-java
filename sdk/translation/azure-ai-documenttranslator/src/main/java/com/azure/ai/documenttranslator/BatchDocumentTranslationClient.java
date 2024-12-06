@@ -22,7 +22,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous BatchDocumentTranslationClient type. */
 @ServiceClient(builder = BatchDocumentTranslationClientBuilder.class)
 public final class BatchDocumentTranslationClient {
-    @Generated private final DocumentTranslationsImpl serviceClient;
+    @Generated
+    private final DocumentTranslationsImpl serviceClient;
 
     /**
      * Initializes an instance of BatchDocumentTranslationClient class.
@@ -251,8 +252,8 @@ public final class BatchDocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDocumentStatusWithResponse(
-            String id, String documentId, RequestOptions requestOptions) {
+    public Response<BinaryData> getDocumentStatusWithResponse(String id, String documentId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDocumentStatusWithResponse(id, documentId, requestOptions);
     }
 

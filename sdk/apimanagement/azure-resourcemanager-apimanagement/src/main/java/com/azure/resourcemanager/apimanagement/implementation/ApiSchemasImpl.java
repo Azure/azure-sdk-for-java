@@ -23,33 +23,27 @@ public final class ApiSchemasImpl implements ApiSchemas {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiSchemasImpl(
-        ApiSchemasClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ApiSchemasImpl(ApiSchemasClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SchemaContract> listByApi(String resourceGroupName, String serviceName, String apiId) {
-        PagedIterable<SchemaContractInner> inner =
-            this.serviceClient().listByApi(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new SchemaContractImpl(inner1, this.manager()));
+        PagedIterable<SchemaContractInner> inner
+            = this.serviceClient().listByApi(resourceGroupName, serviceName, apiId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SchemaContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<SchemaContractInner> inner =
-            this.serviceClient().listByApi(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new SchemaContractImpl(inner1, this.manager()));
+    public PagedIterable<SchemaContract> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<SchemaContractInner> inner
+            = this.serviceClient().listByApi(resourceGroupName, serviceName, apiId, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaContractImpl(inner1, this.manager()));
     }
 
-    public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
+    public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String schemaId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
     }
 
@@ -57,15 +51,12 @@ public final class ApiSchemasImpl implements ApiSchemas {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, schemaId);
     }
 
-    public Response<SchemaContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
-        ApiSchemasGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
+    public Response<SchemaContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, Context context) {
+        ApiSchemasGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SchemaContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -81,16 +72,9 @@ public final class ApiSchemasImpl implements ApiSchemas {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        String ifMatch,
-        Boolean force,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, String ifMatch, Boolean force, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force, context);
     }
 
@@ -99,137 +83,100 @@ public final class ApiSchemasImpl implements ApiSchemas {
     }
 
     public SchemaContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String schemaId = Utils.getValueFromIdByName(id, "schemas");
+        String schemaId = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
         if (schemaId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, apiId, schemaId, Context.NONE).getValue();
     }
 
     public Response<SchemaContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String schemaId = Utils.getValueFromIdByName(id, "schemas");
+        String schemaId = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
         if (schemaId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String schemaId = Utils.getValueFromIdByName(id, "schemas");
+        String schemaId = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
         if (schemaId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
         String localIfMatch = null;
         Boolean localForce = null;
-        this
-            .deleteWithResponse(
-                resourceGroupName, serviceName, apiId, schemaId, localIfMatch, localForce, Context.NONE);
+        this.deleteWithResponse(resourceGroupName, serviceName, apiId, schemaId, localIfMatch, localForce,
+            Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String schemaId = Utils.getValueFromIdByName(id, "schemas");
+        String schemaId = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
         if (schemaId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force, context);
     }

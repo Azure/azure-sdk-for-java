@@ -6,59 +6,61 @@ package com.azure.resourcemanager.resourcegraph.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcegraph.models.Facet;
 import com.azure.resourcemanager.resourcegraph.models.ResultTruncated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Query result. */
+/**
+ * Query result.
+ */
 @Fluent
-public final class QueryResponseInner {
+public final class QueryResponseInner implements JsonSerializable<QueryResponseInner> {
     /*
      * Number of total records matching the query.
      */
-    @JsonProperty(value = "totalRecords", required = true)
     private long totalRecords;
 
     /*
      * Number of records returned in the current response. In the case of paging, this is the number of records in the
      * current page.
      */
-    @JsonProperty(value = "count", required = true)
     private long count;
 
     /*
      * Indicates whether the query results are truncated.
      */
-    @JsonProperty(value = "resultTruncated", required = true)
     private ResultTruncated resultTruncated;
 
     /*
-     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
-     * in the current request) to retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in
+     * the current request) to retrieve the next page of data.
      */
-    @JsonProperty(value = "$skipToken")
     private String skipToken;
 
     /*
      * Query output in JObject array or Table format.
      */
-    @JsonProperty(value = "data", required = true)
     private Object data;
 
     /*
      * Query facets.
      */
-    @JsonProperty(value = "facets")
     private List<Facet> facets;
 
-    /** Creates an instance of QueryResponseInner class. */
+    /**
+     * Creates an instance of QueryResponseInner class.
+     */
     public QueryResponseInner() {
     }
 
     /**
      * Get the totalRecords property: Number of total records matching the query.
-     *
+     * 
      * @return the totalRecords value.
      */
     public long totalRecords() {
@@ -67,7 +69,7 @@ public final class QueryResponseInner {
 
     /**
      * Set the totalRecords property: Number of total records matching the query.
-     *
+     * 
      * @param totalRecords the totalRecords value to set.
      * @return the QueryResponseInner object itself.
      */
@@ -79,7 +81,7 @@ public final class QueryResponseInner {
     /**
      * Get the count property: Number of records returned in the current response. In the case of paging, this is the
      * number of records in the current page.
-     *
+     * 
      * @return the count value.
      */
     public long count() {
@@ -89,7 +91,7 @@ public final class QueryResponseInner {
     /**
      * Set the count property: Number of records returned in the current response. In the case of paging, this is the
      * number of records in the current page.
-     *
+     * 
      * @param count the count value to set.
      * @return the QueryResponseInner object itself.
      */
@@ -100,7 +102,7 @@ public final class QueryResponseInner {
 
     /**
      * Get the resultTruncated property: Indicates whether the query results are truncated.
-     *
+     * 
      * @return the resultTruncated value.
      */
     public ResultTruncated resultTruncated() {
@@ -109,7 +111,7 @@ public final class QueryResponseInner {
 
     /**
      * Set the resultTruncated property: Indicates whether the query results are truncated.
-     *
+     * 
      * @param resultTruncated the resultTruncated value to set.
      * @return the QueryResponseInner object itself.
      */
@@ -121,7 +123,7 @@ public final class QueryResponseInner {
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -131,7 +133,7 @@ public final class QueryResponseInner {
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the QueryResponseInner object itself.
      */
@@ -142,7 +144,7 @@ public final class QueryResponseInner {
 
     /**
      * Get the data property: Query output in JObject array or Table format.
-     *
+     * 
      * @return the data value.
      */
     public Object data() {
@@ -151,7 +153,7 @@ public final class QueryResponseInner {
 
     /**
      * Set the data property: Query output in JObject array or Table format.
-     *
+     * 
      * @param data the data value to set.
      * @return the QueryResponseInner object itself.
      */
@@ -162,7 +164,7 @@ public final class QueryResponseInner {
 
     /**
      * Get the facets property: Query facets.
-     *
+     * 
      * @return the facets value.
      */
     public List<Facet> facets() {
@@ -171,7 +173,7 @@ public final class QueryResponseInner {
 
     /**
      * Set the facets property: Query facets.
-     *
+     * 
      * @param facets the facets value to set.
      * @return the QueryResponseInner object itself.
      */
@@ -182,20 +184,18 @@ public final class QueryResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resultTruncated() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resultTruncated in model QueryResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resultTruncated in model QueryResponseInner"));
         }
         if (data() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property data in model QueryResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property data in model QueryResponseInner"));
         }
         if (facets() != null) {
             facets().forEach(e -> e.validate());
@@ -203,4 +203,58 @@ public final class QueryResponseInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(QueryResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("totalRecords", this.totalRecords);
+        jsonWriter.writeLongField("count", this.count);
+        jsonWriter.writeStringField("resultTruncated",
+            this.resultTruncated == null ? null : this.resultTruncated.toString());
+        jsonWriter.writeUntypedField("data", this.data);
+        jsonWriter.writeStringField("$skipToken", this.skipToken);
+        jsonWriter.writeArrayField("facets", this.facets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryResponseInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryResponseInner.
+     */
+    public static QueryResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryResponseInner deserializedQueryResponseInner = new QueryResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalRecords".equals(fieldName)) {
+                    deserializedQueryResponseInner.totalRecords = reader.getLong();
+                } else if ("count".equals(fieldName)) {
+                    deserializedQueryResponseInner.count = reader.getLong();
+                } else if ("resultTruncated".equals(fieldName)) {
+                    deserializedQueryResponseInner.resultTruncated = ResultTruncated.fromString(reader.getString());
+                } else if ("data".equals(fieldName)) {
+                    deserializedQueryResponseInner.data = reader.readUntyped();
+                } else if ("$skipToken".equals(fieldName)) {
+                    deserializedQueryResponseInner.skipToken = reader.getString();
+                } else if ("facets".equals(fieldName)) {
+                    List<Facet> facets = reader.readArray(reader1 -> Facet.fromJson(reader1));
+                    deserializedQueryResponseInner.facets = facets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryResponseInner;
+        });
+    }
 }

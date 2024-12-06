@@ -7,34 +7,54 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** A Content Key Policy resource. */
+/**
+ * A Content Key Policy resource.
+ */
 @Fluent
 public final class ContentKeyPolicyInner extends ProxyResource {
     /*
      * The properties of the Content Key Policy.
      */
-    @JsonProperty(value = "properties")
     private ContentKeyPolicyPropertiesInner innerProperties;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ContentKeyPolicyInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ContentKeyPolicyInner class.
+     */
     public ContentKeyPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Content Key Policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContentKeyPolicyPropertiesInner innerProperties() {
@@ -43,7 +63,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,8 +71,38 @@ public final class ContentKeyPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the policyId property: The legacy Policy ID.
-     *
+     * 
      * @return the policyId value.
      */
     public UUID policyId() {
@@ -61,7 +111,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Get the created property: The creation date of the Policy.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -70,7 +120,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Get the lastModified property: The last modified date of the Policy.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -79,7 +129,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Get the description property: A description for the Policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -88,7 +138,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Set the description property: A description for the Policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the ContentKeyPolicyInner object itself.
      */
@@ -102,7 +152,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Get the options property: The Key Policy options.
-     *
+     * 
      * @return the options value.
      */
     public List<ContentKeyPolicyOption> options() {
@@ -111,7 +161,7 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Set the options property: The Key Policy options.
-     *
+     * 
      * @param options the options value to set.
      * @return the ContentKeyPolicyInner object itself.
      */
@@ -125,12 +175,58 @@ public final class ContentKeyPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyInner.
+     */
+    public static ContentKeyPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyInner deserializedContentKeyPolicyInner = new ContentKeyPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContentKeyPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContentKeyPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContentKeyPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedContentKeyPolicyInner.innerProperties
+                        = ContentKeyPolicyPropertiesInner.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedContentKeyPolicyInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyInner;
+        });
     }
 }

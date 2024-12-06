@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TestLines. */
+/**
+ * Resource collection API of TestLines.
+ */
 public interface TestLines {
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface TestLines {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface TestLines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TestLine list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TestLine> listByCommunicationsGateway(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    PagedIterable<TestLine> listByCommunicationsGateway(String resourceGroupName, String communicationsGatewayName,
+        Context context);
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -48,12 +50,12 @@ public interface TestLines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a TestLine along with {@link Response}.
      */
-    Response<TestLine> getWithResponse(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context);
+    Response<TestLine> getWithResponse(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        Context context);
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -66,7 +68,7 @@ public interface TestLines {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -78,7 +80,7 @@ public interface TestLines {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -91,7 +93,7 @@ public interface TestLines {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface TestLines {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface TestLines {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface TestLines {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface TestLines {
 
     /**
      * Begins definition for a new TestLine resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new TestLine definition.
      */

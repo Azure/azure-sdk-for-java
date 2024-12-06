@@ -13,50 +13,46 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"mrhublwpc\",\"aliasName\":\"utr\",\"ruleState\":\"Disabled\",\"schemaName\":\"pauutpw\",\"tableName\":\"qhih\",\"columnName\":\"jqgwzp\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"n\",\"numberTo\":\"ypsxjvfoim\",\"prefixSize\":\"slirciz\",\"suffixSize\":\"vydfceacvlhvygdy\",\"replacementString\":\"umrtwnawjsl\"},\"location\":\"wkojgcyztsfmzn\",\"kind\":\"eqphchqnrnr\",\"id\":\"x\",\"name\":\"huwrykqgaifm\",\"type\":\"iklbydvkhb\"}")
-                .toObject(DataMaskingRuleInner.class);
-        Assertions.assertEquals("utr", model.aliasName());
-        Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.ruleState());
-        Assertions.assertEquals("pauutpw", model.schemaName());
-        Assertions.assertEquals("qhih", model.tableName());
-        Assertions.assertEquals("jqgwzp", model.columnName());
+        DataMaskingRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"id\":\"tac\",\"aliasName\":\"bj\",\"ruleState\":\"Enabled\",\"schemaName\":\"zcjznmwcpmgua\",\"tableName\":\"draufactkah\",\"columnName\":\"ovajjziuxxps\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"e\",\"numberTo\":\"lfg\",\"prefixSize\":\"qubkw\",\"suffixSize\":\"enr\",\"replacementString\":\"utujba\"},\"location\":\"juohminyflnorw\",\"kind\":\"uvwpklvxwmyg\",\"id\":\"xpgpq\",\"name\":\"hiszepnnbjcrxgib\",\"type\":\"daxconfozauorsuk\"}")
+            .toObject(DataMaskingRuleInner.class);
+        Assertions.assertEquals("bj", model.aliasName());
+        Assertions.assertEquals(DataMaskingRuleState.ENABLED, model.ruleState());
+        Assertions.assertEquals("zcjznmwcpmgua", model.schemaName());
+        Assertions.assertEquals("draufactkah", model.tableName());
+        Assertions.assertEquals("ovajjziuxxps", model.columnName());
         Assertions.assertEquals(DataMaskingFunction.CCN, model.maskingFunction());
-        Assertions.assertEquals("n", model.numberFrom());
-        Assertions.assertEquals("ypsxjvfoim", model.numberTo());
-        Assertions.assertEquals("slirciz", model.prefixSize());
-        Assertions.assertEquals("vydfceacvlhvygdy", model.suffixSize());
-        Assertions.assertEquals("umrtwnawjsl", model.replacementString());
+        Assertions.assertEquals("e", model.numberFrom());
+        Assertions.assertEquals("lfg", model.numberTo());
+        Assertions.assertEquals("qubkw", model.prefixSize());
+        Assertions.assertEquals("enr", model.suffixSize());
+        Assertions.assertEquals("utujba", model.replacementString());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingRuleInner model =
-            new DataMaskingRuleInner()
-                .withAliasName("utr")
-                .withRuleState(DataMaskingRuleState.DISABLED)
-                .withSchemaName("pauutpw")
-                .withTableName("qhih")
-                .withColumnName("jqgwzp")
-                .withMaskingFunction(DataMaskingFunction.CCN)
-                .withNumberFrom("n")
-                .withNumberTo("ypsxjvfoim")
-                .withPrefixSize("slirciz")
-                .withSuffixSize("vydfceacvlhvygdy")
-                .withReplacementString("umrtwnawjsl");
+        DataMaskingRuleInner model = new DataMaskingRuleInner().withAliasName("bj")
+            .withRuleState(DataMaskingRuleState.ENABLED)
+            .withSchemaName("zcjznmwcpmgua")
+            .withTableName("draufactkah")
+            .withColumnName("ovajjziuxxps")
+            .withMaskingFunction(DataMaskingFunction.CCN)
+            .withNumberFrom("e")
+            .withNumberTo("lfg")
+            .withPrefixSize("qubkw")
+            .withSuffixSize("enr")
+            .withReplacementString("utujba");
         model = BinaryData.fromObject(model).toObject(DataMaskingRuleInner.class);
-        Assertions.assertEquals("utr", model.aliasName());
-        Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.ruleState());
-        Assertions.assertEquals("pauutpw", model.schemaName());
-        Assertions.assertEquals("qhih", model.tableName());
-        Assertions.assertEquals("jqgwzp", model.columnName());
+        Assertions.assertEquals("bj", model.aliasName());
+        Assertions.assertEquals(DataMaskingRuleState.ENABLED, model.ruleState());
+        Assertions.assertEquals("zcjznmwcpmgua", model.schemaName());
+        Assertions.assertEquals("draufactkah", model.tableName());
+        Assertions.assertEquals("ovajjziuxxps", model.columnName());
         Assertions.assertEquals(DataMaskingFunction.CCN, model.maskingFunction());
-        Assertions.assertEquals("n", model.numberFrom());
-        Assertions.assertEquals("ypsxjvfoim", model.numberTo());
-        Assertions.assertEquals("slirciz", model.prefixSize());
-        Assertions.assertEquals("vydfceacvlhvygdy", model.suffixSize());
-        Assertions.assertEquals("umrtwnawjsl", model.replacementString());
+        Assertions.assertEquals("e", model.numberFrom());
+        Assertions.assertEquals("lfg", model.numberTo());
+        Assertions.assertEquals("qubkw", model.prefixSize());
+        Assertions.assertEquals("enr", model.suffixSize());
+        Assertions.assertEquals("utujba", model.replacementString());
     }
 }

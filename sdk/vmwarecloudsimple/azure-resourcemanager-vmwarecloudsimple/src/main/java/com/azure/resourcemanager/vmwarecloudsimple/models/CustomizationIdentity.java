@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CustomizationIdentity model. */
+/**
+ * The CustomizationIdentity model.
+ */
 @Fluent
-public class CustomizationIdentity {
+public final class CustomizationIdentity implements JsonSerializable<CustomizationIdentity> {
     /*
      * Windows Text Identity. Prepared data
      */
-    @JsonProperty(value = "data")
     private String data;
 
     /*
      * Virtual machine host name settings
      */
-    @JsonProperty(value = "hostName")
     private CustomizationHostname hostname;
 
     /*
      * Identity type
      */
-    @JsonProperty(value = "type")
     private CustomizationIdentityType type;
 
     /*
      * Windows Identity. User data customization
      */
-    @JsonProperty(value = "userData")
     private CustomizationIdentityUserData userData;
 
-    /** Creates an instance of CustomizationIdentity class. */
+    /**
+     * Creates an instance of CustomizationIdentity class.
+     */
     public CustomizationIdentity() {
     }
 
     /**
      * Get the data property: Windows Text Identity. Prepared data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -49,7 +53,7 @@ public class CustomizationIdentity {
 
     /**
      * Set the data property: Windows Text Identity. Prepared data.
-     *
+     * 
      * @param data the data value to set.
      * @return the CustomizationIdentity object itself.
      */
@@ -60,7 +64,7 @@ public class CustomizationIdentity {
 
     /**
      * Get the hostname property: Virtual machine host name settings.
-     *
+     * 
      * @return the hostname value.
      */
     public CustomizationHostname hostname() {
@@ -69,7 +73,7 @@ public class CustomizationIdentity {
 
     /**
      * Set the hostname property: Virtual machine host name settings.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomizationIdentity object itself.
      */
@@ -80,7 +84,7 @@ public class CustomizationIdentity {
 
     /**
      * Get the type property: Identity type.
-     *
+     * 
      * @return the type value.
      */
     public CustomizationIdentityType type() {
@@ -89,7 +93,7 @@ public class CustomizationIdentity {
 
     /**
      * Set the type property: Identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the CustomizationIdentity object itself.
      */
@@ -100,7 +104,7 @@ public class CustomizationIdentity {
 
     /**
      * Get the userData property: Windows Identity. User data customization.
-     *
+     * 
      * @return the userData value.
      */
     public CustomizationIdentityUserData userData() {
@@ -109,7 +113,7 @@ public class CustomizationIdentity {
 
     /**
      * Set the userData property: Windows Identity. User data customization.
-     *
+     * 
      * @param userData the userData value to set.
      * @return the CustomizationIdentity object itself.
      */
@@ -120,7 +124,7 @@ public class CustomizationIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,5 +134,50 @@ public class CustomizationIdentity {
         if (userData() != null) {
             userData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("data", this.data);
+        jsonWriter.writeJsonField("hostName", this.hostname);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomizationIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomizationIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomizationIdentity.
+     */
+    public static CustomizationIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomizationIdentity deserializedCustomizationIdentity = new CustomizationIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    deserializedCustomizationIdentity.data = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedCustomizationIdentity.hostname = CustomizationHostname.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomizationIdentity.type = CustomizationIdentityType.fromString(reader.getString());
+                } else if ("userData".equals(fieldName)) {
+                    deserializedCustomizationIdentity.userData = CustomizationIdentityUserData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomizationIdentity;
+        });
     }
 }

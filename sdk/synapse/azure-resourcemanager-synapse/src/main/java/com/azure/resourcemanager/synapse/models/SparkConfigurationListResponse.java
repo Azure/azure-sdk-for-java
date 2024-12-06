@@ -6,32 +6,38 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of SparkConfiguration resources. */
+/**
+ * A list of SparkConfiguration resources.
+ */
 @Fluent
-public final class SparkConfigurationListResponse {
+public final class SparkConfigurationListResponse implements JsonSerializable<SparkConfigurationListResponse> {
     /*
      * List of SparkConfiguration.
      */
-    @JsonProperty(value = "value", required = true)
     private List<SparkConfigurationResourceInner> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SparkConfigurationListResponse class. */
+    /**
+     * Creates an instance of SparkConfigurationListResponse class.
+     */
     public SparkConfigurationListResponse() {
     }
 
     /**
      * Get the value property: List of SparkConfiguration.
-     *
+     * 
      * @return the value value.
      */
     public List<SparkConfigurationResourceInner> value() {
@@ -40,7 +46,7 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Set the value property: List of SparkConfiguration.
-     *
+     * 
      * @param value the value value to set.
      * @return the SparkConfigurationListResponse object itself.
      */
@@ -51,7 +57,7 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SparkConfigurationListResponse object itself.
      */
@@ -71,19 +77,61 @@ public final class SparkConfigurationListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SparkConfigurationListResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SparkConfigurationListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SparkConfigurationListResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkConfigurationListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkConfigurationListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkConfigurationListResponse.
+     */
+    public static SparkConfigurationListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkConfigurationListResponse deserializedSparkConfigurationListResponse
+                = new SparkConfigurationListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SparkConfigurationResourceInner> value
+                        = reader.readArray(reader1 -> SparkConfigurationResourceInner.fromJson(reader1));
+                    deserializedSparkConfigurationListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSparkConfigurationListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkConfigurationListResponse;
+        });
+    }
 }

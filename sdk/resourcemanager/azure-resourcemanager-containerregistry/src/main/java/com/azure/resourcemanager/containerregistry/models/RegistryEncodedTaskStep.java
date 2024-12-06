@@ -22,18 +22,15 @@ public interface RegistryEncodedTaskStep extends RegistryTaskStep {
     List<SetValue> values();
 
     /** Container interface for all the definitions related to a RegistryEncodedTaskStep. */
-    interface Definition
-        extends RegistryEncodedTaskStep.DefinitionStages.Blank,
-            RegistryEncodedTaskStep.DefinitionStages.EncodedTaskContent,
-            RegistryEncodedTaskStep.DefinitionStages.EncodedTaskStepAttachable {
+    interface Definition extends RegistryEncodedTaskStep.DefinitionStages.Blank,
+        RegistryEncodedTaskStep.DefinitionStages.EncodedTaskContent,
+        RegistryEncodedTaskStep.DefinitionStages.EncodedTaskStepAttachable {
     }
 
     /** Container interface for all the updates related to a RegistryEncodedTaskStep. */
     interface Update
-        extends RegistryEncodedTaskStep.UpdateStages.EncodedTaskContent,
-            RegistryEncodedTaskStep.UpdateStages.ValuePath,
-            RegistryEncodedTaskStep.UpdateStages.OverridingValues,
-            Settable<RegistryTask.Update> {
+        extends RegistryEncodedTaskStep.UpdateStages.EncodedTaskContent, RegistryEncodedTaskStep.UpdateStages.ValuePath,
+        RegistryEncodedTaskStep.UpdateStages.OverridingValues, Settable<RegistryTask.Update> {
     }
 
     /** Grouping of registry encoded task definition stages. */

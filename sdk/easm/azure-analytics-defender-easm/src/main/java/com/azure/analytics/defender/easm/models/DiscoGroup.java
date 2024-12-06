@@ -22,7 +22,7 @@ import java.util.List;
 public final class DiscoGroup implements JsonSerializable<DiscoGroup> {
 
     /*
-     * The system generated unique id for the resource.
+     * This is typically the same as the name but might be different for different models.
      */
     @Generated
     private String id;
@@ -101,7 +101,7 @@ public final class DiscoGroup implements JsonSerializable<DiscoGroup> {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
+     * Get the id property: This is typically the same as the name but might be different for different models.
      *
      * @return the id value.
      */

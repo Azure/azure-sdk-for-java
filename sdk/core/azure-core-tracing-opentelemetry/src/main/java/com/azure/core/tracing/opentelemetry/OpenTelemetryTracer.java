@@ -5,6 +5,7 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.StartSpanOptions;
@@ -30,6 +31,8 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import static java.util.Collections.singletonMap;
+
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
  * context propagation. Singleton OpenTelemetry tracer capable of starting and exporting spans.
@@ -41,7 +44,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final StartSpanOptions DEFAULT_SPAN_START_OPTIONS
         = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
     private static final TextMapPropagator TRACE_CONTEXT_FORMAT = W3CTraceContextPropagator.getInstance();
-    private static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.23.1";
+    private static final String DEFAULT_SCHEMA_URL = "https://opentelemetry.io/schemas/1.23.1";
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
@@ -78,11 +81,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             // to resolve the actual io.opentelemetry.context.Context.
             applicationContextClass = Class.forName("#io.opentelemetry.context.Context".substring(1));
             convertAppToAgentContextMethod = agentCtxStorageClass.getMethod("getAgentContext", applicationContextClass);
-        } catch (ReflectiveOperationException t) {
+        } catch (Throwable t) {
             // it's expected if we're not running in the agent
             LOGGER.verbose("Failed to resolve AgentContextStorage.getAgentContext or one of its dependencies", t);
-        } catch (RuntimeException t) {
-            throw LOGGER.logExceptionAsError(t);
         }
     }
 
@@ -92,7 +93,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      */
     public OpenTelemetryTracer() {
-        this("azure-core", null, null, null);
+        this(new LibraryTelemetryOptions("azure-core"), null);
     }
 
     /**
@@ -100,14 +101,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
-    OpenTelemetryTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+    OpenTelemetryTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
 
-        TracerProvider otelProvider = getTracerProvider(options);
-        this.isEnabled = (options == null || options.isEnabled()) && otelProvider != TracerProvider.noop();
-        this.azNamespace = azNamespace;
-        this.tracer = otelProvider.tracerBuilder(libraryName)
-            .setInstrumentationVersion(libraryVersion)
-            .setSchemaUrl(SCHEMA_URL)
+        TracerProvider otelProvider = getTracerProvider(applicationOptions);
+        this.isEnabled
+            = (applicationOptions == null || applicationOptions.isEnabled()) && otelProvider != TracerProvider.noop();
+        this.azNamespace = libraryOptions.getResourceProviderNamespace();
+        this.tracer = otelProvider.tracerBuilder(libraryOptions.getLibraryName())
+            .setInstrumentationVersion(libraryOptions.getLibraryVersion())
+            .setSchemaUrl(libraryOptions.getSchemaUrl() != null ? libraryOptions.getSchemaUrl() : DEFAULT_SCHEMA_URL)
             .build();
     }
 
@@ -135,7 +137,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (shouldSuppress(spanKind, context)) {
             return startSuppressedSpan(context);
         }
-        context = unsuppress(context);
+        context = unsuppressed(context);
         if (isInternalOrClientSpan(spanKind) && !context.getData(CLIENT_METHOD_CALL_FLAG).isPresent()) {
             context = context.addData(CLIENT_METHOD_CALL_FLAG, true);
         }
@@ -148,15 +150,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             spanBuilder.setStartTimestamp(options.getStartTimestamp());
         }
 
-        Span span = spanBuilder.startSpan();
-        if (span.isRecording()) {
-            // If span is sampled in, add additional attributes
-
-            String tracingNamespace = getAzNamespace(context);
-            if (tracingNamespace != null) {
-                OpenTelemetryUtils.addAttribute(span, AZ_TRACING_NAMESPACE_KEY, tracingNamespace);
-            }
+        String tracingNamespace = getAzNamespace(context);
+        if (tracingNamespace != null) {
+            Attributes attributes
+                = OpenTelemetryUtils.convert(singletonMap(AZ_TRACING_NAMESPACE_KEY, tracingNamespace));
+            spanBuilder.setAllAttributes(attributes);
         }
+
+        Span span = spanBuilder.startSpan();
 
         return context.addData(PARENT_TRACE_CONTEXT_KEY,
             (traceContext != null ? traceContext : io.opentelemetry.context.Context.current()).with(span));
@@ -497,7 +498,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return kind == SpanKind.INTERNAL && getBoolean(CLIENT_METHOD_CALL_FLAG, context);
     }
 
-    private static Context unsuppress(Context context) {
+    private static Context unsuppressed(Context context) {
         if (getBoolean(SUPPRESSED_SPAN_FLAG, context)) {
             return context.addData(SUPPRESSED_SPAN_FLAG, false);
         }

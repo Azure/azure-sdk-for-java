@@ -27,7 +27,7 @@ public class DeviceUpdateClientSyncStackTests extends TestProxyTestBase {
         DeviceUpdateClientBuilder clientBuilder = new DeviceUpdateClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", TestData.ACCOUNT_ENDPOINT))
             .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", TestData.INSTANCE_ID))
-            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
+            .httpClient(buildSyncAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null))))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -55,23 +55,24 @@ public class DeviceUpdateClientSyncStackTests extends TestProxyTestBase {
 
     @Test
     public void testListVersions() {
-        PagedIterable<BinaryData> response = deviceUpdateClient.listVersions(TestData.PROVIDER, TestData.NAME, requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceUpdateClient.listVersions(TestData.PROVIDER, TestData.NAME, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testListFiles() {
-        PagedIterable<BinaryData> response =
-            deviceUpdateClient.listFiles(TestData.PROVIDER, TestData.NAME, TestData.VERSION, requestOptions);
+        PagedIterable<BinaryData> response
+            = deviceUpdateClient.listFiles(TestData.PROVIDER, TestData.NAME, TestData.VERSION, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 
     @Test
     public void testGetFile() {
-        Response<BinaryData> response =
-            deviceUpdateClient.getFileWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, TestData.FILE_ID, requestOptions);
+        Response<BinaryData> response = deviceUpdateClient.getFileWithResponse(TestData.PROVIDER, TestData.NAME,
+            TestData.VERSION, TestData.FILE_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
@@ -85,15 +86,13 @@ public class DeviceUpdateClientSyncStackTests extends TestProxyTestBase {
 
     @Test
     public void testGetUpdate() {
-        Response<BinaryData> response =
-            deviceUpdateClient.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, requestOptions);
+        Response<BinaryData> response = deviceUpdateClient.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME,
+            TestData.VERSION, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertNotNull(response.getValue());
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 }

@@ -50,6 +50,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
@@ -92,21 +93,20 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     private static final String FQDN = "contoso-shopping.servicebus.windows.net";
     private static final String QUEUE_NAME = "orders";
     private static final String CLIENT_IDENTIFIER = "client-identifier";
-    private static final ServiceBusSenderInstrumentation DEFAULT_INSTRUMENTATION = new ServiceBusSenderInstrumentation(
-        null, null, FQDN, QUEUE_NAME);
+    private static final ServiceBusSenderInstrumentation DEFAULT_INSTRUMENTATION
+        = new ServiceBusSenderInstrumentation(null, null, FQDN, QUEUE_NAME);
     private static final Duration VIRTUAL_TIME_SHIFT = OPERATION_TIMEOUT.plusSeconds(30);
-    private static final AmqpException RETRIABLE_LINK_ERROR = new AmqpException(true, AmqpErrorCondition.LINK_DETACH_FORCED,
-        "detach-link-error", new AmqpErrorContext(FQDN));
-    private static final AmqpException RETRIABLE_SESSION_ERROR = new AmqpException(true, "session-error",
-        new AmqpErrorContext(FQDN));
-    private static final AmqpException RETRIABLE_CONNECTION_ERROR = new AmqpException(true, AmqpErrorCondition.CONNECTION_FORCED,
-        "connection-forced-error", new AmqpErrorContext(FQDN));
-    private static final AmqpException NON_RETRIABLE_ERROR_1 = new AmqpException(false, AmqpErrorCondition.NOT_ALLOWED,
-        "not-allowed-error-1", new AmqpErrorContext(FQDN));
-    private static final AmqpException NON_RETRIABLE_ERROR_2 = new AmqpException(false, AmqpErrorCondition.NOT_ALLOWED,
-        "not-allowed-error-2", new AmqpErrorContext(FQDN));
-    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
-        .setMode(AmqpRetryMode.FIXED)
+    private static final AmqpException RETRIABLE_LINK_ERROR = new AmqpException(true,
+        AmqpErrorCondition.LINK_DETACH_FORCED, "detach-link-error", new AmqpErrorContext(FQDN));
+    private static final AmqpException RETRIABLE_SESSION_ERROR
+        = new AmqpException(true, "session-error", new AmqpErrorContext(FQDN));
+    private static final AmqpException RETRIABLE_CONNECTION_ERROR = new AmqpException(true,
+        AmqpErrorCondition.CONNECTION_FORCED, "connection-forced-error", new AmqpErrorContext(FQDN));
+    private static final AmqpException NON_RETRIABLE_ERROR_1
+        = new AmqpException(false, AmqpErrorCondition.NOT_ALLOWED, "not-allowed-error-1", new AmqpErrorContext(FQDN));
+    private static final AmqpException NON_RETRIABLE_ERROR_2
+        = new AmqpException(false, AmqpErrorCondition.NOT_ALLOWED, "not-allowed-error-2", new AmqpErrorContext(FQDN));
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
         .setMaxRetries(10)
         .setMaxDelay(Duration.ofSeconds(5))
         .setDelay(Duration.ofSeconds(1))
@@ -155,9 +155,11 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                             // Replicate the arrival of transient-error in the first (current) AmqpSendLink on which 'send' API is invoked.
                             endpoint.emitCurrentSendLinkError(RETRIABLE_LINK_ERROR);
                             return Mono.error(RETRIABLE_LINK_ERROR);
+
                         case 1:
                             // Replicate the successful processing of 'send' API invocation on the second (current) AmqpSendLink.
                             return Mono.empty();
+
                         default:
                             throw new RuntimeException("More than two invocations of send-answer is not expected.");
                     }
@@ -171,7 +173,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final int messagesCount = 4;
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = createConnectionCache(connectionSupplier);
             final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use the first AmqpSendLink, but upon transient-error
@@ -198,7 +201,6 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         }
     }
 
-
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     void shouldBubbleUpNonRetriableSendLinkError() {
@@ -221,11 +223,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                             // on which 'send' API is invoked.
                             endpoint.emitCurrentSendLinkError(RETRIABLE_LINK_ERROR);
                             return Mono.error(RETRIABLE_LINK_ERROR);
+
                         case 1:
                             // Replicate the arrival of non-transient-error in the second (current) AmqpSendLink
                             // on which 'send' API is invoked.
                             endpoint.emitCurrentSendLinkError(NON_RETRIABLE_ERROR_1);
                             return Mono.error(NON_RETRIABLE_ERROR_1);
+
                         default:
                             throw new RuntimeException("More than two invocations of send-answer is not expected.");
                     }
@@ -239,7 +243,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final int messagesCount = 4;
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = createConnectionCache(connectionSupplier);
             final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use the first AmqpSendLink, but upon transient-error
@@ -294,10 +299,12 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                             // the AmqpSendLink on which 'send' API is invoked.
                             endpoint.emitCurrentSessionError(RETRIABLE_SESSION_ERROR);
                             return Mono.error(RETRIABLE_SESSION_ERROR);
+
                         case 1:
                             // Replicate the successful processing of 'send' API invocation on the AmqpSendLink
                             // in the second (current) Session.
                             return Mono.empty();
+
                         default:
                             throw new RuntimeException("More than two invocations of send-answer is not expected.");
                     }
@@ -311,7 +318,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final int messagesCount = 4;
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = createConnectionCache(connectionSupplier);
             final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but upon
@@ -360,11 +368,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                             // the AmqpSendLink on which 'send' API is invoked.
                             endpoint.emitCurrentSessionError(RETRIABLE_SESSION_ERROR);
                             return Mono.error(RETRIABLE_SESSION_ERROR);
+
                         case 1:
                             // Replicate the arrival of non-transient-error in the second (current) Session hosting
                             // the AmqpSendLink on which 'send' API is invoked.
                             endpoint.emitCurrentSessionError(NON_RETRIABLE_ERROR_1);
                             return Mono.error(NON_RETRIABLE_ERROR_1);
+
                         default:
                             throw new RuntimeException("More than two invocations of send-answer is not expected.");
                     }
@@ -378,7 +388,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final int messagesCount = 4;
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = createConnectionCache(connectionSupplier);
             final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but upon
@@ -419,21 +430,24 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         final int[] linksPerSession = new int[] { 1, 1, 1 };
         try (MockEndpoint endpoint = createMockEndpoint(sessionsCnt, linksPerSession)) {
             // The ServiceBusReactorAmqpConnection connection supplier for ReactorConnectionCache.
-            final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = new Supplier<ServiceBusReactorAmqpConnection>() {
-                private int invocationCount = -1;
+            final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier
+                = new Supplier<ServiceBusReactorAmqpConnection>() {
+                    private int invocationCount = -1;
 
-                @Override
-                public ServiceBusReactorAmqpConnection get() {
-                    invocationCount++;
-                    switch (invocationCount) {
-                        case 0:
-                            final ServiceBusReactorAmqpConnection c = endpoint.arrange();
-                            return c;
-                        default:
-                            throw new RuntimeException("More than one invocation of connection-supplier is not expected.");
+                    @Override
+                    public ServiceBusReactorAmqpConnection get() {
+                        invocationCount++;
+                        switch (invocationCount) {
+                            case 0:
+                                final ServiceBusReactorAmqpConnection c = endpoint.arrange();
+                                return c;
+
+                            default:
+                                throw new RuntimeException(
+                                    "More than one invocation of connection-supplier is not expected.");
+                        }
                     }
-                }
-            };
+                };
 
             // Answers the invocation of 'send' API on each AmqpSendLink in the two Session.
             final Answer<Mono<Void>> sendAnswer = new Answer<Mono<Void>>() {
@@ -448,15 +462,18 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                             // in the first session on which 'send' API is invoked.
                             endpoint.emitCurrentSendLinkError(NON_RETRIABLE_ERROR_1);
                             return Mono.error(NON_RETRIABLE_ERROR_1);
+
                         case 1:
                             // Replicate the arrival of non-transient-error in the second Session hosting
                             // the current AmqpSendLink on which 'send' API is invoked.
                             endpoint.emitCurrentSessionError(NON_RETRIABLE_ERROR_2);
                             return Mono.error(NON_RETRIABLE_ERROR_2);
+
                         case 2:
                             // Replicate the successful processing of 'send' API invocation on the current
                             // AmqpSendLink in the third Session.
                             return Mono.empty();
+
                         default:
                             throw new RuntimeException("More than three invocations of send-answer is not expected.");
                     }
@@ -475,7 +492,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
             final ServiceBusMessage messageToSend = createMessageToSend();
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = createConnectionCache(connectionSupplier);
             final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
             try {
                 // The Producer.send that internally attempt to use AmqpSendLink in the first Session, but fails
@@ -542,21 +560,23 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         try (MockEndpoints endpoints = createMockEndpoints(sessionLinkCountList)) {
             final AtomicReference<MockEndpoint> currentEndpoint = new AtomicReference<>();
             // The ServiceBusReactorAmqpConnection connection supplier for ReactorConnectionCache.
-            final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = new Supplier<ServiceBusReactorAmqpConnection>() {
-                private int endpointIndex = -1;
+            final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier
+                = new Supplier<ServiceBusReactorAmqpConnection>() {
+                    private int endpointIndex = -1;
 
-                @Override
-                public ServiceBusReactorAmqpConnection get() {
-                    endpointIndex++;
-                    if (endpointIndex >= endpointsCount) {
-                        throw new RuntimeException("More than " + endpointsCount + " invocation of connection-supplier is not expected.");
+                    @Override
+                    public ServiceBusReactorAmqpConnection get() {
+                        endpointIndex++;
+                        if (endpointIndex >= endpointsCount) {
+                            throw new RuntimeException(
+                                "More than " + endpointsCount + " invocation of connection-supplier is not expected.");
+                        }
+                        final MockEndpoint e = endpoints.get(endpointIndex);
+                        currentEndpoint.set(e);
+                        final ServiceBusReactorAmqpConnection c = e.arrange();
+                        return c;
                     }
-                    final MockEndpoint e = endpoints.get(endpointIndex);
-                    currentEndpoint.set(e);
-                    final ServiceBusReactorAmqpConnection c = e.arrange();
-                    return c;
-                }
-            };
+                };
 
             // Answers the invocation of 'send' API on each Session's AmqpSendLink in each Connection.
             final Answer<Mono<Void>> sendAnswer = new Answer<Mono<Void>>() {
@@ -572,23 +592,27 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                             // connection) on which 'send' API is invoked.
                             endpoints.get(0).emitCurrentSendLinkError(RETRIABLE_LINK_ERROR);
                             return Mono.error(RETRIABLE_LINK_ERROR);
+
                         case 1:
                             Assertions.assertEquals(endpoints.get(1), currentEndpoint.get());
                             // Replicate the arrival of transient-error in the current Session (in the second
                             // connection) hosting the current AmqpSendLink on which 'send' API is invoked.
                             endpoints.get(1).emitCurrentSessionError(RETRIABLE_SESSION_ERROR);
                             return Mono.error(RETRIABLE_SESSION_ERROR);
+
                         case 2:
                             Assertions.assertEquals(endpoints.get(2), currentEndpoint.get());
                             // Replicate the arrival of transient-error in the third connection owning the Session
                             // hosting the current AmqpSendLink on which 'send' API is invoked.
                             endpoints.get(2).emitConnectionError(RETRIABLE_CONNECTION_ERROR);
                             return Mono.error(RETRIABLE_CONNECTION_ERROR);
+
                         case 3:
                             Assertions.assertEquals(endpoints.get(3), currentEndpoint.get());
                             // Replicate the successful processing of 'send' API invocation on the current
                             // AmqpSendLink in the Session owned by fourth Session.
                             return Mono.empty();
+
                         default:
                             throw new RuntimeException("More than three invocations of send-answer is not expected.");
                     }
@@ -604,7 +628,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final int messagesCount = 4;
             final List<ServiceBusMessage> messagesToSend = createMessagesToSend(messagesCount);
 
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = createConnectionCache(connectionSupplier);
+            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+                = createConnectionCache(connectionSupplier);
             final ServiceBusSenderAsyncClient sender = createSenderAsyncClient(connectionCache, false);
             try {
                 try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -634,27 +659,31 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
     }
 
     private Supplier<ServiceBusReactorAmqpConnection> singleConnectionSupplier(MockEndpoint endpoint) {
-        final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = new Supplier<ServiceBusReactorAmqpConnection>() {
-            private int invocationCount = -1;
-            @Override
-            public ServiceBusReactorAmqpConnection get() {
-                invocationCount++;
-                switch (invocationCount) {
-                    case 0:
-                        final ServiceBusReactorAmqpConnection c = endpoint.arrange();
-                        return c;
-                    default:
-                        throw new RuntimeException("More than one invocation of connection-supplier is not expected.");
+        final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier
+            = new Supplier<ServiceBusReactorAmqpConnection>() {
+                private int invocationCount = -1;
+
+                @Override
+                public ServiceBusReactorAmqpConnection get() {
+                    invocationCount++;
+                    switch (invocationCount) {
+                        case 0:
+                            final ServiceBusReactorAmqpConnection c = endpoint.arrange();
+                            return c;
+
+                        default:
+                            throw new RuntimeException(
+                                "More than one invocation of connection-supplier is not expected.");
+                    }
                 }
-            }
-        };
+            };
         return connectionSupplier;
     }
 
-    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(
-        Supplier<ServiceBusReactorAmqpConnection> connectionSupplier) {
-        return new ReactorConnectionCache<>(connectionSupplier,
-            FQDN, QUEUE_NAME, getRetryPolicy(RETRY_OPTIONS), new HashMap<>());
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection>
+        createConnectionCache(Supplier<ServiceBusReactorAmqpConnection> connectionSupplier) {
+        return new ReactorConnectionCache<>(connectionSupplier, FQDN, QUEUE_NAME, getRetryPolicy(RETRY_OPTIONS),
+            new HashMap<>());
     }
 
     private ServiceBusSenderAsyncClient createSenderAsyncClient(
@@ -711,11 +740,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             this.mockEndpointsCnt = this.mockEndpoints.size();
         }
 
-        static MockEndpoints create(String queueName, AmqpRetryOptions retryOptions, List<SessionLinkCount> sessionLinkCounts) {
+        static MockEndpoints create(String queueName, AmqpRetryOptions retryOptions,
+            List<SessionLinkCount> sessionLinkCounts) {
             final List<MockEndpoint> mockEndpoints = new ArrayList<>(sessionLinkCounts.size());
             int conId = 1;
             for (SessionLinkCount slc : sessionLinkCounts) {
-                mockEndpoints.add(MockEndpoint.create(String.valueOf(conId), queueName, retryOptions, slc.sessionsCnt, slc.linksPerSession));
+                mockEndpoints.add(MockEndpoint.create(String.valueOf(conId), queueName, retryOptions, slc.sessionsCnt,
+                    slc.linksPerSession));
                 conId++;
             }
             return new MockEndpoints(mockEndpoints);
@@ -756,11 +787,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         private final MessageSerializer messageSerializer;
         private final AtomicBoolean arranged = new AtomicBoolean(false);
 
-        private MockEndpoint(String connectionId, String queueName, AmqpRetryOptions retryOptions, MockSendSessions mockSendSessions,
-                             ConnectionOptions connectionOptions, Connection connection, Reactor reactor, ReactorDispatcher reactorDispatcher,
-                             ReactorExecutor reactorExecutor, ReactorProvider reactorProvider, ConnectionHandler connectionHandler,
-                             Sinks.Many<EndpointState> connectionStateSink, ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
-                             TokenManagerProvider tokenManagerProvider, TokenManager tokenManager, MessageSerializer messageSerializer) {
+        private MockEndpoint(String connectionId, String queueName, AmqpRetryOptions retryOptions,
+            MockSendSessions mockSendSessions, ConnectionOptions connectionOptions, Connection connection,
+            Reactor reactor, ReactorDispatcher reactorDispatcher, ReactorExecutor reactorExecutor,
+            ReactorProvider reactorProvider, ConnectionHandler connectionHandler,
+            Sinks.Many<EndpointState> connectionStateSink, ReactorHandlerProvider handlerProvider,
+            ServiceBusAmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
+            TokenManager tokenManager, MessageSerializer messageSerializer) {
             this.connectionId = connectionId;
             this.queueName = queueName;
             this.retryOptions = retryOptions;
@@ -780,7 +813,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             this.messageSerializer = messageSerializer;
         }
 
-        static MockEndpoint create(String connectionId, String queueName, AmqpRetryOptions retryOptions, int sessionsCnt, int[] linksPerSession) {
+        static MockEndpoint create(String connectionId, String queueName, AmqpRetryOptions retryOptions,
+            int sessionsCnt, int[] linksPerSession) {
             Assertions.assertNotNull(retryOptions);
             Assertions.assertTrue(sessionsCnt > 0, "sessionsCnt must be > 0.");
             Assertions.assertEquals(sessionsCnt, linksPerSession.length);
@@ -788,12 +822,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                 Assertions.assertTrue(linksCnt >= 0, "links-count in linksPerSession must be >= 0.");
             }
 
-            final MockSendSessions mockSendSessions = MockSendSessions.create(connectionId, sessionsCnt, linksPerSession);
+            final MockSendSessions mockSendSessions
+                = MockSendSessions.create(connectionId, sessionsCnt, linksPerSession);
 
             final ConnectionOptions connectionOptions = mock(ConnectionOptions.class);
             final Connection connection = mock(Connection.class);
-            final Sinks.Many<EndpointState> connectionStateSink = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
+            final Sinks.Many<EndpointState> connectionStateSink
+                = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
             final ConnectionHandler connectionHandler = mock(ConnectionHandler.class);
 
             final Reactor reactor = mock(Reactor.class);
@@ -807,9 +842,10 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
             final MessageSerializer messageSerializer = mock(MessageSerializer.class);
 
-            return new MockEndpoint(connectionId, queueName, retryOptions, mockSendSessions, connectionOptions, connection,
-                reactor, reactorDispatcher, reactorExecutor, reactorProvider, connectionHandler, connectionStateSink,
-                handlerProvider, linkProvider, tokenManagerProvider, tokenManager, messageSerializer);
+            return new MockEndpoint(connectionId, queueName, retryOptions, mockSendSessions, connectionOptions,
+                connection, reactor, reactorDispatcher, reactorExecutor, reactorProvider, connectionHandler,
+                connectionStateSink, handlerProvider, linkProvider, tokenManagerProvider, tokenManager,
+                messageSerializer);
         }
 
         ServiceBusReactorAmqpConnection arrange() {
@@ -852,8 +888,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
             // New tests only for ReactorConnectionCache introduced in v2.
             final boolean isV2 = true;
-            return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions,
-                reactorProvider, handlerProvider, linkProvider, tokenManagerProvider, messageSerializer,  false, isV2);
+            return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, reactorProvider,
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, isV2, false);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {
@@ -947,7 +983,7 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         }
 
         void arrange(ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider, Connection connection,
-                     Sinks.Many<EndpointState> connectionStateSink) {
+            Sinks.Many<EndpointState> connectionStateSink) {
             for (MockSendSession mockSession : mockSendSessions) {
                 mockSession.arrange();
                 mockSession.emitSessionState(EndpointState.ACTIVE);
@@ -971,13 +1007,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
 
             // Arrange the stub to provide AmqpSendLinks.
             when(linkProvider.createSendLink(any(ServiceBusReactorAmqpConnection.class), anyString(), any(Sender.class),
-                any(SendLinkHandler.class), any(ReactorProvider.class), any(TokenManager.class), any(MessageSerializer.class),
-                any(AmqpRetryOptions.class), any(Scheduler.class), any()))
-                .thenAnswer(invocation -> {
-                    final SendLinkHandler sendLinkHandler = invocation.getArgument(3);
-                    final AmqpSendLink amqpSendLink = lookupAmqpSendLinkFor(sendLinkHandler);
-                    return amqpSendLink;
-                });
+                any(SendLinkHandler.class), any(ReactorProvider.class), any(TokenManager.class),
+                any(MessageSerializer.class), any(AmqpRetryOptions.class), any(Scheduler.class), any()))
+                    .thenAnswer(invocation -> {
+                        final SendLinkHandler sendLinkHandler = invocation.getArgument(3);
+                        final AmqpSendLink amqpSendLink = lookupAmqpSendLinkFor(sendLinkHandler);
+                        return amqpSendLink;
+                    });
 
             // Arrange the stub to provide the QPID sessions.
             final ArrayList<Session> qpidSessions = new ArrayList<>(sessionsCnt + 1);
@@ -985,8 +1021,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                 qpidSessions.add(mockSendSession.getQpidSession());
             }
             qpidSessions.add(terminalMockSendSession.getQpidSession());
-            when(connection.session())
-                .thenReturn(qpidSessions.get(0), qpidSessions.subList(1, sessionsCnt + 1).toArray(new Session[0]));
+            when(connection.session()).thenReturn(qpidSessions.get(0),
+                qpidSessions.subList(1, sessionsCnt + 1).toArray(new Session[0]));
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {
@@ -1087,8 +1123,9 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         // The read-write to currentMockSendLink is synchronized by MockSessions lock.
         private MockSendLink currentMockSendLink;
 
-        private MockSendSession(String connectionId, Session session, Record sessionAttachments, SessionHandler sessionHandler,
-                                Sinks.Many<EndpointState> sessionStateSink, List<MockSendLink> mockSendLinks, MockSendLink terminalMockSendLink) {
+        private MockSendSession(String connectionId, Session session, Record sessionAttachments,
+            SessionHandler sessionHandler, Sinks.Many<EndpointState> sessionStateSink, List<MockSendLink> mockSendLinks,
+            MockSendLink terminalMockSendLink) {
             this.connectionId = connectionId;
             this.session = session;
             this.sessionAttachments = sessionAttachments;
@@ -1110,8 +1147,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final Record sessionAttachments = mock(Record.class);
             final Session session = mock(Session.class);
             final SessionHandler sessionHandler = mock(SessionHandler.class);
-            final Sinks.Many<EndpointState> sessionStateSink = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
+            final Sinks.Many<EndpointState> sessionStateSink
+                = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
             return new MockSendSession(connectionId, session, sessionAttachments, sessionHandler, sessionStateSink,
                 Collections.unmodifiableList(mockSendLinks), terminalMockSendLink);
         }
@@ -1131,9 +1168,12 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             };
             when(terminalMockSendLink.getAmqpSendLink().send(anyList())).then(terminalSendAnswer);
             when(terminalMockSendLink.getAmqpSendLink().send(any(Message.class))).then(terminalSendAnswer);
-            when(terminalMockSendLink.getAmqpSendLink().send(any(Message.class), any(DeliveryState.class))).then(terminalSendAnswer);
-            when(terminalMockSendLink.getAmqpSendLink().send(anyList(), any(DeliveryState.class))).then(terminalSendAnswer);
-            when(terminalMockSendLink.getAmqpSendLink().send(any(), anyInt(), anyInt(), any(DeliveryState.class))).then(terminalSendAnswer);
+            when(terminalMockSendLink.getAmqpSendLink().send(any(Message.class), any(DeliveryState.class)))
+                .then(terminalSendAnswer);
+            when(terminalMockSendLink.getAmqpSendLink().send(anyList(), any(DeliveryState.class)))
+                .then(terminalSendAnswer);
+            when(terminalMockSendLink.getAmqpSendLink().send(any(), anyInt(), anyInt(), any(DeliveryState.class)))
+                .then(terminalSendAnswer);
 
             doNothing().when(sessionAttachments).set(any(), any(), anyString());
             when(session.attachments()).thenReturn(sessionAttachments);
@@ -1149,8 +1189,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
                 qpidSenders.add(mockSendLink.getQpidSender());
             }
             qpidSenders.add(terminalMockSendLink.getQpidSender());
-            when(session.sender(any()))
-                .thenReturn(qpidSenders.get(0), qpidSenders.subList(1, sendLinkCnt + 1).toArray(new Sender[0]));
+            when(session.sender(any())).thenReturn(qpidSenders.get(0),
+                qpidSenders.subList(1, sendLinkCnt + 1).toArray(new Sender[0]));
         }
 
         Session getQpidSession() {
@@ -1232,8 +1272,8 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
         private final SendLinkHandler sendLinkHandler;
         private final Sinks.Many<EndpointState> sendLinkStateSink;
 
-        private MockSendLink(Sender sender, Record senderAttachments, AmqpSendLink amqpSendLink, SendLinkHandler sendLinkHandler,
-                             Sinks.Many<EndpointState> sendLinkStateSink) {
+        private MockSendLink(Sender sender, Record senderAttachments, AmqpSendLink amqpSendLink,
+            SendLinkHandler sendLinkHandler, Sinks.Many<EndpointState> sendLinkStateSink) {
             this.sender = sender;
             this.senderAttachments = senderAttachments;
             this.amqpSendLink = amqpSendLink;
@@ -1245,9 +1285,20 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             final Record senderAttachments = mock(Record.class);
             final Sender sender = mock(Sender.class);
             final AmqpSendLink amqpSendLink = mock(AmqpSendLink.class);
-            final SendLinkHandler sendLinkHandler = mock(SendLinkHandler.class);
-            final Sinks.Many<EndpointState> sendLinkStateSink = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
+            final Sinks.Many<EndpointState> sendLinkStateSink
+                = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
+
+            final SendLinkHandler sendLinkHandler = new SendLinkHandler("", "", "", "", null) {
+                @Override
+                public Flux<EndpointState> getEndpointStates() {
+                    return sendLinkStateSink.asFlux().distinctUntilChanged();
+                }
+
+                @Override
+                public void close() {
+                }
+            };
+
             return new MockSendLink(sender, senderAttachments, amqpSendLink, sendLinkHandler, sendLinkStateSink);
         }
 
@@ -1259,11 +1310,10 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             doNothing().when(sender).setProperties(any());
             doNothing().when(sender).setSource(any());
             doNothing().when(sender).open();
-            when(amqpSendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+            when(amqpSendLink.getLinkSize())
+                .thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
             when(amqpSendLink.getEndpointStates())
                 .thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged().map(state -> toAmqpEndpointState(state)));
-            when(sendLinkHandler.getEndpointStates()).thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged());
-            doNothing().when(sendLinkHandler).close();
         }
 
         Sender getQpidSender() {
@@ -1294,10 +1344,13 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             switch (state) {
                 case ACTIVE:
                     return AmqpEndpointState.ACTIVE;
+
                 case UNINITIALIZED:
                     return AmqpEndpointState.UNINITIALIZED;
+
                 case CLOSED:
                     return AmqpEndpointState.CLOSED;
+
                 default:
                     throw new IllegalArgumentException("This endpoint state is not supported. State:" + state);
             }
@@ -1308,7 +1361,6 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             Mockito.framework().clearInlineMock(sender);
             Mockito.framework().clearInlineMock(senderAttachments);
             Mockito.framework().clearInlineMock(amqpSendLink);
-            Mockito.framework().clearInlineMock(sendLinkHandler);
         }
     }
 }

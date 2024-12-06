@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Nsp configuration with profile information.
  */
 @Fluent
-public final class NetworkSecurityPerimeterConfigurationProfile {
+public final class NetworkSecurityPerimeterConfigurationProfile
+    implements JsonSerializable<NetworkSecurityPerimeterConfigurationProfile> {
     /*
      * Nsp configuration profile name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Access rules version number for nsp profile.
      */
-    @JsonProperty(value = "accessRulesVersion")
     private String accessRulesVersion;
 
     /*
      * List of inbound or outbound access rule setup on the nsp profile.
      */
-    @JsonProperty(value = "accessRules")
     private List<NetworkSecurityPerimeterProfileAccessRule> accessRules;
 
     /*
      * Diagnostic settings version number for nsp profile.
      */
-    @JsonProperty(value = "diagnosticSettingsVersion")
     private String diagnosticSettingsVersion;
 
     /*
      * Enabled log categories for nsp profile.
      */
-    @JsonProperty(value = "enabledLogCategories")
     private List<String> enabledLogCategories;
 
     /**
@@ -160,5 +160,60 @@ public final class NetworkSecurityPerimeterConfigurationProfile {
         if (accessRules() != null) {
             accessRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("accessRulesVersion", this.accessRulesVersion);
+        jsonWriter.writeArrayField("accessRules", this.accessRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("diagnosticSettingsVersion", this.diagnosticSettingsVersion);
+        jsonWriter.writeArrayField("enabledLogCategories", this.enabledLogCategories,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityPerimeterConfigurationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityPerimeterConfigurationProfile if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterConfigurationProfile.
+     */
+    public static NetworkSecurityPerimeterConfigurationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityPerimeterConfigurationProfile deserializedNetworkSecurityPerimeterConfigurationProfile
+                = new NetworkSecurityPerimeterConfigurationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProfile.name = reader.getString();
+                } else if ("accessRulesVersion".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProfile.accessRulesVersion = reader.getString();
+                } else if ("accessRules".equals(fieldName)) {
+                    List<NetworkSecurityPerimeterProfileAccessRule> accessRules
+                        = reader.readArray(reader1 -> NetworkSecurityPerimeterProfileAccessRule.fromJson(reader1));
+                    deserializedNetworkSecurityPerimeterConfigurationProfile.accessRules = accessRules;
+                } else if ("diagnosticSettingsVersion".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProfile.diagnosticSettingsVersion
+                        = reader.getString();
+                } else if ("enabledLogCategories".equals(fieldName)) {
+                    List<String> enabledLogCategories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkSecurityPerimeterConfigurationProfile.enabledLogCategories
+                        = enabledLogCategories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityPerimeterConfigurationProfile;
+        });
     }
 }

@@ -21,7 +21,7 @@ public final class ImagesListByGalleryMockTests {
     @Test
     public void testListByGallery() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"kifmjn\",\"publisher\":\"wtqabpxuckp\",\"offer\":\"qoweyirdhl\",\"sku\":\"ngwflqqmpizruwn\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":717298847,\"max\":289665577},\"vCPUs\":{\"min\":2135849980,\"max\":744816761}},\"provisioningState\":\"Running\",\"hibernateSupport\":\"Disabled\"},\"id\":\"ixtmkzjvkviirhgf\",\"name\":\"rwsdp\",\"type\":\"ra\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"ayxonsupeujl\",\"publisher\":\"nh\",\"offer\":\"sqltnzo\",\"sku\":\"gsxgnxfyqon\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1811066896,\"max\":46593633},\"vCPUs\":{\"min\":1576410378,\"max\":887033867}},\"provisioningState\":\"RolloutInProgress\",\"hibernateSupport\":\"Disabled\"},\"id\":\"iqbi\",\"name\":\"htmwwinh\",\"type\":\"hfqpofv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ImagesListByGalleryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Image> response = manager.images()
-            .listByGallery("jkwrusnkq", "hsyrqunj", "hdenxaulk", 2127477983, com.azure.core.util.Context.NONE);
+            .listByGallery("ljhlnymzotq", "ryuzcbmqqv", "mv", 622297852, com.azure.core.util.Context.NONE);
 
     }
 }

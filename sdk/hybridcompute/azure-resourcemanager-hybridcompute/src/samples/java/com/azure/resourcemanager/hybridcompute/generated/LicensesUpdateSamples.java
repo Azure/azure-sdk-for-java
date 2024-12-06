@@ -17,7 +17,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
 public final class LicensesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/license/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/license/
      * License_Update.json
      */
     /**

@@ -5,74 +5,73 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data of a property change. */
+/**
+ * Data of a property change.
+ */
 @Fluent
-public final class PropertyChange {
+public final class PropertyChange implements JsonSerializable<PropertyChange> {
     /*
      * The type of the change.
      */
-    @JsonProperty(value = "changeType")
     private ChangeType changeType;
 
     /*
      * The change category.
      */
-    @JsonProperty(value = "changeCategory")
     private ChangeCategory changeCategory;
 
     /*
      * The json path of the changed property.
      */
-    @JsonProperty(value = "jsonPath")
     private String jsonPath;
 
     /*
      * The enhanced display name of the json path. E.g., the json path value[0].properties will be translated to
      * something meaningful like slots["Staging"].properties.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The level property.
      */
-    @JsonProperty(value = "level")
     private Level level;
 
     /*
      * The description of the changed property.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The value of the property before the change.
      */
-    @JsonProperty(value = "oldValue")
     private String oldValue;
 
     /*
      * The value of the property after the change.
      */
-    @JsonProperty(value = "newValue")
     private String newValue;
 
     /*
      * The boolean indicating whether the oldValue and newValue are masked. The values are masked if it contains
      * sensitive information that the user doesn't have access to.
      */
-    @JsonProperty(value = "isDataMasked")
     private Boolean isDataMasked;
 
-    /** Creates an instance of PropertyChange class. */
+    /**
+     * Creates an instance of PropertyChange class.
+     */
     public PropertyChange() {
     }
 
     /**
      * Get the changeType property: The type of the change.
-     *
+     * 
      * @return the changeType value.
      */
     public ChangeType changeType() {
@@ -81,7 +80,7 @@ public final class PropertyChange {
 
     /**
      * Set the changeType property: The type of the change.
-     *
+     * 
      * @param changeType the changeType value to set.
      * @return the PropertyChange object itself.
      */
@@ -92,7 +91,7 @@ public final class PropertyChange {
 
     /**
      * Get the changeCategory property: The change category.
-     *
+     * 
      * @return the changeCategory value.
      */
     public ChangeCategory changeCategory() {
@@ -101,7 +100,7 @@ public final class PropertyChange {
 
     /**
      * Set the changeCategory property: The change category.
-     *
+     * 
      * @param changeCategory the changeCategory value to set.
      * @return the PropertyChange object itself.
      */
@@ -112,7 +111,7 @@ public final class PropertyChange {
 
     /**
      * Get the jsonPath property: The json path of the changed property.
-     *
+     * 
      * @return the jsonPath value.
      */
     public String jsonPath() {
@@ -121,7 +120,7 @@ public final class PropertyChange {
 
     /**
      * Set the jsonPath property: The json path of the changed property.
-     *
+     * 
      * @param jsonPath the jsonPath value to set.
      * @return the PropertyChange object itself.
      */
@@ -133,7 +132,7 @@ public final class PropertyChange {
     /**
      * Get the displayName property: The enhanced display name of the json path. E.g., the json path value[0].properties
      * will be translated to something meaningful like slots["Staging"].properties.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -143,7 +142,7 @@ public final class PropertyChange {
     /**
      * Set the displayName property: The enhanced display name of the json path. E.g., the json path value[0].properties
      * will be translated to something meaningful like slots["Staging"].properties.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PropertyChange object itself.
      */
@@ -154,7 +153,7 @@ public final class PropertyChange {
 
     /**
      * Get the level property: The level property.
-     *
+     * 
      * @return the level value.
      */
     public Level level() {
@@ -163,7 +162,7 @@ public final class PropertyChange {
 
     /**
      * Set the level property: The level property.
-     *
+     * 
      * @param level the level value to set.
      * @return the PropertyChange object itself.
      */
@@ -174,7 +173,7 @@ public final class PropertyChange {
 
     /**
      * Get the description property: The description of the changed property.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -183,7 +182,7 @@ public final class PropertyChange {
 
     /**
      * Set the description property: The description of the changed property.
-     *
+     * 
      * @param description the description value to set.
      * @return the PropertyChange object itself.
      */
@@ -194,7 +193,7 @@ public final class PropertyChange {
 
     /**
      * Get the oldValue property: The value of the property before the change.
-     *
+     * 
      * @return the oldValue value.
      */
     public String oldValue() {
@@ -203,7 +202,7 @@ public final class PropertyChange {
 
     /**
      * Set the oldValue property: The value of the property before the change.
-     *
+     * 
      * @param oldValue the oldValue value to set.
      * @return the PropertyChange object itself.
      */
@@ -214,7 +213,7 @@ public final class PropertyChange {
 
     /**
      * Get the newValue property: The value of the property after the change.
-     *
+     * 
      * @return the newValue value.
      */
     public String newValue() {
@@ -223,7 +222,7 @@ public final class PropertyChange {
 
     /**
      * Set the newValue property: The value of the property after the change.
-     *
+     * 
      * @param newValue the newValue value to set.
      * @return the PropertyChange object itself.
      */
@@ -235,7 +234,7 @@ public final class PropertyChange {
     /**
      * Get the isDataMasked property: The boolean indicating whether the oldValue and newValue are masked. The values
      * are masked if it contains sensitive information that the user doesn't have access to.
-     *
+     * 
      * @return the isDataMasked value.
      */
     public Boolean isDataMasked() {
@@ -245,7 +244,7 @@ public final class PropertyChange {
     /**
      * Set the isDataMasked property: The boolean indicating whether the oldValue and newValue are masked. The values
      * are masked if it contains sensitive information that the user doesn't have access to.
-     *
+     * 
      * @param isDataMasked the isDataMasked value to set.
      * @return the PropertyChange object itself.
      */
@@ -256,9 +255,70 @@ public final class PropertyChange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        jsonWriter.writeStringField("changeCategory",
+            this.changeCategory == null ? null : this.changeCategory.toString());
+        jsonWriter.writeStringField("jsonPath", this.jsonPath);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("oldValue", this.oldValue);
+        jsonWriter.writeStringField("newValue", this.newValue);
+        jsonWriter.writeBooleanField("isDataMasked", this.isDataMasked);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PropertyChange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PropertyChange if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PropertyChange.
+     */
+    public static PropertyChange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PropertyChange deserializedPropertyChange = new PropertyChange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("changeType".equals(fieldName)) {
+                    deserializedPropertyChange.changeType = ChangeType.fromString(reader.getString());
+                } else if ("changeCategory".equals(fieldName)) {
+                    deserializedPropertyChange.changeCategory = ChangeCategory.fromString(reader.getString());
+                } else if ("jsonPath".equals(fieldName)) {
+                    deserializedPropertyChange.jsonPath = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPropertyChange.displayName = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedPropertyChange.level = Level.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPropertyChange.description = reader.getString();
+                } else if ("oldValue".equals(fieldName)) {
+                    deserializedPropertyChange.oldValue = reader.getString();
+                } else if ("newValue".equals(fieldName)) {
+                    deserializedPropertyChange.newValue = reader.getString();
+                } else if ("isDataMasked".equals(fieldName)) {
+                    deserializedPropertyChange.isDataMasked = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPropertyChange;
+        });
     }
 }

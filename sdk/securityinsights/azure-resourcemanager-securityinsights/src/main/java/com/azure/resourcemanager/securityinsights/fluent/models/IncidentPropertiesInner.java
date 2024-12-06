@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.IncidentAdditionalData;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassification;
 import com.azure.resourcemanager.securityinsights.models.IncidentClassificationReason;
@@ -13,136 +18,125 @@ import com.azure.resourcemanager.securityinsights.models.IncidentLabel;
 import com.azure.resourcemanager.securityinsights.models.IncidentOwnerInfo;
 import com.azure.resourcemanager.securityinsights.models.IncidentSeverity;
 import com.azure.resourcemanager.securityinsights.models.IncidentStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Describes incident properties. */
+/**
+ * Describes incident properties.
+ */
 @Fluent
-public final class IncidentPropertiesInner {
+public final class IncidentPropertiesInner implements JsonSerializable<IncidentPropertiesInner> {
     /*
      * Additional data on the incident
      */
-    @JsonProperty(value = "additionalData", access = JsonProperty.Access.WRITE_ONLY)
     private IncidentAdditionalData additionalData;
 
     /*
      * The reason the incident was closed
      */
-    @JsonProperty(value = "classification")
     private IncidentClassification classification;
 
     /*
      * Describes the reason the incident was closed
      */
-    @JsonProperty(value = "classificationComment")
     private String classificationComment;
 
     /*
      * The classification reason the incident was closed with
      */
-    @JsonProperty(value = "classificationReason")
     private IncidentClassificationReason classificationReason;
 
     /*
      * The time the incident was created
      */
-    @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimeUtc;
 
     /*
      * The description of the incident
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The time of the first activity in the incident
      */
-    @JsonProperty(value = "firstActivityTimeUtc")
     private OffsetDateTime firstActivityTimeUtc;
 
     /*
      * The deep-link url to the incident in Azure portal
      */
-    @JsonProperty(value = "incidentUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String incidentUrl;
 
     /*
      * A sequential number
      */
-    @JsonProperty(value = "incidentNumber", access = JsonProperty.Access.WRITE_ONLY)
     private Integer incidentNumber;
 
     /*
      * List of labels relevant to this incident
      */
-    @JsonProperty(value = "labels")
     private List<IncidentLabel> labels;
 
     /*
      * The name of the source provider that generated the incident
      */
-    @JsonProperty(value = "providerName")
     private String providerName;
 
     /*
      * The incident ID assigned by the incident provider
      */
-    @JsonProperty(value = "providerIncidentId")
     private String providerIncidentId;
 
     /*
      * The time of the last activity in the incident
      */
-    @JsonProperty(value = "lastActivityTimeUtc")
     private OffsetDateTime lastActivityTimeUtc;
 
     /*
      * The last time the incident was updated
      */
-    @JsonProperty(value = "lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTimeUtc;
 
     /*
      * Describes a user that the incident is assigned to
      */
-    @JsonProperty(value = "owner")
     private IncidentOwnerInfo owner;
 
     /*
      * List of resource ids of Analytic rules related to the incident
      */
-    @JsonProperty(value = "relatedAnalyticRuleIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> relatedAnalyticRuleIds;
 
     /*
      * The severity of the incident
      */
-    @JsonProperty(value = "severity", required = true)
     private IncidentSeverity severity;
 
     /*
      * The status of the incident
      */
-    @JsonProperty(value = "status", required = true)
     private IncidentStatus status;
 
     /*
      * Describes a team for the incident
      */
-    @JsonProperty(value = "teamInformation")
     private TeamInformationInner teamInformation;
 
     /*
      * The title of the incident
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /**
+     * Creates an instance of IncidentPropertiesInner class.
+     */
+    public IncidentPropertiesInner() {
+    }
+
+    /**
      * Get the additionalData property: Additional data on the incident.
-     *
+     * 
      * @return the additionalData value.
      */
     public IncidentAdditionalData additionalData() {
@@ -151,7 +145,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the classification property: The reason the incident was closed.
-     *
+     * 
      * @return the classification value.
      */
     public IncidentClassification classification() {
@@ -160,7 +154,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the classification property: The reason the incident was closed.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -171,7 +165,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the classificationComment property: Describes the reason the incident was closed.
-     *
+     * 
      * @return the classificationComment value.
      */
     public String classificationComment() {
@@ -180,7 +174,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the classificationComment property: Describes the reason the incident was closed.
-     *
+     * 
      * @param classificationComment the classificationComment value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -191,7 +185,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the classificationReason property: The classification reason the incident was closed with.
-     *
+     * 
      * @return the classificationReason value.
      */
     public IncidentClassificationReason classificationReason() {
@@ -200,7 +194,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the classificationReason property: The classification reason the incident was closed with.
-     *
+     * 
      * @param classificationReason the classificationReason value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -211,7 +205,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the createdTimeUtc property: The time the incident was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -220,7 +214,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the description property: The description of the incident.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -229,7 +223,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the description property: The description of the incident.
-     *
+     * 
      * @param description the description value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -240,7 +234,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the firstActivityTimeUtc property: The time of the first activity in the incident.
-     *
+     * 
      * @return the firstActivityTimeUtc value.
      */
     public OffsetDateTime firstActivityTimeUtc() {
@@ -249,7 +243,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the firstActivityTimeUtc property: The time of the first activity in the incident.
-     *
+     * 
      * @param firstActivityTimeUtc the firstActivityTimeUtc value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -260,7 +254,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the incidentUrl property: The deep-link url to the incident in Azure portal.
-     *
+     * 
      * @return the incidentUrl value.
      */
     public String incidentUrl() {
@@ -269,7 +263,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the incidentNumber property: A sequential number.
-     *
+     * 
      * @return the incidentNumber value.
      */
     public Integer incidentNumber() {
@@ -278,7 +272,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the labels property: List of labels relevant to this incident.
-     *
+     * 
      * @return the labels value.
      */
     public List<IncidentLabel> labels() {
@@ -287,7 +281,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the labels property: List of labels relevant to this incident.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -298,7 +292,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the providerName property: The name of the source provider that generated the incident.
-     *
+     * 
      * @return the providerName value.
      */
     public String providerName() {
@@ -307,7 +301,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the providerName property: The name of the source provider that generated the incident.
-     *
+     * 
      * @param providerName the providerName value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -318,7 +312,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the providerIncidentId property: The incident ID assigned by the incident provider.
-     *
+     * 
      * @return the providerIncidentId value.
      */
     public String providerIncidentId() {
@@ -327,7 +321,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the providerIncidentId property: The incident ID assigned by the incident provider.
-     *
+     * 
      * @param providerIncidentId the providerIncidentId value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -338,7 +332,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the lastActivityTimeUtc property: The time of the last activity in the incident.
-     *
+     * 
      * @return the lastActivityTimeUtc value.
      */
     public OffsetDateTime lastActivityTimeUtc() {
@@ -347,7 +341,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the lastActivityTimeUtc property: The time of the last activity in the incident.
-     *
+     * 
      * @param lastActivityTimeUtc the lastActivityTimeUtc value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -358,7 +352,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the lastModifiedTimeUtc property: The last time the incident was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -367,7 +361,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the owner property: Describes a user that the incident is assigned to.
-     *
+     * 
      * @return the owner value.
      */
     public IncidentOwnerInfo owner() {
@@ -376,7 +370,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the owner property: Describes a user that the incident is assigned to.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -387,7 +381,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the relatedAnalyticRuleIds property: List of resource ids of Analytic rules related to the incident.
-     *
+     * 
      * @return the relatedAnalyticRuleIds value.
      */
     public List<String> relatedAnalyticRuleIds() {
@@ -396,7 +390,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the severity property: The severity of the incident.
-     *
+     * 
      * @return the severity value.
      */
     public IncidentSeverity severity() {
@@ -405,7 +399,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the severity property: The severity of the incident.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -416,7 +410,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the status property: The status of the incident.
-     *
+     * 
      * @return the status value.
      */
     public IncidentStatus status() {
@@ -425,7 +419,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the status property: The status of the incident.
-     *
+     * 
      * @param status the status value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -436,7 +430,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the teamInformation property: Describes a team for the incident.
-     *
+     * 
      * @return the teamInformation value.
      */
     public TeamInformationInner teamInformation() {
@@ -445,7 +439,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the teamInformation property: Describes a team for the incident.
-     *
+     * 
      * @param teamInformation the teamInformation value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -456,7 +450,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Get the title property: The title of the incident.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -465,7 +459,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Set the title property: The title of the incident.
-     *
+     * 
      * @param title the title value to set.
      * @return the IncidentPropertiesInner object itself.
      */
@@ -476,7 +470,7 @@ public final class IncidentPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -490,25 +484,126 @@ public final class IncidentPropertiesInner {
             owner().validate();
         }
         if (severity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property severity in model IncidentPropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severity in model IncidentPropertiesInner"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property status in model IncidentPropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property status in model IncidentPropertiesInner"));
         }
         if (teamInformation() != null) {
             teamInformation().validate();
         }
         if (title() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property title in model IncidentPropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model IncidentPropertiesInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IncidentPropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("classification",
+            this.classification == null ? null : this.classification.toString());
+        jsonWriter.writeStringField("classificationComment", this.classificationComment);
+        jsonWriter.writeStringField("classificationReason",
+            this.classificationReason == null ? null : this.classificationReason.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("firstActivityTimeUtc",
+            this.firstActivityTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstActivityTimeUtc));
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("providerName", this.providerName);
+        jsonWriter.writeStringField("providerIncidentId", this.providerIncidentId);
+        jsonWriter.writeStringField("lastActivityTimeUtc",
+            this.lastActivityTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActivityTimeUtc));
+        jsonWriter.writeJsonField("owner", this.owner);
+        jsonWriter.writeJsonField("teamInformation", this.teamInformation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentPropertiesInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncidentPropertiesInner.
+     */
+    public static IncidentPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentPropertiesInner deserializedIncidentPropertiesInner = new IncidentPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("severity".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.severity = IncidentSeverity.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.status = IncidentStatus.fromString(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.title = reader.getString();
+                } else if ("additionalData".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.additionalData = IncidentAdditionalData.fromJson(reader);
+                } else if ("classification".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.classification
+                        = IncidentClassification.fromString(reader.getString());
+                } else if ("classificationComment".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.classificationComment = reader.getString();
+                } else if ("classificationReason".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.classificationReason
+                        = IncidentClassificationReason.fromString(reader.getString());
+                } else if ("createdTimeUtc".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.createdTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.description = reader.getString();
+                } else if ("firstActivityTimeUtc".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.firstActivityTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("incidentUrl".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.incidentUrl = reader.getString();
+                } else if ("incidentNumber".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.incidentNumber = reader.getNullable(JsonReader::getInt);
+                } else if ("labels".equals(fieldName)) {
+                    List<IncidentLabel> labels = reader.readArray(reader1 -> IncidentLabel.fromJson(reader1));
+                    deserializedIncidentPropertiesInner.labels = labels;
+                } else if ("providerName".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.providerName = reader.getString();
+                } else if ("providerIncidentId".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.providerIncidentId = reader.getString();
+                } else if ("lastActivityTimeUtc".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.lastActivityTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTimeUtc".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.lastModifiedTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("owner".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.owner = IncidentOwnerInfo.fromJson(reader);
+                } else if ("relatedAnalyticRuleIds".equals(fieldName)) {
+                    List<String> relatedAnalyticRuleIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIncidentPropertiesInner.relatedAnalyticRuleIds = relatedAnalyticRuleIds;
+                } else if ("teamInformation".equals(fieldName)) {
+                    deserializedIncidentPropertiesInner.teamInformation = TeamInformationInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentPropertiesInner;
+        });
+    }
 }

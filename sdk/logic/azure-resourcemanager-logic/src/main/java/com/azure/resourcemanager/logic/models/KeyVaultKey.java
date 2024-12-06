@@ -6,25 +6,27 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.resourcemanager.logic.fluent.models.KeyVaultKeyInner;
 
-/** An immutable client-side representation of KeyVaultKey. */
+/**
+ * An immutable client-side representation of KeyVaultKey.
+ */
 public interface KeyVaultKey {
     /**
      * Gets the kid property: The key id.
-     *
+     * 
      * @return the kid value.
      */
     String kid();
 
     /**
      * Gets the attributes property: The key attributes.
-     *
+     * 
      * @return the attributes value.
      */
     KeyVaultKeyAttributes attributes();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.KeyVaultKeyInner object.
-     *
+     * 
      * @return the inner object.
      */
     KeyVaultKeyInner innerModel();

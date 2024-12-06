@@ -18,13 +18,12 @@ public class AnomalyIncidentDetectedAsyncTest extends IncidentDetectedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void listIncidentsDetected(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
+        MetricsAdvisorAsyncClient client
+            = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
-        PagedFlux<AnomalyIncident> incidentsFlux
-            = client.listIncidentsForDetectionConfig(
-            ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId,
-            ListIncidentsDetectedInput.INSTANCE.startTime, ListIncidentsDetectedInput.INSTANCE.endTime,
-            ListIncidentsDetectedInput.INSTANCE.options);
+        PagedFlux<AnomalyIncident> incidentsFlux = client.listIncidentsForDetectionConfig(
+            ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId, ListIncidentsDetectedInput.INSTANCE.startTime,
+            ListIncidentsDetectedInput.INSTANCE.endTime, ListIncidentsDetectedInput.INSTANCE.options);
 
         Assertions.assertNotNull(incidentsFlux);
 

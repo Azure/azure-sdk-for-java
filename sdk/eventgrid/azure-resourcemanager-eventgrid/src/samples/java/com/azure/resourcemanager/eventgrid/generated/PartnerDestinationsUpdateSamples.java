@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class PartnerDestinationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerDestinations_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerDestinations_Update.json
      */
     /**
      * Sample code: PartnerDestinations_Update.

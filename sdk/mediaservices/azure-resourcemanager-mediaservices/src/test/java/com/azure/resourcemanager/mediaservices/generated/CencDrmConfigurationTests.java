@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CencDrmConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CencDrmConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"playReady\":{\"customLicenseAcquisitionUrlTemplate\":\"l\",\"playReadyCustomAttributes\":\"slqlfmmdn\"},\"widevine\":{\"customLicenseAcquisitionUrlTemplate\":\"lzpswiydm\"}}")
-                .toObject(CencDrmConfiguration.class);
-        Assertions.assertEquals("l", model.playReady().customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals("slqlfmmdn", model.playReady().playReadyCustomAttributes());
-        Assertions.assertEquals("lzpswiydm", model.widevine().customLicenseAcquisitionUrlTemplate());
+        CencDrmConfiguration model = BinaryData.fromString(
+            "{\"playReady\":{\"customLicenseAcquisitionUrlTemplate\":\"kcrodtjinfw\",\"playReadyCustomAttributes\":\"fltkacjv\"},\"widevine\":{\"customLicenseAcquisitionUrlTemplate\":\"dlfoakggkfp\"}}")
+            .toObject(CencDrmConfiguration.class);
+        Assertions.assertEquals("kcrodtjinfw", model.playReady().customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("fltkacjv", model.playReady().playReadyCustomAttributes());
+        Assertions.assertEquals("dlfoakggkfp", model.widevine().customLicenseAcquisitionUrlTemplate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CencDrmConfiguration model =
-            new CencDrmConfiguration()
-                .withPlayReady(
-                    new StreamingPolicyPlayReadyConfiguration()
-                        .withCustomLicenseAcquisitionUrlTemplate("l")
-                        .withPlayReadyCustomAttributes("slqlfmmdn"))
-                .withWidevine(
-                    new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("lzpswiydm"));
+        CencDrmConfiguration model = new CencDrmConfiguration()
+            .withPlayReady(
+                new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("kcrodtjinfw")
+                    .withPlayReadyCustomAttributes("fltkacjv"))
+            .withWidevine(
+                new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("dlfoakggkfp"));
         model = BinaryData.fromObject(model).toObject(CencDrmConfiguration.class);
-        Assertions.assertEquals("l", model.playReady().customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals("slqlfmmdn", model.playReady().playReadyCustomAttributes());
-        Assertions.assertEquals("lzpswiydm", model.widevine().customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("kcrodtjinfw", model.playReady().customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals("fltkacjv", model.playReady().playReadyCustomAttributes());
+        Assertions.assertEquals("dlfoakggkfp", model.widevine().customLicenseAcquisitionUrlTemplate());
     }
 }

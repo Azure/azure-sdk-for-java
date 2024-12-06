@@ -46,8 +46,8 @@ public interface MarketplaceAgreementsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogAgreementResourceInner> createOrUpdateWithResponse(
-        DatadogAgreementResourceInner body, Context context);
+    Response<DatadogAgreementResourceInner> createOrUpdateWithResponse(DatadogAgreementResourceInner body,
+        Context context);
 
     /**
      * Create Datadog marketplace agreement in the subscription.

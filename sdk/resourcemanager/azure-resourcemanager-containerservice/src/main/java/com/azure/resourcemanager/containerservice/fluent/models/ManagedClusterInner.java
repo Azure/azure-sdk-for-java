@@ -25,6 +25,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxy
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -47,6 +48,13 @@ import java.util.Map;
  */
 @Fluent
 public final class ManagedClusterInner extends Resource {
+    /*
+     * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
+     * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
+     * optimistic concurrency per the normal etag convention.
+     */
+    private String etag;
+
     /*
      * The managed cluster SKU.
      */
@@ -73,9 +81,9 @@ public final class ManagedClusterInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -83,14 +91,25 @@ public final class ManagedClusterInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ManagedClusterInner class.
      */
     public ManagedClusterInner() {
+    }
+
+    /**
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -172,13 +191,13 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -192,13 +211,13 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -561,6 +580,30 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the nodeResourceGroupProfile property: Profile of the node resource group configuration.
+     * 
+     * @return the nodeResourceGroupProfile value.
+     */
+    public ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeResourceGroupProfile();
+    }
+
+    /**
+     * Set the nodeResourceGroupProfile property: Profile of the node resource group configuration.
+     * 
+     * @param nodeResourceGroupProfile the nodeResourceGroupProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner
+        withNodeResourceGroupProfile(ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withNodeResourceGroupProfile(nodeResourceGroupProfile);
+        return this;
+    }
+
+    /**
      * Get the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
      * 
      * @return the enableRbac value.
@@ -799,7 +842,10 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the identityProfile property: Identities associated with the cluster.
+     * Get the identityProfile property: The user identity associated with the managed cluster. This identity will be
+     * used by the kubelet. Only one user assigned identity is allowed. The only accepted key is "kubeletidentity", with
+     * value of "resourceId":
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}".
      * 
      * @return the identityProfile value.
      */
@@ -808,7 +854,10 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the identityProfile property: Identities associated with the cluster.
+     * Set the identityProfile property: The user identity associated with the managed cluster. This identity will be
+     * used by the kubelet. Only one user assigned identity is allowed. The only accepted key is "kubeletidentity", with
+     * value of "resourceId":
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}".
      * 
      * @param identityProfile the identityProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -1151,6 +1200,8 @@ public final class ManagedClusterInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedManagedClusterInner.withTags(tags);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedManagedClusterInner.etag = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedManagedClusterInner.sku = ManagedClusterSku.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {

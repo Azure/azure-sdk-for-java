@@ -20,7 +20,7 @@ public final class ApplicationTypeVersionsGetSamples {
      */
     public static void
         getAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypeVersions().getWithResponse("resRg", "myCluster", "myAppType", "1.0",
-            com.azure.core.util.Context.NONE);
+        manager.applicationTypeVersions()
+            .getWithResponse("resRg", "myCluster", "myAppType", "1.0", com.azure.core.util.Context.NONE);
     }
 }

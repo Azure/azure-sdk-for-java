@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VaultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultsClient.
+ */
 public final class VaultsClientImpl implements VaultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VaultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of VaultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VaultsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -65,116 +71,84 @@ public final class VaultsClientImpl implements VaultsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface VaultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultModelInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VaultModelInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VaultModelInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VaultModelInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VaultModelUpdate body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VaultModelUpdate body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataReplication/replicationVaults")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultModelCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VaultModelCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("continuationToken") String continuationToken,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("continuationToken") String continuationToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultModelCollection>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VaultModelCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("continuationToken") String continuationToken,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("continuationToken") String continuationToken, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultModelCollection>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultModelCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VaultModelCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,19 +157,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the details of the vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultModelInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<Response<VaultModelInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,24 +177,16 @@ public final class VaultsClientImpl implements VaultsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, vaultName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -234,19 +196,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the details of the vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultModelInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<Response<VaultModelInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vaultName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -257,22 +215,15 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,9 +239,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -300,16 +251,16 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the details of the vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VaultModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vaultName, Context context) {
+    public Response<VaultModelInner> getByResourceGroupWithResponse(String resourceGroupName, String vaultName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vaultName, context).block();
     }
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,9 +275,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -336,19 +287,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultModelInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String vaultName,
+        VaultModelInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -362,26 +309,16 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -392,19 +329,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultModelInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String vaultName,
+        VaultModelInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -418,23 +351,15 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -444,24 +369,18 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginCreateAsync(
-        String resourceGroupName, String vaultName, VaultModelInner body) {
+    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginCreateAsync(String resourceGroupName,
+        String vaultName, VaultModelInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, vaultName, body);
-        return this
-            .client
-            .<VaultModelInner, VaultModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VaultModelInner.class,
-                VaultModelInner.class,
-                this.client.getContext());
+        return this.client.<VaultModelInner, VaultModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VaultModelInner.class, VaultModelInner.class, this.client.getContext());
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,25 +389,19 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginCreateAsync(
-        String resourceGroupName, String vaultName) {
+    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginCreateAsync(String resourceGroupName,
+        String vaultName) {
         final VaultModelInner body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, vaultName, body);
-        return this
-            .client
-            .<VaultModelInner, VaultModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VaultModelInner.class,
-                VaultModelInner.class,
-                this.client.getContext());
+        return this.client.<VaultModelInner, VaultModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VaultModelInner.class, VaultModelInner.class, this.client.getContext());
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -499,21 +412,19 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginCreateAsync(
-        String resourceGroupName, String vaultName, VaultModelInner body, Context context) {
+    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginCreateAsync(String resourceGroupName,
+        String vaultName, VaultModelInner body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, vaultName, body, context);
-        return this
-            .client
-            .<VaultModelInner, VaultModelInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VaultModelInner.class, VaultModelInner.class, context);
+        return this.client.<VaultModelInner, VaultModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VaultModelInner.class, VaultModelInner.class, context);
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,17 +433,17 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(
-        String resourceGroupName, String vaultName) {
+    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(String resourceGroupName,
+        String vaultName) {
         final VaultModelInner body = null;
         return this.beginCreateAsync(resourceGroupName, vaultName, body).getSyncPoller();
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -543,16 +454,16 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(
-        String resourceGroupName, String vaultName, VaultModelInner body, Context context) {
+    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(String resourceGroupName,
+        String vaultName, VaultModelInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, vaultName, body, context).getSyncPoller();
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -563,16 +474,15 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultModelInner> createAsync(String resourceGroupName, String vaultName, VaultModelInner body) {
-        return beginCreateAsync(resourceGroupName, vaultName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, vaultName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -583,16 +493,15 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultModelInner> createAsync(String resourceGroupName, String vaultName) {
         final VaultModelInner body = null;
-        return beginCreateAsync(resourceGroupName, vaultName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, vaultName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -603,18 +512,17 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultModelInner> createAsync(
-        String resourceGroupName, String vaultName, VaultModelInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, vaultName, body, context)
-            .last()
+    private Mono<VaultModelInner> createAsync(String resourceGroupName, String vaultName, VaultModelInner body,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, vaultName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,9 +538,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -649,9 +557,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -661,19 +569,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultModelUpdate body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vaultName,
+        VaultModelUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -687,26 +591,16 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -717,19 +611,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String vaultName, VaultModelUpdate body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vaultName,
+        VaultModelUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -743,23 +633,15 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -769,24 +651,18 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginUpdateAsync(
-        String resourceGroupName, String vaultName, VaultModelUpdate body) {
+    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginUpdateAsync(String resourceGroupName,
+        String vaultName, VaultModelUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vaultName, body);
-        return this
-            .client
-            .<VaultModelInner, VaultModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VaultModelInner.class,
-                VaultModelInner.class,
-                this.client.getContext());
+        return this.client.<VaultModelInner, VaultModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VaultModelInner.class, VaultModelInner.class, this.client.getContext());
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -795,25 +671,19 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginUpdateAsync(
-        String resourceGroupName, String vaultName) {
+    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginUpdateAsync(String resourceGroupName,
+        String vaultName) {
         final VaultModelUpdate body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vaultName, body);
-        return this
-            .client
-            .<VaultModelInner, VaultModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VaultModelInner.class,
-                VaultModelInner.class,
-                this.client.getContext());
+        return this.client.<VaultModelInner, VaultModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VaultModelInner.class, VaultModelInner.class, this.client.getContext());
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -824,21 +694,19 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginUpdateAsync(
-        String resourceGroupName, String vaultName, VaultModelUpdate body, Context context) {
+    private PollerFlux<PollResult<VaultModelInner>, VaultModelInner> beginUpdateAsync(String resourceGroupName,
+        String vaultName, VaultModelUpdate body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vaultName, body, context);
-        return this
-            .client
-            .<VaultModelInner, VaultModelInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VaultModelInner.class, VaultModelInner.class, context);
+        return this.client.<VaultModelInner, VaultModelInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VaultModelInner.class, VaultModelInner.class, context);
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -847,17 +715,17 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(
-        String resourceGroupName, String vaultName) {
+    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(String resourceGroupName,
+        String vaultName) {
         final VaultModelUpdate body = null;
         return this.beginUpdateAsync(resourceGroupName, vaultName, body).getSyncPoller();
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -868,16 +736,16 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(
-        String resourceGroupName, String vaultName, VaultModelUpdate body, Context context) {
+    public SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(String resourceGroupName,
+        String vaultName, VaultModelUpdate body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, vaultName, body, context).getSyncPoller();
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -888,16 +756,15 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultModelInner> updateAsync(String resourceGroupName, String vaultName, VaultModelUpdate body) {
-        return beginUpdateAsync(resourceGroupName, vaultName, body)
-            .last()
+        return beginUpdateAsync(resourceGroupName, vaultName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -908,16 +775,15 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultModelInner> updateAsync(String resourceGroupName, String vaultName) {
         final VaultModelUpdate body = null;
-        return beginUpdateAsync(resourceGroupName, vaultName, body)
-            .last()
+        return beginUpdateAsync(resourceGroupName, vaultName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -928,18 +794,17 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultModelInner> updateAsync(
-        String resourceGroupName, String vaultName, VaultModelUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, vaultName, body, context)
-            .last()
+    private Mono<VaultModelInner> updateAsync(String resourceGroupName, String vaultName, VaultModelUpdate body,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, vaultName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -955,9 +820,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -974,9 +839,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -987,16 +852,12 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1007,25 +868,16 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1035,19 +887,15 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1058,22 +906,15 @@ public final class VaultsClientImpl implements VaultsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1084,17 +925,15 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vaultName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1104,20 +943,19 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vaultName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1132,9 +970,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1150,9 +988,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1167,9 +1005,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1180,16 +1018,15 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vaultName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1203,9 +1040,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1220,107 +1057,72 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listSinglePageAsync(String continuationToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            continuationToken,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VaultModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                continuationToken, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VaultModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listSinglePageAsync(String continuationToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                continuationToken,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), continuationToken,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1329,15 +1131,15 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listAsync(String continuationToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(continuationToken), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(continuationToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription as paginated response with {@link PagedFlux}.
@@ -1345,15 +1147,15 @@ public final class VaultsClientImpl implements VaultsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listAsync() {
         final String continuationToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(continuationToken), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(continuationToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,16 +1165,15 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listAsync(String continuationToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(continuationToken, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(continuationToken, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription as paginated response with {@link PagedIterable}.
@@ -1385,9 +1186,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1402,31 +1203,27 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultModelInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String continuationToken) {
+    private Mono<PagedResponse<VaultModelInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String continuationToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1435,33 +1232,18 @@ public final class VaultsClientImpl implements VaultsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            continuationToken,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VaultModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, continuationToken, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VaultModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
@@ -1469,22 +1251,18 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultModelInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String continuationToken, Context context) {
+    private Mono<PagedResponse<VaultModelInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String continuationToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1493,98 +1271,82 @@ public final class VaultsClientImpl implements VaultsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                continuationToken,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                continuationToken, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listByResourceGroupAsync(String resourceGroupName, String continuationToken) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, continuationToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, continuationToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listByResourceGroupAsync(String resourceGroupName) {
         final String continuationToken = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, continuationToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, continuationToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VaultModelInner> listByResourceGroupAsync(
-        String resourceGroupName, String continuationToken, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, continuationToken, context),
+    private PagedFlux<VaultModelInner> listByResourceGroupAsync(String resourceGroupName, String continuationToken,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, continuationToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName) {
@@ -1594,29 +1356,28 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultModelInner> listByResourceGroup(
-        String resourceGroupName, String continuationToken, Context context) {
+    public PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName, String continuationToken,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, continuationToken, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1628,32 +1389,22 @@ public final class VaultsClientImpl implements VaultsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VaultModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VaultModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1661,37 +1412,26 @@ public final class VaultsClientImpl implements VaultsClient {
      * @return vault model collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultModelInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VaultModelInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1703,31 +1443,20 @@ public final class VaultsClientImpl implements VaultsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VaultModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VaultModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1740,23 +1469,13 @@ public final class VaultsClientImpl implements VaultsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

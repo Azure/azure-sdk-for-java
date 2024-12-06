@@ -18,7 +18,6 @@ import java.util.function.Consumer;
  */
 @Fluent
 public class BlobQueryOptions {
-
     private final String expression;
     private final OutputStream outputStream;
     private BlobQuerySerialization inputSerialization;
@@ -29,7 +28,9 @@ public class BlobQueryOptions {
 
     /**
      * Constructs a {@link BlobQueryOptions}.
+     *
      * @param expression The query expression.
+     * @throws NullPointerException If {@code expression} is null.
      */
     public BlobQueryOptions(String expression) {
         StorageImplUtils.assertNotNull("expression", expression);
@@ -39,8 +40,10 @@ public class BlobQueryOptions {
 
     /**
      * Constructs a {@link BlobQueryOptions}.
+     *
      * @param expression The query expression.
      * @param outputStream The OutputStream where the downloaded data will be written.
+     * @throws NullPointerException If {@code expression} or {@code outputStream} is null.
      */
     public BlobQueryOptions(String expression, OutputStream outputStream) {
         StorageImplUtils.assertNotNull("expression", expression);

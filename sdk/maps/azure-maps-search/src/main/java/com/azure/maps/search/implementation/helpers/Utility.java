@@ -50,7 +50,8 @@ public class Utility {
             SERIALIZER.serialize(baos, fc.getFeatures().get(0).getGeometry());
 
             // deserialize into GeoObject
-            final TypeReference<GeoObject> typeReference = new TypeReference<GeoObject>() { };
+            final TypeReference<GeoObject> typeReference = new TypeReference<GeoObject>() {
+            };
             return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
         }
 

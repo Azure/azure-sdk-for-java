@@ -22,19 +22,19 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
+import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.QueuesCreateHeaders;
 import com.azure.storage.queue.implementation.models.QueuesDeleteHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
-import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
 import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataHeaders;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
+import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
-import com.azure.storage.queue.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Queues.
@@ -306,10 +306,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueuesCreateHeaders, Void>> createWithResponseAsync(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getUrl(), queueName, timeout, metadata,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> createWithResponseAsync(queueName, timeout, metadata, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -415,10 +413,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), queueName, timeout, metadata,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(
+                context -> createNoCustomHeadersWithResponseAsync(queueName, timeout, metadata, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -473,8 +470,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesCreateHeaders, Void> createWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), queueName, timeout, metadata, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -526,8 +523,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, metadata,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -552,10 +549,7 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueuesDeleteHeaders, Void>> deleteWithResponseAsync(String queueName, Integer timeout,
         String requestId) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
-                requestId, accept, context))
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -643,10 +637,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String queueName, Integer timeout,
         String requestId) {
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), queueName, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> deleteNoCustomHeadersWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -693,8 +685,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesDeleteHeaders, Void> deleteWithResponse(String queueName, Integer timeout,
         String requestId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId,
                 accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -738,8 +730,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String queueName, Integer timeout, String requestId,
         Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -765,11 +757,7 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueuesGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(String queueName,
         Integer timeout, String requestId) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), queueName, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -863,11 +851,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String queueName, Integer timeout,
         String requestId) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), queueName, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(
+                context -> getPropertiesNoCustomHeadersWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -917,9 +903,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesGetPropertiesHeaders, Void> getPropertiesWithResponse(String queueName, Integer timeout,
         String requestId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -965,9 +951,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String queueName, Integer timeout, String requestId,
         Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -996,11 +982,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueuesSetMetadataHeaders, Void>> setMetadataWithResponseAsync(String queueName,
         Integer timeout, Map<String, String> metadata, String requestId) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setMetadata(this.client.getUrl(), queueName, comp, timeout, metadata,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> setMetadataWithResponseAsync(queueName, timeout, metadata, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1108,11 +1091,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataNoCustomHeadersWithResponseAsync(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), queueName, comp, timeout,
-                metadata, this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(
+            context -> setMetadataNoCustomHeadersWithResponseAsync(queueName, timeout, metadata, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1168,9 +1148,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesSetMetadataHeaders, Void> setMetadataWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataSync(this.client.getUrl(), queueName, comp, timeout, metadata,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1222,9 +1202,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String queueName, Integer timeout,
         Map<String, String> metadata, String requestId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout, metadata,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1251,11 +1231,7 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper>>
         getAccessPolicyWithResponseAsync(String queueName, Integer timeout, String requestId) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getAccessPolicy(this.client.getUrl(), queueName, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getAccessPolicyWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1352,11 +1328,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueSignedIdentifierWrapper>>
         getAccessPolicyNoCustomHeadersWithResponseAsync(String queueName, Integer timeout, String requestId) {
-        final String comp = "acl";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), queueName, comp,
-                timeout, this.client.getVersion(), requestId, accept, context))
+            .withContext(
+                context -> getAccessPolicyNoCustomHeadersWithResponseAsync(queueName, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1406,9 +1380,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper>
         getAccessPolicyWithResponse(String queueName, Integer timeout, String requestId, Context context) {
-        final String comp = "acl";
-        final String accept = "application/xml";
         try {
+            final String comp = "acl";
+            final String accept = "application/xml";
             return service.getAccessPolicySync(this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1459,9 +1433,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersWithResponse(String queueName,
         Integer timeout, String requestId, Context context) {
-        final String comp = "acl";
-        final String accept = "application/xml";
         try {
+            final String comp = "acl";
+            final String accept = "application/xml";
             return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1487,12 +1461,8 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<QueuesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(String queueName,
         Integer timeout, String requestId, List<QueueSignedIdentifier> queueAcl) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         return FluxUtil
-            .withContext(context -> service.setAccessPolicy(this.client.getUrl(), queueName, comp, timeout,
-                this.client.getVersion(), requestId, queueAclConverted, accept, context))
+            .withContext(context -> setAccessPolicyWithResponseAsync(queueName, timeout, requestId, queueAcl, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1589,12 +1559,9 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessPolicyNoCustomHeadersWithResponseAsync(String queueName, Integer timeout,
         String requestId, List<QueueSignedIdentifier> queueAcl) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         return FluxUtil
-            .withContext(context -> service.setAccessPolicyNoCustomHeaders(this.client.getUrl(), queueName, comp,
-                timeout, this.client.getVersion(), requestId, queueAclConverted, accept, context))
+            .withContext(context -> setAccessPolicyNoCustomHeadersWithResponseAsync(queueName, timeout, requestId,
+                queueAcl, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -1645,10 +1612,10 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<QueuesSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(String queueName,
         Integer timeout, String requestId, List<QueueSignedIdentifier> queueAcl, Context context) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         try {
+            final String comp = "acl";
+            final String accept = "application/xml";
+            QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
             return service.setAccessPolicySync(this.client.getUrl(), queueName, comp, timeout, this.client.getVersion(),
                 requestId, queueAclConverted, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1695,10 +1662,10 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPolicyNoCustomHeadersWithResponse(String queueName, Integer timeout,
         String requestId, List<QueueSignedIdentifier> queueAcl, Context context) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         try {
+            final String comp = "acl";
+            final String accept = "application/xml";
+            QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
             return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), queueName, comp, timeout,
                 this.client.getVersion(), requestId, queueAclConverted, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {

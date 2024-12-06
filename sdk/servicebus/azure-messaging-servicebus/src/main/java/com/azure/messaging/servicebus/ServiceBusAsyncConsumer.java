@@ -41,8 +41,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
     }
 
-    ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiverInstrumentation instrumentation) {
+    ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux, MessageSerializer messageSerializer,
+        ReceiverOptions receiverOptions, ServiceBusReceiverInstrumentation instrumentation) {
         this.isV2 = true;
         this.linkName = linkName;
         this.messageFlux = messageFlux;
@@ -50,8 +50,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         this.messageSerializer = messageSerializer;
 
         // This ServiceBusAsyncConsumer is backing ServiceBusReceiverAsyncClient instance (client has instrumentation is enabled).
-        final Flux<ServiceBusReceivedMessage> deserialize = messageFlux
-            .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
+        final Flux<ServiceBusReceivedMessage> deserialize
+            = messageFlux.map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
         this.processor = TracingFluxOperator.create(deserialize, instrumentation);
     }
 

@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,10 +23,11 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
-import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
 import java.io.IOException;
@@ -156,6 +157,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The AutoUpgradeProfilesClient object to access its operations.
+     */
+    private final AutoUpgradeProfilesClient autoUpgradeProfiles;
+
+    /**
+     * Gets the AutoUpgradeProfilesClient object to access its operations.
+     * 
+     * @return the AutoUpgradeProfilesClient object.
+     */
+    public AutoUpgradeProfilesClient getAutoUpgradeProfiles() {
+        return this.autoUpgradeProfiles;
+    }
+
+    /**
      * The FleetMembersClient object to access its operations.
      */
     private final FleetMembersClient fleetMembers;
@@ -214,9 +229,10 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-04-01";
+        this.apiVersion = "2024-05-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
+        this.autoUpgradeProfiles = new AutoUpgradeProfilesClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);

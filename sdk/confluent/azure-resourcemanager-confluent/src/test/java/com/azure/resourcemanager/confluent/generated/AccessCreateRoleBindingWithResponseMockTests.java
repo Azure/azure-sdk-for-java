@@ -45,13 +45,16 @@ public final class AccessCreateRoleBindingWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RoleBindingRecord response = manager.access()
-            .createRoleBindingWithResponse("gepuslvyjtc", "uwkasiz", new AccessCreateRoleBindingRequestModel()
-                .withPrincipal("sfuughtuqfecjx").withRoleName("gtuhxuicbu").withCrnPattern("mr"),
+            .createRoleBindingWithResponse("gepuslvyjtc", "uwkasiz",
+                new AccessCreateRoleBindingRequestModel().withPrincipal("sfuughtuqfecjx")
+                    .withRoleName("gtuhxuicbu")
+                    .withCrnPattern("mr"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -75,6 +75,11 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
      */
     private List<ComputedProperty> computedProperties;
 
+    /*
+     * The vector embedding policy for the container.
+     */
+    private VectorEmbeddingPolicy vectorEmbeddingPolicy;
+
     /**
      * Creates an instance of SqlContainerResource class.
      */
@@ -308,6 +313,26 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
     }
 
     /**
+     * Get the vectorEmbeddingPolicy property: The vector embedding policy for the container.
+     * 
+     * @return the vectorEmbeddingPolicy value.
+     */
+    public VectorEmbeddingPolicy vectorEmbeddingPolicy() {
+        return this.vectorEmbeddingPolicy;
+    }
+
+    /**
+     * Set the vectorEmbeddingPolicy property: The vector embedding policy for the container.
+     * 
+     * @param vectorEmbeddingPolicy the vectorEmbeddingPolicy value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withVectorEmbeddingPolicy(VectorEmbeddingPolicy vectorEmbeddingPolicy) {
+        this.vectorEmbeddingPolicy = vectorEmbeddingPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -338,6 +363,9 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());
         }
+        if (vectorEmbeddingPolicy() != null) {
+            vectorEmbeddingPolicy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlContainerResource.class);
@@ -360,6 +388,7 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
         jsonWriter.writeArrayField("computedProperties", this.computedProperties,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vectorEmbeddingPolicy", this.vectorEmbeddingPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -404,6 +433,8 @@ public class SqlContainerResource implements JsonSerializable<SqlContainerResour
                     List<ComputedProperty> computedProperties
                         = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
                     deserializedSqlContainerResource.computedProperties = computedProperties;
+                } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.vectorEmbeddingPolicy = VectorEmbeddingPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

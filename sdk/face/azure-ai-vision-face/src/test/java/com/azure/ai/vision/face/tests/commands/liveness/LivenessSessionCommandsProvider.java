@@ -12,15 +12,16 @@ import java.util.function.BiFunction;
 public final class LivenessSessionCommandsProvider
     extends CommandProvider<FaceSessionClient, FaceSessionAsyncClient, ILivenessSessionSyncCommands> {
 
-    public LivenessSessionCommandsProvider(
-        String tag, BiFunction<FaceSessionClient, FaceSessionAsyncClient, ILivenessSessionSyncCommands> creator) {
+    public LivenessSessionCommandsProvider(String tag,
+        BiFunction<FaceSessionClient, FaceSessionAsyncClient, ILivenessSessionSyncCommands> creator) {
         super(tag, creator);
     }
 
     public static LivenessSessionCommandsProvider[] getFunctionProviders() {
         return new LivenessSessionCommandsProvider[] {
-            new LivenessSessionCommandsProvider("Sync", (faceClient, faceAsyncClient) -> new LivenessSessionSyncCommands(faceClient)),
-            new LivenessSessionCommandsProvider("Async", (faceClient, faceAsyncClient) -> new LivenessSessionAsyncCommands(faceAsyncClient)),
-        };
+            new LivenessSessionCommandsProvider("Sync",
+                (faceClient, faceAsyncClient) -> new LivenessSessionSyncCommands(faceClient)),
+            new LivenessSessionCommandsProvider("Async",
+                (faceClient, faceAsyncClient) -> new LivenessSessionAsyncCommands(faceAsyncClient)), };
     }
 }

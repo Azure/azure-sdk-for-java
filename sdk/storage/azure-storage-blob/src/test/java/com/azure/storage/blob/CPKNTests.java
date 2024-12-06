@@ -62,18 +62,24 @@ public class CPKNTests extends BlobTestBase {
     }
 
     @Test
+    public void getEncryptionScope() {
+        Assertions.assertEquals(es, cpknContainer.getEncryptionScope());
+    }
+
+    @Test
     public void containerCreate() {
-        BlobContainerClient cpknCesContainer = builder.blobContainerEncryptionScope(ces).encryptionScope(null)
-            .containerName(generateContainerName()).buildClient();
-        Response<Void> response = cpknCesContainer.createWithResponse(null, null, null,
-            null);
+        BlobContainerClient cpknCesContainer = builder.blobContainerEncryptionScope(ces)
+            .encryptionScope(null)
+            .containerName(generateContainerName())
+            .buildClient();
+        Response<Void> response = cpknCesContainer.createWithResponse(null, null, null, null);
         assertResponseStatusCode(response, 201);
     }
 
     @Test
     public void containerDenyEncryptionScopeOverride() {
-        BlobContainerClient cpknCesContainer = builder.blobContainerEncryptionScope(ces)
-            .containerName(generateContainerName()).buildClient();
+        BlobContainerClient cpknCesContainer
+            = builder.blobContainerEncryptionScope(ces).containerName(generateContainerName()).buildClient();
         cpknCesContainer.create();
 
         cpknAppendBlob = builder.encryptionScope(es)
@@ -87,8 +93,7 @@ public class CPKNTests extends BlobTestBase {
 
     @Test
     public void containerListBlobsFlat() {
-        BlobContainerClient cpkncesContainer = builder
-            .blobContainerEncryptionScope(ces)
+        BlobContainerClient cpkncesContainer = builder.blobContainerEncryptionScope(ces)
             .encryptionScope(null)
             .containerName(generateContainerName())
             .buildClient();
@@ -105,8 +110,7 @@ public class CPKNTests extends BlobTestBase {
 
     @Test
     public void containerListBlobsHierarchical() {
-        BlobContainerClient cpkncesContainer = builder
-            .blobContainerEncryptionScope(ces)
+        BlobContainerClient cpkncesContainer = builder.blobContainerEncryptionScope(ces)
             .encryptionScope(null)
             .containerName(generateContainerName())
             .buildClient();
@@ -123,8 +127,7 @@ public class CPKNTests extends BlobTestBase {
 
     @Test
     public void appendBlobCreate() {
-        Response<AppendBlobItem> response = cpknAppendBlob.createWithResponse(null, null,
-            null, null, null);
+        Response<AppendBlobItem> response = cpknAppendBlob.createWithResponse(null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -152,9 +155,8 @@ public class CPKNTests extends BlobTestBase {
 
         String sas = cc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
-        Response<AppendBlobItem> response = cpknAppendBlob.appendBlockFromUrlWithResponse(
-            sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
-            null, null, null);
+        Response<AppendBlobItem> response = cpknAppendBlob
+            .appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -163,8 +165,7 @@ public class CPKNTests extends BlobTestBase {
 
     @Test
     public void pageBlobCreate() {
-        Response<PageBlobItem> response = cpknPageBlob.createWithResponse(1024, null, null,
-            null, null, null, null);
+        Response<PageBlobItem> response = cpknPageBlob.createWithResponse(1024, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -175,10 +176,9 @@ public class CPKNTests extends BlobTestBase {
     public void pageBlobPutPage() {
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES);
 
-        Response<PageBlobItem> response = cpknPageBlob.uploadPagesWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null,
-            null, null, null);
+        Response<PageBlobItem> response
+            = cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -191,8 +191,7 @@ public class CPKNTests extends BlobTestBase {
         PageBlobClient sourceBlob = cc.getBlobClient(blobName).getPageBlobClient();
         sourceBlob.create(PageBlobClient.PAGE_BYTES);
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null,
-            null, null, null);
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES);
         String sas = cc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
@@ -200,8 +199,7 @@ public class CPKNTests extends BlobTestBase {
 
         Response<PageBlobItem> response = cpknPageBlob.uploadPagesFromUrlWithResponse(
             new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), sourceBlob.getBlobUrl() + "?" + sas,
-            null, null, null, null, null,
-            null);
+            null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -212,10 +210,9 @@ public class CPKNTests extends BlobTestBase {
     public void pageBlobPutMultiplePages() {
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2);
 
-        Response<PageBlobItem> response = cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0)
-                .setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null,
-            null, null, null);
+        Response<PageBlobItem> response = cpknPageBlob.uploadPagesWithResponse(
+            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -226,11 +223,10 @@ public class CPKNTests extends BlobTestBase {
     public void pageBlobClearPage() {
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2);
         cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null,
-            null, null, null);
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
-        Response<PageBlobItem> response = cpknPageBlob.clearPagesWithResponse(new PageRange().setStart(0)
-                .setEnd(PageBlobClient.PAGE_BYTES - 1), null, null, null);
+        Response<PageBlobItem> response = cpknPageBlob.clearPagesWithResponse(
+            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null, null, null);
 
         assertResponseStatusCode(response, 201);
     }
@@ -238,9 +234,8 @@ public class CPKNTests extends BlobTestBase {
     @Test
     public void pageBlobResize() {
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2);
-        Response<PageBlobItem> response = cpknPageBlob.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2,
-            null, null,
-            null);
+        Response<PageBlobItem> response
+            = cpknPageBlob.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, null, null, null);
 
         assertResponseStatusCode(response, 200);
     }
@@ -248,8 +243,7 @@ public class CPKNTests extends BlobTestBase {
     @Test
     public void blockBlobUpload() {
         Response<BlockBlobItem> response = cpknBlockBlob.uploadWithResponse(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize(), null, null, null, null, null,
-            null, null);
+            DATA.getDefaultDataSize(), null, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -274,8 +268,8 @@ public class CPKNTests extends BlobTestBase {
         cpknBlockBlob.stageBlock(blockID, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         List<String> ids = Collections.singletonList(blockID);
 
-        Response<BlockBlobItem> response = cpknBlockBlob.commitBlockListWithResponse(ids, null, null,
-            null, null, null, null);
+        Response<BlockBlobItem> response
+            = cpknBlockBlob.commitBlockListWithResponse(ids, null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -290,66 +284,66 @@ public class CPKNTests extends BlobTestBase {
 
         String sas = blobSource.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl() + "?" + sas),
-            null, null);
+        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl() + "?" + sas), null,
+            null);
 
         Assertions.assertEquals(scope1, cpknBlockBlob.getProperties().getEncryptionScope());
     }
 
     @Test
     public void serviceClientBuilderCheck() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobServiceClientBuilder()
-            .encryptionScope(es)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
-            .buildClient());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new BlobServiceClientBuilder().encryptionScope(es)
+                .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
+                .buildClient());
     }
 
     @Test
     public void containerClientBuilderCheck() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobContainerClientBuilder()
-            .encryptionScope(es)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
-            .buildClient());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new BlobContainerClientBuilder().encryptionScope(es)
+                .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
+                .buildClient());
     }
 
     @Test
     public void blobClientBuilderCheck() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobClientBuilder()
-            .encryptionScope(es)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildClient());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new BlobClientBuilder().encryptionScope(es)
+                .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
+                .endpoint(cc.getBlobContainerUrl())
+                .blobName(generateBlobName())
+                .buildClient());
     }
 
     @Test
     public void appendBlobClientBuilderCheck() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new SpecializedBlobClientBuilder()
-            .encryptionScope(es)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildAppendBlobClient());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new SpecializedBlobClientBuilder().encryptionScope(es)
+                .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
+                .endpoint(cc.getBlobContainerUrl())
+                .blobName(generateBlobName())
+                .buildAppendBlobClient());
     }
 
     @Test
     public void blockBlobClientBuilderCheck() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new SpecializedBlobClientBuilder()
-            .encryptionScope(es)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildBlockBlobClient());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new SpecializedBlobClientBuilder().encryptionScope(es)
+                .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
+                .endpoint(cc.getBlobContainerUrl())
+                .blobName(generateBlobName())
+                .buildBlockBlobClient());
     }
 
     @Test
     public void pageBlobClientBuilderCheck() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new SpecializedBlobClientBuilder()
-            .encryptionScope(es)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildPageBlobClient());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new SpecializedBlobClientBuilder().encryptionScope(es)
+                .customerProvidedKey(new CustomerProvidedKey(getRandomKey()))
+                .endpoint(cc.getBlobContainerUrl())
+                .blobName(generateBlobName())
+                .buildPageBlobClient());
     }
 
     @Test
@@ -378,8 +372,8 @@ public class CPKNTests extends BlobTestBase {
         Assertions.assertNotEquals(cpkBlobClient.getEncryptionScope(), newCpknBlobClient.getEncryptionScope());
 
         // when: "BlobClientBase"
-        BlobClientBase newCpknBlobClientBase = ((BlobClientBase) cpkBlobClient)
-            .getEncryptionScopeClient(newEncryptionScope);
+        BlobClientBase newCpknBlobClientBase
+            = ((BlobClientBase) cpkBlobClient).getEncryptionScopeClient(newEncryptionScope);
         Assertions.assertInstanceOf(BlobClientBase.class, newCpknBlobClientBase);
         Assertions.assertNotEquals(cpkBlobClient.getEncryptionScope(), newCpknBlobClientBase.getEncryptionScope());
     }

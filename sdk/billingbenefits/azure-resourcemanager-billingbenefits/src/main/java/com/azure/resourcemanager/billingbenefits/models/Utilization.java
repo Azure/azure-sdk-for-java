@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Savings plan utilization. */
+/**
+ * Savings plan utilization.
+ */
 @Fluent
-public final class Utilization {
+public final class Utilization implements JsonSerializable<Utilization> {
     /*
      * The number of days trend for a savings plan
      */
-    @JsonProperty(value = "trend", access = JsonProperty.Access.WRITE_ONLY)
     private String trend;
 
     /*
      * The array of aggregates of a savings plan's utilization
      */
-    @JsonProperty(value = "aggregates")
     private List<UtilizationAggregates> aggregates;
 
-    /** Creates an instance of Utilization class. */
+    /**
+     * Creates an instance of Utilization class.
+     */
     public Utilization() {
     }
 
     /**
      * Get the trend property: The number of days trend for a savings plan.
-     *
+     * 
      * @return the trend value.
      */
     public String trend() {
@@ -38,7 +44,7 @@ public final class Utilization {
 
     /**
      * Get the aggregates property: The array of aggregates of a savings plan's utilization.
-     *
+     * 
      * @return the aggregates value.
      */
     public List<UtilizationAggregates> aggregates() {
@@ -47,7 +53,7 @@ public final class Utilization {
 
     /**
      * Set the aggregates property: The array of aggregates of a savings plan's utilization.
-     *
+     * 
      * @param aggregates the aggregates value to set.
      * @return the Utilization object itself.
      */
@@ -58,12 +64,52 @@ public final class Utilization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aggregates() != null) {
             aggregates().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("aggregates", this.aggregates, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Utilization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Utilization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Utilization.
+     */
+    public static Utilization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Utilization deserializedUtilization = new Utilization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trend".equals(fieldName)) {
+                    deserializedUtilization.trend = reader.getString();
+                } else if ("aggregates".equals(fieldName)) {
+                    List<UtilizationAggregates> aggregates
+                        = reader.readArray(reader1 -> UtilizationAggregates.fromJson(reader1));
+                    deserializedUtilization.aggregates = aggregates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUtilization;
+        });
     }
 }

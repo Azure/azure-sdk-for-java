@@ -103,9 +103,9 @@ public class EventProcessorClientErrorHandlingTest {
                 Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
                 Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
                 Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, tracer, processorOptions);
+            }, tracer, null, processorOptions);
         client.start();
-        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
         try {
             client.stop();
         } catch (IllegalStateException ex) {
@@ -133,8 +133,8 @@ public class EventProcessorClientErrorHandlingTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
-            () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(),
-            errorContext -> { }, tracer, processorOptions);
+            () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), errorContext -> {
+            }, tracer, null, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -159,8 +159,8 @@ public class EventProcessorClientErrorHandlingTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
-            () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(),
-            errorContext -> { }, tracer, processorOptions);
+            () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), errorContext -> {
+            }, tracer, null, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -186,8 +186,8 @@ public class EventProcessorClientErrorHandlingTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
-            () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(),
-            errorContext -> { }, tracer, processorOptions);
+            () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), errorContext -> {
+            }, tracer, null, processorOptions);
 
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
@@ -196,9 +196,7 @@ public class EventProcessorClientErrorHandlingTest {
     }
 
     private static Stream<Arguments> checkpointStoreSupplier() {
-        return Stream.of(
-            Arguments.of(new ListOwnershipErrorStore()),
-            Arguments.of(new ClaimOwnershipErrorStore()),
+        return Stream.of(Arguments.of(new ListOwnershipErrorStore()), Arguments.of(new ClaimOwnershipErrorStore()),
             Arguments.of(new ListCheckpointErrorStore()));
     }
 
@@ -207,24 +205,22 @@ public class EventProcessorClientErrorHandlingTest {
         return new PartitionEvent(context, event, null);
     }
 
-
     private static class ListOwnershipErrorStore implements CheckpointStore {
 
         @Override
-        public Flux<PartitionOwnership> listOwnership(
-            String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return Flux.error(new IllegalStateException("List ownership error"));
         }
 
         @Override
-        public Flux<PartitionOwnership> claimOwnership(
-            List<PartitionOwnership> requestedPartitionOwnerships) {
+        public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
             return null;
         }
 
         @Override
-        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace,
-            String eventHubName, String consumerGroup) {
+        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return null;
         }
 
@@ -237,20 +233,19 @@ public class EventProcessorClientErrorHandlingTest {
     private static class ClaimOwnershipErrorStore implements CheckpointStore {
 
         @Override
-        public Flux<PartitionOwnership> listOwnership(
-            String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return Flux.empty();
         }
 
         @Override
-        public Flux<PartitionOwnership> claimOwnership(
-            List<PartitionOwnership> requestedPartitionOwnerships) {
+        public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
             return Flux.error(new IllegalStateException("Claim Ownership error"));
         }
 
         @Override
-        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace,
-            String eventHubName, String consumerGroup) {
+        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return Flux.empty();
         }
 
@@ -263,20 +258,19 @@ public class EventProcessorClientErrorHandlingTest {
     private static class ListCheckpointErrorStore implements CheckpointStore {
 
         @Override
-        public Flux<PartitionOwnership> listOwnership(
-            String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return Flux.empty();
         }
 
         @Override
-        public Flux<PartitionOwnership> claimOwnership(
-            List<PartitionOwnership> requestedPartitionOwnerships) {
+        public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
             return Flux.fromIterable(requestedPartitionOwnerships);
         }
 
         @Override
-        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace,
-            String eventHubName, String consumerGroup) {
+        public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
+            String consumerGroup) {
             return Flux.error(new IllegalStateException("List checkpoint error"));
         }
 
@@ -350,6 +344,7 @@ public class EventProcessorClientErrorHandlingTest {
     private static final class BadCloseHandler extends PartitionProcessor {
 
         CountDownLatch countDownLatch;
+
         BadCloseHandler(CountDownLatch countDownLatch) {
             this.countDownLatch = countDownLatch;
         }

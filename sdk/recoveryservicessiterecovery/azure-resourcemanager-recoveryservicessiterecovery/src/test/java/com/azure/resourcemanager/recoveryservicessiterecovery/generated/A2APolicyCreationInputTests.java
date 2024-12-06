@@ -24,7 +24,8 @@ public final class A2APolicyCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2APolicyCreationInput model = new A2APolicyCreationInput().withRecoveryPointHistory(723936709)
-            .withCrashConsistentFrequencyInMinutes(1450165650).withAppConsistentFrequencyInMinutes(1593194036)
+            .withCrashConsistentFrequencyInMinutes(1450165650)
+            .withAppConsistentFrequencyInMinutes(1593194036)
             .withMultiVmSyncStatus(SetMultiVmSyncStatus.DISABLE);
         model = BinaryData.fromObject(model).toObject(A2APolicyCreationInput.class);
         Assertions.assertEquals(723936709, model.recoveryPointHistory());

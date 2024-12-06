@@ -7,20 +7,23 @@ package com.azure.resourcemanager.workloads.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SapCentralInstances Create. */
+/**
+ * Samples for SapCentralInstances Create.
+ */
 public final class SapCentralInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPCentralInstances_Create_HA_AvSet.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/
+     * SAPCentralInstances_Create_HA_AvSet.json
      */
     /**
      * Sample code: Create SAP Central Instances for HA System with Availability Set.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
     public static void createSAPCentralInstancesForHASystemWithAvailabilitySet(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager
-            .sapCentralInstances()
+        manager.sapCentralInstances()
             .define("centralServer")
             .withRegion("westcentralus")
             .withExistingSapVirtualInstance("test-rg", "X00")
@@ -29,16 +32,17 @@ public final class SapCentralInstancesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPCentralInstances_Create.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/
+     * SAPCentralInstances_Create.json
      */
     /**
      * Sample code: SAPCentralInstances_Create.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
     public static void sAPCentralInstancesCreate(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager
-            .sapCentralInstances()
+        manager.sapCentralInstances()
             .define("centralServer")
             .withRegion("westcentralus")
             .withExistingSapVirtualInstance("test-rg", "X00")
@@ -46,6 +50,7 @@ public final class SapCentralInstancesCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

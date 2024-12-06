@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TokenKey")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.RsaTokenKey", value = RsaTokenKey.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EccTokenKey", value = EccTokenKey.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EccTokenKey", value = EccTokenKey.class) })
 @Fluent
 public class TokenKey {
     /*

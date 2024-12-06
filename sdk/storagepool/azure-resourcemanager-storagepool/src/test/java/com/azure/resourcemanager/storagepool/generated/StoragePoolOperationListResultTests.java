@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StoragePoolOperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StoragePoolOperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"mhquvgjxp\",\"isDataAction\":false,\"actionType\":\"zm\",\"display\":{\"provider\":\"hmtzopbsphrup\",\"resource\":\"dgs\",\"operation\":\"bb\",\"description\":\"jhphoyc\"},\"origin\":\"xaobhdxbmtqioqjz\"},{\"name\":\"htbmuf\",\"isDataAction\":false,\"actionType\":\"noi\",\"display\":{\"provider\":\"hwlrx\",\"resource\":\"bqsoqijg\",\"operation\":\"dmbpazlobcufpdz\",\"description\":\"rbt\"},\"origin\":\"qjnqglhqgnufoooj\"},{\"name\":\"wifsq\",\"isDataAction\":false,\"actionType\":\"agdfmglzlh\",\"display\":{\"provider\":\"xrifkwmrvkts\",\"resource\":\"zntocipaouajps\",\"operation\":\"ucmpoyfd\",\"description\":\"fogknygjofjdde\"},\"origin\":\"rd\"}],\"nextLink\":\"pewnw\"}")
-                .toObject(StoragePoolOperationListResult.class);
+        StoragePoolOperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"mhquvgjxp\",\"isDataAction\":false,\"actionType\":\"zm\",\"display\":{\"provider\":\"hmtzopbsphrup\",\"resource\":\"dgs\",\"operation\":\"bb\",\"description\":\"jhphoyc\"},\"origin\":\"xaobhdxbmtqioqjz\"},{\"name\":\"htbmuf\",\"isDataAction\":false,\"actionType\":\"noi\",\"display\":{\"provider\":\"hwlrx\",\"resource\":\"bqsoqijg\",\"operation\":\"dmbpazlobcufpdz\",\"description\":\"rbt\"},\"origin\":\"qjnqglhqgnufoooj\"},{\"name\":\"wifsq\",\"isDataAction\":false,\"actionType\":\"agdfmglzlh\",\"display\":{\"provider\":\"xrifkwmrvkts\",\"resource\":\"zntocipaouajps\",\"operation\":\"ucmpoyfd\",\"description\":\"fogknygjofjdde\"},\"origin\":\"rd\"}],\"nextLink\":\"pewnw\"}")
+            .toObject(StoragePoolOperationListResult.class);
         Assertions.assertEquals("mhquvgjxp", model.value().get(0).name());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
         Assertions.assertEquals("zm", model.value().get(0).actionType());
@@ -32,45 +30,32 @@ public final class StoragePoolOperationListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolOperationListResult model =
-            new StoragePoolOperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new StoragePoolRPOperationInner()
-                                .withName("mhquvgjxp")
-                                .withIsDataAction(false)
-                                .withActionType("zm")
-                                .withDisplay(
-                                    new StoragePoolOperationDisplay()
-                                        .withProvider("hmtzopbsphrup")
-                                        .withResource("dgs")
-                                        .withOperation("bb")
-                                        .withDescription("jhphoyc"))
-                                .withOrigin("xaobhdxbmtqioqjz"),
-                            new StoragePoolRPOperationInner()
-                                .withName("htbmuf")
-                                .withIsDataAction(false)
-                                .withActionType("noi")
-                                .withDisplay(
-                                    new StoragePoolOperationDisplay()
-                                        .withProvider("hwlrx")
-                                        .withResource("bqsoqijg")
-                                        .withOperation("dmbpazlobcufpdz")
-                                        .withDescription("rbt"))
-                                .withOrigin("qjnqglhqgnufoooj"),
-                            new StoragePoolRPOperationInner()
-                                .withName("wifsq")
-                                .withIsDataAction(false)
-                                .withActionType("agdfmglzlh")
-                                .withDisplay(
-                                    new StoragePoolOperationDisplay()
-                                        .withProvider("xrifkwmrvkts")
-                                        .withResource("zntocipaouajps")
-                                        .withOperation("ucmpoyfd")
-                                        .withDescription("fogknygjofjdde"))
-                                .withOrigin("rd")))
-                .withNextLink("pewnw");
+        StoragePoolOperationListResult model = new StoragePoolOperationListResult().withValue(Arrays.asList(
+            new StoragePoolRPOperationInner().withName("mhquvgjxp")
+                .withIsDataAction(false)
+                .withActionType("zm")
+                .withDisplay(new StoragePoolOperationDisplay().withProvider("hmtzopbsphrup")
+                    .withResource("dgs")
+                    .withOperation("bb")
+                    .withDescription("jhphoyc"))
+                .withOrigin("xaobhdxbmtqioqjz"),
+            new StoragePoolRPOperationInner().withName("htbmuf")
+                .withIsDataAction(false)
+                .withActionType("noi")
+                .withDisplay(new StoragePoolOperationDisplay().withProvider("hwlrx")
+                    .withResource("bqsoqijg")
+                    .withOperation("dmbpazlobcufpdz")
+                    .withDescription("rbt"))
+                .withOrigin("qjnqglhqgnufoooj"),
+            new StoragePoolRPOperationInner().withName("wifsq")
+                .withIsDataAction(false)
+                .withActionType("agdfmglzlh")
+                .withDisplay(new StoragePoolOperationDisplay().withProvider("xrifkwmrvkts")
+                    .withResource("zntocipaouajps")
+                    .withOperation("ucmpoyfd")
+                    .withDescription("fogknygjofjdde"))
+                .withOrigin("rd")))
+            .withNextLink("pewnw");
         model = BinaryData.fromObject(model).toObject(StoragePoolOperationListResult.class);
         Assertions.assertEquals("mhquvgjxp", model.value().get(0).name());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());

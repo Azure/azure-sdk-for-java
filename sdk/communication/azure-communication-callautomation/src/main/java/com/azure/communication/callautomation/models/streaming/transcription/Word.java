@@ -31,6 +31,12 @@ public class Word implements JsonSerializable<Word> {
     private long duration;
 
     /**
+     * Creates a new instance of {@link Word}.
+     */
+    public Word() {
+    }
+
+    /**
      * Get the text property.
      *
      * @return the text value.
@@ -48,11 +54,11 @@ public class Word implements JsonSerializable<Word> {
         return offset;
     }
 
-      /**
-     * Get the duration property.
-     *
-     * @return the duration value.
-     */
+    /**
+    * Get the duration property.
+    *
+    * @return the duration value.
+    */
     public long getDuration() {
         return duration;
     }

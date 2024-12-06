@@ -12,27 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeOperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"InProgress\",\"name\":\"uughtuqfecjxeyg\",\"properties\":\"datahxuicbuewmrs\",\"error\":\"jlxuz\"}")
-                .toObject(IntegrationRuntimeOperationStatusInner.class);
-        Assertions.assertEquals(WorkspaceStatus.IN_PROGRESS, model.status());
-        Assertions.assertEquals("uughtuqfecjxeyg", model.name());
-        Assertions.assertEquals("jlxuz", model.error());
+        IntegrationRuntimeOperationStatusInner model = BinaryData.fromString(
+            "{\"status\":\"Failed\",\"name\":\"kcdxfzzzw\",\"properties\":\"dataafitlhguynuchlg\",\"error\":\"txd\"}")
+            .toObject(IntegrationRuntimeOperationStatusInner.class);
+        Assertions.assertEquals(WorkspaceStatus.FAILED, model.status());
+        Assertions.assertEquals("kcdxfzzzw", model.name());
+        Assertions.assertEquals("txd", model.error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeOperationStatusInner model =
-            new IntegrationRuntimeOperationStatusInner()
-                .withStatus(WorkspaceStatus.IN_PROGRESS)
-                .withName("uughtuqfecjxeyg")
-                .withProperties("datahxuicbuewmrs")
-                .withError("jlxuz");
+        IntegrationRuntimeOperationStatusInner model
+            = new IntegrationRuntimeOperationStatusInner().withStatus(WorkspaceStatus.FAILED)
+                .withName("kcdxfzzzw")
+                .withProperties("dataafitlhguynuchlg")
+                .withError("txd");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeOperationStatusInner.class);
-        Assertions.assertEquals(WorkspaceStatus.IN_PROGRESS, model.status());
-        Assertions.assertEquals("uughtuqfecjxeyg", model.name());
-        Assertions.assertEquals("jlxuz", model.error());
+        Assertions.assertEquals(WorkspaceStatus.FAILED, model.status());
+        Assertions.assertEquals("kcdxfzzzw", model.name());
+        Assertions.assertEquals("txd", model.error());
     }
 }

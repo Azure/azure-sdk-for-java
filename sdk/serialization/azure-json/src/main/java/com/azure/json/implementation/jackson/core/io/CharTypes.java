@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 @SuppressWarnings("cast")
 public final class CharTypes {
-    protected final static char[] HC = "0123456789ABCDEF".toCharArray();
-    protected final static byte[] HB;
+    private final static char[] HC = "0123456789ABCDEF".toCharArray();
+    private final static byte[] HB;
     static {
         int len = HC.length;
         HB = new byte[len];
@@ -19,7 +19,7 @@ public final class CharTypes {
      * Lookup table used for determining which input characters
      * need special handling when contained in text segment.
      */
-    protected final static int[] sInputCodes;
+    private final static int[] sInputCodes;
     static {
         /*
          * 96 would do for most cases (backslash is ASCII 94)
@@ -41,7 +41,7 @@ public final class CharTypes {
      * Additionally we can combine UTF-8 decoding info into similar
      * data table.
      */
-    protected final static int[] sInputCodesUTF8;
+    private final static int[] sInputCodesUTF8;
     static {
         final int[] table = new int[sInputCodes.length];
         System.arraycopy(sInputCodes, 0, table, 0, table.length);
@@ -71,7 +71,7 @@ public final class CharTypes {
      * Basically this is list of 8-bit ASCII characters that are legal
      * as part of Javascript identifier
      */
-    protected final static int[] sInputCodesJsNames;
+    private final static int[] sInputCodesJsNames;
     static {
         final int[] table = new int[256];
         // Default is "not a name char", mark ones that are
@@ -99,7 +99,7 @@ public final class CharTypes {
      * code as ok. They will be validated at a later point, when decoding
      * name
      */
-    protected final static int[] sInputCodesUtf8JsNames;
+    private final static int[] sInputCodesUtf8JsNames;
     static {
         final int[] table = new int[256];
         // start with 8-bit JS names
@@ -112,7 +112,7 @@ public final class CharTypes {
      * Decoding table used to quickly determine characters that are
      * relevant within comment content.
      */
-    protected final static int[] sInputCodesComment;
+    private final static int[] sInputCodesComment;
     static {
         final int[] buf = new int[256];
         // but first: let's start with UTF-8 multi-byte markers:
@@ -132,7 +132,7 @@ public final class CharTypes {
      *
      * @since 2.3
      */
-    protected final static int[] sInputCodesWS;
+    private final static int[] sInputCodesWS;
     static {
         // but first: let's start with UTF-8 multi-byte markers:
         final int[] buf = new int[256];
@@ -155,7 +155,7 @@ public final class CharTypes {
      * Lookup table used for determining which output characters in
      * 7-bit ASCII range need to be quoted.
      */
-    protected final static int[] sOutputEscapes128;
+    private final static int[] sOutputEscapes128;
     static {
         int[] table = new int[128];
         // Control chars need generic escape sequence
@@ -182,7 +182,7 @@ public final class CharTypes {
      *<p>
      * NOTE: before 2.10.1, was of size 128, extended for simpler handling
      */
-    protected final static int[] sHexValues = new int[256];
+    private final static int[] sHexValues = new int[256];
     static {
         Arrays.fill(sHexValues, -1);
         for (int i = 0; i < 10; ++i) {
@@ -212,10 +212,6 @@ public final class CharTypes {
 
     public static int[] getInputCodeComment() {
         return sInputCodesComment;
-    }
-
-    public static int[] getInputCodeWS() {
-        return sInputCodesWS;
     }
 
     /**
@@ -292,9 +288,9 @@ public final class CharTypes {
                 sb.append('u');
                 sb.append('0');
                 sb.append('0');
-                int value = c;  // widening
-                sb.append(HC[value >> 4]);
-                sb.append(HC[value & 0xF]);
+                // widening
+                sb.append(HC[(int) c >> 4]);
+                sb.append(HC[(int) c & 0xF]);
             } else { // "named", i.e. prepend with slash
                 sb.append((char) escCode);
             }
@@ -302,11 +298,11 @@ public final class CharTypes {
     }
 
     public static char[] copyHexChars() {
-        return (char[]) HC.clone();
+        return HC.clone();
     }
 
     public static byte[] copyHexBytes() {
-        return (byte[]) HB.clone();
+        return HB.clone();
     }
 
     /**
@@ -319,7 +315,7 @@ public final class CharTypes {
     private static class AltEscapes {
         public final static AltEscapes instance = new AltEscapes();
 
-        private int[][] _altEscapes = new int[128][];
+        private final int[][] _altEscapes = new int[128][];
 
         public int[] escapesFor(int quoteChar) {
             int[] esc = _altEscapes[quoteChar];

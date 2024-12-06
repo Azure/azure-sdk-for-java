@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -22,7 +24,7 @@ public interface Operations {
 
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +35,7 @@ public interface Operations {
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,12 +43,12 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operations supported by the given provider along with {@link Response}.
      */
-    Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(
-        String providerNamespace, Context context);
+    Response<List<OperationsDefinition>> listByProviderRegistrationWithResponse(String providerNamespace,
+        Context context);
 
     /**
      * Gets the operations supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,7 +59,7 @@ public interface Operations {
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -66,12 +68,12 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<OperationsContent> createOrUpdateWithResponse(
-        String providerNamespace, OperationsPutContent operationsPutContent, Context context);
+    Response<OperationsContent> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContent operationsPutContent, Context context);
 
     /**
      * Creates or updates the operation supported by the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface Operations {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +97,7 @@ public interface Operations {
 
     /**
      * Deletes an operation.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -84,9 +84,7 @@ public final class ConnectedMessage extends WebPubSubMessage {
                 }
             }
 
-            return new ConnectedMessage(connectionId)
-                .setUserId(userId)
-                .setReconnectionToken(reconnectionToken);
+            return new ConnectedMessage(connectionId).setUserId(userId).setReconnectionToken(reconnectionToken);
         });
     }
 }

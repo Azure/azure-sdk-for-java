@@ -35,8 +35,8 @@ final class TestUtils {
         "David Schmidt, senior vice president--Food Safety, International Food Information Council (IFIC), Washington,"
             + " D.C., discussed the physical activity component.");
 
-    static final List<String> CUSTOM_SINGLE_CLASSIFICATION = asList(
-        "A recent report by the Government Accountability Office (GAO) found that the dramatic increase in oil"
+    static final List<String> CUSTOM_SINGLE_CLASSIFICATION
+        = asList("A recent report by the Government Accountability Office (GAO) found that the dramatic increase in oil"
             + " and natural gas development on federal lands over the past six years has stretched the staff of "
             + "the BLM to a point that it has been unable to meet its environmental protection responsibilities.");
 
@@ -61,33 +61,28 @@ final class TestUtils {
             + " toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and"
             + " multilingual learning that is closer in line with how humans learn and understand. I believe the joint"
             + " XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources"
-            + " in the downstream AI tasks."
-    );
+            + " in the downstream AI tasks.");
 
-    static final List<String> SENTIMENT_INPUTS = asList(
-        "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
-        "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
+    static final List<String> SENTIMENT_INPUTS
+        = asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+            "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
 
-    static final List<String> CATEGORIZED_ENTITY_INPUTS = asList(
-        "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+    static final List<String> CATEGORIZED_ENTITY_INPUTS
+        = asList("I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
     static final List<String> PII_ENTITY_INPUTS = asList(
         "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
         "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
 
-    static final List<String> LINKED_ENTITY_INPUTS = asList(
-        "I had a wonderful trip to Seattle last week.",
-        "I work at Microsoft.");
+    static final List<String> LINKED_ENTITY_INPUTS
+        = asList("I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-    static final List<String> KEY_PHRASE_INPUTS = asList(
-        "Hello world. This is some input text that I love.",
-        "Bonjour tout le monde");
-    static final List<String> KEY_PHRASE_FRENCH_INPUTS = asList(
-        "Bonjour tout le monde.",
-        "Je m'appelle Mondly.");
+    static final List<String> KEY_PHRASE_INPUTS
+        = asList("Hello world. This is some input text that I love.", "Bonjour tout le monde");
+    static final List<String> KEY_PHRASE_FRENCH_INPUTS = asList("Bonjour tout le monde.", "Je m'appelle Mondly.");
 
-    static final List<String> DETECT_LANGUAGE_INPUTS = asList(
-        "This is written in English", "Este es un documento escrito en Español.");
+    static final List<String> DETECT_LANGUAGE_INPUTS
+        = asList("This is written in English", "Este es un documento escrito en Español.");
 
     static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
     static final String SENTIMENT_OFFSET_INPUT = "The hotel was unclean.";
@@ -103,34 +98,28 @@ final class TestUtils {
     static final List<String> SPANISH_SAME_AS_ENGLISH_INPUTS = asList("personal", "social");
 
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS =
-        "AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS";
+    private static final String AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS
+        = "AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS";
 
     static List<DetectLanguageInput> getDetectLanguageInputs() {
-        return asList(
-            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
+        return asList(new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
             new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1), "US"));
     }
 
     static List<DetectLanguageInput> getDuplicateIdDetectLanguageInputs() {
-        return asList(
-            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
-            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US")
-        );
+        return asList(new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
+            new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"));
     }
 
     static List<TextDocumentInput> getDuplicateTextDocumentInputs() {
-        return asList(
+        return asList(new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
-            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
-            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0))
-        );
+            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)));
     }
 
     static List<TextDocumentInput> getTextDocumentInputs(List<String> inputs) {
         return IntStream.range(0, inputs.size())
-            .mapToObj(index ->
-                new TextDocumentInput(String.valueOf(index), inputs.get(index)))
+            .mapToObj(index -> new TextDocumentInput(String.valueOf(index), inputs.get(index)))
             .collect(Collectors.toList());
     }
 
@@ -144,12 +133,11 @@ final class TestUtils {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(TextAnalyticsServiceVersion.values()).filter(
-                    TestUtils::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+        getHttpClients().forEach(httpClient -> {
+            Arrays.stream(TextAnalyticsServiceVersion.values())
+                .filter(TestUtils::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+        });
         return argumentsList.stream();
     }
 
@@ -170,8 +158,8 @@ final class TestUtils {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(TextAnalyticsServiceVersion serviceVersion) {
-        String serviceVersionFromEnv =
-            Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
+        String serviceVersionFromEnv
+            = Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return TextAnalyticsServiceVersion.getLatest().equals(serviceVersion);
         }
@@ -179,8 +167,8 @@ final class TestUtils {
             return true;
         }
         String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
     private TestUtils() {

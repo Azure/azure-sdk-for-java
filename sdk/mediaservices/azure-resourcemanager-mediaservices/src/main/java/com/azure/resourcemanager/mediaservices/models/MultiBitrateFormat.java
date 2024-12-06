@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,33 +17,39 @@ import java.util.List;
  * produce one output file for each video layer which is muxed together with all the audios. The exact output files
  * produced can be controlled by specifying the outputFiles collection.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = MultiBitrateFormat.class)
-@JsonTypeName("#Microsoft.Media.MultiBitrateFormat")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.Mp4Format", value = Mp4Format.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.TransportStreamFormat", value = TransportStreamFormat.class)
-})
 @Fluent
 public class MultiBitrateFormat extends Format {
     /*
-     * The list of output files to produce.  Each entry in the list is a set of audio and video layer labels to be
-     * muxed together .
+     * The discriminator for derived types.
      */
-    @JsonProperty(value = "outputFiles")
+    private String odataType = "#Microsoft.Media.MultiBitrateFormat";
+
+    /*
+     * The list of output files to produce. Each entry in the list is a set of audio and video layer labels to be muxed
+     * together .
+     */
     private List<OutputFile> outputFiles;
 
-    /** Creates an instance of MultiBitrateFormat class. */
+    /**
+     * Creates an instance of MultiBitrateFormat class.
+     */
     public MultiBitrateFormat() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Get the outputFiles property: The list of output files to produce. Each entry in the list is a set of audio and
      * video layer labels to be muxed together .
-     *
+     * 
      * @return the outputFiles value.
      */
     public List<OutputFile> outputFiles() {
@@ -52,7 +59,7 @@ public class MultiBitrateFormat extends Format {
     /**
      * Set the outputFiles property: The list of output files to produce. Each entry in the list is a set of audio and
      * video layer labels to be muxed together .
-     *
+     * 
      * @param outputFiles the outputFiles value to set.
      * @return the MultiBitrateFormat object itself.
      */
@@ -61,7 +68,9 @@ public class MultiBitrateFormat extends Format {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MultiBitrateFormat withFilenamePattern(String filenamePattern) {
         super.withFilenamePattern(filenamePattern);
@@ -70,14 +79,91 @@ public class MultiBitrateFormat extends Format {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (outputFiles() != null) {
             outputFiles().forEach(e -> e.validate());
         }
+        if (filenamePattern() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filenamePattern in model MultiBitrateFormat"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MultiBitrateFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filenamePattern", filenamePattern());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeArrayField("outputFiles", this.outputFiles, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MultiBitrateFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MultiBitrateFormat if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MultiBitrateFormat.
+     */
+    public static MultiBitrateFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.Mp4Format".equals(discriminatorValue)) {
+                    return Mp4Format.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.TransportStreamFormat".equals(discriminatorValue)) {
+                    return TransportStreamFormat.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MultiBitrateFormat fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MultiBitrateFormat deserializedMultiBitrateFormat = new MultiBitrateFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filenamePattern".equals(fieldName)) {
+                    deserializedMultiBitrateFormat.withFilenamePattern(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedMultiBitrateFormat.odataType = reader.getString();
+                } else if ("outputFiles".equals(fieldName)) {
+                    List<OutputFile> outputFiles = reader.readArray(reader1 -> OutputFile.fromJson(reader1));
+                    deserializedMultiBitrateFormat.outputFiles = outputFiles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMultiBitrateFormat;
+        });
     }
 }

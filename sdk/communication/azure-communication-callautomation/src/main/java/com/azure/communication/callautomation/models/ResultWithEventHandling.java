@@ -11,6 +11,8 @@ import java.time.Duration;
 
 /**
  * Injects the event handling into the result
+ *
+ * @param <TEventResult> the type of the event result
  */
 public abstract class ResultWithEventHandling<TEventResult> {
     /**
@@ -27,13 +29,20 @@ public abstract class ResultWithEventHandling<TEventResult> {
     protected String operationContextFromRequest;
 
     /**
+     * Creates a new instance of {@link ResultWithEventHandling}.
+     */
+    public ResultWithEventHandling() {
+    }
+
+    /**
      * Sets the event processor
      *
      * @param eventProcessor the event processor
      * @param callConnectionId the call connection id
      * @param operationContext the operation context
      */
-    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId, String operationContext) {
+    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId,
+        String operationContext) {
         this.eventProcessor = eventProcessor;
         this.callConnectionId = callConnectionId;
         this.operationContextFromRequest = operationContext;

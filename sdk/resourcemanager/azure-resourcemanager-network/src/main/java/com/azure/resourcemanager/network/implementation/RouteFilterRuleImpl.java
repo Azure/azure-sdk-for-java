@@ -15,10 +15,8 @@ import java.util.List;
 
 /** Implementation for {@link RouteFilterRule} and its create and update interfaces. */
 class RouteFilterRuleImpl extends ChildResourceImpl<RouteFilterRuleInner, RouteFilterImpl, RouteFilter>
-    implements RouteFilterRule,
-        RouteFilterRule.Definition<RouteFilter.DefinitionStages.WithCreate>,
-        RouteFilterRule.UpdateDefinition<RouteFilter.Update>,
-        RouteFilterRule.Update {
+    implements RouteFilterRule, RouteFilterRule.Definition<RouteFilter.DefinitionStages.WithCreate>,
+    RouteFilterRule.UpdateDefinition<RouteFilter.Update>, RouteFilterRule.Update {
 
     RouteFilterRuleImpl(RouteFilterRuleInner inner, RouteFilterImpl parent) {
         super(inner, parent);

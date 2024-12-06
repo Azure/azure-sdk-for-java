@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class FirewallRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FirewallRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"startIpAddress\":\"watkpnpulexxb\",\"endIpAddress\":\"wtruwiqzbqjvsovm\"},\"name\":\"kacspkw\",\"type\":\"zdobpxjmflbvvnch\",\"id\":\"cciw\"}")
-                .toObject(FirewallRuleInner.class);
-        Assertions.assertEquals("cciw", model.id());
+        FirewallRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"startIpAddress\":\"lhbxxhejjzzvdud\",\"endIpAddress\":\"dslfhotwmcy\"},\"name\":\"wlbjnpgacftade\",\"type\":\"nltyfsoppusuesnz\",\"id\":\"ej\"}")
+            .toObject(FirewallRuleInner.class);
+        Assertions.assertEquals("ej", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FirewallRuleInner model = new FirewallRuleInner().withId("cciw");
+        FirewallRuleInner model = new FirewallRuleInner().withId("ej");
         model = BinaryData.fromObject(model).toObject(FirewallRuleInner.class);
-        Assertions.assertEquals("cciw", model.id());
+        Assertions.assertEquals("ej", model.id());
     }
 }

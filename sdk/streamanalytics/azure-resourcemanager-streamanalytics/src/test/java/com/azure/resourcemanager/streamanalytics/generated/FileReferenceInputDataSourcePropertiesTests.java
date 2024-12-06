@@ -12,15 +12,14 @@ public final class FileReferenceInputDataSourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileReferenceInputDataSourceProperties model
-            = BinaryData.fromString("{\"path\":\"kcnqxwbpo\"}").toObject(FileReferenceInputDataSourceProperties.class);
-        Assertions.assertEquals("kcnqxwbpo", model.path());
+            = BinaryData.fromString("{\"path\":\"rpqlp\"}").toObject(FileReferenceInputDataSourceProperties.class);
+        Assertions.assertEquals("rpqlp", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileReferenceInputDataSourceProperties model
-            = new FileReferenceInputDataSourceProperties().withPath("kcnqxwbpo");
+        FileReferenceInputDataSourceProperties model = new FileReferenceInputDataSourceProperties().withPath("rpqlp");
         model = BinaryData.fromObject(model).toObject(FileReferenceInputDataSourceProperties.class);
-        Assertions.assertEquals("kcnqxwbpo", model.path());
+        Assertions.assertEquals("rpqlp", model.path());
     }
 }

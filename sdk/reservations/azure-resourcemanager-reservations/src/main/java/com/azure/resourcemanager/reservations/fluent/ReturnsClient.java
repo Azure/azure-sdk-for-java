@@ -12,13 +12,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.reservations.fluent.models.ReservationOrderResponseInner;
 import com.azure.resourcemanager.reservations.models.RefundRequest;
 
-/** An instance of this class provides access to all the operations defined in ReturnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReturnsClient.
+ */
 public interface ReturnsClient {
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,14 +29,14 @@ public interface ReturnsClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
-        String reservationOrderId, RefundRequest body);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPost(String reservationOrderId, RefundRequest body);
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.
@@ -44,14 +46,14 @@ public interface ReturnsClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
-        String reservationOrderId, RefundRequest body, Context context);
+    SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPost(String reservationOrderId, RefundRequest body, Context context);
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,9 +66,9 @@ public interface ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.

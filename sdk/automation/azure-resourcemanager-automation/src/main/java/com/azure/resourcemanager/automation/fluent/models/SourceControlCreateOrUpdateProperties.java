@@ -5,64 +5,69 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SourceControlSecurityTokenProperties;
 import com.azure.resourcemanager.automation.models.SourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of the create source control operation. */
+/**
+ * The properties of the create source control operation.
+ */
 @Fluent
-public final class SourceControlCreateOrUpdateProperties {
+public final class SourceControlCreateOrUpdateProperties
+    implements JsonSerializable<SourceControlCreateOrUpdateProperties> {
     /*
      * The repo url of the source control.
      */
-    @JsonProperty(value = "repoUrl")
     private String repoUrl;
 
     /*
      * The repo branch of the source control. Include branch as empty string for VsoTfvc.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The folder path of the source control. Path must be relative.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * The auto async of the source control. Default is false.
      */
-    @JsonProperty(value = "autoSync")
     private Boolean autoSync;
 
     /*
      * The auto publish of the source control. Default is true.
      */
-    @JsonProperty(value = "publishRunbook")
     private Boolean publishRunbook;
 
     /*
      * The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
      */
-    @JsonProperty(value = "sourceType")
     private SourceType sourceType;
 
     /*
      * The authorization token for the repo of the source control.
      */
-    @JsonProperty(value = "securityToken")
     private SourceControlSecurityTokenProperties securityToken;
 
     /*
      * The user description of the source control.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of SourceControlCreateOrUpdateProperties class.
+     */
+    public SourceControlCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -71,7 +76,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -82,7 +87,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -91,7 +96,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -102,7 +107,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the folderPath property: The folder path of the source control. Path must be relative.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -111,7 +116,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the folderPath property: The folder path of the source control. Path must be relative.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -122,7 +127,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the autoSync property: The auto async of the source control. Default is false.
-     *
+     * 
      * @return the autoSync value.
      */
     public Boolean autoSync() {
@@ -131,7 +136,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the autoSync property: The auto async of the source control. Default is false.
-     *
+     * 
      * @param autoSync the autoSync value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -142,7 +147,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @return the publishRunbook value.
      */
     public Boolean publishRunbook() {
@@ -151,7 +156,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @param publishRunbook the publishRunbook value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -162,7 +167,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -171,7 +176,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -182,7 +187,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the securityToken property: The authorization token for the repo of the source control.
-     *
+     * 
      * @return the securityToken value.
      */
     public SourceControlSecurityTokenProperties securityToken() {
@@ -191,7 +196,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the securityToken property: The authorization token for the repo of the source control.
-     *
+     * 
      * @param securityToken the securityToken value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -202,7 +207,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Get the description property: The user description of the source control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -211,7 +216,7 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Set the description property: The user description of the source control.
-     *
+     * 
      * @param description the description value to set.
      * @return the SourceControlCreateOrUpdateProperties object itself.
      */
@@ -222,12 +227,74 @@ public final class SourceControlCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityToken() != null) {
             securityToken().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("repoUrl", this.repoUrl);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeBooleanField("autoSync", this.autoSync);
+        jsonWriter.writeBooleanField("publishRunbook", this.publishRunbook);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeJsonField("securityToken", this.securityToken);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlCreateOrUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceControlCreateOrUpdateProperties.
+     */
+    public static SourceControlCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlCreateOrUpdateProperties deserializedSourceControlCreateOrUpdateProperties
+                = new SourceControlCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("repoUrl".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.repoUrl = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.branch = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.folderPath = reader.getString();
+                } else if ("autoSync".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.autoSync
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publishRunbook".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.publishRunbook
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.sourceType
+                        = SourceType.fromString(reader.getString());
+                } else if ("securityToken".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.securityToken
+                        = SourceControlSecurityTokenProperties.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSourceControlCreateOrUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlCreateOrUpdateProperties;
+        });
     }
 }

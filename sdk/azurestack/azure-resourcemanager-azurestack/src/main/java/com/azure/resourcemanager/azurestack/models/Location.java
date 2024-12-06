@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Location of the resource. */
+/**
+ * Location of the resource.
+ */
 public final class Location extends ExpandableStringEnum<Location> {
-    /** Static value global for Location. */
+    /**
+     * Static value global for Location.
+     */
     public static final Location GLOBAL = fromString("global");
 
     /**
      * Creates a new instance of Location value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class Location extends ExpandableStringEnum<Location> {
 
     /**
      * Creates or finds a Location from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Location.
      */
-    @JsonCreator
     public static Location fromString(String name) {
         return fromString(name, Location.class);
     }
 
     /**
      * Gets known Location values.
-     *
+     * 
      * @return known Location values.
      */
     public static Collection<Location> values() {

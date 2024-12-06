@@ -9,32 +9,34 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerContractInner;
 import java.util.List;
 
-/** An immutable client-side representation of AuthorizationServerContract. */
+/**
+ * An immutable client-side representation of AuthorizationServerContract.
+ */
 public interface AuthorizationServerContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the displayName property: User-friendly authorization server name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
@@ -42,7 +44,7 @@ public interface AuthorizationServerContract {
     /**
      * Gets the useInTestConsole property: If true, the authorization server may be used in the developer portal test
      * console. True by default if no value is provided.
-     *
+     * 
      * @return the useInTestConsole value.
      */
     Boolean useInTestConsole();
@@ -50,7 +52,7 @@ public interface AuthorizationServerContract {
     /**
      * Gets the useInApiDocumentation property: If true, the authorization server will be used in the API documentation
      * in the developer portal. False by default if no value is provided.
-     *
+     * 
      * @return the useInApiDocumentation value.
      */
     Boolean useInApiDocumentation();
@@ -58,7 +60,7 @@ public interface AuthorizationServerContract {
     /**
      * Gets the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
      * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
+     * 
      * @return the clientRegistrationEndpoint value.
      */
     String clientRegistrationEndpoint();
@@ -66,21 +68,21 @@ public interface AuthorizationServerContract {
     /**
      * Gets the authorizationEndpoint property: OAuth authorization endpoint. See
      * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
+     * 
      * @return the authorizationEndpoint value.
      */
     String authorizationEndpoint();
 
     /**
      * Gets the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
+     * 
      * @return the grantTypes value.
      */
     List<GrantType> grantTypes();
 
     /**
      * Gets the clientId property: Client or app id registered with this authorization server.
-     *
+     * 
      * @return the clientId value.
      */
     String clientId();
@@ -88,14 +90,14 @@ public interface AuthorizationServerContract {
     /**
      * Gets the clientSecret property: Client or app secret registered with this authorization server. This property
      * will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the clientSecret value.
      */
     String clientSecret();
 
     /**
      * Gets the description property: Description of the authorization server. Can contain HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     String description();
@@ -103,7 +105,7 @@ public interface AuthorizationServerContract {
     /**
      * Gets the authorizationMethods property: HTTP verbs supported by the authorization endpoint. GET must be always
      * present. POST is optional.
-     *
+     * 
      * @return the authorizationMethods value.
      */
     List<AuthorizationMethod> authorizationMethods();
@@ -112,7 +114,7 @@ public interface AuthorizationServerContract {
      * Gets the clientAuthenticationMethod property: Method of authentication supported by the token endpoint of this
      * authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other
      * parameters are passed within the request body in the application/x-www-form-urlencoded format.
-     *
+     * 
      * @return the clientAuthenticationMethod value.
      */
     List<ClientAuthenticationMethod> clientAuthenticationMethod();
@@ -121,14 +123,14 @@ public interface AuthorizationServerContract {
      * Gets the tokenBodyParameters property: Additional parameters required by the token endpoint of this authorization
      * server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name
      * value", "value": "a value"}.
-     *
+     * 
      * @return the tokenBodyParameters value.
      */
     List<TokenBodyParameterContract> tokenBodyParameters();
 
     /**
      * Gets the tokenEndpoint property: OAuth token endpoint. Contains absolute URI to entity being referenced.
-     *
+     * 
      * @return the tokenEndpoint value.
      */
     String tokenEndpoint();
@@ -136,7 +138,7 @@ public interface AuthorizationServerContract {
     /**
      * Gets the supportState property: If true, authorization server will include state parameter from the authorization
      * request to its response. Client may use state parameter to raise protocol security.
-     *
+     * 
      * @return the supportState value.
      */
     Boolean supportState();
@@ -144,14 +146,14 @@ public interface AuthorizationServerContract {
     /**
      * Gets the defaultScope property: Access token scope that is going to be requested by default. Can be overridden at
      * the API level. Should be provided in the form of a string containing space-delimited values.
-     *
+     * 
      * @return the defaultScope value.
      */
     String defaultScope();
 
     /**
      * Gets the bearerTokenSendingMethods property: Specifies the mechanism by which access token is passed to the API.
-     *
+     * 
      * @return the bearerTokenSendingMethods value.
      */
     List<BearerTokenSendingMethod> bearerTokenSendingMethods();
@@ -159,7 +161,7 @@ public interface AuthorizationServerContract {
     /**
      * Gets the resourceOwnerUsername property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner username.
-     *
+     * 
      * @return the resourceOwnerUsername value.
      */
     String resourceOwnerUsername();
@@ -167,41 +169,49 @@ public interface AuthorizationServerContract {
     /**
      * Gets the resourceOwnerPassword property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner password.
-     *
+     * 
      * @return the resourceOwnerPassword value.
      */
     String resourceOwnerPassword();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     AuthorizationServerContractInner innerModel();
 
-    /** The entirety of the AuthorizationServerContract definition. */
+    /**
+     * The entirety of the AuthorizationServerContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The AuthorizationServerContract definition stages. */
+    /**
+     * The AuthorizationServerContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AuthorizationServerContract definition. */
+        /**
+         * The first stage of the AuthorizationServerContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -213,284 +223,310 @@ public interface AuthorizationServerContract {
          * The stage of the AuthorizationServerContract definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithUseInTestConsole,
-                DefinitionStages.WithUseInApiDocumentation,
-                DefinitionStages.WithClientRegistrationEndpoint,
-                DefinitionStages.WithAuthorizationEndpoint,
-                DefinitionStages.WithGrantTypes,
-                DefinitionStages.WithClientId,
-                DefinitionStages.WithClientSecret,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithAuthorizationMethods,
-                DefinitionStages.WithClientAuthenticationMethod,
-                DefinitionStages.WithTokenBodyParameters,
-                DefinitionStages.WithTokenEndpoint,
-                DefinitionStages.WithSupportState,
-                DefinitionStages.WithDefaultScope,
-                DefinitionStages.WithBearerTokenSendingMethods,
-                DefinitionStages.WithResourceOwnerUsername,
-                DefinitionStages.WithResourceOwnerPassword,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithUseInTestConsole,
+            DefinitionStages.WithUseInApiDocumentation, DefinitionStages.WithClientRegistrationEndpoint,
+            DefinitionStages.WithAuthorizationEndpoint, DefinitionStages.WithGrantTypes, DefinitionStages.WithClientId,
+            DefinitionStages.WithClientSecret, DefinitionStages.WithDescription,
+            DefinitionStages.WithAuthorizationMethods, DefinitionStages.WithClientAuthenticationMethod,
+            DefinitionStages.WithTokenBodyParameters, DefinitionStages.WithTokenEndpoint,
+            DefinitionStages.WithSupportState, DefinitionStages.WithDefaultScope,
+            DefinitionStages.WithBearerTokenSendingMethods, DefinitionStages.WithResourceOwnerUsername,
+            DefinitionStages.WithResourceOwnerPassword, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AuthorizationServerContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AuthorizationServerContract create(Context context);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify displayName. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: User-friendly authorization server name..
-             *
+             * 
              * @param displayName User-friendly authorization server name.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify useInTestConsole. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify useInTestConsole.
+         */
         interface WithUseInTestConsole {
             /**
              * Specifies the useInTestConsole property: If true, the authorization server may be used in the developer
              * portal test console. True by default if no value is provided..
-             *
+             * 
              * @param useInTestConsole If true, the authorization server may be used in the developer portal test
-             *     console. True by default if no value is provided.
+             * console. True by default if no value is provided.
              * @return the next definition stage.
              */
             WithCreate withUseInTestConsole(Boolean useInTestConsole);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify useInApiDocumentation. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify useInApiDocumentation.
+         */
         interface WithUseInApiDocumentation {
             /**
              * Specifies the useInApiDocumentation property: If true, the authorization server will be used in the API
              * documentation in the developer portal. False by default if no value is provided..
-             *
+             * 
              * @param useInApiDocumentation If true, the authorization server will be used in the API documentation in
-             *     the developer portal. False by default if no value is provided.
+             * the developer portal. False by default if no value is provided.
              * @return the next definition stage.
              */
             WithCreate withUseInApiDocumentation(Boolean useInApiDocumentation);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientRegistrationEndpoint. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify clientRegistrationEndpoint.
+         */
         interface WithClientRegistrationEndpoint {
             /**
              * Specifies the clientRegistrationEndpoint property: Optional reference to a page where client or app
              * registration for this authorization server is performed. Contains absolute URL to entity being
              * referenced..
-             *
+             * 
              * @param clientRegistrationEndpoint Optional reference to a page where client or app registration for this
-             *     authorization server is performed. Contains absolute URL to entity being referenced.
+             * authorization server is performed. Contains absolute URL to entity being referenced.
              * @return the next definition stage.
              */
             WithCreate withClientRegistrationEndpoint(String clientRegistrationEndpoint);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify authorizationEndpoint. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify authorizationEndpoint.
+         */
         interface WithAuthorizationEndpoint {
             /**
              * Specifies the authorizationEndpoint property: OAuth authorization endpoint. See
              * http://tools.ietf.org/html/rfc6749#section-3.2..
-             *
+             * 
              * @param authorizationEndpoint OAuth authorization endpoint. See
-             *     http://tools.ietf.org/html/rfc6749#section-3.2.
+             * http://tools.ietf.org/html/rfc6749#section-3.2.
              * @return the next definition stage.
              */
             WithCreate withAuthorizationEndpoint(String authorizationEndpoint);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify grantTypes. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify grantTypes.
+         */
         interface WithGrantTypes {
             /**
              * Specifies the grantTypes property: Form of an authorization grant, which the client uses to request the
              * access token..
-             *
+             * 
              * @param grantTypes Form of an authorization grant, which the client uses to request the access token.
              * @return the next definition stage.
              */
             WithCreate withGrantTypes(List<GrantType> grantTypes);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientId. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify clientId.
+         */
         interface WithClientId {
             /**
              * Specifies the clientId property: Client or app id registered with this authorization server..
-             *
+             * 
              * @param clientId Client or app id registered with this authorization server.
              * @return the next definition stage.
              */
             WithCreate withClientId(String clientId);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientSecret. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify clientSecret.
+         */
         interface WithClientSecret {
             /**
              * Specifies the clientSecret property: Client or app secret registered with this authorization server. This
              * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value..
-             *
+             * 
              * @param clientSecret Client or app secret registered with this authorization server. This property will
-             *     not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+             * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
              * @return the next definition stage.
              */
             WithCreate withClientSecret(String clientSecret);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify description. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the authorization server. Can contain HTML formatting
              * tags..
-             *
+             * 
              * @param description Description of the authorization server. Can contain HTML formatting tags.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify authorizationMethods. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify authorizationMethods.
+         */
         interface WithAuthorizationMethods {
             /**
              * Specifies the authorizationMethods property: HTTP verbs supported by the authorization endpoint. GET must
              * be always present. POST is optional..
-             *
+             * 
              * @param authorizationMethods HTTP verbs supported by the authorization endpoint. GET must be always
-             *     present. POST is optional.
+             * present. POST is optional.
              * @return the next definition stage.
              */
             WithCreate withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientAuthenticationMethod. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify clientAuthenticationMethod.
+         */
         interface WithClientAuthenticationMethod {
             /**
              * Specifies the clientAuthenticationMethod property: Method of authentication supported by the token
              * endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified,
              * client credentials and other parameters are passed within the request body in the
              * application/x-www-form-urlencoded format..
-             *
+             * 
              * @param clientAuthenticationMethod Method of authentication supported by the token endpoint of this
-             *     authorization server. Possible values are Basic and/or Body. When Body is specified, client
-             *     credentials and other parameters are passed within the request body in the
-             *     application/x-www-form-urlencoded format.
+             * authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials
+             * and other parameters are passed within the request body in the application/x-www-form-urlencoded format.
              * @return the next definition stage.
              */
             WithCreate withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify tokenBodyParameters. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify tokenBodyParameters.
+         */
         interface WithTokenBodyParameters {
             /**
              * Specifies the tokenBodyParameters property: Additional parameters required by the token endpoint of this
              * authorization server represented as an array of JSON objects with name and value string properties, i.e.
              * {"name" : "name value", "value": "a value"}..
-             *
+             * 
              * @param tokenBodyParameters Additional parameters required by the token endpoint of this authorization
-             *     server represented as an array of JSON objects with name and value string properties, i.e. {"name" :
-             *     "name value", "value": "a value"}.
+             * server represented as an array of JSON objects with name and value string properties, i.e. {"name" :
+             * "name value", "value": "a value"}.
              * @return the next definition stage.
              */
             WithCreate withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify tokenEndpoint. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify tokenEndpoint.
+         */
         interface WithTokenEndpoint {
             /**
              * Specifies the tokenEndpoint property: OAuth token endpoint. Contains absolute URI to entity being
              * referenced..
-             *
+             * 
              * @param tokenEndpoint OAuth token endpoint. Contains absolute URI to entity being referenced.
              * @return the next definition stage.
              */
             WithCreate withTokenEndpoint(String tokenEndpoint);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify supportState. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify supportState.
+         */
         interface WithSupportState {
             /**
              * Specifies the supportState property: If true, authorization server will include state parameter from the
              * authorization request to its response. Client may use state parameter to raise protocol security..
-             *
+             * 
              * @param supportState If true, authorization server will include state parameter from the authorization
-             *     request to its response. Client may use state parameter to raise protocol security.
+             * request to its response. Client may use state parameter to raise protocol security.
              * @return the next definition stage.
              */
             WithCreate withSupportState(Boolean supportState);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify defaultScope. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify defaultScope.
+         */
         interface WithDefaultScope {
             /**
              * Specifies the defaultScope property: Access token scope that is going to be requested by default. Can be
              * overridden at the API level. Should be provided in the form of a string containing space-delimited
              * values..
-             *
+             * 
              * @param defaultScope Access token scope that is going to be requested by default. Can be overridden at the
-             *     API level. Should be provided in the form of a string containing space-delimited values.
+             * API level. Should be provided in the form of a string containing space-delimited values.
              * @return the next definition stage.
              */
             WithCreate withDefaultScope(String defaultScope);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify bearerTokenSendingMethods. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify bearerTokenSendingMethods.
+         */
         interface WithBearerTokenSendingMethods {
             /**
              * Specifies the bearerTokenSendingMethods property: Specifies the mechanism by which access token is passed
              * to the API. .
-             *
+             * 
              * @param bearerTokenSendingMethods Specifies the mechanism by which access token is passed to the API.
              * @return the next definition stage.
              */
             WithCreate withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify resourceOwnerUsername. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify resourceOwnerUsername.
+         */
         interface WithResourceOwnerUsername {
             /**
              * Specifies the resourceOwnerUsername property: Can be optionally specified when resource owner password
              * grant type is supported by this authorization server. Default resource owner username..
-             *
+             * 
              * @param resourceOwnerUsername Can be optionally specified when resource owner password grant type is
-             *     supported by this authorization server. Default resource owner username.
+             * supported by this authorization server. Default resource owner username.
              * @return the next definition stage.
              */
             WithCreate withResourceOwnerUsername(String resourceOwnerUsername);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify resourceOwnerPassword. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify resourceOwnerPassword.
+         */
         interface WithResourceOwnerPassword {
             /**
              * Specifies the resourceOwnerPassword property: Can be optionally specified when resource owner password
              * grant type is supported by this authorization server. Default resource owner password..
-             *
+             * 
              * @param resourceOwnerPassword Can be optionally specified when resource owner password grant type is
-             *     supported by this authorization server. Default resource owner password.
+             * supported by this authorization server. Default resource owner password.
              * @return the next definition stage.
              */
             WithCreate withResourceOwnerPassword(String resourceOwnerPassword);
         }
 
-        /** The stage of the AuthorizationServerContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the AuthorizationServerContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -499,292 +535,321 @@ public interface AuthorizationServerContract {
 
     /**
      * Begins update for the AuthorizationServerContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AuthorizationServerContract.Update update();
 
-    /** The template for AuthorizationServerContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithUseInTestConsole,
-            UpdateStages.WithUseInApiDocumentation,
-            UpdateStages.WithClientRegistrationEndpoint,
-            UpdateStages.WithAuthorizationEndpoint,
-            UpdateStages.WithGrantTypes,
-            UpdateStages.WithClientId,
-            UpdateStages.WithClientSecret,
-            UpdateStages.WithDescription,
-            UpdateStages.WithAuthorizationMethods,
-            UpdateStages.WithClientAuthenticationMethod,
-            UpdateStages.WithTokenBodyParameters,
-            UpdateStages.WithTokenEndpoint,
-            UpdateStages.WithSupportState,
-            UpdateStages.WithDefaultScope,
-            UpdateStages.WithBearerTokenSendingMethods,
-            UpdateStages.WithResourceOwnerUsername,
-            UpdateStages.WithResourceOwnerPassword,
-            UpdateStages.WithIfMatch {
+    /**
+     * The template for AuthorizationServerContract update.
+     */
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithUseInTestConsole,
+        UpdateStages.WithUseInApiDocumentation, UpdateStages.WithClientRegistrationEndpoint,
+        UpdateStages.WithAuthorizationEndpoint, UpdateStages.WithGrantTypes, UpdateStages.WithClientId,
+        UpdateStages.WithClientSecret, UpdateStages.WithDescription, UpdateStages.WithAuthorizationMethods,
+        UpdateStages.WithClientAuthenticationMethod, UpdateStages.WithTokenBodyParameters,
+        UpdateStages.WithTokenEndpoint, UpdateStages.WithSupportState, UpdateStages.WithDefaultScope,
+        UpdateStages.WithBearerTokenSendingMethods, UpdateStages.WithResourceOwnerUsername,
+        UpdateStages.WithResourceOwnerPassword, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AuthorizationServerContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AuthorizationServerContract apply(Context context);
     }
 
-    /** The AuthorizationServerContract update stages. */
+    /**
+     * The AuthorizationServerContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AuthorizationServerContract update allowing to specify displayName. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: User-friendly authorization server name..
-             *
+             * 
              * @param displayName User-friendly authorization server name.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify useInTestConsole. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify useInTestConsole.
+         */
         interface WithUseInTestConsole {
             /**
              * Specifies the useInTestConsole property: If true, the authorization server may be used in the developer
              * portal test console. True by default if no value is provided..
-             *
+             * 
              * @param useInTestConsole If true, the authorization server may be used in the developer portal test
-             *     console. True by default if no value is provided.
+             * console. True by default if no value is provided.
              * @return the next definition stage.
              */
             Update withUseInTestConsole(Boolean useInTestConsole);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify useInApiDocumentation. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify useInApiDocumentation.
+         */
         interface WithUseInApiDocumentation {
             /**
              * Specifies the useInApiDocumentation property: If true, the authorization server will be used in the API
              * documentation in the developer portal. False by default if no value is provided..
-             *
+             * 
              * @param useInApiDocumentation If true, the authorization server will be used in the API documentation in
-             *     the developer portal. False by default if no value is provided.
+             * the developer portal. False by default if no value is provided.
              * @return the next definition stage.
              */
             Update withUseInApiDocumentation(Boolean useInApiDocumentation);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify clientRegistrationEndpoint. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify clientRegistrationEndpoint.
+         */
         interface WithClientRegistrationEndpoint {
             /**
              * Specifies the clientRegistrationEndpoint property: Optional reference to a page where client or app
              * registration for this authorization server is performed. Contains absolute URL to entity being
              * referenced..
-             *
+             * 
              * @param clientRegistrationEndpoint Optional reference to a page where client or app registration for this
-             *     authorization server is performed. Contains absolute URL to entity being referenced.
+             * authorization server is performed. Contains absolute URL to entity being referenced.
              * @return the next definition stage.
              */
             Update withClientRegistrationEndpoint(String clientRegistrationEndpoint);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify authorizationEndpoint. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify authorizationEndpoint.
+         */
         interface WithAuthorizationEndpoint {
             /**
              * Specifies the authorizationEndpoint property: OAuth authorization endpoint. See
              * http://tools.ietf.org/html/rfc6749#section-3.2..
-             *
+             * 
              * @param authorizationEndpoint OAuth authorization endpoint. See
-             *     http://tools.ietf.org/html/rfc6749#section-3.2.
+             * http://tools.ietf.org/html/rfc6749#section-3.2.
              * @return the next definition stage.
              */
             Update withAuthorizationEndpoint(String authorizationEndpoint);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify grantTypes. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify grantTypes.
+         */
         interface WithGrantTypes {
             /**
              * Specifies the grantTypes property: Form of an authorization grant, which the client uses to request the
              * access token..
-             *
+             * 
              * @param grantTypes Form of an authorization grant, which the client uses to request the access token.
              * @return the next definition stage.
              */
             Update withGrantTypes(List<GrantType> grantTypes);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify clientId. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify clientId.
+         */
         interface WithClientId {
             /**
              * Specifies the clientId property: Client or app id registered with this authorization server..
-             *
+             * 
              * @param clientId Client or app id registered with this authorization server.
              * @return the next definition stage.
              */
             Update withClientId(String clientId);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify clientSecret. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify clientSecret.
+         */
         interface WithClientSecret {
             /**
              * Specifies the clientSecret property: Client or app secret registered with this authorization server. This
              * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value..
-             *
+             * 
              * @param clientSecret Client or app secret registered with this authorization server. This property will
-             *     not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+             * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
              * @return the next definition stage.
              */
             Update withClientSecret(String clientSecret);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify description. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the authorization server. Can contain HTML formatting
              * tags..
-             *
+             * 
              * @param description Description of the authorization server. Can contain HTML formatting tags.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify authorizationMethods. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify authorizationMethods.
+         */
         interface WithAuthorizationMethods {
             /**
              * Specifies the authorizationMethods property: HTTP verbs supported by the authorization endpoint. GET must
              * be always present. POST is optional..
-             *
+             * 
              * @param authorizationMethods HTTP verbs supported by the authorization endpoint. GET must be always
-             *     present. POST is optional.
+             * present. POST is optional.
              * @return the next definition stage.
              */
             Update withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify clientAuthenticationMethod. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify clientAuthenticationMethod.
+         */
         interface WithClientAuthenticationMethod {
             /**
              * Specifies the clientAuthenticationMethod property: Method of authentication supported by the token
              * endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified,
              * client credentials and other parameters are passed within the request body in the
              * application/x-www-form-urlencoded format..
-             *
+             * 
              * @param clientAuthenticationMethod Method of authentication supported by the token endpoint of this
-             *     authorization server. Possible values are Basic and/or Body. When Body is specified, client
-             *     credentials and other parameters are passed within the request body in the
-             *     application/x-www-form-urlencoded format.
+             * authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials
+             * and other parameters are passed within the request body in the application/x-www-form-urlencoded format.
              * @return the next definition stage.
              */
             Update withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify tokenBodyParameters. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify tokenBodyParameters.
+         */
         interface WithTokenBodyParameters {
             /**
              * Specifies the tokenBodyParameters property: Additional parameters required by the token endpoint of this
              * authorization server represented as an array of JSON objects with name and value string properties, i.e.
              * {"name" : "name value", "value": "a value"}..
-             *
+             * 
              * @param tokenBodyParameters Additional parameters required by the token endpoint of this authorization
-             *     server represented as an array of JSON objects with name and value string properties, i.e. {"name" :
-             *     "name value", "value": "a value"}.
+             * server represented as an array of JSON objects with name and value string properties, i.e. {"name" :
+             * "name value", "value": "a value"}.
              * @return the next definition stage.
              */
             Update withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify tokenEndpoint. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify tokenEndpoint.
+         */
         interface WithTokenEndpoint {
             /**
              * Specifies the tokenEndpoint property: OAuth token endpoint. Contains absolute URI to entity being
              * referenced..
-             *
+             * 
              * @param tokenEndpoint OAuth token endpoint. Contains absolute URI to entity being referenced.
              * @return the next definition stage.
              */
             Update withTokenEndpoint(String tokenEndpoint);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify supportState. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify supportState.
+         */
         interface WithSupportState {
             /**
              * Specifies the supportState property: If true, authorization server will include state parameter from the
              * authorization request to its response. Client may use state parameter to raise protocol security..
-             *
+             * 
              * @param supportState If true, authorization server will include state parameter from the authorization
-             *     request to its response. Client may use state parameter to raise protocol security.
+             * request to its response. Client may use state parameter to raise protocol security.
              * @return the next definition stage.
              */
             Update withSupportState(Boolean supportState);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify defaultScope. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify defaultScope.
+         */
         interface WithDefaultScope {
             /**
              * Specifies the defaultScope property: Access token scope that is going to be requested by default. Can be
              * overridden at the API level. Should be provided in the form of a string containing space-delimited
              * values..
-             *
+             * 
              * @param defaultScope Access token scope that is going to be requested by default. Can be overridden at the
-             *     API level. Should be provided in the form of a string containing space-delimited values.
+             * API level. Should be provided in the form of a string containing space-delimited values.
              * @return the next definition stage.
              */
             Update withDefaultScope(String defaultScope);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify bearerTokenSendingMethods. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify bearerTokenSendingMethods.
+         */
         interface WithBearerTokenSendingMethods {
             /**
              * Specifies the bearerTokenSendingMethods property: Specifies the mechanism by which access token is passed
              * to the API. .
-             *
+             * 
              * @param bearerTokenSendingMethods Specifies the mechanism by which access token is passed to the API.
              * @return the next definition stage.
              */
             Update withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify resourceOwnerUsername. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify resourceOwnerUsername.
+         */
         interface WithResourceOwnerUsername {
             /**
              * Specifies the resourceOwnerUsername property: Can be optionally specified when resource owner password
              * grant type is supported by this authorization server. Default resource owner username..
-             *
+             * 
              * @param resourceOwnerUsername Can be optionally specified when resource owner password grant type is
-             *     supported by this authorization server. Default resource owner username.
+             * supported by this authorization server. Default resource owner username.
              * @return the next definition stage.
              */
             Update withResourceOwnerUsername(String resourceOwnerUsername);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify resourceOwnerPassword. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify resourceOwnerPassword.
+         */
         interface WithResourceOwnerPassword {
             /**
              * Specifies the resourceOwnerPassword property: Can be optionally specified when resource owner password
              * grant type is supported by this authorization server. Default resource owner password..
-             *
+             * 
              * @param resourceOwnerPassword Can be optionally specified when resource owner password grant type is
-             *     supported by this authorization server. Default resource owner password.
+             * supported by this authorization server. Default resource owner password.
              * @return the next definition stage.
              */
             Update withResourceOwnerPassword(String resourceOwnerPassword);
         }
 
-        /** The stage of the AuthorizationServerContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the AuthorizationServerContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -793,14 +858,14 @@ public interface AuthorizationServerContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AuthorizationServerContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -808,7 +873,7 @@ public interface AuthorizationServerContract {
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -819,7 +884,7 @@ public interface AuthorizationServerContract {
 
     /**
      * Gets the client secret details of the authorization server.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the client secret details of the authorization server.

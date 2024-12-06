@@ -35,60 +35,39 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"vcyy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fgdo\",\"actionsRequired\":\"ubiipuipwoqonma\"}},\"id\":\"jeknizshq\",\"name\":\"cimpevfg\",\"type\":\"b\"}";
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"vcyy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fgdo\",\"actionsRequired\":\"ubiipuipwoqonma\"}},\"id\":\"jeknizshq\",\"name\":\"cimpevfg\",\"type\":\"b\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .update(
-                    "axconfozauo",
-                    "sukokwbqplhl",
-                    "nuuepzlrp",
-                    new PrivateEndpointConnectionInner()
-                        .withProperties(
-                            new PrivateEndpointConnectionProperties()
-                                .withPrivateEndpoint(new PrivateEndpoint())
-                                .withPrivateLinkServiceConnectionState(
-                                    new PrivateLinkServiceConnectionState()
-                                        .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                                        .withDescription("nrwrbiork")
-                                        .withActionsRequired("lywjhh"))),
-                    com.azure.core.util.Context.NONE);
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .update("axconfozauo", "sukokwbqplhl", "nuuepzlrp",
+                new PrivateEndpointConnectionInner()
+                    .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
+                            .withDescription("nrwrbiork")
+                            .withActionsRequired("lywjhh"))),
+                com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.PENDING,
-                response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+            response.properties().privateLinkServiceConnectionState().status());
         Assertions.assertEquals("fgdo", response.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "ubiipuipwoqonma", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ubiipuipwoqonma",
+            response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

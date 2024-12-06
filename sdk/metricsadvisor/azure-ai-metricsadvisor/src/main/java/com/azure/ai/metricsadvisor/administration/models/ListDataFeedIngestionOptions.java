@@ -23,8 +23,7 @@ public final class ListDataFeedIngestionOptions {
      * @param startTime The start point of time range to query data ingestion status.
      * @param endTime The end point of time range to query data ingestion status.
      */
-    public ListDataFeedIngestionOptions(OffsetDateTime startTime,
-                            OffsetDateTime endTime) {
+    public ListDataFeedIngestionOptions(OffsetDateTime startTime, OffsetDateTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
     }

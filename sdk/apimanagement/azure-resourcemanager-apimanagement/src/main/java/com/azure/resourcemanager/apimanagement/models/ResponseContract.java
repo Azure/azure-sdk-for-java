@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Operation response details. */
+/**
+ * Operation response details.
+ */
 @Fluent
-public final class ResponseContract {
+public final class ResponseContract implements JsonSerializable<ResponseContract> {
     /*
      * Operation response HTTP status code.
      */
-    @JsonProperty(value = "statusCode", required = true)
     private int statusCode;
 
     /*
      * Operation response description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Collection of operation response representations.
      */
-    @JsonProperty(value = "representations")
     private List<RepresentationContract> representations;
 
     /*
      * Collection of operation response headers.
      */
-    @JsonProperty(value = "headers")
     private List<ParameterContract> headers;
 
-    /** Creates an instance of ResponseContract class. */
+    /**
+     * Creates an instance of ResponseContract class.
+     */
     public ResponseContract() {
     }
 
     /**
      * Get the statusCode property: Operation response HTTP status code.
-     *
+     * 
      * @return the statusCode value.
      */
     public int statusCode() {
@@ -50,7 +54,7 @@ public final class ResponseContract {
 
     /**
      * Set the statusCode property: Operation response HTTP status code.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the ResponseContract object itself.
      */
@@ -61,7 +65,7 @@ public final class ResponseContract {
 
     /**
      * Get the description property: Operation response description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -70,7 +74,7 @@ public final class ResponseContract {
 
     /**
      * Set the description property: Operation response description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResponseContract object itself.
      */
@@ -81,7 +85,7 @@ public final class ResponseContract {
 
     /**
      * Get the representations property: Collection of operation response representations.
-     *
+     * 
      * @return the representations value.
      */
     public List<RepresentationContract> representations() {
@@ -90,7 +94,7 @@ public final class ResponseContract {
 
     /**
      * Set the representations property: Collection of operation response representations.
-     *
+     * 
      * @param representations the representations value to set.
      * @return the ResponseContract object itself.
      */
@@ -101,7 +105,7 @@ public final class ResponseContract {
 
     /**
      * Get the headers property: Collection of operation response headers.
-     *
+     * 
      * @return the headers value.
      */
     public List<ParameterContract> headers() {
@@ -110,7 +114,7 @@ public final class ResponseContract {
 
     /**
      * Set the headers property: Collection of operation response headers.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the ResponseContract object itself.
      */
@@ -121,7 +125,7 @@ public final class ResponseContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -131,5 +135,55 @@ public final class ResponseContract {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("statusCode", this.statusCode);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("representations", this.representations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResponseContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResponseContract if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResponseContract.
+     */
+    public static ResponseContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResponseContract deserializedResponseContract = new ResponseContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("statusCode".equals(fieldName)) {
+                    deserializedResponseContract.statusCode = reader.getInt();
+                } else if ("description".equals(fieldName)) {
+                    deserializedResponseContract.description = reader.getString();
+                } else if ("representations".equals(fieldName)) {
+                    List<RepresentationContract> representations
+                        = reader.readArray(reader1 -> RepresentationContract.fromJson(reader1));
+                    deserializedResponseContract.representations = representations;
+                } else if ("headers".equals(fieldName)) {
+                    List<ParameterContract> headers = reader.readArray(reader1 -> ParameterContract.fromJson(reader1));
+                    deserializedResponseContract.headers = headers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResponseContract;
+        });
     }
 }

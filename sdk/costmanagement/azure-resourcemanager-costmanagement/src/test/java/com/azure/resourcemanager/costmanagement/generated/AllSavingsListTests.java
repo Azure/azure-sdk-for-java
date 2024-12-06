@@ -10,8 +10,8 @@ import com.azure.resourcemanager.costmanagement.models.AllSavingsList;
 public final class AllSavingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllSavingsList model =
-            BinaryData.fromString("{\"value\":[{}],\"nextLink\":\"p\"}").toObject(AllSavingsList.class);
+        AllSavingsList model = BinaryData.fromString("{\"value\":[{},{}],\"nextLink\":\"enbbklqpxzucafed\"}")
+            .toObject(AllSavingsList.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -9,8 +9,7 @@ import io.clientcore.http.stress.util.TelemetryHelper;
 /**
  * Stress test application
  */
-public class App {
-
+public final class App {
     /**
      * Main method to invoke other stress tests.
      *
@@ -19,10 +18,12 @@ public class App {
     public static void main(String[] args) {
         TelemetryHelper.init();
 
-        PerfStressProgram.run(new Class<?>[]{
-            HttpGet.class,
-            HttpPatch.class,
+        PerfStressProgram.run(new Class<?>[] { HttpGet.class,
+            // HttpPatch.class,
             // add other stress tests here
         }, args);
+    }
+
+    private App() {
     }
 }

@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.BookmarkExpandResponseValue;
 import com.azure.resourcemanager.securityinsights.models.ExpansionResultsMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The entity expansion result operation response. */
+/**
+ * The entity expansion result operation response.
+ */
 @Fluent
-public final class BookmarkExpandResponseInner {
+public final class BookmarkExpandResponseInner implements JsonSerializable<BookmarkExpandResponseInner> {
     /*
      * The metadata from the expansion operation results.
      */
-    @JsonProperty(value = "metaData")
     private ExpansionResultsMetadata metadata;
 
     /*
      * The expansion result values.
      */
-    @JsonProperty(value = "value")
     private BookmarkExpandResponseValue value;
 
     /**
+     * Creates an instance of BookmarkExpandResponseInner class.
+     */
+    public BookmarkExpandResponseInner() {
+    }
+
+    /**
      * Get the metadata property: The metadata from the expansion operation results.
-     *
+     * 
      * @return the metadata value.
      */
     public ExpansionResultsMetadata metadata() {
@@ -35,7 +45,7 @@ public final class BookmarkExpandResponseInner {
 
     /**
      * Set the metadata property: The metadata from the expansion operation results.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the BookmarkExpandResponseInner object itself.
      */
@@ -46,7 +56,7 @@ public final class BookmarkExpandResponseInner {
 
     /**
      * Get the value property: The expansion result values.
-     *
+     * 
      * @return the value value.
      */
     public BookmarkExpandResponseValue value() {
@@ -55,7 +65,7 @@ public final class BookmarkExpandResponseInner {
 
     /**
      * Set the value property: The expansion result values.
-     *
+     * 
      * @param value the value value to set.
      * @return the BookmarkExpandResponseInner object itself.
      */
@@ -66,7 +76,7 @@ public final class BookmarkExpandResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -76,5 +86,44 @@ public final class BookmarkExpandResponseInner {
         if (value() != null) {
             value().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metaData", this.metadata);
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BookmarkExpandResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BookmarkExpandResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BookmarkExpandResponseInner.
+     */
+    public static BookmarkExpandResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BookmarkExpandResponseInner deserializedBookmarkExpandResponseInner = new BookmarkExpandResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metaData".equals(fieldName)) {
+                    deserializedBookmarkExpandResponseInner.metadata = ExpansionResultsMetadata.fromJson(reader);
+                } else if ("value".equals(fieldName)) {
+                    deserializedBookmarkExpandResponseInner.value = BookmarkExpandResponseValue.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBookmarkExpandResponseInner;
+        });
     }
 }

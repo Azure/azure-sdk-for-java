@@ -13,15 +13,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for VirtualMachineExtensionImageTypes. */
-class VirtualMachineExtensionImageTypesImpl
-    extends ReadableWrappersImpl<
-        VirtualMachineExtensionImageType, VirtualMachineExtensionImageTypeImpl, VirtualMachineExtensionImageInner>
+class VirtualMachineExtensionImageTypesImpl extends
+    ReadableWrappersImpl<VirtualMachineExtensionImageType, VirtualMachineExtensionImageTypeImpl, VirtualMachineExtensionImageInner>
     implements VirtualMachineExtensionImageTypes {
     private final VirtualMachineExtensionImagesClient client;
     private final VirtualMachinePublisher publisher;
 
-    VirtualMachineExtensionImageTypesImpl(
-        VirtualMachineExtensionImagesClient client, VirtualMachinePublisher publisher) {
+    VirtualMachineExtensionImageTypesImpl(VirtualMachineExtensionImagesClient client,
+        VirtualMachinePublisher publisher) {
         this.client = client;
         this.publisher = publisher;
     }
@@ -41,9 +40,9 @@ class VirtualMachineExtensionImageTypesImpl
 
     @Override
     public PagedFlux<VirtualMachineExtensionImageType> listAsync() {
-        return PagedConverter.mapPage(PagedConverter
-            .convertListToPagedFlux(client.listTypesWithResponseAsync(
-                this.publisher.region().toString(), this.publisher.name())),
+        return PagedConverter.mapPage(
+            PagedConverter.convertListToPagedFlux(
+                client.listTypesWithResponseAsync(this.publisher.region().toString(), this.publisher.name())),
             this::wrapModel);
     }
 }

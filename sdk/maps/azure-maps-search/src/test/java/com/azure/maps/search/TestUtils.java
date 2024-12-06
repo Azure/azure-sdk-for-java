@@ -21,8 +21,9 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        return TestBase.getHttpClients().flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
-            .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
+        return TestProxyTestBase.getHttpClients()
+            .flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
+                .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
 }

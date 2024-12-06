@@ -23,7 +23,9 @@ public final class RuleCounterResetInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuleCounterResetInner model = new RuleCounterResetInner().withRuleStackName("fwdsj")
-            .withRuleListName("aljutiiswac").withFirewallName("gdkz").withRuleName("wkfvhqcrailvp");
+            .withRuleListName("aljutiiswac")
+            .withFirewallName("gdkz")
+            .withRuleName("wkfvhqcrailvp");
         model = BinaryData.fromObject(model).toObject(RuleCounterResetInner.class);
         Assertions.assertEquals("fwdsj", model.ruleStackName());
         Assertions.assertEquals("aljutiiswac", model.ruleListName());

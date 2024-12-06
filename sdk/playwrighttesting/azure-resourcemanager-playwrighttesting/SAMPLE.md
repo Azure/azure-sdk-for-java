@@ -42,9 +42,13 @@ public final class AccountsCreateOrUpdateSamples {
      */
     public static void
         accountsCreateOrUpdate(com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
-        manager.accounts().define("myPlaywrightAccount").withRegion("westus").withExistingResourceGroup("dummyrg")
+        manager.accounts()
+            .define("myPlaywrightAccount")
+            .withRegion("westus")
+            .withExistingResourceGroup("dummyrg")
             .withTags(mapOf("Team", "Dev Exp"))
-            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED)).create();
+            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -102,8 +106,8 @@ public final class AccountsGetByResourceGroupSamples {
      * @param manager Entry point to PlaywrightTestingManager.
      */
     public static void accountsGet(com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
-        manager.accounts().getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount",
-            com.azure.core.util.Context.NONE);
+        manager.accounts()
+            .getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -183,8 +187,10 @@ public final class AccountsUpdateSamples {
         Account resource = manager.accounts()
             .getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
-            .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)).apply();
+        resource.update()
+            .withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
+            .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED))
+            .apply();
     }
 
     // Use "Map.of" if available

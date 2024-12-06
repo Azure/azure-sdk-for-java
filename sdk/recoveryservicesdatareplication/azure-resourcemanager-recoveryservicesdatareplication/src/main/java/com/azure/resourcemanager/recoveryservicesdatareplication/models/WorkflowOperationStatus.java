@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkflowOperationStatus. */
+/**
+ * Resource collection API of WorkflowOperationStatus.
+ */
 public interface WorkflowOperationStatus {
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -24,14 +26,14 @@ public interface WorkflowOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, String operationId, Context context);
+    Response<OperationStatus> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        String operationId, Context context);
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.

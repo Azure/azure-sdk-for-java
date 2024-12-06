@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -218,6 +219,9 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -256,8 +260,8 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
                 } else if ("eventType".equals(fieldName)) {
                     deserializedEventGridEvent.eventType = reader.getString();
                 } else if ("eventTime".equals(fieldName)) {
-                    deserializedEventGridEvent.eventTime
-                        = reader.getNullable(nonNullReader -> parseOffsetDateTimeBest(nonNullReader.getString()));
+                    deserializedEventGridEvent.eventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dataVersion".equals(fieldName)) {
                     deserializedEventGridEvent.dataVersion = reader.getString();
                 } else if ("topic".equals(fieldName)) {
@@ -286,6 +290,7 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
         TemporalAccessor temporal
             = DateTimeFormatter.ISO_DATE_TIME.parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
         return (temporal.query(TemporalQueries.offset()) == null)
-            ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC) : OffsetDateTime.from(temporal);
+            ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)
+            : OffsetDateTime.from(temporal);
     }
 }

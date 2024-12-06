@@ -11,14 +11,13 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ConsumerFactory;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
-import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
-import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -26,7 +25,6 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -49,8 +47,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private static final Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
-    private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
-        + ":transfer-destination-address");
+    private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY
+        = Symbol.getSymbol(AmqpConstants.VENDOR + ":transfer-destination-address");
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSession.class);
     private final AmqpRetryPolicy retryPolicy;
@@ -66,9 +64,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * Creates a new AMQP session using proton-j.
      *
      * @param session Proton-j session for this AMQP session.
-     * @param sessionHandler Handler for events that occur in the session.
-     * @param sessionName Name of the session.
-     * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
      * @param linkProvider Provides amqp links for send and receive.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
@@ -78,13 +73,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
      * @param isV2 (temporary) flag indicating which receiver, v1 or v2, to create.
      */
-    ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
-        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-        ServiceBusAmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+    ServiceBusReactorSession(AmqpConnection amqpConnection, ProtonSessionWrapper session,
+        ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
+        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
         ServiceBusCreateSessionOptions createOptions, boolean isV2) {
-        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
-            tokenManagerProvider, messageSerializer, retryOptions);
+        super(amqpConnection, session, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider,
+            messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
         this.retryOptions = retryOptions;
         this.linkProvider = linkProvider;
@@ -97,8 +92,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-            MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
-            String clientIdentifier) {
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
+        String clientIdentifier) {
         final Map<Symbol, Object> filter = new HashMap<>();
 
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter, clientIdentifier);
@@ -116,8 +111,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, String transferEntityPath, String clientIdentifier) {
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        String transferEntityPath, String clientIdentifier) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
@@ -136,8 +131,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 .addKeyValue("transferEntityPath", transferEntityPath)
                 .log("Get or create sender link.");
 
-            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
-                transferEntityPath);
+            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, transferEntityPath);
 
             return tokenManager.authorize()
                 .doFinally(signalType -> tokenManager.close())
@@ -158,11 +152,11 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        Map<Symbol, Object> linkProperties) {
         if (distributedTransactionsSupport) {
-            return getOrCreateTransactionCoordinator().flatMap(coordinator -> super.createProducer(linkName, entityPath,
-                timeout, retry, linkProperties));
+            return getOrCreateTransactionCoordinator()
+                .flatMap(coordinator -> super.createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
             return super.createProducer(linkName, entityPath, timeout, retry, linkProperties);
         }
@@ -194,11 +188,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 receiverSettleMode = ReceiverSettleMode.SECOND;
                 deliverySettleMode = DeliverySettleMode.SETTLE_VIA_DISPOSITION;
                 break;
+
             case RECEIVE_AND_DELETE:
                 senderSettleMode = SenderSettleMode.SETTLED;
                 receiverSettleMode = ReceiverSettleMode.FIRST;
                 deliverySettleMode = DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY;
                 break;
+
             default:
                 return Mono.error(new RuntimeException("ReceiveMode is not supported: " + receiveMode));
         }
@@ -211,13 +207,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         }
 
         if (distributedTransactionsSupport) {
-            return getOrCreateTransactionCoordinator().flatMap(transactionCoordinator -> super.createConsumer(linkName,
-                entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
-                receiverSettleMode, consumerFactory)
-                .cast(ServiceBusReceiveLink.class));
+            return getOrCreateTransactionCoordinator()
+                .flatMap(transactionCoordinator -> super.createConsumer(linkName, entityPath, timeout, retry, filter,
+                    linkProperties, null, senderSettleMode, receiverSettleMode, consumerFactory)
+                        .cast(ServiceBusReceiveLink.class));
         } else {
-            return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
-                null, senderSettleMode, receiverSettleMode, consumerFactory).cast(ServiceBusReceiveLink.class);
+            return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties, null,
+                senderSettleMode, receiverSettleMode, consumerFactory).cast(ServiceBusReceiveLink.class);
         }
     }
 }

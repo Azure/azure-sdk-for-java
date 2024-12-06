@@ -16,18 +16,16 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches> {
 
     @Override
     public RedisCache createResource(RedisCaches resources) throws Exception {
-        final String redisName = resources.manager().resourceManager().internalContext().randomResourceName("redis", 10);
+        final String redisName
+            = resources.manager().resourceManager().internalContext().randomResourceName("redis", 10);
         final RedisCache[] redisCaches = new RedisCache[1];
 
-        Mono<RedisCache> resourceStream =
-            resources
-                .define(redisName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withStandardSku()
-                .withTag("mytag", "testtag")
-                .createAsync();
-
+        Mono<RedisCache> resourceStream = resources.define(redisName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withStandardSku()
+            .withTag("mytag", "testtag")
+            .createAsync();
 
         redisCaches[0] = resourceStream.block();
 

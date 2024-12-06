@@ -83,6 +83,9 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
         return this.docTypes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

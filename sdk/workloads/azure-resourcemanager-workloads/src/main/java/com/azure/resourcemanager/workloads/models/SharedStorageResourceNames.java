@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource names object for shared storage. */
+/**
+ * The resource names object for shared storage.
+ */
 @Fluent
-public final class SharedStorageResourceNames {
+public final class SharedStorageResourceNames implements JsonSerializable<SharedStorageResourceNames> {
     /*
      * The full name of the shared storage account. If it is not provided, it will be defaulted to {SID}nfs{guid of 15
      * chars}.
      */
-    @JsonProperty(value = "sharedStorageAccountName")
     private String sharedStorageAccountName;
 
     /*
-     * The full name of private end point for the shared storage account. If it is not provided, it will be defaulted
-     * to {storageAccountName}_pe
+     * The full name of private end point for the shared storage account. If it is not provided, it will be defaulted to
+     * {storageAccountName}_pe
      */
-    @JsonProperty(value = "sharedStorageAccountPrivateEndPointName")
     private String sharedStorageAccountPrivateEndPointName;
 
-    /** Creates an instance of SharedStorageResourceNames class. */
+    /**
+     * Creates an instance of SharedStorageResourceNames class.
+     */
     public SharedStorageResourceNames() {
     }
 
     /**
      * Get the sharedStorageAccountName property: The full name of the shared storage account. If it is not provided, it
      * will be defaulted to {SID}nfs{guid of 15 chars}.
-     *
+     * 
      * @return the sharedStorageAccountName value.
      */
     public String sharedStorageAccountName() {
@@ -41,7 +47,7 @@ public final class SharedStorageResourceNames {
     /**
      * Set the sharedStorageAccountName property: The full name of the shared storage account. If it is not provided, it
      * will be defaulted to {SID}nfs{guid of 15 chars}.
-     *
+     * 
      * @param sharedStorageAccountName the sharedStorageAccountName value to set.
      * @return the SharedStorageResourceNames object itself.
      */
@@ -53,7 +59,7 @@ public final class SharedStorageResourceNames {
     /**
      * Get the sharedStorageAccountPrivateEndPointName property: The full name of private end point for the shared
      * storage account. If it is not provided, it will be defaulted to {storageAccountName}_pe.
-     *
+     * 
      * @return the sharedStorageAccountPrivateEndPointName value.
      */
     public String sharedStorageAccountPrivateEndPointName() {
@@ -63,21 +69,61 @@ public final class SharedStorageResourceNames {
     /**
      * Set the sharedStorageAccountPrivateEndPointName property: The full name of private end point for the shared
      * storage account. If it is not provided, it will be defaulted to {storageAccountName}_pe.
-     *
+     * 
      * @param sharedStorageAccountPrivateEndPointName the sharedStorageAccountPrivateEndPointName value to set.
      * @return the SharedStorageResourceNames object itself.
      */
-    public SharedStorageResourceNames withSharedStorageAccountPrivateEndPointName(
-        String sharedStorageAccountPrivateEndPointName) {
+    public SharedStorageResourceNames
+        withSharedStorageAccountPrivateEndPointName(String sharedStorageAccountPrivateEndPointName) {
         this.sharedStorageAccountPrivateEndPointName = sharedStorageAccountPrivateEndPointName;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sharedStorageAccountName", this.sharedStorageAccountName);
+        jsonWriter.writeStringField("sharedStorageAccountPrivateEndPointName",
+            this.sharedStorageAccountPrivateEndPointName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedStorageResourceNames from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedStorageResourceNames if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedStorageResourceNames.
+     */
+    public static SharedStorageResourceNames fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedStorageResourceNames deserializedSharedStorageResourceNames = new SharedStorageResourceNames();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sharedStorageAccountName".equals(fieldName)) {
+                    deserializedSharedStorageResourceNames.sharedStorageAccountName = reader.getString();
+                } else if ("sharedStorageAccountPrivateEndPointName".equals(fieldName)) {
+                    deserializedSharedStorageResourceNames.sharedStorageAccountPrivateEndPointName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedStorageResourceNames;
+        });
     }
 }

@@ -34,27 +34,21 @@ public class UploadFileDatalakeTest extends FileTestBase<StoragePerfStressOption
     @Override
     public void run() {
         inputStream.reset();
-        FileParallelUploadOptions uploadOptions = new FileParallelUploadOptions(inputStream, options.getSize())
-            .setParallelTransferOptions(
-                new ParallelTransferOptions()
-                    .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+        FileParallelUploadOptions uploadOptions
+            = new FileParallelUploadOptions(inputStream, options.getSize()).setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
                     .setBlockSizeLong(options.getTransferBlockSize())
-                    .setMaxConcurrency(options.getTransferConcurrency())
-            );
+                    .setMaxConcurrency(options.getTransferConcurrency()));
         dataLakeFileClient.uploadWithResponse(uploadOptions, null, null);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        FileParallelUploadOptions uploadOptions = new FileParallelUploadOptions(
-            createRandomByteBufferFlux(options.getSize()))
-            .setParallelTransferOptions(
-                new ParallelTransferOptions()
-                    .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+        FileParallelUploadOptions uploadOptions
+            = new FileParallelUploadOptions(createRandomByteBufferFlux(options.getSize())).setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
                     .setBlockSizeLong(options.getTransferBlockSize())
-                    .setMaxConcurrency(options.getTransferConcurrency())
-            );
-        return dataLakeFileAsyncClient.uploadWithResponse(uploadOptions)
-            .then();
+                    .setMaxConcurrency(options.getTransferConcurrency()));
+        return dataLakeFileAsyncClient.uploadWithResponse(uploadOptions).then();
     }
 }

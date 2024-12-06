@@ -5,36 +5,46 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cognitive Services Model. */
+/**
+ * Cognitive Services Model.
+ */
 @Fluent
-public final class ModelInner {
+public final class ModelInner implements JsonSerializable<ModelInner> {
     /*
-     * Model Metadata.
+     * Cognitive Services account Model.
      */
-    @JsonProperty(value = "model")
     private AccountModelInner model;
 
     /*
-     * The Kind of the Model.
+     * The kind (type) of cognitive service account.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
-     * The SKU of the Model.
+     * The name of SKU.
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
-    /** Creates an instance of ModelInner class. */
+    /*
+     * The description of the model.
+     */
+    private String description;
+
+    /**
+     * Creates an instance of ModelInner class.
+     */
     public ModelInner() {
     }
 
     /**
-     * Get the model property: Model Metadata.
-     *
+     * Get the model property: Cognitive Services account Model.
+     * 
      * @return the model value.
      */
     public AccountModelInner model() {
@@ -42,8 +52,8 @@ public final class ModelInner {
     }
 
     /**
-     * Set the model property: Model Metadata.
-     *
+     * Set the model property: Cognitive Services account Model.
+     * 
      * @param model the model value to set.
      * @return the ModelInner object itself.
      */
@@ -53,8 +63,8 @@ public final class ModelInner {
     }
 
     /**
-     * Get the kind property: The Kind of the Model.
-     *
+     * Get the kind property: The kind (type) of cognitive service account.
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -62,8 +72,8 @@ public final class ModelInner {
     }
 
     /**
-     * Set the kind property: The Kind of the Model.
-     *
+     * Set the kind property: The kind (type) of cognitive service account.
+     * 
      * @param kind the kind value to set.
      * @return the ModelInner object itself.
      */
@@ -73,8 +83,8 @@ public final class ModelInner {
     }
 
     /**
-     * Get the skuName property: The SKU of the Model.
-     *
+     * Get the skuName property: The name of SKU.
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -82,8 +92,8 @@ public final class ModelInner {
     }
 
     /**
-     * Set the skuName property: The SKU of the Model.
-     *
+     * Set the skuName property: The name of SKU.
+     * 
      * @param skuName the skuName value to set.
      * @return the ModelInner object itself.
      */
@@ -93,13 +103,78 @@ public final class ModelInner {
     }
 
     /**
+     * Get the description property: The description of the model.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: The description of the model.
+     * 
+     * @param description the description value to set.
+     * @return the ModelInner object itself.
+     */
+    public ModelInner withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (model() != null) {
             model().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("model", this.model);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("skuName", this.skuName);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModelInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ModelInner.
+     */
+    public static ModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModelInner deserializedModelInner = new ModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("model".equals(fieldName)) {
+                    deserializedModelInner.model = AccountModelInner.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedModelInner.kind = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedModelInner.skuName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedModelInner.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModelInner;
+        });
     }
 }

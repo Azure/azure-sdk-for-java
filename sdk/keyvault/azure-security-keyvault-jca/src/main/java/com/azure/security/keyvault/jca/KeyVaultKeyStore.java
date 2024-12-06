@@ -94,16 +94,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
     /**
-     * Store the path where the well know certificate is placed
+     * Store the path where the well-known certificate is placed
      */
-    final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
-        .orElse("/etc/certs/well-known/");
+    final String wellKnowPath
+        = Optional.ofNullable(System.getProperty("azure.cert-path.well-known")).orElse("/etc/certs/well-known/");
 
     /**
      * Store the path where the custom certificate is placed
      */
-    final String customPath = Optional.ofNullable(System.getProperty("azure.cert-path.custom"))
-        .orElse("/etc/certs/custom/");
+    final String customPath
+        = Optional.ofNullable(System.getProperty("azure.cert-path.custom")).orElse("/etc/certs/custom/");
 
     /**
      * Constructor.
@@ -128,11 +128,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        boolean disableChallengeResourceVerification =
-            Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+        boolean disableChallengeResourceVerification
+            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
         long refreshInterval = getRefreshInterval();
-        refreshCertificatesWhenHaveUnTrustCertificate =
-            Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
+        refreshCertificatesWhenHaveUnTrustCertificate
+            = Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
                 .map(System::getProperty)
                 .map(Boolean::parseBoolean)
                 .orElse(false);
@@ -158,7 +158,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     Long getRefreshInterval() {
-        return Stream.of("azure.keyvault.jca.certificates-refresh-interval-in-ms",
+        return Stream
+            .of("azure.keyvault.jca.certificates-refresh-interval-in-ms",
                 "azure.keyvault.jca.certificates-refresh-interval")
             .map(System::getProperty)
             .filter(Objects::nonNull)
@@ -177,17 +178,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * @throws KeyStoreException when no Provider supports a KeyStoreSpi implementation for the specified type
      * @throws IOException when an I/O error occurs.
      */
-    public static KeyStore getKeyVaultKeyStoreBySystemProperty() throws CertificateException, NoSuchAlgorithmException,
-        KeyStoreException, IOException {
+    public static KeyStore getKeyVaultKeyStoreBySystemProperty()
+        throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
-        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter =
-            new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"),
-                System.getProperty("azure.keyvault.tenant-id"),
-                System.getProperty("azure.keyvault.client-id"),
-                System.getProperty("azure.keyvault.client-secret"),
-                System.getProperty("azure.keyvault.managed-identity"));
+        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"), System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"), System.getProperty("azure.keyvault.client-secret"),
+            System.getProperty("azure.keyvault.managed-identity"));
 
         if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
             keyVaultLoadStoreParameter.disableChallengeResourceVerification();
@@ -279,16 +277,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
-
         if (cert != null) {
             List<String> aliasList = getAllAliases();
-
             for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
-
                 if (certificate.equals(cert)) {
                     alias = candidateAlias;
-
                     break;
                 }
             }
@@ -311,15 +305,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        Certificate[] chain = null;
-        Certificate certificate = engineGetCertificate(alias);
-
-        if (certificate != null) {
-            chain = new Certificate[1];
-            chain[0] = certificate;
+        Certificate[] certificates = allCertificates.stream()
+            .map(AzureCertificates::getCertificateChains)
+            .filter(Objects::nonNull)
+            .filter(a -> a.containsKey(alias))
+            .findFirst()
+            .map(m -> m.get(alias))
+            .orElse(null);
+        if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
+            keyVaultCertificates.refreshCertificates();
+            return keyVaultCertificates.getCertificateChains().get(alias);
         }
-
-        return chain;
+        return certificates;
     }
 
     /**
@@ -344,8 +341,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * @exception UnrecoverableEntryException if the specified {@code protParam} were insufficient or invalid
      */
     @Override
-    public KeyStore.Entry engineGetEntry(String alias, KeyStore.ProtectionParameter protParam) throws KeyStoreException,
-        NoSuchAlgorithmException, UnrecoverableEntryException {
+    public KeyStore.Entry engineGetEntry(String alias, KeyStore.ProtectionParameter protParam)
+        throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableEntryException {
 
         return super.engineGetEntry(alias, protParam);
     }
@@ -450,10 +447,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (getAllAliases().contains(alias)) {
             LOGGER.log(WARNING, "Cannot overwrite own certificate");
-
             return;
         }
-
         classpathCertificates.setCertificateEntry(alias, certificate);
     }
 

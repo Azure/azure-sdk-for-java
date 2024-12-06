@@ -69,8 +69,8 @@ public class AzureResourceTests extends BlobNioTestBase {
         // Generate resource names.
         // In root1, the resource will be in the root. In root2, the resource will be several levels deep. Also
         // root1 will be non-default directory and root2 is default directory.
-        AzurePath parentPath1 = (AzurePath) fs.getPath(rootNameToContainerName(getNonDefaultRootDir(fs)),
-            generateBlobName());
+        AzurePath parentPath1
+            = (AzurePath) fs.getPath(rootNameToContainerName(getNonDefaultRootDir(fs)), generateBlobName());
         AzurePath parentPath2 = (AzurePath) fs.getPath(getPathWithDepth(3), generateBlobName());
 
         // Generate clients to resources.
@@ -156,8 +156,8 @@ public class AzureResourceTests extends BlobNioTestBase {
 
     @Test
     public void parentDirExistsFalse() throws IOException {
-        assertFalse(new AzureResource(createFS(config).getPath(generateBlobName(), "bar"))
-            .checkParentDirectoryExists());
+        assertFalse(
+            new AzureResource(createFS(config).getPath(generateBlobName(), "bar")).checkParentDirectoryExists());
     }
 
     @Test
@@ -199,7 +199,7 @@ public class AzureResourceTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"false,false", "true,false", "false,true", "true,true"})
+    @CsvSource(value = { "false,false", "true,false", "false,true", "true,true" })
     public void putDirectoryBlob(boolean metadata, boolean properties) throws IOException, NoSuchAlgorithmException {
         AzureResource resource = new AzureResource(createFS(config).getPath(generateBlobName()));
         byte[] contentMd5 = MessageDigest.getInstance("MD5").digest(new byte[0]);
@@ -251,8 +251,7 @@ public class AzureResourceTests extends BlobNioTestBase {
         AzureResource resource = new AzureResource(createFS(config).getPath(generateBlobName()));
         resource.getBlobClient().upload(DATA.getDefaultBinaryData());
         match = setupBlobMatchCondition(resource.getBlobClient(), match);
-        resource.putDirectoryBlob(new BlobRequestConditions()
-            .setIfMatch(match)
+        resource.putDirectoryBlob(new BlobRequestConditions().setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified));
@@ -273,8 +272,7 @@ public class AzureResourceTests extends BlobNioTestBase {
         AzureResource resource = new AzureResource(createFS(config).getPath(generateBlobName()));
         resource.getBlobClient().upload(DATA.getDefaultBinaryData());
         noneMatch = setupBlobMatchCondition(resource.getBlobClient(), noneMatch);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setIfMatch(match)
+        BlobRequestConditions bac = new BlobRequestConditions().setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);

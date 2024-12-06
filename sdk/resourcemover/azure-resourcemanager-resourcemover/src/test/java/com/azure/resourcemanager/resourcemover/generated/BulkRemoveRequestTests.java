@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkRemoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkRemoveRequest model =
-            BinaryData
-                .fromString(
-                    "{\"validateOnly\":true,\"moveResources\":[\"gwdkcglhsl\"],\"moveResourceInputType\":\"MoveResourceSourceId\"}")
-                .toObject(BulkRemoveRequest.class);
+        BulkRemoveRequest model = BinaryData.fromString(
+            "{\"validateOnly\":true,\"moveResources\":[\"gwdkcglhsl\"],\"moveResourceInputType\":\"MoveResourceSourceId\"}")
+            .toObject(BulkRemoveRequest.class);
         Assertions.assertEquals(true, model.validateOnly());
         Assertions.assertEquals("gwdkcglhsl", model.moveResources().get(0));
         Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
@@ -25,11 +23,9 @@ public final class BulkRemoveRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BulkRemoveRequest model =
-            new BulkRemoveRequest()
-                .withValidateOnly(true)
-                .withMoveResources(Arrays.asList("gwdkcglhsl"))
-                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID);
+        BulkRemoveRequest model = new BulkRemoveRequest().withValidateOnly(true)
+            .withMoveResources(Arrays.asList("gwdkcglhsl"))
+            .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID);
         model = BinaryData.fromObject(model).toObject(BulkRemoveRequest.class);
         Assertions.assertEquals(true, model.validateOnly());
         Assertions.assertEquals("gwdkcglhsl", model.moveResources().get(0));

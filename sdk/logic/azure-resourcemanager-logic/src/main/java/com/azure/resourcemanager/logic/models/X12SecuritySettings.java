@@ -6,42 +6,46 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 agreement security settings. */
+/**
+ * The X12 agreement security settings.
+ */
 @Fluent
-public final class X12SecuritySettings {
+public final class X12SecuritySettings implements JsonSerializable<X12SecuritySettings> {
     /*
      * The authorization qualifier.
      */
-    @JsonProperty(value = "authorizationQualifier", required = true)
     private String authorizationQualifier;
 
     /*
      * The authorization value.
      */
-    @JsonProperty(value = "authorizationValue")
     private String authorizationValue;
 
     /*
      * The security qualifier.
      */
-    @JsonProperty(value = "securityQualifier", required = true)
     private String securityQualifier;
 
     /*
      * The password value.
      */
-    @JsonProperty(value = "passwordValue")
     private String passwordValue;
 
-    /** Creates an instance of X12SecuritySettings class. */
+    /**
+     * Creates an instance of X12SecuritySettings class.
+     */
     public X12SecuritySettings() {
     }
 
     /**
      * Get the authorizationQualifier property: The authorization qualifier.
-     *
+     * 
      * @return the authorizationQualifier value.
      */
     public String authorizationQualifier() {
@@ -50,7 +54,7 @@ public final class X12SecuritySettings {
 
     /**
      * Set the authorizationQualifier property: The authorization qualifier.
-     *
+     * 
      * @param authorizationQualifier the authorizationQualifier value to set.
      * @return the X12SecuritySettings object itself.
      */
@@ -61,7 +65,7 @@ public final class X12SecuritySettings {
 
     /**
      * Get the authorizationValue property: The authorization value.
-     *
+     * 
      * @return the authorizationValue value.
      */
     public String authorizationValue() {
@@ -70,7 +74,7 @@ public final class X12SecuritySettings {
 
     /**
      * Set the authorizationValue property: The authorization value.
-     *
+     * 
      * @param authorizationValue the authorizationValue value to set.
      * @return the X12SecuritySettings object itself.
      */
@@ -81,7 +85,7 @@ public final class X12SecuritySettings {
 
     /**
      * Get the securityQualifier property: The security qualifier.
-     *
+     * 
      * @return the securityQualifier value.
      */
     public String securityQualifier() {
@@ -90,7 +94,7 @@ public final class X12SecuritySettings {
 
     /**
      * Set the securityQualifier property: The security qualifier.
-     *
+     * 
      * @param securityQualifier the securityQualifier value to set.
      * @return the X12SecuritySettings object itself.
      */
@@ -101,7 +105,7 @@ public final class X12SecuritySettings {
 
     /**
      * Get the passwordValue property: The password value.
-     *
+     * 
      * @return the passwordValue value.
      */
     public String passwordValue() {
@@ -110,7 +114,7 @@ public final class X12SecuritySettings {
 
     /**
      * Set the passwordValue property: The password value.
-     *
+     * 
      * @param passwordValue the passwordValue value to set.
      * @return the X12SecuritySettings object itself.
      */
@@ -121,23 +125,67 @@ public final class X12SecuritySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authorizationQualifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authorizationQualifier in model X12SecuritySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authorizationQualifier in model X12SecuritySettings"));
         }
         if (securityQualifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityQualifier in model X12SecuritySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityQualifier in model X12SecuritySettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12SecuritySettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authorizationQualifier", this.authorizationQualifier);
+        jsonWriter.writeStringField("securityQualifier", this.securityQualifier);
+        jsonWriter.writeStringField("authorizationValue", this.authorizationValue);
+        jsonWriter.writeStringField("passwordValue", this.passwordValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12SecuritySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12SecuritySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12SecuritySettings.
+     */
+    public static X12SecuritySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12SecuritySettings deserializedX12SecuritySettings = new X12SecuritySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizationQualifier".equals(fieldName)) {
+                    deserializedX12SecuritySettings.authorizationQualifier = reader.getString();
+                } else if ("securityQualifier".equals(fieldName)) {
+                    deserializedX12SecuritySettings.securityQualifier = reader.getString();
+                } else if ("authorizationValue".equals(fieldName)) {
+                    deserializedX12SecuritySettings.authorizationValue = reader.getString();
+                } else if ("passwordValue".equals(fieldName)) {
+                    deserializedX12SecuritySettings.passwordValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12SecuritySettings;
+        });
+    }
 }

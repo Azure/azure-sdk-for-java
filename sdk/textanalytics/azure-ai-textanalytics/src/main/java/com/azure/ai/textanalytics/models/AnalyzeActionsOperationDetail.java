@@ -24,8 +24,8 @@ public final class AnalyzeActionsOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        AnalyzeActionsOperationDetailPropertiesHelper.setAccessor(
-            new AnalyzeActionsOperationDetailPropertiesHelper.AnalyzeActionsOperationDetailAccessor() {
+        AnalyzeActionsOperationDetailPropertiesHelper
+            .setAccessor(new AnalyzeActionsOperationDetailPropertiesHelper.AnalyzeActionsOperationDetailAccessor() {
                 @Override
                 public void setOperationId(AnalyzeActionsOperationDetail operationDetail, String operationId) {
                     operationDetail.setOperationId(operationId);
@@ -57,14 +57,12 @@ public final class AnalyzeActionsOperationDetail {
                 }
 
                 @Override
-                public void setExpiresAt(AnalyzeActionsOperationDetail operationDetail,
-                    OffsetDateTime expiresAt) {
+                public void setExpiresAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AnalyzeActionsOperationDetail operationDetail,
-                    OffsetDateTime createdAt) {
+                public void setCreatedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 

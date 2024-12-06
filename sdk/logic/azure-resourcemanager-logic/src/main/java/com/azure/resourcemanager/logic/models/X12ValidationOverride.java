@@ -6,60 +6,61 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 validation override settings. */
+/**
+ * The X12 validation override settings.
+ */
 @Fluent
-public final class X12ValidationOverride {
+public final class X12ValidationOverride implements JsonSerializable<X12ValidationOverride> {
     /*
      * The message id on which the validation settings has to be applied.
      */
-    @JsonProperty(value = "messageId", required = true)
     private String messageId;
 
     /*
      * The value indicating whether to validate EDI types.
      */
-    @JsonProperty(value = "validateEDITypes", required = true)
     private boolean validateEdiTypes;
 
     /*
      * The value indicating whether to validate XSD types.
      */
-    @JsonProperty(value = "validateXSDTypes", required = true)
     private boolean validateXsdTypes;
 
     /*
      * The value indicating whether to allow leading and trailing spaces and zeroes.
      */
-    @JsonProperty(value = "allowLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean allowLeadingAndTrailingSpacesAndZeroes;
 
     /*
      * The value indicating whether to validate character Set.
      */
-    @JsonProperty(value = "validateCharacterSet", required = true)
     private boolean validateCharacterSet;
 
     /*
      * The value indicating whether to trim leading and trailing spaces and zeroes.
      */
-    @JsonProperty(value = "trimLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean trimLeadingAndTrailingSpacesAndZeroes;
 
     /*
      * The trailing separator policy.
      */
-    @JsonProperty(value = "trailingSeparatorPolicy", required = true)
     private TrailingSeparatorPolicy trailingSeparatorPolicy;
 
-    /** Creates an instance of X12ValidationOverride class. */
+    /**
+     * Creates an instance of X12ValidationOverride class.
+     */
     public X12ValidationOverride() {
     }
 
     /**
      * Get the messageId property: The message id on which the validation settings has to be applied.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -68,7 +69,7 @@ public final class X12ValidationOverride {
 
     /**
      * Set the messageId property: The message id on which the validation settings has to be applied.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the X12ValidationOverride object itself.
      */
@@ -79,7 +80,7 @@ public final class X12ValidationOverride {
 
     /**
      * Get the validateEdiTypes property: The value indicating whether to validate EDI types.
-     *
+     * 
      * @return the validateEdiTypes value.
      */
     public boolean validateEdiTypes() {
@@ -88,7 +89,7 @@ public final class X12ValidationOverride {
 
     /**
      * Set the validateEdiTypes property: The value indicating whether to validate EDI types.
-     *
+     * 
      * @param validateEdiTypes the validateEdiTypes value to set.
      * @return the X12ValidationOverride object itself.
      */
@@ -99,7 +100,7 @@ public final class X12ValidationOverride {
 
     /**
      * Get the validateXsdTypes property: The value indicating whether to validate XSD types.
-     *
+     * 
      * @return the validateXsdTypes value.
      */
     public boolean validateXsdTypes() {
@@ -108,7 +109,7 @@ public final class X12ValidationOverride {
 
     /**
      * Set the validateXsdTypes property: The value indicating whether to validate XSD types.
-     *
+     * 
      * @param validateXsdTypes the validateXsdTypes value to set.
      * @return the X12ValidationOverride object itself.
      */
@@ -120,7 +121,7 @@ public final class X12ValidationOverride {
     /**
      * Get the allowLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to allow leading and
      * trailing spaces and zeroes.
-     *
+     * 
      * @return the allowLeadingAndTrailingSpacesAndZeroes value.
      */
     public boolean allowLeadingAndTrailingSpacesAndZeroes() {
@@ -130,19 +131,19 @@ public final class X12ValidationOverride {
     /**
      * Set the allowLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to allow leading and
      * trailing spaces and zeroes.
-     *
+     * 
      * @param allowLeadingAndTrailingSpacesAndZeroes the allowLeadingAndTrailingSpacesAndZeroes value to set.
      * @return the X12ValidationOverride object itself.
      */
-    public X12ValidationOverride withAllowLeadingAndTrailingSpacesAndZeroes(
-        boolean allowLeadingAndTrailingSpacesAndZeroes) {
+    public X12ValidationOverride
+        withAllowLeadingAndTrailingSpacesAndZeroes(boolean allowLeadingAndTrailingSpacesAndZeroes) {
         this.allowLeadingAndTrailingSpacesAndZeroes = allowLeadingAndTrailingSpacesAndZeroes;
         return this;
     }
 
     /**
      * Get the validateCharacterSet property: The value indicating whether to validate character Set.
-     *
+     * 
      * @return the validateCharacterSet value.
      */
     public boolean validateCharacterSet() {
@@ -151,7 +152,7 @@ public final class X12ValidationOverride {
 
     /**
      * Set the validateCharacterSet property: The value indicating whether to validate character Set.
-     *
+     * 
      * @param validateCharacterSet the validateCharacterSet value to set.
      * @return the X12ValidationOverride object itself.
      */
@@ -163,7 +164,7 @@ public final class X12ValidationOverride {
     /**
      * Get the trimLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to trim leading and trailing
      * spaces and zeroes.
-     *
+     * 
      * @return the trimLeadingAndTrailingSpacesAndZeroes value.
      */
     public boolean trimLeadingAndTrailingSpacesAndZeroes() {
@@ -173,19 +174,19 @@ public final class X12ValidationOverride {
     /**
      * Set the trimLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to trim leading and trailing
      * spaces and zeroes.
-     *
+     * 
      * @param trimLeadingAndTrailingSpacesAndZeroes the trimLeadingAndTrailingSpacesAndZeroes value to set.
      * @return the X12ValidationOverride object itself.
      */
-    public X12ValidationOverride withTrimLeadingAndTrailingSpacesAndZeroes(
-        boolean trimLeadingAndTrailingSpacesAndZeroes) {
+    public X12ValidationOverride
+        withTrimLeadingAndTrailingSpacesAndZeroes(boolean trimLeadingAndTrailingSpacesAndZeroes) {
         this.trimLeadingAndTrailingSpacesAndZeroes = trimLeadingAndTrailingSpacesAndZeroes;
         return this;
     }
 
     /**
      * Get the trailingSeparatorPolicy property: The trailing separator policy.
-     *
+     * 
      * @return the trailingSeparatorPolicy value.
      */
     public TrailingSeparatorPolicy trailingSeparatorPolicy() {
@@ -194,7 +195,7 @@ public final class X12ValidationOverride {
 
     /**
      * Set the trailingSeparatorPolicy property: The trailing separator policy.
-     *
+     * 
      * @param trailingSeparatorPolicy the trailingSeparatorPolicy value to set.
      * @return the X12ValidationOverride object itself.
      */
@@ -205,22 +206,80 @@ public final class X12ValidationOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (messageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property messageId in model X12ValidationOverride"));
         }
         if (trailingSeparatorPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trailingSeparatorPolicy in model X12ValidationOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trailingSeparatorPolicy in model X12ValidationOverride"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12ValidationOverride.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeBooleanField("validateEDITypes", this.validateEdiTypes);
+        jsonWriter.writeBooleanField("validateXSDTypes", this.validateXsdTypes);
+        jsonWriter.writeBooleanField("allowLeadingAndTrailingSpacesAndZeroes",
+            this.allowLeadingAndTrailingSpacesAndZeroes);
+        jsonWriter.writeBooleanField("validateCharacterSet", this.validateCharacterSet);
+        jsonWriter.writeBooleanField("trimLeadingAndTrailingSpacesAndZeroes",
+            this.trimLeadingAndTrailingSpacesAndZeroes);
+        jsonWriter.writeStringField("trailingSeparatorPolicy",
+            this.trailingSeparatorPolicy == null ? null : this.trailingSeparatorPolicy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12ValidationOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12ValidationOverride if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12ValidationOverride.
+     */
+    public static X12ValidationOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12ValidationOverride deserializedX12ValidationOverride = new X12ValidationOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedX12ValidationOverride.messageId = reader.getString();
+                } else if ("validateEDITypes".equals(fieldName)) {
+                    deserializedX12ValidationOverride.validateEdiTypes = reader.getBoolean();
+                } else if ("validateXSDTypes".equals(fieldName)) {
+                    deserializedX12ValidationOverride.validateXsdTypes = reader.getBoolean();
+                } else if ("allowLeadingAndTrailingSpacesAndZeroes".equals(fieldName)) {
+                    deserializedX12ValidationOverride.allowLeadingAndTrailingSpacesAndZeroes = reader.getBoolean();
+                } else if ("validateCharacterSet".equals(fieldName)) {
+                    deserializedX12ValidationOverride.validateCharacterSet = reader.getBoolean();
+                } else if ("trimLeadingAndTrailingSpacesAndZeroes".equals(fieldName)) {
+                    deserializedX12ValidationOverride.trimLeadingAndTrailingSpacesAndZeroes = reader.getBoolean();
+                } else if ("trailingSeparatorPolicy".equals(fieldName)) {
+                    deserializedX12ValidationOverride.trailingSeparatorPolicy
+                        = TrailingSeparatorPolicy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12ValidationOverride;
+        });
+    }
 }

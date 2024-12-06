@@ -98,18 +98,16 @@ public interface ServiceUnitResource {
 
     /** The entirety of the ServiceUnitResource definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithTargetResourceGroup,
-            DefinitionStages.WithDeploymentMode,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource,
+        DefinitionStages.WithTargetResourceGroup, DefinitionStages.WithDeploymentMode, DefinitionStages.WithCreate {
     }
+
     /** The ServiceUnitResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ServiceUnitResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ServiceUnitResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -128,6 +126,7 @@ public interface ServiceUnitResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ServiceUnitResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -138,9 +137,10 @@ public interface ServiceUnitResource {
              * @param serviceName The name of the service resource.
              * @return the next definition stage.
              */
-            WithTargetResourceGroup withExistingService(
-                String resourceGroupName, String serviceTopologyName, String serviceName);
+            WithTargetResourceGroup withExistingService(String resourceGroupName, String serviceTopologyName,
+                String serviceName);
         }
+
         /** The stage of the ServiceUnitResource definition allowing to specify targetResourceGroup. */
         interface WithTargetResourceGroup {
             /**
@@ -153,6 +153,7 @@ public interface ServiceUnitResource {
              */
             WithDeploymentMode withTargetResourceGroup(String targetResourceGroup);
         }
+
         /** The stage of the ServiceUnitResource definition allowing to specify deploymentMode. */
         interface WithDeploymentMode {
             /**
@@ -164,6 +165,7 @@ public interface ServiceUnitResource {
              */
             WithCreate withDeploymentMode(DeploymentMode deploymentMode);
         }
+
         /**
          * The stage of the ServiceUnitResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -184,6 +186,7 @@ public interface ServiceUnitResource {
              */
             ServiceUnitResource create(Context context);
         }
+
         /** The stage of the ServiceUnitResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -194,6 +197,7 @@ public interface ServiceUnitResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ServiceUnitResource definition allowing to specify artifacts. */
         interface WithArtifacts {
             /**
@@ -205,6 +209,7 @@ public interface ServiceUnitResource {
             WithCreate withArtifacts(ServiceUnitArtifacts artifacts);
         }
     }
+
     /**
      * Begins update for the ServiceUnitResource resource.
      *
@@ -213,11 +218,8 @@ public interface ServiceUnitResource {
     ServiceUnitResource.Update update();
 
     /** The template for ServiceUnitResource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithTargetResourceGroup,
-            UpdateStages.WithDeploymentMode,
-            UpdateStages.WithArtifacts {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithTargetResourceGroup,
+        UpdateStages.WithDeploymentMode, UpdateStages.WithArtifacts {
         /**
          * Executes the update request.
          *
@@ -233,6 +235,7 @@ public interface ServiceUnitResource {
          */
         ServiceUnitResource apply(Context context);
     }
+
     /** The ServiceUnitResource update stages. */
     interface UpdateStages {
         /** The stage of the ServiceUnitResource update allowing to specify tags. */
@@ -245,6 +248,7 @@ public interface ServiceUnitResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ServiceUnitResource update allowing to specify targetResourceGroup. */
         interface WithTargetResourceGroup {
             /**
@@ -257,6 +261,7 @@ public interface ServiceUnitResource {
              */
             Update withTargetResourceGroup(String targetResourceGroup);
         }
+
         /** The stage of the ServiceUnitResource update allowing to specify deploymentMode. */
         interface WithDeploymentMode {
             /**
@@ -268,6 +273,7 @@ public interface ServiceUnitResource {
              */
             Update withDeploymentMode(DeploymentMode deploymentMode);
         }
+
         /** The stage of the ServiceUnitResource update allowing to specify artifacts. */
         interface WithArtifacts {
             /**
@@ -279,6 +285,7 @@ public interface ServiceUnitResource {
             Update withArtifacts(ServiceUnitArtifacts artifacts);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

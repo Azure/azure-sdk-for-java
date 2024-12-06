@@ -5,39 +5,40 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ConnectionState;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpoint;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the private endpoint connection resource.
  */
 @Fluent
-public final class PrivateEndpointConnectionProperties {
+public final class PrivateEndpointConnectionProperties
+    implements JsonSerializable<PrivateEndpointConnectionProperties> {
     /*
      * The Private Endpoint resource for this Connection.
      */
-    @JsonProperty(value = "privateEndpoint")
     private PrivateEndpoint privateEndpoint;
 
     /*
      * GroupIds from the private link service resource.
      */
-    @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
     /*
      * Details about the state of the connection.
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState")
     private ConnectionState privateLinkServiceConnectionState;
 
     /*
      * Provisioning state of the Private Endpoint Connection.
      */
-    @JsonProperty(value = "provisioningState")
     private ResourceProvisioningState provisioningState;
 
     /**
@@ -139,5 +140,55 @@ public final class PrivateEndpointConnectionProperties {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("privateEndpoint", this.privateEndpoint);
+        jsonWriter.writeArrayField("groupIds", this.groupIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionProperties.
+     */
+    public static PrivateEndpointConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionProperties deserializedPrivateEndpointConnectionProperties
+                = new PrivateEndpointConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateEndpoint".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.privateEndpoint = PrivateEndpoint.fromJson(reader);
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateEndpointConnectionProperties.groupIds = groupIds;
+                } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.privateLinkServiceConnectionState
+                        = ConnectionState.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionProperties;
+        });
     }
 }

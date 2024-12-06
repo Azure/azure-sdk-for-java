@@ -6,30 +6,36 @@ package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a supported operation by the Storage Import/Export job API. */
+/**
+ * Describes a supported operation by the Storage Import/Export job API.
+ */
 @Fluent
-public final class OperationInner {
+public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
      * Name of the operation.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * operation display properties
      */
-    @JsonProperty(value = "display", required = true)
     private OperationDisplay innerDisplay = new OperationDisplay();
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class OperationInner {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -49,7 +55,7 @@ public final class OperationInner {
 
     /**
      * Get the innerDisplay property: operation display properties.
-     *
+     * 
      * @return the innerDisplay value.
      */
     private OperationDisplay innerDisplay() {
@@ -58,7 +64,7 @@ public final class OperationInner {
 
     /**
      * Get the provider property: The resource provider name to which the operation belongs.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -67,7 +73,7 @@ public final class OperationInner {
 
     /**
      * Set the provider property: The resource provider name to which the operation belongs.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationInner object itself.
      */
@@ -81,7 +87,7 @@ public final class OperationInner {
 
     /**
      * Get the resource property: The name of the resource to which the operation belongs.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -90,7 +96,7 @@ public final class OperationInner {
 
     /**
      * Set the resource property: The name of the resource to which the operation belongs.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationInner object itself.
      */
@@ -104,7 +110,7 @@ public final class OperationInner {
 
     /**
      * Get the operation property: The display name of the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -113,7 +119,7 @@ public final class OperationInner {
 
     /**
      * Set the operation property: The display name of the operation.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationInner object itself.
      */
@@ -127,7 +133,7 @@ public final class OperationInner {
 
     /**
      * Get the description property: Short description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -136,7 +142,7 @@ public final class OperationInner {
 
     /**
      * Set the description property: Short description of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationInner object itself.
      */
@@ -150,23 +156,61 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model OperationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model OperationInner"));
         }
         if (innerDisplay() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerDisplay in model OperationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerDisplay in model OperationInner"));
         } else {
             innerDisplay().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.innerDisplay);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationInner.
+     */
+    public static OperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationInner deserializedOperationInner = new OperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationInner.innerDisplay = OperationDisplay.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationInner;
+        });
+    }
 }

@@ -6,29 +6,30 @@ package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Marketplace details for an organization.
  */
 @Fluent
-public final class LiftrBaseMarketplaceDetails {
+public final class LiftrBaseMarketplaceDetails implements JsonSerializable<LiftrBaseMarketplaceDetails> {
     /*
      * Azure subscription id for the the marketplace offer is purchased from
      */
-    @JsonProperty(value = "subscriptionId", required = true)
     private String subscriptionId;
 
     /*
      * Marketplace subscription status
      */
-    @JsonProperty(value = "subscriptionStatus")
     private MarketplaceSubscriptionStatus subscriptionStatus;
 
     /*
      * Offer details for the marketplace that is selected by the user
      */
-    @JsonProperty(value = "offerDetails", required = true)
     private LiftrBaseOfferDetails offerDetails;
 
     /**
@@ -103,17 +104,59 @@ public final class LiftrBaseMarketplaceDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subscriptionId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subscriptionId in model LiftrBaseMarketplaceDetails"));
-        }
         if (offerDetails() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property offerDetails in model LiftrBaseMarketplaceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property offerDetails in model LiftrBaseMarketplaceDetails"));
         } else {
             offerDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LiftrBaseMarketplaceDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("offerDetails", this.offerDetails);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("subscriptionStatus",
+            this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiftrBaseMarketplaceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiftrBaseMarketplaceDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LiftrBaseMarketplaceDetails.
+     */
+    public static LiftrBaseMarketplaceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiftrBaseMarketplaceDetails deserializedLiftrBaseMarketplaceDetails = new LiftrBaseMarketplaceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offerDetails".equals(fieldName)) {
+                    deserializedLiftrBaseMarketplaceDetails.offerDetails = LiftrBaseOfferDetails.fromJson(reader);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedLiftrBaseMarketplaceDetails.subscriptionId = reader.getString();
+                } else if ("subscriptionStatus".equals(fieldName)) {
+                    deserializedLiftrBaseMarketplaceDetails.subscriptionStatus
+                        = MarketplaceSubscriptionStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiftrBaseMarketplaceDetails;
+        });
+    }
 }

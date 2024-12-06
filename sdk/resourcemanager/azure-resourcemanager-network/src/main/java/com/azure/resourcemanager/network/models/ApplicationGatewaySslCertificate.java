@@ -101,11 +101,8 @@ public interface ApplicationGatewaySslCertificate
      *
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithData<ParentT>,
-            DefinitionStages.WithPassword<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithData<ParentT>, DefinitionStages.WithPassword<ParentT> {
     }
 
     /** Grouping of application gateway SSL certificate update stages. */
@@ -195,9 +192,7 @@ public interface ApplicationGatewaySslCertificate
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithData<ParentT>,
-            UpdateDefinitionStages.WithPassword<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithData<ParentT>,
+        UpdateDefinitionStages.WithPassword<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

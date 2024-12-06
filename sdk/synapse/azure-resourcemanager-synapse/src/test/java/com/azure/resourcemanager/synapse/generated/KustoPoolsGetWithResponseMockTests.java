@@ -6,79 +6,47 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.KustoPool;
 import com.azure.resourcemanager.synapse.models.SkuName;
 import com.azure.resourcemanager.synapse.models.SkuSize;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class KustoPoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"Compute optimized\",\"capacity\":1789917841,\"size\":\"Large\"},\"properties\":{\"state\":\"Deleted\",\"provisioningState\":\"Running\",\"uri\":\"aqwmwqo\",\"dataIngestionUri\":\"flteatnegef\",\"stateReason\":\"xnjtqbgysib\",\"optimizedAutoscale\":{\"version\":2133577099,\"isEnabled\":false,\"minimum\":1403266090,\"maximum\":635241954},\"enableStreamingIngest\":true,\"enablePurge\":true,\"languageExtensions\":{\"value\":[{\"languageExtensionName\":\"R\"},{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"R\"}]},\"workspaceUID\":\"xu\"},\"etag\":\"aujqgbbjv\",\"location\":\"oawh\",\"tags\":{\"e\":\"mbcsloygsabdgd\",\"zvzuat\":\"onsdunr\",\"bqskgqjbvitptpvs\":\"hgzuyxtrvf\"},\"id\":\"favdhpiwrm\",\"name\":\"wkgjwb\",\"type\":\"fdwfbwxy\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"Compute"
-                + " optimized\",\"capacity\":797241887,\"size\":\"Medium\"},\"properties\":{\"state\":\"Stopped\",\"provisioningState\":\"Moving\",\"uri\":\"npiyuxlv\",\"dataIngestionUri\":\"prrv\",\"stateReason\":\"onleqflvtl\",\"optimizedAutoscale\":{\"version\":407535743,\"isEnabled\":false,\"minimum\":1195854621,\"maximum\":1769963402},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"nttlnrjd\"},\"etag\":\"dbuziciqppoqvg\",\"location\":\"e\",\"tags\":{\"wjnoxuo\":\"w\",\"cjmgvsnvbtqdxfm\":\"tfnressfepgck\"},\"id\":\"ym\",\"name\":\"n\",\"type\":\"jluqllbsupu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        KustoPool response = manager.kustoPools()
+            .getWithResponse("uynf", "kyvnhiysdhork", "lhr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        KustoPool response =
-            manager
-                .kustoPools()
-                .getWithResponse("pkvegeatt", "zkgtzqn", "qsttewuvcysjeuf", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("e", response.location());
-        Assertions.assertEquals("w", response.tags().get("wjnoxuo"));
+        Assertions.assertEquals("oawh", response.location());
+        Assertions.assertEquals("mbcsloygsabdgd", response.tags().get("e"));
         Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, response.sku().name());
-        Assertions.assertEquals(797241887, response.sku().capacity());
-        Assertions.assertEquals(SkuSize.MEDIUM, response.sku().size());
-        Assertions.assertEquals(407535743, response.optimizedAutoscale().version());
+        Assertions.assertEquals(1789917841, response.sku().capacity());
+        Assertions.assertEquals(SkuSize.LARGE, response.sku().size());
+        Assertions.assertEquals(2133577099, response.optimizedAutoscale().version());
         Assertions.assertEquals(false, response.optimizedAutoscale().isEnabled());
-        Assertions.assertEquals(1195854621, response.optimizedAutoscale().minimum());
-        Assertions.assertEquals(1769963402, response.optimizedAutoscale().maximum());
-        Assertions.assertEquals(false, response.enableStreamingIngest());
+        Assertions.assertEquals(1403266090, response.optimizedAutoscale().minimum());
+        Assertions.assertEquals(635241954, response.optimizedAutoscale().maximum());
+        Assertions.assertEquals(true, response.enableStreamingIngest());
         Assertions.assertEquals(true, response.enablePurge());
-        Assertions.assertEquals("nttlnrjd", response.workspaceUid());
+        Assertions.assertEquals("xu", response.workspaceUid());
     }
 }

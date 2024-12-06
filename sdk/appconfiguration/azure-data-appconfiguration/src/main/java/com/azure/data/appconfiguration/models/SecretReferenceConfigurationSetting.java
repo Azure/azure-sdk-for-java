@@ -27,14 +27,15 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     private static final ClientLogger LOGGER = new ClientLogger(SecretReferenceConfigurationSetting.class);
 
     private String secretId;
-    private static final String SECRET_REFERENCE_CONTENT_TYPE =
-        "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
+    private static final String SECRET_REFERENCE_CONTENT_TYPE
+        = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
     // The flag to indicate if the 'value' field is valid. It is a temporary field to store the flag.
     // If the 'value' field is not valid, we will throw an exception when user try to access the strongly-typed
     // properties.
     private boolean isValidSecretReferenceValue;
     private final Map<String, Object> parsedProperties = new LinkedHashMap<>(1);
+
     /**
      * The constructor for a secret reference configuration setting.
      *
@@ -128,8 +129,8 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Can't parse Secret Reference configuration setting value.", exception));
+            LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Can't parse Secret Reference configuration setting value.", exception));
         }
 
         super.setValue(newValue);

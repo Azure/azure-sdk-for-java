@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LabInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"defaultStorageAccount\":\"dkirsoodqxhcr\",\"defaultPremiumStorageAccount\":\"ohjtckw\",\"artifactsStorageAccount\":\"soifiyipjxsqw\",\"premiumDataDiskStorageAccount\":\"rjb\",\"vaultName\":\"orcjxvsnby\",\"labStorageType\":\"StandardSSD\",\"mandatoryArtifactsResourceIdsLinux\":[\"mocpc\"],\"mandatoryArtifactsResourceIdsWindows\":[\"urzafb\",\"jjgpb\",\"oq\"],\"createdDate\":\"2021-03-12T03:38:31Z\",\"premiumDataDisks\":\"Disabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"qidtqajzyu\",\"markdown\":\"kudjkrlkhb\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-23T09:32:58Z\",\"expired\":false,\"provisioningState\":\"qex\",\"uniqueIdentifier\":\"ocxscpaierhhbcs\"},\"support\":{\"enabled\":\"Disabled\",\"markdown\":\"a\"},\"vmCreationResourceGroup\":\"j\",\"publicIpId\":\"dxob\",\"loadBalancerId\":\"dxkqpx\",\"networkSecurityGroupId\":\"ajionpimexgstxg\",\"extendedProperties\":{\"aajrm\":\"dg\",\"clwhijcoejctbz\":\"djwzrlov\",\"bkbfkgukdkex\":\"qsqsy\",\"ocjjxhvpmouexh\":\"ppofmxaxcfjpgdd\"},\"provisioningState\":\"xibqeojnx\",\"uniqueIdentifier\":\"zvddntwndeicbtwn\"},\"location\":\"zao\",\"tags\":{\"qkwpyeicxmqc\":\"hrhcffcyddglmjth\",\"pbobjo\":\"wqvhkhixuigdt\",\"w\":\"hm\",\"a\":\"a\"},\"id\":\"hrzayvvtpgvdf\",\"name\":\"iotkftutqxl\",\"type\":\"gxlefgugnxkrxd\"}")
-                .toObject(LabInner.class);
+        LabInner model = BinaryData.fromString(
+            "{\"properties\":{\"defaultStorageAccount\":\"dkirsoodqxhcr\",\"defaultPremiumStorageAccount\":\"ohjtckw\",\"artifactsStorageAccount\":\"soifiyipjxsqw\",\"premiumDataDiskStorageAccount\":\"rjb\",\"vaultName\":\"orcjxvsnby\",\"labStorageType\":\"StandardSSD\",\"mandatoryArtifactsResourceIdsLinux\":[\"mocpc\"],\"mandatoryArtifactsResourceIdsWindows\":[\"urzafb\",\"jjgpb\",\"oq\"],\"createdDate\":\"2021-03-12T03:38:31Z\",\"premiumDataDisks\":\"Disabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"qidtqajzyu\",\"markdown\":\"kudjkrlkhb\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-23T09:32:58Z\",\"expired\":false,\"provisioningState\":\"qex\",\"uniqueIdentifier\":\"ocxscpaierhhbcs\"},\"support\":{\"enabled\":\"Disabled\",\"markdown\":\"a\"},\"vmCreationResourceGroup\":\"j\",\"publicIpId\":\"dxob\",\"loadBalancerId\":\"dxkqpx\",\"networkSecurityGroupId\":\"ajionpimexgstxg\",\"extendedProperties\":{\"aajrm\":\"dg\",\"clwhijcoejctbz\":\"djwzrlov\",\"bkbfkgukdkex\":\"qsqsy\",\"ocjjxhvpmouexh\":\"ppofmxaxcfjpgdd\"},\"provisioningState\":\"xibqeojnx\",\"uniqueIdentifier\":\"zvddntwndeicbtwn\"},\"location\":\"zao\",\"tags\":{\"qkwpyeicxmqc\":\"hrhcffcyddglmjth\",\"pbobjo\":\"wqvhkhixuigdt\",\"w\":\"hm\",\"a\":\"a\"},\"id\":\"hrzayvvtpgvdf\",\"name\":\"iotkftutqxl\",\"type\":\"gxlefgugnxkrxd\"}")
+            .toObject(LabInner.class);
         Assertions.assertEquals("zao", model.location());
         Assertions.assertEquals("hrhcffcyddglmjth", model.tags().get("qkwpyeicxmqc"));
         Assertions.assertEquals(StorageType.STANDARD_SSD, model.labStorageType());
@@ -45,33 +43,21 @@ public final class LabInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabInner model =
-            new LabInner()
-                .withLocation("zao")
-                .withTags(mapOf("qkwpyeicxmqc", "hrhcffcyddglmjth", "pbobjo", "wqvhkhixuigdt", "w", "hm", "a", "a"))
-                .withLabStorageType(StorageType.STANDARD_SSD)
-                .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("mocpc"))
-                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("urzafb", "jjgpb", "oq"))
-                .withPremiumDataDisks(PremiumDataDisk.DISABLED)
-                .withEnvironmentPermission(EnvironmentPermission.READER)
-                .withAnnouncement(
-                    new LabAnnouncementProperties()
-                        .withTitle("qidtqajzyu")
-                        .withMarkdown("kudjkrlkhb")
-                        .withEnabled(EnableStatus.ENABLED)
-                        .withExpirationDate(OffsetDateTime.parse("2021-02-23T09:32:58Z"))
-                        .withExpired(false))
-                .withSupport(new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("a"))
-                .withExtendedProperties(
-                    mapOf(
-                        "aajrm",
-                        "dg",
-                        "clwhijcoejctbz",
-                        "djwzrlov",
-                        "bkbfkgukdkex",
-                        "qsqsy",
-                        "ocjjxhvpmouexh",
-                        "ppofmxaxcfjpgdd"));
+        LabInner model = new LabInner().withLocation("zao")
+            .withTags(mapOf("qkwpyeicxmqc", "hrhcffcyddglmjth", "pbobjo", "wqvhkhixuigdt", "w", "hm", "a", "a"))
+            .withLabStorageType(StorageType.STANDARD_SSD)
+            .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("mocpc"))
+            .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("urzafb", "jjgpb", "oq"))
+            .withPremiumDataDisks(PremiumDataDisk.DISABLED)
+            .withEnvironmentPermission(EnvironmentPermission.READER)
+            .withAnnouncement(new LabAnnouncementProperties().withTitle("qidtqajzyu")
+                .withMarkdown("kudjkrlkhb")
+                .withEnabled(EnableStatus.ENABLED)
+                .withExpirationDate(OffsetDateTime.parse("2021-02-23T09:32:58Z"))
+                .withExpired(false))
+            .withSupport(new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("a"))
+            .withExtendedProperties(mapOf("aajrm", "dg", "clwhijcoejctbz", "djwzrlov", "bkbfkgukdkex", "qsqsy",
+                "ocjjxhvpmouexh", "ppofmxaxcfjpgdd"));
         model = BinaryData.fromObject(model).toObject(LabInner.class);
         Assertions.assertEquals("zao", model.location());
         Assertions.assertEquals("hrhcffcyddglmjth", model.tags().get("qkwpyeicxmqc"));

@@ -75,10 +75,8 @@ public final class SandboxCustomImagesCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model SandboxCustomImagesCheckNameRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model SandboxCustomImagesCheckNameRequest"));
         }
     }
 

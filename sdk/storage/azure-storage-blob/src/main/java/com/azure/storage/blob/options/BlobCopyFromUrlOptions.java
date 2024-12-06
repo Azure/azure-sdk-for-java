@@ -31,7 +31,10 @@ public class BlobCopyFromUrlOptions {
     private BlobCopySourceTagsMode copySourceTags;
 
     /**
+     * Creates a new instance of {@link BlobCopyFromUrlOptions}.
+     *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @throws NullPointerException If {@code copySource} is null.
      */
     public BlobCopyFromUrlOptions(String copySource) {
         StorageImplUtils.assertNotNull("copySource", copySource);
@@ -39,6 +42,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the source URL to copy from.
+     *
      * @return The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public String getCopySource() {
@@ -46,6 +51,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the metadata to associate with the destination blob.
+     *
      * @return The metadata to associate with the destination blob.
      */
     public Map<String, String> getMetadata() {
@@ -53,6 +60,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Sets the metadata to associate with the destination blob.
+     *
      * @param metadata The metadata to associate with the destination blob.
      * @return The updated options
      */
@@ -62,6 +71,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the tags to associate with the blob.
+     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -69,6 +80,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Sets the tags to associate with the blob.
+     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -78,6 +91,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the {@link AccessTier} for the destination blob.
+     *
      * @return {@link AccessTier} for the destination blob.
      */
     public AccessTier getTier() {
@@ -85,6 +100,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Sets the {@link AccessTier} for the destination blob.
+     *
      * @param tier {@link AccessTier} for the destination blob.
      * @return The updated options.
      */
@@ -94,14 +111,17 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the {@link RequestConditions} for the source.
+     *
      * @return {@link RequestConditions} for the source.
      */
     public RequestConditions getSourceRequestConditions() {
         return sourceRequestConditions;
     }
 
-
     /**
+     * Sets the {@link RequestConditions} for the source.
+     *
      * @param sourceRequestConditions {@link RequestConditions} for the source.
      * @return The updated options.
      */
@@ -111,6 +131,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions} for the destination.
+     *
      * @return {@link BlobRequestConditions} for the destination.
      */
     public BlobRequestConditions getDestinationRequestConditions() {
@@ -118,6 +140,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions} for the destination.
+     *
      * @param destinationRequestConditions {@link BlobRequestConditions} for the destination.
      * @return The updated options.
      */
@@ -127,6 +151,9 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
      * @return auth header for access to source.
      */
     public HttpAuthorization getSourceAuthorization() {
@@ -146,6 +173,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the {@link BlobImmutabilityPolicy}.
+     *
      * @return {@link BlobImmutabilityPolicy}
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -153,6 +182,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Sets the {@link BlobImmutabilityPolicy}.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
      *
@@ -165,6 +196,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets if a legal hold should be placed on the blob.
+     *
      * @return If a legal hold should be placed on the blob.
      */
     public Boolean hasLegalHold() {
@@ -172,6 +205,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Sets if a legal hold should be placed on the blob.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
      *
@@ -184,6 +219,8 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
+     * Gets the copy source tags mode.
+     *
      * @return The copy source tags mode.
      */
     public BlobCopySourceTagsMode getCopySourceTagsMode() {

@@ -172,8 +172,8 @@ class PrivateDnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        RecordSetInner inner = manager().serviceClient().getRecordSets()
-            .get(resourceGroupName(), name(), RecordType.SOA, "@");
+        RecordSetInner inner
+            = manager().serviceClient().getRecordSets().get(resourceGroupName(), name(), RecordType.SOA, "@");
         return inner == null ? null : new SoaRecordSetImpl(inner.name(), this, inner);
     }
 
@@ -392,21 +392,16 @@ class PrivateDnsZoneImpl
     public Mono<PrivateDnsZone> createResourceAsync() {
         Mono<PrivateDnsZone> mono;
         if (isInCreateMode()) {
-            mono = manager().serviceClient().getPrivateZones()
-                .createOrUpdateAsync(
-                    resourceGroupName(),
-                    name(),
-                    innerModel(),
-                    etagState.ifMatchValueOnUpdate(innerModel().etag()),
-                    etagState.ifNonMatchValueOnCreate())
+            mono = manager().serviceClient()
+                .getPrivateZones()
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel(),
+                    etagState.ifMatchValueOnUpdate(innerModel().etag()), etagState.ifNonMatchValueOnCreate())
                 .map(innerToFluentMap(this));
         } else {
             if (!Objects.equals(resourceTagsSnapshotOnUpdate, innerModel().tags())) {
-                mono = manager().serviceClient().getPrivateZones()
-                    .updateAsync(
-                        resourceGroupName(),
-                        name(),
-                        innerModel(),
+                mono = manager().serviceClient()
+                    .getPrivateZones()
+                    .updateAsync(resourceGroupName(), name(), innerModel(),
                         etagState.ifMatchValueOnUpdate(innerModel().etag()))
                     .map(innerToFluentMap(this));
             } else {
@@ -415,11 +410,10 @@ class PrivateDnsZoneImpl
             }
         }
 
-        return mono
-            .map(privateDnsZone -> {
-                etagState.clear();
-                return privateDnsZone;
-            });
+        return mono.map(privateDnsZone -> {
+            etagState.clear();
+            return privateDnsZone;
+        });
     }
 
     @Override
@@ -461,28 +455,36 @@ class PrivateDnsZoneImpl
 
     private PagedFlux<PrivateDnsRecordSet> listRecordSetsInternAsync(String recordSetSuffix, Integer pageSize) {
         final PrivateDnsZoneImpl self = this;
-        return PagedConverter.mapPage(manager().serviceClient().getRecordSets()
-            .listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix),
+        return PagedConverter.mapPage(
+            manager().serviceClient().getRecordSets().listAsync(resourceGroupName(), name(), pageSize, recordSetSuffix),
             recordSetInner -> {
-                PrivateDnsRecordSet recordSet = new PrivateDnsRecordSetImpl(
-                    recordSetInner.name(), recordSetInner.type(), self, recordSetInner);
+                PrivateDnsRecordSet recordSet
+                    = new PrivateDnsRecordSetImpl(recordSetInner.name(), recordSetInner.type(), self, recordSetInner);
                 switch (recordSet.recordType()) {
                     case AAAA:
                         return new AaaaRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case A:
                         return new ARecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case CNAME:
                         return new CnameRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case MX:
                         return new MxRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case PTR:
                         return new PtrRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case SOA:
                         return new SoaRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case SRV:
                         return new SrvRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     case TXT:
                         return new TxtRecordSetImpl(recordSetInner.name(), self, recordSetInner);
+
                     default:
                         return recordSet;
                 }

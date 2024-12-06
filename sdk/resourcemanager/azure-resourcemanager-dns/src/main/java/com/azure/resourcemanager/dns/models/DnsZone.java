@@ -208,11 +208,8 @@ public interface DnsZone
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<DnsZone>,
-                DefinitionStages.WithRecordSet,
-                DefinitionStages.WithETagCheck,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<DnsZone>, DefinitionStages.WithRecordSet, DefinitionStages.WithETagCheck,
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -558,10 +555,7 @@ public interface DnsZone
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<DnsZone>,
-            UpdateStages.WithRecordSet,
-            UpdateStages.WithETagCheck,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<DnsZone>, UpdateStages.WithRecordSet, UpdateStages.WithETagCheck,
+        Resource.UpdateWithTags<Update> {
     }
 }

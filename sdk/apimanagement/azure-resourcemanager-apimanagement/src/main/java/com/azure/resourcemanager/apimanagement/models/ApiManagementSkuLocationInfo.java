@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ApiManagementSkuLocationInfo model. */
+/**
+ * The ApiManagementSkuLocationInfo model.
+ */
 @Immutable
-public final class ApiManagementSkuLocationInfo {
+public final class ApiManagementSkuLocationInfo implements JsonSerializable<ApiManagementSkuLocationInfo> {
     /*
      * Location of the SKU
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * List of availability zones where the SKU is supported.
      */
-    @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
 
     /*
      * Details of capabilities available to a SKU in specific zones.
      */
-    @JsonProperty(value = "zoneDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiManagementSkuZoneDetails> zoneDetails;
 
-    /** Creates an instance of ApiManagementSkuLocationInfo class. */
+    /**
+     * Creates an instance of ApiManagementSkuLocationInfo class.
+     */
     public ApiManagementSkuLocationInfo() {
     }
 
     /**
      * Get the location property: Location of the SKU.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -44,7 +49,7 @@ public final class ApiManagementSkuLocationInfo {
 
     /**
      * Get the zones property: List of availability zones where the SKU is supported.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -53,7 +58,7 @@ public final class ApiManagementSkuLocationInfo {
 
     /**
      * Get the zoneDetails property: Details of capabilities available to a SKU in specific zones.
-     *
+     * 
      * @return the zoneDetails value.
      */
     public List<ApiManagementSkuZoneDetails> zoneDetails() {
@@ -62,12 +67,54 @@ public final class ApiManagementSkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (zoneDetails() != null) {
             zoneDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementSkuLocationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementSkuLocationInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiManagementSkuLocationInfo.
+     */
+    public static ApiManagementSkuLocationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementSkuLocationInfo deserializedApiManagementSkuLocationInfo = new ApiManagementSkuLocationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedApiManagementSkuLocationInfo.location = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementSkuLocationInfo.zones = zones;
+                } else if ("zoneDetails".equals(fieldName)) {
+                    List<ApiManagementSkuZoneDetails> zoneDetails
+                        = reader.readArray(reader1 -> ApiManagementSkuZoneDetails.fromJson(reader1));
+                    deserializedApiManagementSkuLocationInfo.zoneDetails = zoneDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementSkuLocationInfo;
+        });
     }
 }

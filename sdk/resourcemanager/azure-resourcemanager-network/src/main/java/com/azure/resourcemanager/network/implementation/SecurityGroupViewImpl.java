@@ -55,20 +55,16 @@ class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResu
 
     @Override
     public Mono<SecurityGroupView> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                securityGroupView -> {
-                    SecurityGroupViewImpl impl = (SecurityGroupViewImpl) securityGroupView;
-                    impl.initializeFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(securityGroupView -> {
+            SecurityGroupViewImpl impl = (SecurityGroupViewImpl) securityGroupView;
+            impl.initializeFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<SecurityGroupViewResultInner> getInnerAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()

@@ -25,13 +25,10 @@ public final class CatalogListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CatalogListResult model
-            = new CatalogListResult()
-                .withValue(
-                    Arrays.asList(new CatalogInner()
-                        .withLocation("zb").withTags(mapOf("vyq", "npqxuh", "tfwvukxgaudc", "iwbybrkxvdumjg",
-                            "napczwlokjy", "snhsjcnyejhkryh", "oxzjnchgejspod", "mkkvnip"))
-                        .withProperties(new CatalogProperties())));
+        CatalogListResult model = new CatalogListResult().withValue(Arrays.asList(new CatalogInner().withLocation("zb")
+            .withTags(mapOf("vyq", "npqxuh", "tfwvukxgaudc", "iwbybrkxvdumjg", "napczwlokjy", "snhsjcnyejhkryh",
+                "oxzjnchgejspod", "mkkvnip"))
+            .withProperties(new CatalogProperties())));
         model = BinaryData.fromObject(model).toObject(CatalogListResult.class);
         Assertions.assertEquals("zb", model.value().get(0).location());
         Assertions.assertEquals("npqxuh", model.value().get(0).tags().get("vyq"));

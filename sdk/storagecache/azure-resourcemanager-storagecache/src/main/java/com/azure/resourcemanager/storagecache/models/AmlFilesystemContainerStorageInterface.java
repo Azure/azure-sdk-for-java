@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * AML file system container storage interface information.
  */
 @Immutable
-public final class AmlFilesystemContainerStorageInterface {
+public final class AmlFilesystemContainerStorageInterface
+    implements JsonSerializable<AmlFilesystemContainerStorageInterface> {
     /*
      * Recommended AKS Persistent Volume Claim for the CSI driver, in Base64 encoded YAML
      */
-    @JsonProperty(value = "persistentVolumeClaim", access = JsonProperty.Access.WRITE_ONLY)
     private String persistentVolumeClaim;
 
     /*
      * Recommended AKS Persistent Volume for the CSI driver, in Base64 encoded YAML
      */
-    @JsonProperty(value = "persistentVolume", access = JsonProperty.Access.WRITE_ONLY)
     private String persistentVolume;
 
     /*
      * Recommended AKS Storage Class for the CSI driver, in Base64 encoded YAML
      */
-    @JsonProperty(value = "storageClass", access = JsonProperty.Access.WRITE_ONLY)
     private String storageClass;
 
     /**
@@ -70,5 +72,45 @@ public final class AmlFilesystemContainerStorageInterface {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemContainerStorageInterface from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemContainerStorageInterface if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemContainerStorageInterface.
+     */
+    public static AmlFilesystemContainerStorageInterface fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemContainerStorageInterface deserializedAmlFilesystemContainerStorageInterface
+                = new AmlFilesystemContainerStorageInterface();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("persistentVolumeClaim".equals(fieldName)) {
+                    deserializedAmlFilesystemContainerStorageInterface.persistentVolumeClaim = reader.getString();
+                } else if ("persistentVolume".equals(fieldName)) {
+                    deserializedAmlFilesystemContainerStorageInterface.persistentVolume = reader.getString();
+                } else if ("storageClass".equals(fieldName)) {
+                    deserializedAmlFilesystemContainerStorageInterface.storageClass = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemContainerStorageInterface;
+        });
     }
 }

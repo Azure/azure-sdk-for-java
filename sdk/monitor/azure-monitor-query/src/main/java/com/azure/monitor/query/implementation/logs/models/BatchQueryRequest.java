@@ -146,8 +146,8 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     }
 
     /**
-     * Get the workspace property: Primary Workspace ID of the query. This is the Workspace ID from the Properties
-     * blade in the Azure portal.
+     * Get the workspace property: Primary Workspace ID of the query. This is the Workspace ID from the Properties blade
+     * in the Azure portal.
      * 
      * @return the workspace value.
      */
@@ -155,6 +155,9 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
         return this.workspace;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

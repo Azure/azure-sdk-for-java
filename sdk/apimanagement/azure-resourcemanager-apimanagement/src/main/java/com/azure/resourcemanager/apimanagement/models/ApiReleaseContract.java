@@ -8,32 +8,34 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of ApiReleaseContract. */
+/**
+ * An immutable client-side representation of ApiReleaseContract.
+ */
 public interface ApiReleaseContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the apiId property: Identifier of the API the release belongs to.
-     *
+     * 
      * @return the apiId value.
      */
     String apiId();
@@ -41,55 +43,63 @@ public interface ApiReleaseContract {
     /**
      * Gets the createdDateTime property: The time the API was released. The date conforms to the following format:
      * yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdDateTime value.
      */
     OffsetDateTime createdDateTime();
 
     /**
      * Gets the updatedDateTime property: The time the API release was updated.
-     *
+     * 
      * @return the updatedDateTime value.
      */
     OffsetDateTime updatedDateTime();
 
     /**
      * Gets the notes property: Release Notes.
-     *
+     * 
      * @return the notes value.
      */
     String notes();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     ApiReleaseContractInner innerModel();
 
-    /** The entirety of the ApiReleaseContract definition. */
+    /**
+     * The entirety of the ApiReleaseContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The ApiReleaseContract definition stages. */
+    /**
+     * The ApiReleaseContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ApiReleaseContract definition. */
+        /**
+         * The first stage of the ApiReleaseContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the ApiReleaseContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the ApiReleaseContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -106,50 +116,56 @@ public interface ApiReleaseContract {
             extends DefinitionStages.WithApiId, DefinitionStages.WithNotes, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ApiReleaseContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ApiReleaseContract create(Context context);
         }
 
-        /** The stage of the ApiReleaseContract definition allowing to specify apiId. */
+        /**
+         * The stage of the ApiReleaseContract definition allowing to specify apiId.
+         */
         interface WithApiId {
             /**
              * Specifies the apiId property: Identifier of the API the release belongs to..
-             *
+             * 
              * @param apiId Identifier of the API the release belongs to.
              * @return the next definition stage.
              */
             WithCreate withApiId(String apiId);
         }
 
-        /** The stage of the ApiReleaseContract definition allowing to specify notes. */
+        /**
+         * The stage of the ApiReleaseContract definition allowing to specify notes.
+         */
         interface WithNotes {
             /**
              * Specifies the notes property: Release Notes.
-             *
+             * 
              * @param notes Release Notes.
              * @return the next definition stage.
              */
             WithCreate withNotes(String notes);
         }
 
-        /** The stage of the ApiReleaseContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the ApiReleaseContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -158,61 +174,71 @@ public interface ApiReleaseContract {
 
     /**
      * Begins update for the ApiReleaseContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ApiReleaseContract.Update update();
 
-    /** The template for ApiReleaseContract update. */
+    /**
+     * The template for ApiReleaseContract update.
+     */
     interface Update extends UpdateStages.WithApiId, UpdateStages.WithNotes, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ApiReleaseContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ApiReleaseContract apply(Context context);
     }
 
-    /** The ApiReleaseContract update stages. */
+    /**
+     * The ApiReleaseContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ApiReleaseContract update allowing to specify apiId. */
+        /**
+         * The stage of the ApiReleaseContract update allowing to specify apiId.
+         */
         interface WithApiId {
             /**
              * Specifies the apiId property: Identifier of the API the release belongs to..
-             *
+             * 
              * @param apiId Identifier of the API the release belongs to.
              * @return the next definition stage.
              */
             Update withApiId(String apiId);
         }
 
-        /** The stage of the ApiReleaseContract update allowing to specify notes. */
+        /**
+         * The stage of the ApiReleaseContract update allowing to specify notes.
+         */
         interface WithNotes {
             /**
              * Specifies the notes property: Release Notes.
-             *
+             * 
              * @param notes Release Notes.
              * @return the next definition stage.
              */
             Update withNotes(String notes);
         }
 
-        /** The stage of the ApiReleaseContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the ApiReleaseContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -221,14 +247,14 @@ public interface ApiReleaseContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ApiReleaseContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

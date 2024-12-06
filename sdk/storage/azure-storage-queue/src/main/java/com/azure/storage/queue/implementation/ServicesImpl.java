@@ -32,6 +32,7 @@ import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeader
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentHeaders;
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentNextHeaders;
 import com.azure.storage.queue.implementation.models.ServicesSetPropertiesHeaders;
+import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
@@ -39,7 +40,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
-import com.azure.storage.queue.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Services.
@@ -277,12 +277,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
         QueueServiceProperties queueServiceProperties, Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setProperties(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, queueServiceProperties, accept, context))
+            .withContext(context -> setPropertiesWithResponseAsync(queueServiceProperties, timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -379,12 +375,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
         QueueServiceProperties queueServiceProperties, Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, queueServiceProperties, accept, context))
+            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(queueServiceProperties, timeout,
+                requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -435,10 +428,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesWithResponse(
         QueueServiceProperties queueServiceProperties, Integer timeout, String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, queueServiceProperties, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -484,10 +477,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(QueueServiceProperties queueServiceProperties,
         Integer timeout, String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, queueServiceProperties, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -513,12 +506,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties>>
         getPropertiesWithResponseAsync(Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -613,12 +601,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueServiceProperties>> getPropertiesNoCustomHeadersWithResponseAsync(Integer timeout,
         String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -669,10 +653,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties> getPropertiesWithResponse(Integer timeout,
         String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -723,10 +707,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesNoCustomHeadersWithResponse(Integer timeout, String requestId,
         Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -751,12 +735,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>>
         getStatisticsWithResponseAsync(Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getStatistics(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+        return FluxUtil.withContext(context -> getStatisticsWithResponseAsync(timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -847,12 +826,8 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueServiceStatistics>> getStatisticsNoCustomHeadersWithResponseAsync(Integer timeout,
         String requestId) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getStatisticsNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), requestId, accept, context))
+            .withContext(context -> getStatisticsNoCustomHeadersWithResponseAsync(timeout, requestId, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
@@ -901,10 +876,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics> getStatisticsWithResponse(Integer timeout,
         String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "stats";
+            final String accept = "application/xml";
             return service.getStatisticsSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -953,10 +928,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsNoCustomHeadersWithResponse(Integer timeout, String requestId,
         Context context) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "stats";
+            final String accept = "application/xml";
             return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1316,17 +1291,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentSinglePage(String prefix, String marker, Integer maxresults,
         List<String> include, Integer timeout, String requestId) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        ResponseBase<ServicesListQueuesSegmentHeaders, ListQueuesSegmentResponse> res
-            = service.listQueuesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), requestId, accept, Context.NONE);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            ResponseBase<ServicesListQueuesSegmentHeaders, ListQueuesSegmentResponse> res
+                = service.listQueuesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults,
+                    includeConverted, timeout, this.client.getVersion(), requestId, accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1364,17 +1339,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentSinglePage(String prefix, String marker, Integer maxresults,
         List<String> include, Integer timeout, String requestId, Context context) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        ResponseBase<ServicesListQueuesSegmentHeaders, ListQueuesSegmentResponse> res
-            = service.listQueuesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), requestId, accept, context);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            ResponseBase<ServicesListQueuesSegmentHeaders, ListQueuesSegmentResponse> res
+                = service.listQueuesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults,
+                    includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1482,17 +1457,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentNoCustomHeadersSinglePage(String prefix, String marker,
         Integer maxresults, List<String> include, Integer timeout, String requestId) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<ListQueuesSegmentResponse> res
-            = service.listQueuesSegmentNoCustomHeadersSync(this.client.getUrl(), comp, prefix, marker, maxresults,
-                includeConverted, timeout, this.client.getVersion(), requestId, accept, Context.NONE);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            Response<ListQueuesSegmentResponse> res
+                = service.listQueuesSegmentNoCustomHeadersSync(this.client.getUrl(), comp, prefix, marker, maxresults,
+                    includeConverted, timeout, this.client.getVersion(), requestId, accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1530,17 +1505,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentNoCustomHeadersSinglePage(String prefix, String marker,
         Integer maxresults, List<String> include, Integer timeout, String requestId, Context context) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<ListQueuesSegmentResponse> res
-            = service.listQueuesSegmentNoCustomHeadersSync(this.client.getUrl(), comp, prefix, marker, maxresults,
-                includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            Response<ListQueuesSegmentResponse> res
+                = service.listQueuesSegmentNoCustomHeadersSync(this.client.getUrl(), comp, prefix, marker, maxresults,
+                    includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1620,9 +1595,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1645,9 +1618,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -1671,9 +1642,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1697,9 +1666,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -1724,9 +1691,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1736,11 +1701,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentNextSinglePage(String nextLink, String requestId) {
-        final String accept = "application/xml";
-        ResponseBase<ServicesListQueuesSegmentNextHeaders, ListQueuesSegmentResponse> res
-            = service.listQueuesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(), requestId,
-                accept, Context.NONE);
         try {
+            final String accept = "application/xml";
+            ResponseBase<ServicesListQueuesSegmentNextHeaders, ListQueuesSegmentResponse> res
+                = service.listQueuesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(), requestId,
+                    accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1751,9 +1716,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -1765,11 +1728,11 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentNextSinglePage(String nextLink, String requestId,
         Context context) {
-        final String accept = "application/xml";
-        ResponseBase<ServicesListQueuesSegmentNextHeaders, ListQueuesSegmentResponse> res
-            = service.listQueuesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(), requestId,
-                accept, context);
         try {
+            final String accept = "application/xml";
+            ResponseBase<ServicesListQueuesSegmentNextHeaders, ListQueuesSegmentResponse> res
+                = service.listQueuesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(), requestId,
+                    accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1780,9 +1743,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1792,10 +1753,10 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentNextNoCustomHeadersSinglePage(String nextLink, String requestId) {
-        final String accept = "application/xml";
-        Response<ListQueuesSegmentResponse> res = service.listQueuesSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), requestId, accept, Context.NONE);
         try {
+            final String accept = "application/xml";
+            Response<ListQueuesSegmentResponse> res = service.listQueuesSegmentNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), requestId, accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
@@ -1806,9 +1767,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -1820,10 +1779,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<QueueItem> listQueuesSegmentNextNoCustomHeadersSinglePage(String nextLink, String requestId,
         Context context) {
-        final String accept = "application/xml";
-        Response<ListQueuesSegmentResponse> res = service.listQueuesSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), requestId, accept, context);
         try {
+            final String accept = "application/xml";
+            Response<ListQueuesSegmentResponse> res = service.listQueuesSegmentNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), requestId, accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {

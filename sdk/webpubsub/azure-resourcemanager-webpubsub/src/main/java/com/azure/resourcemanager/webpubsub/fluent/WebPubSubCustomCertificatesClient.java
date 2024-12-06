@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.webpubsub.fluent.models.CustomCertificateInner;
 
-/** An instance of this class provides access to all the operations defined in WebPubSubCustomCertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebPubSubCustomCertificatesClient.
+ */
 public interface WebPubSubCustomCertificatesClient {
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface WebPubSubCustomCertificatesClient {
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface WebPubSubCustomCertificatesClient {
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -55,12 +57,12 @@ public interface WebPubSubCustomCertificatesClient {
      * @return a custom certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomCertificateInner> getWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<CustomCertificateInner> getWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, Context context);
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -74,27 +76,27 @@ public interface WebPubSubCustomCertificatesClient {
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters);
+    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String certificateName, CustomCertificateInner parameters);
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,36 +104,32 @@ public interface WebPubSubCustomCertificatesClient {
      * @return the {@link SyncPoller} for polling of a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CustomCertificateInner parameters,
-        Context context);
+    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String certificateName, CustomCertificateInner parameters, Context context);
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomCertificateInner createOrUpdate(
-        String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters);
+    CustomCertificateInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
+        CustomCertificateInner parameters);
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,16 +137,12 @@ public interface WebPubSubCustomCertificatesClient {
      * @return a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CustomCertificateInner parameters,
-        Context context);
+    CustomCertificateInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
+        CustomCertificateInner parameters, Context context);
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -159,12 +153,12 @@ public interface WebPubSubCustomCertificatesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        Context context);
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.

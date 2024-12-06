@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class OperationProvisioningState extends ExpandableStringEnum<Opera
      * @param name a name to look for.
      * @return the corresponding OperationProvisioningState.
      */
-    @JsonCreator
     public static OperationProvisioningState fromString(String name) {
         return fromString(name, OperationProvisioningState.class);
     }

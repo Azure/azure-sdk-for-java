@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class SapInstanceEnvironment extends ExpandableStringEnum<SapInstan
      * @param name a name to look for.
      * @return the corresponding SapInstanceEnvironment.
      */
-    @JsonCreator
     public static SapInstanceEnvironment fromString(String name) {
         return fromString(name, SapInstanceEnvironment.class);
     }

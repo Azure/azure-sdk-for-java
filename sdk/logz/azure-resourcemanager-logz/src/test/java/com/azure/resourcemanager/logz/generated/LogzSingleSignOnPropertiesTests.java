@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class LogzSingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogzSingleSignOnProperties model =
-            BinaryData
-                .fromString(
-                    "{\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"lzevgbmqjqab\",\"singleSignOnUrl\":\"pmivkwlzu\",\"provisioningState\":\"Deleting\"}")
-                .toObject(LogzSingleSignOnProperties.class);
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.singleSignOnState());
-        Assertions.assertEquals("lzevgbmqjqab", model.enterpriseAppId());
-        Assertions.assertEquals("pmivkwlzu", model.singleSignOnUrl());
+        LogzSingleSignOnProperties model = BinaryData.fromString(
+            "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"zyiuokk\",\"singleSignOnUrl\":\"hrdxwzywqsmbs\",\"provisioningState\":\"Creating\"}")
+            .toObject(LogzSingleSignOnProperties.class);
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
+        Assertions.assertEquals("zyiuokk", model.enterpriseAppId());
+        Assertions.assertEquals("hrdxwzywqsmbs", model.singleSignOnUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogzSingleSignOnProperties model =
-            new LogzSingleSignOnProperties()
-                .withSingleSignOnState(SingleSignOnStates.DISABLE)
-                .withEnterpriseAppId("lzevgbmqjqab")
-                .withSingleSignOnUrl("pmivkwlzu");
+        LogzSingleSignOnProperties model
+            = new LogzSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                .withEnterpriseAppId("zyiuokk")
+                .withSingleSignOnUrl("hrdxwzywqsmbs");
         model = BinaryData.fromObject(model).toObject(LogzSingleSignOnProperties.class);
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.singleSignOnState());
-        Assertions.assertEquals("lzevgbmqjqab", model.enterpriseAppId());
-        Assertions.assertEquals("pmivkwlzu", model.singleSignOnUrl());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
+        Assertions.assertEquals("zyiuokk", model.enterpriseAppId());
+        Assertions.assertEquals("hrdxwzywqsmbs", model.singleSignOnUrl());
     }
 }

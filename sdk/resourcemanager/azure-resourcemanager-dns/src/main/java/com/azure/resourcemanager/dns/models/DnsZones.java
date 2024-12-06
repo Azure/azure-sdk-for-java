@@ -18,17 +18,10 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to DNS zone management API in Azure. */
 @Fluent
-public interface DnsZones
-    extends SupportsCreating<DnsZone.DefinitionStages.Blank>,
-        SupportsListing<DnsZone>,
-        SupportsListingByResourceGroup<DnsZone>,
-        SupportsGettingByResourceGroup<DnsZone>,
-        SupportsGettingById<DnsZone>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<DnsZone>,
-        SupportsBatchDeletion,
-        HasManager<DnsZoneManager> {
+public interface DnsZones extends SupportsCreating<DnsZone.DefinitionStages.Blank>, SupportsListing<DnsZone>,
+    SupportsListingByResourceGroup<DnsZone>, SupportsGettingByResourceGroup<DnsZone>, SupportsGettingById<DnsZone>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<DnsZone>, SupportsBatchDeletion,
+    HasManager<DnsZoneManager> {
     /**
      * Asynchronously deletes the zone from Azure, identifying it by its name and its resource group.
      *

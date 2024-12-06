@@ -44,12 +44,15 @@ public final class MigrationRecoveryPointsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MigrationRecoveryPoint response = manager.migrationRecoveryPoints().getWithResponse("bfb", "divixzhpjgqzmiao",
-            "weacfxaubu", "ruetcnx", "iqzzdckhsqdrrjsu", "nowobwx", com.azure.core.util.Context.NONE).getValue();
+        MigrationRecoveryPoint response = manager.migrationRecoveryPoints()
+            .getWithResponse("bfb", "divixzhpjgqzmiao", "weacfxaubu", "ruetcnx", "iqzzdckhsqdrrjsu", "nowobwx",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("hlsfjfouqjpzhea", response.location());
     }

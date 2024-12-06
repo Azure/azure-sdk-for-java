@@ -148,19 +148,7 @@ public final class DigitalTwinModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<DigitalTwinsModelData>>> addWithResponseAsync(List<Object> models,
         DigitalTwinModelsAddOptions digitalTwinModelsAddOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinModelsAddOptions != null) {
-            traceparentInternal = digitalTwinModelsAddOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinModelsAddOptions != null) {
-            tracestateInternal = digitalTwinModelsAddOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.add(this.client.getHost(), traceparent, tracestate,
-            this.client.getApiVersion(), models, accept, context));
+        return FluxUtil.withContext(context -> addWithResponseAsync(models, digitalTwinModelsAddOptions, context));
     }
 
     /**
@@ -355,19 +343,8 @@ public final class DigitalTwinModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DigitalTwinsModelData>> getByIdWithResponseAsync(String id, Boolean includeModelDefinition,
         DigitalTwinModelsGetByIdOptions digitalTwinModelsGetByIdOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinModelsGetByIdOptions != null) {
-            traceparentInternal = digitalTwinModelsGetByIdOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinModelsGetByIdOptions != null) {
-            tracestateInternal = digitalTwinModelsGetByIdOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.getById(this.client.getHost(), traceparent, tracestate, id,
-            includeModelDefinition, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> getByIdWithResponseAsync(id, includeModelDefinition, digitalTwinModelsGetByIdOptions, context));
     }
 
     /**
@@ -473,7 +450,8 @@ public final class DigitalTwinModelsImpl {
      * * ModelReferencesNotDecommissioned - The model refers to models that are not decommissioned.
      * 
      * @param id The id for the model. The id is globally unique and case sensitive.
-     * @param updateModel Array of AnyObject.
+     * @param updateModel An update specification described by JSON Patch. Only the decommissioned property can be
+     * replaced.
      * @param digitalTwinModelsUpdateOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -483,19 +461,8 @@ public final class DigitalTwinModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String id, JsonPatchDocument updateModel,
         DigitalTwinModelsUpdateOptions digitalTwinModelsUpdateOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinModelsUpdateOptions != null) {
-            traceparentInternal = digitalTwinModelsUpdateOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinModelsUpdateOptions != null) {
-            tracestateInternal = digitalTwinModelsUpdateOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.update(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), updateModel, accept, context));
+        return FluxUtil
+            .withContext(context -> updateWithResponseAsync(id, updateModel, digitalTwinModelsUpdateOptions, context));
     }
 
     /**
@@ -512,7 +479,8 @@ public final class DigitalTwinModelsImpl {
      * * ModelReferencesNotDecommissioned - The model refers to models that are not decommissioned.
      * 
      * @param id The id for the model. The id is globally unique and case sensitive.
-     * @param updateModel Array of AnyObject.
+     * @param updateModel An update specification described by JSON Patch. Only the decommissioned property can be
+     * replaced.
      * @param digitalTwinModelsUpdateOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -552,7 +520,8 @@ public final class DigitalTwinModelsImpl {
      * * ModelReferencesNotDecommissioned - The model refers to models that are not decommissioned.
      * 
      * @param id The id for the model. The id is globally unique and case sensitive.
-     * @param updateModel Array of AnyObject.
+     * @param updateModel An update specification described by JSON Patch. Only the decommissioned property can be
+     * replaced.
      * @param digitalTwinModelsUpdateOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -580,7 +549,8 @@ public final class DigitalTwinModelsImpl {
      * * ModelReferencesNotDecommissioned - The model refers to models that are not decommissioned.
      * 
      * @param id The id for the model. The id is globally unique and case sensitive.
-     * @param updateModel Array of AnyObject.
+     * @param updateModel An update specification described by JSON Patch. Only the decommissioned property can be
+     * replaced.
      * @param digitalTwinModelsUpdateOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,19 +587,7 @@ public final class DigitalTwinModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id,
         DigitalTwinModelsDeleteOptions digitalTwinModelsDeleteOptions) {
-        final String accept = "application/json";
-        String traceparentInternal = null;
-        if (digitalTwinModelsDeleteOptions != null) {
-            traceparentInternal = digitalTwinModelsDeleteOptions.getTraceparent();
-        }
-        String traceparent = traceparentInternal;
-        String tracestateInternal = null;
-        if (digitalTwinModelsDeleteOptions != null) {
-            tracestateInternal = digitalTwinModelsDeleteOptions.getTracestate();
-        }
-        String tracestate = tracestateInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), traceparent, tracestate, id,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(id, digitalTwinModelsDeleteOptions, context));
     }
 
     /**
@@ -723,9 +681,7 @@ public final class DigitalTwinModelsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param digitalTwinModelsListOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
