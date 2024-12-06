@@ -7,32 +7,32 @@ extends:
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_AppConfig
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.appconfiguration.*IT
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.appconfiguration.*.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_Cosmos
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.cosmos.*IT
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.cosmos.*.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_ServiceBus
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.servicebus.*IT
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.servicebus.*.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_EventHubs_Storage
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.eventhubs.*IT,com.azure.spring.cloud.integration.tests.storage.*IT
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.eventhubs.*.*IT,com.azure.spring.cloud.integration.tests.storage.*.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
             - spring/spring-cloud-azure-integration-tests/test-resources/storage
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
-          TestName: IT_Keyvault
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.keyvault.*IT
+          TestName: IT_KeyVault
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.keyvault.*.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
