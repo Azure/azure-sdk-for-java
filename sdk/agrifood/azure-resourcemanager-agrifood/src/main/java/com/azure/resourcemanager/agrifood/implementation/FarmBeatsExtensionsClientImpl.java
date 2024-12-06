@@ -34,17 +34,23 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FarmBeatsExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FarmBeatsExtensionsClient.
+ */
 public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FarmBeatsExtensionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AgriFoodManagementClientImpl client;
 
     /**
      * Initializes an instance of FarmBeatsExtensionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FarmBeatsExtensionsClientImpl(AgriFoodManagementClientImpl client) {
@@ -59,7 +65,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AgriFoodManagementCl")
-    private interface FarmBeatsExtensionsService {
+    public interface FarmBeatsExtensionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.AgFoodPlatform/farmBeatsExtensionDefinitions")
         @ExpectedResponses({ 200 })
@@ -93,12 +99,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -136,12 +143,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -180,12 +188,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,7 +210,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedFlux}.
@@ -219,12 +228,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,7 +252,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedIterable}.
@@ -260,12 +270,13 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -282,7 +293,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -308,7 +319,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,7 +345,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -348,21 +359,7 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get farmBeats extension.
-     *
-     * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return farmBeats extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FarmBeatsExtensionInner get(String farmBeatsExtensionId) {
-        return getAsync(farmBeatsExtensionId).block();
-    }
-
-    /**
-     * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,15 +373,28 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
     }
 
     /**
+     * Get farmBeats extension.
+     * 
+     * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return farmBeats extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FarmBeatsExtensionInner get(String farmBeatsExtensionId) {
+        return getWithResponse(farmBeatsExtensionId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsExtensionInner>> listNextSinglePageAsync(String nextLink) {
@@ -404,15 +414,14 @@ public final class FarmBeatsExtensionsClientImpl implements FarmBeatsExtensionsC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged response contains list of requested objects and a URL link to get the next set of results along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FarmBeatsExtensionInner>> listNextSinglePageAsync(String nextLink, Context context) {
