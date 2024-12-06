@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the type of application server VM. */
+/**
+ * Defines the type of application server VM.
+ */
 public final class ApplicationServerVirtualMachineType
     extends ExpandableStringEnum<ApplicationServerVirtualMachineType> {
-    /** Static value Active for ApplicationServerVirtualMachineType. */
+    /**
+     * Static value Active for ApplicationServerVirtualMachineType.
+     */
     public static final ApplicationServerVirtualMachineType ACTIVE = fromString("Active");
 
-    /** Static value Standby for ApplicationServerVirtualMachineType. */
+    /**
+     * Static value Standby for ApplicationServerVirtualMachineType.
+     */
     public static final ApplicationServerVirtualMachineType STANDBY = fromString("Standby");
 
-    /** Static value Unknown for ApplicationServerVirtualMachineType. */
+    /**
+     * Static value Unknown for ApplicationServerVirtualMachineType.
+     */
     public static final ApplicationServerVirtualMachineType UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of ApplicationServerVirtualMachineType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class ApplicationServerVirtualMachineType
 
     /**
      * Creates or finds a ApplicationServerVirtualMachineType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationServerVirtualMachineType.
      */
-    @JsonCreator
     public static ApplicationServerVirtualMachineType fromString(String name) {
         return fromString(name, ApplicationServerVirtualMachineType.class);
     }
 
     /**
      * Gets known ApplicationServerVirtualMachineType values.
-     *
+     * 
      * @return known ApplicationServerVirtualMachineType values.
      */
     public static Collection<ApplicationServerVirtualMachineType> values() {

@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityReason;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Represents a resource name availability.
@@ -17,13 +20,11 @@ public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
     /*
      * name of the PostgreSQL server.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * type of the server
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -84,6 +85,52 @@ public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", nameAvailable());
+        jsonWriter.writeStringField("reason", reason() == null ? null : reason().toString());
+        jsonWriter.writeStringField("message", message());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityInner.
+     */
+    public static NameAvailabilityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityInner deserializedNameAvailabilityInner = new NameAvailabilityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.withNameAvailable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityInner
+                        .withReason(CheckNameAvailabilityReason.fromString(reader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.withMessage(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityInner;
+        });
     }
 }

@@ -37,7 +37,7 @@
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.CustomDimensions" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryColumns" />
     </Or>
   </Match>
   <Match>
@@ -70,6 +70,7 @@
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration" />
     </Or>
   </Match>
   <Match>

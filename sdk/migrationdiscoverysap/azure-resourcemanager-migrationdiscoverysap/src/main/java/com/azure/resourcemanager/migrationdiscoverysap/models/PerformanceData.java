@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SAP instance specific performance data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "dataSource",
-    defaultImpl = PerformanceData.class)
-@JsonTypeName("PerformanceData")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Excel", value = ExcelPerformanceData.class),
-    @JsonSubTypes.Type(name = "Native", value = NativePerformanceData.class) })
 @Immutable
-public class PerformanceData {
+public class PerformanceData implements JsonSerializable<PerformanceData> {
+    /*
+     * The data source of the performance data.
+     */
+    private DataSource dataSource = DataSource.fromString("PerformanceData");
+
     /**
      * Creates an instance of PerformanceData class.
      */
     public PerformanceData() {
+    }
+
+    /**
+     * Get the dataSource property: The data source of the performance data.
+     * 
+     * @return the dataSource value.
+     */
+    public DataSource dataSource() {
+        return this.dataSource;
     }
 
     /**
@@ -35,5 +42,68 @@ public class PerformanceData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSource", this.dataSource == null ? null : this.dataSource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerformanceData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerformanceData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerformanceData.
+     */
+    public static PerformanceData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("dataSource".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Excel".equals(discriminatorValue)) {
+                    return ExcelPerformanceData.fromJson(readerToUse.reset());
+                } else if ("Native".equals(discriminatorValue)) {
+                    return NativePerformanceData.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static PerformanceData fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerformanceData deserializedPerformanceData = new PerformanceData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSource".equals(fieldName)) {
+                    deserializedPerformanceData.dataSource = DataSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerformanceData;
+        });
     }
 }

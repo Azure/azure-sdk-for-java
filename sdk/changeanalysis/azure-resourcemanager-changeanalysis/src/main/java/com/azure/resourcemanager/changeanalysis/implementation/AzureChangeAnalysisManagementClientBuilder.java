@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureChangeAnalysisManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the AzureChangeAnalysisManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { AzureChangeAnalysisManagementClientImpl.class })
 public final class AzureChangeAnalysisManagementClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureChangeAnalysisManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureChangeAnalysisManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureChangeAnalysisManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureChangeAnalysisManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureChangeAnalysisManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureChangeAnalysisManagementClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
 
     /**
      * Builds an instance of AzureChangeAnalysisManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureChangeAnalysisManagementClientImpl.
      */
     public AzureChangeAnalysisManagementClientImpl buildClient() {
@@ -130,7 +132,7 @@ public final class AzureChangeAnalysisManagementClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureChangeAnalysisManagementClientImpl client = new AzureChangeAnalysisManagementClientImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DeployerVmPackagesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeployerVmPackages model = BinaryData.fromString("{\"url\":\"yujviylwdshfssn\",\"storageAccountId\":\"gy\"}")
+        DeployerVmPackages model = BinaryData.fromString("{\"url\":\"qupevzh\",\"storageAccountId\":\"totxhojujb\"}")
             .toObject(DeployerVmPackages.class);
-        Assertions.assertEquals("yujviylwdshfssn", model.url());
-        Assertions.assertEquals("gy", model.storageAccountId());
+        Assertions.assertEquals("qupevzh", model.url());
+        Assertions.assertEquals("totxhojujb", model.storageAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeployerVmPackages model = new DeployerVmPackages().withUrl("yujviylwdshfssn").withStorageAccountId("gy");
+        DeployerVmPackages model = new DeployerVmPackages().withUrl("qupevzh").withStorageAccountId("totxhojujb");
         model = BinaryData.fromObject(model).toObject(DeployerVmPackages.class);
-        Assertions.assertEquals("yujviylwdshfssn", model.url());
-        Assertions.assertEquals("gy", model.storageAccountId());
+        Assertions.assertEquals("qupevzh", model.url());
+        Assertions.assertEquals("totxhojujb", model.storageAccountId());
     }
 }

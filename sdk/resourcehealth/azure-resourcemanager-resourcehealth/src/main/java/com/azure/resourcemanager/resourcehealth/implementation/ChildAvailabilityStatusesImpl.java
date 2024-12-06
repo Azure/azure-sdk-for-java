@@ -50,12 +50,12 @@ public final class ChildAvailabilityStatusesImpl implements ChildAvailabilitySta
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri, String filter, String expand, Context context) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri, filter, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     private ChildAvailabilityStatusesClient serviceClient() {

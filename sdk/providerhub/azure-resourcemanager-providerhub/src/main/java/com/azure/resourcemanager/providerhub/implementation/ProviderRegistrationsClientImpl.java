@@ -41,17 +41,23 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProviderRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProviderRegistrationsClient.
+ */
 public final class ProviderRegistrationsClientImpl implements ProviderRegistrationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProviderRegistrationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of ProviderRegistrationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProviderRegistrationsClientImpl(ProviderHubImpl client) {
@@ -104,8 +110,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/generateOperations")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateOperations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<OperationsDefinitionInner>>> generateOperations(@HostParam("$host") String endpoint,
@@ -124,7 +129,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,7 +159,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,7 +189,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -198,7 +203,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +218,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -227,7 +232,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +269,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -301,7 +306,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,7 +325,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -340,7 +345,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,7 +361,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -373,7 +378,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +395,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -408,7 +413,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,7 +428,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -440,7 +445,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,7 +475,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,7 +505,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -514,7 +519,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,7 +534,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -542,11 +547,11 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the provider registrations in the subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderRegistrationInner>> listSinglePageAsync() {
@@ -569,13 +574,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the provider registrations in the subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderRegistrationInner>> listSinglePageAsync(Context context) {
@@ -598,7 +603,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the provider registrations in the subscription as paginated response with {@link PagedFlux}.
@@ -610,7 +615,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -625,11 +630,11 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the provider registrations in the subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderRegistrationInner> list() {
@@ -638,13 +643,13 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the provider registrations in the subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderRegistrationInner> list(Context context) {
@@ -653,7 +658,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -684,7 +689,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -715,7 +720,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -729,7 +734,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -745,7 +750,7 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -759,9 +764,8 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -785,9 +789,8 @@ public final class ProviderRegistrationsClientImpl implements ProviderRegistrati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

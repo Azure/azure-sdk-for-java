@@ -13,7 +13,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
  */
 public final class ServerThreatProtectionSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerThreatProtectionSettingsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ServerThreatProtectionSettingsCreateOrUpdate.json
      */
     /**
      * Sample code: Update a server's Threat Protection settings.

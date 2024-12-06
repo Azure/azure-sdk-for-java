@@ -5,74 +5,68 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the SAP Instance properties.
  */
 @Immutable
-public final class ServerInstanceProperties {
+public final class ServerInstanceProperties implements JsonSerializable<ServerInstanceProperties> {
     /*
      * This is the Virtual Machine Name of the SAP system. Add all the virtual machines attached to an SAP system which
      * you wish to migrate to Azure. Keeping this not equal to ID as for single tier all InstanceTypes would be on same
      * server, leading to multiple resources with same servername.
      */
-    @JsonProperty(value = "serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /*
      * Defines the type SAP instance on this server instance.
      */
-    @JsonProperty(value = "sapInstanceType", access = JsonProperty.Access.WRITE_ONLY)
     private SapInstanceType sapInstanceType;
 
     /*
      * This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA database for example could have a
      * different SID for database Instance than that of ASCS instance.
      */
-    @JsonProperty(value = "instanceSid", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceSid;
 
     /*
      * This is the SAP Application Component; e.g. SAP S/4HANA 2022, SAP ERP ENHANCE PACKAGE.
      */
-    @JsonProperty(value = "sapProduct", access = JsonProperty.Access.WRITE_ONLY)
     private String sapProduct;
 
     /*
      * Provide the product version of the SAP product.
      */
-    @JsonProperty(value = "sapProductVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sapProductVersion;
 
     /*
      * This is Operating System on which the host server is running.
      */
-    @JsonProperty(value = "operatingSystem", access = JsonProperty.Access.WRITE_ONLY)
     private OperatingSystem operatingSystem;
 
     /*
      * Configuration data for this server instance.
      */
-    @JsonProperty(value = "configurationData", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationData configurationData;
 
     /*
      * Configuration data for this server instance.
      */
-    @JsonProperty(value = "performanceData", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceData performanceData;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Defines the errors related to SAP Instance resource.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapMigrateError errors;
 
     /**
@@ -83,8 +77,8 @@ public final class ServerInstanceProperties {
 
     /**
      * Get the serverName property: This is the Virtual Machine Name of the SAP system. Add all the virtual machines
-     * attached to an SAP system which you wish to migrate to Azure. Keeping this not equal to ID as for single tier
-     * all InstanceTypes would be on same server, leading to multiple resources with same servername.
+     * attached to an SAP system which you wish to migrate to Azure. Keeping this not equal to ID as for single tier all
+     * InstanceTypes would be on same server, leading to multiple resources with same servername.
      * 
      * @return the serverName value.
      */
@@ -102,8 +96,8 @@ public final class ServerInstanceProperties {
     }
 
     /**
-     * Get the instanceSid property: This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA
-     * database for example could have a different SID for database Instance than that of ASCS instance.
+     * Get the instanceSid property: This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA database
+     * for example could have a different SID for database Instance than that of ASCS instance.
      * 
      * @return the instanceSid value.
      */
@@ -190,5 +184,61 @@ public final class ServerInstanceProperties {
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerInstanceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerInstanceProperties.
+     */
+    public static ServerInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerInstanceProperties deserializedServerInstanceProperties = new ServerInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverName".equals(fieldName)) {
+                    deserializedServerInstanceProperties.serverName = reader.getString();
+                } else if ("sapInstanceType".equals(fieldName)) {
+                    deserializedServerInstanceProperties.sapInstanceType
+                        = SapInstanceType.fromString(reader.getString());
+                } else if ("instanceSid".equals(fieldName)) {
+                    deserializedServerInstanceProperties.instanceSid = reader.getString();
+                } else if ("sapProduct".equals(fieldName)) {
+                    deserializedServerInstanceProperties.sapProduct = reader.getString();
+                } else if ("sapProductVersion".equals(fieldName)) {
+                    deserializedServerInstanceProperties.sapProductVersion = reader.getString();
+                } else if ("operatingSystem".equals(fieldName)) {
+                    deserializedServerInstanceProperties.operatingSystem
+                        = OperatingSystem.fromString(reader.getString());
+                } else if ("configurationData".equals(fieldName)) {
+                    deserializedServerInstanceProperties.configurationData = ConfigurationData.fromJson(reader);
+                } else if ("performanceData".equals(fieldName)) {
+                    deserializedServerInstanceProperties.performanceData = PerformanceData.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServerInstanceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedServerInstanceProperties.errors = SapMigrateError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerInstanceProperties;
+        });
     }
 }

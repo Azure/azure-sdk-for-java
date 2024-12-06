@@ -176,8 +176,9 @@ public final class SapVirtualInstanceImpl
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sapVirtualInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
     }
 
     public SapVirtualInstance refresh() {

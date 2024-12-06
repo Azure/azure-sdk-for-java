@@ -6,60 +6,42 @@ package com.azure.resourcemanager.digitaltwins.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.ManagedIdentityReference;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TimeSeriesDatabaseConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Succeeded\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"elxprglyatddck\"}},\"id\":\"cuejrjxgci\",\"name\":\"ibrhosxsdqr\",\"type\":\"zoymibmrqyibahw\"}";
+            = "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Succeeded\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"p\"}},\"id\":\"odacizs\",\"name\":\"q\",\"type\":\"hkr\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TimeSeriesDatabaseConnection response = manager.timeSeriesDatabaseConnections()
-            .define("zksmondj")
-            .withExistingDigitalTwinsInstance("yzvqt", "nubexk")
-            .withProperties(new TimeSeriesDatabaseConnectionProperties().withIdentity(
-                new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED).withUserAssignedIdentity("mg")))
+            .define("cstwity")
+            .withExistingDigitalTwinsInstance("wib", "rcdlbhshfwpr")
+            .withProperties(new TimeSeriesDatabaseConnectionProperties()
+                .withIdentity(new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("dcpnmdyodnw")))
             .create();
 
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.properties().identity().type());
-        Assertions.assertEquals("elxprglyatddck", response.properties().identity().userAssignedIdentity());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.properties().identity().type());
+        Assertions.assertEquals("p", response.properties().identity().userAssignedIdentity());
     }
 }

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.changeanalysis.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner;
+import com.azure.resourcemanager.changeanalysis.models.ChangeCategory;
 import com.azure.resourcemanager.changeanalysis.models.ChangeList;
 import com.azure.resourcemanager.changeanalysis.models.ChangeProperties;
 import com.azure.resourcemanager.changeanalysis.models.ChangeType;
+import com.azure.resourcemanager.changeanalysis.models.Level;
+import com.azure.resourcemanager.changeanalysis.models.PropertyChange;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,39 +20,129 @@ public final class ChangeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceId\":\"ryrtihfxtijbpzv\",\"timeStamp\":\"2021-10-14T13:51:33Z\",\"initiatedByList\":[],\"changeType\":\"Update\",\"propertyChanges\":[]},\"id\":\"glzufc\",\"name\":\"zk\",\"type\":\"hdbihan\"},{\"properties\":{\"resourceId\":\"fcbjysagithxqha\",\"timeStamp\":\"2021-01-28T13:36:26Z\",\"initiatedByList\":[],\"changeType\":\"Update\",\"propertyChanges\":[]},\"id\":\"wczbys\",\"name\":\"npqxuh\",\"type\":\"vyq\"},{\"properties\":{\"resourceId\":\"b\",\"timeStamp\":\"2021-06-19T13:57:47Z\",\"initiatedByList\":[],\"changeType\":\"Remove\",\"propertyChanges\":[]},\"id\":\"umjgrtfwvuk\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"}],\"nextLink\":\"ryhtnapczwlokjy\"}")
+            "{\"value\":[{\"properties\":{\"resourceId\":\"ryrtihfxtijbpzv\",\"timeStamp\":\"2021-10-14T13:51:33Z\",\"initiatedByList\":[\"ymglzufcyz\",\"ohdbihanufh\",\"cbjy\"],\"changeType\":\"Add\",\"propertyChanges\":[{\"changeType\":\"Remove\",\"changeCategory\":\"User\",\"jsonPath\":\"bifpikxwczb\",\"displayName\":\"cnpqxuhivyqniwby\",\"level\":\"Normal\",\"description\":\"vd\",\"oldValue\":\"jgrtfwvukxga\",\"newValue\":\"ccsnhsjc\",\"isDataMasked\":false}]},\"id\":\"j\",\"name\":\"kryhtnapczwlokj\",\"type\":\"emkkvnipjox\"},{\"properties\":{\"resourceId\":\"chgejspodm\",\"timeStamp\":\"2020-12-22T17:42:34Z\",\"initiatedByList\":[\"deh\",\"jwyahuxinpmqnja\"],\"changeType\":\"Update\",\"propertyChanges\":[{\"changeType\":\"Remove\",\"changeCategory\":\"User\",\"jsonPath\":\"vcputegj\",\"displayName\":\"mfdatscmdvpj\",\"level\":\"Important\",\"description\":\"uuvmkjozkrwfnd\",\"oldValue\":\"djpslw\",\"newValue\":\"dpvwryoqpsoaccta\",\"isDataMasked\":false},{\"changeType\":\"Add\",\"changeCategory\":\"User\",\"jsonPath\":\"bcryffdfd\",\"displayName\":\"ygexpaojakhmsb\",\"level\":\"Important\",\"description\":\"rzevdphlxaol\",\"oldValue\":\"qtrgqjbpfzfsinzg\",\"newValue\":\"cjrwzoxxjtfellu\",\"isDataMasked\":true},{\"changeType\":\"Add\",\"changeCategory\":\"User\",\"jsonPath\":\"eqfpj\",\"displayName\":\"lxofpdvhpfxxypin\",\"level\":\"Normal\",\"description\":\"yhuybbkpod\",\"oldValue\":\"ooginuvamih\",\"newValue\":\"gnarxzxtheo\",\"isDataMasked\":false}]},\"id\":\"ivyevcciqihnhun\",\"name\":\"bwjzr\",\"type\":\"fygxgispemvtzfk\"},{\"properties\":{\"resourceId\":\"bljofxqeof\",\"timeStamp\":\"2021-11-09T06:35:40Z\",\"initiatedByList\":[\"hqjbasvmsmj\",\"ulngsntn\",\"ybkzgcwr\",\"clxxwrljdo\"],\"changeType\":\"Remove\",\"propertyChanges\":[{\"changeType\":\"Add\",\"changeCategory\":\"User\",\"jsonPath\":\"cjdkwtnhxbnjbi\",\"displayName\":\"qrglssainqpjwn\",\"level\":\"Noisy\",\"description\":\"fmppe\",\"oldValue\":\"vmgxsab\",\"newValue\":\"qduujitcjczdz\",\"isDataMasked\":false},{\"changeType\":\"Remove\",\"changeCategory\":\"System\",\"jsonPath\":\"pdappds\",\"displayName\":\"kvwrwjfeu\",\"level\":\"Important\",\"description\":\"tjelt\",\"oldValue\":\"ldhugjzzdatqxh\",\"newValue\":\"dgeablgphu\",\"isDataMasked\":true}]},\"id\":\"ndv\",\"name\":\"aozwyiftyhxhu\",\"type\":\"okftyxolniwpwcuk\"}],\"nextLink\":\"kgiawxklryplwck\"}")
             .toObject(ChangeList.class);
         Assertions.assertEquals("ryrtihfxtijbpzv", model.value().get(0).properties().resourceId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T13:51:33Z"),
             model.value().get(0).properties().timestamp());
-        Assertions.assertEquals(ChangeType.UPDATE, model.value().get(0).properties().changeType());
-        Assertions.assertEquals("ryhtnapczwlokjy", model.nextLink());
+        Assertions.assertEquals("ymglzufcyz", model.value().get(0).properties().initiatedByList().get(0));
+        Assertions.assertEquals(ChangeType.ADD, model.value().get(0).properties().changeType());
+        Assertions.assertEquals(ChangeType.REMOVE,
+            model.value().get(0).properties().propertyChanges().get(0).changeType());
+        Assertions.assertEquals(ChangeCategory.USER,
+            model.value().get(0).properties().propertyChanges().get(0).changeCategory());
+        Assertions.assertEquals("bifpikxwczb", model.value().get(0).properties().propertyChanges().get(0).jsonPath());
+        Assertions.assertEquals("cnpqxuhivyqniwby",
+            model.value().get(0).properties().propertyChanges().get(0).displayName());
+        Assertions.assertEquals(Level.NORMAL, model.value().get(0).properties().propertyChanges().get(0).level());
+        Assertions.assertEquals("vd", model.value().get(0).properties().propertyChanges().get(0).description());
+        Assertions.assertEquals("jgrtfwvukxga", model.value().get(0).properties().propertyChanges().get(0).oldValue());
+        Assertions.assertEquals("ccsnhsjc", model.value().get(0).properties().propertyChanges().get(0).newValue());
+        Assertions.assertEquals(false, model.value().get(0).properties().propertyChanges().get(0).isDataMasked());
+        Assertions.assertEquals("kgiawxklryplwck", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeList model = new ChangeList().withValue(Arrays.asList(
-            new ChangeInner().withProperties(new ChangeProperties().withResourceId("ryrtihfxtijbpzv")
-                .withTimestamp(OffsetDateTime.parse("2021-10-14T13:51:33Z"))
-                .withInitiatedByList(Arrays.asList())
-                .withChangeType(ChangeType.UPDATE)
-                .withPropertyChanges(Arrays.asList())),
-            new ChangeInner().withProperties(new ChangeProperties().withResourceId("fcbjysagithxqha")
-                .withTimestamp(OffsetDateTime.parse("2021-01-28T13:36:26Z"))
-                .withInitiatedByList(Arrays.asList())
-                .withChangeType(ChangeType.UPDATE)
-                .withPropertyChanges(Arrays.asList())),
-            new ChangeInner().withProperties(new ChangeProperties().withResourceId("b")
-                .withTimestamp(OffsetDateTime.parse("2021-06-19T13:57:47Z"))
-                .withInitiatedByList(Arrays.asList())
-                .withChangeType(ChangeType.REMOVE)
-                .withPropertyChanges(Arrays.asList()))))
-            .withNextLink("ryhtnapczwlokjy");
+        ChangeList model
+            = new ChangeList()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new ChangeInner()
+                                .withProperties(
+                                    new ChangeProperties().withResourceId("ryrtihfxtijbpzv")
+                                        .withTimestamp(OffsetDateTime.parse("2021-10-14T13:51:33Z"))
+                                        .withInitiatedByList(Arrays.asList("ymglzufcyz", "ohdbihanufh", "cbjy"))
+                                        .withChangeType(ChangeType.ADD)
+                                        .withPropertyChanges(Arrays.asList(new PropertyChange()
+                                            .withChangeType(ChangeType.REMOVE)
+                                            .withChangeCategory(ChangeCategory.USER)
+                                            .withJsonPath("bifpikxwczb")
+                                            .withDisplayName("cnpqxuhivyqniwby")
+                                            .withLevel(Level.NORMAL)
+                                            .withDescription("vd")
+                                            .withOldValue("jgrtfwvukxga")
+                                            .withNewValue("ccsnhsjc")
+                                            .withIsDataMasked(false)))),
+                            new ChangeInner()
+                                .withProperties(
+                                    new ChangeProperties().withResourceId("chgejspodm")
+                                        .withTimestamp(OffsetDateTime.parse("2020-12-22T17:42:34Z"))
+                                        .withInitiatedByList(Arrays.asList("deh", "jwyahuxinpmqnja"))
+                                        .withChangeType(ChangeType.UPDATE)
+                                        .withPropertyChanges(
+                                            Arrays
+                                                .asList(
+                                                    new PropertyChange().withChangeType(ChangeType.REMOVE)
+                                                        .withChangeCategory(ChangeCategory.USER)
+                                                        .withJsonPath("vcputegj")
+                                                        .withDisplayName("mfdatscmdvpj")
+                                                        .withLevel(Level.IMPORTANT)
+                                                        .withDescription("uuvmkjozkrwfnd")
+                                                        .withOldValue("djpslw")
+                                                        .withNewValue("dpvwryoqpsoaccta")
+                                                        .withIsDataMasked(false),
+                                                    new PropertyChange().withChangeType(ChangeType.ADD)
+                                                        .withChangeCategory(ChangeCategory.USER)
+                                                        .withJsonPath("bcryffdfd")
+                                                        .withDisplayName("ygexpaojakhmsb")
+                                                        .withLevel(Level.IMPORTANT)
+                                                        .withDescription("rzevdphlxaol")
+                                                        .withOldValue("qtrgqjbpfzfsinzg")
+                                                        .withNewValue("cjrwzoxxjtfellu")
+                                                        .withIsDataMasked(true),
+                                                    new PropertyChange().withChangeType(ChangeType.ADD)
+                                                        .withChangeCategory(ChangeCategory.USER)
+                                                        .withJsonPath("eqfpj")
+                                                        .withDisplayName("lxofpdvhpfxxypin")
+                                                        .withLevel(Level.NORMAL)
+                                                        .withDescription("yhuybbkpod")
+                                                        .withOldValue("ooginuvamih")
+                                                        .withNewValue("gnarxzxtheo")
+                                                        .withIsDataMasked(false)))),
+                            new ChangeInner().withProperties(new ChangeProperties().withResourceId("bljofxqeof")
+                                .withTimestamp(OffsetDateTime.parse("2021-11-09T06:35:40Z"))
+                                .withInitiatedByList(Arrays.asList("hqjbasvmsmj", "ulngsntn", "ybkzgcwr", "clxxwrljdo"))
+                                .withChangeType(ChangeType.REMOVE)
+                                .withPropertyChanges(Arrays.asList(
+                                    new PropertyChange().withChangeType(ChangeType.ADD)
+                                        .withChangeCategory(ChangeCategory.USER)
+                                        .withJsonPath("cjdkwtnhxbnjbi")
+                                        .withDisplayName("qrglssainqpjwn")
+                                        .withLevel(Level.NOISY)
+                                        .withDescription("fmppe")
+                                        .withOldValue("vmgxsab")
+                                        .withNewValue("qduujitcjczdz")
+                                        .withIsDataMasked(false),
+                                    new PropertyChange().withChangeType(ChangeType.REMOVE)
+                                        .withChangeCategory(ChangeCategory.SYSTEM)
+                                        .withJsonPath("pdappds")
+                                        .withDisplayName("kvwrwjfeu")
+                                        .withLevel(Level.IMPORTANT)
+                                        .withDescription("tjelt")
+                                        .withOldValue("ldhugjzzdatqxh")
+                                        .withNewValue("dgeablgphu")
+                                        .withIsDataMasked(true))))))
+                .withNextLink("kgiawxklryplwck");
         model = BinaryData.fromObject(model).toObject(ChangeList.class);
         Assertions.assertEquals("ryrtihfxtijbpzv", model.value().get(0).properties().resourceId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T13:51:33Z"),
             model.value().get(0).properties().timestamp());
-        Assertions.assertEquals(ChangeType.UPDATE, model.value().get(0).properties().changeType());
-        Assertions.assertEquals("ryhtnapczwlokjy", model.nextLink());
+        Assertions.assertEquals("ymglzufcyz", model.value().get(0).properties().initiatedByList().get(0));
+        Assertions.assertEquals(ChangeType.ADD, model.value().get(0).properties().changeType());
+        Assertions.assertEquals(ChangeType.REMOVE,
+            model.value().get(0).properties().propertyChanges().get(0).changeType());
+        Assertions.assertEquals(ChangeCategory.USER,
+            model.value().get(0).properties().propertyChanges().get(0).changeCategory());
+        Assertions.assertEquals("bifpikxwczb", model.value().get(0).properties().propertyChanges().get(0).jsonPath());
+        Assertions.assertEquals("cnpqxuhivyqniwby",
+            model.value().get(0).properties().propertyChanges().get(0).displayName());
+        Assertions.assertEquals(Level.NORMAL, model.value().get(0).properties().propertyChanges().get(0).level());
+        Assertions.assertEquals("vd", model.value().get(0).properties().propertyChanges().get(0).description());
+        Assertions.assertEquals("jgrtfwvukxga", model.value().get(0).properties().propertyChanges().get(0).oldValue());
+        Assertions.assertEquals("ccsnhsjc", model.value().get(0).properties().propertyChanges().get(0).newValue());
+        Assertions.assertEquals(false, model.value().get(0).properties().propertyChanges().get(0).isDataMasked());
+        Assertions.assertEquals("kgiawxklryplwck", model.nextLink());
     }
 }

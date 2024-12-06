@@ -20,7 +20,7 @@ public final class SapDiscoverySitesGetByResourceGroupSamples {
      */
     public static void gETASAPMigrationDiscoverySiteResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapDiscoverySites().getByResourceGroupWithResponse("test-rg", "SampleSite",
-            com.azure.core.util.Context.NONE);
+        manager.sapDiscoverySites()
+            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE);
     }
 }

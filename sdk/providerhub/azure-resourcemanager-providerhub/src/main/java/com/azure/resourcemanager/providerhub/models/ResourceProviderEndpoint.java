@@ -5,62 +5,64 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The ResourceProviderEndpoint model. */
+/**
+ * The ResourceProviderEndpoint model.
+ */
 @Fluent
-public final class ResourceProviderEndpoint {
+public final class ResourceProviderEndpoint implements JsonSerializable<ResourceProviderEndpoint> {
     /*
      * The enabled property.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The apiVersions property.
      */
-    @JsonProperty(value = "apiVersions")
     private List<String> apiVersions;
 
     /*
      * The endpointUri property.
      */
-    @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
      * The locations property.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
     /*
      * The featuresRule property.
      */
-    @JsonProperty(value = "featuresRule")
     private ResourceProviderEndpointFeaturesRule featuresRule;
 
     /*
      * The timeout property.
      */
-    @JsonProperty(value = "timeout")
     private Duration timeout;
 
-    /** Creates an instance of ResourceProviderEndpoint class. */
+    /**
+     * Creates an instance of ResourceProviderEndpoint class.
+     */
     public ResourceProviderEndpoint() {
     }
 
     /**
      * Get the enabled property: The enabled property.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -69,7 +71,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the enabled property: The enabled property.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -80,7 +82,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Get the apiVersions property: The apiVersions property.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -89,7 +91,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the apiVersions property: The apiVersions property.
-     *
+     * 
      * @param apiVersions the apiVersions value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -100,7 +102,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Get the endpointUri property: The endpointUri property.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -109,7 +111,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the endpointUri property: The endpointUri property.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -120,7 +122,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Get the locations property: The locations property.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -129,7 +131,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the locations property: The locations property.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -140,7 +142,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -149,7 +151,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -160,7 +162,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Get the featuresRule property: The featuresRule property.
-     *
+     * 
      * @return the featuresRule value.
      */
     public ResourceProviderEndpointFeaturesRule featuresRule() {
@@ -169,7 +171,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the featuresRule property: The featuresRule property.
-     *
+     * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -180,7 +182,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Get the timeout property: The timeout property.
-     *
+     * 
      * @return the timeout value.
      */
     public Duration timeout() {
@@ -189,7 +191,7 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Set the timeout property: The timeout property.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
@@ -200,12 +202,72 @@ public final class ResourceProviderEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (featuresRule() != null) {
             featuresRule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("apiVersions", this.apiVersions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("featuresRule", this.featuresRule);
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderEndpoint if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderEndpoint.
+     */
+    public static ResourceProviderEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderEndpoint deserializedResourceProviderEndpoint = new ResourceProviderEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedResourceProviderEndpoint.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("apiVersions".equals(fieldName)) {
+                    List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderEndpoint.apiVersions = apiVersions;
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedResourceProviderEndpoint.endpointUri = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderEndpoint.locations = locations;
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderEndpoint.requiredFeatures = requiredFeatures;
+                } else if ("featuresRule".equals(fieldName)) {
+                    deserializedResourceProviderEndpoint.featuresRule
+                        = ResourceProviderEndpointFeaturesRule.fromJson(reader);
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedResourceProviderEndpoint.timeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderEndpoint;
+        });
     }
 }

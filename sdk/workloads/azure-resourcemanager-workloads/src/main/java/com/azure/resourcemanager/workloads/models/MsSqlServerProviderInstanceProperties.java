@@ -5,70 +5,80 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the SQL server provider properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
-@JsonTypeName("MsSqlServer")
+/**
+ * Gets or sets the SQL server provider properties.
+ */
 @Fluent
 public final class MsSqlServerProviderInstanceProperties extends ProviderSpecificProperties {
     /*
+     * The provider type. For example, the value can be SapHana.
+     */
+    private String providerType = "MsSqlServer";
+
+    /*
      * Gets or sets the SQL server host name.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * Gets or sets the database sql port.
      */
-    @JsonProperty(value = "dbPort")
     private String dbPort;
 
     /*
      * Gets or sets the database user name.
      */
-    @JsonProperty(value = "dbUsername")
     private String dbUsername;
 
     /*
      * Gets or sets the database password.
      */
-    @JsonProperty(value = "dbPassword")
     private String dbPassword;
 
     /*
      * Gets or sets the key vault URI to secret with the database password.
      */
-    @JsonProperty(value = "dbPasswordUri")
     private String dbPasswordUri;
 
     /*
      * Gets or sets the SAP System Identifier
      */
-    @JsonProperty(value = "sapSid")
     private String sapSid;
 
     /*
      * Gets or sets certificate preference if secure communication is enabled.
      */
-    @JsonProperty(value = "sslPreference")
     private SslPreference sslPreference;
 
     /*
      * Gets or sets the blob URI to SSL certificate for the SQL Database.
      */
-    @JsonProperty(value = "sslCertificateUri")
     private String sslCertificateUri;
 
-    /** Creates an instance of MsSqlServerProviderInstanceProperties class. */
+    /**
+     * Creates an instance of MsSqlServerProviderInstanceProperties class.
+     */
     public MsSqlServerProviderInstanceProperties() {
     }
 
     /**
+     * Get the providerType property: The provider type. For example, the value can be SapHana.
+     * 
+     * @return the providerType value.
+     */
+    @Override
+    public String providerType() {
+        return this.providerType;
+    }
+
+    /**
      * Get the hostname property: Gets or sets the SQL server host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -77,7 +87,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the hostname property: Gets or sets the SQL server host name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -88,7 +98,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbPort property: Gets or sets the database sql port.
-     *
+     * 
      * @return the dbPort value.
      */
     public String dbPort() {
@@ -97,7 +107,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbPort property: Gets or sets the database sql port.
-     *
+     * 
      * @param dbPort the dbPort value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -108,7 +118,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbUsername property: Gets or sets the database user name.
-     *
+     * 
      * @return the dbUsername value.
      */
     public String dbUsername() {
@@ -117,7 +127,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbUsername property: Gets or sets the database user name.
-     *
+     * 
      * @param dbUsername the dbUsername value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -128,7 +138,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbPassword property: Gets or sets the database password.
-     *
+     * 
      * @return the dbPassword value.
      */
     public String dbPassword() {
@@ -137,7 +147,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbPassword property: Gets or sets the database password.
-     *
+     * 
      * @param dbPassword the dbPassword value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -148,7 +158,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @return the dbPasswordUri value.
      */
     public String dbPasswordUri() {
@@ -157,7 +167,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @param dbPasswordUri the dbPasswordUri value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -168,7 +178,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @return the sapSid value.
      */
     public String sapSid() {
@@ -177,7 +187,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @param sapSid the sapSid value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -188,7 +198,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @return the sslPreference value.
      */
     public SslPreference sslPreference() {
@@ -197,7 +207,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @param sslPreference the sslPreference value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -208,7 +218,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SQL Database.
-     *
+     * 
      * @return the sslCertificateUri value.
      */
     public String sslCertificateUri() {
@@ -217,7 +227,7 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the SQL Database.
-     *
+     * 
      * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the MsSqlServerProviderInstanceProperties object itself.
      */
@@ -228,11 +238,72 @@ public final class MsSqlServerProviderInstanceProperties extends ProviderSpecifi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerType", this.providerType);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("dbPort", this.dbPort);
+        jsonWriter.writeStringField("dbUsername", this.dbUsername);
+        jsonWriter.writeStringField("dbPassword", this.dbPassword);
+        jsonWriter.writeStringField("dbPasswordUri", this.dbPasswordUri);
+        jsonWriter.writeStringField("sapSid", this.sapSid);
+        jsonWriter.writeStringField("sslPreference", this.sslPreference == null ? null : this.sslPreference.toString());
+        jsonWriter.writeStringField("sslCertificateUri", this.sslCertificateUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsSqlServerProviderInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsSqlServerProviderInstanceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MsSqlServerProviderInstanceProperties.
+     */
+    public static MsSqlServerProviderInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsSqlServerProviderInstanceProperties deserializedMsSqlServerProviderInstanceProperties
+                = new MsSqlServerProviderInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerType".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.providerType = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.hostname = reader.getString();
+                } else if ("dbPort".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.dbPort = reader.getString();
+                } else if ("dbUsername".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.dbUsername = reader.getString();
+                } else if ("dbPassword".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.dbPassword = reader.getString();
+                } else if ("dbPasswordUri".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.dbPasswordUri = reader.getString();
+                } else if ("sapSid".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.sapSid = reader.getString();
+                } else if ("sslPreference".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.sslPreference
+                        = SslPreference.fromString(reader.getString());
+                } else if ("sslCertificateUri".equals(fieldName)) {
+                    deserializedMsSqlServerProviderInstanceProperties.sslCertificateUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsSqlServerProviderInstanceProperties;
+        });
     }
 }

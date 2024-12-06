@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TestLinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TestLinesClient.
+ */
 public final class TestLinesClientImpl implements TestLinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TestLinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftVoiceServicesImpl client;
 
     /**
      * Initializes an instance of TestLinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TestLinesClientImpl(MicrosoftVoiceServicesImpl client) {
@@ -129,14 +135,14 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TestLine list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewaySinglePageAsync(String resourceGroupName,
@@ -169,7 +175,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -177,7 +183,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TestLine list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewaySinglePageAsync(String resourceGroupName,
@@ -209,7 +215,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +233,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -246,7 +252,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +268,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * List TestLine resources by CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -280,7 +286,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -321,7 +327,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -361,7 +367,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -379,7 +385,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -397,7 +403,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -413,7 +419,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -460,7 +466,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -507,7 +513,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -528,7 +534,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -551,7 +557,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -570,7 +576,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -591,7 +597,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -610,7 +616,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -631,7 +637,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -649,7 +655,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Create a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -669,7 +675,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -710,7 +716,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -750,7 +756,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -770,7 +776,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -792,7 +798,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -809,7 +815,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -828,7 +834,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -845,7 +851,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -864,7 +870,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -879,7 +885,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Delete a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -896,7 +902,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -943,7 +949,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -989,7 +995,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -1008,7 +1014,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -1028,7 +1034,7 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Update a TestLine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param testLineName Unique identifier for this test line.
@@ -1047,14 +1053,13 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TestLine list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewayNextSinglePageAsync(String nextLink) {
@@ -1075,15 +1080,14 @@ public final class TestLinesClientImpl implements TestLinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TestLine list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TestLineInner>> listByCommunicationsGatewayNextSinglePageAsync(String nextLink,

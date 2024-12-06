@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The stage of this active event. */
+/**
+ * The stage of this active event.
+ */
 public final class StageValues extends ExpandableStringEnum<StageValues> {
-    /** Static value Active for StageValues. */
+    /**
+     * Static value Active for StageValues.
+     */
     public static final StageValues ACTIVE = fromString("Active");
 
-    /** Static value Resolve for StageValues. */
+    /**
+     * Static value Resolve for StageValues.
+     */
     public static final StageValues RESOLVE = fromString("Resolve");
 
-    /** Static value Archived for StageValues. */
+    /**
+     * Static value Archived for StageValues.
+     */
     public static final StageValues ARCHIVED = fromString("Archived");
 
     /**
      * Creates a new instance of StageValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class StageValues extends ExpandableStringEnum<StageValues> {
 
     /**
      * Creates or finds a StageValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StageValues.
      */
-    @JsonCreator
     public static StageValues fromString(String name) {
         return fromString(name, StageValues.class);
     }
 
     /**
      * Gets known StageValues values.
-     *
+     * 
      * @return known StageValues values.
      */
     public static Collection<StageValues> values() {

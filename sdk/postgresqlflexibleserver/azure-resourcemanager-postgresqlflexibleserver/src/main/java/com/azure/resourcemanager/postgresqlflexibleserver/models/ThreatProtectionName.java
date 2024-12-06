@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ThreatProtectionName extends ExpandableStringEnum<ThreatProte
      * @param name a name to look for.
      * @return the corresponding ThreatProtectionName.
      */
-    @JsonCreator
     public static ThreatProtectionName fromString(String name) {
         return fromString(name, ThreatProtectionName.class);
     }
