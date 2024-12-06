@@ -5,28 +5,82 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Gets or sets the file share configuration for scenarios where transport directory fileshare is not created or
  * required.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
-@JsonTypeName("Skip")
 @Immutable
 public final class SkipFileShareConfiguration extends FileShareConfiguration {
-    /** Creates an instance of SkipFileShareConfiguration class. */
+    /*
+     * The type of file share config.
+     */
+    private ConfigurationType configurationType = ConfigurationType.SKIP;
+
+    /**
+     * Creates an instance of SkipFileShareConfiguration class.
+     */
     public SkipFileShareConfiguration() {
     }
 
     /**
+     * Get the configurationType property: The type of file share config.
+     * 
+     * @return the configurationType value.
+     */
+    @Override
+    public ConfigurationType configurationType() {
+        return this.configurationType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkipFileShareConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkipFileShareConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkipFileShareConfiguration.
+     */
+    public static SkipFileShareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkipFileShareConfiguration deserializedSkipFileShareConfiguration = new SkipFileShareConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedSkipFileShareConfiguration.configurationType
+                        = ConfigurationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkipFileShareConfiguration;
+        });
     }
 }

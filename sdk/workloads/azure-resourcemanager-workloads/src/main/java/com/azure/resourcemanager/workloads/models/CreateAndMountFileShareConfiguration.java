@@ -5,40 +5,54 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Gets or sets the file share configuration where the transport directory fileshare is created and mounted as a part of
  * the create infra flow. Please pre-create the resource group you intend to place the transport directory in. The
  * storage account and fileshare will be auto-created by the ACSS and doesn’t need to pre-created.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "configurationType")
-@JsonTypeName("CreateAndMount")
 @Fluent
 public final class CreateAndMountFileShareConfiguration extends FileShareConfiguration {
+    /*
+     * The type of file share config.
+     */
+    private ConfigurationType configurationType = ConfigurationType.CREATE_AND_MOUNT;
+
     /*
      * The name of transport file share resource group. This should be pre created by the customer. The app rg is used
      * in case of missing input.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * The name of file share storage account name . A custom name is used in case of missing input.
      */
-    @JsonProperty(value = "storageAccountName")
     private String storageAccountName;
 
-    /** Creates an instance of CreateAndMountFileShareConfiguration class. */
+    /**
+     * Creates an instance of CreateAndMountFileShareConfiguration class.
+     */
     public CreateAndMountFileShareConfiguration() {
+    }
+
+    /**
+     * Get the configurationType property: The type of file share config.
+     * 
+     * @return the configurationType value.
+     */
+    @Override
+    public ConfigurationType configurationType() {
+        return this.configurationType;
     }
 
     /**
      * Get the resourceGroup property: The name of transport file share resource group. This should be pre created by
      * the customer. The app rg is used in case of missing input.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -48,7 +62,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /**
      * Set the resourceGroup property: The name of transport file share resource group. This should be pre created by
      * the customer. The app rg is used in case of missing input.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.
      */
@@ -60,7 +74,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /**
      * Get the storageAccountName property: The name of file share storage account name . A custom name is used in case
      * of missing input.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -70,7 +84,7 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
     /**
      * Set the storageAccountName property: The name of file share storage account name . A custom name is used in case
      * of missing input.
-     *
+     * 
      * @param storageAccountName the storageAccountName value to set.
      * @return the CreateAndMountFileShareConfiguration object itself.
      */
@@ -81,11 +95,55 @@ public final class CreateAndMountFileShareConfiguration extends FileShareConfigu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("storageAccountName", this.storageAccountName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateAndMountFileShareConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateAndMountFileShareConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateAndMountFileShareConfiguration.
+     */
+    public static CreateAndMountFileShareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateAndMountFileShareConfiguration deserializedCreateAndMountFileShareConfiguration
+                = new CreateAndMountFileShareConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedCreateAndMountFileShareConfiguration.configurationType
+                        = ConfigurationType.fromString(reader.getString());
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedCreateAndMountFileShareConfiguration.resourceGroup = reader.getString();
+                } else if ("storageAccountName".equals(fieldName)) {
+                    deserializedCreateAndMountFileShareConfiguration.storageAccountName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateAndMountFileShareConfiguration;
+        });
     }
 }

@@ -12,18 +12,18 @@ public final class SapAvailabilityZonePairTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapAvailabilityZonePair model
-            = BinaryData.fromString("{\"zoneA\":5112949672295507633,\"zoneB\":2906295825403594883}")
+            = BinaryData.fromString("{\"zoneA\":3603111410957529467,\"zoneB\":160761804683354241}")
                 .toObject(SapAvailabilityZonePair.class);
-        Assertions.assertEquals(5112949672295507633L, model.zoneA());
-        Assertions.assertEquals(2906295825403594883L, model.zoneB());
+        Assertions.assertEquals(3603111410957529467L, model.zoneA());
+        Assertions.assertEquals(160761804683354241L, model.zoneB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapAvailabilityZonePair model
-            = new SapAvailabilityZonePair().withZoneA(5112949672295507633L).withZoneB(2906295825403594883L);
+            = new SapAvailabilityZonePair().withZoneA(3603111410957529467L).withZoneB(160761804683354241L);
         model = BinaryData.fromObject(model).toObject(SapAvailabilityZonePair.class);
-        Assertions.assertEquals(5112949672295507633L, model.zoneA());
-        Assertions.assertEquals(2906295825403594883L, model.zoneB());
+        Assertions.assertEquals(3603111410957529467L, model.zoneA());
+        Assertions.assertEquals(160761804683354241L, model.zoneB());
     }
 }

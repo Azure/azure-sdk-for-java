@@ -17,24 +17,26 @@ public final class UpdateMonitorRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateMonitorRequest model = BinaryData.fromString(
-            "{\"tags\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"ba4e8e39-4d8c-4df0-b474-6268ebc19ff0\",\"clientId\":\"50d09aa1-837a-439d-add4-f29214d450e6\"},\"wiwubm\":{\"principalId\":\"09559181-9d20-4838-9e28-54d4d59aee1e\",\"clientId\":\"01af568c-3304-49cf-85c1-074a846dc298\"},\"esl\":{\"principalId\":\"0c3d2754-8972-4cc2-89ba-d0e7e6ea1587\",\"clientId\":\"195f9248-d5fe-44c5-8b71-e48a9c776924\"}}}}")
+            "{\"tags\":{\"yyazttbt\":\"tsthsucocm\",\"ckzywbiexzfeyue\":\"wrqpue\",\"zyoxaepdkzjan\":\"xibxujwbhqwalm\",\"hdwbavxbniwdjs\":\"ux\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"gnxytxhpzxbz\":{\"principalId\":\"0724dce4-a136-4915-ab23-a149329124cf\",\"clientId\":\"347cc763-3cb2-4c87-8325-1a59bc61be34\"},\"abgl\":{\"principalId\":\"84739e4c-073d-4bfa-8034-fe92b44d315c\",\"clientId\":\"d00e3780-463e-48aa-b0ef-34717178c41e\"},\"xwtctyqiklbbovpl\":{\"principalId\":\"d3cbd74c-0bcc-4bba-a797-2cce7f9fd81e\",\"clientId\":\"736a8164-e970-4fe4-92fe-961492cce3f8\"}}}}")
             .toObject(UpdateMonitorRequest.class);
-        Assertions.assertEquals("lylpstdb", model.tags().get("hxsrzdzucersc"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("tsthsucocm", model.tags().get("yyazttbt"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateMonitorRequest model = new UpdateMonitorRequest()
-            .withTags(mapOf("hxsrzdzucersc", "lylpstdb", "iwjmygtdssls", "ntnev", "emwabnet", "tmweriofzpyq"))
-            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("d", new UserAssignedIdentity(), "wiwubm", new UserAssignedIdentity(),
-                    "esl", new UserAssignedIdentity())));
+            .withTags(mapOf("yyazttbt", "tsthsucocm", "ckzywbiexzfeyue", "wrqpue", "zyoxaepdkzjan", "xibxujwbhqwalm",
+                "hdwbavxbniwdjs", "ux"))
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("gnxytxhpzxbz", new UserAssignedIdentity(), "abgl",
+                    new UserAssignedIdentity(), "xwtctyqiklbbovpl", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(UpdateMonitorRequest.class);
-        Assertions.assertEquals("lylpstdb", model.tags().get("hxsrzdzucersc"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("tsthsucocm", model.tags().get("yyazttbt"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
