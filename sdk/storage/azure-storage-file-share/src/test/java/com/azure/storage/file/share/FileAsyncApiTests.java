@@ -739,7 +739,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
-
+    
         StepVerifier.create(primaryFileAsyncClient.create(1024).then(destinationClient.create(1024))
             .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
             .verifyErrorSatisfies(r -> {
@@ -935,10 +935,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileAsyncClient.create(1024);
-
+    
         PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
             primaryFileAsyncClient.beginCopy("https://error.file.core.windows.net/garbage", new ShareFileCopyOptions(), null));
-
+    
         StepVerifier.create(primaryFileAsyncClient.create(1024).thenMany(poller))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
@@ -1620,16 +1620,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void listRangesDiff(List<FileRange> rangesToUpdate, List<FileRange> rangesToClear,
         List<FileRange> expectedRanges, List<ClearRange> expectedClearRanges) {
         Mono<String> snapshotIdMono = primaryFileAsyncClient.create(4 * Constants.MB)
-            .then(primaryFileAsyncClient.upload(Flux.just(getRandomByteBuffer(4 * Constants.MB)),
-                4 * Constants.MB))
+            .then(primaryFileAsyncClient.upload(Flux.just(getRandomByteBuffer(4 * Constants.MB)), 4 * Constants.MB))
             .then(primaryFileServiceAsyncClient.getShareAsyncClient(primaryFileAsyncClient.getShareName())
                 .createSnapshot()
                 .map(ShareSnapshotInfo::getSnapshot));
 
         Flux<Void> updateRangesFlux = Flux.fromIterable(rangesToUpdate).flatMap(it -> {
             int size = (int) (it.getEnd() - it.getStart() + 1);
-            return primaryFileAsyncClient
-                .uploadWithResponse(Flux.just(getRandomByteBuffer(size)), size, it.getStart())
+            return primaryFileAsyncClient.uploadWithResponse(Flux.just(getRandomByteBuffer(size)), size, it.getStart())
                 .then();
         });
 
