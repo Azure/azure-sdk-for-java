@@ -16,6 +16,30 @@ extends:
           TestClassPatterns: com.azure.spring.cloud.integration.tests.cosmos.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_ServiceBus
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.servicebus.*IT
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_EventHubs
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.eventhubs.*IT
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_Storage
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.storage.*IT
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/storage
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_Keyvault
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.keyvault.*IT
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           TestName: AppConfig_IT
