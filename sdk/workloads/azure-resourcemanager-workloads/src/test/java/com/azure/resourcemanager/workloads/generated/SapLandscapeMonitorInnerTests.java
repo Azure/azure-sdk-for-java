@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorInner;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorMetricThresholds;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorPropertiesGrouping;
+import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorSidMapping;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,28 +16,47 @@ public final class SapLandscapeMonitorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapLandscapeMonitorInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"grouping\":{\"landscape\":[],\"sapApplication\":[]},\"topMetricsThresholds\":[{\"name\":\"mpgcjefuzmuvpbt\",\"green\":11.969751,\"yellow\":78.04989,\"red\":2.2329688}]},\"id\":\"xe\",\"name\":\"mnzb\",\"type\":\"bhjpglkfgohdne\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"grouping\":{\"landscape\":[{\"name\":\"yfjfcnjbkcn\",\"topSid\":[\"bttk\",\"h\",\"wpn\"]}],\"sapApplication\":[{\"name\":\"qnermclfplphoxu\",\"topSid\":[\"pabgyeps\",\"jta\"]}]},\"topMetricsThresholds\":[{\"name\":\"xywpmueefjzwfqkq\",\"green\":14.922005,\"yellow\":76.74346,\"red\":41.041588},{\"name\":\"nobglaocq\",\"green\":15.741169,\"yellow\":90.26907,\"red\":62.299984},{\"name\":\"dxyt\",\"green\":98.45001,\"yellow\":15.2881565,\"red\":80.88741}]},\"id\":\"fudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"}")
             .toObject(SapLandscapeMonitorInner.class);
-        Assertions.assertEquals("mpgcjefuzmuvpbt", model.topMetricsThresholds().get(0).name());
-        Assertions.assertEquals(11.969751F, model.topMetricsThresholds().get(0).green());
-        Assertions.assertEquals(78.04989F, model.topMetricsThresholds().get(0).yellow());
-        Assertions.assertEquals(2.2329688F, model.topMetricsThresholds().get(0).red());
+        Assertions.assertEquals("yfjfcnjbkcn", model.grouping().landscape().get(0).name());
+        Assertions.assertEquals("bttk", model.grouping().landscape().get(0).topSid().get(0));
+        Assertions.assertEquals("qnermclfplphoxu", model.grouping().sapApplication().get(0).name());
+        Assertions.assertEquals("pabgyeps", model.grouping().sapApplication().get(0).topSid().get(0));
+        Assertions.assertEquals("xywpmueefjzwfqkq", model.topMetricsThresholds().get(0).name());
+        Assertions.assertEquals(14.922005F, model.topMetricsThresholds().get(0).green());
+        Assertions.assertEquals(76.74346F, model.topMetricsThresholds().get(0).yellow());
+        Assertions.assertEquals(41.041588F, model.topMetricsThresholds().get(0).red());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapLandscapeMonitorInner model = new SapLandscapeMonitorInner()
-            .withGrouping(new SapLandscapeMonitorPropertiesGrouping().withLandscape(Arrays.asList())
-                .withSapApplication(Arrays.asList()))
-            .withTopMetricsThresholds(
-                Arrays.asList(new SapLandscapeMonitorMetricThresholds().withName("mpgcjefuzmuvpbt")
-                    .withGreen(11.969751F)
-                    .withYellow(78.04989F)
-                    .withRed(2.2329688F)));
+            .withGrouping(new SapLandscapeMonitorPropertiesGrouping()
+                .withLandscape(Arrays.asList(new SapLandscapeMonitorSidMapping().withName("yfjfcnjbkcn")
+                    .withTopSid(Arrays.asList("bttk", "h", "wpn"))))
+                .withSapApplication(Arrays.asList(new SapLandscapeMonitorSidMapping().withName("qnermclfplphoxu")
+                    .withTopSid(Arrays.asList("pabgyeps", "jta")))))
+            .withTopMetricsThresholds(Arrays.asList(
+                new SapLandscapeMonitorMetricThresholds().withName("xywpmueefjzwfqkq")
+                    .withGreen(14.922005F)
+                    .withYellow(76.74346F)
+                    .withRed(41.041588F),
+                new SapLandscapeMonitorMetricThresholds().withName("nobglaocq")
+                    .withGreen(15.741169F)
+                    .withYellow(90.26907F)
+                    .withRed(62.299984F),
+                new SapLandscapeMonitorMetricThresholds().withName("dxyt")
+                    .withGreen(98.45001F)
+                    .withYellow(15.2881565F)
+                    .withRed(80.88741F)));
         model = BinaryData.fromObject(model).toObject(SapLandscapeMonitorInner.class);
-        Assertions.assertEquals("mpgcjefuzmuvpbt", model.topMetricsThresholds().get(0).name());
-        Assertions.assertEquals(11.969751F, model.topMetricsThresholds().get(0).green());
-        Assertions.assertEquals(78.04989F, model.topMetricsThresholds().get(0).yellow());
-        Assertions.assertEquals(2.2329688F, model.topMetricsThresholds().get(0).red());
+        Assertions.assertEquals("yfjfcnjbkcn", model.grouping().landscape().get(0).name());
+        Assertions.assertEquals("bttk", model.grouping().landscape().get(0).topSid().get(0));
+        Assertions.assertEquals("qnermclfplphoxu", model.grouping().sapApplication().get(0).name());
+        Assertions.assertEquals("pabgyeps", model.grouping().sapApplication().get(0).topSid().get(0));
+        Assertions.assertEquals("xywpmueefjzwfqkq", model.topMetricsThresholds().get(0).name());
+        Assertions.assertEquals(14.922005F, model.topMetricsThresholds().get(0).green());
+        Assertions.assertEquals(76.74346F, model.topMetricsThresholds().get(0).yellow());
+        Assertions.assertEquals(41.041588F, model.topMetricsThresholds().get(0).red());
     }
 }

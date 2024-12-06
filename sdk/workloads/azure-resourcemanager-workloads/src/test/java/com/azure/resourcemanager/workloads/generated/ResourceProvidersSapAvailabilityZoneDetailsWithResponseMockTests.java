@@ -6,61 +6,42 @@ package com.azure.resourcemanager.workloads.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.workloads.WorkloadsManager;
 import com.azure.resourcemanager.workloads.models.SapAvailabilityZoneDetailsRequest;
 import com.azure.resourcemanager.workloads.models.SapAvailabilityZoneDetailsResult;
 import com.azure.resourcemanager.workloads.models.SapDatabaseType;
 import com.azure.resourcemanager.workloads.models.SapProductType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ResourceProvidersSapAvailabilityZoneDetailsWithResponseMockTests {
     @Test
     public void testSapAvailabilityZoneDetailsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"availabilityZonePairs\":[{\"zoneA\":6361635428329654747,\"zoneB\":7784785853201585272},{\"zoneA\":3454564679932943672,\"zoneB\":5824526456552081192},{\"zoneA\":6174770568857951171,\"zoneB\":6143780622017155787}]}";
+            = "{\"availabilityZonePairs\":[{\"zoneA\":1750720875062450600,\"zoneB\":4417563431245742652}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         WorkloadsManager manager = WorkloadsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapAvailabilityZoneDetailsResult response = manager.resourceProviders()
-            .sapAvailabilityZoneDetailsWithResponse("emvvhm",
-                new SapAvailabilityZoneDetailsRequest().withAppLocation("tdrjfutacoebj")
-                    .withSapProduct(SapProductType.OTHER)
-                    .withDatabaseType(SapDatabaseType.DB2),
+            .sapAvailabilityZoneDetailsWithResponse("iplt",
+                new SapAvailabilityZoneDetailsRequest().withAppLocation("n")
+                    .withSapProduct(SapProductType.ECC)
+                    .withDatabaseType(SapDatabaseType.HANA),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(6361635428329654747L, response.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(7784785853201585272L, response.availabilityZonePairs().get(0).zoneB());
+        Assertions.assertEquals(1750720875062450600L, response.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(4417563431245742652L, response.availabilityZonePairs().get(0).zoneB());
     }
 }

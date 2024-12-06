@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the Threshold Values for Top Metrics Health. */
+/**
+ * Gets or sets the Threshold Values for Top Metrics Health.
+ */
 @Fluent
-public final class SapLandscapeMonitorMetricThresholds {
+public final class SapLandscapeMonitorMetricThresholds
+    implements JsonSerializable<SapLandscapeMonitorMetricThresholds> {
     /*
      * Gets or sets the name of the threshold.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the threshold value for Green.
      */
-    @JsonProperty(value = "green")
     private Float green;
 
     /*
      * Gets or sets the threshold value for Yellow.
      */
-    @JsonProperty(value = "yellow")
     private Float yellow;
 
     /*
      * Gets or sets the threshold value for Red.
      */
-    @JsonProperty(value = "red")
     private Float red;
 
-    /** Creates an instance of SapLandscapeMonitorMetricThresholds class. */
+    /**
+     * Creates an instance of SapLandscapeMonitorMetricThresholds class.
+     */
     public SapLandscapeMonitorMetricThresholds() {
     }
 
     /**
      * Get the name property: Gets or sets the name of the threshold.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +54,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the name property: Gets or sets the name of the threshold.
-     *
+     * 
      * @param name the name value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -60,7 +65,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Get the green property: Gets or sets the threshold value for Green.
-     *
+     * 
      * @return the green value.
      */
     public Float green() {
@@ -69,7 +74,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the green property: Gets or sets the threshold value for Green.
-     *
+     * 
      * @param green the green value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -80,7 +85,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Get the yellow property: Gets or sets the threshold value for Yellow.
-     *
+     * 
      * @return the yellow value.
      */
     public Float yellow() {
@@ -89,7 +94,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the yellow property: Gets or sets the threshold value for Yellow.
-     *
+     * 
      * @param yellow the yellow value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -100,7 +105,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Get the red property: Gets or sets the threshold value for Red.
-     *
+     * 
      * @return the red value.
      */
     public Float red() {
@@ -109,7 +114,7 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Set the red property: Gets or sets the threshold value for Red.
-     *
+     * 
      * @param red the red value to set.
      * @return the SapLandscapeMonitorMetricThresholds object itself.
      */
@@ -120,9 +125,55 @@ public final class SapLandscapeMonitorMetricThresholds {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("green", this.green);
+        jsonWriter.writeNumberField("yellow", this.yellow);
+        jsonWriter.writeNumberField("red", this.red);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapLandscapeMonitorMetricThresholds from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapLandscapeMonitorMetricThresholds if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapLandscapeMonitorMetricThresholds.
+     */
+    public static SapLandscapeMonitorMetricThresholds fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapLandscapeMonitorMetricThresholds deserializedSapLandscapeMonitorMetricThresholds
+                = new SapLandscapeMonitorMetricThresholds();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorMetricThresholds.name = reader.getString();
+                } else if ("green".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorMetricThresholds.green = reader.getNullable(JsonReader::getFloat);
+                } else if ("yellow".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorMetricThresholds.yellow = reader.getNullable(JsonReader::getFloat);
+                } else if ("red".equals(fieldName)) {
+                    deserializedSapLandscapeMonitorMetricThresholds.red = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapLandscapeMonitorMetricThresholds;
+        });
     }
 }

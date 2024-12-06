@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An error response from the Virtual Instance for SAP Workload service. */
+/**
+ * An error response from the Virtual Instance for SAP Workload service.
+ */
 @Fluent
-public final class SapVirtualInstanceError {
+public final class SapVirtualInstanceError implements JsonSerializable<SapVirtualInstanceError> {
     /*
      * The Virtual Instance for SAP error body.
      */
-    @JsonProperty(value = "properties")
     private ErrorDefinition properties;
 
-    /** Creates an instance of SapVirtualInstanceError class. */
+    /**
+     * Creates an instance of SapVirtualInstanceError class.
+     */
     public SapVirtualInstanceError() {
     }
 
     /**
      * Get the properties property: The Virtual Instance for SAP error body.
-     *
+     * 
      * @return the properties value.
      */
     public ErrorDefinition properties() {
@@ -31,7 +38,7 @@ public final class SapVirtualInstanceError {
 
     /**
      * Set the properties property: The Virtual Instance for SAP error body.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SapVirtualInstanceError object itself.
      */
@@ -42,12 +49,48 @@ public final class SapVirtualInstanceError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapVirtualInstanceError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapVirtualInstanceError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapVirtualInstanceError.
+     */
+    public static SapVirtualInstanceError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapVirtualInstanceError deserializedSapVirtualInstanceError = new SapVirtualInstanceError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSapVirtualInstanceError.properties = ErrorDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapVirtualInstanceError;
+        });
     }
 }

@@ -7,37 +7,57 @@ package com.azure.resourcemanager.workloads.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.DatabaseVmDetails;
 import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Define the Database resource. */
+/**
+ * Define the Database resource.
+ */
 @Fluent
 public final class SapDatabaseInstanceInner extends Resource {
     /*
      * Defines the Database properties.
      */
-    @JsonProperty(value = "properties")
     private SapDatabaseProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SapDatabaseInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SapDatabaseInstanceInner class.
+     */
     public SapDatabaseInstanceInner() {
     }
 
     /**
      * Get the innerProperties property: Defines the Database properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SapDatabaseProperties innerProperties() {
@@ -46,21 +66,55 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapDatabaseInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapDatabaseInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -69,7 +123,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the subnet property: Database subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -78,7 +132,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the databaseSid property: Database SID name.
-     *
+     * 
      * @return the databaseSid value.
      */
     public String databaseSid() {
@@ -88,7 +142,7 @@ public final class SapDatabaseInstanceInner extends Resource {
     /**
      * Get the databaseType property: Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL
      * Server.
-     *
+     * 
      * @return the databaseType value.
      */
     public String databaseType() {
@@ -97,7 +151,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the ipAddress property: Database IP Address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -107,7 +161,7 @@ public final class SapDatabaseInstanceInner extends Resource {
     /**
      * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Database
      * Virtual Machines.
-     *
+     * 
      * @return the loadBalancerDetails value.
      */
     public LoadBalancerDetails loadBalancerDetails() {
@@ -116,7 +170,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the vmDetails property: The list of virtual machines corresponding to the Database resource.
-     *
+     * 
      * @return the vmDetails value.
      */
     public List<DatabaseVmDetails> vmDetails() {
@@ -125,7 +179,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -134,7 +188,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -143,7 +197,7 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Get the errors property: Defines the errors related to Database resource.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -152,12 +206,64 @@ public final class SapDatabaseInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapDatabaseInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapDatabaseInstanceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapDatabaseInstanceInner.
+     */
+    public static SapDatabaseInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapDatabaseInstanceInner deserializedSapDatabaseInstanceInner = new SapDatabaseInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSapDatabaseInstanceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceInner.innerProperties = SapDatabaseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapDatabaseInstanceInner;
+        });
     }
 }
