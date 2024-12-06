@@ -872,7 +872,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         else
         {
             $hasError = $true
-            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing signature version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
 
