@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SapApplicationServerInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SapApplicationServerInstancesClient.
+ */
 public final class SapApplicationServerInstancesClientImpl implements SapApplicationServerInstancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SapApplicationServerInstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WorkloadsClientImpl client;
 
     /**
      * Initializes an instance of SapApplicationServerInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SapApplicationServerInstancesClientImpl(WorkloadsClientImpl client) {
@@ -161,7 +167,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -169,7 +175,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapApplicationServerInstanceInner>> getWithResponseAsync(String resourceGroupName,
@@ -204,7 +210,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -213,7 +219,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapApplicationServerInstanceInner>> getWithResponseAsync(String resourceGroupName,
@@ -246,7 +252,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -254,7 +260,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapApplicationServerInstanceInner> getAsync(String resourceGroupName, String sapVirtualInstanceName,
@@ -265,7 +271,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -274,7 +280,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapApplicationServerInstanceInner> getWithResponse(String resourceGroupName,
@@ -285,7 +291,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Gets the SAP Application Server Instance corresponding to the Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -304,7 +310,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -313,7 +319,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the SAP Application Server Instance resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -352,7 +358,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -362,7 +368,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the SAP Application Server Instance resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -400,7 +406,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -424,7 +430,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -447,7 +453,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -473,7 +479,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -493,7 +499,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -515,7 +521,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -535,7 +541,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -555,7 +561,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -577,7 +583,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -596,7 +602,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Puts the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by
      * end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -615,7 +621,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -624,7 +630,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the SAP Application Server Instance resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -662,7 +668,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -672,7 +678,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the SAP Application Server Instance resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -709,7 +715,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -732,7 +738,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -754,7 +760,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -779,7 +785,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -798,7 +804,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -819,7 +825,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -838,7 +844,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -857,7 +863,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -878,7 +884,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -896,7 +902,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Puts the SAP Application Server Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -916,15 +922,15 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -960,7 +966,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -968,8 +974,8 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -1003,7 +1009,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1025,7 +1031,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1048,7 +1054,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1067,7 +1073,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1087,7 +1093,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1106,7 +1112,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1126,7 +1132,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1144,7 +1150,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     /**
      * Deletes the SAP Application Server Instance resource. &lt;br&gt;&lt;br&gt;This operation will be used by service
      * only. Delete by end user will return a Bad Request error.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1162,14 +1168,14 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of SAP Application Server Instance resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapApplicationServerInstanceInner>> listSinglePageAsync(String resourceGroupName,
@@ -1201,7 +1207,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -1209,7 +1215,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of SAP Application Server Instance resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapApplicationServerInstanceInner>> listSinglePageAsync(String resourceGroupName,
@@ -1241,14 +1247,14 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Application Server Instance resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return defines the collection of SAP Application Server Instance resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SapApplicationServerInstanceInner> listAsync(String resourceGroupName,
@@ -1259,15 +1265,15 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Application Server Instance resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return defines the collection of SAP Application Server Instance resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SapApplicationServerInstanceInner> listAsync(String resourceGroupName,
@@ -1278,14 +1284,14 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Application Server Instance resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return defines the collection of SAP Application Server Instance resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SapApplicationServerInstanceInner> list(String resourceGroupName,
@@ -1295,15 +1301,15 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Lists the SAP Application Server Instance resources for a given Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Application Server Instance resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return defines the collection of SAP Application Server Instance resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SapApplicationServerInstanceInner> list(String resourceGroupName,
@@ -1313,15 +1319,15 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startInstanceWithResponseAsync(String resourceGroupName,
@@ -1356,7 +1362,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1364,8 +1370,8 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startInstanceWithResponseAsync(String resourceGroupName,
@@ -1398,7 +1404,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1419,7 +1425,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1441,7 +1447,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1459,7 +1465,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1478,7 +1484,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1496,7 +1502,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1516,7 +1522,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1533,7 +1539,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Starts the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1551,7 +1557,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1559,8 +1565,8 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopInstanceWithResponseAsync(String resourceGroupName,
@@ -1598,7 +1604,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1607,8 +1613,8 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopInstanceWithResponseAsync(String resourceGroupName,
@@ -1644,7 +1650,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1666,7 +1672,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1688,7 +1694,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1712,7 +1718,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1731,7 +1737,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1753,7 +1759,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1772,7 +1778,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1791,7 +1797,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1812,7 +1818,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1830,7 +1836,7 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Stops the SAP Application Server Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param applicationInstanceName The name of SAP Application Server instance resource.
@@ -1850,14 +1856,13 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of SAP Application Server Instance resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapApplicationServerInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1877,15 +1882,14 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of SAP Application Server Instance resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapApplicationServerInstanceInner>> listNextSinglePageAsync(String nextLink,

@@ -11,7 +11,7 @@ public final class LoadBalancerDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoadBalancerDetails model
-            = BinaryData.fromString("{\"id\":\"jqkwpyeicx\"}").toObject(LoadBalancerDetails.class);
+            = BinaryData.fromString("{\"id\":\"xhdzxibqeojnx\"}").toObject(LoadBalancerDetails.class);
     }
 
     @org.junit.jupiter.api.Test

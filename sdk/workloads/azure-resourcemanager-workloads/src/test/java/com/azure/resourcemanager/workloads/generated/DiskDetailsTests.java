@@ -14,33 +14,33 @@ public final class DiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskDetails model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"Standard_LRS\"},\"sizeGB\":5612595688544592348,\"minimumSupportedDiskCount\":8451324547573976029,\"maximumSupportedDiskCount\":4274110393583912034,\"iopsReadWrite\":5470433313051888734,\"mbpsReadWrite\":7911846487069687431,\"diskTier\":\"nwzsymg\"}")
+            "{\"sku\":{\"name\":\"PremiumV2_LRS\"},\"sizeGB\":1238812057634274431,\"minimumSupportedDiskCount\":8676926822483952686,\"maximumSupportedDiskCount\":7845911778748581750,\"iopsReadWrite\":3225020590001531371,\"mbpsReadWrite\":1759642651685294957,\"diskTier\":\"vwmf\"}")
             .toObject(DiskDetails.class);
-        Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.sku().name());
-        Assertions.assertEquals(5612595688544592348L, model.sizeGB());
-        Assertions.assertEquals(8451324547573976029L, model.minimumSupportedDiskCount());
-        Assertions.assertEquals(4274110393583912034L, model.maximumSupportedDiskCount());
-        Assertions.assertEquals(5470433313051888734L, model.iopsReadWrite());
-        Assertions.assertEquals(7911846487069687431L, model.mbpsReadWrite());
-        Assertions.assertEquals("nwzsymg", model.diskTier());
+        Assertions.assertEquals(DiskSkuName.PREMIUM_V2_LRS, model.sku().name());
+        Assertions.assertEquals(1238812057634274431L, model.sizeGB());
+        Assertions.assertEquals(8676926822483952686L, model.minimumSupportedDiskCount());
+        Assertions.assertEquals(7845911778748581750L, model.maximumSupportedDiskCount());
+        Assertions.assertEquals(3225020590001531371L, model.iopsReadWrite());
+        Assertions.assertEquals(1759642651685294957L, model.mbpsReadWrite());
+        Assertions.assertEquals("vwmf", model.diskTier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskDetails model = new DiskDetails().withSku(new DiskSku().withName(DiskSkuName.STANDARD_LRS))
-            .withSizeGB(5612595688544592348L)
-            .withMinimumSupportedDiskCount(8451324547573976029L)
-            .withMaximumSupportedDiskCount(4274110393583912034L)
-            .withIopsReadWrite(5470433313051888734L)
-            .withMbpsReadWrite(7911846487069687431L)
-            .withDiskTier("nwzsymg");
+        DiskDetails model = new DiskDetails().withSku(new DiskSku().withName(DiskSkuName.PREMIUM_V2_LRS))
+            .withSizeGB(1238812057634274431L)
+            .withMinimumSupportedDiskCount(8676926822483952686L)
+            .withMaximumSupportedDiskCount(7845911778748581750L)
+            .withIopsReadWrite(3225020590001531371L)
+            .withMbpsReadWrite(1759642651685294957L)
+            .withDiskTier("vwmf");
         model = BinaryData.fromObject(model).toObject(DiskDetails.class);
-        Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.sku().name());
-        Assertions.assertEquals(5612595688544592348L, model.sizeGB());
-        Assertions.assertEquals(8451324547573976029L, model.minimumSupportedDiskCount());
-        Assertions.assertEquals(4274110393583912034L, model.maximumSupportedDiskCount());
-        Assertions.assertEquals(5470433313051888734L, model.iopsReadWrite());
-        Assertions.assertEquals(7911846487069687431L, model.mbpsReadWrite());
-        Assertions.assertEquals("nwzsymg", model.diskTier());
+        Assertions.assertEquals(DiskSkuName.PREMIUM_V2_LRS, model.sku().name());
+        Assertions.assertEquals(1238812057634274431L, model.sizeGB());
+        Assertions.assertEquals(8676926822483952686L, model.minimumSupportedDiskCount());
+        Assertions.assertEquals(7845911778748581750L, model.maximumSupportedDiskCount());
+        Assertions.assertEquals(3225020590001531371L, model.iopsReadWrite());
+        Assertions.assertEquals(1759642651685294957L, model.mbpsReadWrite());
+        Assertions.assertEquals("vwmf", model.diskTier());
     }
 }
