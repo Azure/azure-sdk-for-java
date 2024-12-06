@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceValidation. */
+/**
+ * Defines values for ResourceValidation.
+ */
 public final class ResourceValidation extends ExpandableStringEnum<ResourceValidation> {
-    /** Static value NotSpecified for ResourceValidation. */
+    /**
+     * Static value NotSpecified for ResourceValidation.
+     */
     public static final ResourceValidation NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value ReservedWords for ResourceValidation. */
+    /**
+     * Static value ReservedWords for ResourceValidation.
+     */
     public static final ResourceValidation RESERVED_WORDS = fromString("ReservedWords");
 
-    /** Static value ProfaneWords for ResourceValidation. */
+    /**
+     * Static value ProfaneWords for ResourceValidation.
+     */
     public static final ResourceValidation PROFANE_WORDS = fromString("ProfaneWords");
 
     /**
      * Creates a new instance of ResourceValidation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ResourceValidation extends ExpandableStringEnum<ResourceValid
 
     /**
      * Creates or finds a ResourceValidation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceValidation.
      */
-    @JsonCreator
     public static ResourceValidation fromString(String name) {
         return fromString(name, ResourceValidation.class);
     }
 
     /**
      * Gets known ResourceValidation values.
-     *
+     * 
      * @return known ResourceValidation values.
      */
     public static Collection<ResourceValidation> values() {

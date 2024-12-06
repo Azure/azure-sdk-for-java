@@ -6,31 +6,37 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceTypeSku model. */
+/**
+ * The ResourceTypeSku model.
+ */
 @Fluent
-public class ResourceTypeSku {
+public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     /*
      * The skuSettings property.
      */
-    @JsonProperty(value = "skuSettings", required = true)
     private List<SkuSetting> skuSettings;
 
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ResourceTypeSku class. */
+    /**
+     * Creates an instance of ResourceTypeSku class.
+     */
     public ResourceTypeSku() {
     }
 
     /**
      * Get the skuSettings property: The skuSettings property.
-     *
+     * 
      * @return the skuSettings value.
      */
     public List<SkuSetting> skuSettings() {
@@ -39,7 +45,7 @@ public class ResourceTypeSku {
 
     /**
      * Set the skuSettings property: The skuSettings property.
-     *
+     * 
      * @param skuSettings the skuSettings value to set.
      * @return the ResourceTypeSku object itself.
      */
@@ -50,7 +56,7 @@ public class ResourceTypeSku {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +65,7 @@ public class ResourceTypeSku {
 
     /**
      * Set the provisioningState property: The provisioningState property.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ResourceTypeSku object itself.
      */
@@ -70,17 +76,59 @@ public class ResourceTypeSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (skuSettings() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property skuSettings in model ResourceTypeSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property skuSettings in model ResourceTypeSku"));
         } else {
             skuSettings().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceTypeSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("skuSettings", this.skuSettings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceTypeSku.
+     */
+    public static ResourceTypeSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeSku deserializedResourceTypeSku = new ResourceTypeSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skuSettings".equals(fieldName)) {
+                    List<SkuSetting> skuSettings = reader.readArray(reader1 -> SkuSetting.fromJson(reader1));
+                    deserializedResourceTypeSku.skuSettings = skuSettings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedResourceTypeSku.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeSku;
+        });
+    }
 }
