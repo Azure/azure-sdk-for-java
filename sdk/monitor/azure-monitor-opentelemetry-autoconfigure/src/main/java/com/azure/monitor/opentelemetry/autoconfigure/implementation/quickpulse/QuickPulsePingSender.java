@@ -9,6 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.NetworkFriendlyExceptions;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
@@ -19,6 +20,7 @@ import reactor.util.annotation.Nullable;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -35,12 +37,7 @@ class QuickPulsePingSender {
     //  operationLogger?
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
 
-    // TODO: remove httpPipeline if not needed
-    //private final HttpPipeline httpPipeline;
     private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
-    //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    // private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
-
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
     private final String roleName;
@@ -49,14 +46,13 @@ class QuickPulsePingSender {
     private final String quickPulseId;
     private long lastValidRequestTimeNs = System.nanoTime();
     private final String sdkVersion;
-
+    private final AtomicReference<FilteringConfiguration> configuration;
     private IsSubscribedHeaders responseHeaders;
-
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
 
     QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
-        String quickPulseId, String sdkVersion) {
+        String quickPulseId, String sdkVersion, AtomicReference<FilteringConfiguration> configuration) {
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -66,6 +62,7 @@ class QuickPulsePingSender {
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
         this.responseHeaders = null;
+        this.configuration = configuration;
     }
 
     IsSubscribedHeaders ping(String redirectedEndpoint) {
@@ -103,6 +100,11 @@ class QuickPulsePingSender {
             if (!Strings.isNullOrEmpty(isSubscribed)) {
                 operationLogger.recordSuccess(); // when does this need to be called
                 lastValidRequestTimeNs = sendTime;
+            }
+
+            CollectionConfigurationInfo body = responseMono.getValue();
+            if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                configuration.set(new FilteringConfiguration(body));
             }
 
             return responseHeaders;

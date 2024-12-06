@@ -6,17 +6,20 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PublishHeaders;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 class QuickPulseDataSender implements Runnable {
@@ -39,14 +42,17 @@ class QuickPulseDataSender implements Runnable {
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
+    private final AtomicReference<FilteringConfiguration> configuration;
+
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
         ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey) {
+        Supplier<String> instrumentationKey, AtomicReference<FilteringConfiguration> configuration) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.qpStatus = QuickPulseStatus.QP_IS_OFF;
         this.instrumentationKey = instrumentationKey;
+        this.configuration = configuration;
     }
 
     @Override
@@ -74,10 +80,12 @@ class QuickPulseDataSender implements Runnable {
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
-                //TODO (harskaur): for a future PR populate the saved etag here for filtering
+                // TODO (harskaur): remove logging when manual testing done
+                logger.verbose("Monitoring point: {}", point.toJsonString());
+                logger.verbose("etag: {}", configuration.get().getETag());
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
-                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "",
-                        transmissionTimeInTicks, dataPointList)
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(),
+                        configuration.get().getETag(), transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
@@ -96,9 +104,12 @@ class QuickPulseDataSender implements Runnable {
                 }
 
                 lastValidRequestTimeNs = sendTime;
-                //TODO (harskaur): for a future PR parse the response body here for filtering
+                CollectionConfigurationInfo body = responseMono.getValue();
+                if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                    configuration.set(new FilteringConfiguration(body));
+                }
 
-            } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
+            } catch (RuntimeException | IOException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);
                 logger.error(
                     "QuickPulseDataSender received a service error while attempting to send data to quickpulse {}",

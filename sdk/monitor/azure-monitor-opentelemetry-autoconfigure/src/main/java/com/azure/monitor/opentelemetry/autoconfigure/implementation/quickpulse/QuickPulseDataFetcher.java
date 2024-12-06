@@ -41,7 +41,6 @@ class QuickPulseDataFetcher {
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
-
     }
 
     /**
