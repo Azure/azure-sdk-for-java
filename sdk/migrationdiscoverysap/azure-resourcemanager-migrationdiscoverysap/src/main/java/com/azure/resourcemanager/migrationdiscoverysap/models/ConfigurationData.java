@@ -5,81 +5,73 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SAP instance specific configuration data.
  */
 @Immutable
-public final class ConfigurationData {
+public final class ConfigurationData implements JsonSerializable<ConfigurationData> {
     /*
      * Provide the SAPS for each server of the SAP system. This should be a non-zero value. For example, 1000.
      */
-    @JsonProperty(value = "saps", access = JsonProperty.Access.WRITE_ONLY)
     private Integer saps;
 
     /*
      * Provide the CPU value of the server. For example, 16, 32 etc.
      */
-    @JsonProperty(value = "cpu", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cpu;
 
     /*
      * Provide the CPU architecture type of the server. For example, Xeon Platinum 8171M, Xeon E5-2673 v3.
      */
-    @JsonProperty(value = "cpuType", access = JsonProperty.Access.WRITE_ONLY)
     private String cpuType;
 
     /*
      * Provide the CPU clock speed of the server in MHz. This should be a non-zero value. For example, 2100.
      */
-    @JsonProperty(value = "cpuInMhz", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cpuInMhz;
 
     /*
      * Provide the RAM of the server. This should be a non-zero value. For example, 256.
      */
-    @JsonProperty(value = "ram", access = JsonProperty.Access.WRITE_ONLY)
     private Integer ram;
 
     /*
      * Provide the HW manufacturer company of the server. For example, Microsoft Corporation.
      */
-    @JsonProperty(value = "hardwareManufacturer", access = JsonProperty.Access.WRITE_ONLY)
     private String hardwareManufacturer;
 
     /*
      * Specify if the Hardware is a physical server or virtual machine.
      */
-    @JsonProperty(value = "model", access = JsonProperty.Access.WRITE_ONLY)
     private String model;
 
     /*
-     * Provide the total disk volume capacity in GB. Add the disk volume for each individual disks and provide the
-     * total sum in this field.
+     * Provide the total disk volume capacity in GB. Add the disk volume for each individual disks and provide the total
+     * sum in this field.
      */
-    @JsonProperty(value = "totalDiskSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalDiskSizeGB;
 
     /*
      * Provide the total disk IOPS capacity. Add the disk volume for each individual disk and provide the sum total in
      * this field.
      */
-    @JsonProperty(value = "totalDiskIops", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalDiskIops;
 
     /*
-     * The database of this is a server instance. Applicable only if SAP instance type for this server instance is
-     * 'DB'.
+     * The database of this is a server instance. Applicable only if SAP instance type for this server instance is 'DB'.
      */
-    @JsonProperty(value = "databaseType", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseType databaseType;
 
     /*
      * Provide the target HANA database size you need. Applicable only if SAP instance type for this server instance is
      * 'DB' and you are migrating an AnyDb database to SAP S/4HANA.
      */
-    @JsonProperty(value = "targetHanaRamSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetHanaRamSizeGB;
 
     /**
@@ -108,8 +100,8 @@ public final class ConfigurationData {
     }
 
     /**
-     * Get the cpuType property: Provide the CPU architecture type of the server. For example, Xeon Platinum 8171M,
-     * Xeon E5-2673 v3.
+     * Get the cpuType property: Provide the CPU architecture type of the server. For example, Xeon Platinum 8171M, Xeon
+     * E5-2673 v3.
      * 
      * @return the cpuType value.
      */
@@ -118,8 +110,8 @@ public final class ConfigurationData {
     }
 
     /**
-     * Get the cpuInMhz property: Provide the CPU clock speed of the server in MHz. This should be a non-zero value.
-     * For example, 2100.
+     * Get the cpuInMhz property: Provide the CPU clock speed of the server in MHz. This should be a non-zero value. For
+     * example, 2100.
      * 
      * @return the cpuInMhz value.
      */
@@ -137,8 +129,8 @@ public final class ConfigurationData {
     }
 
     /**
-     * Get the hardwareManufacturer property: Provide the HW manufacturer company of the server. For example,
-     * Microsoft Corporation.
+     * Get the hardwareManufacturer property: Provide the HW manufacturer company of the server. For example, Microsoft
+     * Corporation.
      * 
      * @return the hardwareManufacturer value.
      */
@@ -201,5 +193,60 @@ public final class ConfigurationData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationData.
+     */
+    public static ConfigurationData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationData deserializedConfigurationData = new ConfigurationData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("saps".equals(fieldName)) {
+                    deserializedConfigurationData.saps = reader.getNullable(JsonReader::getInt);
+                } else if ("cpu".equals(fieldName)) {
+                    deserializedConfigurationData.cpu = reader.getNullable(JsonReader::getInt);
+                } else if ("cpuType".equals(fieldName)) {
+                    deserializedConfigurationData.cpuType = reader.getString();
+                } else if ("cpuInMhz".equals(fieldName)) {
+                    deserializedConfigurationData.cpuInMhz = reader.getNullable(JsonReader::getInt);
+                } else if ("ram".equals(fieldName)) {
+                    deserializedConfigurationData.ram = reader.getNullable(JsonReader::getInt);
+                } else if ("hardwareManufacturer".equals(fieldName)) {
+                    deserializedConfigurationData.hardwareManufacturer = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    deserializedConfigurationData.model = reader.getString();
+                } else if ("totalDiskSizeGB".equals(fieldName)) {
+                    deserializedConfigurationData.totalDiskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("totalDiskIops".equals(fieldName)) {
+                    deserializedConfigurationData.totalDiskIops = reader.getNullable(JsonReader::getInt);
+                } else if ("databaseType".equals(fieldName)) {
+                    deserializedConfigurationData.databaseType = DatabaseType.fromString(reader.getString());
+                } else if ("targetHanaRamSizeGB".equals(fieldName)) {
+                    deserializedConfigurationData.targetHanaRamSizeGB = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationData;
+        });
     }
 }
