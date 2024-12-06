@@ -67,7 +67,9 @@
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
-    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/generated/**/*.java,**/aalto/**/*.java</checkstyle.excludes>
+
+    <spotbugs.excludes>**/aalto/**/*.java</spotbugs.excludes>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
@@ -180,6 +182,18 @@
             <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
           </dependency>
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <excludes>
+            <exclude>META-INF/**</exclude>
+            <exclude>**/io/clientcore/core/serialization/xml/implementation/aalto/**</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

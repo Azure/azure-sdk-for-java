@@ -6,6 +6,9 @@
  */
 module io.clientcore.core {
     requires transitive io.clientcore.core.json;
+
+    requires transitive java.xml;
+
     requires java.net.http;
 
     // public API surface area
