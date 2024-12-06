@@ -5,67 +5,67 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceProviderManagement model. */
+/**
+ * The ResourceProviderManagement model.
+ */
 @Fluent
-public class ResourceProviderManagement {
+public class ResourceProviderManagement implements JsonSerializable<ResourceProviderManagement> {
     /*
      * The schemaOwners property.
      */
-    @JsonProperty(value = "schemaOwners")
     private List<String> schemaOwners;
 
     /*
      * The manifestOwners property.
      */
-    @JsonProperty(value = "manifestOwners")
     private List<String> manifestOwners;
 
     /*
      * The incidentRoutingService property.
      */
-    @JsonProperty(value = "incidentRoutingService")
     private String incidentRoutingService;
 
     /*
      * The incidentRoutingTeam property.
      */
-    @JsonProperty(value = "incidentRoutingTeam")
     private String incidentRoutingTeam;
 
     /*
      * The incidentContactEmail property.
      */
-    @JsonProperty(value = "incidentContactEmail")
     private String incidentContactEmail;
 
     /*
      * The serviceTreeInfos property.
      */
-    @JsonProperty(value = "serviceTreeInfos")
     private List<ServiceTreeInfo> serviceTreeInfos;
 
     /*
      * The resourceAccessPolicy property.
      */
-    @JsonProperty(value = "resourceAccessPolicy")
     private ResourceAccessPolicy resourceAccessPolicy;
 
     /*
      * The resourceAccessRoles property.
      */
-    @JsonProperty(value = "resourceAccessRoles")
     private List<Object> resourceAccessRoles;
 
-    /** Creates an instance of ResourceProviderManagement class. */
+    /**
+     * Creates an instance of ResourceProviderManagement class.
+     */
     public ResourceProviderManagement() {
     }
 
     /**
      * Get the schemaOwners property: The schemaOwners property.
-     *
+     * 
      * @return the schemaOwners value.
      */
     public List<String> schemaOwners() {
@@ -74,7 +74,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the schemaOwners property: The schemaOwners property.
-     *
+     * 
      * @param schemaOwners the schemaOwners value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -85,7 +85,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the manifestOwners property: The manifestOwners property.
-     *
+     * 
      * @return the manifestOwners value.
      */
     public List<String> manifestOwners() {
@@ -94,7 +94,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the manifestOwners property: The manifestOwners property.
-     *
+     * 
      * @param manifestOwners the manifestOwners value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -105,7 +105,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the incidentRoutingService property: The incidentRoutingService property.
-     *
+     * 
      * @return the incidentRoutingService value.
      */
     public String incidentRoutingService() {
@@ -114,7 +114,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the incidentRoutingService property: The incidentRoutingService property.
-     *
+     * 
      * @param incidentRoutingService the incidentRoutingService value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -125,7 +125,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the incidentRoutingTeam property: The incidentRoutingTeam property.
-     *
+     * 
      * @return the incidentRoutingTeam value.
      */
     public String incidentRoutingTeam() {
@@ -134,7 +134,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the incidentRoutingTeam property: The incidentRoutingTeam property.
-     *
+     * 
      * @param incidentRoutingTeam the incidentRoutingTeam value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -145,7 +145,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the incidentContactEmail property: The incidentContactEmail property.
-     *
+     * 
      * @return the incidentContactEmail value.
      */
     public String incidentContactEmail() {
@@ -154,7 +154,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the incidentContactEmail property: The incidentContactEmail property.
-     *
+     * 
      * @param incidentContactEmail the incidentContactEmail value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -165,7 +165,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the serviceTreeInfos property: The serviceTreeInfos property.
-     *
+     * 
      * @return the serviceTreeInfos value.
      */
     public List<ServiceTreeInfo> serviceTreeInfos() {
@@ -174,7 +174,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the serviceTreeInfos property: The serviceTreeInfos property.
-     *
+     * 
      * @param serviceTreeInfos the serviceTreeInfos value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -185,7 +185,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the resourceAccessPolicy property: The resourceAccessPolicy property.
-     *
+     * 
      * @return the resourceAccessPolicy value.
      */
     public ResourceAccessPolicy resourceAccessPolicy() {
@@ -194,7 +194,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the resourceAccessPolicy property: The resourceAccessPolicy property.
-     *
+     * 
      * @param resourceAccessPolicy the resourceAccessPolicy value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -205,7 +205,7 @@ public class ResourceProviderManagement {
 
     /**
      * Get the resourceAccessRoles property: The resourceAccessRoles property.
-     *
+     * 
      * @return the resourceAccessRoles value.
      */
     public List<Object> resourceAccessRoles() {
@@ -214,7 +214,7 @@ public class ResourceProviderManagement {
 
     /**
      * Set the resourceAccessRoles property: The resourceAccessRoles property.
-     *
+     * 
      * @param resourceAccessRoles the resourceAccessRoles value to set.
      * @return the ResourceProviderManagement object itself.
      */
@@ -225,12 +225,79 @@ public class ResourceProviderManagement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceTreeInfos() != null) {
             serviceTreeInfos().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("schemaOwners", this.schemaOwners, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("manifestOwners", this.manifestOwners,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("incidentRoutingService", this.incidentRoutingService);
+        jsonWriter.writeStringField("incidentRoutingTeam", this.incidentRoutingTeam);
+        jsonWriter.writeStringField("incidentContactEmail", this.incidentContactEmail);
+        jsonWriter.writeArrayField("serviceTreeInfos", this.serviceTreeInfos,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("resourceAccessPolicy",
+            this.resourceAccessPolicy == null ? null : this.resourceAccessPolicy.toString());
+        jsonWriter.writeArrayField("resourceAccessRoles", this.resourceAccessRoles,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderManagement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderManagement if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderManagement.
+     */
+    public static ResourceProviderManagement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderManagement deserializedResourceProviderManagement = new ResourceProviderManagement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schemaOwners".equals(fieldName)) {
+                    List<String> schemaOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.schemaOwners = schemaOwners;
+                } else if ("manifestOwners".equals(fieldName)) {
+                    List<String> manifestOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.manifestOwners = manifestOwners;
+                } else if ("incidentRoutingService".equals(fieldName)) {
+                    deserializedResourceProviderManagement.incidentRoutingService = reader.getString();
+                } else if ("incidentRoutingTeam".equals(fieldName)) {
+                    deserializedResourceProviderManagement.incidentRoutingTeam = reader.getString();
+                } else if ("incidentContactEmail".equals(fieldName)) {
+                    deserializedResourceProviderManagement.incidentContactEmail = reader.getString();
+                } else if ("serviceTreeInfos".equals(fieldName)) {
+                    List<ServiceTreeInfo> serviceTreeInfos
+                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
+                    deserializedResourceProviderManagement.serviceTreeInfos = serviceTreeInfos;
+                } else if ("resourceAccessPolicy".equals(fieldName)) {
+                    deserializedResourceProviderManagement.resourceAccessPolicy
+                        = ResourceAccessPolicy.fromString(reader.getString());
+                } else if ("resourceAccessRoles".equals(fieldName)) {
+                    List<Object> resourceAccessRoles = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedResourceProviderManagement.resourceAccessRoles = resourceAccessRoles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderManagement;
+        });
     }
 }

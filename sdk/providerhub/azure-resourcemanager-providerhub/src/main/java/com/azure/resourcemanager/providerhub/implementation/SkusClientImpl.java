@@ -33,17 +33,23 @@ import com.azure.resourcemanager.providerhub.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.providerhub.models.SkuResourceArrayResponseWithContinuation;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SkusClient.
+ */
 public final class SkusClientImpl implements SkusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SkusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of SkusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SkusClientImpl(ProviderHubImpl client) {
@@ -59,8 +65,7 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceInterface(name = "ProviderHubSkus")
     public interface SkusService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> get(@HostParam("$host") String endpoint,
@@ -70,8 +75,7 @@ public final class SkusClientImpl implements SkusClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -82,8 +86,7 @@ public final class SkusClientImpl implements SkusClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/skus/{sku}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus/{sku}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -93,9 +96,7 @@ public final class SkusClientImpl implements SkusClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-            + "/{sku}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> getNestedResourceTypeFirst(@HostParam("$host") String endpoint,
@@ -105,9 +106,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-            + "/{sku}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeFirst(@HostParam("$host") String endpoint,
@@ -118,9 +117,7 @@ public final class SkusClientImpl implements SkusClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-            + "/{sku}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus/{sku}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteNestedResourceTypeFirst(@HostParam("$host") String endpoint,
@@ -130,9 +127,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> getNestedResourceTypeSecond(@HostParam("$host") String endpoint,
@@ -143,9 +138,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeSecond(@HostParam("$host") String endpoint,
@@ -157,9 +150,7 @@ public final class SkusClientImpl implements SkusClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus/{sku}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteNestedResourceTypeSecond(@HostParam("$host") String endpoint,
@@ -170,10 +161,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-            + "/{nestedResourceTypeThird}/skus/{sku}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations/{nestedResourceTypeThird}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> getNestedResourceTypeThird(@HostParam("$host") String endpoint,
@@ -185,10 +173,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-            + "/{nestedResourceTypeThird}/skus/{sku}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations/{nestedResourceTypeThird}/skus/{sku}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceInner>> createOrUpdateNestedResourceTypeThird(@HostParam("$host") String endpoint,
@@ -201,10 +186,7 @@ public final class SkusClientImpl implements SkusClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-            + "/{nestedResourceTypeThird}/skus/{sku}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations/{nestedResourceTypeThird}/skus/{sku}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteNestedResourceTypeThird(@HostParam("$host") String endpoint,
@@ -216,8 +198,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/skus")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrations(
@@ -226,8 +207,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrationsNestedResourceTypeFirst(
@@ -237,9 +217,7 @@ public final class SkusClientImpl implements SkusClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>>
@@ -252,10 +230,7 @@ public final class SkusClientImpl implements SkusClient {
                 @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}"
-            + "/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations"
-            + "/{nestedResourceTypeThird}/skus")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations/{nestedResourceTypeThird}/skus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuResourceArrayResponseWithContinuation>> listByResourceTypeRegistrationsNestedResourceTypeThird(
@@ -304,7 +279,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -312,7 +287,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getWithResponseAsync(String providerNamespace, String resourceType,
@@ -344,7 +319,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -353,7 +328,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getWithResponseAsync(String providerNamespace, String resourceType,
@@ -384,7 +359,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -401,7 +376,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -419,7 +394,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -435,7 +410,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -480,7 +455,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -525,7 +500,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -544,7 +519,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -563,7 +538,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -581,7 +556,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -619,7 +594,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -658,7 +633,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -674,7 +649,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -692,7 +667,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -707,7 +682,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -716,7 +691,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getNestedResourceTypeFirstWithResponseAsync(String providerNamespace,
@@ -753,7 +728,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -763,7 +738,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getNestedResourceTypeFirstWithResponseAsync(String providerNamespace,
@@ -799,7 +774,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -818,7 +793,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -838,7 +813,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -857,7 +832,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -909,7 +884,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -961,7 +936,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -981,7 +956,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1002,7 +977,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1022,7 +997,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1067,7 +1042,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1112,7 +1087,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1131,7 +1106,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1151,7 +1126,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1169,7 +1144,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1179,7 +1154,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getNestedResourceTypeSecondWithResponseAsync(String providerNamespace,
@@ -1220,7 +1195,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1231,7 +1206,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getNestedResourceTypeSecondWithResponseAsync(String providerNamespace,
@@ -1272,7 +1247,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1292,7 +1267,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1314,7 +1289,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1334,7 +1309,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1391,7 +1366,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1448,7 +1423,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1471,7 +1446,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1494,7 +1469,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1515,7 +1490,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1565,7 +1540,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1616,7 +1591,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1636,7 +1611,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1657,7 +1632,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1676,7 +1651,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1687,7 +1662,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getNestedResourceTypeThirdWithResponseAsync(String providerNamespace,
@@ -1733,7 +1708,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1745,7 +1720,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sku details for the given resource type and sku name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuResourceInner>> getNestedResourceTypeThirdWithResponseAsync(String providerNamespace,
@@ -1790,7 +1765,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1811,7 +1786,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1834,7 +1809,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1855,7 +1830,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1918,7 +1893,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -1980,7 +1955,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2004,7 +1979,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2029,7 +2004,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2053,7 +2028,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2109,7 +2084,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2165,7 +2140,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2186,7 +2161,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2209,7 +2184,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2229,14 +2204,14 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>>
@@ -2268,7 +2243,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -2276,7 +2251,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>>
@@ -2307,7 +2282,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2324,7 +2299,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -2343,7 +2318,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2359,7 +2334,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -2376,7 +2351,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2384,7 +2359,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(
@@ -2420,7 +2395,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2429,7 +2404,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeFirstSinglePageAsync(
@@ -2465,7 +2440,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2485,7 +2460,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2506,7 +2481,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2524,7 +2499,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2543,7 +2518,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2552,7 +2527,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>>
@@ -2593,7 +2568,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2603,7 +2578,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>>
@@ -2644,7 +2619,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2666,7 +2641,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2689,7 +2664,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2709,7 +2684,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2730,7 +2705,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2740,7 +2715,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(
@@ -2786,7 +2761,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2797,7 +2772,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of skus for the given resource type along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuResourceInner>> listByResourceTypeRegistrationsNestedResourceTypeThirdSinglePageAsync(
@@ -2842,7 +2817,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2865,7 +2840,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2889,7 +2864,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2910,7 +2885,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -2932,9 +2907,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2960,9 +2934,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2988,9 +2961,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3017,9 +2989,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3047,9 +3018,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3076,9 +3046,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3106,9 +3075,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3135,9 +3103,8 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

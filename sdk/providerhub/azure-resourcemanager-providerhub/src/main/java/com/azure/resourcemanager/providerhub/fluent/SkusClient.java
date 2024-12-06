@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.SkuResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SkusClient.
+ */
 public interface SkusClient {
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -31,7 +33,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -45,7 +47,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -62,7 +64,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -78,7 +80,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -93,7 +95,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param sku The SKU.
@@ -106,7 +108,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -123,7 +125,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -139,7 +141,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -157,7 +159,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -174,7 +176,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -191,7 +193,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -206,7 +208,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -224,7 +226,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -241,7 +243,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -261,7 +263,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -279,7 +281,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -297,7 +299,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -313,7 +315,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -333,7 +335,7 @@ public interface SkusClient {
 
     /**
      * Gets the sku details for the given resource type and sku name.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -351,7 +353,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -372,7 +374,7 @@ public interface SkusClient {
 
     /**
      * Creates or updates the resource type skus in the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -392,7 +394,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -412,7 +414,7 @@ public interface SkusClient {
 
     /**
      * Deletes a resource type sku.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -429,7 +431,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,7 +444,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -457,7 +459,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -472,7 +474,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -488,7 +490,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -504,7 +506,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -521,7 +523,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.
@@ -539,7 +541,7 @@ public interface SkusClient {
 
     /**
      * Gets the list of skus for the given resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param nestedResourceTypeFirst The first child resource type.

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ExtendedLocationOptions model. */
+/**
+ * The ExtendedLocationOptions model.
+ */
 @Fluent
-public final class ExtendedLocationOptions {
+public final class ExtendedLocationOptions implements JsonSerializable<ExtendedLocationOptions> {
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The supportedPolicy property.
      */
-    @JsonProperty(value = "supportedPolicy")
     private String supportedPolicy;
 
-    /** Creates an instance of ExtendedLocationOptions class. */
+    /**
+     * Creates an instance of ExtendedLocationOptions class.
+     */
     public ExtendedLocationOptions() {
     }
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -37,7 +43,7 @@ public final class ExtendedLocationOptions {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the ExtendedLocationOptions object itself.
      */
@@ -48,7 +54,7 @@ public final class ExtendedLocationOptions {
 
     /**
      * Get the supportedPolicy property: The supportedPolicy property.
-     *
+     * 
      * @return the supportedPolicy value.
      */
     public String supportedPolicy() {
@@ -57,7 +63,7 @@ public final class ExtendedLocationOptions {
 
     /**
      * Set the supportedPolicy property: The supportedPolicy property.
-     *
+     * 
      * @param supportedPolicy the supportedPolicy value to set.
      * @return the ExtendedLocationOptions object itself.
      */
@@ -68,9 +74,48 @@ public final class ExtendedLocationOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("supportedPolicy", this.supportedPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtendedLocationOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtendedLocationOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtendedLocationOptions.
+     */
+    public static ExtendedLocationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtendedLocationOptions deserializedExtendedLocationOptions = new ExtendedLocationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedExtendedLocationOptions.type = reader.getString();
+                } else if ("supportedPolicy".equals(fieldName)) {
+                    deserializedExtendedLocationOptions.supportedPolicy = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtendedLocationOptions;
+        });
     }
 }

@@ -5,62 +5,64 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The ResourceTypeEndpoint model. */
+/**
+ * The ResourceTypeEndpoint model.
+ */
 @Fluent
-public final class ResourceTypeEndpoint {
+public final class ResourceTypeEndpoint implements JsonSerializable<ResourceTypeEndpoint> {
     /*
      * The enabled property.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The apiVersions property.
      */
-    @JsonProperty(value = "apiVersions")
     private List<String> apiVersions;
 
     /*
      * The locations property.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
     /*
      * The featuresRule property.
      */
-    @JsonProperty(value = "featuresRule")
     private ResourceTypeEndpointFeaturesRule featuresRule;
 
     /*
      * The extensions property.
      */
-    @JsonProperty(value = "extensions")
     private List<ResourceTypeExtension> extensions;
 
     /*
      * The timeout property.
      */
-    @JsonProperty(value = "timeout")
     private Duration timeout;
 
-    /** Creates an instance of ResourceTypeEndpoint class. */
+    /**
+     * Creates an instance of ResourceTypeEndpoint class.
+     */
     public ResourceTypeEndpoint() {
     }
 
     /**
      * Get the enabled property: The enabled property.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -69,7 +71,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the enabled property: The enabled property.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -80,7 +82,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Get the apiVersions property: The apiVersions property.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -89,7 +91,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the apiVersions property: The apiVersions property.
-     *
+     * 
      * @param apiVersions the apiVersions value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -100,7 +102,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Get the locations property: The locations property.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -109,7 +111,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the locations property: The locations property.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -120,7 +122,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -129,7 +131,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -140,7 +142,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Get the featuresRule property: The featuresRule property.
-     *
+     * 
      * @return the featuresRule value.
      */
     public ResourceTypeEndpointFeaturesRule featuresRule() {
@@ -149,7 +151,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the featuresRule property: The featuresRule property.
-     *
+     * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -160,7 +162,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Get the extensions property: The extensions property.
-     *
+     * 
      * @return the extensions value.
      */
     public List<ResourceTypeExtension> extensions() {
@@ -169,7 +171,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the extensions property: The extensions property.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -180,7 +182,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Get the timeout property: The timeout property.
-     *
+     * 
      * @return the timeout value.
      */
     public Duration timeout() {
@@ -189,7 +191,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Set the timeout property: The timeout property.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
@@ -200,7 +202,7 @@ public final class ResourceTypeEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -210,5 +212,66 @@ public final class ResourceTypeEndpoint {
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("apiVersions", this.apiVersions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("featuresRule", this.featuresRule);
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeEndpoint.
+     */
+    public static ResourceTypeEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeEndpoint deserializedResourceTypeEndpoint = new ResourceTypeEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("apiVersions".equals(fieldName)) {
+                    List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeEndpoint.apiVersions = apiVersions;
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeEndpoint.locations = locations;
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeEndpoint.requiredFeatures = requiredFeatures;
+                } else if ("featuresRule".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.featuresRule = ResourceTypeEndpointFeaturesRule.fromJson(reader);
+                } else if ("extensions".equals(fieldName)) {
+                    List<ResourceTypeExtension> extensions
+                        = reader.readArray(reader1 -> ResourceTypeExtension.fromJson(reader1));
+                    deserializedResourceTypeEndpoint.extensions = extensions;
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.timeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeEndpoint;
+        });
     }
 }
