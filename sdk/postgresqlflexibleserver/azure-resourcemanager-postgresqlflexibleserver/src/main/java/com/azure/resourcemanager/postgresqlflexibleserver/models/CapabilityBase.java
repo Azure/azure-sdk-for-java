@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base object for representing capability.
  */
 @Immutable
-public class CapabilityBase {
+public class CapabilityBase implements JsonSerializable<CapabilityBase> {
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
     /**
@@ -40,6 +42,17 @@ public class CapabilityBase {
     }
 
     /**
+     * Set the status property: The status of the capability.
+     * 
+     * @param status the status value to set.
+     * @return the CapabilityBase object itself.
+     */
+    CapabilityBase withStatus(CapabilityStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the reason property: The reason for the capability not being available.
      * 
      * @return the reason value.
@@ -49,10 +62,58 @@ public class CapabilityBase {
     }
 
     /**
+     * Set the reason property: The reason for the capability not being available.
+     * 
+     * @param reason the reason value to set.
+     * @return the CapabilityBase object itself.
+     */
+    CapabilityBase withReason(String reason) {
+        this.reason = reason;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilityBase.
+     */
+    public static CapabilityBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityBase deserializedCapabilityBase = new CapabilityBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedCapabilityBase.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCapabilityBase.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityBase;
+        });
     }
 }

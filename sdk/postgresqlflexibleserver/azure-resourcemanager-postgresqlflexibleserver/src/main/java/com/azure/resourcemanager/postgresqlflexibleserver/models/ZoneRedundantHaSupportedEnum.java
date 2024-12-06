@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class ZoneRedundantHaSupportedEnum extends ExpandableStringEnum<Zon
      * @param name a name to look for.
      * @return the corresponding ZoneRedundantHaSupportedEnum.
      */
-    @JsonCreator
     public static ZoneRedundantHaSupportedEnum fromString(String name) {
         return fromString(name, ZoneRedundantHaSupportedEnum.class);
     }
