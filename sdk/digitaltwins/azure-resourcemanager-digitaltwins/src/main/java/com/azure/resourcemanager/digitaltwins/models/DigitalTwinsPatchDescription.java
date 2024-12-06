@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The description of the DigitalTwins service. */
+/**
+ * The description of the DigitalTwins service.
+ */
 @Fluent
-public final class DigitalTwinsPatchDescription {
+public final class DigitalTwinsPatchDescription implements JsonSerializable<DigitalTwinsPatchDescription> {
     /*
      * Instance patch properties
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The managed identity for the DigitalTwinsInstance.
      */
-    @JsonProperty(value = "identity")
     private DigitalTwinsIdentity identity;
 
     /*
      * Properties for the DigitalTwinsInstance.
      */
-    @JsonProperty(value = "properties")
     private DigitalTwinsPatchProperties properties;
 
-    /** Creates an instance of DigitalTwinsPatchDescription class. */
+    /**
+     * Creates an instance of DigitalTwinsPatchDescription class.
+     */
     public DigitalTwinsPatchDescription() {
     }
 
     /**
      * Get the tags property: Instance patch properties.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -46,7 +49,7 @@ public final class DigitalTwinsPatchDescription {
 
     /**
      * Set the tags property: Instance patch properties.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DigitalTwinsPatchDescription object itself.
      */
@@ -57,7 +60,7 @@ public final class DigitalTwinsPatchDescription {
 
     /**
      * Get the identity property: The managed identity for the DigitalTwinsInstance.
-     *
+     * 
      * @return the identity value.
      */
     public DigitalTwinsIdentity identity() {
@@ -66,7 +69,7 @@ public final class DigitalTwinsPatchDescription {
 
     /**
      * Set the identity property: The managed identity for the DigitalTwinsInstance.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DigitalTwinsPatchDescription object itself.
      */
@@ -77,7 +80,7 @@ public final class DigitalTwinsPatchDescription {
 
     /**
      * Get the properties property: Properties for the DigitalTwinsInstance.
-     *
+     * 
      * @return the properties value.
      */
     public DigitalTwinsPatchProperties properties() {
@@ -86,7 +89,7 @@ public final class DigitalTwinsPatchDescription {
 
     /**
      * Set the properties property: Properties for the DigitalTwinsInstance.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DigitalTwinsPatchDescription object itself.
      */
@@ -97,7 +100,7 @@ public final class DigitalTwinsPatchDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +110,48 @@ public final class DigitalTwinsPatchDescription {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DigitalTwinsPatchDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DigitalTwinsPatchDescription if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DigitalTwinsPatchDescription.
+     */
+    public static DigitalTwinsPatchDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DigitalTwinsPatchDescription deserializedDigitalTwinsPatchDescription = new DigitalTwinsPatchDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDigitalTwinsPatchDescription.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDigitalTwinsPatchDescription.identity = DigitalTwinsIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDigitalTwinsPatchDescription.properties = DigitalTwinsPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDigitalTwinsPatchDescription;
+        });
     }
 }
