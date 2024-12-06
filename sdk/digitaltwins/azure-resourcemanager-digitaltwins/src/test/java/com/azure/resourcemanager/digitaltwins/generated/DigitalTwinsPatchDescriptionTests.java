@@ -19,30 +19,28 @@ public final class DigitalTwinsPatchDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DigitalTwinsPatchDescription model = BinaryData.fromString(
-            "{\"tags\":{\"ndv\":\"xhocdgeablgphuti\",\"okftyxolniwpwcuk\":\"aozwyiftyhxhu\",\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\"},\"identity\":{\"type\":\"None\",\"principalId\":\"wyqkgfgibm\",\"tenantId\":\"gakeqsr\",\"userAssignedIdentities\":{\"ugpbkw\":{\"clientId\":\"qqedqytbciqfou\",\"principalId\":\"mmnkzsmodmgl\"},\"gbbjfddgmbmbe\":{\"clientId\":\"utduqktapspwgcu\",\"principalId\":\"tumkdosvqwhbm\"},\"gzjaoyfhrtxilne\":{\"clientId\":\"pbhtqqrolfpfpsa\",\"principalId\":\"bquxigjy\"},\"nwbxgjvtbvpyssz\":{\"clientId\":\"ujysvle\",\"principalId\":\"vfqawrlyxwjkcpr\"}}},\"properties\":{\"publicNetworkAccess\":\"Enabled\"}}")
+            "{\"tags\":{\"gjvtbv\":\"b\",\"uouq\":\"ysszdnrujqguh\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"wbnguitnwui\",\"tenantId\":\"a\",\"userAssignedIdentities\":{\"nteiwaopv\":{\"clientId\":\"izuckyfihrfidfvz\",\"principalId\":\"zuhtymwisdkfthwx\"},\"mzidnsezcxtb\":{\"clientId\":\"ijcmmx\",\"principalId\":\"ufufsrp\"},\"jeiachboosfl\":{\"clientId\":\"gfycc\",\"principalId\":\"ewmdw\"}}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
             .toObject(DigitalTwinsPatchDescription.class);
-        Assertions.assertEquals("xhocdgeablgphuti", model.tags().get("ndv"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("b", model.tags().get("gjvtbv"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsPatchDescription model
-            = new DigitalTwinsPatchDescription()
-                .withTags(mapOf("ndv", "xhocdgeablgphuti", "okftyxolniwpwcuk", "aozwyiftyhxhu", "ryplwckbasyypn",
-                    "fkgiawxk", "phejkotynqgoulz", "dhsgcba"))
-                .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.NONE)
-                    .withUserAssignedIdentities(mapOf("ugpbkw", new UserAssignedIdentity(), "gbbjfddgmbmbe",
-                        new UserAssignedIdentity(), "gzjaoyfhrtxilne", new UserAssignedIdentity(), "nwbxgjvtbvpyssz",
-                        new UserAssignedIdentity())))
-                .withProperties(new DigitalTwinsPatchProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED));
+        DigitalTwinsPatchDescription model = new DigitalTwinsPatchDescription()
+            .withTags(mapOf("gjvtbv", "b", "uouq", "ysszdnrujqguh"))
+            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("nteiwaopv", new UserAssignedIdentity(), "mzidnsezcxtb",
+                    new UserAssignedIdentity(), "jeiachboosfl", new UserAssignedIdentity())))
+            .withProperties(new DigitalTwinsPatchProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED));
         model = BinaryData.fromObject(model).toObject(DigitalTwinsPatchDescription.class);
-        Assertions.assertEquals("xhocdgeablgphuti", model.tags().get("ndv"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("b", model.tags().get("gjvtbv"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

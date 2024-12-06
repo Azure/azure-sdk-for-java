@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.digitaltwins.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The available private link connections for a Digital Twin. */
+/**
+ * The available private link connections for a Digital Twin.
+ */
 @Fluent
-public final class PrivateEndpointConnectionsResponseInner {
+public final class PrivateEndpointConnectionsResponseInner
+    implements JsonSerializable<PrivateEndpointConnectionsResponseInner> {
     /*
      * The list of available private link connections for a Digital Twin.
      */
-    @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
 
-    /** Creates an instance of PrivateEndpointConnectionsResponseInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionsResponseInner class.
+     */
     public PrivateEndpointConnectionsResponseInner() {
     }
 
     /**
      * Get the value property: The list of available private link connections for a Digital Twin.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -32,7 +40,7 @@ public final class PrivateEndpointConnectionsResponseInner {
 
     /**
      * Set the value property: The list of available private link connections for a Digital Twin.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionsResponseInner object itself.
      */
@@ -43,12 +51,51 @@ public final class PrivateEndpointConnectionsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionsResponseInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionsResponseInner.
+     */
+    public static PrivateEndpointConnectionsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionsResponseInner deserializedPrivateEndpointConnectionsResponseInner
+                = new PrivateEndpointConnectionsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> value
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedPrivateEndpointConnectionsResponseInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionsResponseInner;
+        });
     }
 }
