@@ -8,9 +8,9 @@ parameters:
   - name: TestOptions
     type: string
     default: "-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
-  - name: TestClassPackages
+  - name: TestClassPatterns
     type: string
-    default: ''
+    default: '*.*IT'
   - name: TestResourceDirectories
     type: object
     default: []
@@ -21,7 +21,7 @@ stages:
       TestName: ${{ parameters.TestName }}
       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
       TestOptions: ${{ parameters.TestOptions }}
-      TestClassPackages: ${{ parameters.TestClassPackages }}
+      TestClassPatterns: ${{ parameters.TestClassPatterns }}
       TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       Artifacts:
         - name: spring-cloud-azure-integration-tests
