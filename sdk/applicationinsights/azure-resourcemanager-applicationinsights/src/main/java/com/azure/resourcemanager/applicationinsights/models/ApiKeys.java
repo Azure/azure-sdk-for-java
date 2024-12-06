@@ -33,8 +33,8 @@ public interface ApiKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApplicationInsightsComponentApiKey> list(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<ApplicationInsightsComponentApiKey> list(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Create an API Key of an Application Insights component.
@@ -49,8 +49,8 @@ public interface ApiKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentApiKey> createWithResponse(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context);
+    Response<ApplicationInsightsComponentApiKey> createWithResponse(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties, Context context);
 
     /**
      * Create an API Key of an Application Insights component.
@@ -64,8 +64,8 @@ public interface ApiKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component.
      */
-    ApplicationInsightsComponentApiKey create(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties);
+    ApplicationInsightsComponentApiKey create(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties);
 
     /**
      * Delete an API Key of an Application Insights component.
@@ -79,8 +79,8 @@ public interface ApiKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentApiKey> deleteWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context);
+    Response<ApplicationInsightsComponentApiKey> deleteWithResponse(String resourceGroupName, String resourceName,
+        String keyId, Context context);
 
     /**
      * Delete an API Key of an Application Insights component.
@@ -107,8 +107,8 @@ public interface ApiKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the API Key for this key id along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentApiKey> getWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context);
+    Response<ApplicationInsightsComponentApiKey> getWithResponse(String resourceGroupName, String resourceName,
+        String keyId, Context context);
 
     /**
      * Get the API Key for this key id.

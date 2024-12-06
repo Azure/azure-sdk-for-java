@@ -50,18 +50,18 @@ public interface CloudHsmCluster {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: SKU details.
-     * 
-     * @return the sku value.
-     */
-    CloudHsmClusterSku sku();
-
-    /**
      * Gets the identity property: Managed service identity (system assigned and/or user assigned identities).
      * 
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
+
+    /**
+     * Gets the sku property: SKU details.
+     * 
+     * @return the sku value.
+     */
+    CloudHsmClusterSku sku();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -160,7 +160,7 @@ public interface CloudHsmCluster {
          * The stage of the CloudHsmCluster definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithIdentity,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku,
             DefinitionStages.WithProperties {
             /**
              * Executes the create request.
@@ -192,19 +192,6 @@ public interface CloudHsmCluster {
         }
 
         /**
-         * The stage of the CloudHsmCluster definition allowing to specify sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies the sku property: SKU details.
-             * 
-             * @param sku SKU details.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(CloudHsmClusterSku sku);
-        }
-
-        /**
          * The stage of the CloudHsmCluster definition allowing to specify identity.
          */
         interface WithIdentity {
@@ -216,6 +203,19 @@ public interface CloudHsmCluster {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the CloudHsmCluster definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: SKU details.
+             * 
+             * @param sku SKU details.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(CloudHsmClusterSku sku);
         }
 
         /**
@@ -242,8 +242,7 @@ public interface CloudHsmCluster {
     /**
      * The template for CloudHsmCluster update.
      */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -278,19 +277,6 @@ public interface CloudHsmCluster {
         }
 
         /**
-         * The stage of the CloudHsmCluster update allowing to specify sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies the sku property: SKU details.
-             * 
-             * @param sku SKU details.
-             * @return the next definition stage.
-             */
-            Update withSku(CloudHsmClusterSku sku);
-        }
-
-        /**
          * The stage of the CloudHsmCluster update allowing to specify identity.
          */
         interface WithIdentity {
@@ -302,19 +288,6 @@ public interface CloudHsmCluster {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the CloudHsmCluster update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: Properties of the Cloud HSM Cluster.
-             * 
-             * @param properties Properties of the Cloud HSM Cluster.
-             * @return the next definition stage.
-             */
-            Update withProperties(CloudHsmClusterPatchParametersProperties properties);
         }
     }
 
@@ -332,4 +305,92 @@ public interface CloudHsmCluster {
      * @return the refreshed resource.
      */
     CloudHsmCluster refresh(Context context);
+
+    /**
+     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
+     * the specified subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult validateBackupProperties();
+
+    /**
+     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
+     * the specified subscription.
+     * 
+     * @param backupRequestProperties Backup Operation Required properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult validateBackupProperties(BackupRequestProperties backupRequestProperties, Context context);
+
+    /**
+     * Create a backup of the Cloud HSM Cluster in the specified subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult backup();
+
+    /**
+     * Create a backup of the Cloud HSM Cluster in the specified subscription.
+     * 
+     * @param backupRequestProperties Azure storage Resource Uri.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult backup(BackupRequestProperties backupRequestProperties, Context context);
+
+    /**
+     * Queued validating pre restore operation.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult validateRestoreProperties();
+
+    /**
+     * Queued validating pre restore operation.
+     * 
+     * @param restoreRequestProperties Optional Parameters to validate prior performing a restore operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult validateRestoreProperties(RestoreRequestProperties restoreRequestProperties, Context context);
+
+    /**
+     * Restores all key materials of a specified Cloud HSM Cluster.
+     * 
+     * @param restoreRequestProperties Restore Operation Required properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult restore(RestoreRequestProperties restoreRequestProperties);
+
+    /**
+     * Restores all key materials of a specified Cloud HSM Cluster.
+     * 
+     * @param restoreRequestProperties Restore Operation Required properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult restore(RestoreRequestProperties restoreRequestProperties, Context context);
 }

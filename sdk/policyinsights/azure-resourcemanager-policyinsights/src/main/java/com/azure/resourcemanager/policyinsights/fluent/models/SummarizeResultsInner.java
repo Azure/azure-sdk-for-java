@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.Summary;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Summarize action results. */
+/**
+ * Summarize action results.
+ */
 @Fluent
-public final class SummarizeResultsInner {
+public final class SummarizeResultsInner implements JsonSerializable<SummarizeResultsInner> {
     /*
      * OData context string; used by OData clients to resolve type information based on metadata.
      */
-    @JsonProperty(value = "@odata.context")
     private String odataContext;
 
     /*
      * OData entity count; represents the number of summaries returned; always set to 1.
      */
-    @JsonProperty(value = "@odata.count")
     private Integer odataCount;
 
     /*
      * Summarize action results.
      */
-    @JsonProperty(value = "value")
     private List<Summary> value;
 
-    /** Creates an instance of SummarizeResultsInner class. */
+    /**
+     * Creates an instance of SummarizeResultsInner class.
+     */
     public SummarizeResultsInner() {
     }
 
     /**
      * Get the odataContext property: OData context string; used by OData clients to resolve type information based on
      * metadata.
-     *
+     * 
      * @return the odataContext value.
      */
     public String odataContext() {
@@ -47,7 +52,7 @@ public final class SummarizeResultsInner {
     /**
      * Set the odataContext property: OData context string; used by OData clients to resolve type information based on
      * metadata.
-     *
+     * 
      * @param odataContext the odataContext value to set.
      * @return the SummarizeResultsInner object itself.
      */
@@ -58,7 +63,7 @@ public final class SummarizeResultsInner {
 
     /**
      * Get the odataCount property: OData entity count; represents the number of summaries returned; always set to 1.
-     *
+     * 
      * @return the odataCount value.
      */
     public Integer odataCount() {
@@ -67,7 +72,7 @@ public final class SummarizeResultsInner {
 
     /**
      * Set the odataCount property: OData entity count; represents the number of summaries returned; always set to 1.
-     *
+     * 
      * @param odataCount the odataCount value to set.
      * @return the SummarizeResultsInner object itself.
      */
@@ -78,7 +83,7 @@ public final class SummarizeResultsInner {
 
     /**
      * Get the value property: Summarize action results.
-     *
+     * 
      * @return the value value.
      */
     public List<Summary> value() {
@@ -87,7 +92,7 @@ public final class SummarizeResultsInner {
 
     /**
      * Set the value property: Summarize action results.
-     *
+     * 
      * @param value the value value to set.
      * @return the SummarizeResultsInner object itself.
      */
@@ -98,12 +103,55 @@ public final class SummarizeResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.context", this.odataContext);
+        jsonWriter.writeNumberField("@odata.count", this.odataCount);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SummarizeResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SummarizeResultsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SummarizeResultsInner.
+     */
+    public static SummarizeResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SummarizeResultsInner deserializedSummarizeResultsInner = new SummarizeResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.context".equals(fieldName)) {
+                    deserializedSummarizeResultsInner.odataContext = reader.getString();
+                } else if ("@odata.count".equals(fieldName)) {
+                    deserializedSummarizeResultsInner.odataCount = reader.getNullable(JsonReader::getInt);
+                } else if ("value".equals(fieldName)) {
+                    List<Summary> value = reader.readArray(reader1 -> Summary.fromJson(reader1));
+                    deserializedSummarizeResultsInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSummarizeResultsInner;
+        });
     }
 }

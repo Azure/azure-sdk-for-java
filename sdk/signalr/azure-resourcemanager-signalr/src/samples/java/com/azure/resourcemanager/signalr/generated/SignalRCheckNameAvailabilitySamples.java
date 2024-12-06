@@ -6,23 +6,24 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
 
-/** Samples for SignalR CheckNameAvailability. */
+/**
+ * Samples for SignalR CheckNameAvailability.
+ */
 public final class SignalRCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalR_CheckNameAvailability.json
      */
     /**
      * Sample code: SignalR_CheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRCheckNameAvailability(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRs()
-            .checkNameAvailabilityWithResponse(
-                "eastus",
-                new NameAvailabilityParameters()
-                    .withType("Microsoft.SignalRService/SignalR")
+        manager.signalRs()
+            .checkNameAvailabilityWithResponse("eastus",
+                new NameAvailabilityParameters().withType("Microsoft.SignalRService/SignalR")
                     .withName("mySignalRService"),
                 com.azure.core.util.Context.NONE);
     }

@@ -13,15 +13,14 @@ import org.junit.jupiter.api.Assertions;
 public final class FileDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileDestination model =
-            BinaryData.fromString("{\"fileFormats\":[\"Csv\",\"Csv\",\"Csv\"]}").toObject(FileDestination.class);
+        FileDestination model
+            = BinaryData.fromString("{\"fileFormats\":[\"Csv\",\"Csv\"]}").toObject(FileDestination.class);
         Assertions.assertEquals(FileFormat.CSV, model.fileFormats().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileDestination model =
-            new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV, FileFormat.CSV));
+        FileDestination model = new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV));
         model = BinaryData.fromObject(model).toObject(FileDestination.class);
         Assertions.assertEquals(FileFormat.CSV, model.fileFormats().get(0));
     }

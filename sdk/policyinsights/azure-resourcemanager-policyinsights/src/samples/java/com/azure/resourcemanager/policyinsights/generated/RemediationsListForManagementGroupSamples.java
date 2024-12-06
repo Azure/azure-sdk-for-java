@@ -4,40 +4,40 @@
 
 package com.azure.resourcemanager.policyinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Remediations ListForManagementGroup. */
+/**
+ * Samples for Remediations ListForManagementGroup.
+ */
 public final class RemediationsListForManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListManagementGroupScope.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * Remediations_ListManagementGroupScope.json
      */
     /**
      * Sample code: List remediations at management group scope.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void listRemediationsAtManagementGroupScope(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager.remediations().listForManagementGroup("financeMg", null, null, Context.NONE);
+    public static void
+        listRemediationsAtManagementGroupScope(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.remediations().listForManagementGroup("financeMg", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListManagementGroupScope_WithQuery.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * Remediations_ListManagementGroupScope_WithQuery.json
      */
     /**
      * Sample code: List remediations at management group scope with query parameters.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
     public static void listRemediationsAtManagementGroupScopeWithQueryParameters(
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .remediations()
-            .listForManagementGroup(
-                "financeMg",
-                1,
-                "PolicyAssignmentId eq"
-                    + " '/providers/microsoft.management/managementGroups/financeMg/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5'",
-                Context.NONE);
+        manager.remediations()
+            .listForManagementGroup("financeMg", 1,
+                "PolicyAssignmentId eq '/providers/microsoft.management/managementGroups/financeMg/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5'",
+                com.azure.core.util.Context.NONE);
     }
 }

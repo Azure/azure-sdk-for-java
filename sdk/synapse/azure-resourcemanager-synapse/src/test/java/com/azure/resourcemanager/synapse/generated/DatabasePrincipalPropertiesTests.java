@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePrincipalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePrincipalProperties model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"ybwptda\",\"role\":\"Monitor\",\"tenantId\":\"vvlfntymtp\",\"principalType\":\"Group\",\"tenantName\":\"enazerohzrsqals\",\"principalName\":\"dnwqapfg\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"vessm\"}")
-                .toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("ybwptda", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
-        Assertions.assertEquals("vvlfntymtp", model.tenantId());
+        DatabasePrincipalProperties model = BinaryData.fromString(
+            "{\"principalId\":\"mbewreswmo\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"mmuteyxeyguq\",\"principalType\":\"Group\",\"tenantName\":\"jiitnspxlzdesygr\",\"principalName\":\"waiufanra\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"eqfrojs\"}")
+            .toObject(DatabasePrincipalProperties.class);
+        Assertions.assertEquals("mbewreswmo", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
+        Assertions.assertEquals("mmuteyxeyguq", model.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePrincipalProperties model =
-            new DatabasePrincipalProperties()
-                .withPrincipalId("ybwptda")
-                .withRole(DatabasePrincipalRole.MONITOR)
-                .withTenantId("vvlfntymtp")
-                .withPrincipalType(PrincipalType.GROUP);
+        DatabasePrincipalProperties model = new DatabasePrincipalProperties().withPrincipalId("mbewreswmo")
+            .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
+            .withTenantId("mmuteyxeyguq")
+            .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("ybwptda", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
-        Assertions.assertEquals("vvlfntymtp", model.tenantId());
+        Assertions.assertEquals("mbewreswmo", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.role());
+        Assertions.assertEquals("mmuteyxeyguq", model.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 }

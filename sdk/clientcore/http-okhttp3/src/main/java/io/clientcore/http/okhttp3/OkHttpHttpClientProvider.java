@@ -25,6 +25,12 @@ public final class OkHttpHttpClientProvider extends HttpClientProvider {
         }
     }
 
+    /**
+     * Creates a new instance of {@link OkHttpHttpClientProvider}.
+     */
+    public OkHttpHttpClientProvider() {
+    }
+
     @Override
     public HttpClient getNewInstance() {
         return new OkHttpHttpClientBuilder().build();

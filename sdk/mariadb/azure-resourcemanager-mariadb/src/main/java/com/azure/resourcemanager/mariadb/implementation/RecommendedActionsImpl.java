@@ -21,37 +21,28 @@ public final class RecommendedActionsImpl implements RecommendedActions {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public RecommendedActionsImpl(
-        RecommendedActionsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public RecommendedActionsImpl(RecommendedActionsClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RecommendationAction> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String advisorName,
-        String recommendedActionName,
-        Context context) {
-        Response<RecommendationActionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, serverName, advisorName, recommendedActionName, context);
+    public Response<RecommendationAction> getWithResponse(String resourceGroupName, String serverName,
+        String advisorName, String recommendedActionName, Context context) {
+        Response<RecommendationActionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serverName, advisorName, recommendedActionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecommendationActionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RecommendationAction get(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName) {
-        RecommendationActionInner inner =
-            this.serviceClient().get(resourceGroupName, serverName, advisorName, recommendedActionName);
+    public RecommendationAction get(String resourceGroupName, String serverName, String advisorName,
+        String recommendedActionName) {
+        RecommendationActionInner inner
+            = this.serviceClient().get(resourceGroupName, serverName, advisorName, recommendedActionName);
         if (inner != null) {
             return new RecommendationActionImpl(inner, this.manager());
         } else {
@@ -59,18 +50,18 @@ public final class RecommendedActionsImpl implements RecommendedActions {
         }
     }
 
-    public PagedIterable<RecommendationAction> listByServer(
-        String resourceGroupName, String serverName, String advisorName) {
-        PagedIterable<RecommendationActionInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, advisorName);
-        return Utils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
+    public PagedIterable<RecommendationAction> listByServer(String resourceGroupName, String serverName,
+        String advisorName) {
+        PagedIterable<RecommendationActionInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, advisorName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RecommendationAction> listByServer(
-        String resourceGroupName, String serverName, String advisorName, String sessionId, Context context) {
-        PagedIterable<RecommendationActionInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, advisorName, sessionId, context);
-        return Utils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
+    public PagedIterable<RecommendationAction> listByServer(String resourceGroupName, String serverName,
+        String advisorName, String sessionId, Context context) {
+        PagedIterable<RecommendationActionInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, advisorName, sessionId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
     }
 
     private RecommendedActionsClient serviceClient() {

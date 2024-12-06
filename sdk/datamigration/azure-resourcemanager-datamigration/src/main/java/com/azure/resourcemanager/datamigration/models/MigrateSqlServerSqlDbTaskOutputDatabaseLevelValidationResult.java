@@ -5,78 +5,93 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Database validation result for Sql Server to Azure Sql DB migration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("MigrationDatabaseLevelValidationOutput")
+/**
+ * Database validation result for Sql Server to Azure Sql DB migration.
+ */
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
     extends MigrateSqlServerSqlDbTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "MigrationDatabaseLevelValidationOutput";
+
+    /*
      * Migration Identifier
      */
-    @JsonProperty(value = "migrationId", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationId;
 
     /*
      * Name of the source database
      */
-    @JsonProperty(value = "sourceDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceDatabaseName;
 
     /*
      * Name of the target database
      */
-    @JsonProperty(value = "targetDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetDatabaseName;
 
     /*
      * Validation start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Validation end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Provides data integrity validation result between the source and target tables that are migrated.
      */
-    @JsonProperty(value = "dataIntegrityValidationResult", access = JsonProperty.Access.WRITE_ONLY)
     private DataIntegrityValidationResult dataIntegrityValidationResult;
 
     /*
      * Provides schema comparison result between source and target database
      */
-    @JsonProperty(value = "schemaValidationResult", access = JsonProperty.Access.WRITE_ONLY)
     private SchemaComparisonValidationResult schemaValidationResult;
 
     /*
      * Results of some of the query execution result between source and target database
      */
-    @JsonProperty(value = "queryAnalysisValidationResult", access = JsonProperty.Access.WRITE_ONLY)
     private QueryAnalysisValidationResult queryAnalysisValidationResult;
 
     /*
      * Current status of validation at the database level
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
 
-    /** Creates an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult class.
+     */
     public MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the migrationId property: Migration Identifier.
-     *
+     * 
      * @return the migrationId value.
      */
     public String migrationId() {
@@ -85,7 +100,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
 
     /**
      * Get the sourceDatabaseName property: Name of the source database.
-     *
+     * 
      * @return the sourceDatabaseName value.
      */
     public String sourceDatabaseName() {
@@ -94,7 +109,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
 
     /**
      * Get the targetDatabaseName property: Name of the target database.
-     *
+     * 
      * @return the targetDatabaseName value.
      */
     public String targetDatabaseName() {
@@ -103,7 +118,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
 
     /**
      * Get the startedOn property: Validation start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -112,7 +127,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
 
     /**
      * Get the endedOn property: Validation end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -122,7 +137,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
     /**
      * Get the dataIntegrityValidationResult property: Provides data integrity validation result between the source and
      * target tables that are migrated.
-     *
+     * 
      * @return the dataIntegrityValidationResult value.
      */
     public DataIntegrityValidationResult dataIntegrityValidationResult() {
@@ -131,7 +146,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
 
     /**
      * Get the schemaValidationResult property: Provides schema comparison result between source and target database.
-     *
+     * 
      * @return the schemaValidationResult value.
      */
     public SchemaComparisonValidationResult schemaValidationResult() {
@@ -141,7 +156,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
     /**
      * Get the queryAnalysisValidationResult property: Results of some of the query execution result between source and
      * target database.
-     *
+     * 
      * @return the queryAnalysisValidationResult value.
      */
     public QueryAnalysisValidationResult queryAnalysisValidationResult() {
@@ -150,7 +165,7 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
 
     /**
      * Get the status property: Current status of validation at the database level.
-     *
+     * 
      * @return the status value.
      */
     public ValidationStatus status() {
@@ -158,13 +173,22 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataIntegrityValidationResult() != null) {
             dataIntegrityValidationResult().validate();
         }
@@ -174,5 +198,74 @@ public final class MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
         if (queryAnalysisValidationResult() != null) {
             queryAnalysisValidationResult().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.
+     */
+    public static MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult
+                = new MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.resultType
+                        = reader.getString();
+                } else if ("migrationId".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.migrationId
+                        = reader.getString();
+                } else if ("sourceDatabaseName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.sourceDatabaseName
+                        = reader.getString();
+                } else if ("targetDatabaseName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.targetDatabaseName
+                        = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataIntegrityValidationResult".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.dataIntegrityValidationResult
+                        = DataIntegrityValidationResult.fromJson(reader);
+                } else if ("schemaValidationResult".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.schemaValidationResult
+                        = SchemaComparisonValidationResult.fromJson(reader);
+                } else if ("queryAnalysisValidationResult".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.queryAnalysisValidationResult
+                        = QueryAnalysisValidationResult.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult.status
+                        = ValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult;
+        });
     }
 }

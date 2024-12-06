@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.delegatednetwork.generated;
 
-/** Samples for DelegatedNetwork List. */
+/**
+ * Samples for DelegatedNetwork List.
+ */
 public final class DelegatedNetworkListSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/controllerListBySub.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/controllerListBySub.json
      */
     /**
      * Sample code: Get DelegatedController resources by subscription.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
     public static void getDelegatedControllerResourcesBySubscription(

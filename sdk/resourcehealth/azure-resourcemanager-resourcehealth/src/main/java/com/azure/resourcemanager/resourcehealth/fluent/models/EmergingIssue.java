@@ -5,40 +5,47 @@
 package com.azure.resourcemanager.resourcehealth.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcehealth.models.StatusActiveEvent;
 import com.azure.resourcemanager.resourcehealth.models.StatusBanner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** On-going emerging issue from azure status. */
+/**
+ * On-going emerging issue from azure status.
+ */
 @Fluent
-public final class EmergingIssue {
+public final class EmergingIssue implements JsonSerializable<EmergingIssue> {
     /*
      * Timestamp for when last time refreshed for ongoing emerging issue.
      */
-    @JsonProperty(value = "refreshTimestamp")
     private OffsetDateTime refreshTimestamp;
 
     /*
      * The list of emerging issues of banner type.
      */
-    @JsonProperty(value = "statusBanners")
     private List<StatusBanner> statusBanners;
 
     /*
      * The list of emerging issues of active event type.
      */
-    @JsonProperty(value = "statusActiveEvents")
     private List<StatusActiveEvent> statusActiveEvents;
 
-    /** Creates an instance of EmergingIssue class. */
+    /**
+     * Creates an instance of EmergingIssue class.
+     */
     public EmergingIssue() {
     }
 
     /**
      * Get the refreshTimestamp property: Timestamp for when last time refreshed for ongoing emerging issue.
-     *
+     * 
      * @return the refreshTimestamp value.
      */
     public OffsetDateTime refreshTimestamp() {
@@ -47,7 +54,7 @@ public final class EmergingIssue {
 
     /**
      * Set the refreshTimestamp property: Timestamp for when last time refreshed for ongoing emerging issue.
-     *
+     * 
      * @param refreshTimestamp the refreshTimestamp value to set.
      * @return the EmergingIssue object itself.
      */
@@ -58,7 +65,7 @@ public final class EmergingIssue {
 
     /**
      * Get the statusBanners property: The list of emerging issues of banner type.
-     *
+     * 
      * @return the statusBanners value.
      */
     public List<StatusBanner> statusBanners() {
@@ -67,7 +74,7 @@ public final class EmergingIssue {
 
     /**
      * Set the statusBanners property: The list of emerging issues of banner type.
-     *
+     * 
      * @param statusBanners the statusBanners value to set.
      * @return the EmergingIssue object itself.
      */
@@ -78,7 +85,7 @@ public final class EmergingIssue {
 
     /**
      * Get the statusActiveEvents property: The list of emerging issues of active event type.
-     *
+     * 
      * @return the statusActiveEvents value.
      */
     public List<StatusActiveEvent> statusActiveEvents() {
@@ -87,7 +94,7 @@ public final class EmergingIssue {
 
     /**
      * Set the statusActiveEvents property: The list of emerging issues of active event type.
-     *
+     * 
      * @param statusActiveEvents the statusActiveEvents value to set.
      * @return the EmergingIssue object itself.
      */
@@ -98,7 +105,7 @@ public final class EmergingIssue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +115,55 @@ public final class EmergingIssue {
         if (statusActiveEvents() != null) {
             statusActiveEvents().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("refreshTimestamp",
+            this.refreshTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.refreshTimestamp));
+        jsonWriter.writeArrayField("statusBanners", this.statusBanners, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("statusActiveEvents", this.statusActiveEvents,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmergingIssue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmergingIssue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmergingIssue.
+     */
+    public static EmergingIssue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmergingIssue deserializedEmergingIssue = new EmergingIssue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("refreshTimestamp".equals(fieldName)) {
+                    deserializedEmergingIssue.refreshTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("statusBanners".equals(fieldName)) {
+                    List<StatusBanner> statusBanners = reader.readArray(reader1 -> StatusBanner.fromJson(reader1));
+                    deserializedEmergingIssue.statusBanners = statusBanners;
+                } else if ("statusActiveEvents".equals(fieldName)) {
+                    List<StatusActiveEvent> statusActiveEvents
+                        = reader.readArray(reader1 -> StatusActiveEvent.fromJson(reader1));
+                    deserializedEmergingIssue.statusActiveEvents = statusActiveEvents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmergingIssue;
+        });
     }
 }

@@ -5,51 +5,54 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CanonicalProfileDefinition;
 import com.azure.resourcemanager.customerinsights.models.PredictionDistributionDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The training results of the prediction. */
+/**
+ * The training results of the prediction.
+ */
 @Immutable
-public final class PredictionTrainingResultsInner {
+public final class PredictionTrainingResultsInner implements JsonSerializable<PredictionTrainingResultsInner> {
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Score name.
      */
-    @JsonProperty(value = "scoreName", access = JsonProperty.Access.WRITE_ONLY)
     private String scoreName;
 
     /*
      * Prediction distribution.
      */
-    @JsonProperty(value = "predictionDistribution", access = JsonProperty.Access.WRITE_ONLY)
     private PredictionDistributionDefinition predictionDistribution;
 
     /*
      * Canonical profiles.
      */
-    @JsonProperty(value = "canonicalProfiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<CanonicalProfileDefinition> canonicalProfiles;
 
     /*
      * Instance count of the primary profile.
      */
-    @JsonProperty(value = "primaryProfileInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long primaryProfileInstanceCount;
 
-    /** Creates an instance of PredictionTrainingResultsInner class. */
+    /**
+     * Creates an instance of PredictionTrainingResultsInner class.
+     */
     public PredictionTrainingResultsInner() {
     }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -58,7 +61,7 @@ public final class PredictionTrainingResultsInner {
 
     /**
      * Get the scoreName property: Score name.
-     *
+     * 
      * @return the scoreName value.
      */
     public String scoreName() {
@@ -67,7 +70,7 @@ public final class PredictionTrainingResultsInner {
 
     /**
      * Get the predictionDistribution property: Prediction distribution.
-     *
+     * 
      * @return the predictionDistribution value.
      */
     public PredictionDistributionDefinition predictionDistribution() {
@@ -76,7 +79,7 @@ public final class PredictionTrainingResultsInner {
 
     /**
      * Get the canonicalProfiles property: Canonical profiles.
-     *
+     * 
      * @return the canonicalProfiles value.
      */
     public List<CanonicalProfileDefinition> canonicalProfiles() {
@@ -85,7 +88,7 @@ public final class PredictionTrainingResultsInner {
 
     /**
      * Get the primaryProfileInstanceCount property: Instance count of the primary profile.
-     *
+     * 
      * @return the primaryProfileInstanceCount value.
      */
     public Long primaryProfileInstanceCount() {
@@ -94,7 +97,7 @@ public final class PredictionTrainingResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -104,5 +107,53 @@ public final class PredictionTrainingResultsInner {
         if (canonicalProfiles() != null) {
             canonicalProfiles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionTrainingResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionTrainingResultsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PredictionTrainingResultsInner.
+     */
+    public static PredictionTrainingResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionTrainingResultsInner deserializedPredictionTrainingResultsInner
+                = new PredictionTrainingResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedPredictionTrainingResultsInner.tenantId = reader.getString();
+                } else if ("scoreName".equals(fieldName)) {
+                    deserializedPredictionTrainingResultsInner.scoreName = reader.getString();
+                } else if ("predictionDistribution".equals(fieldName)) {
+                    deserializedPredictionTrainingResultsInner.predictionDistribution
+                        = PredictionDistributionDefinition.fromJson(reader);
+                } else if ("canonicalProfiles".equals(fieldName)) {
+                    List<CanonicalProfileDefinition> canonicalProfiles
+                        = reader.readArray(reader1 -> CanonicalProfileDefinition.fromJson(reader1));
+                    deserializedPredictionTrainingResultsInner.canonicalProfiles = canonicalProfiles;
+                } else if ("primaryProfileInstanceCount".equals(fieldName)) {
+                    deserializedPredictionTrainingResultsInner.primaryProfileInstanceCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionTrainingResultsInner;
+        });
     }
 }

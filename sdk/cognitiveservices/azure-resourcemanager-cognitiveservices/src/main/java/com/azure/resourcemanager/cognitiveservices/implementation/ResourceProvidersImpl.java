@@ -9,8 +9,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.CalculateModelCapacityResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DomainAvailabilityInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.CalculateModelCapacityParameter;
+import com.azure.resourcemanager.cognitiveservices.models.CalculateModelCapacityResult;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.DomainAvailability;
@@ -24,22 +27,18 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context) {
-        Response<SkuAvailabilityListResultInner> inner =
-            this.serviceClient().checkSkuAvailabilityWithResponse(location, parameters, context);
+    public Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(String location,
+        CheckSkuAvailabilityParameter parameters, Context context) {
+        Response<SkuAvailabilityListResultInner> inner
+            = this.serviceClient().checkSkuAvailabilityWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SkuAvailabilityListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -55,15 +54,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<DomainAvailability> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context) {
-        Response<DomainAvailabilityInner> inner =
-            this.serviceClient().checkDomainAvailabilityWithResponse(parameters, context);
+    public Response<DomainAvailability> checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters,
+        Context context) {
+        Response<DomainAvailabilityInner> inner
+            = this.serviceClient().checkDomainAvailabilityWithResponse(parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DomainAvailabilityImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,6 +70,27 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         DomainAvailabilityInner inner = this.serviceClient().checkDomainAvailability(parameters);
         if (inner != null) {
             return new DomainAvailabilityImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CalculateModelCapacityResult>
+        calculateModelCapacityWithResponse(CalculateModelCapacityParameter parameters, Context context) {
+        Response<CalculateModelCapacityResultInner> inner
+            = this.serviceClient().calculateModelCapacityWithResponse(parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CalculateModelCapacityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CalculateModelCapacityResult calculateModelCapacity(CalculateModelCapacityParameter parameters) {
+        CalculateModelCapacityResultInner inner = this.serviceClient().calculateModelCapacity(parameters);
+        if (inner != null) {
+            return new CalculateModelCapacityResultImpl(inner, this.manager());
         } else {
             return null;
         }

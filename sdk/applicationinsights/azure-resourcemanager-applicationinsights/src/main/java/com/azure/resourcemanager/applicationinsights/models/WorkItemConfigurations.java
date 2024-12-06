@@ -52,11 +52,8 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
-    Response<WorkItemConfiguration> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkItemCreateConfiguration workItemConfigurationProperties,
-        Context context);
+    Response<WorkItemConfiguration> createWithResponse(String resourceGroupName, String resourceName,
+        WorkItemCreateConfiguration workItemConfigurationProperties, Context context);
 
     /**
      * Create a work item configuration for an Application Insights component.
@@ -70,8 +67,8 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource.
      */
-    WorkItemConfiguration create(
-        String resourceGroupName, String resourceName, WorkItemCreateConfiguration workItemConfigurationProperties);
+    WorkItemConfiguration create(String resourceGroupName, String resourceName,
+        WorkItemCreateConfiguration workItemConfigurationProperties);
 
     /**
      * Gets default work item configurations that exist for the application.
@@ -84,8 +81,8 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return default work item configurations that exist for the application along with {@link Response}.
      */
-    Response<WorkItemConfiguration> getDefaultWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<WorkItemConfiguration> getDefaultWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets default work item configurations that exist for the application.
@@ -112,8 +109,8 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String workItemConfigId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String workItemConfigId,
+        Context context);
 
     /**
      * Delete a work item configuration of an Application Insights component.
@@ -141,8 +138,8 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specified work item configuration for an Application Insights component along with {@link Response}.
      */
-    Response<WorkItemConfiguration> getItemWithResponse(
-        String resourceGroupName, String resourceName, String workItemConfigId, Context context);
+    Response<WorkItemConfiguration> getItemWithResponse(String resourceGroupName, String resourceName,
+        String workItemConfigId, Context context);
 
     /**
      * Gets specified work item configuration for an Application Insights component.
@@ -173,12 +170,8 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
-    Response<WorkItemConfiguration> updateItemWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
-        WorkItemCreateConfiguration workItemConfigurationProperties,
-        Context context);
+    Response<WorkItemConfiguration> updateItemWithResponse(String resourceGroupName, String resourceName,
+        String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties, Context context);
 
     /**
      * Update a work item configuration for an Application Insights component.
@@ -194,9 +187,6 @@ public interface WorkItemConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return work item configuration associated with an application insights resource.
      */
-    WorkItemConfiguration updateItem(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
+    WorkItemConfiguration updateItem(String resourceGroupName, String resourceName, String workItemConfigId,
         WorkItemCreateConfiguration workItemConfigurationProperties);
 }

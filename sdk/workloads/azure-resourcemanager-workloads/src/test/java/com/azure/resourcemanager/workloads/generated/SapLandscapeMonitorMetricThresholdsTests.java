@@ -11,28 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class SapLandscapeMonitorMetricThresholdsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapLandscapeMonitorMetricThresholds model =
-            BinaryData
-                .fromString("{\"name\":\"osx\",\"green\":88.55184,\"yellow\":65.27517,\"red\":5.093771}")
-                .toObject(SapLandscapeMonitorMetricThresholds.class);
-        Assertions.assertEquals("osx", model.name());
-        Assertions.assertEquals(88.55184F, model.green());
-        Assertions.assertEquals(65.27517F, model.yellow());
-        Assertions.assertEquals(5.093771F, model.red());
+        SapLandscapeMonitorMetricThresholds model = BinaryData
+            .fromString("{\"name\":\"ibtnmxiebwwaloay\",\"green\":38.768154,\"yellow\":28.272938,\"red\":46.54352}")
+            .toObject(SapLandscapeMonitorMetricThresholds.class);
+        Assertions.assertEquals("ibtnmxiebwwaloay", model.name());
+        Assertions.assertEquals(38.768154F, model.green());
+        Assertions.assertEquals(28.272938F, model.yellow());
+        Assertions.assertEquals(46.54352F, model.red());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapLandscapeMonitorMetricThresholds model =
-            new SapLandscapeMonitorMetricThresholds()
-                .withName("osx")
-                .withGreen(88.55184F)
-                .withYellow(65.27517F)
-                .withRed(5.093771F);
+        SapLandscapeMonitorMetricThresholds model
+            = new SapLandscapeMonitorMetricThresholds().withName("ibtnmxiebwwaloay")
+                .withGreen(38.768154F)
+                .withYellow(28.272938F)
+                .withRed(46.54352F);
         model = BinaryData.fromObject(model).toObject(SapLandscapeMonitorMetricThresholds.class);
-        Assertions.assertEquals("osx", model.name());
-        Assertions.assertEquals(88.55184F, model.green());
-        Assertions.assertEquals(65.27517F, model.yellow());
-        Assertions.assertEquals(5.093771F, model.red());
+        Assertions.assertEquals("ibtnmxiebwwaloay", model.name());
+        Assertions.assertEquals(38.768154F, model.green());
+        Assertions.assertEquals(28.272938F, model.yellow());
+        Assertions.assertEquals(46.54352F, model.red());
     }
 }

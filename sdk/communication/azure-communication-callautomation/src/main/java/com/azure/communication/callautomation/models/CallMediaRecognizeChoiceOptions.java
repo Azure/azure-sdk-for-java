@@ -77,7 +77,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the CallMediaRecognizeChoiceOptions object itself.
      */
-    public CallMediaRecognizeChoiceOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+    public CallMediaRecognizeChoiceOptions
+        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }
@@ -151,8 +152,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setInterruptPrompt(
-        Boolean interruptPrompt) {
+    public CallMediaRecognizeChoiceOptions setInterruptPrompt(Boolean interruptPrompt) {
         super.setInterruptPrompt(interruptPrompt);
         return this;
     }
@@ -175,7 +175,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @param targetParticipant Target participant of DTFM tone recognition.
      * @param choices Maximum number of DTMF tones to be collected.
      */
-    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognitionChoice> choices) {
+    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant, List<RecognitionChoice> choices) {
         super(RecognizeInputType.CHOICES, targetParticipant);
         this.choices = choices;
     }
@@ -189,13 +189,17 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
         // write properties of base class.
         jsonWriter.writeStringField("recognizeInputType", "choices");
         jsonWriter.writeJsonField("playPrompt", getPlayPrompt());
+        jsonWriter.writeArrayField("playPrompts", this.getPlayPrompts(),
+            (writer, playPrompt) -> playPrompt.toJson(writer));
         jsonWriter.writeBooleanField("interruptCallMediaOperation", isInterruptCallMediaOperation());
         jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
         jsonWriter.writeStringField("operationContext", getOperationContext());
         jsonWriter.writeBooleanField("interruptPrompt", isInterruptPrompt());
-        jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
-        jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
-        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(getTargetParticipant());
+        jsonWriter.writeStringField("initialSilenceTimeout",
+            CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
+        jsonWriter.writeStringField("speechModelEndpointId", getSpeechRecognitionModelEndpointId());
+        final CommunicationIdentifierModel participant
+            = CommunicationIdentifierConverter.convert(getTargetParticipant());
         jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
         // write properties specific to this class.
@@ -263,7 +267,8 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
                     reader.skipChildren();
                 }
             }
-            final CallMediaRecognizeChoiceOptions options = new CallMediaRecognizeChoiceOptions(targetParticipant, choices);
+            final CallMediaRecognizeChoiceOptions options
+                = new CallMediaRecognizeChoiceOptions(targetParticipant, choices);
             options.speechLanguage = speechLanguage;
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             // set properties of base class.
@@ -273,7 +278,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
             options.setOperationContext(operationContext);
             options.setInterruptPrompt(interruptPrompt);
             options.setInitialSilenceTimeout(initialSilenceTimeout);
-            options.setSpeechModelEndpointId(speechModelEndpointId);
+            options.setSpeechRecognitionModelEndpointId(speechModelEndpointId);
             options.setOperationCallbackUrl(operationCallbackUrl);
 
             return options;

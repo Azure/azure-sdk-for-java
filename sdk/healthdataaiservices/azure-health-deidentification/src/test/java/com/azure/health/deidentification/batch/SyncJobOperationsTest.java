@@ -47,7 +47,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -83,7 +84,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -130,14 +132,14 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        SyncPoller<DeidentificationJob, DeidentificationJob> poller = setPlaybackSyncPollerPollInterval(deidentificationClient.beginCreateJob(jobName, job));
-        DeidentificationJob result = poller
-            .waitForCompletion()
-            .getValue();
+        SyncPoller<DeidentificationJob, DeidentificationJob> poller
+            = setPlaybackSyncPollerPollInterval(deidentificationClient.beginCreateJob(jobName, job));
+        DeidentificationJob result = poller.waitForCompletion().getValue();
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
 
         PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
@@ -166,7 +168,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
@@ -198,11 +201,13 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job
+            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
         job.setDataType(DocumentDataType.PLAINTEXT);
 
-        assertThrows(HttpResponseException.class, () -> deidentificationClient.beginCreateJob(jobName, job).waitUntil(LongRunningOperationStatus.NOT_STARTED));
+        assertThrows(HttpResponseException.class, () -> deidentificationClient.beginCreateJob(jobName, job)
+            .waitUntil(LongRunningOperationStatus.NOT_STARTED));
 
     }
 }

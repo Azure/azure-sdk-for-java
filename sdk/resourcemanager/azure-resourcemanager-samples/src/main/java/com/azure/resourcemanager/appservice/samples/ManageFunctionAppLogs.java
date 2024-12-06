@@ -16,7 +16,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import reactor.core.publisher.BaseSubscriber;
 
 import java.io.ByteArrayOutputStream;
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 /**
  * Azure App Service basic sample for managing function apps.
@@ -42,34 +41,37 @@ public final class ManageFunctionAppLogs {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
         // New resources
-        final String suffix         = ".azurewebsites.net";
-        final String appName       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String appUrl        = appName + suffix;
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String suffix = ".azurewebsites.net";
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String appUrl = appName + suffix;
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
-
 
             //============================================================
             // Create a function app with a new app service plan
 
             System.out.println("Creating function app " + appName + " in resource group " + rgName + "...");
 
-            FunctionApp app = azureResourceManager.functionApps().define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .defineDiagnosticLogsConfiguration()
-                        .withApplicationLogging()
-                        .withLogLevel(LogLevel.VERBOSE)
-                        .withApplicationLogsStoredOnFileSystem()
-                        .attach()
-                    .withFtpsState(FtpsState.ALL_ALLOWED)
-                    .create();
+            FunctionApp app = azureResourceManager.functionApps()
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .defineDiagnosticLogsConfiguration()
+                .withApplicationLogging()
+                .withLogLevel(LogLevel.VERBOSE)
+                .withApplicationLogsStoredOnFileSystem()
+                .attach()
+                .withFtpsState(FtpsState.ALL_ALLOWED)
+                .create();
 
             System.out.println("Created function app " + app.name());
             Utils.print(app);
 
-            app.manager().resourceManager().genericResources().define("ftp")
+            app.manager()
+                .resourceManager()
+                .genericResources()
+                .define("ftp")
                 .withRegion(app.regionName())
                 .withExistingResourceGroup(app.resourceGroupName())
                 .withResourceType("basicPublishingCredentialsPolicies")
@@ -85,9 +87,12 @@ public final class ManageFunctionAppLogs {
 
             System.out.println("Deploying a function app to " + appName + " through FTP...");
 
-            Utils.uploadFileForFunctionViaFtp(app.getPublishingProfile(), "host.json", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/host.json"));
-            Utils.uploadFileForFunctionViaFtp(app.getPublishingProfile(), "square/function.json", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/function.json"));
-            Utils.uploadFileForFunctionViaFtp(app.getPublishingProfile(), "square/index.js", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/index.js"));
+            Utils.uploadFileForFunctionViaFtp(app.getPublishingProfile(), "host.json",
+                ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/host.json"));
+            Utils.uploadFileForFunctionViaFtp(app.getPublishingProfile(), "square/function.json",
+                ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/function.json"));
+            Utils.uploadFileForFunctionViaFtp(app.getPublishingProfile(), "square/index.js",
+                ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/index.js"));
 
             // sync triggers
             app.syncTriggers();
@@ -108,7 +113,7 @@ public final class ManageFunctionAppLogs {
             String line = readLine(stream);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            new Thread(() ->  {
+            new Thread(() -> {
                 Utils.sendPostRequest("http://" + appUrl + "/api/square", "625");
                 ResourceManagerUtils.sleep(Duration.ofSeconds(10));
                 Utils.sendPostRequest("http://" + appUrl + "/api/square", "725");
@@ -124,7 +129,7 @@ public final class ManageFunctionAppLogs {
             //============================================================
             // Listen to logs asynchronously until 3 requests are completed
 
-            new Thread(() ->  {
+            new Thread(() -> {
                 ResourceManagerUtils.sleep(Duration.ofSeconds(5));
                 System.out.println("Starting hitting");
                 Utils.sendPostRequest("http://" + appUrl + "/api/square", "625");
@@ -167,6 +172,7 @@ public final class ManageFunctionAppLogs {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -182,8 +188,7 @@ public final class ManageFunctionAppLogs {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -12,29 +12,27 @@ import org.junit.jupiter.api.Assertions;
 public final class PrimaryRegionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrimaryRegionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"operatorAddresses\":[\"bcryffdfd\",\"sy\",\"expa\",\"jakhmsbzjh\"],\"esrpAddresses\":[\"evdphlxaol\",\"hqtrgqjbpf\"],\"allowedSignalingSourceAddressPrefixes\":[\"inzgvfcj\"],\"allowedMediaSourceAddressPrefixes\":[\"oxxjtfelluwf\",\"it\"]}")
-                .toObject(PrimaryRegionProperties.class);
-        Assertions.assertEquals("bcryffdfd", model.operatorAddresses().get(0));
-        Assertions.assertEquals("evdphlxaol", model.esrpAddresses().get(0));
-        Assertions.assertEquals("inzgvfcj", model.allowedSignalingSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("oxxjtfelluwf", model.allowedMediaSourceAddressPrefixes().get(0));
+        PrimaryRegionProperties model = BinaryData.fromString(
+            "{\"operatorAddresses\":[\"eusnhutj\",\"ltmrldh\"],\"esrpAddresses\":[\"zzd\"],\"allowedSignalingSourceAddressPrefixes\":[\"xhocdgeablgphuti\",\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\"],\"allowedMediaSourceAddressPrefixes\":[\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\",\"jkot\"]}")
+            .toObject(PrimaryRegionProperties.class);
+        Assertions.assertEquals("eusnhutj", model.operatorAddresses().get(0));
+        Assertions.assertEquals("zzd", model.esrpAddresses().get(0));
+        Assertions.assertEquals("xhocdgeablgphuti", model.allowedSignalingSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("giawx", model.allowedMediaSourceAddressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrimaryRegionProperties model =
-            new PrimaryRegionProperties()
-                .withOperatorAddresses(Arrays.asList("bcryffdfd", "sy", "expa", "jakhmsbzjh"))
-                .withEsrpAddresses(Arrays.asList("evdphlxaol", "hqtrgqjbpf"))
-                .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("inzgvfcj"))
-                .withAllowedMediaSourceAddressPrefixes(Arrays.asList("oxxjtfelluwf", "it"));
+        PrimaryRegionProperties model
+            = new PrimaryRegionProperties().withOperatorAddresses(Arrays.asList("eusnhutj", "ltmrldh"))
+                .withEsrpAddresses(Arrays.asList("zzd"))
+                .withAllowedSignalingSourceAddressPrefixes(
+                    Arrays.asList("xhocdgeablgphuti", "ndv", "aozwyiftyhxhu", "okftyxolniwpwcuk"))
+                .withAllowedMediaSourceAddressPrefixes(Arrays.asList("giawx", "lryplwckbasyy", "nddhsgcbacph", "jkot"));
         model = BinaryData.fromObject(model).toObject(PrimaryRegionProperties.class);
-        Assertions.assertEquals("bcryffdfd", model.operatorAddresses().get(0));
-        Assertions.assertEquals("evdphlxaol", model.esrpAddresses().get(0));
-        Assertions.assertEquals("inzgvfcj", model.allowedSignalingSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("oxxjtfelluwf", model.allowedMediaSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("eusnhutj", model.operatorAddresses().get(0));
+        Assertions.assertEquals("zzd", model.esrpAddresses().get(0));
+        Assertions.assertEquals("xhocdgeablgphuti", model.allowedSignalingSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("giawx", model.allowedMediaSourceAddressPrefixes().get(0));
     }
 }

@@ -27,7 +27,7 @@ public final class PrivateLinkScopesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateLinkScopes().delete("sggux", "eml", com.azure.core.util.Context.NONE);
+        manager.privateLinkScopes().delete("randoypmb", "t", com.azure.core.util.Context.NONE);
 
     }
 }

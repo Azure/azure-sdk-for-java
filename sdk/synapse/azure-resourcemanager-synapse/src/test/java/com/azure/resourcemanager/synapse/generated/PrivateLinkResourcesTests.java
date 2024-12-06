@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class PrivateLinkResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResources model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"uipldqq\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"provisioningState\":\"Canceled\"},\"id\":\"lblhtjq\",\"name\":\"qyv\",\"type\":\"eh\"}]}")
-                .toObject(PrivateLinkResources.class);
+        PrivateLinkResources model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"ydkygywezskieca\",\"requiredMembers\":[\"zmxieqvdsmaklix\",\"cahyhx\"],\"requiredZoneNames\":[\"bx\",\"woijpodtbl\",\"pkkwj\",\"jodqhykincn\"],\"provisioningState\":\"Failed\"},\"id\":\"hllizhceumoq\",\"name\":\"dkadppyibn\",\"type\":\"qladywrxwhydtlu\"},{\"properties\":{\"groupId\":\"ds\",\"requiredMembers\":[\"nuyemlowuo\",\"hlxlnwyrmou\",\"blgmokzkltrfowtd\",\"rfmvlihcvjdrqcrj\"],\"requiredZoneNames\":[\"ftukvhd\"],\"provisioningState\":\"Moving\"},\"id\":\"ojbf\",\"name\":\"zd\",\"type\":\"fnjyix\"}]}")
+            .toObject(PrivateLinkResources.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResources model =
-            new PrivateLinkResources().withValue(Arrays.asList(new KustoPoolPrivateLinkResourcesInner()));
+        PrivateLinkResources model = new PrivateLinkResources().withValue(
+            Arrays.asList(new KustoPoolPrivateLinkResourcesInner(), new KustoPoolPrivateLinkResourcesInner()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResources.class);
     }
 }

@@ -47,8 +47,8 @@ public interface Creators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context);
 
     /**
      * Delete a Maps Creator resource.
@@ -74,8 +74,8 @@ public interface Creators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Maps Creator resource along with {@link Response}.
      */
-    Response<Creator> getWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
+    Response<Creator> getWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context);
 
     /**
      * Get a Maps Creator resource.

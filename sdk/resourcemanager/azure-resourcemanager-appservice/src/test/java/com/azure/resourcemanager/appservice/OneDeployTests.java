@@ -39,7 +39,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,24 +57,23 @@ import java.util.Arrays;
 
 public class OneDeployTests extends AppServiceTest {
 
-    private static final String HELLOWORLD_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/helloworld.jar";
+    private static final String HELLOWORLD_JAR_URL
+        = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/helloworld.jar";
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canDeployZip() {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
-        WebApp webApp1 =
-            appServiceManager
-                .webApps()
-                .define(webAppName1)
-                .withRegion(Region.US_WEST3)
-                .withNewResourceGroup(rgName)
-                .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_8_5_NEWEST)
-                .withHttpsOnly(true)
-                .create();
+        WebApp webApp1 = appServiceManager.webApps()
+            .define(webAppName1)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewWindowsPlan(PricingTier.STANDARD_S1)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_8_5_NEWEST)
+            .withHttpsOnly(true)
+            .create();
 
         File zipFile = new File(OneDeployTests.class.getResource("/webapps.zip").getPath());
         webApp1.deploy(DeployType.ZIP, zipFile);
@@ -92,16 +90,14 @@ public class OneDeployTests extends AppServiceTest {
     public void canPushDeployJar() throws Exception {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
-        WebApp webApp1 =
-            appServiceManager
-                .webApps()
-                .define(webAppName1)
-                .withRegion(Region.US_WEST3)
-                .withNewResourceGroup(rgName)
-                .withNewLinuxPlan(PricingTier.STANDARD_S1)
-                .withBuiltInImage(RuntimeStack.JAVA_11_JAVA11)
-                .withHttpsOnly(true)
-                .create();
+        WebApp webApp1 = appServiceManager.webApps()
+            .define(webAppName1)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewLinuxPlan(PricingTier.STANDARD_S1)
+            .withBuiltInImage(RuntimeStack.JAVA_11_JAVA11)
+            .withHttpsOnly(true)
+            .create();
 
         // deploy
         File jarFile = new File("helloworld.jar");
@@ -109,13 +105,18 @@ public class OneDeployTests extends AppServiceTest {
             HttpURLConnection connection = (HttpURLConnection) new URL(HELLOWORLD_JAR_URL).openConnection();
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
-                 OutputStream outputStream = new FileOutputStream(jarFile)) {
-                IOUtils.copy(inputStream, outputStream);
+                OutputStream outputStream = new FileOutputStream(jarFile)) {
+                byte[] buffer = new byte[8192];
+                int read;
+
+                while ((read = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, read);
+                }
             }
             connection.disconnect();
         }
-        KuduDeploymentResult deployResult =
-            webApp1.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
+        KuduDeploymentResult deployResult
+            = webApp1.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
 
         String deploymentId = deployResult.deploymentId();
         Assertions.assertNotNull(deploymentId);
@@ -127,13 +128,10 @@ public class OneDeployTests extends AppServiceTest {
 
         // deploy another slot
         String slotName = generateRandomResourceName("slot", 10);
-        DeploymentSlot slot2 = webApp1.deploymentSlots()
-            .define(slotName)
-            .withConfigurationFromParent()
-            .create();
+        DeploymentSlot slot2 = webApp1.deploymentSlots().define(slotName).withConfigurationFromParent().create();
 
-        KuduDeploymentResult slotDeployResult =
-            slot2.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
+        KuduDeploymentResult slotDeployResult
+            = slot2.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
 
         String slotDeploymentId = slotDeployResult.deploymentId();
         Assertions.assertNotNull(slotDeploymentId);
@@ -144,7 +142,7 @@ public class OneDeployTests extends AppServiceTest {
     // test uses storage account key and connection string to configure the function app
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
-    @ValueSource(booleans = {false, true})
+    @ValueSource(booleans = { false, true })
     public void canDeployFlexConsumptionFunctionApp(boolean pushDeploy) throws FileNotFoundException {
         final PricingTier flexConsumptionTier = new PricingTier("FlexConsumption", "FC1");
 
@@ -162,50 +160,50 @@ public class OneDeployTests extends AppServiceTest {
             .withCapacity(1)
             .create();
 
-        StorageAccount storageAccount = appServiceManager.storageManager().storageAccounts()
+        StorageAccount storageAccount = appServiceManager.storageManager()
+            .storageAccounts()
             .define(storageAccountName)
             .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .create();
 
-        BlobContainer blobContainer = appServiceManager.storageManager().blobContainers()
+        BlobContainer blobContainer = appServiceManager.storageManager()
+            .blobContainers()
             .defineContainer(containerName)
             .withExistingStorageAccount(storageAccount)
             .withPublicAccess(PublicAccess.NONE)
             .create();
 
-        String connectionString = ResourceManagerUtils
-            .getStorageConnectionString(storageAccountName, storageAccount.getKeys().get(0).value(), AzureEnvironment.AZURE);
+        String connectionString = ResourceManagerUtils.getStorageConnectionString(storageAccountName,
+            storageAccount.getKeys().get(0).value(), AzureEnvironment.AZURE);
 
         // create FunctionApp of Flex Consumption Plan
-        SiteInner site = appServiceManager.webApps()
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .createOrUpdate(rgName, functionAppName, new SiteInner().withLocation(Region.US_WEST3.name())
-                .withKind("functionapp,linux")
-                .withHttpsOnly(true)
-                .withServerFarmId(appServicePlan.id())
-                .withSiteConfig(new SiteConfigInner().withAppSettings(Arrays.asList(
-                    new NameValuePair()
-                        .withName("AzureWebJobsStorage")
-                        .withValue(connectionString),
-                    new NameValuePair()
-                        .withName("DEPLOYMENT_STORAGE_CONNECTION_STRING")
-                        .withValue(connectionString))))
-                .withFunctionAppConfig(new FunctionAppConfig()
-                .withDeployment(new FunctionsDeployment().withStorage(
-                    new FunctionsDeploymentStorage()
-                        .withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
-                        .withValue(storageAccount.endPoints().primary().blob() + containerName)
-                        .withAuthentication(new FunctionsDeploymentStorageAuthentication()
-                            .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
-                            .withStorageAccountConnectionStringName("DEPLOYMENT_STORAGE_CONNECTION_STRING"))))
-                .withRuntime(new FunctionsRuntime().withName(RuntimeName.JAVA).withVersion("11"))
-                .withScaleAndConcurrency(new FunctionsScaleAndConcurrency()
-                    .withMaximumInstanceCount(100)
-                    .withInstanceMemoryMB(2048))),
-                com.azure.core.util.Context.NONE);
+        SiteInner site
+            = appServiceManager.webApps()
+                .manager()
+                .serviceClient()
+                .getWebApps()
+                .createOrUpdate(rgName, functionAppName,
+                    new SiteInner().withLocation(Region.US_WEST3.name())
+                        .withKind("functionapp,linux")
+                        .withHttpsOnly(true)
+                        .withServerFarmId(appServicePlan.id())
+                        .withSiteConfig(new SiteConfigInner().withAppSettings(Arrays.asList(
+                            new NameValuePair().withName("AzureWebJobsStorage").withValue(connectionString),
+                            new NameValuePair()
+                                .withName("DEPLOYMENT_STORAGE_CONNECTION_STRING")
+                                .withValue(connectionString))))
+                        .withFunctionAppConfig(new FunctionAppConfig()
+                            .withDeployment(new FunctionsDeployment().withStorage(new FunctionsDeploymentStorage()
+                                .withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
+                                .withValue(storageAccount.endPoints().primary().blob() + containerName)
+                                .withAuthentication(new FunctionsDeploymentStorageAuthentication()
+                                    .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
+                                    .withStorageAccountConnectionStringName("DEPLOYMENT_STORAGE_CONNECTION_STRING"))))
+                            .withRuntime(new FunctionsRuntime().withName(RuntimeName.JAVA).withVersion("11"))
+                            .withScaleAndConcurrency(new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100)
+                                .withInstanceMemoryMB(2048))),
+                    com.azure.core.util.Context.NONE);
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName, functionAppName);
 
@@ -233,22 +231,20 @@ public class OneDeployTests extends AppServiceTest {
 
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
-    @ValueSource(booleans = {false, true})
+    @ValueSource(booleans = { false, true })
     public void canDeployFunctionApp(boolean pushDeploy) {
         String functionAppName = generateRandomResourceName("functionapp", 20);
 
-        FunctionApp functionApp =
-            appServiceManager
-                .functionApps()
-                .define(functionAppName)
-                .withRegion(Region.US_WEST2)
-                .withNewResourceGroup(rgName)
-                // zipDeploy does not work for LinuxConsumptionPlan
-                // Use "WEBSITE_RUN_FROM_PACKAGE" in AppSettings for LinuxConsumptionPlan
-                .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
-                .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
-                .withHttpsOnly(true)
-                .create();
+        FunctionApp functionApp = appServiceManager.functionApps()
+            .define(functionAppName)
+            .withRegion(Region.US_WEST2)
+            .withNewResourceGroup(rgName)
+            // zipDeploy does not work for LinuxConsumptionPlan
+            // Use "WEBSITE_RUN_FROM_PACKAGE" in AppSettings for LinuxConsumptionPlan
+            .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
+            .withHttpsOnly(true)
+            .create();
 
         File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
         // test deploy (currently it would call "zipDeploy", as one deploy is not supported for non-Flex consumption plan)
@@ -270,10 +266,8 @@ public class OneDeployTests extends AppServiceTest {
         }
 
         String slotName = generateRandomResourceName("slot", 10);
-        FunctionDeploymentSlot slot = functionApp.deploymentSlots()
-            .define(slotName)
-            .withConfigurationFromParent()
-            .create();
+        FunctionDeploymentSlot slot
+            = functionApp.deploymentSlots().define(slotName).withConfigurationFromParent().create();
 
         if (!isPlaybackMode()) {
             if (pushDeploy) {

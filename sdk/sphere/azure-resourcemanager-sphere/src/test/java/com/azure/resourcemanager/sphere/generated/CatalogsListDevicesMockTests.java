@@ -45,12 +45,14 @@ public final class CatalogsListDevicesMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Device> response = manager.catalogs().listDevices("touwaboekqv", "elnsmvbxw", "jsflhhcaalnjix",
-            923639125, 1143509001, 589324262, com.azure.core.util.Context.NONE);
+        PagedIterable<Device> response = manager.catalogs()
+            .listDevices("touwaboekqv", "elnsmvbxw", "jsflhhcaalnjix", 923639125, 1143509001, 589324262,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("joya", response.iterator().next().properties().deviceId());
     }

@@ -22,7 +22,7 @@ public final class FleetMembersListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterResourceId\":\"fbjfdtwssotftpvj\",\"group\":\"exilzznfqqnvwpmq\",\"provisioningState\":\"Canceled\"},\"eTag\":\"oujmkcjhwqytj\",\"id\":\"bnw\",\"name\":\"ewgdrjervn\",\"type\":\"enq\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterResourceId\":\"jbi\",\"group\":\"bpybsrfbjf\",\"provisioningState\":\"Updating\"},\"eTag\":\"sotftpvj\",\"id\":\"exilzznfqqnvwpmq\",\"name\":\"aruoujmkcjhwqyt\",\"type\":\"r\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class FleetMembersListByFleetMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FleetMember> response
-            = manager.fleetMembers().listByFleet("gjb", "rxbpyb", com.azure.core.util.Context.NONE);
+            = manager.fleetMembers().listByFleet("bfovasrruvwbhsq", "sub", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fbjfdtwssotftpvj", response.iterator().next().clusterResourceId());
-        Assertions.assertEquals("exilzznfqqnvwpmq", response.iterator().next().group());
+        Assertions.assertEquals("jbi", response.iterator().next().clusterResourceId());
+        Assertions.assertEquals("bpybsrfbjf", response.iterator().next().group());
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
  */
 @Fluent
-public final class GroupingId {
+public final class GroupingId implements JsonSerializable<GroupingId> {
     /*
      * GroupingId type. It is a required property. More types of groupIds can be supported in future.
      */
-    @JsonProperty(value = "groupingIdType")
     private GroupingIdType groupingIdType;
 
     /*
      * GroupId value based on the groupingType selected - Billing Id or ServiceTreeId.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -78,5 +80,45 @@ public final class GroupingId {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupingIdType",
+            this.groupingIdType == null ? null : this.groupingIdType.toString());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupingId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupingId if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the GroupingId.
+     */
+    public static GroupingId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupingId deserializedGroupingId = new GroupingId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupingIdType".equals(fieldName)) {
+                    deserializedGroupingId.groupingIdType = GroupingIdType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedGroupingId.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupingId;
+        });
     }
 }

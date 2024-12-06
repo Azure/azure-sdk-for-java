@@ -154,21 +154,17 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBareMetalMachineKeySets()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, bareMetalMachineKeySetName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBareMetalMachineKeySets()
+            .createOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public BareMetalMachineKeySet create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBareMetalMachineKeySets()
-                .createOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBareMetalMachineKeySets()
+            .createOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, this.innerModel(), context);
         return this;
     }
 
@@ -184,60 +180,44 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBareMetalMachineKeySets()
-                .update(
-                    resourceGroupName,
-                    clusterName,
-                    bareMetalMachineKeySetName,
-                    updateBareMetalMachineKeySetUpdateParameters,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBareMetalMachineKeySets()
+            .update(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+                updateBareMetalMachineKeySetUpdateParameters, Context.NONE);
         return this;
     }
 
     public BareMetalMachineKeySet apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBareMetalMachineKeySets()
-                .update(
-                    resourceGroupName,
-                    clusterName,
-                    bareMetalMachineKeySetName,
-                    updateBareMetalMachineKeySetUpdateParameters,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBareMetalMachineKeySets()
+            .update(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+                updateBareMetalMachineKeySetUpdateParameters, context);
         return this;
     }
 
-    BareMetalMachineKeySetImpl(
-        BareMetalMachineKeySetInner innerObject,
+    BareMetalMachineKeySetImpl(BareMetalMachineKeySetInner innerObject,
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.bareMetalMachineKeySetName = Utils.getValueFromIdByName(innerObject.id(), "bareMetalMachineKeySets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.bareMetalMachineKeySetName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bareMetalMachineKeySets");
     }
 
     public BareMetalMachineKeySet refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBareMetalMachineKeySets()
-                .getWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBareMetalMachineKeySets()
+            .getWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BareMetalMachineKeySet refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBareMetalMachineKeySets()
-                .getWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBareMetalMachineKeySets()
+            .getWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, context)
+            .getValue();
         return this;
     }
 

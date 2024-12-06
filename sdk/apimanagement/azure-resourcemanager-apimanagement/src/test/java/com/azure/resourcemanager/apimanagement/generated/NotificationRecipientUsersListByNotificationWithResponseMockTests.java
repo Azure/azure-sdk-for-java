@@ -6,72 +6,38 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 import com.azure.resourcemanager.apimanagement.models.RecipientUserCollection;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NotificationRecipientUsersListByNotificationWithResponseMockTests {
     @Test
     public void testListByNotificationWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"userId\":\"dmakks\"},\"id\":\"rnaxkczkwohdigey\",\"name\":\"ocft\",\"type\":\"amodw\"},{\"properties\":{\"userId\":\"ktvxerow\"},\"id\":\"zvrnnbegra\",\"name\":\"eonmtojxgdo\",\"type\":\"mazhkqqs\"},{\"properties\":{\"userId\":\"aq\"},\"id\":\"zbwgpmdmwi\",\"name\":\"evveswghhbqqhd\",\"type\":\"dargkwim\"},{\"properties\":{\"userId\":\"eeeuq\"},\"id\":\"uwczzcujwxvbk\",\"name\":\"rgknhfwlajwda\",\"type\":\"y\"}],\"count\":1015416486719648078,\"nextLink\":\"ipvspewyzhydtkbm\"}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"userId\":\"wlnvqacbyfisbl\"},\"id\":\"lmpuyypaggpaihe\",\"name\":\"e\",\"type\":\"zwloqrmgdhy\"},{\"properties\":{\"userId\":\"vlxtywukhjdspl\"},\"id\":\"itxrrgkwiyoyh\",\"name\":\"oivxcodwkwoytc\",\"type\":\"chh\"}],\"count\":439792263271871995,\"nextLink\":\"ewlfwfiikqcdnzs\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        RecipientUserCollection response = manager.notificationRecipientUsers()
+            .listByNotificationWithResponse("ljuepme", "sjpgbmlbxjhgvte", NotificationName.BCC,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        RecipientUserCollection response =
-            manager
-                .notificationRecipientUsers()
-                .listByNotificationWithResponse(
-                    "bunvnjql",
-                    "rqqvcugusqlxl",
-                    NotificationName.NEW_ISSUE_PUBLISHER_NOTIFICATION_MESSAGE,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("wlnvqacbyfisbl", response.value().get(0).userId());
-        Assertions.assertEquals(439792263271871995L, response.count());
-        Assertions.assertEquals("ewlfwfiikqcdnzs", response.nextLink());
+        Assertions.assertEquals("dmakks", response.value().get(0).userId());
+        Assertions.assertEquals(1015416486719648078L, response.count());
+        Assertions.assertEquals("ipvspewyzhydtkbm", response.nextLink());
     }
 }

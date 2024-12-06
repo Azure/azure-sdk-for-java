@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+## 1.5.4 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.5.3 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
 ## 1.5.2 (2024-10-01)
 
 ### Other Changes
@@ -159,7 +175,7 @@
 
 ### Other Changes
 
-- Added dependency on `azure-json` and added support for `JsonSeriliazable` in `JacksonAdapter`.
+- Added dependency on `azure-json` and added support for `JsonSerializable` in `JacksonAdapter`.
 
 #### Dependency Updates
 
@@ -418,7 +434,7 @@
 
 ## 1.0.0-beta.3 (2020-08-12)
 
-- Changed `JacksonJsonSerializer` to implement `azure-core`'s `JsonSerialzer` instead of `azure-core-experimental`'s.
+- Changed `JacksonJsonSerializer` to implement `azure-core`'s `JsonSerializer` instead of `azure-core-experimental`'s.
 - Removed JSON tree models and APIs.
 - `JacksonJsonSerializer` now implements the interface `MemberNameConverter`.
 

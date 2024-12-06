@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"em\",\"display\":{\"provider\":\"zszuwiwtglxx\",\"resource\":\"jfpgpicrmn\",\"operation\":\"rgmqgjs\",\"description\":\"pqcbfrmbodthsq\"},\"origin\":\"vriibakclacjfr\",\"properties\":{\"uzlwvsgmw\":\"datausx\",\"izvu\":\"datahqf\",\"vmribiat\":\"datammkjsvthnwpztek\",\"zcugswvxwlmzqw\":\"datagplucfotangcfhny\"}}]}";
+            = "{\"value\":[{\"name\":\"sftufqobrjlna\",\"display\":{\"provider\":\"ckknhxkizvy\",\"resource\":\"rzvul\",\"operation\":\"aaeranokqgukk\",\"description\":\"nvbroylaxx\"},\"origin\":\"cdisd\",\"properties\":{\"yvycytdclxgcckn\":\"datajbjsvgjrwh\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("em", response.iterator().next().name());
-        Assertions.assertEquals("zszuwiwtglxx", response.iterator().next().display().provider());
-        Assertions.assertEquals("jfpgpicrmn", response.iterator().next().display().resource());
-        Assertions.assertEquals("rgmqgjs", response.iterator().next().display().operation());
-        Assertions.assertEquals("pqcbfrmbodthsq", response.iterator().next().display().description());
-        Assertions.assertEquals("vriibakclacjfr", response.iterator().next().origin());
+        Assertions.assertEquals("sftufqobrjlna", response.iterator().next().name());
+        Assertions.assertEquals("ckknhxkizvy", response.iterator().next().display().provider());
+        Assertions.assertEquals("rzvul", response.iterator().next().display().resource());
+        Assertions.assertEquals("aaeranokqgukk", response.iterator().next().display().operation());
+        Assertions.assertEquals("nvbroylaxx", response.iterator().next().display().description());
+        Assertions.assertEquals("cdisd", response.iterator().next().origin());
     }
 }

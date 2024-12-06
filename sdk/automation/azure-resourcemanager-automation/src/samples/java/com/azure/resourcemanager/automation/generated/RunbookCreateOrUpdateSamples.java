@@ -11,19 +11,22 @@ import com.azure.resourcemanager.automation.models.RunbookTypeEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Runbook CreateOrUpdate. */
+/**
+ * Samples for Runbook CreateOrUpdate.
+ */
 public final class RunbookCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.
+     * json
      */
     /**
      * Sample code: Create runbook as draft.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createRunbookAsDraft(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbooks()
+        manager.runbooks()
             .define("Get-AzureVMTutorial")
             .withExistingAutomationAccount("rg", "ContoseAutomationAccount")
             .withRunbookType(RunbookTypeEnum.POWER_SHELL_WORKFLOW)
@@ -38,17 +41,18 @@ public final class RunbookCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.
+     * json
      */
     /**
      * Sample code: Create or update runbook and publish it.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
-    public static void createOrUpdateRunbookAndPublishIt(
-        com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .runbooks()
+    public static void
+        createOrUpdateRunbookAndPublishIt(com.azure.resourcemanager.automation.AutomationManager manager) {
+        manager.runbooks()
             .define("Get-AzureVMTutorial")
             .withExistingAutomationAccount("rg", "ContoseAutomationAccount")
             .withRunbookType(RunbookTypeEnum.POWER_SHELL_WORKFLOW)
@@ -57,19 +61,16 @@ public final class RunbookCreateOrUpdateSamples {
             .withName("Get-AzureVMTutorial")
             .withLogVerbose(false)
             .withLogProgress(true)
-            .withPublishContentLink(
-                new ContentLink()
-                    .withUri(
-                        "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1")
-                    .withContentHash(
-                        new ContentHash()
-                            .withAlgorithm("SHA256")
-                            .withValue("115775B8FF2BE672D8A946BD0B489918C724DDE15A440373CA54461D53010A80")))
+            .withPublishContentLink(new ContentLink().withUri(
+                "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1")
+                .withContentHash(new ContentHash().withAlgorithm("SHA256")
+                    .withValue("115775B8FF2BE672D8A946BD0B489918C724DDE15A440373CA54461D53010A80")))
             .withDescription("Description of the Runbook")
             .withLogActivityTrace(1)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

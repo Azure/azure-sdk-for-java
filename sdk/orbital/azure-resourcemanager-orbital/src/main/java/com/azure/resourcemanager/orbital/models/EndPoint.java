@@ -6,42 +6,46 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customer end point to store and retrieve data during a contact with the spacecraft. */
+/**
+ * Customer end point to store and retrieve data during a contact with the spacecraft.
+ */
 @Fluent
-public final class EndPoint {
+public final class EndPoint implements JsonSerializable<EndPoint> {
     /*
      * IP Address (IPv4).
      */
-    @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
 
     /*
      * Name of an end point.
      */
-    @JsonProperty(value = "endPointName", required = true)
     private String endPointName;
 
     /*
      * TCP port to listen on to receive data.
      */
-    @JsonProperty(value = "port", required = true)
     private String port;
 
     /*
      * Protocol either UDP or TCP.
      */
-    @JsonProperty(value = "protocol", required = true)
     private Protocol protocol;
 
-    /** Creates an instance of EndPoint class. */
+    /**
+     * Creates an instance of EndPoint class.
+     */
     public EndPoint() {
     }
 
     /**
      * Get the ipAddress property: IP Address (IPv4).
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -50,7 +54,7 @@ public final class EndPoint {
 
     /**
      * Set the ipAddress property: IP Address (IPv4).
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the EndPoint object itself.
      */
@@ -61,7 +65,7 @@ public final class EndPoint {
 
     /**
      * Get the endPointName property: Name of an end point.
-     *
+     * 
      * @return the endPointName value.
      */
     public String endPointName() {
@@ -70,7 +74,7 @@ public final class EndPoint {
 
     /**
      * Set the endPointName property: Name of an end point.
-     *
+     * 
      * @param endPointName the endPointName value to set.
      * @return the EndPoint object itself.
      */
@@ -81,7 +85,7 @@ public final class EndPoint {
 
     /**
      * Get the port property: TCP port to listen on to receive data.
-     *
+     * 
      * @return the port value.
      */
     public String port() {
@@ -90,7 +94,7 @@ public final class EndPoint {
 
     /**
      * Set the port property: TCP port to listen on to receive data.
-     *
+     * 
      * @param port the port value to set.
      * @return the EndPoint object itself.
      */
@@ -101,7 +105,7 @@ public final class EndPoint {
 
     /**
      * Get the protocol property: Protocol either UDP or TCP.
-     *
+     * 
      * @return the protocol value.
      */
     public Protocol protocol() {
@@ -110,7 +114,7 @@ public final class EndPoint {
 
     /**
      * Set the protocol property: Protocol either UDP or TCP.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the EndPoint object itself.
      */
@@ -121,30 +125,73 @@ public final class EndPoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipAddress in model EndPoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipAddress in model EndPoint"));
         }
         if (endPointName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endPointName in model EndPoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endPointName in model EndPoint"));
         }
         if (port() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property port in model EndPoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property port in model EndPoint"));
         }
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property protocol in model EndPoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property protocol in model EndPoint"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EndPoint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("endPointName", this.endPointName);
+        jsonWriter.writeStringField("port", this.port);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndPoint if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndPoint.
+     */
+    public static EndPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndPoint deserializedEndPoint = new EndPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedEndPoint.ipAddress = reader.getString();
+                } else if ("endPointName".equals(fieldName)) {
+                    deserializedEndPoint.endPointName = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedEndPoint.port = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedEndPoint.protocol = Protocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndPoint;
+        });
+    }
 }

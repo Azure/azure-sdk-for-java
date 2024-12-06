@@ -19,37 +19,36 @@ public final class SecurityAdvisoryImpactedResourcesImpl implements SecurityAdvi
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public SecurityAdvisoryImpactedResourcesImpl(
-        SecurityAdvisoryImpactedResourcesClient innerClient,
+    public SecurityAdvisoryImpactedResourcesImpl(SecurityAdvisoryImpactedResourcesClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(String eventTrackingId) {
-        PagedIterable<EventImpactedResourceInner> inner =
-            this.serviceClient().listBySubscriptionIdAndEventId(eventTrackingId);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+        PagedIterable<EventImpactedResourceInner> inner
+            = this.serviceClient().listBySubscriptionIdAndEventId(eventTrackingId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context) {
-        PagedIterable<EventImpactedResourceInner> inner =
-            this.serviceClient().listBySubscriptionIdAndEventId(eventTrackingId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+    public PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(String eventTrackingId, String filter,
+        Context context) {
+        PagedIterable<EventImpactedResourceInner> inner
+            = this.serviceClient().listBySubscriptionIdAndEventId(eventTrackingId, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventImpactedResource> listByTenantIdAndEventId(String eventTrackingId) {
-        PagedIterable<EventImpactedResourceInner> inner =
-            this.serviceClient().listByTenantIdAndEventId(eventTrackingId);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+        PagedIterable<EventImpactedResourceInner> inner
+            = this.serviceClient().listByTenantIdAndEventId(eventTrackingId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventImpactedResource> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context) {
-        PagedIterable<EventImpactedResourceInner> inner =
-            this.serviceClient().listByTenantIdAndEventId(eventTrackingId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+    public PagedIterable<EventImpactedResource> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context) {
+        PagedIterable<EventImpactedResourceInner> inner
+            = this.serviceClient().listByTenantIdAndEventId(eventTrackingId, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
     private SecurityAdvisoryImpactedResourcesClient serviceClient() {

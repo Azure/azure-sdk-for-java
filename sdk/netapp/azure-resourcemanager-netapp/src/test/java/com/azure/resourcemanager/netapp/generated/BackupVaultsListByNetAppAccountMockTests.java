@@ -22,7 +22,7 @@ public final class BackupVaultsListByNetAppAccountMockTests {
     @Test
     public void testListByNetAppAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"mflrytswfpfmdgyc\"},\"location\":\"mskwhqjjysl\",\"tags\":{\"mpqvwwsk\":\"pshhkvpedwqslsr\",\"uvqejosovyrrle\":\"ndcbrwi\",\"uqtljqobbpih\":\"esi\",\"bbmpxdlvykfre\":\"hcecybmrqbr\"},\"id\":\"crse\",\"name\":\"wjksghudgzhxo\",\"type\":\"jggsvo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"zjijpvuaurkihcir\"},\"location\":\"efxrdcoxnbk\",\"tags\":{\"nqbpi\":\"nurnnq\",\"gypxrxvbfihwuhvc\":\"xqltgrd\"},\"id\":\"a\",\"name\":\"s\",\"type\":\"bxrblmliowxihspn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class BackupVaultsListByNetAppAccountMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BackupVault> response
-            = manager.backupVaults().listByNetAppAccount("jcitdigsxcdglj", "lkeuac", com.azure.core.util.Context.NONE);
+            = manager.backupVaults().listByNetAppAccount("bkdq", "rdzsylollgtrczzy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mskwhqjjysl", response.iterator().next().location());
-        Assertions.assertEquals("pshhkvpedwqslsr", response.iterator().next().tags().get("mpqvwwsk"));
+        Assertions.assertEquals("efxrdcoxnbk", response.iterator().next().location());
+        Assertions.assertEquals("nurnnq", response.iterator().next().tags().get("nqbpi"));
     }
 }

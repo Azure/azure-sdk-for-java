@@ -12,13 +12,11 @@ import io.clientcore.core.json.implementation.jackson.core.json.JsonWriteFeature
  *
  * @since 2.10
  */
-public abstract class TSFBuilder<F extends JsonFactory,
-    B extends TSFBuilder<F,B>>
-{
+public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, B>> {
     /*
-    /**********************************************************************
-    /* Constants
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Constants
+     * /**********************************************************************
      */
 
     /**
@@ -39,13 +37,13 @@ public abstract class TSFBuilder<F extends JsonFactory,
     protected final static int DEFAULT_GENERATOR_FEATURE_FLAGS = JsonGenerator.Feature.collectDefaults();
 
     /*
-    /**********************************************************************
-    /* Configured features
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Configured features
+     * /**********************************************************************
      */
 
     /**
-     * Set of {@link io.clientcore.core.json.implementation.jackson.core.JsonFactory.Feature}s enabled,
+     * Set of {@link JsonFactory.Feature}s enabled,
      * as bitmask.
      */
     protected int _factoryFeatures;
@@ -61,9 +59,9 @@ public abstract class TSFBuilder<F extends JsonFactory,
     protected int _streamWriteFeatures;
 
     /*
-    /**********************************************************************
-    /* Other configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Other configuration
+     * /**********************************************************************
      */
 
     /**
@@ -79,9 +77,9 @@ public abstract class TSFBuilder<F extends JsonFactory,
     protected OutputDecorator _outputDecorator;
 
     /*
-    /**********************************************************************
-    /* Construction
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Construction
+     * /**********************************************************************
      */
 
     protected TSFBuilder() {
@@ -92,28 +90,7 @@ public abstract class TSFBuilder<F extends JsonFactory,
         _outputDecorator = null;
     }
 
-    protected TSFBuilder(JsonFactory base)
-    {
-        this(base._factoryFeatures,
-                base._parserFeatures, base._generatorFeatures);
-    }
-
-    protected TSFBuilder(int factoryFeatures,
-            int parserFeatures, int generatorFeatures)
-    {
-        _factoryFeatures = factoryFeatures;
-        _streamReadFeatures = parserFeatures;
-        _streamWriteFeatures = generatorFeatures;
-    }
-
     // // // Accessors
-
-    public int factoryFeaturesMask() { return _factoryFeatures; }
-    public int streamReadFeatures() { return _streamReadFeatures; }
-    public int streamWriteFeatures() { return _streamWriteFeatures; }
-
-    public InputDecorator inputDecorator() { return _inputDecorator; }
-    public OutputDecorator outputDecorator() { return _outputDecorator; }
 
     // // // Factory features
 
@@ -195,11 +172,12 @@ public abstract class TSFBuilder<F extends JsonFactory,
         return state ? enable(f) : disable(f);
     }
 
-    /* 26-Jun-2018, tatu: This should not be needed here, but due to 2.x limitations,
-     *   we do need to include it or require casting.
-     *   Specifically: since `JsonFactory` (and not `TokenStreamFactory`) is base class
-     *   for all backends, it can not expose JSON-specific builder, but this.
-     *   So let's select lesser evil(s).
+    /*
+     * 26-Jun-2018, tatu: This should not be needed here, but due to 2.x limitations,
+     * we do need to include it or require casting.
+     * Specifically: since `JsonFactory` (and not `TokenStreamFactory`) is base class
+     * for all backends, it can not expose JSON-specific builder, but this.
+     * So let's select lesser evil(s).
      */
 
     // // // JSON-specific, reads
@@ -225,8 +203,8 @@ public abstract class TSFBuilder<F extends JsonFactory,
     }
 
     private B _failNonJSON(Object feature) {
-        throw new IllegalArgumentException("Feature "+feature.getClass().getName()
-                +"#"+feature.toString()+" not supported for non-JSON backend");
+        throw new IllegalArgumentException(
+            "Feature " + feature.getClass().getName() + "#" + feature + " not supported for non-JSON backend");
     }
 
     // // // JSON-specific, writes
@@ -275,7 +253,9 @@ public abstract class TSFBuilder<F extends JsonFactory,
 
     // silly convenience cast method we need
     @SuppressWarnings("unchecked")
-    protected final B _this() { return (B) this; }
+    protected final B _this() {
+        return (B) this;
+    }
 
     // // // Support for subtypes
 
@@ -296,6 +276,7 @@ public abstract class TSFBuilder<F extends JsonFactory,
             _streamWriteFeatures |= f.getMask();
         }
     }
+
     protected void _legacyDisable(JsonGenerator.Feature f) {
         if (f != null) {
             _streamWriteFeatures &= ~f.getMask();

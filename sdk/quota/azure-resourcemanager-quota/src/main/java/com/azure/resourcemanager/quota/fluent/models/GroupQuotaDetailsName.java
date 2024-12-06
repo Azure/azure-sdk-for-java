@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Name of the resource provided by the resource provider. This property is already included in the request URI, so it
  * is a readonly property returned in the response.
  */
 @Immutable
-public final class GroupQuotaDetailsName {
+public final class GroupQuotaDetailsName implements JsonSerializable<GroupQuotaDetailsName> {
     /*
      * Resource name.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Resource display name.
      */
-    @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
     /**
@@ -55,5 +57,42 @@ public final class GroupQuotaDetailsName {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotaDetailsName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotaDetailsName if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotaDetailsName.
+     */
+    public static GroupQuotaDetailsName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotaDetailsName deserializedGroupQuotaDetailsName = new GroupQuotaDetailsName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedGroupQuotaDetailsName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedGroupQuotaDetailsName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotaDetailsName;
+        });
     }
 }

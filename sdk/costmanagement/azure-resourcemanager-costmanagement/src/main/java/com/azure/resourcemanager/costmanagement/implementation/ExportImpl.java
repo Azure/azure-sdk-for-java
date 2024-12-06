@@ -88,22 +88,18 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
     }
 
     public Export create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExports()
-                .createOrUpdateWithResponse(scope, exportName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExports()
+            .createOrUpdateWithResponse(scope, exportName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Export create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExports()
-                .createOrUpdateWithResponse(scope, exportName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExports()
+            .createOrUpdateWithResponse(scope, exportName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -118,57 +114,45 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
     }
 
     public Export apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExports()
-                .createOrUpdateWithResponse(scope, exportName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExports()
+            .createOrUpdateWithResponse(scope, exportName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Export apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExports()
-                .createOrUpdateWithResponse(scope, exportName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExports()
+            .createOrUpdateWithResponse(scope, exportName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     ExportImpl(ExportInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "scope");
-        this.exportName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "exportName");
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "scope");
+        this.exportName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "exportName");
     }
 
     public Export refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExports()
-                .getWithResponse(scope, exportName, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExports()
+            .getWithResponse(scope, exportName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Export refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExports()
-                .getWithResponse(scope, exportName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExports()
+            .getWithResponse(scope, exportName, localExpand, context)
+            .getValue();
         return this;
     }
 

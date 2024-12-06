@@ -10,6 +10,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +28,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public DownloadToFile(StorageStressOptions options) {
         super(options);
@@ -35,12 +37,14 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
         this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
+        this.parallelTransferOptions = new ParallelTransferOptions().setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override
     protected void runInternal(Context span) {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
-        BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString());
+        BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString())
+            .setParallelTransferOptions(parallelTransferOptions);
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
@@ -54,7 +58,8 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
-            path -> asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
+            path -> asyncClient.downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(path.toString()).setParallelTransferOptions(parallelTransferOptions))
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
             DownloadToFile::deleteFile);
     }

@@ -212,6 +212,9 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

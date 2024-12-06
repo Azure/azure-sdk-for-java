@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model
-            = BinaryData.fromString("{\"principalId\":\"pgn\",\"tenantId\":\"txhp\",\"type\":\"SystemAssigned\"}")
-                .toObject(Identity.class);
+        Identity model = BinaryData
+            .fromString("{\"principalId\":\"gwyzm\",\"tenantId\":\"xongmtsavjcbpwxq\",\"type\":\"SystemAssigned\"}")
+            .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 

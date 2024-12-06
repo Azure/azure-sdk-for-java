@@ -26,7 +26,8 @@ public final class AddParticipantEventResult {
      * @param failureResult the add participant failed event.
      * @param participant the participant.
      */
-    AddParticipantEventResult(boolean isSuccess, AddParticipantSucceeded successResult, AddParticipantFailed failureResult, CommunicationIdentifier participant) {
+    AddParticipantEventResult(boolean isSuccess, AddParticipantSucceeded successResult,
+        AddParticipantFailed failureResult, CommunicationIdentifier participant) {
         this.isSuccess = isSuccess;
         this.successResult = successResult;
         this.failureResult = failureResult;

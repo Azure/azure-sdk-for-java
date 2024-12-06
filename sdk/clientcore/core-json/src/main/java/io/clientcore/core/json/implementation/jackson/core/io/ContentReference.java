@@ -1,20 +1,22 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
  * Abstraction that encloses information about content being processed --
  * input source or output target, streaming or
  * not -- for the purpose of including pertinent information in
- * location (see {@link io.clientcore.core.json.implementation.jackson.core.JsonLocation})
+ * location (see {@link JsonLocation})
  * objections, most commonly to be printed out as part of {@code Exception}
  * messages.
  *
@@ -22,8 +24,7 @@ import java.util.Objects;
  */
 public class ContentReference
     // sort of: we will read back as "UNKNOWN"
-    implements java.io.Serializable
-{
+    implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -33,8 +34,7 @@ public class ContentReference
      * NOTE: As of 2.13 assume to contain Binary content, meaning that no
      * content snippets will be included.
      */
-    protected final static ContentReference UNKNOWN_CONTENT =
-            new ContentReference(false, null);
+    protected final static ContentReference UNKNOWN_CONTENT = new ContentReference(false, null);
 
     /**
      * Include at most first 500 characters/bytes from contents; should be enough
@@ -72,18 +72,16 @@ public class ContentReference
     protected final boolean _isContentTextual;
 
     /*
-    /**********************************************************************
-    /* Life-cycle
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Life-cycle
+     * /**********************************************************************
      */
 
     protected ContentReference(boolean isContentTextual, Object rawContent) {
         this(isContentTextual, rawContent, -1, -1);
     }
 
-    protected ContentReference(boolean isContentTextual, Object rawContent,
-            int offset, int length)
-    {
+    protected ContentReference(boolean isContentTextual, Object rawContent, int offset, int length) {
         _isContentTextual = isContentTextual;
         _rawContent = rawContent;
         _offset = offset;
@@ -105,8 +103,7 @@ public class ContentReference
         return new ContentReference(isContentTextual, rawContent);
     }
 
-    public static ContentReference construct(boolean isContentTextual, Object rawContent,
-            int offset, int length) {
+    public static ContentReference construct(boolean isContentTextual, Object rawContent, int offset, int length) {
         return new ContentReference(isContentTextual, rawContent, offset, length);
     }
 
@@ -122,9 +119,7 @@ public class ContentReference
      * @return Instance with minimal information about content (basically just
      *    raw content reference without offsets
      */
-    public static ContentReference rawReference(boolean isContentTextual,
-            Object rawContent)
-    {
+    public static ContentReference rawReference(boolean isContentTextual, Object rawContent) {
         // Just to avoid russian-doll-nesting, let's:
         if (rawContent instanceof ContentReference) {
             return (ContentReference) rawContent;
@@ -137,9 +132,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Serializable overrides
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Serializable overrides
+     * /**********************************************************************
      */
 
     // For JDK serialization: can/should not retain raw content, so need
@@ -158,9 +153,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Basic accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Basic accessors
+     * /**********************************************************************
      */
 
     public boolean hasTextualContent() {
@@ -171,8 +166,13 @@ public class ContentReference
         return _rawContent;
     }
 
-    public int contentOffset() { return _offset; }
-    public int contentLength() { return _length; }
+    public int contentOffset() {
+        return _offset;
+    }
+
+    public int contentLength() {
+        return _length;
+    }
 
     /**
      * Internal accessor, overridable, used for checking length (in units in
@@ -186,9 +186,9 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Method for constructing descriptions
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Method for constructing descriptions
+     * /**********************************************************************
      */
 
     /**
@@ -209,8 +209,7 @@ public class ContentReference
      *
      * @return StringBuilder passed as argument (for call chaining)
      */
-    public StringBuilder appendSourceDescription(StringBuilder sb)
-    {
+    public StringBuilder appendSourceDescription(StringBuilder sb) {
         final Object srcRef = getRawContent();
 
         if (srcRef == null) {
@@ -218,8 +217,7 @@ public class ContentReference
             return sb;
         }
         // First, figure out what name to use as source type
-        Class<?> srcType = (srcRef instanceof Class<?>) ?
-                ((Class<?>) srcRef) : srcRef.getClass();
+        Class<?> srcType = (srcRef instanceof Class<?>) ? ((Class<?>) srcRef) : srcRef.getClass();
         String tn = srcType.getName();
         // standard JDK types without package
         if (tn.startsWith("java.")) {
@@ -265,9 +263,7 @@ public class ContentReference
                 if (length < 0) {
                     length = ((byte[]) srcRef).length;
                 }
-                sb.append('[')
-                    .append(length)
-                    .append(" bytes]");
+                sb.append('[').append(length).append(" bytes]");
             }
         }
         return sb;
@@ -291,7 +287,7 @@ public class ContentReference
         _truncateOffsets(offsets, b.length);
         final int start = offsets[0];
         final int length = Math.min(offsets[1], maxSnippetLen);
-        return new String(b, start, length, Charset.forName("UTF-8"));
+        return new String(b, start, length, StandardCharsets.UTF_8);
     }
 
     // Method that is given alleged start/offset pair and needs to adjust
@@ -319,8 +315,8 @@ public class ContentReference
         // [core#658]: make sure to escape non-printable
         for (int i = 0, end = content.length(); i < end; ++i) {
             // 06-Apr-2021, tatu: Gee... there is no "Character.isPrintable()",
-            //   and from what I can see things get rather complicated trying
-            //   to figure out proper way. Hence, we'll do this
+            // and from what I can see things get rather complicated trying
+            // to figure out proper way. Hence, we'll do this
             char ch = content.charAt(i);
             if (!Character.isISOControl(ch) || !_appendEscaped(sb, ch)) {
                 sb.append(ch);
@@ -345,31 +341,32 @@ public class ContentReference
     }
 
     /*
-    /**********************************************************************
-    /* Standard method overrides
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Standard method overrides
+     * /**********************************************************************
      */
 
     // Just needed for JsonLocation#equals(): although it'd seem we only need
     // to care about identity, for backwards compatibility better compare
     // bit more
     @Override
-    public boolean equals(Object other)
-    {
-        if (other == this) return true;
-        if (other == null) return false;
-        if (!(other instanceof ContentReference)) return false;
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (other == null)
+            return false;
+        if (!(other instanceof ContentReference))
+            return false;
         ContentReference otherSrc = (ContentReference) other;
 
         // 16-Jan-2022, tatu: First ensure offset/length the same
-        if ((_offset != otherSrc._offset)
-                || (_length != otherSrc._length)) {
+        if ((_offset != otherSrc._offset) || (_length != otherSrc._length)) {
             return false;
         }
 
         // 16-Jan-2022, tatu: As per [core#739] we'll want to consider some
-        //   but not all content cases with real equality: the concern here is
-        //   to avoid expensive comparisons and/or possible security issues
+        // but not all content cases with real equality: the concern here is
+        // to avoid expensive comparisons and/or possible security issues
         final Object otherRaw = otherSrc._rawContent;
 
         if (_rawContent == null) {
@@ -378,10 +375,7 @@ public class ContentReference
             return false;
         }
 
-        if ((_rawContent instanceof File)
-                || (_rawContent instanceof URL)
-                || (_rawContent instanceof URI)
-        ) {
+        if ((_rawContent instanceof File) || (_rawContent instanceof URL) || (_rawContent instanceof URI)) {
             return _rawContent.equals(otherRaw);
         }
         return _rawContent == otherSrc._rawContent;

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class StopVirtualMachineOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StopVirtualMachineOptions model =
-            BinaryData.fromString("{\"skipShutdown\":true}").toObject(StopVirtualMachineOptions.class);
+        StopVirtualMachineOptions model
+            = BinaryData.fromString("{\"skipShutdown\":true}").toObject(StopVirtualMachineOptions.class);
         Assertions.assertEquals(true, model.skipShutdown());
     }
 

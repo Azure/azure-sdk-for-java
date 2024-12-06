@@ -25,8 +25,11 @@ public final class HyperVReplicaAzureReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureReprotectInput model = new HyperVReplicaAzureReprotectInput().withHvHostVmId("zbnobr")
-            .withVmName("pbcjtrpzuyudivbx").withOsType("sqeaeonqelwg").withVHDId("uruzy")
-            .withStorageAccountId("arogatmolji").withLogStorageAccountId("mpinmzvfkneerzzt");
+            .withVmName("pbcjtrpzuyudivbx")
+            .withOsType("sqeaeonqelwg")
+            .withVHDId("uruzy")
+            .withStorageAccountId("arogatmolji")
+            .withLogStorageAccountId("mpinmzvfkneerzzt");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureReprotectInput.class);
         Assertions.assertEquals("zbnobr", model.hvHostVmId());
         Assertions.assertEquals("pbcjtrpzuyudivbx", model.vmName());

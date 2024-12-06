@@ -6,36 +6,41 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details to transfer all data. */
+/**
+ * Details to transfer all data.
+ */
 @Fluent
-public final class TransferAllDetails {
+public final class TransferAllDetails implements JsonSerializable<TransferAllDetails> {
     /*
      * Type of the account of data
      */
-    @JsonProperty(value = "dataAccountType", required = true)
     private DataAccountType dataAccountType;
 
     /*
      * To indicate if all Azure blobs have to be transferred
      */
-    @JsonProperty(value = "transferAllBlobs")
     private Boolean transferAllBlobs;
 
     /*
      * To indicate if all Azure Files have to be transferred
      */
-    @JsonProperty(value = "transferAllFiles")
     private Boolean transferAllFiles;
 
-    /** Creates an instance of TransferAllDetails class. */
+    /**
+     * Creates an instance of TransferAllDetails class.
+     */
     public TransferAllDetails() {
     }
 
     /**
      * Get the dataAccountType property: Type of the account of data.
-     *
+     * 
      * @return the dataAccountType value.
      */
     public DataAccountType dataAccountType() {
@@ -44,7 +49,7 @@ public final class TransferAllDetails {
 
     /**
      * Set the dataAccountType property: Type of the account of data.
-     *
+     * 
      * @param dataAccountType the dataAccountType value to set.
      * @return the TransferAllDetails object itself.
      */
@@ -55,7 +60,7 @@ public final class TransferAllDetails {
 
     /**
      * Get the transferAllBlobs property: To indicate if all Azure blobs have to be transferred.
-     *
+     * 
      * @return the transferAllBlobs value.
      */
     public Boolean transferAllBlobs() {
@@ -64,7 +69,7 @@ public final class TransferAllDetails {
 
     /**
      * Set the transferAllBlobs property: To indicate if all Azure blobs have to be transferred.
-     *
+     * 
      * @param transferAllBlobs the transferAllBlobs value to set.
      * @return the TransferAllDetails object itself.
      */
@@ -75,7 +80,7 @@ public final class TransferAllDetails {
 
     /**
      * Get the transferAllFiles property: To indicate if all Azure Files have to be transferred.
-     *
+     * 
      * @return the transferAllFiles value.
      */
     public Boolean transferAllFiles() {
@@ -84,7 +89,7 @@ public final class TransferAllDetails {
 
     /**
      * Set the transferAllFiles property: To indicate if all Azure Files have to be transferred.
-     *
+     * 
      * @param transferAllFiles the transferAllFiles value to set.
      * @return the TransferAllDetails object itself.
      */
@@ -95,17 +100,60 @@ public final class TransferAllDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataAccountType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataAccountType in model TransferAllDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataAccountType in model TransferAllDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TransferAllDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataAccountType",
+            this.dataAccountType == null ? null : this.dataAccountType.toString());
+        jsonWriter.writeBooleanField("transferAllBlobs", this.transferAllBlobs);
+        jsonWriter.writeBooleanField("transferAllFiles", this.transferAllFiles);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransferAllDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransferAllDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransferAllDetails.
+     */
+    public static TransferAllDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransferAllDetails deserializedTransferAllDetails = new TransferAllDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataAccountType".equals(fieldName)) {
+                    deserializedTransferAllDetails.dataAccountType = DataAccountType.fromString(reader.getString());
+                } else if ("transferAllBlobs".equals(fieldName)) {
+                    deserializedTransferAllDetails.transferAllBlobs = reader.getNullable(JsonReader::getBoolean);
+                } else if ("transferAllFiles".equals(fieldName)) {
+                    deserializedTransferAllDetails.transferAllFiles = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransferAllDetails;
+        });
+    }
 }

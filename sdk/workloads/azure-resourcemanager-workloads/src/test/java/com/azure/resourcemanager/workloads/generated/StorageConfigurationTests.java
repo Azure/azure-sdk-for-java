@@ -11,16 +11,15 @@ import com.azure.resourcemanager.workloads.models.StorageConfiguration;
 public final class StorageConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageConfiguration model =
-            BinaryData
-                .fromString("{\"transportFileShareConfiguration\":{\"configurationType\":\"FileShareConfiguration\"}}")
-                .toObject(StorageConfiguration.class);
+        StorageConfiguration model = BinaryData
+            .fromString("{\"transportFileShareConfiguration\":{\"configurationType\":\"FileShareConfiguration\"}}")
+            .toObject(StorageConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageConfiguration model =
-            new StorageConfiguration().withTransportFileShareConfiguration(new FileShareConfiguration());
+        StorageConfiguration model
+            = new StorageConfiguration().withTransportFileShareConfiguration(new FileShareConfiguration());
         model = BinaryData.fromObject(model).toObject(StorageConfiguration.class);
     }
 }

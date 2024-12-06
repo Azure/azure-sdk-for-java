@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The speech recognition status as a result.
+ * The speech status as a result.
  */
 @Fluent
 public final class SpeechResultInternal implements JsonSerializable<SpeechResultInternal> {

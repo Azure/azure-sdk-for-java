@@ -53,7 +53,8 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         assertNull(result.getTaggerResult().getEtag());
         assertNull(result.getTaggerResult().getPath());
         assertFalse(result.getTaggerResult().getEntities().isEmpty());
-        assertTrue(result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR) || result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
+        assertTrue(result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
+            || result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
         assertEquals("John Smith", result.getTaggerResult().getEntities().get(0).getText());
         assertEquals(18, result.getTaggerResult().getEntities().get(0).getOffset().getUtf8());
         assertEquals(10, result.getTaggerResult().getEntities().get(0).getLength().getUtf8());

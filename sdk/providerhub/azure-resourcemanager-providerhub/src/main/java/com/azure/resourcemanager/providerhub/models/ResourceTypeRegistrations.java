@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceTypeRegistrations. */
+/**
+ * Resource collection API of ResourceTypeRegistrations.
+ */
 public interface ResourceTypeRegistrations {
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -50,7 +52,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,7 +74,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +97,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +109,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,7 +119,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +131,7 @@ public interface ResourceTypeRegistrations {
 
     /**
      * Begins definition for a new ResourceTypeRegistration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ResourceTypeRegistration definition.
      */

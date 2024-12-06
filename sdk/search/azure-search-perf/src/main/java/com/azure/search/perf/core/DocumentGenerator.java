@@ -45,7 +45,7 @@ public final class DocumentGenerator {
                 + "de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus "
                 + "attractives et cosmopolites de l'Amérique.";
             hotel.category = "Boutique";
-            hotel.tags = new String[]{"pool", "air conditioning", "concierge"};
+            hotel.tags = new String[] { "pool", "air conditioning", "concierge" };
             hotel.parkingIncluded = false;
             hotel.lastRenovationDate = OffsetDateTime.of(1970, 1, 18, 0, 0, 0, 0, ZoneOffset.UTC);
             hotel.rating = 3.6D;
@@ -87,10 +87,18 @@ public final class DocumentGenerator {
                 + "exploriez simplement le parc, le Mount Rainier Lodge peut être le lieu de repos idéal pour votre "
                 + "aventure. Nous espérons vous voir bientôt!";
             hotel.category = "Lodge";
-            hotel.tags = new String[]{
-                "jacuzzi", "air conditioning", "gift shop", "basic cable", "continental breakfast", "free wi-fi",
-                "national park", "cabin", "outdoors", "pacific northwest", "mountain"
-            };
+            hotel.tags = new String[] {
+                "jacuzzi",
+                "air conditioning",
+                "gift shop",
+                "basic cable",
+                "continental breakfast",
+                "free wi-fi",
+                "national park",
+                "cabin",
+                "outdoors",
+                "pacific northwest",
+                "mountain" };
             hotel.parkingIncluded = true;
             hotel.lastRenovationDate = OffsetDateTime.of(1985, 3, 30, 0, 0, 0, 0, ZoneOffset.UTC);
             hotel.rating = 4.2D;

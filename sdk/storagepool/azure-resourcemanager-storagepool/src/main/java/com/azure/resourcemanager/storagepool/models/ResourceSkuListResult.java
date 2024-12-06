@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.fluent.models.ResourceSkuInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List Disk Pool skus operation response. */
+/**
+ * List Disk Pool skus operation response.
+ */
 @Fluent
-public final class ResourceSkuListResult {
+public final class ResourceSkuListResult implements JsonSerializable<ResourceSkuListResult> {
     /*
      * The list of StoragePool resource skus.
      */
-    @JsonProperty(value = "value")
     private List<ResourceSkuInfoInner> value;
 
     /*
      * URI to fetch the next section of the paginated response.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ResourceSkuListResult class. */
+    /**
+     * Creates an instance of ResourceSkuListResult class.
+     */
     public ResourceSkuListResult() {
     }
 
     /**
      * Get the value property: The list of StoragePool resource skus.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceSkuInfoInner> value() {
@@ -39,7 +45,7 @@ public final class ResourceSkuListResult {
 
     /**
      * Set the value property: The list of StoragePool resource skus.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceSkuListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ResourceSkuListResult {
 
     /**
      * Get the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ResourceSkuListResult {
 
     /**
      * Set the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceSkuListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class ResourceSkuListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuListResult.
+     */
+    public static ResourceSkuListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuListResult deserializedResourceSkuListResult = new ResourceSkuListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ResourceSkuInfoInner> value
+                        = reader.readArray(reader1 -> ResourceSkuInfoInner.fromJson(reader1));
+                    deserializedResourceSkuListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedResourceSkuListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuListResult;
+        });
     }
 }

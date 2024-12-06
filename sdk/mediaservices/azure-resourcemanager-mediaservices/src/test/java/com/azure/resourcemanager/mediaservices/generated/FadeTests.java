@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class FadeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Fade model =
-            BinaryData
-                .fromString(
-                    "{\"duration\":\"PT197H27M1S\",\"fadeColor\":\"uuepzlrphwzsoldw\",\"start\":\"uqdunvmnnrwrbi\"}")
-                .toObject(Fade.class);
-        Assertions.assertEquals(Duration.parse("PT197H27M1S"), model.duration());
-        Assertions.assertEquals("uuepzlrphwzsoldw", model.fadeColor());
-        Assertions.assertEquals("uqdunvmnnrwrbi", model.start());
+        Fade model = BinaryData
+            .fromString("{\"duration\":\"PT46H40M33S\",\"fadeColor\":\"grjqctojcmi\",\"start\":\"fieypefojyqdhcup\"}")
+            .toObject(Fade.class);
+        Assertions.assertEquals(Duration.parse("PT46H40M33S"), model.duration());
+        Assertions.assertEquals("grjqctojcmi", model.fadeColor());
+        Assertions.assertEquals("fieypefojyqdhcup", model.start());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Fade model =
-            new Fade()
-                .withDuration(Duration.parse("PT197H27M1S"))
-                .withFadeColor("uuepzlrphwzsoldw")
-                .withStart("uqdunvmnnrwrbi");
+        Fade model = new Fade().withDuration(Duration.parse("PT46H40M33S"))
+            .withFadeColor("grjqctojcmi")
+            .withStart("fieypefojyqdhcup");
         model = BinaryData.fromObject(model).toObject(Fade.class);
-        Assertions.assertEquals(Duration.parse("PT197H27M1S"), model.duration());
-        Assertions.assertEquals("uuepzlrphwzsoldw", model.fadeColor());
-        Assertions.assertEquals("uqdunvmnnrwrbi", model.start());
+        Assertions.assertEquals(Duration.parse("PT46H40M33S"), model.duration());
+        Assertions.assertEquals("grjqctojcmi", model.fadeColor());
+        Assertions.assertEquals("fieypefojyqdhcup", model.start());
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Nsp resource association.
  */
 @Fluent
-public final class ResourceAssociation {
+public final class ResourceAssociation implements JsonSerializable<ResourceAssociation> {
     /*
      * Association name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Network security perimeter access mode.
      */
-    @JsonProperty(value = "accessMode")
     private NetworkSecurityPerimeterAssociationAccessMode accessMode;
 
     /**
@@ -76,5 +78,45 @@ public final class ResourceAssociation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("accessMode", this.accessMode == null ? null : this.accessMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceAssociation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceAssociation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceAssociation.
+     */
+    public static ResourceAssociation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceAssociation deserializedResourceAssociation = new ResourceAssociation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceAssociation.name = reader.getString();
+                } else if ("accessMode".equals(fieldName)) {
+                    deserializedResourceAssociation.accessMode
+                        = NetworkSecurityPerimeterAssociationAccessMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceAssociation;
+        });
     }
 }

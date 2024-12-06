@@ -34,13 +34,11 @@ public class DevTestLabsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        devTestLabsManager = DevTestLabsManager
-            .configure()
+        devTestLabsManager = DevTestLabsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class DevTestLabsManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -71,13 +66,13 @@ public class DevTestLabsManagerTests extends TestProxyTestBase {
         Lab lab = null;
         try {
             String labName = "lab" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             lab = devTestLabsManager.labs()
                 .define(labName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             lab.refresh();
             Assertions.assertEquals(lab.name(), labName);
             Assertions.assertEquals(lab.name(), devTestLabsManager.labs().getById(lab.id()).name());

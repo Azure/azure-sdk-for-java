@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolInner;
+import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.DiskPoolListResult;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import java.util.Arrays;
@@ -16,85 +17,73 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"kohdbiha\",\"tier\":\"fhfcb\"},\"properties\":{\"provisioningState\":\"Invalid\",\"availabilityZones\":[],\"status\":\"Invalid\",\"disks\":[],\"subnetId\":\"git\",\"additionalCapabilities\":[]},\"managedBy\":\"hab\",\"managedByExtended\":[\"ikxwc\",\"byscnp\",\"x\",\"hiv\"],\"systemData\":{\"createdBy\":\"iwbybrkxvdumjg\",\"createdByType\":\"Application\",\"createdAt\":\"2021-08-06T06:25:16Z\",\"lastModifiedBy\":\"k\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-02-24T15:23:22Z\"},\"location\":\"ccsnhsjc\",\"tags\":{\"kryhtnapczwlokj\":\"j\",\"jnchgej\":\"emkkvnipjox\"},\"id\":\"podmailzydehojwy\",\"name\":\"huxinpmqnj\",\"type\":\"qwixjspro\"},{\"sku\":{\"name\":\"cputegjvwmfdats\",\"tier\":\"dvpjhulsuuvmk\"},\"properties\":{\"provisioningState\":\"Deleting\",\"availabilityZones\":[],\"status\":\"Healthy\",\"disks\":[],\"subnetId\":\"rwfndiod\",\"additionalCapabilities\":[]},\"managedBy\":\"lwejdpv\",\"managedByExtended\":[\"oqpsoa\",\"ctazakljlahbcryf\",\"dfdosygexp\"],\"systemData\":{\"createdBy\":\"akhmsbzjhcrz\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-07-17T05:53:15Z\",\"lastModifiedBy\":\"xaolth\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-11-21T18:08:48Z\"},\"location\":\"jbp\",\"tags\":{\"n\":\"s\",\"wzo\":\"gvfcj\",\"np\":\"xjtfelluwfzit\",\"lxofpdvhpfxxypin\":\"qfpjk\"},\"id\":\"nmayhuybb\",\"name\":\"podepoo\",\"type\":\"inuvamiheogn\"},{\"sku\":{\"name\":\"xzxtheo\",\"tier\":\"si\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityZones\":[],\"status\":\"Running\",\"disks\":[],\"subnetId\":\"cciqihnhungbwjz\",\"additionalCapabilities\":[]},\"managedBy\":\"ygxgispemvtz\",\"managedByExtended\":[\"fublj\",\"fxqeof\"],\"systemData\":{\"createdBy\":\"qjhqjbas\",\"createdByType\":\"Key\",\"createdAt\":\"2021-01-21T06:57:24Z\",\"lastModifiedBy\":\"ulngsntn\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-04-13T14:53:58Z\"},\"location\":\"gc\",\"tags\":{\"skcqvkocrcjd\":\"clxxwrljdo\",\"lssai\":\"wtnhxbnjbiksqr\"},\"id\":\"qpjwnzlljfm\",\"name\":\"pee\",\"type\":\"vmgxsab\"},{\"sku\":{\"name\":\"qduujitcjczdz\",\"tier\":\"ndhkrw\"},\"properties\":{\"provisioningState\":\"Invalid\",\"availabilityZones\":[],\"status\":\"Unknown\",\"disks\":[],\"subnetId\":\"p\",\"additionalCapabilities\":[]},\"managedBy\":\"dkvwrwjfe\",\"managedByExtended\":[\"hutje\",\"tmrldhugjzzdatq\",\"hocdgeab\",\"gphuticndvka\"],\"systemData\":{\"createdBy\":\"yiftyhxhuro\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-02-18T21:26:44Z\",\"lastModifiedBy\":\"lniwpwcukjfkgiaw\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-05-21T20:11:19Z\"},\"location\":\"plwckbas\",\"tags\":{\"jkot\":\"nddhsgcbacph\",\"wyqkgfgibm\":\"nqgoulzndli\",\"qsrxybzqqed\":\"dgak\",\"iqfouflmmnkz\":\"ytb\"},\"id\":\"modmglougpb\",\"name\":\"wtmutduq\",\"type\":\"ta\"}],\"nextLink\":\"pwgcuertu\"}")
-                .toObject(DiskPoolListResult.class);
-        Assertions.assertEquals("ccsnhsjc", model.value().get(0).location());
-        Assertions.assertEquals("j", model.value().get(0).tags().get("kryhtnapczwlokj"));
+        DiskPoolListResult model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"kohdbiha\",\"tier\":\"fhfcb\"},\"properties\":{\"provisioningState\":\"Invalid\",\"availabilityZones\":[\"a\"],\"status\":\"Running\",\"disks\":[{\"id\":\"xqhabi\"}],\"subnetId\":\"pikxwczbyscnpqxu\",\"additionalCapabilities\":[\"y\"]},\"managedBy\":\"iwbybrkxvdumjg\",\"managedByExtended\":[\"wvukx\",\"audccsnhs\"],\"systemData\":{\"createdBy\":\"yejhk\",\"createdByType\":\"Key\",\"createdAt\":\"2021-03-30T08:32:11Z\",\"lastModifiedBy\":\"pczwlo\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-02-13T10:58:08Z\"},\"location\":\"kkvnipjox\",\"tags\":{\"ilzyd\":\"chgejspodm\",\"jwyahuxinpmqnja\":\"h\"},\"id\":\"wixjsprozvcp\",\"name\":\"tegjvwmf\",\"type\":\"atscmd\"},{\"sku\":{\"name\":\"jhulsuuvmkjo\",\"tier\":\"rwfndiod\"},\"properties\":{\"provisioningState\":\"Pending\",\"availabilityZones\":[\"lwejdpv\",\"ryo\",\"psoacctazakljl\"],\"status\":\"Stopped (deallocated)\",\"disks\":[{\"id\":\"ryffdfdosy\"}],\"subnetId\":\"expa\",\"additionalCapabilities\":[\"khmsbz\",\"hcrzevd\",\"hlxaolthqtr\"]},\"managedBy\":\"jbp\",\"managedByExtended\":[\"s\",\"n\",\"gvfcj\",\"wzo\"],\"systemData\":{\"createdBy\":\"tfell\",\"createdByType\":\"Application\",\"createdAt\":\"2021-08-13T19:56:23Z\",\"lastModifiedBy\":\"onpeqfpjkjlxofp\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-01-04T15:14:41Z\"},\"location\":\"xxypininmay\",\"tags\":{\"oginuvamiheognar\":\"bbkpodep\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"},{\"sku\":{\"name\":\"rnfygxgispem\",\"tier\":\"zfkufubljofx\"},\"properties\":{\"provisioningState\":\"Pending\",\"availabilityZones\":[\"fjaeq\",\"hqjbasvmsmj\",\"ulngsntn\"],\"status\":\"Unhealthy\",\"disks\":[{\"id\":\"zgcwrw\"},{\"id\":\"lxxwrljdouskc\"},{\"id\":\"vkocrcjdkwtn\"}],\"subnetId\":\"xbnjbiksq\",\"additionalCapabilities\":[\"ssainqpjwnzll\",\"fmppe\"]},\"managedBy\":\"vmgxsab\",\"managedByExtended\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"],\"systemData\":{\"createdBy\":\"wjfeusnhutjel\",\"createdByType\":\"User\",\"createdAt\":\"2021-11-14T20:48:19Z\",\"lastModifiedBy\":\"ugjzzdatqxhocdge\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-05-27T22:50:20Z\"},\"location\":\"huticndvkao\",\"tags\":{\"tyhxhurokft\":\"i\",\"iawxklry\":\"xolniwpwcukjfk\",\"cbacphejkotynqg\":\"lwckbasyypnddhs\"},\"id\":\"ulzndlikwyqk\",\"name\":\"fgibmadgakeq\",\"type\":\"rxybz\"},{\"sku\":{\"name\":\"e\",\"tier\":\"ytb\"},\"properties\":{\"provisioningState\":\"Creating\",\"availabilityZones\":[\"fouflmmnkzsmo\"],\"status\":\"Updating\",\"disks\":[{\"id\":\"ougpbkwt\"},{\"id\":\"utduqktapspwgcu\"}],\"subnetId\":\"rtumkdosvq\",\"additionalCapabilities\":[\"mdgbbjfdd\"]},\"managedBy\":\"bmbexppbhtqqro\",\"managedByExtended\":[\"fpsalgbqu\"],\"systemData\":{\"createdBy\":\"jyj\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-11-28T08:08:08Z\",\"lastModifiedBy\":\"fhrtxilnerkujysv\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-08-05T18:12:20Z\"},\"location\":\"fqawrlyxw\",\"tags\":{\"ysszdnrujqguh\":\"prbnwbxgjvtbv\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"}],\"nextLink\":\"uckyf\"}")
+            .toObject(DiskPoolListResult.class);
+        Assertions.assertEquals("kkvnipjox", model.value().get(0).location());
+        Assertions.assertEquals("chgejspodm", model.value().get(0).tags().get("ilzyd"));
         Assertions.assertEquals("kohdbiha", model.value().get(0).nameSkuName());
         Assertions.assertEquals("fhfcb", model.value().get(0).tier());
-        Assertions.assertEquals(OperationalStatus.INVALID, model.value().get(0).status());
-        Assertions.assertEquals("git", model.value().get(0).subnetId());
+        Assertions.assertEquals("a", model.value().get(0).availabilityZones().get(0));
+        Assertions.assertEquals(OperationalStatus.RUNNING, model.value().get(0).status());
+        Assertions.assertEquals("xqhabi", model.value().get(0).disks().get(0).id());
+        Assertions.assertEquals("pikxwczbyscnpqxu", model.value().get(0).subnetId());
+        Assertions.assertEquals("y", model.value().get(0).additionalCapabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolListResult model =
-            new DiskPoolListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DiskPoolInner()
-                                .withLocation("ccsnhsjc")
-                                .withTags(mapOf("kryhtnapczwlokj", "j", "jnchgej", "emkkvnipjox"))
-                                .withNameSkuName("kohdbiha")
-                                .withTier("fhfcb")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withStatus(OperationalStatus.INVALID)
-                                .withDisks(Arrays.asList())
-                                .withSubnetId("git")
-                                .withAdditionalCapabilities(Arrays.asList()),
-                            new DiskPoolInner()
-                                .withLocation("jbp")
-                                .withTags(
-                                    mapOf("n", "s", "wzo", "gvfcj", "np", "xjtfelluwfzit", "lxofpdvhpfxxypin", "qfpjk"))
-                                .withNameSkuName("cputegjvwmfdats")
-                                .withTier("dvpjhulsuuvmk")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withStatus(OperationalStatus.HEALTHY)
-                                .withDisks(Arrays.asList())
-                                .withSubnetId("rwfndiod")
-                                .withAdditionalCapabilities(Arrays.asList()),
-                            new DiskPoolInner()
-                                .withLocation("gc")
-                                .withTags(mapOf("skcqvkocrcjd", "clxxwrljdo", "lssai", "wtnhxbnjbiksqr"))
-                                .withNameSkuName("xzxtheo")
-                                .withTier("si")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withStatus(OperationalStatus.RUNNING)
-                                .withDisks(Arrays.asList())
-                                .withSubnetId("cciqihnhungbwjz")
-                                .withAdditionalCapabilities(Arrays.asList()),
-                            new DiskPoolInner()
-                                .withLocation("plwckbas")
-                                .withTags(
-                                    mapOf(
-                                        "jkot",
-                                        "nddhsgcbacph",
-                                        "wyqkgfgibm",
-                                        "nqgoulzndli",
-                                        "qsrxybzqqed",
-                                        "dgak",
-                                        "iqfouflmmnkz",
-                                        "ytb"))
-                                .withNameSkuName("qduujitcjczdz")
-                                .withTier("ndhkrw")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withStatus(OperationalStatus.UNKNOWN)
-                                .withDisks(Arrays.asList())
-                                .withSubnetId("p")
-                                .withAdditionalCapabilities(Arrays.asList())));
+        DiskPoolListResult model = new DiskPoolListResult().withValue(Arrays.asList(
+            new DiskPoolInner().withLocation("kkvnipjox")
+                .withTags(mapOf("ilzyd", "chgejspodm", "jwyahuxinpmqnja", "h"))
+                .withNameSkuName("kohdbiha")
+                .withTier("fhfcb")
+                .withAvailabilityZones(Arrays.asList("a"))
+                .withStatus(OperationalStatus.RUNNING)
+                .withDisks(Arrays.asList(new Disk().withId("xqhabi")))
+                .withSubnetId("pikxwczbyscnpqxu")
+                .withAdditionalCapabilities(Arrays.asList("y")),
+            new DiskPoolInner().withLocation("xxypininmay")
+                .withTags(mapOf("oginuvamiheognar", "bbkpodep"))
+                .withNameSkuName("jhulsuuvmkjo")
+                .withTier("rwfndiod")
+                .withAvailabilityZones(Arrays.asList("lwejdpv", "ryo", "psoacctazakljl"))
+                .withStatus(OperationalStatus.STOPPED_DEALLOCATED)
+                .withDisks(Arrays.asList(new Disk().withId("ryffdfdosy")))
+                .withSubnetId("expa")
+                .withAdditionalCapabilities(Arrays.asList("khmsbz", "hcrzevd", "hlxaolthqtr")),
+            new DiskPoolInner().withLocation("huticndvkao")
+                .withTags(mapOf("tyhxhurokft", "i", "iawxklry", "xolniwpwcukjfk", "cbacphejkotynqg", "lwckbasyypnddhs"))
+                .withNameSkuName("rnfygxgispem")
+                .withTier("zfkufubljofx")
+                .withAvailabilityZones(Arrays.asList("fjaeq", "hqjbasvmsmj", "ulngsntn"))
+                .withStatus(OperationalStatus.UNHEALTHY)
+                .withDisks(Arrays.asList(new Disk().withId("zgcwrw"), new Disk().withId("lxxwrljdouskc"),
+                    new Disk().withId("vkocrcjdkwtn")))
+                .withSubnetId("xbnjbiksq")
+                .withAdditionalCapabilities(Arrays.asList("ssainqpjwnzll", "fmppe")),
+            new DiskPoolInner().withLocation("fqawrlyxw")
+                .withTags(mapOf("ysszdnrujqguh", "prbnwbxgjvtbv"))
+                .withNameSkuName("e")
+                .withTier("ytb")
+                .withAvailabilityZones(Arrays.asList("fouflmmnkzsmo"))
+                .withStatus(OperationalStatus.UPDATING)
+                .withDisks(Arrays.asList(new Disk().withId("ougpbkwt"), new Disk().withId("utduqktapspwgcu")))
+                .withSubnetId("rtumkdosvq")
+                .withAdditionalCapabilities(Arrays.asList("mdgbbjfdd"))));
         model = BinaryData.fromObject(model).toObject(DiskPoolListResult.class);
-        Assertions.assertEquals("ccsnhsjc", model.value().get(0).location());
-        Assertions.assertEquals("j", model.value().get(0).tags().get("kryhtnapczwlokj"));
+        Assertions.assertEquals("kkvnipjox", model.value().get(0).location());
+        Assertions.assertEquals("chgejspodm", model.value().get(0).tags().get("ilzyd"));
         Assertions.assertEquals("kohdbiha", model.value().get(0).nameSkuName());
         Assertions.assertEquals("fhfcb", model.value().get(0).tier());
-        Assertions.assertEquals(OperationalStatus.INVALID, model.value().get(0).status());
-        Assertions.assertEquals("git", model.value().get(0).subnetId());
+        Assertions.assertEquals("a", model.value().get(0).availabilityZones().get(0));
+        Assertions.assertEquals(OperationalStatus.RUNNING, model.value().get(0).status());
+        Assertions.assertEquals("xqhabi", model.value().get(0).disks().get(0).id());
+        Assertions.assertEquals("pikxwczbyscnpqxu", model.value().get(0).subnetId());
+        Assertions.assertEquals("y", model.value().get(0).additionalCapabilities().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

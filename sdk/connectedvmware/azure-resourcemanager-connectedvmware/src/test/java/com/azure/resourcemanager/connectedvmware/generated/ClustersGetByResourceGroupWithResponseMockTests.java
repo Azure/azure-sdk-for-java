@@ -30,40 +30,28 @@ public final class ClustersGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"uuid\":\"srxuzvoam\",\"vCenterId\":\"cqiosmgbza\",\"moRefId\":\"xqdlyrtltlapr\",\"inventoryItemId\":\"zkatb\",\"moName\":\"mznnbsoqeqalarvl\",\"statuses\":[{\"type\":\"btgfeb\",\"status\":\"nbmhyree\",\"reason\":\"zqavbpdqmjx\",\"message\":\"yzglgo\",\"severity\":\"tlmj\",\"lastUpdatedAt\":\"2021-07-23T23:28:22Z\"}],\"customResourceName\":\"j\",\"usedMemoryGB\":1913590755057725088,\"totalMemoryGB\":3676534686505365342,\"usedCpuMHz\":4607088404912248152,\"totalCpuMHz\":378200694653432281,\"datastoreIds\":[\"fjkwrusnkq\",\"hsyrqunj\"],\"networkIds\":[\"enx\",\"ulkpakd\"],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"nnawtqabpxuckpgg\",\"name\":\"wey\"},\"kind\":\"hlisngw\",\"location\":\"lqqmpiz\",\"tags\":{\"qxpxiwfcngjsaa\":\"n\"},\"id\":\"iixtmkzj\",\"name\":\"kv\",\"type\":\"irhgfgrwsdp\"}";
+        String responseStr
+            = "{\"properties\":{\"uuid\":\"srxuzvoam\",\"vCenterId\":\"cqiosmgbza\",\"moRefId\":\"xqdlyrtltlapr\",\"inventoryItemId\":\"zkatb\",\"moName\":\"mznnbsoqeqalarvl\",\"statuses\":[{\"type\":\"btgfeb\",\"status\":\"nbmhyree\",\"reason\":\"zqavbpdqmjx\",\"message\":\"yzglgo\",\"severity\":\"tlmj\",\"lastUpdatedAt\":\"2021-07-23T23:28:22Z\"}],\"customResourceName\":\"j\",\"usedMemoryGB\":1913590755057725088,\"totalMemoryGB\":3676534686505365342,\"usedCpuMHz\":4607088404912248152,\"totalCpuMHz\":378200694653432281,\"datastoreIds\":[\"fjkwrusnkq\",\"hsyrqunj\"],\"networkIds\":[\"enx\",\"ulkpakd\"],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"nnawtqabpxuckpgg\",\"name\":\"wey\"},\"kind\":\"hlisngw\",\"location\":\"lqqmpiz\",\"tags\":{\"qxpxiwfcngjsaa\":\"n\"},\"id\":\"iixtmkzj\",\"name\":\"kv\",\"type\":\"irhgfgrwsdp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Cluster response =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("ztrksxwpndf", "pfnznthjtwkj", com.azure.core.util.Context.NONE)
-                .getValue();
+        Cluster response = manager.clusters()
+            .getByResourceGroupWithResponse("ztrksxwpndf", "pfnznthjtwkj", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("lqqmpiz", response.location());
         Assertions.assertEquals("n", response.tags().get("qxpxiwfcngjsaa"));

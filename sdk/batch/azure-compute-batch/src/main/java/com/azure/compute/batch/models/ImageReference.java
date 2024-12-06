@@ -236,6 +236,8 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
         jsonWriter.writeStringField("sku", this.sku);
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeStringField("virtualMachineImageId", this.virtualMachineImageId);
+        jsonWriter.writeStringField("sharedGalleryImageId", this.sharedGalleryImageId);
+        jsonWriter.writeStringField("communityGalleryImageId", this.communityGalleryImageId);
         return jsonWriter.writeEndObject();
     }
 
@@ -266,11 +268,77 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
                     deserializedImageReference.virtualMachineImageId = reader.getString();
                 } else if ("exactVersion".equals(fieldName)) {
                     deserializedImageReference.exactVersion = reader.getString();
+                } else if ("sharedGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.sharedGalleryImageId = reader.getString();
+                } else if ("communityGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.communityGalleryImageId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedImageReference;
         });
+    }
+
+    /*
+     * The shared gallery image unique identifier. This property is mutually exclusive with other properties and can be
+     * fetched from shared gallery image GET call.
+     */
+    @Generated
+    private String sharedGalleryImageId;
+
+    /*
+     * The community gallery image unique identifier. This property is mutually exclusive with other properties and can
+     * be fetched from community gallery image GET call.
+     */
+    @Generated
+    private String communityGalleryImageId;
+
+    /**
+     * Get the sharedGalleryImageId property: The shared gallery image unique identifier. This property is mutually
+     * exclusive with other properties and can be fetched from shared gallery image GET call.
+     *
+     * @return the sharedGalleryImageId value.
+     */
+    @Generated
+    public String getSharedGalleryImageId() {
+        return this.sharedGalleryImageId;
+    }
+
+    /**
+     * Set the sharedGalleryImageId property: The shared gallery image unique identifier. This property is mutually
+     * exclusive with other properties and can be fetched from shared gallery image GET call.
+     *
+     * @param sharedGalleryImageId the sharedGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    @Generated
+    public ImageReference setSharedGalleryImageId(String sharedGalleryImageId) {
+        this.sharedGalleryImageId = sharedGalleryImageId;
+        return this;
+    }
+
+    /**
+     * Get the communityGalleryImageId property: The community gallery image unique identifier. This property is
+     * mutually exclusive with other properties and can be fetched from community gallery image GET call.
+     *
+     * @return the communityGalleryImageId value.
+     */
+    @Generated
+    public String getCommunityGalleryImageId() {
+        return this.communityGalleryImageId;
+    }
+
+    /**
+     * Set the communityGalleryImageId property: The community gallery image unique identifier. This property is
+     * mutually exclusive with other properties and can be fetched from community gallery image GET call.
+     *
+     * @param communityGalleryImageId the communityGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    @Generated
+    public ImageReference setCommunityGalleryImageId(String communityGalleryImageId) {
+        this.communityGalleryImageId = communityGalleryImageId;
+        return this;
     }
 }

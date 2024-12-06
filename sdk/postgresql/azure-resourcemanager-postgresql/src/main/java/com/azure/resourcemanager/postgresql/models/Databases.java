@@ -60,8 +60,8 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a database along with {@link Response}.
      */
-    Response<Database> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<Database> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * List all the databases in a given server.

@@ -51,7 +51,7 @@ public final class EventGridSenderAsyncClient {
      * {
      *     id: String (Required)
      *     source: String (Required)
-     *     data: Object (Optional)
+     *     data: BinaryData (Optional)
      *     data_base64: byte[] (Optional)
      *     type: String (Required)
      *     time: OffsetDateTime (Optional)
@@ -97,7 +97,7 @@ public final class EventGridSenderAsyncClient {
      *      (Required){
      *         id: String (Required)
      *         source: String (Required)
-     *         data: Object (Optional)
+     *         data: BinaryData (Optional)
      *         data_base64: byte[] (Optional)
      *         type: String (Required)
      *         time: OffsetDateTime (Optional)

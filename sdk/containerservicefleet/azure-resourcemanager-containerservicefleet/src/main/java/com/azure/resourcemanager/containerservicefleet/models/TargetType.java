@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class TargetType extends ExpandableStringEnum<TargetType> {
      * @param name a name to look for.
      * @return the corresponding TargetType.
      */
-    @JsonCreator
     public static TargetType fromString(String name) {
         return fromString(name, TargetType.class);
     }

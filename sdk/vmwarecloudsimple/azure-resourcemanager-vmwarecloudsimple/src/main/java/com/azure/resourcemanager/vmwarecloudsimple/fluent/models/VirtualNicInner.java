@@ -6,69 +6,69 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOsnicCustomization;
 import com.azure.resourcemanager.vmwarecloudsimple.models.NicType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Virtual NIC model. */
+/**
+ * Virtual NIC model.
+ */
 @Fluent
-public final class VirtualNicInner {
+public final class VirtualNicInner implements JsonSerializable<VirtualNicInner> {
     /*
      * guest OS customization for nic
      */
-    @JsonProperty(value = "customization")
     private GuestOsnicCustomization customization;
 
     /*
      * NIC ip address
      */
-    @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
     /*
      * NIC MAC address
      */
-    @JsonProperty(value = "macAddress")
     private String macAddress;
 
     /*
      * Virtual Network
      */
-    @JsonProperty(value = "network", required = true)
     private VirtualNetworkInner network;
 
     /*
      * NIC type
      */
-    @JsonProperty(value = "nicType", required = true)
     private NicType nicType;
 
     /*
      * Is NIC powered on/off on boot
      */
-    @JsonProperty(value = "powerOnBoot")
     private Boolean powerOnBoot;
 
     /*
      * NIC id
      */
-    @JsonProperty(value = "virtualNicId")
     private String virtualNicId;
 
     /*
      * NIC name
      */
-    @JsonProperty(value = "virtualNicName", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualNicName;
 
-    /** Creates an instance of VirtualNicInner class. */
+    /**
+     * Creates an instance of VirtualNicInner class.
+     */
     public VirtualNicInner() {
     }
 
     /**
      * Get the customization property: guest OS customization for nic.
-     *
+     * 
      * @return the customization value.
      */
     public GuestOsnicCustomization customization() {
@@ -77,7 +77,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the customization property: guest OS customization for nic.
-     *
+     * 
      * @param customization the customization value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -88,7 +88,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the ipAddresses property: NIC ip address.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -97,7 +97,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the ipAddresses property: NIC ip address.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -108,7 +108,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the macAddress property: NIC MAC address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -117,7 +117,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the macAddress property: NIC MAC address.
-     *
+     * 
      * @param macAddress the macAddress value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -128,7 +128,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the network property: Virtual Network.
-     *
+     * 
      * @return the network value.
      */
     public VirtualNetworkInner network() {
@@ -137,7 +137,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the network property: Virtual Network.
-     *
+     * 
      * @param network the network value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -148,7 +148,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the nicType property: NIC type.
-     *
+     * 
      * @return the nicType value.
      */
     public NicType nicType() {
@@ -157,7 +157,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the nicType property: NIC type.
-     *
+     * 
      * @param nicType the nicType value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -168,7 +168,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the powerOnBoot property: Is NIC powered on/off on boot.
-     *
+     * 
      * @return the powerOnBoot value.
      */
     public Boolean powerOnBoot() {
@@ -177,7 +177,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the powerOnBoot property: Is NIC powered on/off on boot.
-     *
+     * 
      * @param powerOnBoot the powerOnBoot value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -188,7 +188,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the virtualNicId property: NIC id.
-     *
+     * 
      * @return the virtualNicId value.
      */
     public String virtualNicId() {
@@ -197,7 +197,7 @@ public final class VirtualNicInner {
 
     /**
      * Set the virtualNicId property: NIC id.
-     *
+     * 
      * @param virtualNicId the virtualNicId value to set.
      * @return the VirtualNicInner object itself.
      */
@@ -208,7 +208,7 @@ public final class VirtualNicInner {
 
     /**
      * Get the virtualNicName property: NIC name.
-     *
+     * 
      * @return the virtualNicName value.
      */
     public String virtualNicName() {
@@ -217,7 +217,7 @@ public final class VirtualNicInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -225,18 +225,74 @@ public final class VirtualNicInner {
             customization().validate();
         }
         if (network() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property network in model VirtualNicInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property network in model VirtualNicInner"));
         } else {
             network().validate();
         }
         if (nicType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nicType in model VirtualNicInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nicType in model VirtualNicInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNicInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("network", this.network);
+        jsonWriter.writeStringField("nicType", this.nicType == null ? null : this.nicType.toString());
+        jsonWriter.writeJsonField("customization", this.customization);
+        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("macAddress", this.macAddress);
+        jsonWriter.writeBooleanField("powerOnBoot", this.powerOnBoot);
+        jsonWriter.writeStringField("virtualNicId", this.virtualNicId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNicInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNicInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNicInner.
+     */
+    public static VirtualNicInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNicInner deserializedVirtualNicInner = new VirtualNicInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("network".equals(fieldName)) {
+                    deserializedVirtualNicInner.network = VirtualNetworkInner.fromJson(reader);
+                } else if ("nicType".equals(fieldName)) {
+                    deserializedVirtualNicInner.nicType = NicType.fromString(reader.getString());
+                } else if ("customization".equals(fieldName)) {
+                    deserializedVirtualNicInner.customization = GuestOsnicCustomization.fromJson(reader);
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualNicInner.ipAddresses = ipAddresses;
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedVirtualNicInner.macAddress = reader.getString();
+                } else if ("powerOnBoot".equals(fieldName)) {
+                    deserializedVirtualNicInner.powerOnBoot = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualNicId".equals(fieldName)) {
+                    deserializedVirtualNicInner.virtualNicId = reader.getString();
+                } else if ("virtualNicName".equals(fieldName)) {
+                    deserializedVirtualNicInner.virtualNicName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNicInner;
+        });
+    }
 }

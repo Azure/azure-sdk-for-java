@@ -20,8 +20,9 @@ public final class SpringbootappsGetSamples {
      */
     public static void
         springbootappsGetMinimumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootapps().getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
-            "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
+        manager.springbootapps()
+            .getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
+                "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class SpringbootappsGetSamples {
      */
     public static void
         springbootappsGetMaximumSetGen(com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootapps().getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
-            "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
+        manager.springbootapps()
+            .getWithResponse("rgspringbootapps", "pdfosfhtemfsaglvwjdyqlyeipucrd",
+                "ofjeesoahqtnovlbuvflyknpbhcpeqqhekntvqxyemuwbcqnuxjgfhsf", com.azure.core.util.Context.NONE);
     }
 }

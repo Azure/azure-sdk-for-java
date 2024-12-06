@@ -15,11 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure private DNS zone group. */
-public interface PrivateDnsZoneGroup extends
-    IndependentChild<NetworkManager>,
-    HasInnerModel<PrivateDnsZoneGroupInner>,
-    Refreshable<PrivateDnsZoneGroup>,
-    Updatable<PrivateDnsZoneGroup.Update> {
+public interface PrivateDnsZoneGroup extends IndependentChild<NetworkManager>, HasInnerModel<PrivateDnsZoneGroupInner>,
+    Refreshable<PrivateDnsZoneGroup>, Updatable<PrivateDnsZoneGroup.Update> {
 
     /**
      * @return the provisioning state.
@@ -34,10 +31,8 @@ public interface PrivateDnsZoneGroup extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithZoneConfigure,
-        DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithZoneConfigure, DefinitionStages.WithCreate {
     }
 
     /**
@@ -68,16 +63,12 @@ public interface PrivateDnsZoneGroup extends
          * A definition with sufficient inputs to create a new private dns zone group in the cloud, but
          * exposing additional optional inputs to specify.
          */
-        interface WithCreate extends
-            WithZoneConfigure,
-            Creatable<PrivateDnsZoneGroup> {
+        interface WithCreate extends WithZoneConfigure, Creatable<PrivateDnsZoneGroup> {
         }
     }
 
     /** The template for update operation, containing all the settings that can be modified. */
-    interface Update extends
-        UpdateStages.WithZoneConfigure,
-        Appliable<PrivateDnsZoneGroup> {
+    interface Update extends UpdateStages.WithZoneConfigure, Appliable<PrivateDnsZoneGroup> {
     }
 
     /**

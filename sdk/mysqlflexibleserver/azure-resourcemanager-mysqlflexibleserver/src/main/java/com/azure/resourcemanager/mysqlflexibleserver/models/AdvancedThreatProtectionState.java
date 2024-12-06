@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AdvancedThreatProtectionState extends ExpandableStringEnum<Ad
      * @param name a name to look for.
      * @return the corresponding AdvancedThreatProtectionState.
      */
-    @JsonCreator
     public static AdvancedThreatProtectionState fromString(String name) {
         return fromString(name, AdvancedThreatProtectionState.class);
     }

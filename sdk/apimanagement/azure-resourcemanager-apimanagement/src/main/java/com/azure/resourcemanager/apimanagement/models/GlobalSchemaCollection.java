@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.GlobalSchemaContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of the list schema operation. */
+/**
+ * The response of the list schema operation.
+ */
 @Fluent
-public final class GlobalSchemaCollection {
+public final class GlobalSchemaCollection implements JsonSerializable<GlobalSchemaCollection> {
     /*
      * Global Schema Contract value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GlobalSchemaContractInner> value;
 
     /*
      * Total record count number.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Next page link if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of GlobalSchemaCollection class. */
+    /**
+     * Creates an instance of GlobalSchemaCollection class.
+     */
     public GlobalSchemaCollection() {
     }
 
     /**
      * Get the value property: Global Schema Contract value.
-     *
+     * 
      * @return the value value.
      */
     public List<GlobalSchemaContractInner> value() {
@@ -45,7 +50,7 @@ public final class GlobalSchemaCollection {
 
     /**
      * Get the count property: Total record count number.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -54,7 +59,7 @@ public final class GlobalSchemaCollection {
 
     /**
      * Set the count property: Total record count number.
-     *
+     * 
      * @param count the count value to set.
      * @return the GlobalSchemaCollection object itself.
      */
@@ -65,7 +70,7 @@ public final class GlobalSchemaCollection {
 
     /**
      * Get the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -74,12 +79,54 @@ public final class GlobalSchemaCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalSchemaCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalSchemaCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GlobalSchemaCollection.
+     */
+    public static GlobalSchemaCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalSchemaCollection deserializedGlobalSchemaCollection = new GlobalSchemaCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GlobalSchemaContractInner> value
+                        = reader.readArray(reader1 -> GlobalSchemaContractInner.fromJson(reader1));
+                    deserializedGlobalSchemaCollection.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedGlobalSchemaCollection.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGlobalSchemaCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalSchemaCollection;
+        });
     }
 }

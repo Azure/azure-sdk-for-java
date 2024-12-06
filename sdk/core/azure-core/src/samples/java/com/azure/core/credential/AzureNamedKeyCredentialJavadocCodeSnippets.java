@@ -8,11 +8,11 @@ package com.azure.core.credential;
  */
 public class AzureNamedKeyCredentialJavadocCodeSnippets {
 
-    public void azureNamedKeyCredenialSasKey() {
-        // BEGIN: com.azure.core.credential.azureNamedKeyCredenialSasKey
+    public void azureNamedKeyCredentialSasKey() {
+        // BEGIN: com.azure.core.credential.azureNamedKeyCredentialSasKey
         AzureNamedKeyCredential azureNamedKeyCredential =
             new AzureNamedKeyCredential("AZURE-SERVICE-SAS-KEY-NAME", "AZURE-SERVICE-SAS-KEY");
-        // END: com.azure.core.credential.azureNamedKeyCredenialSasKey
+        // END: com.azure.core.credential.azureNamedKeyCredentialSasKey
     }
 
     public void azureSasCredential() {

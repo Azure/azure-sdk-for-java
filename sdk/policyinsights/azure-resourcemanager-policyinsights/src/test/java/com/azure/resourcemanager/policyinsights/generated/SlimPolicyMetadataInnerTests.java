@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.fluent.models.SlimPolicyMetadataInner;
-import org.junit.jupiter.api.Test;
 
 public final class SlimPolicyMetadataInnerTests {
-    @Test
-    public void testDeserialize() {
-        SlimPolicyMetadataInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"metadataId\":\"pcdpumnz\",\"category\":\"wznm\",\"title\":\"iknsorgjh\",\"owner\":\"ldtlwwr\",\"additionalContentUrl\":\"dmtnc\"},\"id\":\"otllxdyhgsyo\",\"type\":\"gjltdtbnnhado\",\"name\":\"rkvcikhnvpa\"}")
-                .toObject(SlimPolicyMetadataInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SlimPolicyMetadataInner model = BinaryData.fromString(
+            "{\"properties\":{\"metadataId\":\"ijaeukm\",\"category\":\"ieekpndzaa\",\"title\":\"udqmeqwigpibudq\",\"owner\":\"xebeybpmz\",\"additionalContentUrl\":\"rtffyaqitmh\",\"metadata\":\"dataioqaqhvs\"},\"id\":\"fuqyrxpdlcgqlsi\",\"type\":\"jqfrddgamquh\",\"name\":\"srsjuivfc\"}")
+            .toObject(SlimPolicyMetadataInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SlimPolicyMetadataInner model = new SlimPolicyMetadataInner();
         model = BinaryData.fromObject(model).toObject(SlimPolicyMetadataInner.class);
     }

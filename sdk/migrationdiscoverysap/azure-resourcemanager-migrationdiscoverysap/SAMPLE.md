@@ -77,7 +77,10 @@ public final class SapDiscoverySitesCreateSamples {
      */
     public static void createResourceForImportBasedInput(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapDiscoverySites().define("SampleSite").withRegion("eastus").withExistingResourceGroup("test-rg")
+        manager.sapDiscoverySites()
+            .define("SampleSite")
+            .withRegion("eastus")
+            .withExistingResourceGroup("test-rg")
             .withTags(mapOf("property1", "value1", "property2", "value2"))
             .withProperties(new SapDiscoverySiteProperties().withMasterSiteId("MasterSiteIdResourceId")
                 .withMigrateProjectId("MigrateProjectId"))
@@ -141,8 +144,8 @@ public final class SapDiscoverySitesGetByResourceGroupSamples {
      */
     public static void gETASAPMigrationDiscoverySiteResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapDiscoverySites().getByResourceGroupWithResponse("test-rg", "SampleSite",
-            com.azure.core.util.Context.NONE);
+        manager.sapDiscoverySites()
+            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -243,7 +246,8 @@ public final class SapDiscoverySitesUpdateSamples {
     public static void updatesASAPMigrationDiscoverySiteResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         SapDiscoverySite resource = manager.sapDiscoverySites()
-            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 
@@ -284,9 +288,12 @@ public final class SapInstancesCreateSamples {
      */
     public static void createsTheSAPInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapInstances().define("MPP_MPP").withRegion("eastus")
+        manager.sapInstances()
+            .define("MPP_MPP")
+            .withRegion("eastus")
             .withExistingSapDiscoverySite("test-rg", "SampleSite")
-            .withTags(mapOf("property1", "value1", "property2", "value2")).withProperties(new SapInstanceProperties())
+            .withTags(mapOf("property1", "value1", "property2", "value2"))
+            .withProperties(new SapInstanceProperties())
             .create();
     }
 
@@ -400,7 +407,8 @@ public final class SapInstancesUpdateSamples {
     public static void updatesTheSAPInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         SapInstance resource = manager.sapInstances()
-            .getWithResponse("test-rg", "SampleSite", "MPP_MPP", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("test-rg", "SampleSite", "MPP_MPP", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 
@@ -437,7 +445,9 @@ public final class ServerInstancesCreateSamples {
      */
     public static void createsTheServerInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.serverInstances().define("APP_SapServer1").withExistingSapInstance("test-rg", "SampleSite", "MPP_MPP")
+        manager.serverInstances()
+            .define("APP_SapServer1")
+            .withExistingSapInstance("test-rg", "SampleSite", "MPP_MPP")
             .create();
     }
 }
@@ -462,8 +472,8 @@ public final class ServerInstancesDeleteSamples {
      */
     public static void deletesTheServerInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.serverInstances().delete("test-rg", "SampleSite", "MPP_MPP", "APP_SapServer1",
-            com.azure.core.util.Context.NONE);
+        manager.serverInstances()
+            .delete("test-rg", "SampleSite", "MPP_MPP", "APP_SapServer1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -487,8 +497,8 @@ public final class ServerInstancesGetSamples {
      */
     public static void gETAServerInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.serverInstances().getWithResponse("test-rg", "SampleSite", "MPP_MPP", "APP_SapServer1",
-            com.azure.core.util.Context.NONE);
+        manager.serverInstances()
+            .getWithResponse("test-rg", "SampleSite", "MPP_MPP", "APP_SapServer1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -512,8 +522,8 @@ public final class ServerInstancesListBySapInstanceSamples {
      */
     public static void listsTheServerInstanceResourcesForTheGivenSAPInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.serverInstances().listBySapInstance("test-rg", "SampleSite", "MPP_MPP",
-            com.azure.core.util.Context.NONE);
+        manager.serverInstances()
+            .listBySapInstance("test-rg", "SampleSite", "MPP_MPP", com.azure.core.util.Context.NONE);
     }
 }
 ```

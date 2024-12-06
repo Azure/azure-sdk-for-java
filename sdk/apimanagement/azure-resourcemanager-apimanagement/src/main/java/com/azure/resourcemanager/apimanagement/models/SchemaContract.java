@@ -7,25 +7,27 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner;
 
-/** An immutable client-side representation of SchemaContract. */
+/**
+ * An immutable client-side representation of SchemaContract.
+ */
 public interface SchemaContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -37,7 +39,7 @@ public interface SchemaContract {
      * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
      * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
-     *
+     * 
      * @return the contentType value.
      */
     String contentType();
@@ -45,59 +47,67 @@ public interface SchemaContract {
     /**
      * Gets the value property: Json escaped string defining the document representing the Schema. Used for schemas
      * other than Swagger/OpenAPI.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
-     *
+     * 
      * @return the definitions value.
      */
     Object definitions();
 
     /**
      * Gets the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
-     *
+     * 
      * @return the components value.
      */
     Object components();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     SchemaContractInner innerModel();
 
-    /** The entirety of the SchemaContract definition. */
+    /**
+     * The entirety of the SchemaContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The SchemaContract definition stages. */
+    /**
+     * The SchemaContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the SchemaContract definition. */
+        /**
+         * The first stage of the SchemaContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the SchemaContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the SchemaContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API revision identifier. Must be unique in the current API Management service instance.
-             *     Non-current revision has ;rev=n as a suffix where n is the revision number.
+             * Non-current revision has ;rev=n as a suffix where n is the revision number.
              * @return the next definition stage.
              */
             WithCreate withExistingApi(String resourceGroupName, String serviceName, String apiId);
@@ -107,29 +117,27 @@ public interface SchemaContract {
          * The stage of the SchemaContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithContentType,
-                DefinitionStages.WithValue,
-                DefinitionStages.WithDefinitions,
-                DefinitionStages.WithComponents,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithContentType, DefinitionStages.WithValue,
+            DefinitionStages.WithDefinitions, DefinitionStages.WithComponents, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SchemaContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SchemaContract create(Context context);
         }
 
-        /** The stage of the SchemaContract definition allowing to specify contentType. */
+        /**
+         * The stage of the SchemaContract definition allowing to specify contentType.
+         */
         interface WithContentType {
             /**
              * Specifies the contentType property: Must be a valid a media type used in a Content-Type header as defined
@@ -138,63 +146,71 @@ public interface SchemaContract {
              * Schema use `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
              * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
              * `application/vnd.ms-azure-apim.wadl.grammars+xml`..
-             *
+             * 
              * @param contentType Must be a valid a media type used in a Content-Type header as defined in the RFC 2616.
-             *     Media type of the schema document (e.g. application/json, application/xml). &lt;/br&gt; - `Swagger`
-             *     Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
-             *     `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
-             *     `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-             *     `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+             * Media type of the schema document (e.g. application/json, application/xml). &lt;/br&gt; - `Swagger`
+             * Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
+             * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
+             * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
+             * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
              * @return the next definition stage.
              */
             WithCreate withContentType(String contentType);
         }
 
-        /** The stage of the SchemaContract definition allowing to specify value. */
+        /**
+         * The stage of the SchemaContract definition allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Json escaped string defining the document representing the Schema. Used for
              * schemas other than Swagger/OpenAPI..
-             *
+             * 
              * @param value Json escaped string defining the document representing the Schema. Used for schemas other
-             *     than Swagger/OpenAPI.
+             * than Swagger/OpenAPI.
              * @return the next definition stage.
              */
             WithCreate withValue(String value);
         }
 
-        /** The stage of the SchemaContract definition allowing to specify definitions. */
+        /**
+         * The stage of the SchemaContract definition allowing to specify definitions.
+         */
         interface WithDefinitions {
             /**
              * Specifies the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null
              * otherwise..
-             *
+             * 
              * @param definitions Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
              * @return the next definition stage.
              */
             WithCreate withDefinitions(Object definitions);
         }
 
-        /** The stage of the SchemaContract definition allowing to specify components. */
+        /**
+         * The stage of the SchemaContract definition allowing to specify components.
+         */
         interface WithComponents {
             /**
              * Specifies the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null
              * otherwise..
-             *
+             * 
              * @param components Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
              * @return the next definition stage.
              */
             WithCreate withComponents(Object components);
         }
 
-        /** The stage of the SchemaContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the SchemaContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -203,37 +219,39 @@ public interface SchemaContract {
 
     /**
      * Begins update for the SchemaContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SchemaContract.Update update();
 
-    /** The template for SchemaContract update. */
-    interface Update
-        extends UpdateStages.WithContentType,
-            UpdateStages.WithValue,
-            UpdateStages.WithDefinitions,
-            UpdateStages.WithComponents,
-            UpdateStages.WithIfMatch {
+    /**
+     * The template for SchemaContract update.
+     */
+    interface Update extends UpdateStages.WithContentType, UpdateStages.WithValue, UpdateStages.WithDefinitions,
+        UpdateStages.WithComponents, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SchemaContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SchemaContract apply(Context context);
     }
 
-    /** The SchemaContract update stages. */
+    /**
+     * The SchemaContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the SchemaContract update allowing to specify contentType. */
+        /**
+         * The stage of the SchemaContract update allowing to specify contentType.
+         */
         interface WithContentType {
             /**
              * Specifies the contentType property: Must be a valid a media type used in a Content-Type header as defined
@@ -242,63 +260,71 @@ public interface SchemaContract {
              * Schema use `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
              * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
              * `application/vnd.ms-azure-apim.wadl.grammars+xml`..
-             *
+             * 
              * @param contentType Must be a valid a media type used in a Content-Type header as defined in the RFC 2616.
-             *     Media type of the schema document (e.g. application/json, application/xml). &lt;/br&gt; - `Swagger`
-             *     Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
-             *     `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
-             *     `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-             *     `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+             * Media type of the schema document (e.g. application/json, application/xml). &lt;/br&gt; - `Swagger`
+             * Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
+             * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
+             * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
+             * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
              * @return the next definition stage.
              */
             Update withContentType(String contentType);
         }
 
-        /** The stage of the SchemaContract update allowing to specify value. */
+        /**
+         * The stage of the SchemaContract update allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Json escaped string defining the document representing the Schema. Used for
              * schemas other than Swagger/OpenAPI..
-             *
+             * 
              * @param value Json escaped string defining the document representing the Schema. Used for schemas other
-             *     than Swagger/OpenAPI.
+             * than Swagger/OpenAPI.
              * @return the next definition stage.
              */
             Update withValue(String value);
         }
 
-        /** The stage of the SchemaContract update allowing to specify definitions. */
+        /**
+         * The stage of the SchemaContract update allowing to specify definitions.
+         */
         interface WithDefinitions {
             /**
              * Specifies the definitions property: Types definitions. Used for Swagger/OpenAPI v1 schemas only, null
              * otherwise..
-             *
+             * 
              * @param definitions Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
              * @return the next definition stage.
              */
             Update withDefinitions(Object definitions);
         }
 
-        /** The stage of the SchemaContract update allowing to specify components. */
+        /**
+         * The stage of the SchemaContract update allowing to specify components.
+         */
         interface WithComponents {
             /**
              * Specifies the components property: Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null
              * otherwise..
-             *
+             * 
              * @param components Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
              * @return the next definition stage.
              */
             Update withComponents(Object components);
         }
 
-        /** The stage of the SchemaContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the SchemaContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -307,14 +333,14 @@ public interface SchemaContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SchemaContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

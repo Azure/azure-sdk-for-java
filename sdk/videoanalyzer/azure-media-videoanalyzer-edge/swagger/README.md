@@ -20,10 +20,10 @@ add-context-parameter: true
 models-subpackage: models
 custom-types-subpacakge: models
 context-client-method-parameter: true
-use: '@autorest/java@4.0.24'
+use: '@autorest/java@4.1.39'
 model-override-setter-from-superclass: true
 required-fields-as-ctor-args: true
-customization-class: MethodRequestCustomizations
+customization-class: src/main/java/VideoAnalyzerEdgeCustomization.java
 ```
 
 ### discriminator vs default enum
@@ -35,9 +35,10 @@ directive:
     let definitionKeys = Object.keys($);
     for(let i = 0; i < definitionKeys.length; i++) {
       if(definitionKeys[i] === "MethodRequest") {
-        $[definitionKeys[i]].required = ["@apiVersion"];
         delete $[definitionKeys[i]].properties.methodName;
         delete $[definitionKeys[i]].discriminator;
+        delete $[definitionKeys[i]].properties["@apiVersion"].enum;
+        delete $[definitionKeys[i]].properties["@apiVersion"]["x-ms-enum"];
       }
       else {
         if($[definitionKeys[i]]["x-ms-discriminator-value"]) {
@@ -50,8 +51,7 @@ directive:
           definition.properties.methodName = {
             "type": "string",
             "description": "method name",
-            "readOnly": true,
-            "enum": [value]
+            "readOnly": true
           };
           if(definition.required){
             definition.required.push("methodName");
@@ -64,82 +64,44 @@ directive:
     }
 ```
 
-### Customization
-
-```java
-import org.slf4j.Logger;
-
-public class MethodRequestCustomizations extends Customization {
-    @Override
-    public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        customizeModelsPackage(libraryCustomization.getPackage("com.azure.media.videoanalyzer.edge.models"));
-    }
-
-    private void customizeModelsPackage(PackageCustomization packageCustomization) {
-        customizeMethodRequest(packageCustomization.getClass("MethodRequest"));
-        customizePipelineSetRequest(packageCustomization.getClass("PipelineTopologySetRequest"));
-        customizeLivePipelineSetRequest(packageCustomization.getClass("LivePipelineSetRequest"));
-        customizeRemoteDeviceAdapterSetRequest(packageCustomization.getClass("RemoteDeviceAdapterSetRequest"));
-    }
-
-    private void customizePipelineSetRequest(ClassCustomization classCustomization) {
-        classCustomization.addMethod(
-            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
-                "    PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody(this.pipelineTopology.getName());\n" +
-                "    setRequestBody.setSystemData(this.pipelineTopology.getSystemData());\n" +
-                "    setRequestBody.setProperties(this.pipelineTopology.getProperties());\n" +
-                "    return setRequestBody.getPayloadAsJson();\n" +
-                "}"
-        );
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
-    }
-    
-    private void customizeRemoteDeviceAdapterSetRequest(ClassCustomization classCustomization) {
-        classCustomization.addMethod(
-            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
-                "    RemoteDeviceAdapterSetRequestBody setRequestBody = new RemoteDeviceAdapterSetRequestBody(this.remoteDeviceAdapter.getName());\n" +
-                "    setRequestBody.setSystemData(this.remoteDeviceAdapter.getSystemData());\n" +
-                "    setRequestBody.setProperties(this.remoteDeviceAdapter.getProperties());\n" +
-                "    return setRequestBody.getPayloadAsJson();\n" +
-                "}"
-        );
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
-    }
-    
-    private void customizeLivePipelineSetRequest(ClassCustomization classCustomization) {
-        classCustomization.addMethod(
-            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
-                "    LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody(this.livePipeline.getName());\n" +
-                "    setRequestBody.setSystemData(this.livePipeline.getSystemData());\n" +
-                "    setRequestBody.setProperties(this.livePipeline.getProperties());\n" +
-                "    return setRequestBody.getPayloadAsJson();\n" +
-                "}"
-        );
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
-    }
-    
-    private void customizeMethodRequest(ClassCustomization classCustomization) {
-        classCustomization.addMethod(
-            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
-                "    ObjectSerializer serializer = JsonSerializerProviders.createInstance();\n" +
-                "    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();\n" +
-                "    serializer.serialize(outputStream, this);\n" +
-                "    String payload = outputStream.toString(\"UTF-8\");\n" +
-                "    return payload;\n" +
-                "}"
-        );
-        classCustomization.getMethod("getPayloadAsJson").addAnnotation("@JsonIgnore");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
-        classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
-    }
-
-}
+### Add AssetSink
+```yaml
+directive:
+- from: AzureVideoAnalyzer.json
+  where: $.definitions
+  transform: >
+    $.AssetSink = {
+      "type": "object",
+      "properties": {
+        "assetContainerSasUrl": {
+          "type": "string",
+          "description": "An Azure Storage SAS Url which points to container, such as the one created for an Azure Media Services asset."
+        },
+        "segmentLength": {
+          "type": "string",
+          "description": "When writing media to an asset, wait until at least this duration of media has been accumulated on the Edge. Expressed in increments of 30 seconds, with a minimum of 30 seconds and a recommended maximum of 5 minutes."
+        },
+        "localMediaCachePath": {
+          "type": "string",
+          "description": "Path to a local file system directory for temporary caching of media before writing to an Asset. Used when the Edge device is temporarily disconnected from Azure."
+        },
+        "localMediaCacheMaximumSizeMiB": {
+          "type": "string",
+          "description": "Maximum amount of disk space that can be used for temporary caching of media."
+        }
+      },
+      "required": [
+        "@type",
+        "assetContainerSasUrl",
+        "localMediaCachePath",
+        "localMediaCacheMaximumSizeMiB"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/SinkNodeBase"
+        }
+      ],
+      "description": "Enables a pipeline topology to record media to an Azure Media Services asset for subsequent playback.",
+      "x-ms-discriminator-value": "#Microsoft.VideoAnalyzer.AssetSink"
+    };
 ```
-

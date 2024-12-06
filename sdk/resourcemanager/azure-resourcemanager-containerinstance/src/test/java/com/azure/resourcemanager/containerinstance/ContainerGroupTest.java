@@ -13,8 +13,10 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartP
 import com.azure.resourcemanager.containerinstance.models.ContainerHttpGet;
 import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
 import com.azure.resourcemanager.containerinstance.models.ContainerState;
+import com.azure.resourcemanager.containerinstance.models.DnsNameLabelReusePolicy;
 import com.azure.resourcemanager.containerinstance.models.Scheme;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,20 +28,18 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     @Test
     public void testContainerGroupWithVirtualNetwork() {
         String containerGroupName = generateRandomResourceName("container", 20);
-        Region region = Region.US_EAST;
+        Region region = Region.US_WEST3;
 
-        ContainerGroup containerGroup =
-            containerInstanceManager
-                .containerGroups()
-                .define(containerGroupName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withLinux()
-                .withPublicImageRegistryOnly()
-                .withoutVolume()
-                .withContainerInstance("nginx", 80)
-                .withNewVirtualNetwork("10.0.0.0/24")
-                .create();
+        ContainerGroup containerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withoutVolume()
+            .withContainerInstance("nginx", 80)
+            .withNewVirtualNetwork("10.0.0.0/24")
+            .create();
 
         Assertions.assertEquals(1, containerGroup.subnetIds().size());
 
@@ -48,17 +48,20 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         final String subnetName = "default";
         final String containerGroupName1 = generateRandomResourceName("container", 20);
 
-        Network vnet = containerInstanceManager.networkManager().networks().define("vnet1")
+        Network vnet = containerInstanceManager.networkManager()
+            .networks()
+            .define("vnet1")
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withAddressSpace("10.1.0.0/24")
             .defineSubnet(subnetName)
-                .withAddressPrefix("10.1.0.0/24")
-                .withDelegation("Microsoft.ContainerInstance/containerGroups")
-                .attach()
+            .withAddressPrefix("10.1.0.0/24")
+            .withDelegation("Microsoft.ContainerInstance/containerGroups")
+            .attach()
             .create();
 
-        ContainerGroup containerGroup1 = containerInstanceManager.containerGroups().define(containerGroupName1)
+        ContainerGroup containerGroup1 = containerInstanceManager.containerGroups()
+            .define(containerGroupName1)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withLinux()
@@ -70,7 +73,8 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
 
         Assertions.assertEquals(1, containerGroup1.subnetIds().size());
         Assertions.assertEquals(subnetName, containerGroup1.subnetIds().iterator().next().name());
-        Assertions.assertEquals(vnet.subnets().get(subnetName).id(), containerGroup1.subnetIds().iterator().next().id());
+        Assertions.assertEquals(vnet.subnets().get(subnetName).id(),
+            containerGroup1.subnetIds().iterator().next().id());
     }
 
     @Test
@@ -80,19 +84,19 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         String dnsPrefix = generateRandomResourceName("aci-dns", 20);
         Region region = Region.US_EAST;
 
-        ContainerGroup containerGroup =
-            containerInstanceManager
-                .containerGroups()
-                .define(containerGroupName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withLinux()
-                .withPublicImageRegistryOnly()
-                .withoutVolume()
-                .withContainerInstance("mcr.microsoft.com/azuredocs/aci-helloworld", 80)
-                .withDnsPrefix(dnsPrefix)
-                .create();
+        ContainerGroup containerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withoutVolume()
+            .withContainerInstance("mcr.microsoft.com/azuredocs/aci-helloworld", 80)
+            .withDnsPrefix(dnsPrefix)
+            .create();
         Assertions.assertTrue(containerGroup.fqdn().startsWith(dnsPrefix));
+        Assertions
+            .assertTrue(DnsNameLabelReusePolicy.UNSECURE.equals(containerGroup.autoGeneratedDomainNameLabelScope()));
 
         Container container = containerGroup.containers().values().iterator().next();
 
@@ -114,46 +118,41 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         int failureThreshold = 3;
         int probePeriodSeconds = 10;
 
-        ContainerGroup containerGroup =
-            containerInstanceManager
-                .containerGroups()
-                .define(containerGroupName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withLinux()
-                .withPublicImageRegistryOnly()
-                .withoutVolume()
-                .defineContainerInstance(containerName1)
-                    .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
-                    .withExternalTcpPort(80)
-                    // simulate the situation where, container starts healthy for a given period of time, and then becomes unhealthy
-                    .withStartingCommandLine("/bin/sh", "-c", "touch /tmp/healthy; sleep " + healthySeconds + "; rm -rf /tmp/healthy; sleep 600;")
-                    .withLivenessProbeExecutionCommand(Arrays.asList("cat", "/tmp/healthy"), probePeriodSeconds, failureThreshold)
-                    .withReadinessProbeHttpGet("/mypath", 80, 30, 3)
-                .attach()
-                .defineContainerInstance(containerName2)
-                    .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
-                    .withExternalTcpPort(8080)
-                    .withLivenessProbe(
-                        new ContainerProbe()
-                            .withExec(
-                                new ContainerExec()
-                                    .withCommand(Arrays.asList("/bin/bash", "myCustomScript2.sh")))
-                            .withPeriodSeconds(30)
-                            .withFailureThreshold(2))
-                    .withReadinessProbe(
-                        new ContainerProbe()
-                            .withHttpGet(
-                                new ContainerHttpGet()
-                                    .withPath("/")
-                                    .withPort(8080)
-                                    .withScheme(Scheme.HTTP))
-                            .withPeriodSeconds(30)
-                            .withInitialDelaySeconds(0))
-                    .attach()
-                .withDnsPrefix(dnsPrefix)
-                .withRestartPolicy(ContainerGroupRestartPolicy.ALWAYS)
-                .create();
+        ContainerGroup containerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withoutVolume()
+            .defineContainerInstance(containerName1)
+            .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
+            .withExternalTcpPort(80)
+            // simulate the situation where, container starts healthy for a given period of time, and then becomes unhealthy
+            .withStartingCommandLine("/bin/sh", "-c",
+                "touch /tmp/healthy; sleep " + healthySeconds + "; rm -rf /tmp/healthy; sleep 600;")
+            .withLivenessProbeExecutionCommand(Arrays.asList("cat", "/tmp/healthy"), probePeriodSeconds,
+                failureThreshold)
+            .withReadinessProbeHttpGet("/mypath", 80, 30, 3)
+            .attach()
+            .defineContainerInstance(containerName2)
+            .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
+            .withExternalTcpPort(8080)
+            .withLivenessProbe(new ContainerProbe()
+                .withExec(new ContainerExec().withCommand(Arrays.asList("/bin/bash", "myCustomScript2.sh")))
+                .withPeriodSeconds(30)
+                .withFailureThreshold(2))
+            .withReadinessProbe(new ContainerProbe()
+                .withHttpGet(new ContainerHttpGet().withPath("/").withPort(8080).withScheme(Scheme.HTTP))
+                .withPeriodSeconds(30)
+                .withInitialDelaySeconds(0))
+            .attach()
+            .withDnsPrefix(dnsPrefix)
+            .withRestartPolicy(ContainerGroupRestartPolicy.ALWAYS)
+            .create();
+
+        Assertions
+            .assertTrue(DnsNameLabelReusePolicy.UNSECURE.equals(containerGroup.autoGeneratedDomainNameLabelScope()));
 
         Assertions.assertEquals(0, containerGroup.containers().get(containerName1).instanceView().restartCount());
         Assertions.assertNull(containerGroup.containers().get(containerName1).instanceView().previousState());
@@ -174,10 +173,85 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         ContainerState previousState = container.instanceView().previousState();
         Assertions.assertNotNull(previousState);
 
-        Duration durationBeforeRestart = Duration.ofSeconds(previousState.finishTime().toEpochSecond() - previousState.startTime().toEpochSecond());
+        Duration durationBeforeRestart = Duration
+            .ofSeconds(previousState.finishTime().toEpochSecond() - previousState.startTime().toEpochSecond());
 
         // duration before restart should be in between healthy duration plus last probe and healthy duration plus latest probe
-        Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * (failureThreshold - 1))) > 0);
-        Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * failureThreshold)) <= 0);
+        Assertions.assertTrue(durationBeforeRestart
+            .compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * (failureThreshold - 1))) > 0);
+        Assertions.assertTrue(
+            durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * failureThreshold))
+                <= 0);
+    }
+
+    @Test
+    public void testBeginCreate() {
+        final String succeededState = "Succeeded";
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
+
+        // create resource group and virtual network, but no storage account, before create container group
+        Accepted<ContainerGroup> acceptedContainerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withoutVolume()
+            .withContainerInstance("nginx", 80)
+            .withNewVirtualNetwork("10.0.0.0/24")
+            .beginCreate();
+
+        ContainerGroup createdContainerGroup = acceptedContainerGroup.getActivationResponse().getValue();
+        Assertions.assertNotEquals(succeededState, createdContainerGroup.provisioningState());
+
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        Assertions.assertEquals(succeededState, containerGroup.provisioningState());
+    }
+
+    // test contains a data-plane call
+    @DoNotRecord(skipInPlayback = true)
+    @Test
+    public void testBeginCreateWithFileShareVolume() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
+
+        // create storage account (and virtual network), before create container group
+        Accepted<ContainerGroup> acceptedContainerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            // definition step only allow creating one file share volume
+            .withNewAzureFileShareVolume("vol1", "share1")
+            .withContainerInstance("nginx", 80)
+            .withNewVirtualNetwork("10.0.0.0/24")
+            .beginCreate();
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        Assertions.assertEquals(1, containerGroup.volumes().size());
+    }
+
+    @Test
+    public void testCreateWithAutoGeneratedDomainNameLabelScope() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        String dnsNameLbl = generateRandomResourceName("dnslbl", 20);
+        Region region = Region.US_WEST3;
+
+        // With AutoGeneratedDomainNameLabelScope
+        ContainerGroup containerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withoutVolume()
+            .withContainerInstance("nginx", 80)
+            .withDnsPrefix(dnsNameLbl)
+            .withAutoGeneratedDomainNameLabelScope(DnsNameLabelReusePolicy.TENANT_REUSE)
+            .create();
+
+        Assertions.assertTrue(
+            DnsNameLabelReusePolicy.TENANT_REUSE.equals(containerGroup.autoGeneratedDomainNameLabelScope()));
     }
 }

@@ -44,10 +44,8 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(response -> Mono.just(scrubETagHeader(response)));
+        return next.process().flatMap(response -> Mono.just(scrubETagHeader(response)));
     }
-
 
     /*
     The service is inconsistent in whether the eTag header value has quotes. This method will check if the

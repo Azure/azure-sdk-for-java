@@ -29,11 +29,10 @@ import java.util.Random;
 public class ResourceHealthTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
-    private static final Region REGION = Region.US_WEST3;
+    private static final Region REGION = Region.US_EAST2;
     private static final String VM_NAME = "vm" + randomPadding();
 
     private String resourceGroup = "rg" + randomPadding();
-
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
@@ -42,12 +41,12 @@ public class ResourceHealthTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void resourceHealthTest() {
-        ComputeManager computeManager = ComputeManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        ComputeManager computeManager = ComputeManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        ResourceHealthManager resourceHealthManager = ResourceHealthManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        ResourceHealthManager resourceHealthManager = ResourceHealthManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -55,37 +54,37 @@ public class ResourceHealthTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            computeManager.resourceManager().resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            computeManager.resourceManager().resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {
             // create vm
-            VirtualMachine virtualMachine =
-                computeManager
-                    .virtualMachines()
-                    .define(VM_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                    .withRootUsername("azuser")
-                    .withRootPassword("Pa5$123456")
-                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
-                    .create();
+            VirtualMachine virtualMachine = computeManager.virtualMachines()
+                .define(VM_NAME)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroup)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername("azuser")
+                .withRootPassword("Pa5$123456")
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .create();
 
             // get current availability status
-            AvailabilityStatus vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
+            AvailabilityStatus vmAvailabilityStatus
+                = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             while (!AvailabilityStateValues.AVAILABLE.equals(vmAvailabilityStatus.properties().availabilityState())) {
                 sleepIfRunningAgainstService(1000 * 10);
                 vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             }
-            Assertions.assertEquals(AvailabilityStateValues.AVAILABLE, vmAvailabilityStatus.properties().availabilityState());
-            PagedIterable<AvailabilityStatus> historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id());
-            Assertions.assertEquals(AvailabilityStateValues.AVAILABLE, historyEvents.iterator().next().properties().availabilityState());
+            Assertions.assertEquals(AvailabilityStateValues.AVAILABLE,
+                vmAvailabilityStatus.properties().availabilityState());
+            PagedIterable<AvailabilityStatus> historyEvents
+                = resourceHealthManager.availabilityStatuses().list(virtualMachine.id());
+            Assertions.assertEquals(AvailabilityStateValues.AVAILABLE,
+                historyEvents.iterator().next().properties().availabilityState());
 
             // deallocate vm
             virtualMachine.deallocate();
@@ -94,7 +93,8 @@ public class ResourceHealthTests extends TestProxyTestBase {
                 sleepIfRunningAgainstService(1000 * 10);
                 vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             }
-            Assertions.assertEquals(AvailabilityStateValues.UNAVAILABLE, vmAvailabilityStatus.properties().availabilityState());
+            Assertions.assertEquals(AvailabilityStateValues.UNAVAILABLE,
+                vmAvailabilityStatus.properties().availabilityState());
 
             // start vm again
             virtualMachine.start();
@@ -104,14 +104,15 @@ public class ResourceHealthTests extends TestProxyTestBase {
                 vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             }
 
-            historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id(), null, "recommendedactions", Context.NONE);
+            historyEvents = resourceHealthManager.availabilityStatuses()
+                .list(virtualMachine.id(), null, "recommendedactions", Context.NONE);
             Assertions.assertTrue(historyEvents.stream().count() > 0);
-//            Assertions.assertTrue(
-//                historyEvents
-//                    .stream()
-//                    .anyMatch(
-//                        status -> "current".equals(status.name())
-//                            && AvailabilityStateValues.AVAILABLE.equals(status.properties().availabilityState())));
+            //            Assertions.assertTrue(
+            //                historyEvents
+            //                    .stream()
+            //                    .anyMatch(
+            //                        status -> "current".equals(status.name())
+            //                            && AvailabilityStateValues.AVAILABLE.equals(status.properties().availabilityState())));
         } finally {
             if (!testEnv) {
                 computeManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);

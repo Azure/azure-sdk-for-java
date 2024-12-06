@@ -6,30 +6,36 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The KPI extract. */
+/**
+ * The KPI extract.
+ */
 @Fluent
-public final class KpiExtract {
+public final class KpiExtract implements JsonSerializable<KpiExtract> {
     /*
      * KPI extract name.
      */
-    @JsonProperty(value = "extractName", required = true)
     private String extractName;
 
     /*
      * The expression.
      */
-    @JsonProperty(value = "expression", required = true)
     private String expression;
 
-    /** Creates an instance of KpiExtract class. */
+    /**
+     * Creates an instance of KpiExtract class.
+     */
     public KpiExtract() {
     }
 
     /**
      * Get the extractName property: KPI extract name.
-     *
+     * 
      * @return the extractName value.
      */
     public String extractName() {
@@ -38,7 +44,7 @@ public final class KpiExtract {
 
     /**
      * Set the extractName property: KPI extract name.
-     *
+     * 
      * @param extractName the extractName value to set.
      * @return the KpiExtract object itself.
      */
@@ -49,7 +55,7 @@ public final class KpiExtract {
 
     /**
      * Get the expression property: The expression.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -58,7 +64,7 @@ public final class KpiExtract {
 
     /**
      * Set the expression property: The expression.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the KpiExtract object itself.
      */
@@ -69,21 +75,59 @@ public final class KpiExtract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extractName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property extractName in model KpiExtract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property extractName in model KpiExtract"));
         }
         if (expression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expression in model KpiExtract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expression in model KpiExtract"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KpiExtract.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extractName", this.extractName);
+        jsonWriter.writeStringField("expression", this.expression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiExtract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiExtract if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiExtract.
+     */
+    public static KpiExtract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiExtract deserializedKpiExtract = new KpiExtract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extractName".equals(fieldName)) {
+                    deserializedKpiExtract.extractName = reader.getString();
+                } else if ("expression".equals(fieldName)) {
+                    deserializedKpiExtract.expression = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiExtract;
+        });
+    }
 }

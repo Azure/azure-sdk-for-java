@@ -1,14 +1,26 @@
 ## Release History
 
-### 5.18.0-beta.1 (Unreleased)
+### 5.19.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
 
 #### Other Changes
+
+### 5.18.0 (2024-11-05)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 5.18.0 and above.
+#### Other Changes
+* Updated `azure-cosmos` to version `4.64.0`.
+
+### 5.17.1 (2024-10-11)
+
+#### Bugs Fixed
+* Fixed issue that some classes do not support Java 17.
 
 ### 5.17.0 (2024-10-09)
 
@@ -279,8 +291,6 @@
 * Updated `azure-cosmos` to version `4.38.0`.
 
 ### 3.28.1 (2022-10-07)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 3.28.1 and above.
 #### Other Changes
 * Updated `azure-cosmos` to version `4.37.1`.
 

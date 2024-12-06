@@ -132,7 +132,7 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
      * Additional properties
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of CompleteRequest class.
@@ -487,7 +487,7 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -498,7 +498,7 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
      * @return the CompleteRequest object itself.
      */
     @Generated
-    public CompleteRequest setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public CompleteRequest setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -521,13 +521,19 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
         jsonWriter.writeArrayField("stop", this.stop, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         if (this.toolChoice != null) {
-            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
         }
         jsonWriter.writeNumberField("seed", this.seed);
         jsonWriter.writeStringField("model", this.model);
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -558,7 +564,7 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
             BinaryData toolChoice = null;
             Long seed = null;
             String model = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -593,7 +599,8 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             CompleteRequest deserializedCompleteRequest = new CompleteRequest(messages);

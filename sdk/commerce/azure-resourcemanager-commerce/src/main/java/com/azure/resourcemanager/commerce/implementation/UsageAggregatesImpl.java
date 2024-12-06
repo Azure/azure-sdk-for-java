@@ -21,8 +21,8 @@ public final class UsageAggregatesImpl implements UsageAggregates {
 
     private final com.azure.resourcemanager.commerce.UsageManager serviceManager;
 
-    public UsageAggregatesImpl(
-        UsageAggregatesClient innerClient, com.azure.resourcemanager.commerce.UsageManager serviceManager) {
+    public UsageAggregatesImpl(UsageAggregatesClient innerClient,
+        com.azure.resourcemanager.commerce.UsageManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -32,23 +32,10 @@ public final class UsageAggregatesImpl implements UsageAggregates {
         return Utils.mapPage(inner, inner1 -> new UsageAggregationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UsageAggregation> list(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken,
-        Context context) {
-        PagedIterable<UsageAggregationInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    reportedStartTime,
-                    reportedEndTime,
-                    showDetails,
-                    aggregationGranularity,
-                    continuationToken,
-                    context);
+    public PagedIterable<UsageAggregation> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
+        Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken, Context context) {
+        PagedIterable<UsageAggregationInner> inner = this.serviceClient()
+            .list(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken, context);
         return Utils.mapPage(inner, inner1 -> new UsageAggregationImpl(inner1, this.manager()));
     }
 

@@ -1,14 +1,21 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import java.io.*;
-
-import io.clientcore.core.json.implementation.jackson.core.*;
-import io.clientcore.core.json.implementation.jackson.core.format.InputAccessor;
-import io.clientcore.core.json.implementation.jackson.core.format.MatchStrength;
-import io.clientcore.core.json.implementation.jackson.core.io.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonEncoding;
+import io.clientcore.core.json.implementation.jackson.core.JsonFactory;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.io.IOContext;
+import io.clientcore.core.json.implementation.jackson.core.io.MergedStream;
+import io.clientcore.core.json.implementation.jackson.core.io.UTF32Reader;
 import io.clientcore.core.json.implementation.jackson.core.sym.ByteQuadsCanonicalizer;
 import io.clientcore.core.json.implementation.jackson.core.sym.CharsToNameCanonicalizer;
+
+import java.io.ByteArrayInputStream;
+import java.io.CharConversionException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 /**
  * This class is used to determine the encoding of byte stream
@@ -17,16 +24,12 @@ import io.clientcore.core.json.implementation.jackson.core.sym.CharsToNameCanoni
  * for BOM handling, which is a property of underlying
  * streams.
  */
-public final class ByteSourceJsonBootstrapper
-{
-    public final static byte UTF8_BOM_1 = (byte) 0xEF;
-    public final static byte UTF8_BOM_2 = (byte) 0xBB;
-    public final static byte UTF8_BOM_3 = (byte) 0xBF;
+public final class ByteSourceJsonBootstrapper {
 
     /*
-    /**********************************************************
-    /* Configuration
-    /**********************************************************
+     * /**********************************************************
+     * /* Configuration
+     * /**********************************************************
      */
 
     private final IOContext _context;
@@ -34,9 +37,9 @@ public final class ByteSourceJsonBootstrapper
     private final InputStream _in;
 
     /*
-    /**********************************************************
-    /* Input buffering
-    /**********************************************************
+     * /**********************************************************
+     * /* Input buffering
+     * /**********************************************************
      */
 
     private final byte[] _inputBuffer;
@@ -52,9 +55,9 @@ public final class ByteSourceJsonBootstrapper
     private final boolean _bufferRecyclable;
 
     /*
-    /**********************************************************
-    /* Input location
-    /**********************************************************
+     * /**********************************************************
+     * /* Input location
+     * /**********************************************************
      */
 
     /**
@@ -64,12 +67,12 @@ public final class ByteSourceJsonBootstrapper
      *<p>
      * Note: includes possible BOMs, if those were part of the input.
      */
-//    private int _inputProcessed;
+    // private int _inputProcessed;
 
     /*
-    /**********************************************************
-    /* Data gathered
-    /**********************************************************
+     * /**********************************************************
+     * /* Data gathered
+     * /**********************************************************
      */
 
     /**
@@ -80,9 +83,9 @@ public final class ByteSourceJsonBootstrapper
     private int _bytesPerChar; // 0 means "dunno yet"
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     public ByteSourceJsonBootstrapper(IOContext ctxt, InputStream in) {
@@ -90,7 +93,7 @@ public final class ByteSourceJsonBootstrapper
         _in = in;
         _inputBuffer = ctxt.allocReadIOBuffer();
         _inputEnd = _inputPtr = 0;
-//        _inputProcessed = 0;
+        // _inputProcessed = 0;
         _bufferRecyclable = true;
     }
 
@@ -101,14 +104,14 @@ public final class ByteSourceJsonBootstrapper
         _inputPtr = inputStart;
         _inputEnd = (inputStart + inputLen);
         // Need to offset this for correct location info
-//        _inputProcessed = -inputStart;
+        // _inputProcessed = -inputStart;
         _bufferRecyclable = false;
     }
 
     /*
-    /**********************************************************
-    /*  Encoding detection during bootstrapping
-    /**********************************************************
+     * /**********************************************************
+     * /* Encoding detection during bootstrapping
+     * /**********************************************************
      */
 
     /**
@@ -120,27 +123,26 @@ public final class ByteSourceJsonBootstrapper
      *
      * @throws IOException If read from underlying input source fails
      */
-    public JsonEncoding detectEncoding() throws IOException
-    {
+    public JsonEncoding detectEncoding() throws IOException {
         boolean foundEncoding = false;
 
         // First things first: BOM handling
-        /* Note: we can require 4 bytes to be read, since no
+        /*
+         * Note: we can require 4 bytes to be read, since no
          * combination of BOM + valid JSON content can have
          * shorter length (shortest valid JSON content is single
          * digit char, but BOMs are chosen such that combination
          * is always at least 4 chars long)
          */
         if (ensureLoaded(4)) {
-            int quad =  (_inputBuffer[_inputPtr] << 24)
-                | ((_inputBuffer[_inputPtr+1] & 0xFF) << 16)
-                | ((_inputBuffer[_inputPtr+2] & 0xFF) << 8)
-                | (_inputBuffer[_inputPtr+3] & 0xFF);
+            int quad = (_inputBuffer[_inputPtr] << 24) | ((_inputBuffer[_inputPtr + 1] & 0xFF) << 16)
+                | ((_inputBuffer[_inputPtr + 2] & 0xFF) << 8) | (_inputBuffer[_inputPtr + 3] & 0xFF);
 
             if (handleBOM(quad)) {
                 foundEncoding = true;
             } else {
-                /* If no BOM, need to auto-detect based on first char;
+                /*
+                 * If no BOM, need to auto-detect based on first char;
                  * this works since it must be 7-bit ascii (wrt. unicode
                  * compatible encodings, only ones JSON can be transferred
                  * over)
@@ -153,8 +155,7 @@ public final class ByteSourceJsonBootstrapper
                 }
             }
         } else if (ensureLoaded(2)) {
-            int i16 = ((_inputBuffer[_inputPtr] & 0xFF) << 8)
-                | (_inputBuffer[_inputPtr+1] & 0xFF);
+            int i16 = ((_inputBuffer[_inputPtr] & 0xFF) << 8) | (_inputBuffer[_inputPtr + 1] & 0xFF);
             if (checkUTF16(i16)) {
                 foundEncoding = true;
             }
@@ -167,73 +168,46 @@ public final class ByteSourceJsonBootstrapper
             enc = JsonEncoding.UTF8;
         } else {
             switch (_bytesPerChar) {
-            case 1: enc = JsonEncoding.UTF8;
-                break;
-            case 2: enc = _bigEndian ? JsonEncoding.UTF16_BE : JsonEncoding.UTF16_LE;
-                break;
-            case 4: enc = _bigEndian ? JsonEncoding.UTF32_BE : JsonEncoding.UTF32_LE;
-                break;
-            default: throw new RuntimeException("Internal error"); // should never get here
+                case 1:
+                    enc = JsonEncoding.UTF8;
+                    break;
+
+                case 2:
+                    enc = _bigEndian ? JsonEncoding.UTF16_BE : JsonEncoding.UTF16_LE;
+                    break;
+
+                case 4:
+                    enc = _bigEndian ? JsonEncoding.UTF32_BE : JsonEncoding.UTF32_LE;
+                    break;
+
+                default:
+                    throw new RuntimeException("Internal error"); // should never get here
             }
         }
         _context.setEncoding(enc);
         return enc;
     }
 
-    /**
-     * Helper method that may be called to see if given {@link DataInput}
-     * has BOM marker, and if so, to skip it.
-     *
-     * @param input DataInput to read content from
-     *
-     * @return Byte (as unsigned {@code int}) read after possible UTF-8 BOM
-     *
-     * @throws IOException If read from underlying input source fails
-     *
-     * @since 2.8
-     */
-    public static int skipUTF8BOM(DataInput input) throws IOException
-    {
-        int b = input.readUnsignedByte();
-        if (b != 0xEF) {
-            return b;
-        }
-        // since this is not legal byte in JSON otherwise, except
-        // that we do get BOM; if not, report error
-        b = input.readUnsignedByte();
-        if (b != 0xBB) {
-            throw new IOException("Unexpected byte 0x"+Integer.toHexString(b)
-                +" following 0xEF; should get 0xBB as part of UTF-8 BOM");
-        }
-        b = input.readUnsignedByte();
-        if (b != 0xBF) {
-            throw new IOException("Unexpected byte 0x"+Integer.toHexString(b)
-                +" following 0xEF 0xBB; should get 0xBF as part of UTF-8 BOM");
-        }
-        return input.readUnsignedByte();
-    }
-
     /*
-    /**********************************************************
-    /* Constructing a Reader
-    /**********************************************************
+     * /**********************************************************
+     * /* Constructing a Reader
+     * /**********************************************************
      */
 
     @SuppressWarnings("resource")
-    public Reader constructReader() throws IOException
-    {
+    public Reader constructReader() throws IOException {
         JsonEncoding enc = _context.getEncoding();
         switch (enc.bits()) {
-        case 8: // only in non-common case where we don't want to do direct mapping
-        case 16:
-            {
+            case 8: // only in non-common case where we don't want to do direct mapping
+            case 16: {
                 // First: do we have a Stream? If not, need to create one:
                 InputStream in = _in;
 
                 if (in == null) {
                     in = new ByteArrayInputStream(_inputBuffer, _inputPtr, _inputEnd);
                 } else {
-                    /* Also, if we have any read but unused input (usually true),
+                    /*
+                     * Also, if we have any read but unused input (usually true),
                      * need to merge that input in:
                      */
                     if (_inputPtr < _inputEnd) {
@@ -242,211 +216,78 @@ public final class ByteSourceJsonBootstrapper
                 }
                 return new InputStreamReader(in, enc.getJavaName());
             }
-        case 32:
-            return new UTF32Reader(_context, _in, _inputBuffer, _inputPtr, _inputEnd,
+
+            case 32:
+                return new UTF32Reader(_context, _in, _inputBuffer, _inputPtr, _inputEnd,
                     _context.getEncoding().isBigEndian());
         }
         throw new RuntimeException("Internal error"); // should never get here
     }
 
-    public JsonParser constructParser(int parserFeatures, ObjectCodec codec,
-            ByteQuadsCanonicalizer rootByteSymbols, CharsToNameCanonicalizer rootCharSymbols,
-            int factoryFeatures) throws IOException
-    {
+    public JsonParser constructParser(int parserFeatures, ByteQuadsCanonicalizer rootByteSymbols,
+        CharsToNameCanonicalizer rootCharSymbols, int factoryFeatures) throws IOException {
         int prevInputPtr = _inputPtr;
         JsonEncoding enc = detectEncoding();
         int bytesProcessed = _inputPtr - prevInputPtr;
 
         if (enc == JsonEncoding.UTF8) {
-            /* and without canonicalization, byte-based approach is not performant; just use std UTF-8 reader
+            /*
+             * and without canonicalization, byte-based approach is not performant; just use std UTF-8 reader
              * (which is ok for larger input; not so hot for smaller; but this is not a common case)
              */
             if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
                 ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
-                return new UTF8StreamJsonParser(_context, parserFeatures, _in, codec, can,
-                        _inputBuffer, _inputPtr, _inputEnd, bytesProcessed, _bufferRecyclable);
+                return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr, _inputEnd,
+                    bytesProcessed, _bufferRecyclable);
             }
         }
-        return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), codec,
-                rootCharSymbols.makeChild(factoryFeatures));
+        return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(),
+            rootCharSymbols.makeChild(factoryFeatures));
     }
 
     /*
-    /**********************************************************
-    /*  Encoding detection for data format auto-detection
-    /**********************************************************
+     * /**********************************************************
+     * /* Encoding detection for data format auto-detection
+     * /**********************************************************
      */
-
-    /**
-     * Current implementation is not as thorough as other functionality
-     * ({@link io.clientcore.core.json.implementation.jackson.core.json.ByteSourceJsonBootstrapper});
-     * supports UTF-8, for example. But it should work, for now, and can
-     * be improved as necessary.
-     *
-     * @param acc InputAccessor to use for accessing content to check
-     *
-     * @return Strength of match (never {@code null})
-     *
-     * @throws IOException if input access fails due to read problem
-     */
-    public static MatchStrength hasJSONFormat(InputAccessor acc) throws IOException
-    {
-        // Ideally we should see "[" or "{"; but if not, we'll accept double-quote (String)
-        // in future could also consider accepting non-standard matches?
-
-        if (!acc.hasMoreBytes()) {
-            return MatchStrength.INCONCLUSIVE;
-        }
-        byte b = acc.nextByte();
-        // Very first thing, a UTF-8 BOM?
-        if (b == UTF8_BOM_1) { // yes, looks like UTF-8 BOM
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (acc.nextByte() != UTF8_BOM_2) {
-                return MatchStrength.NO_MATCH;
-            }
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (acc.nextByte() != UTF8_BOM_3) {
-                return MatchStrength.NO_MATCH;
-            }
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            b = acc.nextByte();
-        }
-        // Then possible leading space
-        int ch = skipSpace(acc, b);
-        if (ch < 0) {
-            return MatchStrength.INCONCLUSIVE;
-        }
-        // First, let's see if it looks like a structured type:
-        if (ch == '{') { // JSON object?
-            // Ideally we need to find either double-quote or closing bracket
-            ch = skipSpace(acc);
-            if (ch < 0) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (ch == '"' || ch == '}') {
-                return MatchStrength.SOLID_MATCH;
-            }
-            // ... should we allow non-standard? Let's not yet... can add if need be
-            return MatchStrength.NO_MATCH;
-        }
-        MatchStrength strength;
-
-        if (ch == '[') {
-            ch = skipSpace(acc);
-            if (ch < 0) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            // closing brackets is easy; but for now, let's also accept opening...
-            if (ch == ']' || ch == '[') {
-                return MatchStrength.SOLID_MATCH;
-            }
-            return MatchStrength.SOLID_MATCH;
-        } else {
-            // plain old value is not very convincing...
-            strength = MatchStrength.WEAK_MATCH;
-        }
-
-        if (ch == '"') { // string value
-            return strength;
-        }
-        if (ch <= '9' && ch >= '0') { // number
-            return strength;
-        }
-        if (ch == '-') { // negative number
-            ch = skipSpace(acc);
-            if (ch < 0) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            return (ch <= '9' && ch >= '0') ? strength : MatchStrength.NO_MATCH;
-        }
-        // or one of literals
-        if (ch == 'n') { // null
-            return tryMatch(acc, "ull", strength);
-        }
-        if (ch == 't') { // true
-            return tryMatch(acc, "rue", strength);
-        }
-        if (ch == 'f') { // false
-            return tryMatch(acc, "alse", strength);
-        }
-        return MatchStrength.NO_MATCH;
-    }
-
-    private static MatchStrength tryMatch(InputAccessor acc, String matchStr, MatchStrength fullMatchStrength)
-        throws IOException
-    {
-        for (int i = 0, len = matchStr.length(); i < len; ++i) {
-            if (!acc.hasMoreBytes()) {
-                return MatchStrength.INCONCLUSIVE;
-            }
-            if (acc.nextByte() != matchStr.charAt(i)) {
-                return MatchStrength.NO_MATCH;
-            }
-        }
-        return fullMatchStrength;
-    }
-
-    private static int skipSpace(InputAccessor acc) throws IOException
-    {
-        if (!acc.hasMoreBytes()) {
-            return -1;
-        }
-        return skipSpace(acc, acc.nextByte());
-    }
-
-    private static int skipSpace(InputAccessor acc, byte b) throws IOException
-    {
-        while (true) {
-            int ch = (int) b & 0xFF;
-            if (!(ch == ' ' || ch == '\r' || ch == '\n' || ch == '\t')) {
-                return ch;
-            }
-            if (!acc.hasMoreBytes()) {
-                return -1;
-            }
-            b = acc.nextByte();
-        }
-    }
 
     /*
-    /**********************************************************
-    /* Internal methods, parsing
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods, parsing
+     * /**********************************************************
      */
 
     /**
      * @return True if a BOM was succesfully found, and encoding
      *   thereby recognized.
      */
-    private boolean handleBOM(int quad) throws IOException
-    {
-        /* Handling of (usually) optional BOM (required for
+    private boolean handleBOM(int quad) throws IOException {
+        /*
+         * Handling of (usually) optional BOM (required for
          * multi-byte formats); first 32-bit charsets:
          */
         switch (quad) {
-        case 0x0000FEFF:
-            _bigEndian = true;
-            _inputPtr += 4;
-            _bytesPerChar = 4;
-            return true;
-        case 0xFFFE0000: // UCS-4, LE?
-            _inputPtr += 4;
-            _bytesPerChar = 4;
-            _bigEndian = false;
-            return true;
-        case 0x0000FFFE: // UCS-4, in-order...
-            reportWeirdUCS4("2143"); // throws exception
-            break; // never gets here
-        case 0xFEFF0000: // UCS-4, in-order...
-            reportWeirdUCS4("3412"); // throws exception
-            break; // never gets here
-        default:
+            case 0x0000FEFF:
+                _bigEndian = true;
+                _inputPtr += 4;
+                _bytesPerChar = 4;
+                return true;
+
+            case 0xFFFE0000: // UCS-4, LE?
+                _inputPtr += 4;
+                _bytesPerChar = 4;
+                _bigEndian = false;
+                return true;
+
+            case 0x0000FFFE: // UCS-4, in-order...
+                reportWeirdUCS4("2143"); // throws exception
+                break; // never gets here
+
+            case 0xFEFF0000: // UCS-4, in-order...
+                reportWeirdUCS4("3412"); // throws exception
+                break; // never gets here
+
+            default:
         }
         // Ok, if not, how about 16-bit encoding BOMs?
         int msw = quad >>> 16;
@@ -472,9 +313,9 @@ public final class ByteSourceJsonBootstrapper
         return false;
     }
 
-    private boolean checkUTF32(int quad) throws IOException
-    {
-        /* Handling of (usually) optional BOM (required for
+    private boolean checkUTF32(int quad) throws IOException {
+        /*
+         * Handling of (usually) optional BOM (required for
          * multi-byte formats); first 32-bit charsets:
          */
         if ((quad >> 8) == 0) { // 0x000000?? -> UTF32-BE
@@ -490,44 +331,44 @@ public final class ByteSourceJsonBootstrapper
             return false;
         }
         // Not BOM (just regular content), nothing to skip past:
-        //_inputPtr += 4;
+        // _inputPtr += 4;
         _bytesPerChar = 4;
         return true;
     }
 
-    private boolean checkUTF16(int i16)
-    {
+    private boolean checkUTF16(int i16) {
         if ((i16 & 0xFF00) == 0) { // UTF-16BE
             _bigEndian = true;
         } else if ((i16 & 0x00FF) == 0) { // UTF-16LE
             _bigEndian = false;
-        } else { // nope, not  UTF-16
+        } else { // nope, not UTF-16
             return false;
         }
         // Not BOM (just regular content), nothing to skip past:
-        //_inputPtr += 2;
+        // _inputPtr += 2;
         _bytesPerChar = 2;
         return true;
     }
 
     /*
-    /**********************************************************
-    /* Internal methods, problem reporting
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods, problem reporting
+     * /**********************************************************
      */
 
     private void reportWeirdUCS4(String type) throws IOException {
-        throw new CharConversionException("Unsupported UCS-4 endianness ("+type+") detected");
+        throw new CharConversionException("Unsupported UCS-4 endianness (" + type + ") detected");
     }
 
     /*
-    /**********************************************************
-    /* Internal methods, raw input access
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods, raw input access
+     * /**********************************************************
      */
 
-    protected boolean ensureLoaded(int minimum) throws IOException {
-        /* Let's assume here buffer has enough room -- this will always
+    private boolean ensureLoaded(int minimum) throws IOException {
+        /*
+         * Let's assume here buffer has enough room -- this will always
          * be true for the limited used this method gets
          */
         int gotten = (_inputEnd - _inputPtr);

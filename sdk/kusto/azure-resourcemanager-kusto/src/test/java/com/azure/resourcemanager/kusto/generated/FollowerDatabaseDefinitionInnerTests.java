@@ -11,21 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FollowerDatabaseDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FollowerDatabaseDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"clusterResourceId\":\"xyqj\",\"attachedDatabaseConfigurationName\":\"k\",\"databaseName\":\"t\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jcrcczsqpjhvmda\",\"v\",\"ysou\",\"q\"],\"tablesToExclude\":[\"noae\"],\"externalTablesToInclude\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"externalTablesToExclude\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"materializedViewsToInclude\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"materializedViewsToExclude\":[\"kiiuxhqyudxor\"],\"functionsToInclude\":[\"b\",\"oczvy\",\"fqrvkdvjsllrmvvd\",\"watkpnpulexxb\"],\"functionsToExclude\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"]},\"databaseShareOrigin\":\"Direct\"}")
-                .toObject(FollowerDatabaseDefinitionInner.class);
+        FollowerDatabaseDefinitionInner model = BinaryData.fromString(
+            "{\"clusterResourceId\":\"xyqj\",\"attachedDatabaseConfigurationName\":\"k\",\"databaseName\":\"t\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jcrcczsqpjhvmda\",\"v\",\"ysou\",\"q\"],\"tablesToExclude\":[\"noae\"],\"externalTablesToInclude\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"externalTablesToExclude\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"materializedViewsToInclude\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"materializedViewsToExclude\":[\"kiiuxhqyudxor\"],\"functionsToInclude\":[\"b\",\"oczvy\",\"fqrvkdvjsllrmvvd\",\"watkpnpulexxb\"],\"functionsToExclude\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"]},\"databaseShareOrigin\":\"Direct\"}")
+            .toObject(FollowerDatabaseDefinitionInner.class);
         Assertions.assertEquals("xyqj", model.clusterResourceId());
         Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FollowerDatabaseDefinitionInner model =
-            new FollowerDatabaseDefinitionInner()
-                .withClusterResourceId("xyqj")
-                .withAttachedDatabaseConfigurationName("k");
+        FollowerDatabaseDefinitionInner model = new FollowerDatabaseDefinitionInner().withClusterResourceId("xyqj")
+            .withAttachedDatabaseConfigurationName("k");
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseDefinitionInner.class);
         Assertions.assertEquals("xyqj", model.clusterResourceId());
         Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueUpdateContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueUpdateContract model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"title\":\"vweht\",\"description\":\"mxhzzysevus\",\"userId\":\"vzrrryveimi\",\"createdDate\":\"2021-06-20T09:39:58Z\",\"state\":\"open\",\"apiId\":\"atvfuzkaftj\"}}")
-                .toObject(IssueUpdateContract.class);
+        IssueUpdateContract model = BinaryData.fromString(
+            "{\"properties\":{\"title\":\"vweht\",\"description\":\"mxhzzysevus\",\"userId\":\"vzrrryveimi\",\"createdDate\":\"2021-06-20T09:39:58Z\",\"state\":\"open\",\"apiId\":\"atvfuzkaftj\"}}")
+            .toObject(IssueUpdateContract.class);
         Assertions.assertEquals("vweht", model.title());
         Assertions.assertEquals("mxhzzysevus", model.description());
         Assertions.assertEquals("vzrrryveimi", model.userId());
@@ -28,14 +26,12 @@ public final class IssueUpdateContractTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueUpdateContract model =
-            new IssueUpdateContract()
-                .withTitle("vweht")
-                .withDescription("mxhzzysevus")
-                .withUserId("vzrrryveimi")
-                .withCreatedDate(OffsetDateTime.parse("2021-06-20T09:39:58Z"))
-                .withState(State.OPEN)
-                .withApiId("atvfuzkaftj");
+        IssueUpdateContract model = new IssueUpdateContract().withTitle("vweht")
+            .withDescription("mxhzzysevus")
+            .withUserId("vzrrryveimi")
+            .withCreatedDate(OffsetDateTime.parse("2021-06-20T09:39:58Z"))
+            .withState(State.OPEN)
+            .withApiId("atvfuzkaftj");
         model = BinaryData.fromObject(model).toObject(IssueUpdateContract.class);
         Assertions.assertEquals("vweht", model.title());
         Assertions.assertEquals("mxhzzysevus", model.description());

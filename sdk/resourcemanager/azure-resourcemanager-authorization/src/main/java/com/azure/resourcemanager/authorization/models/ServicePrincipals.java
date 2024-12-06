@@ -15,12 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to service principal management API. */
 @Fluent
-public interface ServicePrincipals
-    extends SupportsListing<ServicePrincipal>,
-        SupportsListingByFilter<ServicePrincipal>,
-        SupportsGettingById<ServicePrincipal>,
-        SupportsGettingByName<ServicePrincipal>,
-        SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        HasManager<AuthorizationManager> {
+public interface ServicePrincipals extends SupportsListing<ServicePrincipal>, SupportsListingByFilter<ServicePrincipal>,
+    SupportsGettingById<ServicePrincipal>, SupportsGettingByName<ServicePrincipal>,
+    SupportsCreating<ServicePrincipal.DefinitionStages.Blank>, SupportsDeletingById, HasManager<AuthorizationManager> {
 }

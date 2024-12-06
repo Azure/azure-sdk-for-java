@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class BareMetalMachineCommandSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BareMetalMachineCommandSpecification model =
-            BinaryData
-                .fromString("{\"arguments\":[\"z\"],\"command\":\"umwmxqhnd\"}")
+        BareMetalMachineCommandSpecification model
+            = BinaryData.fromString("{\"arguments\":[\"iixtmkzj\"],\"command\":\"kv\"}")
                 .toObject(BareMetalMachineCommandSpecification.class);
-        Assertions.assertEquals("z", model.arguments().get(0));
-        Assertions.assertEquals("umwmxqhnd", model.command());
+        Assertions.assertEquals("iixtmkzj", model.arguments().get(0));
+        Assertions.assertEquals("kv", model.command());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BareMetalMachineCommandSpecification model =
-            new BareMetalMachineCommandSpecification().withArguments(Arrays.asList("z")).withCommand("umwmxqhnd");
+        BareMetalMachineCommandSpecification model
+            = new BareMetalMachineCommandSpecification().withArguments(Arrays.asList("iixtmkzj")).withCommand("kv");
         model = BinaryData.fromObject(model).toObject(BareMetalMachineCommandSpecification.class);
-        Assertions.assertEquals("z", model.arguments().get(0));
-        Assertions.assertEquals("umwmxqhnd", model.command());
+        Assertions.assertEquals("iixtmkzj", model.arguments().get(0));
+        Assertions.assertEquals("kv", model.command());
     }
 }

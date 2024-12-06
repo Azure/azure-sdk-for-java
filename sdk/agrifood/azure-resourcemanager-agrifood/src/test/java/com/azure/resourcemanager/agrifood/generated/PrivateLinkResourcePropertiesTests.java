@@ -8,25 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.fluent.models.PrivateLinkResourceProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"rzpwvlqdqgbiq\",\"requiredMembers\":[\"hkaetcktvfc\",\"vf\",\"nkymuctqhjfbebrj\"],\"requiredZoneNames\":[\"rfuwutt\",\"xfvjrbirp\",\"xepcyvahfn\"]}")
-                .toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("rfuwutt", model.requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResourceProperties model = BinaryData.fromString(
+            "{\"groupId\":\"mcy\",\"requiredMembers\":[\"lbjnpgacftadehx\",\"ltyfsop\",\"usue\",\"nzwdejba\"],\"requiredZoneNames\":[\"xzdmohctb\",\"vudwx\",\"ndnvo\",\"gujjugwdkcglh\"]}")
+            .toObject(PrivateLinkResourceProperties.class);
+        Assertions.assertEquals("xzdmohctb", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResourceProperties model =
-            new PrivateLinkResourceProperties()
-                .withRequiredZoneNames(Arrays.asList("rfuwutt", "xfvjrbirp", "xepcyvahfn"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResourceProperties model = new PrivateLinkResourceProperties()
+            .withRequiredZoneNames(Arrays.asList("xzdmohctb", "vudwx", "ndnvo", "gujjugwdkcglh"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("rfuwutt", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("xzdmohctb", model.requiredZoneNames().get(0));
     }
 }

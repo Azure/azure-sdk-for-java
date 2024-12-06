@@ -6,7 +6,10 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.AvailableOperationInner;
+import com.azure.resourcemanager.vmwarecloudsimple.models.AggregationType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplay;
+import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsItem;
+import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsList;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationsListResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationOrigin;
 import java.util.Arrays;
@@ -15,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableOperationsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableOperationsListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"display\":{\"description\":\"ehmtzop\",\"operation\":\"phrupidgsybbejhp\",\"provider\":\"ycm\",\"resource\":\"ao\"},\"isDataAction\":true,\"name\":\"bmtqioq\",\"origin\":\"system\",\"properties\":{}},{\"display\":{\"description\":\"ufpo\",\"operation\":\"oizh\",\"provider\":\"rxybqsoq\",\"resource\":\"gkdmb\"},\"isDataAction\":true,\"name\":\"obcu\",\"origin\":\"user,system\",\"properties\":{}},{\"display\":{\"description\":\"t\",\"operation\":\"qjnqglhqgnufoooj\",\"provider\":\"ifsqesaagdfmg\",\"resource\":\"lhjxr\"},\"isDataAction\":false,\"name\":\"mrvktsizntoc\",\"origin\":\"system\",\"properties\":{}},{\"display\":{\"description\":\"psqucmpoyf\",\"operation\":\"fogknygjofjdde\",\"provider\":\"rd\",\"resource\":\"pewnw\"},\"isDataAction\":false,\"name\":\"jzyflu\",\"origin\":\"system\",\"properties\":{}}]}")
-                .toObject(AvailableOperationsListResponse.class);
+        AvailableOperationsListResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"display\":{\"description\":\"ehmtzop\",\"operation\":\"phrupidgsybbejhp\",\"provider\":\"ycm\",\"resource\":\"ao\"},\"isDataAction\":true,\"name\":\"bmtqioq\",\"origin\":\"system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"aggregationType\":\"Average\",\"displayDescription\":\"fpownoizhwlr\",\"displayName\":\"ybqsoqijg\",\"name\":\"dmbpazlobcufpdz\",\"unit\":\"rbt\"}]}}},{\"display\":{\"description\":\"jnqglhqgnu\",\"operation\":\"oo\",\"provider\":\"wifsq\",\"resource\":\"aagdfmg\"},\"isDataAction\":false,\"name\":\"j\",\"origin\":\"system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"aggregationType\":\"Average\",\"displayDescription\":\"vktsizntocipao\",\"displayName\":\"ajpsquc\",\"name\":\"poyfdkfogkn\",\"unit\":\"gjofjd\"},{\"aggregationType\":\"Total\",\"displayDescription\":\"qs\",\"displayName\":\"deupewnwrei\",\"name\":\"jzyflu\",\"unit\":\"arhmofcqhsmy\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"kdtmlxhekuk\",\"displayName\":\"jtxukcdm\",\"name\":\"arcryuanzwuxzdxt\",\"unit\":\"yrlhmwhfpmrqobm\"}]}}},{\"display\":{\"description\":\"knryrtihfxtij\",\"operation\":\"zvgnwzs\",\"provider\":\"glzufc\",\"resource\":\"kohdbiha\"},\"isDataAction\":false,\"name\":\"fcbjysagithxqha\",\"origin\":\"user,system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"aggregationType\":\"Average\",\"displayDescription\":\"czbysc\",\"displayName\":\"pqxu\",\"name\":\"ivyqniwbybrkxvd\",\"unit\":\"mjgr\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"wvukx\",\"displayName\":\"audccsnhs\",\"name\":\"cnyejhkryhtnapcz\",\"unit\":\"lokjyemkk\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"ipjoxzjnchgejs\",\"displayName\":\"odmailzyd\",\"name\":\"h\",\"unit\":\"jwyahuxinpmqnja\"}]}}},{\"display\":{\"description\":\"xj\",\"operation\":\"r\",\"provider\":\"vcputegj\",\"resource\":\"mfdatscmdvpj\"},\"isDataAction\":true,\"name\":\"uuvmkjozkrwfnd\",\"origin\":\"user,system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"aggregationType\":\"Average\",\"displayDescription\":\"ej\",\"displayName\":\"pvwryoqpsoacc\",\"name\":\"azakl\",\"unit\":\"lahbcryff\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"dosyg\",\"displayName\":\"xpaojakhmsbz\",\"name\":\"hcrzevd\",\"unit\":\"hlxaolthqtr\"}]}}}]}")
+            .toObject(AvailableOperationsListResponse.class);
         Assertions.assertEquals("mhquvgjxp", model.nextLink());
         Assertions.assertEquals("ehmtzop", model.value().get(0).display().description());
         Assertions.assertEquals("phrupidgsybbejhp", model.value().get(0).display().operation());
@@ -28,56 +29,117 @@ public final class AvailableOperationsListResponseTests {
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
         Assertions.assertEquals("bmtqioq", model.value().get(0).name());
         Assertions.assertEquals(OperationOrigin.SYSTEM, model.value().get(0).origin());
+        Assertions.assertEquals(AggregationType.AVERAGE,
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("fpownoizhwlr",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("ybqsoqijg",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("dmbpazlobcufpdz",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("rbt",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableOperationsListResponse model =
-            new AvailableOperationsListResponse()
-                .withNextLink("mhquvgjxp")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AvailableOperationInner()
-                                .withDisplay(
-                                    new AvailableOperationDisplay()
-                                        .withDescription("ehmtzop")
-                                        .withOperation("phrupidgsybbejhp")
-                                        .withProvider("ycm")
-                                        .withResource("ao"))
-                                .withIsDataAction(true)
-                                .withName("bmtqioq")
-                                .withOrigin(OperationOrigin.SYSTEM),
-                            new AvailableOperationInner()
-                                .withDisplay(
-                                    new AvailableOperationDisplay()
-                                        .withDescription("ufpo")
-                                        .withOperation("oizh")
-                                        .withProvider("rxybqsoq")
-                                        .withResource("gkdmb"))
-                                .withIsDataAction(true)
-                                .withName("obcu")
-                                .withOrigin(OperationOrigin.USER_SYSTEM),
-                            new AvailableOperationInner()
-                                .withDisplay(
-                                    new AvailableOperationDisplay()
-                                        .withDescription("t")
-                                        .withOperation("qjnqglhqgnufoooj")
-                                        .withProvider("ifsqesaagdfmg")
-                                        .withResource("lhjxr"))
-                                .withIsDataAction(false)
-                                .withName("mrvktsizntoc")
-                                .withOrigin(OperationOrigin.SYSTEM),
-                            new AvailableOperationInner()
-                                .withDisplay(
-                                    new AvailableOperationDisplay()
-                                        .withDescription("psqucmpoyf")
-                                        .withOperation("fogknygjofjdde")
-                                        .withProvider("rd")
-                                        .withResource("pewnw"))
-                                .withIsDataAction(false)
-                                .withName("jzyflu")
-                                .withOrigin(OperationOrigin.SYSTEM)));
+        AvailableOperationsListResponse model
+            = new AvailableOperationsListResponse().withNextLink("mhquvgjxp")
+                .withValue(Arrays.asList(
+                    new AvailableOperationInner()
+                        .withDisplay(new AvailableOperationDisplay().withDescription("ehmtzop")
+                            .withOperation("phrupidgsybbejhp")
+                            .withProvider("ycm")
+                            .withResource("ao"))
+                        .withIsDataAction(true)
+                        .withName("bmtqioq")
+                        .withOrigin(OperationOrigin.SYSTEM)
+                        .withServiceSpecification(new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
+                            .withMetricSpecifications(
+                                Arrays.asList(new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("fpownoizhwlr")
+                                    .withDisplayName("ybqsoqijg")
+                                    .withName("dmbpazlobcufpdz")
+                                    .withUnit("rbt")))),
+                    new AvailableOperationInner()
+                        .withDisplay(new AvailableOperationDisplay().withDescription("jnqglhqgnu")
+                            .withOperation("oo")
+                            .withProvider("wifsq")
+                            .withResource("aagdfmg"))
+                        .withIsDataAction(false)
+                        .withName("j")
+                        .withOrigin(OperationOrigin.SYSTEM)
+                        .withServiceSpecification(new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
+                            .withMetricSpecifications(Arrays.asList(
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("vktsizntocipao")
+                                    .withDisplayName("ajpsquc")
+                                    .withName("poyfdkfogkn")
+                                    .withUnit("gjofjd"),
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.TOTAL)
+                                    .withDisplayDescription("qs")
+                                    .withDisplayName("deupewnwrei")
+                                    .withName("jzyflu")
+                                    .withUnit("arhmofcqhsmy"),
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("kdtmlxhekuk")
+                                    .withDisplayName("jtxukcdm")
+                                    .withName("arcryuanzwuxzdxt")
+                                    .withUnit("yrlhmwhfpmrqobm")))),
+                    new AvailableOperationInner()
+                        .withDisplay(new AvailableOperationDisplay().withDescription("knryrtihfxtij")
+                            .withOperation("zvgnwzs")
+                            .withProvider("glzufc")
+                            .withResource("kohdbiha"))
+                        .withIsDataAction(false)
+                        .withName("fcbjysagithxqha")
+                        .withOrigin(OperationOrigin.USER_SYSTEM)
+                        .withServiceSpecification(new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
+                            .withMetricSpecifications(Arrays.asList(
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("czbysc")
+                                    .withDisplayName("pqxu")
+                                    .withName("ivyqniwbybrkxvd")
+                                    .withUnit("mjgr"),
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("wvukx")
+                                    .withDisplayName("audccsnhs")
+                                    .withName("cnyejhkryhtnapcz")
+                                    .withUnit("lokjyemkk"),
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("ipjoxzjnchgejs")
+                                    .withDisplayName("odmailzyd")
+                                    .withName("h")
+                                    .withUnit("jwyahuxinpmqnja")))),
+                    new AvailableOperationInner()
+                        .withDisplay(new AvailableOperationDisplay().withDescription("xj")
+                            .withOperation("r")
+                            .withProvider("vcputegj")
+                            .withResource("mfdatscmdvpj"))
+                        .withIsDataAction(true)
+                        .withName("uuvmkjozkrwfnd")
+                        .withOrigin(OperationOrigin.USER_SYSTEM)
+                        .withServiceSpecification(new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
+                            .withMetricSpecifications(Arrays.asList(
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("ej")
+                                    .withDisplayName("pvwryoqpsoacc")
+                                    .withName("azakl")
+                                    .withUnit("lahbcryff"),
+                                new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                                    .withAggregationType(AggregationType.AVERAGE)
+                                    .withDisplayDescription("dosyg")
+                                    .withDisplayName("xpaojakhmsbz")
+                                    .withName("hcrzevd")
+                                    .withUnit("hlxaolthqtr"))))));
         model = BinaryData.fromObject(model).toObject(AvailableOperationsListResponse.class);
         Assertions.assertEquals("mhquvgjxp", model.nextLink());
         Assertions.assertEquals("ehmtzop", model.value().get(0).display().description());
@@ -87,5 +149,15 @@ public final class AvailableOperationsListResponseTests {
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
         Assertions.assertEquals("bmtqioq", model.value().get(0).name());
         Assertions.assertEquals(OperationOrigin.SYSTEM, model.value().get(0).origin());
+        Assertions.assertEquals(AggregationType.AVERAGE,
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("fpownoizhwlr",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("ybqsoqijg",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("dmbpazlobcufpdz",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("rbt",
+            model.value().get(0).serviceSpecification().metricSpecifications().get(0).unit());
     }
 }

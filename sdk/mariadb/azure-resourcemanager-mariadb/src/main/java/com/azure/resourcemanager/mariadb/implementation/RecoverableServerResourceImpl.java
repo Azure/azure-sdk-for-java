@@ -12,8 +12,8 @@ public final class RecoverableServerResourceImpl implements RecoverableServerRes
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    RecoverableServerResourceImpl(
-        RecoverableServerResourceInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    RecoverableServerResourceImpl(RecoverableServerResourceInner innerObject,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

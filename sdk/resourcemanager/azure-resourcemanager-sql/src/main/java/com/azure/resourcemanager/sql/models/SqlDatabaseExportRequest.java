@@ -11,15 +11,13 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /** An immutable client-side representation of an Azure SQL Database export operation request. */
 @Fluent
-public interface SqlDatabaseExportRequest
-    extends HasInnerModel<ExportDatabaseDefinition>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDefinition>,
+    Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database export operation definition. */
-    interface SqlDatabaseExportRequestDefinition
-        extends SqlDatabaseExportRequest.DefinitionStages.ExportTo,
-            SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey,
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword,
-            DefinitionStages.WithExecute {
+    interface SqlDatabaseExportRequestDefinition extends SqlDatabaseExportRequest.DefinitionStages.ExportTo,
+        SqlDatabaseExportRequest.DefinitionStages.WithStorageTypeAndKey,
+        SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword, DefinitionStages.WithExecute {
     }
 
     /** Grouping of database export definition stages. */
@@ -38,8 +36,8 @@ public interface SqlDatabaseExportRequest
              * @param fileName the exported database file name
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
-                StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                exportTo(StorageAccount storageAccount, String containerName, String fileName);
 
             /**
              * @param storageAccountCreatable a storage account to be created as part of this execution flow
@@ -47,8 +45,8 @@ public interface SqlDatabaseExportRequest
              * @param fileName the exported database file name
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
-                Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                exportTo(Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
         }
 
         /** Sets the storage key type and value to use. */
@@ -57,15 +55,15 @@ public interface SqlDatabaseExportRequest
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword withStorageAccessKey(
-                String storageAccessKey);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                withStorageAccessKey(String storageAccessKey);
 
             /**
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword withSharedAccessKey(
-                String sharedAccessKey);
+            SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                withSharedAccessKey(String sharedAccessKey);
         }
 
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
@@ -75,16 +73,16 @@ public interface SqlDatabaseExportRequest
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithExecute withSqlAdministratorLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabaseExportRequest.DefinitionStages.WithExecute
+                withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithExecute withActiveDirectoryLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabaseExportRequest.DefinitionStages.WithExecute
+                withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
         }
 
         /**

@@ -12,8 +12,8 @@ public final class UserTokenResultImpl implements UserTokenResult {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    UserTokenResultImpl(
-        UserTokenResultInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    UserTokenResultImpl(UserTokenResultInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

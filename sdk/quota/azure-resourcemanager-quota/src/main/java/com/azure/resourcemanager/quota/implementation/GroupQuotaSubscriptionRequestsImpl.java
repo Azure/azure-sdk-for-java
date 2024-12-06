@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionRequestsClient;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotaSubscriptionRequestStatusInner;
-import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequests;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequestStatus;
+import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequests;
 
 public final class GroupQuotaSubscriptionRequestsImpl implements GroupQuotaSubscriptionRequests {
     private static final ClientLogger LOGGER = new ClientLogger(GroupQuotaSubscriptionRequestsImpl.class);

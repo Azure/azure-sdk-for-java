@@ -31,30 +31,25 @@ public class ResponseValidationPolicyTest {
     public static final String TEST_CLIENT_REQUEST_ID = "test-client-request-id";
 
     private static HttpPipelinePolicy getResponseValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(X_MS_CLIENT_REQUEST_ID)
-            .build();
+        return new ResponseValidationPolicyBuilder().addOptionalEcho(X_MS_CLIENT_REQUEST_ID).build();
     }
+
     @SyncAsyncTest
     public void responseValidationPolicyTestHeader() throws MalformedURLException {
         final HttpHeaders headers = new HttpHeaders();
         headers.set(X_MS_CLIENT_REQUEST_ID, TEST_CLIENT_REQUEST_ID);
         HttpResponse mockResponse = new MockHttpResponse(getRequestWithHeaders(headers), 200, headers);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(mockResponse);
-                }
-            })
-            .policies(getResponseValidationPolicy())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(mockResponse);
+            }
+        }).policies(getResponseValidationPolicy()).build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(getRequestWithHeaders(headers), Context.NONE),
-            () -> pipeline.send(getRequestWithHeaders(headers))
-        );
+        HttpResponse response
+            = SyncAsyncExtension.execute(() -> pipeline.sendSync(getRequestWithHeaders(headers), Context.NONE),
+                () -> pipeline.send(getRequestWithHeaders(headers)));
 
         assertEquals(TEST_CLIENT_REQUEST_ID, response.getHeaderValue(X_MS_CLIENT_REQUEST_ID));
     }
@@ -70,20 +65,15 @@ public class ResponseValidationPolicyTest {
         headers.set(X_MS_CLIENT_REQUEST_ID, TEST_CLIENT_REQUEST_ID);
         HttpResponse mockResponse = new MockHttpResponse(getRequest(), 200, headers);
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(mockResponse);
-                }
-            })
-            .policies(getResponseValidationPolicy())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(mockResponse);
+            }
+        }).policies(getResponseValidationPolicy()).build();
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(getRequest(), Context.NONE),
-            () -> pipeline.send(getRequest())
-        ));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> SyncAsyncExtension
+            .execute(() -> pipeline.sendSync(getRequest(), Context.NONE), () -> pipeline.send(getRequest())));
 
         assertTrue(exception.getMessage().contains("Unexpected header value. "));
     }

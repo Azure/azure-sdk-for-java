@@ -74,14 +74,12 @@ public final class StorageAccount {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model StorageAccount"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model StorageAccount"));
         }
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model StorageAccount"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property key in model StorageAccount"));
         }
     }
 

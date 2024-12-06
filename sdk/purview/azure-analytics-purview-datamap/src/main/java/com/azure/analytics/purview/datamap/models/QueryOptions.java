@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -42,13 +43,13 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
      * The sort order of search results, can specify multiple fields.
      */
     @Generated
-    private List<Object> orderby;
+    private List<BinaryData> orderby;
 
     /*
      * The filter for the search. See examples for the usage of supported filters.
      */
     @Generated
-    private Object filter;
+    private BinaryData filter;
 
     /*
      * The facets for search. See examples for the usage of supported facets.
@@ -145,7 +146,7 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
      * @return the orderby value.
      */
     @Generated
-    public List<Object> getOrderby() {
+    public List<BinaryData> getOrderby() {
         return this.orderby;
     }
 
@@ -156,7 +157,7 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
      * @return the QueryOptions object itself.
      */
     @Generated
-    public QueryOptions setOrderby(List<Object> orderby) {
+    public QueryOptions setOrderby(List<BinaryData> orderby) {
         this.orderby = orderby;
         return this;
     }
@@ -167,7 +168,7 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
      * @return the filter value.
      */
     @Generated
-    public Object getFilter() {
+    public BinaryData getFilter() {
         return this.filter;
     }
 
@@ -178,7 +179,7 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
      * @return the QueryOptions object itself.
      */
     @Generated
-    public QueryOptions setFilter(Object filter) {
+    public QueryOptions setFilter(BinaryData filter) {
         this.filter = filter;
         return this;
     }
@@ -237,8 +238,12 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
         jsonWriter.writeStringField("keywords", this.keywords);
         jsonWriter.writeNumberField("limit", this.limit);
         jsonWriter.writeStringField("continuationToken", this.continuationToken);
-        jsonWriter.writeArrayField("orderby", this.orderby, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("filter", this.filter);
+        jsonWriter.writeArrayField("orderby", this.orderby,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        if (this.filter != null) {
+            jsonWriter.writeFieldName("filter");
+            this.filter.writeTo(jsonWriter);
+        }
         jsonWriter.writeArrayField("facets", this.facets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("taxonomySetting", this.taxonomySetting);
         return jsonWriter.writeEndObject();
@@ -267,10 +272,12 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
                 } else if ("continuationToken".equals(fieldName)) {
                     deserializedQueryOptions.continuationToken = reader.getString();
                 } else if ("orderby".equals(fieldName)) {
-                    List<Object> orderby = reader.readArray(reader1 -> reader1.readUntyped());
+                    List<BinaryData> orderby = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedQueryOptions.orderby = orderby;
                 } else if ("filter".equals(fieldName)) {
-                    deserializedQueryOptions.filter = reader.readUntyped();
+                    deserializedQueryOptions.filter
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("facets".equals(fieldName)) {
                     List<SearchFacetItem> facets = reader.readArray(reader1 -> SearchFacetItem.fromJson(reader1));
                     deserializedQueryOptions.facets = facets;

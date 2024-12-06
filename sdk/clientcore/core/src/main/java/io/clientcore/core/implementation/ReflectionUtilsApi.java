@@ -34,7 +34,8 @@ interface ReflectionUtilsApi {
      * @throws NullPointerException If {@code method} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore) throws Exception;
+    ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore)
+        throws Exception;
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
@@ -59,13 +60,6 @@ interface ReflectionUtilsApi {
      * @throws NullPointerException If {@code constructor} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToGenericCore)
-        throws Exception;
-
-    /**
-     * Indicates whether the {@link ReflectionUtilsApi} instance uses Java 9+ modules.
-     *
-     * @return Whether the {@link ReflectionUtilsApi} instance uses Java 9+ modules.
-     */
-    boolean isModuleBased();
+    ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
+        boolean scopeToGenericCore) throws Exception;
 }

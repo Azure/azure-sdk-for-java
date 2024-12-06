@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Sku name. */
+/**
+ * The Sku name.
+ */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
-    /** Static value Gateway for SkuName. */
+    /**
+     * Static value Gateway for SkuName.
+     */
     public static final SkuName GATEWAY = fromString("Gateway");
 
-    /** Static value Edge for SkuName. */
+    /**
+     * Static value Edge for SkuName.
+     */
     public static final SkuName EDGE = fromString("Edge");
 
-    /** Static value TEA_1Node for SkuName. */
+    /**
+     * Static value TEA_1Node for SkuName.
+     */
     public static final SkuName TEA_1NODE = fromString("TEA_1Node");
 
-    /** Static value TEA_1Node_UPS for SkuName. */
+    /**
+     * Static value TEA_1Node_UPS for SkuName.
+     */
     public static final SkuName TEA_1NODE_UPS = fromString("TEA_1Node_UPS");
 
-    /** Static value TEA_1Node_Heater for SkuName. */
+    /**
+     * Static value TEA_1Node_Heater for SkuName.
+     */
     public static final SkuName TEA_1NODE_HEATER = fromString("TEA_1Node_Heater");
 
-    /** Static value TEA_1Node_UPS_Heater for SkuName. */
+    /**
+     * Static value TEA_1Node_UPS_Heater for SkuName.
+     */
     public static final SkuName TEA_1NODE_UPS_HEATER = fromString("TEA_1Node_UPS_Heater");
 
-    /** Static value TEA_4Node_Heater for SkuName. */
+    /**
+     * Static value TEA_4Node_Heater for SkuName.
+     */
     public static final SkuName TEA_4NODE_HEATER = fromString("TEA_4Node_Heater");
 
-    /** Static value TEA_4Node_UPS_Heater for SkuName. */
+    /**
+     * Static value TEA_4Node_UPS_Heater for SkuName.
+     */
     public static final SkuName TEA_4NODE_UPS_HEATER = fromString("TEA_4Node_UPS_Heater");
 
-    /** Static value TMA for SkuName. */
+    /**
+     * Static value TMA for SkuName.
+     */
     public static final SkuName TMA = fromString("TMA");
 
     /**
      * Creates a new instance of SkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,18 +67,17 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
 
     /**
      * Creates or finds a SkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuName.
      */
-    @JsonCreator
     public static SkuName fromString(String name) {
         return fromString(name, SkuName.class);
     }
 
     /**
      * Gets known SkuName values.
-     *
+     * 
      * @return known SkuName values.
      */
     public static Collection<SkuName> values() {

@@ -15,35 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class RegionConfigurationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegionConfigurationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"scheduleAvailabilityRequest\":{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"gvpgy\",\"country\":\"qgitxmed\"},\"transportAvailabilityRequest\":{\"skuName\":\"DataBoxHeavy\"},\"datacenterAddressRequest\":{\"storageLocation\":\"ynqwwncwzzhxgk\",\"skuName\":\"DataBoxDisk\"}}")
-                .toObject(RegionConfigurationRequest.class);
-        Assertions.assertEquals("gvpgy", model.scheduleAvailabilityRequest().storageLocation());
-        Assertions.assertEquals("qgitxmed", model.scheduleAvailabilityRequest().country());
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.transportAvailabilityRequest().skuName());
-        Assertions.assertEquals("ynqwwncwzzhxgk", model.datacenterAddressRequest().storageLocation());
-        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.datacenterAddressRequest().skuName());
+        RegionConfigurationRequest model = BinaryData.fromString(
+            "{\"scheduleAvailabilityRequest\":{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"nedgfbc\",\"country\":\"cvqvpkeqdcv\"},\"transportAvailabilityRequest\":{\"skuName\":\"DataBox\"},\"datacenterAddressRequest\":{\"storageLocation\":\"odsotbobzdop\",\"skuName\":\"DataBox\"}}")
+            .toObject(RegionConfigurationRequest.class);
+        Assertions.assertEquals("nedgfbc", model.scheduleAvailabilityRequest().storageLocation());
+        Assertions.assertEquals("cvqvpkeqdcv", model.scheduleAvailabilityRequest().country());
+        Assertions.assertEquals(SkuName.DATA_BOX, model.transportAvailabilityRequest().skuName());
+        Assertions.assertEquals("odsotbobzdop", model.datacenterAddressRequest().storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX, model.datacenterAddressRequest().skuName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionConfigurationRequest model =
-            new RegionConfigurationRequest()
-                .withScheduleAvailabilityRequest(
-                    new ScheduleAvailabilityRequest().withStorageLocation("gvpgy").withCountry("qgitxmed"))
-                .withTransportAvailabilityRequest(
-                    new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY))
-                .withDatacenterAddressRequest(
-                    new DatacenterAddressRequest()
-                        .withStorageLocation("ynqwwncwzzhxgk")
-                        .withSkuName(SkuName.DATA_BOX_DISK));
+        RegionConfigurationRequest model = new RegionConfigurationRequest()
+            .withScheduleAvailabilityRequest(
+                new ScheduleAvailabilityRequest().withStorageLocation("nedgfbc").withCountry("cvqvpkeqdcv"))
+            .withTransportAvailabilityRequest(new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX))
+            .withDatacenterAddressRequest(
+                new DatacenterAddressRequest().withStorageLocation("odsotbobzdop").withSkuName(SkuName.DATA_BOX));
         model = BinaryData.fromObject(model).toObject(RegionConfigurationRequest.class);
-        Assertions.assertEquals("gvpgy", model.scheduleAvailabilityRequest().storageLocation());
-        Assertions.assertEquals("qgitxmed", model.scheduleAvailabilityRequest().country());
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.transportAvailabilityRequest().skuName());
-        Assertions.assertEquals("ynqwwncwzzhxgk", model.datacenterAddressRequest().storageLocation());
-        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.datacenterAddressRequest().skuName());
+        Assertions.assertEquals("nedgfbc", model.scheduleAvailabilityRequest().storageLocation());
+        Assertions.assertEquals("cvqvpkeqdcv", model.scheduleAvailabilityRequest().country());
+        Assertions.assertEquals(SkuName.DATA_BOX, model.transportAvailabilityRequest().skuName());
+        Assertions.assertEquals("odsotbobzdop", model.datacenterAddressRequest().storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX, model.datacenterAddressRequest().skuName());
     }
 }

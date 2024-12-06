@@ -18,22 +18,24 @@ import java.util.List;
  * @param <RuleT> the specific authorization rule type
  */
 @Fluent
-public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-        NestedResource, HasInnerModel<AuthorizationRuleInner>, HasManager<EventHubsManager>,
-        Refreshable<RuleT> {
+public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
+    extends NestedResource, HasInnerModel<AuthorizationRuleInner>, HasManager<EventHubsManager>, Refreshable<RuleT> {
     /**
      * @return rights associated with the authorization rule
      */
     List<AccessRights> rights();
+
     /**
      * @return a representation of the deferred computation of this call,
      * returning access keys (primary, secondary) and the connection strings
      */
     Mono<EventHubAuthorizationKey> getKeysAsync();
+
     /**
      * @return the access keys (primary, secondary) and the connection strings
      */
     EventHubAuthorizationKey getKeys();
+
     /**
      * Regenerates primary or secondary access keys.
      *
@@ -42,6 +44,7 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> exten
      * returning access keys (primary, secondary) and the connection strings
      */
     Mono<EventHubAuthorizationKey> regenerateKeyAsync(KeyType keyType);
+
     /**
      * Regenerates primary or secondary keys.
      *

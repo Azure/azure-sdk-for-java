@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share.models;
 
-
 /**
  * Share File Permission.
  */
@@ -17,6 +16,12 @@ public class ShareFilePermission {
      * The File Permission itself, in SDDL or base64 encoded binary format.
      */
     private String permission;
+
+    /**
+     * Creates a new instance of {@link ShareFilePermission}.
+     */
+    public ShareFilePermission() {
+    }
 
     /**
      * Get the format of file permission.

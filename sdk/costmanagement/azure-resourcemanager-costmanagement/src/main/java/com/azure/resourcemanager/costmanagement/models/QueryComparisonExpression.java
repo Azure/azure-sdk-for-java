@@ -6,37 +6,42 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The comparison expression to be used in the query. */
+/**
+ * The comparison expression to be used in the query.
+ */
 @Fluent
-public final class QueryComparisonExpression {
+public final class QueryComparisonExpression implements JsonSerializable<QueryComparisonExpression> {
     /*
      * The name of the column to use in comparison.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The operator to use for comparison.
      */
-    @JsonProperty(value = "operator", required = true)
     private QueryOperatorType operator;
 
     /*
      * Array of values to use for comparison
      */
-    @JsonProperty(value = "values", required = true)
     private List<String> values;
 
-    /** Creates an instance of QueryComparisonExpression class. */
+    /**
+     * Creates an instance of QueryComparisonExpression class.
+     */
     public QueryComparisonExpression() {
     }
 
     /**
      * Get the name property: The name of the column to use in comparison.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +50,7 @@ public final class QueryComparisonExpression {
 
     /**
      * Set the name property: The name of the column to use in comparison.
-     *
+     * 
      * @param name the name value to set.
      * @return the QueryComparisonExpression object itself.
      */
@@ -56,7 +61,7 @@ public final class QueryComparisonExpression {
 
     /**
      * Get the operator property: The operator to use for comparison.
-     *
+     * 
      * @return the operator value.
      */
     public QueryOperatorType operator() {
@@ -65,7 +70,7 @@ public final class QueryComparisonExpression {
 
     /**
      * Set the operator property: The operator to use for comparison.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the QueryComparisonExpression object itself.
      */
@@ -76,7 +81,7 @@ public final class QueryComparisonExpression {
 
     /**
      * Get the values property: Array of values to use for comparison.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -85,7 +90,7 @@ public final class QueryComparisonExpression {
 
     /**
      * Set the values property: Array of values to use for comparison.
-     *
+     * 
      * @param values the values value to set.
      * @return the QueryComparisonExpression object itself.
      */
@@ -96,28 +101,69 @@ public final class QueryComparisonExpression {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model QueryComparisonExpression"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model QueryComparisonExpression"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model QueryComparisonExpression"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operator in model QueryComparisonExpression"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property values in model QueryComparisonExpression"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property values in model QueryComparisonExpression"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(QueryComparisonExpression.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryComparisonExpression from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryComparisonExpression if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryComparisonExpression.
+     */
+    public static QueryComparisonExpression fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryComparisonExpression deserializedQueryComparisonExpression = new QueryComparisonExpression();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedQueryComparisonExpression.name = reader.getString();
+                } else if ("operator".equals(fieldName)) {
+                    deserializedQueryComparisonExpression.operator = QueryOperatorType.fromString(reader.getString());
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedQueryComparisonExpression.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryComparisonExpression;
+        });
+    }
 }

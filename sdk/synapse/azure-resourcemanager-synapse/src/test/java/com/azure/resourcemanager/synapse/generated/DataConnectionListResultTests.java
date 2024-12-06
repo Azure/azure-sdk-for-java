@@ -13,20 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"smffjkutycyarnr\",\"id\":\"hguabzoghktdp\",\"name\":\"czhcoeocnh\",\"type\":\"qr\"}]}")
-                .toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("smffjkutycyarnr", model.value().get(0).location());
+        DataConnectionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"lxiutgjcyzyzjdnr\",\"id\":\"btxjeaoqaqbzg\",\"name\":\"hfw\",\"type\":\"v\"},{\"kind\":\"DataConnection\",\"location\":\"tbwbqamteuli\",\"id\":\"lpkcvmwfauxxep\",\"name\":\"ywbo\",\"type\":\"mcqmiciijqp\"}]}")
+            .toObject(DataConnectionListResult.class);
+        Assertions.assertEquals("lxiutgjcyzyzjdnr", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionListResult model =
-            new DataConnectionListResult()
-                .withValue(Arrays.asList(new DataConnectionInner().withLocation("smffjkutycyarnr")));
+        DataConnectionListResult model = new DataConnectionListResult()
+            .withValue(Arrays.asList(new DataConnectionInner().withLocation("lxiutgjcyzyzjdnr"),
+                new DataConnectionInner().withLocation("tbwbqamteuli")));
         model = BinaryData.fromObject(model).toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("smffjkutycyarnr", model.value().get(0).location());
+        Assertions.assertEquals("lxiutgjcyzyzjdnr", model.value().get(0).location());
     }
 }

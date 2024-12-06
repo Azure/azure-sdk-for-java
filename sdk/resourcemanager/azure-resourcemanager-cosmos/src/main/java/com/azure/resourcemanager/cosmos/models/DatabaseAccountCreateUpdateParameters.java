@@ -210,20 +210,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the databaseAccountOfferType property: The offer type for the database.
-     * 
-     * @param databaseAccountOfferType the databaseAccountOfferType value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withDatabaseAccountOfferType(String databaseAccountOfferType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withDatabaseAccountOfferType(databaseAccountOfferType);
-        return this;
-    }
-
-    /**
      * Get the ipRules property: List of IpRules.
      * 
      * @return the ipRules value.
@@ -909,6 +895,32 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePerRegionPerPartitionAutoscale();
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -924,11 +936,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
                     "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
         } else {
             innerProperties().validate();
-        }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model DatabaseAccountCreateUpdateParameters"));
         }
     }
 

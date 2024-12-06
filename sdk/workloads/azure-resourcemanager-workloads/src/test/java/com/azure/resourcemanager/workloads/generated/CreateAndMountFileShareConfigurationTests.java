@@ -11,23 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateAndMountFileShareConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateAndMountFileShareConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"configurationType\":\"CreateAndMount\",\"resourceGroup\":\"ebwnujhe\",\"storageAccountName\":\"sbvdkcrodtjinfw\"}")
-                .toObject(CreateAndMountFileShareConfiguration.class);
-        Assertions.assertEquals("ebwnujhe", model.resourceGroup());
-        Assertions.assertEquals("sbvdkcrodtjinfw", model.storageAccountName());
+        CreateAndMountFileShareConfiguration model = BinaryData.fromString(
+            "{\"configurationType\":\"CreateAndMount\",\"resourceGroup\":\"dneu\",\"storageAccountName\":\"fphsdyhtozfikdow\"}")
+            .toObject(CreateAndMountFileShareConfiguration.class);
+        Assertions.assertEquals("dneu", model.resourceGroup());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateAndMountFileShareConfiguration model =
-            new CreateAndMountFileShareConfiguration()
-                .withResourceGroup("ebwnujhe")
-                .withStorageAccountName("sbvdkcrodtjinfw");
+        CreateAndMountFileShareConfiguration model
+            = new CreateAndMountFileShareConfiguration().withResourceGroup("dneu")
+                .withStorageAccountName("fphsdyhtozfikdow");
         model = BinaryData.fromObject(model).toObject(CreateAndMountFileShareConfiguration.class);
-        Assertions.assertEquals("ebwnujhe", model.resourceGroup());
-        Assertions.assertEquals("sbvdkcrodtjinfw", model.storageAccountName());
+        Assertions.assertEquals("dneu", model.resourceGroup());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.storageAccountName());
     }
 }

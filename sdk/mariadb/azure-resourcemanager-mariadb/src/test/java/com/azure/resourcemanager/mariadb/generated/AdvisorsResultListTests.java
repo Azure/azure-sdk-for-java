@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.AdvisorsResultList;
 public final class AdvisorsResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdvisorsResultList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":\"datarmcqiby\",\"id\":\"nojvknmefqsg\",\"name\":\"vah\",\"type\":\"pjyzhpv\"},{\"properties\":\"datazcjrvxdjzlmwlx\",\"id\":\"vu\",\"name\":\"fhzovawjvzunluth\",\"type\":\"n\"},{\"properties\":\"datanxipeil\",\"id\":\"jzuaejxdultskzbb\",\"name\":\"dzumveekg\",\"type\":\"wozuhkf\"},{\"properties\":\"datasjyofdx\",\"id\":\"uusdttouwa\",\"name\":\"oekqvk\",\"type\":\"lns\"}],\"nextLink\":\"bxwyjsflhhcaa\"}")
-                .toObject(AdvisorsResultList.class);
+        AdvisorsResultList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":\"datavmeueci\",\"id\":\"yhz\",\"name\":\"euojgjrwju\",\"type\":\"iotwmcdytdxwit\"},{\"properties\":\"datarjaw\",\"id\":\"qwgxhniskx\",\"name\":\"bkpyc\",\"type\":\"klwndnhjdauwhv\"}],\"nextLink\":\"wzbtdhxu\"}")
+            .toObject(AdvisorsResultList.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.powerbidedicated {
     exports com.azure.resourcemanager.powerbidedicated.fluent.models;
     exports com.azure.resourcemanager.powerbidedicated.models;
 
-    opens com.azure.resourcemanager.powerbidedicated.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.powerbidedicated.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.powerbidedicated.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.powerbidedicated.models to com.azure.core;
 }

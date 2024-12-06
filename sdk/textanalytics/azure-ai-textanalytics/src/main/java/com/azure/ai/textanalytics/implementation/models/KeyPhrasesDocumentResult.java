@@ -17,7 +17,8 @@ import java.util.List;
 @Fluent
 public class KeyPhrasesDocumentResult extends DocumentResult {
     /*
-     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of words in the input document.
+     * A list of representative words or phrases. The number of key phrases returned is proportional to the number of
+     * words in the input document.
      */
     private List<String> keyPhrases;
 

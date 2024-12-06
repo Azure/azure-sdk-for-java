@@ -3,16 +3,24 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Options for the Stop Transcription operation.
  */
-public class StopTranscriptionOptions {
+@Fluent
+public final class StopTranscriptionOptions {
 
     /**
      * The value to identify context of the operation.
      */
     private String operationContext;
 
+    /**
+     * Creates an instance of {@link StopTranscriptionOptions}.
+     */
+    public StopTranscriptionOptions() {
+    }
 
     /**
      * Get the operation context.

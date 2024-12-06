@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Ssis variable. */
+/**
+ * Ssis variable.
+ */
 @Fluent
-public final class SsisVariable {
+public final class SsisVariable implements JsonSerializable<SsisVariable> {
     /*
      * Variable id.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * Variable name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Variable description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Variable type.
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
      * Whether variable is sensitive.
      */
-    @JsonProperty(value = "sensitive")
     private Boolean sensitive;
 
     /*
      * Variable value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Variable sensitive value.
      */
-    @JsonProperty(value = "sensitiveValue")
     private String sensitiveValue;
 
-    /** Creates an instance of SsisVariable class. */
+    /**
+     * Creates an instance of SsisVariable class.
+     */
     public SsisVariable() {
     }
 
     /**
      * Get the id property: Variable id.
-     *
+     * 
      * @return the id value.
      */
     public Long id() {
@@ -67,7 +68,7 @@ public final class SsisVariable {
 
     /**
      * Set the id property: Variable id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SsisVariable object itself.
      */
@@ -78,7 +79,7 @@ public final class SsisVariable {
 
     /**
      * Get the name property: Variable name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +88,7 @@ public final class SsisVariable {
 
     /**
      * Set the name property: Variable name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SsisVariable object itself.
      */
@@ -98,7 +99,7 @@ public final class SsisVariable {
 
     /**
      * Get the description property: Variable description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -107,7 +108,7 @@ public final class SsisVariable {
 
     /**
      * Set the description property: Variable description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SsisVariable object itself.
      */
@@ -118,7 +119,7 @@ public final class SsisVariable {
 
     /**
      * Get the dataType property: Variable type.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -127,7 +128,7 @@ public final class SsisVariable {
 
     /**
      * Set the dataType property: Variable type.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the SsisVariable object itself.
      */
@@ -138,7 +139,7 @@ public final class SsisVariable {
 
     /**
      * Get the sensitive property: Whether variable is sensitive.
-     *
+     * 
      * @return the sensitive value.
      */
     public Boolean sensitive() {
@@ -147,7 +148,7 @@ public final class SsisVariable {
 
     /**
      * Set the sensitive property: Whether variable is sensitive.
-     *
+     * 
      * @param sensitive the sensitive value to set.
      * @return the SsisVariable object itself.
      */
@@ -158,7 +159,7 @@ public final class SsisVariable {
 
     /**
      * Get the value property: Variable value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -167,7 +168,7 @@ public final class SsisVariable {
 
     /**
      * Set the value property: Variable value.
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisVariable object itself.
      */
@@ -178,7 +179,7 @@ public final class SsisVariable {
 
     /**
      * Get the sensitiveValue property: Variable sensitive value.
-     *
+     * 
      * @return the sensitiveValue value.
      */
     public String sensitiveValue() {
@@ -187,7 +188,7 @@ public final class SsisVariable {
 
     /**
      * Set the sensitiveValue property: Variable sensitive value.
-     *
+     * 
      * @param sensitiveValue the sensitiveValue value to set.
      * @return the SsisVariable object itself.
      */
@@ -198,9 +199,63 @@ public final class SsisVariable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeBooleanField("sensitive", this.sensitive);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("sensitiveValue", this.sensitiveValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisVariable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisVariable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisVariable.
+     */
+    public static SsisVariable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisVariable deserializedSsisVariable = new SsisVariable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisVariable.id = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisVariable.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisVariable.description = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedSsisVariable.dataType = reader.getString();
+                } else if ("sensitive".equals(fieldName)) {
+                    deserializedSsisVariable.sensitive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("value".equals(fieldName)) {
+                    deserializedSsisVariable.value = reader.getString();
+                } else if ("sensitiveValue".equals(fieldName)) {
+                    deserializedSsisVariable.sensitiveValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisVariable;
+        });
     }
 }

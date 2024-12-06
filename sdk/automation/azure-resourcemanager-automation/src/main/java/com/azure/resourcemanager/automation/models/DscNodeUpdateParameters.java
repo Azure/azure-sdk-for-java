@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters supplied to the update dsc node operation. */
+/**
+ * The parameters supplied to the update dsc node operation.
+ */
 @Fluent
-public final class DscNodeUpdateParameters {
+public final class DscNodeUpdateParameters implements JsonSerializable<DscNodeUpdateParameters> {
     /*
      * Gets or sets the id of the dsc node.
      */
-    @JsonProperty(value = "nodeId")
     private String nodeId;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private DscNodeUpdateParametersProperties properties;
 
     /**
+     * Creates an instance of DscNodeUpdateParameters class.
+     */
+    public DscNodeUpdateParameters() {
+    }
+
+    /**
      * Get the nodeId property: Gets or sets the id of the dsc node.
-     *
+     * 
      * @return the nodeId value.
      */
     public String nodeId() {
@@ -33,7 +43,7 @@ public final class DscNodeUpdateParameters {
 
     /**
      * Set the nodeId property: Gets or sets the id of the dsc node.
-     *
+     * 
      * @param nodeId the nodeId value to set.
      * @return the DscNodeUpdateParameters object itself.
      */
@@ -44,7 +54,7 @@ public final class DscNodeUpdateParameters {
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public DscNodeUpdateParametersProperties properties() {
@@ -53,7 +63,7 @@ public final class DscNodeUpdateParameters {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DscNodeUpdateParameters object itself.
      */
@@ -64,12 +74,51 @@ public final class DscNodeUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeId", this.nodeId);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscNodeUpdateParameters.
+     */
+    public static DscNodeUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeUpdateParameters deserializedDscNodeUpdateParameters = new DscNodeUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nodeId".equals(fieldName)) {
+                    deserializedDscNodeUpdateParameters.nodeId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDscNodeUpdateParameters.properties = DscNodeUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeUpdateParameters;
+        });
     }
 }

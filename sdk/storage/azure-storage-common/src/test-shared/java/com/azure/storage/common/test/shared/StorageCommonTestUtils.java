@@ -54,7 +54,7 @@ public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
-    private static final HttpClient VERTX_HTTP_CLIENT;;
+    private static final HttpClient VERTX_HTTP_CLIENT;
     private static final HttpClient JDK_HTTP_HTTP_CLIENT;
 
     static {
@@ -269,7 +269,33 @@ public final class StorageCommonTestUtils {
         long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
         Random rand = new Random(seed);
         byte[] data = new byte[size];
-        rand.nextBytes(data);
+
+        // A pseudo-random byte array will be used to fill the data array.
+        //
+        // A pseudo-random set of data is being used to help shrink the git pack files sizes for session records in the
+        // .assets folder. Before this change data used in testing was truly random, which prevented git pack files from
+        // being able to compress the data effectively. Truly random data isn't necessary in testing and the logic used
+        // here is sufficient to prevent any oddities that would cause tests to pass/fail unexpectedly, as the data is
+        // still somewhat random and is replicated using a prime chunk, meaning the normal code flow won't align with
+        // the pseudo-random data.
+        //
+        // As a result of this change git pack file sizes for Storage tests were able to shrink significantly. This
+        // should result in smaller download sizes when checking out new or updated session records, which happens
+        // infrequently locally but every time in CI.
+        byte[] pseudoRandom = new byte[31];
+        rand.nextBytes(pseudoRandom);
+
+        int count = data.length / pseudoRandom.length;
+        int remaining = data.length % pseudoRandom.length;
+
+        for (int i = 0; i < count; i++) {
+            System.arraycopy(pseudoRandom, 0, data, i * pseudoRandom.length, pseudoRandom.length);
+        }
+
+        if (remaining > 0) {
+            System.arraycopy(pseudoRandom, 0, data, count * pseudoRandom.length, remaining);
+        }
+
         return data;
     }
 

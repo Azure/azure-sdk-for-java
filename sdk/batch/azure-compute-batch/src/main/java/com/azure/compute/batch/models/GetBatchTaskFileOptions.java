@@ -13,6 +13,12 @@ public class GetBatchTaskFileOptions extends BatchBaseOptions {
     private String ocpRange;
 
     /**
+     * Creates an instance of {@link GetBatchTaskFileOptions}.
+     */
+    public GetBatchTaskFileOptions() {
+    }
+
+    /**
      * Gets a timestamp indicating the last modified time of the resource known to the client. The operation will be
      * performed only if the resource on the service has been modified since the specified time.
      *

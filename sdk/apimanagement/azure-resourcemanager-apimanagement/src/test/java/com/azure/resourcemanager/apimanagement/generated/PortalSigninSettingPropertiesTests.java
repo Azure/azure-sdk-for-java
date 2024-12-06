@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalSigninSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalSigninSettingProperties model =
-            BinaryData.fromString("{\"enabled\":true}").toObject(PortalSigninSettingProperties.class);
+        PortalSigninSettingProperties model
+            = BinaryData.fromString("{\"enabled\":true}").toObject(PortalSigninSettingProperties.class);
         Assertions.assertEquals(true, model.enabled());
     }
 

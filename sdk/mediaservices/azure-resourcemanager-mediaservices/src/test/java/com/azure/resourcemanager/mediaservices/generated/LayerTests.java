@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Layer model =
-            BinaryData
-                .fromString("{\"width\":\"ktalywjhhgdnhxms\",\"height\":\"fomiloxgg\",\"label\":\"fi\"}")
-                .toObject(Layer.class);
-        Assertions.assertEquals("ktalywjhhgdnhxms", model.width());
-        Assertions.assertEquals("fomiloxgg", model.height());
-        Assertions.assertEquals("fi", model.label());
+        Layer model = BinaryData.fromString("{\"width\":\"plcwkhi\",\"height\":\"hlhzdsqtzbsrgno\",\"label\":\"jhf\"}")
+            .toObject(Layer.class);
+        Assertions.assertEquals("plcwkhi", model.width());
+        Assertions.assertEquals("hlhzdsqtzbsrgno", model.height());
+        Assertions.assertEquals("jhf", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Layer model = new Layer().withWidth("ktalywjhhgdnhxms").withHeight("fomiloxgg").withLabel("fi");
+        Layer model = new Layer().withWidth("plcwkhi").withHeight("hlhzdsqtzbsrgno").withLabel("jhf");
         model = BinaryData.fromObject(model).toObject(Layer.class);
-        Assertions.assertEquals("ktalywjhhgdnhxms", model.width());
-        Assertions.assertEquals("fomiloxgg", model.height());
-        Assertions.assertEquals("fi", model.label());
+        Assertions.assertEquals("plcwkhi", model.width());
+        Assertions.assertEquals("hlhzdsqtzbsrgno", model.height());
+        Assertions.assertEquals("jhf", model.label());
     }
 }

@@ -8,19 +8,22 @@ import com.azure.resourcemanager.automation.models.AdvancedSchedule;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
 import java.time.OffsetDateTime;
 
-/** Samples for Schedule CreateOrUpdate. */
+/**
+ * Samples for Schedule CreateOrUpdate.
+ */
 public final class ScheduleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createOrUpdateSchedule.json
      */
     /**
      * Sample code: Create or update a schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateASchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .schedules()
+        manager.schedules()
             .define("mySchedule")
             .withExistingAutomationAccount("rg", "myAutomationAccount33")
             .withName("mySchedule")

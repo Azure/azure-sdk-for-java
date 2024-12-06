@@ -6,24 +6,45 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gateway hostname configuration details. */
+/**
+ * Gateway hostname configuration details.
+ */
 @Fluent
 public final class GatewayHostnameConfigurationContractInner extends ProxyResource {
     /*
      * Gateway hostname configuration details.
      */
-    @JsonProperty(value = "properties")
     private GatewayHostnameConfigurationContractProperties innerProperties;
 
-    /** Creates an instance of GatewayHostnameConfigurationContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GatewayHostnameConfigurationContractInner class.
+     */
     public GatewayHostnameConfigurationContractInner() {
     }
 
     /**
      * Get the innerProperties property: Gateway hostname configuration details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GatewayHostnameConfigurationContractProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the hostname property: Hostname value. Supports valid domain name, partial or full wildcard.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -41,7 +92,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Set the hostname property: Hostname value. Supports valid domain name, partial or full wildcard.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
     /**
      * Get the certificateId property: Identifier of Certificate entity that will be used for TLS connection
      * establishment.
-     *
+     * 
      * @return the certificateId value.
      */
     public String certificateId() {
@@ -66,7 +117,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
     /**
      * Set the certificateId property: Identifier of Certificate entity that will be used for TLS connection
      * establishment.
-     *
+     * 
      * @param certificateId the certificateId value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
@@ -80,7 +131,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Get the negotiateClientCertificate property: Determines whether gateway requests client certificate.
-     *
+     * 
      * @return the negotiateClientCertificate value.
      */
     public Boolean negotiateClientCertificate() {
@@ -89,12 +140,12 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Set the negotiateClientCertificate property: Determines whether gateway requests client certificate.
-     *
+     * 
      * @param negotiateClientCertificate the negotiateClientCertificate value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
-    public GatewayHostnameConfigurationContractInner withNegotiateClientCertificate(
-        Boolean negotiateClientCertificate) {
+    public GatewayHostnameConfigurationContractInner
+        withNegotiateClientCertificate(Boolean negotiateClientCertificate) {
         if (this.innerProperties() == null) {
             this.innerProperties = new GatewayHostnameConfigurationContractProperties();
         }
@@ -104,7 +155,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Get the tls10Enabled property: Specifies if TLS 1.0 is supported.
-     *
+     * 
      * @return the tls10Enabled value.
      */
     public Boolean tls10Enabled() {
@@ -113,7 +164,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Set the tls10Enabled property: Specifies if TLS 1.0 is supported.
-     *
+     * 
      * @param tls10Enabled the tls10Enabled value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
@@ -127,7 +178,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Get the tls11Enabled property: Specifies if TLS 1.1 is supported.
-     *
+     * 
      * @return the tls11Enabled value.
      */
     public Boolean tls11Enabled() {
@@ -136,7 +187,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Set the tls11Enabled property: Specifies if TLS 1.1 is supported.
-     *
+     * 
      * @param tls11Enabled the tls11Enabled value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
@@ -150,7 +201,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Get the http2Enabled property: Specifies if HTTP/2.0 is supported.
-     *
+     * 
      * @return the http2Enabled value.
      */
     public Boolean http2Enabled() {
@@ -159,7 +210,7 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Set the http2Enabled property: Specifies if HTTP/2.0 is supported.
-     *
+     * 
      * @param http2Enabled the http2Enabled value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
@@ -173,12 +224,57 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayHostnameConfigurationContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayHostnameConfigurationContractInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GatewayHostnameConfigurationContractInner.
+     */
+    public static GatewayHostnameConfigurationContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayHostnameConfigurationContractInner deserializedGatewayHostnameConfigurationContractInner
+                = new GatewayHostnameConfigurationContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGatewayHostnameConfigurationContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGatewayHostnameConfigurationContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGatewayHostnameConfigurationContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGatewayHostnameConfigurationContractInner.innerProperties
+                        = GatewayHostnameConfigurationContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayHostnameConfigurationContractInner;
+        });
     }
 }

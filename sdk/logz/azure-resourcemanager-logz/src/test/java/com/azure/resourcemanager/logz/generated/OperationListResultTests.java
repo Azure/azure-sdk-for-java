@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"psqucmpoyf\",\"isDataAction\":true,\"display\":{\"provider\":\"knygjofjddeq\",\"resource\":\"deupewnwrei\",\"operation\":\"zyf\",\"description\":\"sarhmofc\"},\"origin\":\"smy\"},{\"name\":\"kdtmlxhekuk\",\"isDataAction\":false,\"display\":{\"provider\":\"kc\",\"resource\":\"parcry\",\"operation\":\"nzwuxzd\",\"description\":\"a\"},\"origin\":\"lhmwhfpmrqobm\"}],\"nextLink\":\"kknryrtihf\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"psqucmpoyf\",\"isDataAction\":true,\"display\":{\"provider\":\"knygjofjddeq\",\"resource\":\"deupewnwrei\",\"operation\":\"zyf\",\"description\":\"sarhmofc\"},\"origin\":\"smy\"},{\"name\":\"kdtmlxhekuk\",\"isDataAction\":false,\"display\":{\"provider\":\"kc\",\"resource\":\"parcry\",\"operation\":\"nzwuxzd\",\"description\":\"a\"},\"origin\":\"lhmwhfpmrqobm\"}],\"nextLink\":\"kknryrtihf\"}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals("psqucmpoyf", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
         Assertions.assertEquals("knygjofjddeq", model.value().get(0).display().provider());
@@ -31,32 +29,22 @@ public final class OperationListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationResultInner()
-                                .withName("psqucmpoyf")
-                                .withIsDataAction(true)
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("knygjofjddeq")
-                                        .withResource("deupewnwrei")
-                                        .withOperation("zyf")
-                                        .withDescription("sarhmofc"))
-                                .withOrigin("smy"),
-                            new OperationResultInner()
-                                .withName("kdtmlxhekuk")
-                                .withIsDataAction(false)
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("kc")
-                                        .withResource("parcry")
-                                        .withOperation("nzwuxzd")
-                                        .withDescription("a"))
-                                .withOrigin("lhmwhfpmrqobm")))
-                .withNextLink("kknryrtihf");
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationResultInner().withName("psqucmpoyf")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDisplay().withProvider("knygjofjddeq")
+                    .withResource("deupewnwrei")
+                    .withOperation("zyf")
+                    .withDescription("sarhmofc"))
+                .withOrigin("smy"),
+            new OperationResultInner().withName("kdtmlxhekuk")
+                .withIsDataAction(false)
+                .withDisplay(new OperationDisplay().withProvider("kc")
+                    .withResource("parcry")
+                    .withOperation("nzwuxzd")
+                    .withDescription("a"))
+                .withOrigin("lhmwhfpmrqobm")))
+            .withNextLink("kknryrtihf");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("psqucmpoyf", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());

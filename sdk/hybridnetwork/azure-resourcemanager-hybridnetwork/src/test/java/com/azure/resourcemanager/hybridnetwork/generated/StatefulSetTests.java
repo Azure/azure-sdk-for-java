@@ -24,9 +24,11 @@ public final class StatefulSetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatefulSet model
-            = new StatefulSet().withName("ndoygmifthnzdnd").withNamespace("gnayqigynduh").withDesired(690810711)
-                .withReady(1238517729).withCreationTime(OffsetDateTime.parse("2021-06-18T10:05:08Z"));
+        StatefulSet model = new StatefulSet().withName("ndoygmifthnzdnd")
+            .withNamespace("gnayqigynduh")
+            .withDesired(690810711)
+            .withReady(1238517729)
+            .withCreationTime(OffsetDateTime.parse("2021-06-18T10:05:08Z"));
         model = BinaryData.fromObject(model).toObject(StatefulSet.class);
         Assertions.assertEquals("ndoygmifthnzdnd", model.name());
         Assertions.assertEquals("gnayqigynduh", model.namespace());

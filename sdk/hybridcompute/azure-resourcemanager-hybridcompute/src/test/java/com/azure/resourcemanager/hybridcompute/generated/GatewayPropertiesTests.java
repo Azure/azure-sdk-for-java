@@ -14,18 +14,18 @@ public final class GatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"gatewayId\":\"fnjhfjxwmszkkfo\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"fkzikfj\",\"allowedFeatures\":[\"eaivxwczel\"]}")
+            "{\"provisioningState\":\"Failed\",\"gatewayId\":\"qukyhejhzi\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"pelol\",\"allowedFeatures\":[\"ksrpqv\"]}")
             .toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("eaivxwczel", model.allowedFeatures().get(0));
+        Assertions.assertEquals("ksrpqv", model.allowedFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayProperties model = new GatewayProperties().withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("eaivxwczel"));
+        GatewayProperties model
+            = new GatewayProperties().withGatewayType(GatewayType.PUBLIC).withAllowedFeatures(Arrays.asList("ksrpqv"));
         model = BinaryData.fromObject(model).toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("eaivxwczel", model.allowedFeatures().get(0));
+        Assertions.assertEquals("ksrpqv", model.allowedFeatures().get(0));
     }
 }

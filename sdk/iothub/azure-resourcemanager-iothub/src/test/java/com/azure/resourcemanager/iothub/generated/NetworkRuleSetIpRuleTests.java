@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRuleSetIpRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRuleSetIpRule model =
-            BinaryData
-                .fromString("{\"filterName\":\"vd\",\"action\":\"Allow\",\"ipMask\":\"grtfwvu\"}")
+        NetworkRuleSetIpRule model
+            = BinaryData.fromString("{\"filterName\":\"vd\",\"action\":\"Allow\",\"ipMask\":\"grtfwvu\"}")
                 .toObject(NetworkRuleSetIpRule.class);
         Assertions.assertEquals("vd", model.filterName());
         Assertions.assertEquals(NetworkRuleIpAction.ALLOW, model.action());
@@ -23,8 +22,9 @@ public final class NetworkRuleSetIpRuleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRuleSetIpRule model =
-            new NetworkRuleSetIpRule().withFilterName("vd").withAction(NetworkRuleIpAction.ALLOW).withIpMask("grtfwvu");
+        NetworkRuleSetIpRule model = new NetworkRuleSetIpRule().withFilterName("vd")
+            .withAction(NetworkRuleIpAction.ALLOW)
+            .withIpMask("grtfwvu");
         model = BinaryData.fromObject(model).toObject(NetworkRuleSetIpRule.class);
         Assertions.assertEquals("vd", model.filterName());
         Assertions.assertEquals(NetworkRuleIpAction.ALLOW, model.action());

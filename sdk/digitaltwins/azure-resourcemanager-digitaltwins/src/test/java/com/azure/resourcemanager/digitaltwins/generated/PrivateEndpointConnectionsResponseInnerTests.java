@@ -8,27 +8,66 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionsResponseInner;
 import com.azure.resourcemanager.digitaltwins.models.ConnectionProperties;
+import com.azure.resourcemanager.digitaltwins.models.ConnectionPropertiesPrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.digitaltwins.models.PrivateEndpoint;
+import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class PrivateEndpointConnectionsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionsResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Disconnected\",\"groupIds\":[]},\"id\":\"xdeoejzic\",\"name\":\"ifsjttgzfbishcb\",\"type\":\"hajdeyeamdpha\"}]}")
-                .toObject(PrivateEndpointConnectionsResponseInner.class);
+        PrivateEndpointConnectionsResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"moryocfsfksym\"},\"groupIds\":[\"stkiiuxhqyud\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"rq\",\"actionsRequired\":\"poczvyifqrvkdvjs\"}},\"id\":\"rm\",\"name\":\"vdfwatkpn\",\"type\":\"ulexxbczwtr\"},{\"properties\":{\"provisioningState\":\"Approved\",\"privateEndpoint\":{\"id\":\"bq\"},\"groupIds\":[\"ovm\",\"okacspk\",\"lhzdobp\",\"jmflbvvnch\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ciwwzjuqkhr\",\"actionsRequired\":\"jiwkuofoskghsau\"}},\"id\":\"mjmvxieduugidyjr\",\"name\":\"f\",\"type\":\"y\"},{\"properties\":{\"provisioningState\":\"Disconnected\",\"privateEndpoint\":{\"id\":\"xc\"},\"groupIds\":[\"pclhocohslk\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"eggzfb\",\"actionsRequired\":\"fmvfaxkffeiit\"}},\"id\":\"vmezy\",\"name\":\"shxmzsbbzoggigrx\",\"type\":\"burvjxxjnspy\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"enkouknvudw\"},\"groupIds\":[\"kbldngkpocipa\",\"yxoegukgjnp\",\"ucgygevqz\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"pmr\",\"actionsRequired\":\"izcdrqjsd\"}},\"id\":\"dnfyhxdeoejzicwi\",\"name\":\"sjttgzfbish\",\"type\":\"bkh\"}]}")
+            .toObject(PrivateEndpointConnectionsResponseInner.class);
+        Assertions.assertEquals("stkiiuxhqyud", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+            model.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("rq",
+            model.value().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("poczvyifqrvkdvjs",
+            model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionsResponseInner model =
-            new PrivateEndpointConnectionsResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionInner()
-                                .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList()))));
+        PrivateEndpointConnectionsResponseInner model
+            = new PrivateEndpointConnectionsResponseInner().withValue(Arrays.asList(
+                new PrivateEndpointConnectionInner().withProperties(new ConnectionProperties()
+                    .withPrivateEndpoint(new PrivateEndpoint())
+                    .withGroupIds(Arrays.asList("stkiiuxhqyud"))
+                    .withPrivateLinkServiceConnectionState(new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                        .withDescription("rq")
+                        .withActionsRequired("poczvyifqrvkdvjs"))),
+                new PrivateEndpointConnectionInner().withProperties(new ConnectionProperties()
+                    .withPrivateEndpoint(new PrivateEndpoint())
+                    .withGroupIds(Arrays.asList("ovm", "okacspk", "lhzdobp", "jmflbvvnch"))
+                    .withPrivateLinkServiceConnectionState(new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
+                        .withDescription("ciwwzjuqkhr")
+                        .withActionsRequired("jiwkuofoskghsau"))),
+                new PrivateEndpointConnectionInner().withProperties(new ConnectionProperties()
+                    .withPrivateEndpoint(new PrivateEndpoint())
+                    .withGroupIds(Arrays.asList("pclhocohslk"))
+                    .withPrivateLinkServiceConnectionState(new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                        .withDescription("eggzfb")
+                        .withActionsRequired("fmvfaxkffeiit"))),
+                new PrivateEndpointConnectionInner().withProperties(new ConnectionProperties()
+                    .withPrivateEndpoint(new PrivateEndpoint())
+                    .withGroupIds(Arrays.asList("kbldngkpocipa", "yxoegukgjnp", "ucgygevqz"))
+                    .withPrivateLinkServiceConnectionState(new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
+                        .withDescription("pmr")
+                        .withActionsRequired("izcdrqjsd")))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionsResponseInner.class);
+        Assertions.assertEquals("stkiiuxhqyud", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+            model.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("rq",
+            model.value().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("poczvyifqrvkdvjs",
+            model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

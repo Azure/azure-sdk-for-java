@@ -6,25 +6,27 @@ package com.azure.resourcemanager.reservations.models;
 
 import com.azure.resourcemanager.reservations.fluent.models.CalculateRefundResponseInner;
 
-/** An immutable client-side representation of CalculateRefundResponse. */
+/**
+ * An immutable client-side representation of CalculateRefundResponse.
+ */
 public interface CalculateRefundResponse {
     /**
      * Gets the id property: Fully qualified identifier of the reservation being returned.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the properties property: The refund properties of reservation.
-     *
+     * 
      * @return the properties value.
      */
     RefundResponseProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.reservations.fluent.models.CalculateRefundResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CalculateRefundResponseInner innerModel();

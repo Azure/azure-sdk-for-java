@@ -140,6 +140,16 @@ public class HttpClientMockWrapper {
                 return Mono.delay(Duration.ofMillis(responseAfterMillis)).flatMap(t -> httpResponseOrException(httpResponse, e));
             }
         }).when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+
+        Mockito.doAnswer(invocationOnMock -> {
+            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+            requests.add(httpRequest);
+            if (responseAfterMillis <= 0) {
+                return httpResponseOrException(httpResponse, e);
+            } else {
+                return Mono.delay(Duration.ofMillis(responseAfterMillis)).flatMap(t -> httpResponseOrException(httpResponse, e));
+            }
+        }).when(httpClient).send(Mockito.any(HttpRequest.class));
     }
 
     public HttpClientMockWrapper(HttpClientBehaviourBuilder builder) {

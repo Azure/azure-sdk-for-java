@@ -33,40 +33,30 @@ public final class GitHubRepoesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"accountId\":2202893815567667311,\"repoUrl\":\"notyfjfcnjbkcn\",\"ownerName\":\"hbttkphyw\"},\"id\":\"vjtoqnermclfp\",\"name\":\"phoxus\",\"type\":\"rpabg\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"accountId\":2202893815567667311,\"repoUrl\":\"notyfjfcnjbkcn\",\"ownerName\":\"hbttkphyw\"},\"id\":\"vjtoqnermclfp\",\"name\":\"phoxus\",\"type\":\"rpabg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityDevOpsManager manager =
-            SecurityDevOpsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityDevOpsManager manager = SecurityDevOpsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GitHubRepo> response =
-            manager.gitHubRepoes().list("uutkncw", "cwsvlxotog", "wrupqsxvnmicykvc", Context.NONE);
+        PagedIterable<GitHubRepo> response
+            = manager.gitHubRepoes().list("uutkncw", "cwsvlxotog", "wrupqsxvnmicykvc", Context.NONE);
 
-        Assertions
-            .assertEquals(ProvisioningState.SUCCEEDED, response.iterator().next().properties().provisioningState());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED,
+            response.iterator().next().properties().provisioningState());
         Assertions.assertEquals(2202893815567667311L, response.iterator().next().properties().accountId());
         Assertions.assertEquals("notyfjfcnjbkcn", response.iterator().next().properties().repoUrl());
         Assertions.assertEquals("hbttkphyw", response.iterator().next().properties().ownerName());

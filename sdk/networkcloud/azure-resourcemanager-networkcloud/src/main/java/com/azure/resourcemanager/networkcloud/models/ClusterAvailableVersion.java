@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ClusterAvailableVersion represents the cluster version that the cluster manager can be asked to create and manage.
  */
 @Immutable
-public final class ClusterAvailableVersion {
+public final class ClusterAvailableVersion implements JsonSerializable<ClusterAvailableVersion> {
     /*
      * The last date the version of the platform is supported.
      */
-    @JsonProperty(value = "supportExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private String supportExpiryDate;
 
     /*
      * The version of the cluster to be deployed.
      */
-    @JsonProperty(value = "targetClusterVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetClusterVersion;
 
-    /** Creates an instance of ClusterAvailableVersion class. */
+    /**
+     * Creates an instance of ClusterAvailableVersion class.
+     */
     public ClusterAvailableVersion() {
     }
 
     /**
      * Get the supportExpiryDate property: The last date the version of the platform is supported.
-     *
+     * 
      * @return the supportExpiryDate value.
      */
     public String supportExpiryDate() {
@@ -39,7 +43,7 @@ public final class ClusterAvailableVersion {
 
     /**
      * Get the targetClusterVersion property: The version of the cluster to be deployed.
-     *
+     * 
      * @return the targetClusterVersion value.
      */
     public String targetClusterVersion() {
@@ -48,9 +52,46 @@ public final class ClusterAvailableVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterAvailableVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterAvailableVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterAvailableVersion.
+     */
+    public static ClusterAvailableVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterAvailableVersion deserializedClusterAvailableVersion = new ClusterAvailableVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportExpiryDate".equals(fieldName)) {
+                    deserializedClusterAvailableVersion.supportExpiryDate = reader.getString();
+                } else if ("targetClusterVersion".equals(fieldName)) {
+                    deserializedClusterAvailableVersion.targetClusterVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterAvailableVersion;
+        });
     }
 }

@@ -45,12 +45,13 @@ public final class NetworkFunctionDefinitionVersionsUpdateStateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkFunctionDefinitionVersionUpdateState response
-            = manager.networkFunctionDefinitionVersions().updateState("ukoveofi", "rvjfnmjmvlw", "z", "iblkujr",
+        NetworkFunctionDefinitionVersionUpdateState response = manager.networkFunctionDefinitionVersions()
+            .updateState("ukoveofi", "rvjfnmjmvlw", "z", "iblkujr",
                 new NetworkFunctionDefinitionVersionUpdateStateInner().withVersionState(VersionState.DEPRECATED),
                 com.azure.core.util.Context.NONE);
 

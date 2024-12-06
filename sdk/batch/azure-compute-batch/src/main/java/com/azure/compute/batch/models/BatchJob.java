@@ -191,7 +191,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private BatchJobExecutionInfo executionInfo;
 
     /*
-     * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the CloudJob was
+     * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the BatchJob was
      * retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be
      * immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30
      * minutes.
@@ -567,7 +567,7 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
 
     /**
      * Get the stats property: Resource usage statistics for the entire lifetime of the Job. This property is populated
-     * only if the CloudJob was retrieved with an expand clause including the 'stats' attribute; otherwise it is null.
+     * only if the BatchJob was retrieved with an expand clause including the 'stats' attribute; otherwise it is null.
      * The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
      * typical delay is about 30 minutes.
      *

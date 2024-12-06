@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SavedSearchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavedSearchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"emwabnet\",\"displayName\":\"hhszh\",\"query\":\"d\",\"functionAlias\":\"vwiwubmwmbesld\",\"functionParameters\":\"wwtppj\",\"version\":3431932886317561144,\"tags\":[{\"name\":\"aokonzmnsik\",\"value\":\"mkqzeqqkdltfzxmh\"},{\"name\":\"v\",\"value\":\"gureodkwobdag\"},{\"name\":\"tibqdxbxwakb\",\"value\":\"gqxndlkzgxhuripl\"},{\"name\":\"podxunkb\",\"value\":\"bxmubyynt\"}]}")
-                .toObject(SavedSearchProperties.class);
+        SavedSearchProperties model = BinaryData.fromString(
+            "{\"category\":\"emwabnet\",\"displayName\":\"hhszh\",\"query\":\"d\",\"functionAlias\":\"vwiwubmwmbesld\",\"functionParameters\":\"wwtppj\",\"version\":3431932886317561144,\"tags\":[{\"name\":\"aokonzmnsik\",\"value\":\"mkqzeqqkdltfzxmh\"},{\"name\":\"v\",\"value\":\"gureodkwobdag\"},{\"name\":\"tibqdxbxwakb\",\"value\":\"gqxndlkzgxhuripl\"},{\"name\":\"podxunkb\",\"value\":\"bxmubyynt\"}]}")
+            .toObject(SavedSearchProperties.class);
         Assertions.assertEquals("emwabnet", model.category());
         Assertions.assertEquals("hhszh", model.displayName());
         Assertions.assertEquals("d", model.query());
@@ -30,21 +28,16 @@ public final class SavedSearchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavedSearchProperties model =
-            new SavedSearchProperties()
-                .withCategory("emwabnet")
-                .withDisplayName("hhszh")
-                .withQuery("d")
-                .withFunctionAlias("vwiwubmwmbesld")
-                .withFunctionParameters("wwtppj")
-                .withVersion(3431932886317561144L)
-                .withTags(
-                    Arrays
-                        .asList(
-                            new Tag().withName("aokonzmnsik").withValue("mkqzeqqkdltfzxmh"),
-                            new Tag().withName("v").withValue("gureodkwobdag"),
-                            new Tag().withName("tibqdxbxwakb").withValue("gqxndlkzgxhuripl"),
-                            new Tag().withName("podxunkb").withValue("bxmubyynt")));
+        SavedSearchProperties model = new SavedSearchProperties().withCategory("emwabnet")
+            .withDisplayName("hhszh")
+            .withQuery("d")
+            .withFunctionAlias("vwiwubmwmbesld")
+            .withFunctionParameters("wwtppj")
+            .withVersion(3431932886317561144L)
+            .withTags(Arrays.asList(new Tag().withName("aokonzmnsik").withValue("mkqzeqqkdltfzxmh"),
+                new Tag().withName("v").withValue("gureodkwobdag"),
+                new Tag().withName("tibqdxbxwakb").withValue("gqxndlkzgxhuripl"),
+                new Tag().withName("podxunkb").withValue("bxmubyynt")));
         model = BinaryData.fromObject(model).toObject(SavedSearchProperties.class);
         Assertions.assertEquals("emwabnet", model.category());
         Assertions.assertEquals("hhszh", model.displayName());

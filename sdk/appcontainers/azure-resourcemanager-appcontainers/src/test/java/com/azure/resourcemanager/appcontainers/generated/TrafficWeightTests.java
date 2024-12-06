@@ -11,25 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficWeightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficWeight model = BinaryData
-            .fromString("{\"revisionName\":\"v\",\"weight\":2103137599,\"latestRevision\":true,\"label\":\"gibtnm\"}")
+        TrafficWeight model = BinaryData.fromString(
+            "{\"revisionName\":\"cngqqmoakufgmjz\",\"weight\":1463483261,\"latestRevision\":false,\"label\":\"twaenuuzko\"}")
             .toObject(TrafficWeight.class);
-        Assertions.assertEquals("v", model.revisionName());
-        Assertions.assertEquals(2103137599, model.weight());
-        Assertions.assertEquals(true, model.latestRevision());
-        Assertions.assertEquals("gibtnm", model.label());
+        Assertions.assertEquals("cngqqmoakufgmjz", model.revisionName());
+        Assertions.assertEquals(1463483261, model.weight());
+        Assertions.assertEquals(false, model.latestRevision());
+        Assertions.assertEquals("twaenuuzko", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficWeight model = new TrafficWeight().withRevisionName("v")
-            .withWeight(2103137599)
-            .withLatestRevision(true)
-            .withLabel("gibtnm");
+        TrafficWeight model = new TrafficWeight().withRevisionName("cngqqmoakufgmjz")
+            .withWeight(1463483261)
+            .withLatestRevision(false)
+            .withLabel("twaenuuzko");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("v", model.revisionName());
-        Assertions.assertEquals(2103137599, model.weight());
-        Assertions.assertEquals(true, model.latestRevision());
-        Assertions.assertEquals("gibtnm", model.label());
+        Assertions.assertEquals("cngqqmoakufgmjz", model.revisionName());
+        Assertions.assertEquals(1463483261, model.weight());
+        Assertions.assertEquals(false, model.latestRevision());
+        Assertions.assertEquals("twaenuuzko", model.label());
     }
 }

@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagsResource model =
-            BinaryData
-                .fromString("{\"tags\":{\"svlxotogtwrup\":\"tkncwsc\",\"nmic\":\"sx\"}}")
-                .toObject(TagsResource.class);
+        TagsResource model = BinaryData.fromString("{\"tags\":{\"svlxotogtwrup\":\"tkncwsc\",\"nmic\":\"sx\"}}")
+            .toObject(TagsResource.class);
         Assertions.assertEquals("tkncwsc", model.tags().get("svlxotogtwrup"));
     }
 

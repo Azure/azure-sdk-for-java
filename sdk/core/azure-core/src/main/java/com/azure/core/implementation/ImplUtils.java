@@ -51,9 +51,6 @@ import java.util.regex.Pattern;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
-    private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
-
     // future improvement - make this configurable
     /**
      * The maximum number of items to cache in a cache.
@@ -86,13 +83,14 @@ public final class ImplUtils {
      */
     public static Duration getRetryAfterFromHeaders(HttpHeaders headers, Supplier<OffsetDateTime> nowSupplier) {
         // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
+        Duration retryDelay
+            = tryGetRetryDelay(headers, HttpHeaderName.X_MS_RETRY_AFTER_MS, ImplUtils::tryGetDelayMillis);
         if (retryDelay != null) {
             return retryDelay;
         }
 
         // Found 'retry-after-ms' header, use a Duration of milliseconds based on the value.
-        retryDelay = tryGetRetryDelay(headers, RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
+        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER_MS, ImplUtils::tryGetDelayMillis);
         if (retryDelay != null) {
             return retryDelay;
         }
@@ -513,14 +511,13 @@ public final class ImplUtils {
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      * @return The {@link Thread} that was passed in.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
         if (shutdownThread == null) {
             return null;
         }
 
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+            AccessControllerUtils.doPrivileged(() -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
                 return null;
             });
@@ -544,14 +541,13 @@ public final class ImplUtils {
      * @param shutdownThread The {@link Thread} that will be added as a
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static void removeShutdownHookSafely(Thread shutdownThread) {
         if (shutdownThread == null) {
             return;
         }
 
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+            AccessControllerUtils.doPrivileged(() -> {
                 Runtime.getRuntime().removeShutdownHook(shutdownThread);
                 return null;
             });

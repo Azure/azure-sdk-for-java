@@ -8,33 +8,35 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of GatewayCertificateAuthorities. */
+/**
+ * Resource collection API of GatewayCertificateAuthorities.
+ */
 public interface GatewayCertificateAuthorities {
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GatewayCertificateAuthorityContract> listByService(
-        String resourceGroupName, String serviceName, String gatewayId);
+    PagedIterable<GatewayCertificateAuthorityContract> listByService(String resourceGroupName, String serviceName,
+        String gatewayId);
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -43,42 +45,36 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GatewayCertificateAuthorityContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GatewayCertificateAuthorityContract> listByService(String resourceGroupName, String serviceName,
+        String gatewayId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
+    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, Context context);
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,75 +83,70 @@ public interface GatewayCertificateAuthorities {
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return assigned Gateway Certificate Authority details.
      */
-    Response<GatewayCertificateAuthorityContract> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
+    Response<GatewayCertificateAuthorityContract> getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId, Context context);
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return assigned Gateway Certificate Authority details.
      */
-    GatewayCertificateAuthorityContract get(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId);
+    GatewayCertificateAuthorityContract get(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId);
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId, String ifMatch, Context context);
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,7 +155,7 @@ public interface GatewayCertificateAuthorities {
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -175,7 +166,7 @@ public interface GatewayCertificateAuthorities {
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +178,7 @@ public interface GatewayCertificateAuthorities {
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,10 +188,10 @@ public interface GatewayCertificateAuthorities {
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,7 +202,7 @@ public interface GatewayCertificateAuthorities {
 
     /**
      * Begins definition for a new GatewayCertificateAuthorityContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new GatewayCertificateAuthorityContract definition.
      */

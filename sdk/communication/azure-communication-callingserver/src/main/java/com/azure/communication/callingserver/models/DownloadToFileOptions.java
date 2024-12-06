@@ -22,6 +22,12 @@ public class DownloadToFileOptions {
     private boolean overwrite;
 
     /**
+     * Creates a new instance of {@link DownloadToFileOptions}.
+     */
+    public DownloadToFileOptions() {
+    }
+
+    /**
      * Get the ParallelDownloadOptions
      * @return ParallelDownloadOptions
      */

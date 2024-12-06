@@ -14,8 +14,10 @@ public class HttpPipelineOptions extends PerfStressOptions {
     @Parameter(names = { "-u", "--url" }, description = "URL to fetch", required = true)
     private URL url;
 
-    @Parameter(names = { "--first-run-extra-requests" },  description = "Extra requests to send on first run. "
-        + "Simulates SDKs which require extra requests (like authentication) on first API call.")
+    @Parameter(
+        names = { "--first-run-extra-requests" },
+        description = "Extra requests to send on first run. "
+            + "Simulates SDKs which require extra requests (like authentication) on first API call.")
     private int firstRunExtraRequests = 0;
 
     /**

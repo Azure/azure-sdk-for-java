@@ -10,9 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to packet captures management API in Azure. */
 @Fluent
-public interface PacketCaptures
-    extends SupportsCreating<PacketCapture.DefinitionStages.WithTarget>,
-        SupportsListing<PacketCapture>,
-        SupportsGettingByName<PacketCapture>,
-        SupportsDeletingByName {
+public interface PacketCaptures extends SupportsCreating<PacketCapture.DefinitionStages.WithTarget>,
+    SupportsListing<PacketCapture>, SupportsGettingByName<PacketCapture>, SupportsDeletingByName {
 }

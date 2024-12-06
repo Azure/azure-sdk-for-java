@@ -22,80 +22,69 @@ import org.junit.jupiter.api.Assertions;
 public final class LogzMonitorResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogzMonitorResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Updating\",\"monitoringStatus\":\"Disabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"logzOrganizationProperties\":{\"companyName\":\"czdzev\",\"id\":\"hkr\",\"enterpriseAppId\":\"d\",\"singleSignOnUrl\":\"p\"},\"userInfo\":{\"firstName\":\"dkvwrwjfe\",\"lastName\":\"nhutjeltmrldhugj\",\"emailAddress\":\"datqxhocdgeabl\",\"phoneNumber\":\"huticndvkao\"},\"planData\":{\"usageType\":\"i\",\"billingCycle\":\"yhxhu\",\"planDetails\":\"k\",\"effectiveDate\":\"2021-04-05T15:40:07Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":214532343},\"identity\":{\"principalId\":\"pwcukjfkgiawxk\",\"tenantId\":\"ypl\",\"type\":\"SystemAssigned\"},\"location\":\"basyy\",\"tags\":{\"phejkotynqgoulz\":\"dhsgcba\",\"gakeqsr\":\"dlikwyqkgfgibma\",\"qqedqytbciqfou\":\"yb\"},\"id\":\"lmmnkzsmodmglo\",\"name\":\"gpbkwtmut\",\"type\":\"uqktap\"}")
-                .toObject(LogzMonitorResourceInner.class);
-        Assertions.assertEquals("basyy", model.location());
-        Assertions.assertEquals("dhsgcba", model.tags().get("phejkotynqgoulz"));
-        Assertions.assertEquals(MonitoringStatus.DISABLED, model.properties().monitoringStatus());
-        Assertions
-            .assertEquals(MarketplaceSubscriptionStatus.ACTIVE, model.properties().marketplaceSubscriptionStatus());
-        Assertions.assertEquals("czdzev", model.properties().logzOrganizationProperties().companyName());
-        Assertions.assertEquals("d", model.properties().logzOrganizationProperties().enterpriseAppId());
-        Assertions.assertEquals("p", model.properties().logzOrganizationProperties().singleSignOnUrl());
-        Assertions.assertEquals("dkvwrwjfe", model.properties().userInfo().firstName());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.properties().userInfo().lastName());
-        Assertions.assertEquals("datqxhocdgeabl", model.properties().userInfo().emailAddress());
-        Assertions.assertEquals("huticndvkao", model.properties().userInfo().phoneNumber());
-        Assertions.assertEquals("i", model.properties().planData().usageType());
-        Assertions.assertEquals("yhxhu", model.properties().planData().billingCycle());
-        Assertions.assertEquals("k", model.properties().planData().planDetails());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-05T15:40:07Z"), model.properties().planData().effectiveDate());
-        Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, model.identity().type());
+        LogzMonitorResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"logzOrganizationProperties\":{\"companyName\":\"prwzwbnguitnwui\",\"id\":\"a\",\"enterpriseAppId\":\"ufizuckyf\",\"singleSignOnUrl\":\"rfidfvzwdz\"},\"userInfo\":{\"firstName\":\"ymwisdkft\",\"lastName\":\"xmnteiwaop\",\"emailAddress\":\"mijcmmxdcufufs\",\"phoneNumber\":\"ymzidn\"},\"planData\":{\"usageType\":\"cxtbzsg\",\"billingCycle\":\"c\",\"planDetails\":\"newmdwzjeiachbo\",\"effectiveDate\":\"2021-05-15T06:55:08Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":1039180854},\"identity\":{\"principalId\":\"qpteeh\",\"tenantId\":\"vypyqrimzinpv\",\"type\":\"UserAssigned\"},\"location\":\"dkirsoodqxhcr\",\"tags\":{\"oifiyipjxsqwpgr\":\"hjtckwhd\",\"qabnmoc\":\"bznorcjxvsnby\"},\"id\":\"cyshurzafbljjgp\",\"name\":\"toqcjmklja\",\"type\":\"bqidtqaj\"}")
+            .toObject(LogzMonitorResourceInner.class);
+        Assertions.assertEquals("dkirsoodqxhcr", model.location());
+        Assertions.assertEquals("hjtckwhd", model.tags().get("oifiyipjxsqwpgr"));
+        Assertions.assertEquals(MonitoringStatus.ENABLED, model.properties().monitoringStatus());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.ACTIVE,
+            model.properties().marketplaceSubscriptionStatus());
+        Assertions.assertEquals("prwzwbnguitnwui", model.properties().logzOrganizationProperties().companyName());
+        Assertions.assertEquals("ufizuckyf", model.properties().logzOrganizationProperties().enterpriseAppId());
+        Assertions.assertEquals("rfidfvzwdz", model.properties().logzOrganizationProperties().singleSignOnUrl());
+        Assertions.assertEquals("ymwisdkft", model.properties().userInfo().firstName());
+        Assertions.assertEquals("xmnteiwaop", model.properties().userInfo().lastName());
+        Assertions.assertEquals("mijcmmxdcufufs", model.properties().userInfo().emailAddress());
+        Assertions.assertEquals("ymzidn", model.properties().userInfo().phoneNumber());
+        Assertions.assertEquals("cxtbzsg", model.properties().planData().usageType());
+        Assertions.assertEquals("c", model.properties().planData().billingCycle());
+        Assertions.assertEquals("newmdwzjeiachbo", model.properties().planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T06:55:08Z"),
+            model.properties().planData().effectiveDate());
+        Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogzMonitorResourceInner model =
-            new LogzMonitorResourceInner()
-                .withLocation("basyy")
-                .withTags(mapOf("phejkotynqgoulz", "dhsgcba", "gakeqsr", "dlikwyqkgfgibma", "qqedqytbciqfou", "yb"))
-                .withProperties(
-                    new MonitorProperties()
-                        .withMonitoringStatus(MonitoringStatus.DISABLED)
-                        .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.ACTIVE)
-                        .withLogzOrganizationProperties(
-                            new LogzOrganizationProperties()
-                                .withCompanyName("czdzev")
-                                .withEnterpriseAppId("d")
-                                .withSingleSignOnUrl("p"))
-                        .withUserInfo(
-                            new UserInfo()
-                                .withFirstName("dkvwrwjfe")
-                                .withLastName("nhutjeltmrldhugj")
-                                .withEmailAddress("datqxhocdgeabl")
-                                .withPhoneNumber("huticndvkao"))
-                        .withPlanData(
-                            new PlanData()
-                                .withUsageType("i")
-                                .withBillingCycle("yhxhu")
-                                .withPlanDetails("k")
-                                .withEffectiveDate(OffsetDateTime.parse("2021-04-05T15:40:07Z"))))
-                .withIdentity(new IdentityProperties().withType(ManagedIdentityTypes.SYSTEM_ASSIGNED));
+        LogzMonitorResourceInner model = new LogzMonitorResourceInner().withLocation("dkirsoodqxhcr")
+            .withTags(mapOf("oifiyipjxsqwpgr", "hjtckwhd", "qabnmoc", "bznorcjxvsnby"))
+            .withProperties(new MonitorProperties().withMonitoringStatus(MonitoringStatus.ENABLED)
+                .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.ACTIVE)
+                .withLogzOrganizationProperties(new LogzOrganizationProperties().withCompanyName("prwzwbnguitnwui")
+                    .withEnterpriseAppId("ufizuckyf")
+                    .withSingleSignOnUrl("rfidfvzwdz"))
+                .withUserInfo(new UserInfo().withFirstName("ymwisdkft")
+                    .withLastName("xmnteiwaop")
+                    .withEmailAddress("mijcmmxdcufufs")
+                    .withPhoneNumber("ymzidn"))
+                .withPlanData(new PlanData().withUsageType("cxtbzsg")
+                    .withBillingCycle("c")
+                    .withPlanDetails("newmdwzjeiachbo")
+                    .withEffectiveDate(OffsetDateTime.parse("2021-05-15T06:55:08Z"))))
+            .withIdentity(new IdentityProperties().withType(ManagedIdentityTypes.USER_ASSIGNED));
         model = BinaryData.fromObject(model).toObject(LogzMonitorResourceInner.class);
-        Assertions.assertEquals("basyy", model.location());
-        Assertions.assertEquals("dhsgcba", model.tags().get("phejkotynqgoulz"));
-        Assertions.assertEquals(MonitoringStatus.DISABLED, model.properties().monitoringStatus());
-        Assertions
-            .assertEquals(MarketplaceSubscriptionStatus.ACTIVE, model.properties().marketplaceSubscriptionStatus());
-        Assertions.assertEquals("czdzev", model.properties().logzOrganizationProperties().companyName());
-        Assertions.assertEquals("d", model.properties().logzOrganizationProperties().enterpriseAppId());
-        Assertions.assertEquals("p", model.properties().logzOrganizationProperties().singleSignOnUrl());
-        Assertions.assertEquals("dkvwrwjfe", model.properties().userInfo().firstName());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.properties().userInfo().lastName());
-        Assertions.assertEquals("datqxhocdgeabl", model.properties().userInfo().emailAddress());
-        Assertions.assertEquals("huticndvkao", model.properties().userInfo().phoneNumber());
-        Assertions.assertEquals("i", model.properties().planData().usageType());
-        Assertions.assertEquals("yhxhu", model.properties().planData().billingCycle());
-        Assertions.assertEquals("k", model.properties().planData().planDetails());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-05T15:40:07Z"), model.properties().planData().effectiveDate());
-        Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dkirsoodqxhcr", model.location());
+        Assertions.assertEquals("hjtckwhd", model.tags().get("oifiyipjxsqwpgr"));
+        Assertions.assertEquals(MonitoringStatus.ENABLED, model.properties().monitoringStatus());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.ACTIVE,
+            model.properties().marketplaceSubscriptionStatus());
+        Assertions.assertEquals("prwzwbnguitnwui", model.properties().logzOrganizationProperties().companyName());
+        Assertions.assertEquals("ufizuckyf", model.properties().logzOrganizationProperties().enterpriseAppId());
+        Assertions.assertEquals("rfidfvzwdz", model.properties().logzOrganizationProperties().singleSignOnUrl());
+        Assertions.assertEquals("ymwisdkft", model.properties().userInfo().firstName());
+        Assertions.assertEquals("xmnteiwaop", model.properties().userInfo().lastName());
+        Assertions.assertEquals("mijcmmxdcufufs", model.properties().userInfo().emailAddress());
+        Assertions.assertEquals("ymzidn", model.properties().userInfo().phoneNumber());
+        Assertions.assertEquals("cxtbzsg", model.properties().planData().usageType());
+        Assertions.assertEquals("c", model.properties().planData().billingCycle());
+        Assertions.assertEquals("newmdwzjeiachbo", model.properties().planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T06:55:08Z"),
+            model.properties().planData().effectiveDate());
+        Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

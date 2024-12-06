@@ -8,20 +8,23 @@ import com.azure.resourcemanager.apimanagement.models.LoggerType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Logger CreateOrUpdate. */
+/**
+ * Samples for Logger CreateOrUpdate.
+ */
 public final class LoggerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAILogger.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateAILogger.json
      */
     /**
      * Sample code: ApiManagementCreateAILogger.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateAILogger(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .loggers()
+    public static void
+        apiManagementCreateAILogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.loggers()
             .define("loggerId")
             .withExistingService("rg1", "apimService1")
             .withLoggerType(LoggerType.APPLICATION_INSIGHTS)
@@ -31,27 +34,24 @@ public final class LoggerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateEHLogger.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateEHLogger.json
      */
     /**
      * Sample code: ApiManagementCreateEHLogger.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateEHLogger(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .loggers()
+    public static void
+        apiManagementCreateEHLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.loggers()
             .define("eh1")
             .withExistingService("rg1", "apimService1")
             .withLoggerType(LoggerType.AZURE_EVENT_HUB)
             .withDescription("adding a new logger")
-            .withCredentials(
-                mapOf(
-                    "name",
-                    "hydraeventhub",
-                    "connectionString",
-                    "Endpoint=sb://hydraeventhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=********="))
+            .withCredentials(mapOf("name", "hydraeventhub", "connectionString",
+                "Endpoint=sb://hydraeventhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=********="))
             .create();
     }
 

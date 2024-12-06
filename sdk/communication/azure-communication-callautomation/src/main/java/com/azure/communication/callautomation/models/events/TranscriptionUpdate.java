@@ -42,17 +42,6 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
-     * Set the transcriptionStatus property: The transcriptionStatus property.
-     *
-     * @param transcriptionStatus the transcriptionStatus value to set.
-     * @return the TranscriptionUpdate object itself.
-     */
-    public TranscriptionUpdate setTranscriptionStatus(TranscriptionStatus transcriptionStatus) {
-        this.transcriptionStatus = transcriptionStatus;
-        return this;
-    }
-
-    /**
      * Get the transcriptionStatusDetails property: The transcriptionStatusDetails property.
      *
      * @return the transcriptionStatusDetails value.
@@ -62,24 +51,15 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
-     * Set the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     *
-     * @param transcriptionStatusDetails the transcriptionStatusDetails value to set.
-     * @return the TranscriptionUpdate object itself.
-     */
-    public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
-        this.transcriptionStatusDetails = transcriptionStatusDetails;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transcriptionStatus", transcriptionStatus != null ? transcriptionStatus.toString() : null);
-        jsonWriter.writeStringField("transcriptionStatusDetails", transcriptionStatusDetails != null ? transcriptionStatusDetails.toString() : null);
+        jsonWriter.writeStringField("transcriptionStatus",
+            transcriptionStatus != null ? transcriptionStatus.toString() : null);
+        jsonWriter.writeStringField("transcriptionStatusDetails",
+            transcriptionStatusDetails != null ? transcriptionStatusDetails.toString() : null);
         return jsonWriter.writeEndObject();
     }
 

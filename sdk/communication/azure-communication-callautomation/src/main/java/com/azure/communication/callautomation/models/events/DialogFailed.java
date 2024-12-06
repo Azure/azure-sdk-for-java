@@ -28,7 +28,8 @@ public final class DialogFailed extends CallAutomationEventBase {
     private String dialogId;
 
     /** Creates an instance of DialogCompleted class. */
-    public DialogFailed() {}
+    public DialogFailed() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

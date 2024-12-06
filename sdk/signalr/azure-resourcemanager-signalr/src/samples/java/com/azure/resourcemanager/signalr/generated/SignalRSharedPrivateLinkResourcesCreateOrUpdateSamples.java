@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalRSharedPrivateLinkResources CreateOrUpdate. */
+/**
+ * Samples for SignalRSharedPrivateLinkResources CreateOrUpdate.
+ */
 public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRSharedPrivateLinkResources_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRSharedPrivateLinkResources_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
-    public static void signalRSharedPrivateLinkResourcesCreateOrUpdate(
-        com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRSharedPrivateLinkResources()
+    public static void
+        signalRSharedPrivateLinkResourcesCreateOrUpdate(com.azure.resourcemanager.signalr.SignalRManager manager) {
+        manager.signalRSharedPrivateLinkResources()
             .define("upstream")
             .withExistingSignalR("myResourceGroup", "mySignalRService")
             .withGroupId("sites")

@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceStatus;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
 import com.azure.resourcemanager.notificationhubs.models.NetworkAcls;
@@ -12,7 +17,7 @@ import com.azure.resourcemanager.notificationhubs.models.OperationProvisioningSt
 import com.azure.resourcemanager.notificationhubs.models.PublicNetworkAccess;
 import com.azure.resourcemanager.notificationhubs.models.ReplicationRegion;
 import com.azure.resourcemanager.notificationhubs.models.ZoneRedundancyPreference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -20,128 +25,108 @@ import java.util.List;
  * Represents namespace properties.
  */
 @Fluent
-public final class NamespaceProperties {
+public final class NamespaceProperties implements JsonSerializable<NamespaceProperties> {
     /*
      * Name of the Notification Hubs namespace. This is immutable property, set automatically
      * by the service when the namespace is created.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Defines values for OperationProvisioningState.
      */
-    @JsonProperty(value = "provisioningState")
     private OperationProvisioningState provisioningState;
 
     /*
      * Namespace status.
      */
-    @JsonProperty(value = "status")
     private NamespaceStatus status;
 
     /*
      * Gets or sets whether or not the namespace is currently enabled.
      */
-    @JsonProperty(value = "enabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enabled;
 
     /*
      * Gets or sets whether or not the namespace is set as Critical.
      */
-    @JsonProperty(value = "critical", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean critical;
 
     /*
      * Namespace subscription id.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Region. The value is always set to the same value as Namespace.Location, so we are deprecating
      * this property.
      */
-    @JsonProperty(value = "region", access = JsonProperty.Access.WRITE_ONLY)
     private String region;
 
     /*
      * Azure Insights Metrics id.
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
      * Time when the namespace was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * Time when the namespace was updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Defines values for NamespaceType.
      */
-    @JsonProperty(value = "namespaceType")
     private NamespaceType namespaceType;
 
     /*
      * Allowed replication region
      */
-    @JsonProperty(value = "replicationRegion")
     private ReplicationRegion replicationRegion;
 
     /*
      * Namespace SKU name.
      */
-    @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancyPreference zoneRedundancy;
 
     /*
      * A collection of network authorization rules.
      */
-    @JsonProperty(value = "networkAcls")
     private NetworkAcls networkAcls;
 
     /*
      * Collection of Notification Hub or Notification Hub Namespace PNS credentials.
      */
-    @JsonProperty(value = "pnsCredentials")
     private PnsCredentials pnsCredentials;
 
     /*
      * Gets or sets endpoint you can use to perform NotificationHub
      * operations.
      */
-    @JsonProperty(value = "serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceBusEndpoint;
 
     /*
      * Private Endpoint Connections for namespace
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionResourceInner> privateEndpointConnections;
 
     /*
      * Gets or sets scaleUnit where the namespace gets created
      */
-    @JsonProperty(value = "scaleUnit")
     private String scaleUnit;
 
     /*
      * Deprecated.
      */
-    @JsonProperty(value = "dataCenter")
     private String dataCenter;
 
     /*
      * Type of public network access.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /**
@@ -459,5 +444,100 @@ public final class NamespaceProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("namespaceType", this.namespaceType == null ? null : this.namespaceType.toString());
+        jsonWriter.writeStringField("replicationRegion",
+            this.replicationRegion == null ? null : this.replicationRegion.toString());
+        jsonWriter.writeStringField("zoneRedundancy",
+            this.zoneRedundancy == null ? null : this.zoneRedundancy.toString());
+        jsonWriter.writeJsonField("networkAcls", this.networkAcls);
+        jsonWriter.writeJsonField("pnsCredentials", this.pnsCredentials);
+        jsonWriter.writeStringField("scaleUnit", this.scaleUnit);
+        jsonWriter.writeStringField("dataCenter", this.dataCenter);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceProperties.
+     */
+    public static NamespaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNamespaceProperties.name = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNamespaceProperties.provisioningState
+                        = OperationProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedNamespaceProperties.status = NamespaceStatus.fromString(reader.getString());
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedNamespaceProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("critical".equals(fieldName)) {
+                    deserializedNamespaceProperties.critical = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedNamespaceProperties.subscriptionId = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedNamespaceProperties.region = reader.getString();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedNamespaceProperties.metricId = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedNamespaceProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedNamespaceProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("namespaceType".equals(fieldName)) {
+                    deserializedNamespaceProperties.namespaceType = NamespaceType.fromString(reader.getString());
+                } else if ("replicationRegion".equals(fieldName)) {
+                    deserializedNamespaceProperties.replicationRegion
+                        = ReplicationRegion.fromString(reader.getString());
+                } else if ("zoneRedundancy".equals(fieldName)) {
+                    deserializedNamespaceProperties.zoneRedundancy
+                        = ZoneRedundancyPreference.fromString(reader.getString());
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedNamespaceProperties.networkAcls = NetworkAcls.fromJson(reader);
+                } else if ("pnsCredentials".equals(fieldName)) {
+                    deserializedNamespaceProperties.pnsCredentials = PnsCredentials.fromJson(reader);
+                } else if ("serviceBusEndpoint".equals(fieldName)) {
+                    deserializedNamespaceProperties.serviceBusEndpoint = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionResourceInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionResourceInner.fromJson(reader1));
+                    deserializedNamespaceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("scaleUnit".equals(fieldName)) {
+                    deserializedNamespaceProperties.scaleUnit = reader.getString();
+                } else if ("dataCenter".equals(fieldName)) {
+                    deserializedNamespaceProperties.dataCenter = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedNamespaceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceProperties;
+        });
     }
 }

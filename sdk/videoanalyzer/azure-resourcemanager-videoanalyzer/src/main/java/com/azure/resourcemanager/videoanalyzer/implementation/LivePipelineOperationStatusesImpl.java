@@ -20,17 +20,16 @@ public final class LivePipelineOperationStatusesImpl implements LivePipelineOper
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public LivePipelineOperationStatusesImpl(
-        LivePipelineOperationStatusesClient innerClient,
+    public LivePipelineOperationStatusesImpl(LivePipelineOperationStatusesClient innerClient,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public LivePipelineOperationStatus get(
-        String resourceGroupName, String accountName, String livePipelineName, String operationId) {
-        LivePipelineOperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, livePipelineName, operationId);
+    public LivePipelineOperationStatus get(String resourceGroupName, String accountName, String livePipelineName,
+        String operationId) {
+        LivePipelineOperationStatusInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, livePipelineName, operationId);
         if (inner != null) {
             return new LivePipelineOperationStatusImpl(inner, this.manager());
         } else {
@@ -38,17 +37,12 @@ public final class LivePipelineOperationStatusesImpl implements LivePipelineOper
         }
     }
 
-    public Response<LivePipelineOperationStatus> getWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, String operationId, Context context) {
-        Response<LivePipelineOperationStatusInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, livePipelineName, operationId, context);
+    public Response<LivePipelineOperationStatus> getWithResponse(String resourceGroupName, String accountName,
+        String livePipelineName, String operationId, Context context) {
+        Response<LivePipelineOperationStatusInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, livePipelineName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LivePipelineOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

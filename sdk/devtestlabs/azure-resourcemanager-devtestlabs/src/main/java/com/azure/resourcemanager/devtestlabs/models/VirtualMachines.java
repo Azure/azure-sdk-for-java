@@ -38,14 +38,8 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LabVirtualMachine> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<LabVirtualMachine> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get virtual machine.
@@ -61,8 +55,8 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine along with {@link Response}.
      */
-    Response<LabVirtualMachine> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<LabVirtualMachine> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get virtual machine.
@@ -127,8 +121,8 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void addDataDisk(
-        String resourceGroupName, String labName, String name, DataDiskProperties dataDiskProperties, Context context);
+    void addDataDisk(String resourceGroupName, String labName, String name, DataDiskProperties dataDiskProperties,
+        Context context);
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
@@ -141,8 +135,8 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void applyArtifacts(
-        String resourceGroupName, String labName, String name, ApplyArtifactsRequest applyArtifactsRequest);
+    void applyArtifacts(String resourceGroupName, String labName, String name,
+        ApplyArtifactsRequest applyArtifactsRequest);
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
@@ -156,12 +150,8 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void applyArtifacts(
-        String resourceGroupName,
-        String labName,
-        String name,
-        ApplyArtifactsRequest applyArtifactsRequest,
-        Context context);
+    void applyArtifacts(String resourceGroupName, String labName, String name,
+        ApplyArtifactsRequest applyArtifactsRequest, Context context);
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
@@ -199,8 +189,8 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachDataDisk(
-        String resourceGroupName, String labName, String name, DetachDataDiskProperties detachDataDiskProperties);
+    void detachDataDisk(String resourceGroupName, String labName, String name,
+        DetachDataDiskProperties detachDataDiskProperties);
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
@@ -214,12 +204,8 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachDataDisk(
-        String resourceGroupName,
-        String labName,
-        String name,
-        DetachDataDiskProperties detachDataDiskProperties,
-        Context context);
+    void detachDataDisk(String resourceGroupName, String labName, String name,
+        DetachDataDiskProperties detachDataDiskProperties, Context context);
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
@@ -234,8 +220,8 @@ public interface VirtualMachines {
      * @return a string that represents the contents of the RDP file for the virtual machine along with {@link
      *     Response}.
      */
-    Response<RdpConnection> getRdpFileContentsWithResponse(
-        String resourceGroupName, String labName, String name, Context context);
+    Response<RdpConnection> getRdpFileContentsWithResponse(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
@@ -262,8 +248,8 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedules applicable to a virtual machine along with {@link Response}.
      */
-    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(
-        String resourceGroupName, String labName, String name, Context context);
+    Response<ApplicableSchedule> listApplicableSchedulesWithResponse(String resourceGroupName, String labName,
+        String name, Context context);
 
     /**
      * Lists the applicable start/stop schedules, if any.
@@ -314,10 +300,7 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resize(
-        String resourceGroupName,
-        String labName,
-        String name,
+    void resize(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties);
 
     /**
@@ -332,12 +315,8 @@ public interface VirtualMachines {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resize(
-        String resourceGroupName,
-        String labName,
-        String name,
-        ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties,
-        Context context);
+    void resize(String resourceGroupName, String labName, String name,
+        ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties, Context context);
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.

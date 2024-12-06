@@ -84,24 +84,20 @@ public final class PortalConfigContractImpl
     }
 
     public PortalConfigContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, portalConfigId, createIfMatch, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, portalConfigId, createIfMatch,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public PortalConfigContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, portalConfigId, createIfMatch, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, portalConfigId, createIfMatch,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -118,54 +114,45 @@ public final class PortalConfigContractImpl
     }
 
     public PortalConfigContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalConfigs()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, portalConfigId, updateIfMatch, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalConfigs()
+            .updateWithResponse(resourceGroupName, serviceName, portalConfigId, updateIfMatch, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PortalConfigContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalConfigs()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, portalConfigId, updateIfMatch, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalConfigs()
+            .updateWithResponse(resourceGroupName, serviceName, portalConfigId, updateIfMatch, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    PortalConfigContractImpl(
-        PortalConfigContractInner innerObject,
+    PortalConfigContractImpl(PortalConfigContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.portalConfigId = Utils.getValueFromIdByName(innerObject.id(), "portalconfigs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.portalConfigId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "portalconfigs");
     }
 
     public PortalConfigContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalConfigs()
-                .getWithResponse(resourceGroupName, serviceName, portalConfigId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalConfigs()
+            .getWithResponse(resourceGroupName, serviceName, portalConfigId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PortalConfigContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPortalConfigs()
-                .getWithResponse(resourceGroupName, serviceName, portalConfigId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPortalConfigs()
+            .getWithResponse(resourceGroupName, serviceName, portalConfigId, context)
+            .getValue();
         return this;
     }
 

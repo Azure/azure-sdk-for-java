@@ -21,22 +21,18 @@ public final class ChildAvailabilityStatusesImpl implements ChildAvailabilitySta
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public ChildAvailabilityStatusesImpl(
-        ChildAvailabilityStatusesClient innerClient,
+    public ChildAvailabilityStatusesImpl(ChildAvailabilityStatusesClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AvailabilityStatus> getByResourceWithResponse(
-        String resourceUri, String filter, String expand, Context context) {
-        Response<AvailabilityStatusInner> inner =
-            this.serviceClient().getByResourceWithResponse(resourceUri, filter, expand, context);
+    public Response<AvailabilityStatus> getByResourceWithResponse(String resourceUri, String filter, String expand,
+        Context context) {
+        Response<AvailabilityStatusInner> inner
+            = this.serviceClient().getByResourceWithResponse(resourceUri, filter, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AvailabilityStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,12 +50,12 @@ public final class ChildAvailabilityStatusesImpl implements ChildAvailabilitySta
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityStatus> list(String resourceUri, String filter, String expand, Context context) {
         PagedIterable<AvailabilityStatusInner> inner = this.serviceClient().list(resourceUri, filter, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityStatusImpl(inner1, this.manager()));
     }
 
     private ChildAvailabilityStatusesClient serviceClient() {

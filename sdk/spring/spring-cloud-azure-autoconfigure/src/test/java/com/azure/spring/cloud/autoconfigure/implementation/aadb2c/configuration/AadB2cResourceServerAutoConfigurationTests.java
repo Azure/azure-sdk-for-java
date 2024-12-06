@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -44,6 +45,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
             .withConfiguration(AutoConfigurations.of(
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class,
                 WebResourceServerTestApp.class,
                 AadB2cResourceServerAutoConfiguration.class,
@@ -57,6 +59,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
         return new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
                 WebOAuth2ClientTestApp.class,
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class,
                 AadB2cResourceServerAutoConfiguration.class,
                 HttpMessageConvertersAutoConfiguration.class,

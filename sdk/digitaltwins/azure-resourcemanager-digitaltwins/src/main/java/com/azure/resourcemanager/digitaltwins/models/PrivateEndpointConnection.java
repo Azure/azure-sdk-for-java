@@ -8,32 +8,34 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner;
 
-/** An immutable client-side representation of PrivateEndpointConnection. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnection.
+ */
 public interface PrivateEndpointConnection {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: The connection properties.
-     *
+     * 
      * @return the properties value.
      */
     ConnectionProperties properties();
@@ -41,58 +43,69 @@ public interface PrivateEndpointConnection {
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the private endpoint
      * connection.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionInner innerModel();
 
-    /** The entirety of the PrivateEndpointConnection definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the PrivateEndpointConnection definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
-    /** The PrivateEndpointConnection definition stages. */
+
+    /**
+     * The PrivateEndpointConnection definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PrivateEndpointConnection definition. */
+        /**
+         * The first stage of the PrivateEndpointConnection definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the PrivateEndpointConnection definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the PrivateEndpointConnection definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, resourceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
              * @param resourceName The name of the DigitalTwinsInstance.
              * @return the next definition stage.
              */
             WithProperties withExistingDigitalTwinsInstance(String resourceGroupName, String resourceName);
         }
-        /** The stage of the PrivateEndpointConnection definition allowing to specify properties. */
+
+        /**
+         * The stage of the PrivateEndpointConnection definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The connection properties..
-             *
+             * 
              * @param properties The connection properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(ConnectionProperties properties);
         }
+
         /**
          * The stage of the PrivateEndpointConnection definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -100,67 +113,76 @@ public interface PrivateEndpointConnection {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PrivateEndpointConnection create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PrivateEndpointConnection create(Context context);
         }
     }
+
     /**
      * Begins update for the PrivateEndpointConnection resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PrivateEndpointConnection.Update update();
 
-    /** The template for PrivateEndpointConnection update. */
+    /**
+     * The template for PrivateEndpointConnection update.
+     */
     interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PrivateEndpointConnection apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PrivateEndpointConnection apply(Context context);
     }
-    /** The PrivateEndpointConnection update stages. */
+
+    /**
+     * The PrivateEndpointConnection update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PrivateEndpointConnection update allowing to specify properties. */
+        /**
+         * The stage of the PrivateEndpointConnection update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The connection properties..
-             *
+             * 
              * @param properties The connection properties.
              * @return the next definition stage.
              */
             Update withProperties(ConnectionProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PrivateEndpointConnection refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

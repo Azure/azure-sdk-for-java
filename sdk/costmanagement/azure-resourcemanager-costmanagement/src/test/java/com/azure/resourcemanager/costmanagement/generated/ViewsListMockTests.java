@@ -6,75 +6,76 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
+import com.azure.resourcemanager.costmanagement.models.KpiType;
 import com.azure.resourcemanager.costmanagement.models.MetricType;
+import com.azure.resourcemanager.costmanagement.models.OperatorType;
+import com.azure.resourcemanager.costmanagement.models.PivotType;
+import com.azure.resourcemanager.costmanagement.models.QueryColumnType;
+import com.azure.resourcemanager.costmanagement.models.ReportGranularityType;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
 import com.azure.resourcemanager.costmanagement.models.View;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ViewsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"rryveimipskdy\",\"scope\":\"tv\",\"createdOn\":\"2021-09-22T17:23:18Z\",\"modifiedOn\":\"2021-10-28T14:29:34Z\",\"dateRange\":\"tjvv\",\"currency\":\"xwigsye\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"MonthToDate\",\"timePeriod\":{\"from\":\"2021-08-13T07:56:44Z\",\"to\":\"2021-03-14T18:33:51Z\"},\"dataSet\":{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"kkileplkc\",\"mknhwtbbaedor\",\"vmq\",\"loyg\"]},\"aggregation\":{\"dhp\":{\"name\":\"wumgx\",\"function\":\"Sum\"},\"jddvjsaqw\":{\"name\":\"bgd\",\"function\":\"Sum\"},\"llcolsrsxapte\":{\"name\":\"tm\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"cgjokjljnhvlq\"},{\"type\":\"Dimension\",\"name\":\"ek\"},{\"type\":\"Dimension\",\"name\":\"eksnbksdqhjvyk\"},{\"type\":\"Dimension\",\"name\":\"eslk\"}],\"sorting\":[{\"name\":\"stcpoqmavnwqjw\"},{\"name\":\"o\"}],\"filter\":{\"and\":[{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"kxybwfdbkj\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"ensvkzykjtj\",\"operator\":\"In\",\"values\":[]}}},\"includeMonetaryCommitment\":false},\"chart\":\"GroupedColumn\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"nq\",\"enabled\":true},{\"type\":\"Forecast\",\"id\":\"pkuwxeoioj\",\"enabled\":false}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"zwfbcyaykmmfzs\"}]},\"eTag\":\"wxrzxmdewsrsxkrp\",\"id\":\"bjazejwwviy\",\"name\":\"y\",\"type\":\"suhbrnn\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"cypsxjv\",\"scope\":\"imwkslircizj\",\"createdOn\":\"2021-01-01T11:30:07Z\",\"modifiedOn\":\"2021-08-31T12:53:55Z\",\"dateRange\":\"eacvl\",\"currency\":\"ygdyftumrtw\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"WeekToDate\",\"includeMonetaryCommitment\":false},\"chart\":\"Table\",\"accumulated\":\"false\",\"metric\":\"AmortizedCost\",\"kpis\":[],\"pivots\":[]},\"eTag\":\"mznbaeqphch\",\"id\":\"nrnrp\",\"name\":\"ehuwrykqgaifmvik\",\"type\":\"bydvkhbejdz\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<View> response = manager.views().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mznbaeqphch", response.iterator().next().etag());
-        Assertions.assertEquals("cypsxjv", response.iterator().next().displayName());
-        Assertions.assertEquals("imwkslircizj", response.iterator().next().scope());
-        Assertions.assertEquals(ChartType.TABLE, response.iterator().next().chart());
+        Assertions.assertEquals("wxrzxmdewsrsxkrp", response.iterator().next().etag());
+        Assertions.assertEquals("rryveimipskdy", response.iterator().next().displayName());
+        Assertions.assertEquals("tv", response.iterator().next().scope());
+        Assertions.assertEquals("tjvv", response.iterator().next().dateRange());
+        Assertions.assertEquals(ChartType.GROUPED_COLUMN, response.iterator().next().chart());
         Assertions.assertEquals(AccumulatedType.FALSE, response.iterator().next().accumulated());
-        Assertions.assertEquals(MetricType.AMORTIZED_COST, response.iterator().next().metric());
+        Assertions.assertEquals(MetricType.ACTUAL_COST, response.iterator().next().metric());
+        Assertions.assertEquals(KpiType.BUDGET, response.iterator().next().kpis().get(0).type());
+        Assertions.assertEquals("nq", response.iterator().next().kpis().get(0).id());
+        Assertions.assertEquals(true, response.iterator().next().kpis().get(0).enabled());
+        Assertions.assertEquals(PivotType.TAG_KEY, response.iterator().next().pivots().get(0).type());
+        Assertions.assertEquals("zwfbcyaykmmfzs", response.iterator().next().pivots().get(0).name());
         Assertions.assertEquals(ReportType.USAGE, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals(ReportTimeframeType.WEEK_TO_DATE, response.iterator().next().timeframe());
+        Assertions.assertEquals(ReportTimeframeType.MONTH_TO_DATE, response.iterator().next().timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T07:56:44Z"),
+            response.iterator().next().timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-14T18:33:51Z"),
+            response.iterator().next().timePeriod().to());
+        Assertions.assertEquals(ReportGranularityType.MONTHLY, response.iterator().next().dataSet().granularity());
+        Assertions.assertEquals("kkileplkc", response.iterator().next().dataSet().configuration().columns().get(0));
+        Assertions.assertEquals("wumgx", response.iterator().next().dataSet().aggregation().get("dhp").name());
+        Assertions.assertEquals(FunctionType.SUM,
+            response.iterator().next().dataSet().aggregation().get("dhp").function());
+        Assertions.assertEquals(QueryColumnType.DIMENSION,
+            response.iterator().next().dataSet().grouping().get(0).type());
+        Assertions.assertEquals("cgjokjljnhvlq", response.iterator().next().dataSet().grouping().get(0).name());
+        Assertions.assertEquals("stcpoqmavnwqjw", response.iterator().next().dataSet().sorting().get(0).name());
+        Assertions.assertEquals("kxybwfdbkj", response.iterator().next().dataSet().filter().dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS,
+            response.iterator().next().dataSet().filter().dimensions().operator());
+        Assertions.assertEquals("ensvkzykjtj", response.iterator().next().dataSet().filter().tags().name());
+        Assertions.assertEquals(OperatorType.IN, response.iterator().next().dataSet().filter().tags().operator());
         Assertions.assertEquals(false, response.iterator().next().includeMonetaryCommitment());
     }
 }

@@ -30,22 +30,28 @@ import com.azure.resourcemanager.reservations.fluent.models.QuotaRequestDetailsI
 import com.azure.resourcemanager.reservations.models.QuotaRequestDetailsList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in QuotaRequestStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotaRequestStatusClient.
+ */
 public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final QuotaRequestStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of QuotaRequestStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     QuotaRequestStatusClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(QuotaRequestStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(QuotaRequestStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,54 +62,38 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiQ")
     public interface QuotaRequestStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests/{id}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests/{id}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @PathParam("id") String id,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("providerId") String providerId, @PathParam("location") String location,
+            @PathParam("id") String id, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("providerId") String providerId,
-            @PathParam("location") String location,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("providerId") String providerId, @PathParam("location") String location,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -114,13 +104,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(
-        String subscriptionId, String providerId, String location, String id) {
+    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String subscriptionId, String providerId,
+        String location, String id) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -137,18 +125,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            apiVersion,
-                            providerId,
-                            location,
-                            id,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), subscriptionId, apiVersion, providerId,
+                location, id, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -156,7 +134,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -168,13 +146,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(
-        String subscriptionId, String providerId, String location, String id, Context context) {
+    private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String subscriptionId, String providerId,
+        String location, String id, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -191,15 +167,15 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), subscriptionId, apiVersion, providerId, location, id, accept, context);
+        return service.get(this.client.getEndpoint(), subscriptionId, apiVersion, providerId, location, id, accept,
+            context);
     }
 
     /**
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -210,8 +186,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QuotaRequestDetailsInner> getAsync(
-        String subscriptionId, String providerId, String location, String id) {
+    private Mono<QuotaRequestDetailsInner> getAsync(String subscriptionId, String providerId, String location,
+        String id) {
         return getWithResponseAsync(subscriptionId, providerId, location, id)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -220,7 +196,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -232,8 +208,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QuotaRequestDetailsInner> getWithResponse(
-        String subscriptionId, String providerId, String location, String id, Context context) {
+    public Response<QuotaRequestDetailsInner> getWithResponse(String subscriptionId, String providerId, String location,
+        String id, Context context) {
         return getWithResponseAsync(subscriptionId, providerId, location, id, context).block();
     }
 
@@ -241,7 +217,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
      * ID for the resources of the resource provider. The PUT request for the quota (service limit) returns a response
      * with the requestId parameter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -259,29 +235,28 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
-     * @param filter | Field | Supported operators | |---------------------|------------------------| |requestSubmitTime
-     *     | ge, le, eq, gt, lt |.
+     * @param filter | Field | Supported operators |
+     * |---------------------|------------------------|
+     * |requestSubmitTime | ge, le, eq, gt, lt |.
      * @param top Number of records to return.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies
-     *     a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies a
+     * starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
-        String subscriptionId, String providerId, String location, String filter, Integer top, String skiptoken) {
+    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String subscriptionId, String providerId,
+        String location, String filter, Integer top, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -295,45 +270,27 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String apiVersion = "2020-10-25";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            apiVersion,
-                            providerId,
-                            location,
-                            filter,
-                            top,
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<QuotaRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), subscriptionId, apiVersion, providerId,
+                location, filter, top, skiptoken, accept, context))
+            .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
-     * @param filter | Field | Supported operators | |---------------------|------------------------| |requestSubmitTime
-     *     | ge, le, eq, gt, lt |.
+     * @param filter | Field | Supported operators |
+     * |---------------------|------------------------|
+     * |requestSubmitTime | ge, le, eq, gt, lt |.
      * @param top Number of records to return.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies
-     *     a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -341,19 +298,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
+    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String subscriptionId, String providerId,
+        String location, String filter, Integer top, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -368,58 +317,42 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                subscriptionId,
-                apiVersion,
-                providerId,
-                location,
-                filter,
-                top,
-                skiptoken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), subscriptionId, apiVersion, providerId, location, filter, top, skiptoken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
-     * @param filter | Field | Supported operators | |---------------------|------------------------| |requestSubmitTime
-     *     | ge, le, eq, gt, lt |.
+     * @param filter | Field | Supported operators |
+     * |---------------------|------------------------|
+     * |requestSubmitTime | ge, le, eq, gt, lt |.
      * @param top Number of records to return.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies
-     *     a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies a
+     * starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaRequestDetailsInner> listAsync(
-        String subscriptionId, String providerId, String location, String filter, Integer top, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
+    private PagedFlux<QuotaRequestDetailsInner> listAsync(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -433,24 +366,24 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String filter = null;
         final Integer top = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
-     * @param filter | Field | Supported operators | |---------------------|------------------------| |requestSubmitTime
-     *     | ge, le, eq, gt, lt |.
+     * @param filter | Field | Supported operators |
+     * |---------------------|------------------------|
+     * |requestSubmitTime | ge, le, eq, gt, lt |.
      * @param top Number of records to return.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies
-     *     a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,14 +391,8 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaRequestDetailsInner> listAsync(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
+    private PagedFlux<QuotaRequestDetailsInner> listAsync(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(subscriptionId, providerId, location, filter, top, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -474,7 +401,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
@@ -494,16 +421,17 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * For the specified Azure region (location), subscription, and resource provider, get the history of the quota
      * requests for the past year. To select specific quota requests, use the oData filter.
-     *
+     * 
      * @param subscriptionId Azure subscription ID.
      * @param providerId Azure resource provider ID.
      * @param location Azure region.
-     * @param filter | Field | Supported operators | |---------------------|------------------------| |requestSubmitTime
-     *     | ge, le, eq, gt, lt |.
+     * @param filter | Field | Supported operators |
+     * |---------------------|------------------------|
+     * |requestSubmitTime | ge, le, eq, gt, lt |.
      * @param top Number of records to return.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies
-     *     a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,22 +439,15 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QuotaRequestDetailsInner> list(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
+    public PagedIterable<QuotaRequestDetailsInner> list(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken, Context context) {
         return new PagedIterable<>(listAsync(subscriptionId, providerId, location, filter, top, skiptoken, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -538,31 +459,20 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QuotaRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -575,23 +485,13 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -22,8 +22,7 @@ public final class SolutionsImpl implements Solutions {
 
     private final com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager;
 
-    public SolutionsImpl(
-        SolutionsClient innerClient,
+    public SolutionsImpl(SolutionsClient innerClient,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -37,15 +36,12 @@ public final class SolutionsImpl implements Solutions {
         this.serviceClient().delete(resourceGroupName, solutionName, context);
     }
 
-    public Response<Solution> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context) {
-        Response<SolutionInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, solutionName, context);
+    public Response<Solution> getByResourceGroupWithResponse(String resourceGroupName, String solutionName,
+        Context context) {
+        Response<SolutionInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, solutionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SolutionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,13 +58,10 @@ public final class SolutionsImpl implements Solutions {
     }
 
     public Response<SolutionPropertiesList> listByResourceGroupWithResponse(String resourceGroupName, Context context) {
-        Response<SolutionPropertiesListInner> inner =
-            this.serviceClient().listByResourceGroupWithResponse(resourceGroupName, context);
+        Response<SolutionPropertiesListInner> inner
+            = this.serviceClient().listByResourceGroupWithResponse(resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SolutionPropertiesListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -87,10 +80,7 @@ public final class SolutionsImpl implements Solutions {
     public Response<SolutionPropertiesList> listBySubscriptionWithResponse(Context context) {
         Response<SolutionPropertiesListInner> inner = this.serviceClient().listBySubscriptionWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SolutionPropertiesListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -107,77 +97,57 @@ public final class SolutionsImpl implements Solutions {
     }
 
     public Solution getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String solutionName = Utils.getValueFromIdByName(id, "solutions");
+        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
         if (solutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 
     public Response<Solution> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String solutionName = Utils.getValueFromIdByName(id, "solutions");
+        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
         if (solutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, solutionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String solutionName = Utils.getValueFromIdByName(id, "solutions");
+        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
         if (solutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
         }
         this.delete(resourceGroupName, solutionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String solutionName = Utils.getValueFromIdByName(id, "solutions");
+        String solutionName = ResourceManagerUtils.getValueFromIdByName(id, "solutions");
         if (solutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
         }
         this.delete(resourceGroupName, solutionName, context);
     }

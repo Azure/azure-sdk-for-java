@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,11 @@ import java.util.Map;
  */
 @Fluent
 public class OperationDetails implements JsonSerializable<OperationDetails> {
+    /*
+     * Type of operation.
+     */
+    private String kind = "OperationDetails";
+
     /*
      * Operation ID
      */
@@ -82,6 +88,15 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         this.resourceLocation = resourceLocation;
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -209,6 +224,9 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -216,9 +234,12 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
@@ -232,8 +253,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of OperationDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperationDetails.
      */
     public static OperationDetails fromJson(JsonReader jsonReader) throws IOException {
@@ -279,6 +299,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
             OffsetDateTime lastUpdatedDateTime = null;
             boolean resourceLocationFound = false;
             String resourceLocation = null;
+            String kind = null;
             Integer percentCompleted = null;
             String apiVersion = null;
             Map<String, String> tags = null;
@@ -294,16 +315,18 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
                     status = OperationStatus.fromString(reader.getString());
                     statusFound = true;
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     createdDateTimeFound = true;
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     lastUpdatedDateTimeFound = true;
                 } else if ("resourceLocation".equals(fieldName)) {
                     resourceLocation = reader.getString();
                     resourceLocationFound = true;
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
                 } else if ("percentCompleted".equals(fieldName)) {
                     percentCompleted = reader.getNullable(JsonReader::getInt);
                 } else if ("apiVersion".equals(fieldName)) {
@@ -316,10 +339,14 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
                     reader.skipChildren();
                 }
             }
-            if (operationIdFound && statusFound && createdDateTimeFound && lastUpdatedDateTimeFound
+            if (operationIdFound
+                && statusFound
+                && createdDateTimeFound
+                && lastUpdatedDateTimeFound
                 && resourceLocationFound) {
                 OperationDetails deserializedOperationDetails
                     = new OperationDetails(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+                deserializedOperationDetails.kind = kind;
                 deserializedOperationDetails.percentCompleted = percentCompleted;
                 deserializedOperationDetails.apiVersion = apiVersion;
                 deserializedOperationDetails.tags = tags;

@@ -6,18 +6,20 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.resourcemanager.mariadb.fluent.models.QueryPerformanceInsightResetDataResultInner;
 
-/** An immutable client-side representation of QueryPerformanceInsightResetDataResult. */
+/**
+ * An immutable client-side representation of QueryPerformanceInsightResetDataResult.
+ */
 public interface QueryPerformanceInsightResetDataResult {
     /**
      * Gets the status property: Indicates result of the operation.
-     *
+     * 
      * @return the status value.
      */
     QueryPerformanceInsightResetDataResultState status();
 
     /**
      * Gets the message property: operation message.
-     *
+     * 
      * @return the message value.
      */
     String message();
@@ -25,7 +27,7 @@ public interface QueryPerformanceInsightResetDataResult {
     /**
      * Gets the inner com.azure.resourcemanager.mariadb.fluent.models.QueryPerformanceInsightResetDataResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     QueryPerformanceInsightResetDataResultInner innerModel();

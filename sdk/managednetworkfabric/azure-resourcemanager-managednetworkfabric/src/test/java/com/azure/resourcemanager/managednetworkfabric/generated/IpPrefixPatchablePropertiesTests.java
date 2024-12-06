@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpPrefixPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpPrefixPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7278434712251922443,\"networkPrefix\":\"uyrsrziuctix\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"uifr\"},{\"action\":\"Permit\",\"sequenceNumber\":7782918375893447021,\"networkPrefix\":\"apezkiswqjmdghs\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"ybjufptb\"},{\"action\":\"Permit\",\"sequenceNumber\":906815829871548771,\"networkPrefix\":\"nciuiyqvldaswvpp\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"zlgcndhzxrrf\"}]}")
-                .toObject(IpPrefixPatchableProperties.class);
+        IpPrefixPatchableProperties model = BinaryData.fromString(
+            "{\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7278434712251922443,\"networkPrefix\":\"uyrsrziuctix\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"uifr\"},{\"action\":\"Permit\",\"sequenceNumber\":7782918375893447021,\"networkPrefix\":\"apezkiswqjmdghs\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"ybjufptb\"},{\"action\":\"Permit\",\"sequenceNumber\":906815829871548771,\"networkPrefix\":\"nciuiyqvldaswvpp\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"zlgcndhzxrrf\"}]}")
+            .toObject(IpPrefixPatchableProperties.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipPrefixRules().get(0).action());
         Assertions.assertEquals(7278434712251922443L, model.ipPrefixRules().get(0).sequenceNumber());
         Assertions.assertEquals("uyrsrziuctix", model.ipPrefixRules().get(0).networkPrefix());
@@ -29,29 +27,22 @@ public final class IpPrefixPatchablePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpPrefixPatchableProperties model =
-            new IpPrefixPatchableProperties()
-                .withIpPrefixRules(
-                    Arrays
-                        .asList(
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(7278434712251922443L)
-                                .withNetworkPrefix("uyrsrziuctix")
-                                .withCondition(Condition.EQUAL_TO)
-                                .withSubnetMaskLength("uifr"),
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(7782918375893447021L)
-                                .withNetworkPrefix("apezkiswqjmdghs")
-                                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
-                                .withSubnetMaskLength("ybjufptb"),
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(906815829871548771L)
-                                .withNetworkPrefix("nciuiyqvldaswvpp")
-                                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
-                                .withSubnetMaskLength("zlgcndhzxrrf")));
+        IpPrefixPatchableProperties model = new IpPrefixPatchableProperties().withIpPrefixRules(Arrays.asList(
+            new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(7278434712251922443L)
+                .withNetworkPrefix("uyrsrziuctix")
+                .withCondition(Condition.EQUAL_TO)
+                .withSubnetMaskLength("uifr"),
+            new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(7782918375893447021L)
+                .withNetworkPrefix("apezkiswqjmdghs")
+                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                .withSubnetMaskLength("ybjufptb"),
+            new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(906815829871548771L)
+                .withNetworkPrefix("nciuiyqvldaswvpp")
+                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                .withSubnetMaskLength("zlgcndhzxrrf")));
         model = BinaryData.fromObject(model).toObject(IpPrefixPatchableProperties.class);
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipPrefixRules().get(0).action());
         Assertions.assertEquals(7278434712251922443L, model.ipPrefixRules().get(0).sequenceNumber());

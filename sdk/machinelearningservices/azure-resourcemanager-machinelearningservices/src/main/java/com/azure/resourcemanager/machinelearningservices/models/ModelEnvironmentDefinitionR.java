@@ -12,7 +12,8 @@ import java.util.List;
 /** Settings for a R environment. */
 @Immutable
 public final class ModelEnvironmentDefinitionR extends RSection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionR.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionR.class);
 
     /** {@inheritDoc} */
     @Override

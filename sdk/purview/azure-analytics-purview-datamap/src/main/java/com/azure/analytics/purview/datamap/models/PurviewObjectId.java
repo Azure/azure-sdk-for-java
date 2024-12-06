@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -34,7 +35,7 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
      * The unique attributes of the object.
      */
     @Generated
-    private Map<String, Object> uniqueAttributes;
+    private Map<String, BinaryData> uniqueAttributes;
 
     /*
      * Name
@@ -64,7 +65,7 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
      * Dictionary of <any>
      */
     @Generated
-    private Map<String, Object> properties;
+    private Map<String, BinaryData> properties;
 
     /**
      * Creates an instance of PurviewObjectId class.
@@ -123,7 +124,7 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
      * @return the uniqueAttributes value.
      */
     @Generated
-    public Map<String, Object> getUniqueAttributes() {
+    public Map<String, BinaryData> getUniqueAttributes() {
         return this.uniqueAttributes;
     }
 
@@ -134,7 +135,7 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
      * @return the PurviewObjectId object itself.
      */
     @Generated
-    public PurviewObjectId setUniqueAttributes(Map<String, Object> uniqueAttributes) {
+    public PurviewObjectId setUniqueAttributes(Map<String, BinaryData> uniqueAttributes) {
         this.uniqueAttributes = uniqueAttributes;
         return this;
     }
@@ -233,7 +234,7 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
      * @return the properties value.
      */
     @Generated
-    public Map<String, Object> getProperties() {
+    public Map<String, BinaryData> getProperties() {
         return this.properties;
     }
 
@@ -244,7 +245,7 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
      * @return the PurviewObjectId object itself.
      */
     @Generated
-    public PurviewObjectId setProperties(Map<String, Object> properties) {
+    public PurviewObjectId setProperties(Map<String, BinaryData> properties) {
         this.properties = properties;
         return this;
     }
@@ -259,12 +260,13 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
         jsonWriter.writeStringField("guid", this.guid);
         jsonWriter.writeStringField("typeName", this.typeName);
         jsonWriter.writeMapField("uniqueAttributes", this.uniqueAttributes,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("displayText", this.displayText);
         jsonWriter.writeStringField("itemPath", this.itemPath);
         jsonWriter.writeStringField("resourceId", this.resourceId);
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("properties", this.properties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         return jsonWriter.writeEndObject();
     }
 
@@ -289,7 +291,8 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
                 } else if ("typeName".equals(fieldName)) {
                     deserializedPurviewObjectId.typeName = reader.getString();
                 } else if ("uniqueAttributes".equals(fieldName)) {
-                    Map<String, Object> uniqueAttributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> uniqueAttributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedPurviewObjectId.uniqueAttributes = uniqueAttributes;
                 } else if ("name".equals(fieldName)) {
                     deserializedPurviewObjectId.name = reader.getString();
@@ -300,7 +303,8 @@ public final class PurviewObjectId implements JsonSerializable<PurviewObjectId> 
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedPurviewObjectId.resourceId = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> properties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedPurviewObjectId.properties = properties;
                 } else {
                     reader.skipChildren();

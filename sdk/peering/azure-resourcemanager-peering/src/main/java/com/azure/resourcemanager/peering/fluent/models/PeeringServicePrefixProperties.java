@@ -5,65 +5,66 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.LearnedType;
 import com.azure.resourcemanager.peering.models.PeeringServicePrefixEvent;
 import com.azure.resourcemanager.peering.models.PrefixValidationState;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The peering service prefix properties class. */
+/**
+ * The peering service prefix properties class.
+ */
 @Fluent
-public final class PeeringServicePrefixProperties {
+public final class PeeringServicePrefixProperties implements JsonSerializable<PeeringServicePrefixProperties> {
     /*
      * The prefix from which your traffic originates.
      */
-    @JsonProperty(value = "prefix")
     private String prefix;
 
     /*
      * The prefix validation state
      */
-    @JsonProperty(value = "prefixValidationState", access = JsonProperty.Access.WRITE_ONLY)
     private PrefixValidationState prefixValidationState;
 
     /*
      * The prefix learned type
      */
-    @JsonProperty(value = "learnedType", access = JsonProperty.Access.WRITE_ONLY)
     private LearnedType learnedType;
 
     /*
      * The error message for validation state
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /*
      * The list of events for peering service prefix
      */
-    @JsonProperty(value = "events", access = JsonProperty.Access.WRITE_ONLY)
     private List<PeeringServicePrefixEvent> events;
 
     /*
      * The peering service prefix key
      */
-    @JsonProperty(value = "peeringServicePrefixKey")
     private String peeringServicePrefixKey;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of PeeringServicePrefixProperties class. */
+    /**
+     * Creates an instance of PeeringServicePrefixProperties class.
+     */
     public PeeringServicePrefixProperties() {
     }
 
     /**
      * Get the prefix property: The prefix from which your traffic originates.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -72,7 +73,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Set the prefix property: The prefix from which your traffic originates.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the PeeringServicePrefixProperties object itself.
      */
@@ -83,7 +84,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Get the prefixValidationState property: The prefix validation state.
-     *
+     * 
      * @return the prefixValidationState value.
      */
     public PrefixValidationState prefixValidationState() {
@@ -92,7 +93,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Get the learnedType property: The prefix learned type.
-     *
+     * 
      * @return the learnedType value.
      */
     public LearnedType learnedType() {
@@ -101,7 +102,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Get the errorMessage property: The error message for validation state.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -110,7 +111,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Get the events property: The list of events for peering service prefix.
-     *
+     * 
      * @return the events value.
      */
     public List<PeeringServicePrefixEvent> events() {
@@ -119,7 +120,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Get the peeringServicePrefixKey property: The peering service prefix key.
-     *
+     * 
      * @return the peeringServicePrefixKey value.
      */
     public String peeringServicePrefixKey() {
@@ -128,7 +129,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Set the peeringServicePrefixKey property: The peering service prefix key.
-     *
+     * 
      * @param peeringServicePrefixKey the peeringServicePrefixKey value to set.
      * @return the PeeringServicePrefixProperties object itself.
      */
@@ -139,7 +140,7 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -148,12 +149,66 @@ public final class PeeringServicePrefixProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (events() != null) {
             events().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeStringField("peeringServicePrefixKey", this.peeringServicePrefixKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServicePrefixProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServicePrefixProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringServicePrefixProperties.
+     */
+    public static PeeringServicePrefixProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServicePrefixProperties deserializedPeeringServicePrefixProperties
+                = new PeeringServicePrefixProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefix".equals(fieldName)) {
+                    deserializedPeeringServicePrefixProperties.prefix = reader.getString();
+                } else if ("prefixValidationState".equals(fieldName)) {
+                    deserializedPeeringServicePrefixProperties.prefixValidationState
+                        = PrefixValidationState.fromString(reader.getString());
+                } else if ("learnedType".equals(fieldName)) {
+                    deserializedPeeringServicePrefixProperties.learnedType = LearnedType.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedPeeringServicePrefixProperties.errorMessage = reader.getString();
+                } else if ("events".equals(fieldName)) {
+                    List<PeeringServicePrefixEvent> events
+                        = reader.readArray(reader1 -> PeeringServicePrefixEvent.fromJson(reader1));
+                    deserializedPeeringServicePrefixProperties.events = events;
+                } else if ("peeringServicePrefixKey".equals(fieldName)) {
+                    deserializedPeeringServicePrefixProperties.peeringServicePrefixKey = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPeeringServicePrefixProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServicePrefixProperties;
+        });
     }
 }

@@ -8,53 +8,55 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner;
 
-/** An immutable client-side representation of BackendContract. */
+/**
+ * An immutable client-side representation of BackendContract.
+ */
 public interface BackendContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the url property: Runtime Url of the Backend.
-     *
+     * 
      * @return the url value.
      */
     String url();
 
     /**
      * Gets the protocol property: Backend communication protocol.
-     *
+     * 
      * @return the protocol value.
      */
     BackendProtocol protocol();
 
     /**
      * Gets the title property: Backend Title.
-     *
+     * 
      * @return the title value.
      */
     String title();
 
     /**
      * Gets the description property: Backend Description.
-     *
+     * 
      * @return the description value.
      */
     String description();
@@ -62,69 +64,77 @@ public interface BackendContract {
     /**
      * Gets the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @return the resourceId value.
      */
     String resourceId();
 
     /**
      * Gets the properties property: Backend Properties contract.
-     *
+     * 
      * @return the properties value.
      */
     BackendProperties properties();
 
     /**
      * Gets the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @return the credentials value.
      */
     BackendCredentialsContract credentials();
 
     /**
      * Gets the proxy property: Backend gateway Contract Properties.
-     *
+     * 
      * @return the proxy value.
      */
     BackendProxyContract proxy();
 
     /**
      * Gets the tls property: Backend TLS Properties.
-     *
+     * 
      * @return the tls value.
      */
     BackendTlsProperties tls();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     BackendContractInner innerModel();
 
-    /** The entirety of the BackendContract definition. */
+    /**
+     * The entirety of the BackendContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The BackendContract definition stages. */
+    /**
+     * The BackendContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the BackendContract definition. */
+        /**
+         * The first stage of the BackendContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the BackendContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the BackendContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -136,142 +146,155 @@ public interface BackendContract {
          * The stage of the BackendContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithUrl,
-                DefinitionStages.WithProtocol,
-                DefinitionStages.WithTitle,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithResourceId,
-                DefinitionStages.WithProperties,
-                DefinitionStages.WithCredentials,
-                DefinitionStages.WithProxy,
-                DefinitionStages.WithTls,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithUrl, DefinitionStages.WithProtocol,
+            DefinitionStages.WithTitle, DefinitionStages.WithDescription, DefinitionStages.WithResourceId,
+            DefinitionStages.WithProperties, DefinitionStages.WithCredentials, DefinitionStages.WithProxy,
+            DefinitionStages.WithTls, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             BackendContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             BackendContract create(Context context);
         }
 
-        /** The stage of the BackendContract definition allowing to specify url. */
+        /**
+         * The stage of the BackendContract definition allowing to specify url.
+         */
         interface WithUrl {
             /**
              * Specifies the url property: Runtime Url of the Backend..
-             *
+             * 
              * @param url Runtime Url of the Backend.
              * @return the next definition stage.
              */
             WithCreate withUrl(String url);
         }
 
-        /** The stage of the BackendContract definition allowing to specify protocol. */
+        /**
+         * The stage of the BackendContract definition allowing to specify protocol.
+         */
         interface WithProtocol {
             /**
              * Specifies the protocol property: Backend communication protocol..
-             *
+             * 
              * @param protocol Backend communication protocol.
              * @return the next definition stage.
              */
             WithCreate withProtocol(BackendProtocol protocol);
         }
 
-        /** The stage of the BackendContract definition allowing to specify title. */
+        /**
+         * The stage of the BackendContract definition allowing to specify title.
+         */
         interface WithTitle {
             /**
              * Specifies the title property: Backend Title..
-             *
+             * 
              * @param title Backend Title.
              * @return the next definition stage.
              */
             WithCreate withTitle(String title);
         }
 
-        /** The stage of the BackendContract definition allowing to specify description. */
+        /**
+         * The stage of the BackendContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Backend Description..
-             *
+             * 
              * @param description Backend Description.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the BackendContract definition allowing to specify resourceId. */
+        /**
+         * The stage of the BackendContract definition allowing to specify resourceId.
+         */
         interface WithResourceId {
             /**
              * Specifies the resourceId property: Management Uri of the Resource in External System. This URL can be the
              * Arm Resource Id of Logic Apps, Function Apps or API Apps..
-             *
+             * 
              * @param resourceId Management Uri of the Resource in External System. This URL can be the Arm Resource Id
-             *     of Logic Apps, Function Apps or API Apps.
+             * of Logic Apps, Function Apps or API Apps.
              * @return the next definition stage.
              */
             WithCreate withResourceId(String resourceId);
         }
 
-        /** The stage of the BackendContract definition allowing to specify properties. */
+        /**
+         * The stage of the BackendContract definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Backend Properties contract.
-             *
+             * 
              * @param properties Backend Properties contract.
              * @return the next definition stage.
              */
             WithCreate withProperties(BackendProperties properties);
         }
 
-        /** The stage of the BackendContract definition allowing to specify credentials. */
+        /**
+         * The stage of the BackendContract definition allowing to specify credentials.
+         */
         interface WithCredentials {
             /**
              * Specifies the credentials property: Backend Credentials Contract Properties.
-             *
+             * 
              * @param credentials Backend Credentials Contract Properties.
              * @return the next definition stage.
              */
             WithCreate withCredentials(BackendCredentialsContract credentials);
         }
 
-        /** The stage of the BackendContract definition allowing to specify proxy. */
+        /**
+         * The stage of the BackendContract definition allowing to specify proxy.
+         */
         interface WithProxy {
             /**
              * Specifies the proxy property: Backend gateway Contract Properties.
-             *
+             * 
              * @param proxy Backend gateway Contract Properties.
              * @return the next definition stage.
              */
             WithCreate withProxy(BackendProxyContract proxy);
         }
 
-        /** The stage of the BackendContract definition allowing to specify tls. */
+        /**
+         * The stage of the BackendContract definition allowing to specify tls.
+         */
         interface WithTls {
             /**
              * Specifies the tls property: Backend TLS Properties.
-             *
+             * 
              * @param tls Backend TLS Properties.
              * @return the next definition stage.
              */
             WithCreate withTls(BackendTlsProperties tls);
         }
 
-        /** The stage of the BackendContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the BackendContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -280,150 +303,166 @@ public interface BackendContract {
 
     /**
      * Begins update for the BackendContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     BackendContract.Update update();
 
-    /** The template for BackendContract update. */
-    interface Update
-        extends UpdateStages.WithUrl,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithTitle,
-            UpdateStages.WithDescription,
-            UpdateStages.WithResourceId,
-            UpdateStages.WithProperties,
-            UpdateStages.WithCredentials,
-            UpdateStages.WithProxy,
-            UpdateStages.WithTls,
-            UpdateStages.WithIfMatch {
+    /**
+     * The template for BackendContract update.
+     */
+    interface Update extends UpdateStages.WithUrl, UpdateStages.WithProtocol, UpdateStages.WithTitle,
+        UpdateStages.WithDescription, UpdateStages.WithResourceId, UpdateStages.WithProperties,
+        UpdateStages.WithCredentials, UpdateStages.WithProxy, UpdateStages.WithTls, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         BackendContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         BackendContract apply(Context context);
     }
 
-    /** The BackendContract update stages. */
+    /**
+     * The BackendContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the BackendContract update allowing to specify url. */
+        /**
+         * The stage of the BackendContract update allowing to specify url.
+         */
         interface WithUrl {
             /**
              * Specifies the url property: Runtime Url of the Backend..
-             *
+             * 
              * @param url Runtime Url of the Backend.
              * @return the next definition stage.
              */
             Update withUrl(String url);
         }
 
-        /** The stage of the BackendContract update allowing to specify protocol. */
+        /**
+         * The stage of the BackendContract update allowing to specify protocol.
+         */
         interface WithProtocol {
             /**
              * Specifies the protocol property: Backend communication protocol..
-             *
+             * 
              * @param protocol Backend communication protocol.
              * @return the next definition stage.
              */
             Update withProtocol(BackendProtocol protocol);
         }
 
-        /** The stage of the BackendContract update allowing to specify title. */
+        /**
+         * The stage of the BackendContract update allowing to specify title.
+         */
         interface WithTitle {
             /**
              * Specifies the title property: Backend Title..
-             *
+             * 
              * @param title Backend Title.
              * @return the next definition stage.
              */
             Update withTitle(String title);
         }
 
-        /** The stage of the BackendContract update allowing to specify description. */
+        /**
+         * The stage of the BackendContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Backend Description..
-             *
+             * 
              * @param description Backend Description.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the BackendContract update allowing to specify resourceId. */
+        /**
+         * The stage of the BackendContract update allowing to specify resourceId.
+         */
         interface WithResourceId {
             /**
              * Specifies the resourceId property: Management Uri of the Resource in External System. This URL can be the
              * Arm Resource Id of Logic Apps, Function Apps or API Apps..
-             *
+             * 
              * @param resourceId Management Uri of the Resource in External System. This URL can be the Arm Resource Id
-             *     of Logic Apps, Function Apps or API Apps.
+             * of Logic Apps, Function Apps or API Apps.
              * @return the next definition stage.
              */
             Update withResourceId(String resourceId);
         }
 
-        /** The stage of the BackendContract update allowing to specify properties. */
+        /**
+         * The stage of the BackendContract update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Backend Properties contract.
-             *
+             * 
              * @param properties Backend Properties contract.
              * @return the next definition stage.
              */
             Update withProperties(BackendProperties properties);
         }
 
-        /** The stage of the BackendContract update allowing to specify credentials. */
+        /**
+         * The stage of the BackendContract update allowing to specify credentials.
+         */
         interface WithCredentials {
             /**
              * Specifies the credentials property: Backend Credentials Contract Properties.
-             *
+             * 
              * @param credentials Backend Credentials Contract Properties.
              * @return the next definition stage.
              */
             Update withCredentials(BackendCredentialsContract credentials);
         }
 
-        /** The stage of the BackendContract update allowing to specify proxy. */
+        /**
+         * The stage of the BackendContract update allowing to specify proxy.
+         */
         interface WithProxy {
             /**
              * Specifies the proxy property: Backend gateway Contract Properties.
-             *
+             * 
              * @param proxy Backend gateway Contract Properties.
              * @return the next definition stage.
              */
             Update withProxy(BackendProxyContract proxy);
         }
 
-        /** The stage of the BackendContract update allowing to specify tls. */
+        /**
+         * The stage of the BackendContract update allowing to specify tls.
+         */
         interface WithTls {
             /**
              * Specifies the tls property: Backend TLS Properties.
-             *
+             * 
              * @param tls Backend TLS Properties.
              * @return the next definition stage.
              */
             Update withTls(BackendTlsProperties tls);
         }
 
-        /** The stage of the BackendContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the BackendContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -432,14 +471,14 @@ public interface BackendContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     BackendContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -448,7 +487,7 @@ public interface BackendContract {
     /**
      * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no
      * timeout was specified, timeout of 2 minutes is used.
-     *
+     * 
      * @param parameters Reconnect request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -461,7 +500,7 @@ public interface BackendContract {
     /**
      * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no
      * timeout was specified, timeout of 2 minutes is used.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */

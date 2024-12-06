@@ -73,9 +73,6 @@ extends:
       - name: azure-cognitiveservices-spellcheck
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesspellcheck
-      - name: azure-cognitiveservices-textanalytics
-        groupId: com.microsoft.azure.cognitiveservices
-        safeName: azurecognitiveservicestextanalytics
       - name: azure-cognitiveservices-videosearch
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesvideosearch

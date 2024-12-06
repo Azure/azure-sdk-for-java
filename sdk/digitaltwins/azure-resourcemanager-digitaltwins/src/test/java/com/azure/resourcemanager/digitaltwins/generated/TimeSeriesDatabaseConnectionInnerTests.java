@@ -14,27 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeSeriesDatabaseConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeSeriesDatabaseConnectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"cktvfcivfsnkymuc\"}},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}")
-                .toObject(TimeSeriesDatabaseConnectionInner.class);
+        TimeSeriesDatabaseConnectionInner model = BinaryData.fromString(
+            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Moving\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"kymuctqhjfbebr\"}},\"id\":\"xerf\",\"name\":\"wutttxfvjrbi\",\"type\":\"phxepcyvahf\"}")
+            .toObject(TimeSeriesDatabaseConnectionInner.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.properties().identity().type());
-        Assertions.assertEquals("cktvfcivfsnkymuc", model.properties().identity().userAssignedIdentity());
+        Assertions.assertEquals("kymuctqhjfbebr", model.properties().identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeSeriesDatabaseConnectionInner model =
-            new TimeSeriesDatabaseConnectionInner()
-                .withProperties(
-                    new TimeSeriesDatabaseConnectionProperties()
-                        .withIdentity(
-                            new ManagedIdentityReference()
-                                .withType(IdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentity("cktvfcivfsnkymuc")));
+        TimeSeriesDatabaseConnectionInner model
+            = new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()
+                .withIdentity(new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("kymuctqhjfbebr")));
         model = BinaryData.fromObject(model).toObject(TimeSeriesDatabaseConnectionInner.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.properties().identity().type());
-        Assertions.assertEquals("cktvfcivfsnkymuc", model.properties().identity().userAssignedIdentity());
+        Assertions.assertEquals("kymuctqhjfbebr", model.properties().identity().userAssignedIdentity());
     }
 }

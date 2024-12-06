@@ -26,7 +26,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     private String kind = "DataConnection";
 
     /*
-     * The system generated unique id for the resource.
+     * This is typically the same as the name but might be different for different models.
      */
     @Generated
     private String id;
@@ -62,7 +62,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     private DataConnectionFrequency frequency;
 
     /*
-     * The day to update the data connection on.
+     * The day to update the data connection on. (1-7 for weekly, 1-31 for monthly)
      */
     @Generated
     private Integer frequencyOffset;
@@ -109,7 +109,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
+     * Get the id property: This is typically the same as the name but might be different for different models.
      *
      * @return the id value.
      */
@@ -119,7 +119,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
-     * Set the id property: The system generated unique id for the resource.
+     * Set the id property: This is typically the same as the name but might be different for different models.
      *
      * @param id the id value to set.
      * @return the DataConnection object itself.
@@ -241,7 +241,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
-     * Get the frequencyOffset property: The day to update the data connection on.
+     * Get the frequencyOffset property: The day to update the data connection on. (1-7 for weekly, 1-31 for monthly).
      *
      * @return the frequencyOffset value.
      */
@@ -251,7 +251,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     }
 
     /**
-     * Set the frequencyOffset property: The day to update the data connection on.
+     * Set the frequencyOffset property: The day to update the data connection on. (1-7 for weekly, 1-31 for monthly).
      *
      * @param frequencyOffset the frequencyOffset value to set.
      * @return the DataConnection object itself.

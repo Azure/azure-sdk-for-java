@@ -13,35 +13,37 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.models.DeletedServiceContractInner;
 
-/** An instance of this class provides access to all the operations defined in DeletedServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedServicesClient.
+ */
 public interface DeletedServicesClient {
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged deleted API Management Services List Representation as paginated response with {@link
-     *     PagedIterable}.
+     * @return paged deleted API Management Services List Representation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeletedServiceContractInner> list();
 
     /**
      * Lists all soft-deleted services available for undelete for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged deleted API Management Services List Representation as paginated response with {@link
-     *     PagedIterable}.
+     * @return paged deleted API Management Services List Representation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeletedServiceContractInner> list(Context context);
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -55,7 +57,7 @@ public interface DeletedServicesClient {
 
     /**
      * Get soft-deleted Api Management Service by name.
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +70,7 @@ public interface DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,12 +79,12 @@ public interface DeletedServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(
-        String serviceName, String location);
+    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(String serviceName,
+        String location);
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
@@ -92,12 +94,12 @@ public interface DeletedServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(
-        String serviceName, String location, Context context);
+    SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(String serviceName,
+        String location, Context context);
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface DeletedServicesClient {
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).
-     *
+     * 
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.

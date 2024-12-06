@@ -61,6 +61,11 @@ public final class ReplicaContainer implements JsonSerializable<ReplicaContainer
      */
     private String execEndpoint;
 
+    /*
+     * Container debug endpoint
+     */
+    private String debugEndpoint;
+
     /**
      * Creates an instance of ReplicaContainer class.
      */
@@ -204,6 +209,15 @@ public final class ReplicaContainer implements JsonSerializable<ReplicaContainer
     }
 
     /**
+     * Get the debugEndpoint property: Container debug endpoint.
+     * 
+     * @return the debugEndpoint value.
+     */
+    public String debugEndpoint() {
+        return this.debugEndpoint;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -259,6 +273,8 @@ public final class ReplicaContainer implements JsonSerializable<ReplicaContainer
                     deserializedReplicaContainer.logStreamEndpoint = reader.getString();
                 } else if ("execEndpoint".equals(fieldName)) {
                     deserializedReplicaContainer.execEndpoint = reader.getString();
+                } else if ("debugEndpoint".equals(fieldName)) {
+                    deserializedReplicaContainer.debugEndpoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

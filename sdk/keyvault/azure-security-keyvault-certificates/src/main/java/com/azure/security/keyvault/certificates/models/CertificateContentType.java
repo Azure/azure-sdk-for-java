@@ -28,7 +28,8 @@ public final class CertificateContentType extends ExpandableStringEnum<Certifica
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateContentType() {}
+    public CertificateContentType() {
+    }
 
     /**
      * Creates or finds a {@link CertificateContentType} from its string representation.
@@ -41,6 +42,8 @@ public final class CertificateContentType extends ExpandableStringEnum<Certifica
     }
 
     /**
+     * Gets the known values for {@link CertificateContentType}.
+     *
      * @return Known {@link CertificateContentType} values.
      */
     public static Collection<CertificateContentType> values() {

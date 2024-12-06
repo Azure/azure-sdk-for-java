@@ -191,10 +191,8 @@ public final class L2IsolationDomainInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model L2IsolationDomainInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model L2IsolationDomainInner"));
         } else {
             innerProperties().validate();
         }

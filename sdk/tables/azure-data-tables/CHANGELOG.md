@@ -1,10 +1,33 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.5.0 (2024-11-21)
+
+### Features Added
+
+- Added support for Microsoft Entra authentication when using the Tables SDK with Azure Cosmos endpoints.
+
+### Other Changes
+
+- Removed handwritten translation layer between generated and custom types.
+- Add serialization support using `azure-xml`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+
+## 12.4.6 (2024-10-17)
 
 ### Bugs Fixed
 
@@ -13,6 +36,10 @@ present within the service.
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 
 ## 12.4.5 (2024-09-27)
 

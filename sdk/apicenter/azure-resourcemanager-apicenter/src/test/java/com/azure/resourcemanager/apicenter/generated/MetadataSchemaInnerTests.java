@@ -29,9 +29,11 @@ public final class MetadataSchemaInnerTests {
         MetadataSchemaInner model
             = new MetadataSchemaInner().withProperties(new MetadataSchemaProperties().withSchema("bzqqedqytbciq")
                 .withAssignedTo(Arrays.asList(
-                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT).withRequired(false)
+                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT)
+                        .withRequired(false)
                         .withDeprecated(false),
-                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.API).withRequired(false)
+                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.API)
+                        .withRequired(false)
                         .withDeprecated(true))));
         model = BinaryData.fromObject(model).toObject(MetadataSchemaInner.class);
         Assertions.assertEquals("bzqqedqytbciq", model.properties().schema());

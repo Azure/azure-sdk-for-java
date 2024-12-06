@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ParentGroupInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParentGroupInfo model =
-            BinaryData
-                .fromString("{\"id\":\"olniwpwcukjf\",\"name\":\"iawxklry\",\"displayName\":\"wckbasyypnd\"}")
-                .toObject(ParentGroupInfo.class);
-        Assertions.assertEquals("olniwpwcukjf", model.id());
-        Assertions.assertEquals("iawxklry", model.name());
-        Assertions.assertEquals("wckbasyypnd", model.displayName());
+        ParentGroupInfo model = BinaryData
+            .fromString("{\"id\":\"ovmclwhijcoejct\",\"name\":\"aqsqsycbkbfk\",\"displayName\":\"kdkexxp\"}")
+            .toObject(ParentGroupInfo.class);
+        Assertions.assertEquals("ovmclwhijcoejct", model.id());
+        Assertions.assertEquals("aqsqsycbkbfk", model.name());
+        Assertions.assertEquals("kdkexxp", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParentGroupInfo model =
-            new ParentGroupInfo().withId("olniwpwcukjf").withName("iawxklry").withDisplayName("wckbasyypnd");
+        ParentGroupInfo model
+            = new ParentGroupInfo().withId("ovmclwhijcoejct").withName("aqsqsycbkbfk").withDisplayName("kdkexxp");
         model = BinaryData.fromObject(model).toObject(ParentGroupInfo.class);
-        Assertions.assertEquals("olniwpwcukjf", model.id());
-        Assertions.assertEquals("iawxklry", model.name());
-        Assertions.assertEquals("wckbasyypnd", model.displayName());
+        Assertions.assertEquals("ovmclwhijcoejct", model.id());
+        Assertions.assertEquals("aqsqsycbkbfk", model.name());
+        Assertions.assertEquals("kdkexxp", model.displayName());
     }
 }

@@ -16,8 +16,8 @@ public final class ReplicaImpl implements Replica, Replica.Definition {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    ReplicaImpl(
-        ReplicaInner innerObject, com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
+    ReplicaImpl(ReplicaInner innerObject,
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -79,20 +79,16 @@ public final class ReplicaImpl implements Replica, Replica.Definition {
     }
 
     public Replica create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicas()
-                .create(resourceGroupName, configStoreName, replicaName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicas()
+            .create(resourceGroupName, configStoreName, replicaName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Replica create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicas()
-                .create(resourceGroupName, configStoreName, replicaName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicas()
+            .create(resourceGroupName, configStoreName, replicaName, this.innerModel(), context);
         return this;
     }
 
@@ -103,22 +99,18 @@ public final class ReplicaImpl implements Replica, Replica.Definition {
     }
 
     public Replica refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicas()
-                .getWithResponse(resourceGroupName, configStoreName, replicaName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicas()
+            .getWithResponse(resourceGroupName, configStoreName, replicaName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Replica refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicas()
-                .getWithResponse(resourceGroupName, configStoreName, replicaName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicas()
+            .getWithResponse(resourceGroupName, configStoreName, replicaName, context)
+            .getValue();
         return this;
     }
 

@@ -11,6 +11,8 @@ import com.azure.json.JsonToken;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
+import java.util.Arrays;
 
 /** Options to configure the Recognize operation **/
 @Fluent
@@ -24,6 +26,11 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * The source of the audio to be played for recognition.
      */
     private PlaySource playPrompt;
+
+    /*
+     * The playPrompts property.
+     */
+    private List<PlaySource> playPrompts;
 
     /*
      * If set recognize can barge into other existing
@@ -102,9 +109,10 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
 
     /**
      * Get the playPrompt property: The source of the audio to be played for recognition.
-     *
+     * @deprecated Use the {@link #getPlayPrompts()} method.
      * @return the playPrompt value.
      */
+    @Deprecated
     public PlaySource getPlayPrompt() {
         return this.playPrompt;
     }
@@ -113,10 +121,46 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
+     * @deprecated Use the {@link #setPlayPrompts(List)} or {@link #setPlayPrompts(PlaySource...)} method.
      * @return the RecognizeRequest object itself.
      */
+    @Deprecated
     public CallMediaRecognizeOptions setPlayPrompt(PlaySource playPrompt) {
         this.playPrompt = playPrompt;
+        return this;
+    }
+
+    /**
+     * Get the playPrompts property: The list source of the audio to be played for recognition.
+     *
+     * @return the playPrompts value.
+     */
+    public List<PlaySource> getPlayPrompts() {
+        return this.playPrompts;
+    }
+
+    /**
+     * Set the playPrompts property: The list source of the audio to be played for recognition.
+     *
+     * @param playPrompts the playPrompts value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public CallMediaRecognizeOptions setPlayPrompts(List<PlaySource> playPrompts) {
+        this.playPrompts = playPrompts;
+        return this;
+    }
+
+    /**
+     * Set the playPrompts property: The list source of the audio to be played for recognition.
+     *
+     * @param playPrompts the playPrompts value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public CallMediaRecognizeOptions setPlayPrompts(PlaySource... playPrompts) {
+        if (playPrompts != null) {
+            this.playPrompts = Arrays.asList(playPrompts);
+        }
+
         return this;
     }
 
@@ -199,8 +243,7 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public CallMediaRecognizeOptions setInterruptPrompt(
-        Boolean interruptPrompt) {
+    public CallMediaRecognizeOptions setInterruptPrompt(Boolean interruptPrompt) {
         this.interruptPrompt = interruptPrompt;
         return this;
     }
@@ -252,25 +295,6 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      */
     public CallMediaRecognizeOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
-        return this;
-    }
-
-     /**
-     * Get the speech model endpoint id.
-     *
-     * @return the speech model endpoint id.
-     */
-    public String getSpeechModelEndpointId() {
-        return speechModelEndpointId;
-    }
-    /**
-     * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
-     *
-     * @param speechModelEndpointId the initialSilenceTimeout value to set.
-     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
-     */
-    public CallMediaRecognizeOptions setSpeechModelEndpointId(String speechModelEndpointId) {
-        this.speechModelEndpointId = speechModelEndpointId;
         return this;
     }
 

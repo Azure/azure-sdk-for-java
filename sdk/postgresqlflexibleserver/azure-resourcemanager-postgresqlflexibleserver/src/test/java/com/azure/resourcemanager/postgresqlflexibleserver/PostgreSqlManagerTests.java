@@ -41,7 +41,7 @@ import java.util.UUID;
 
 public class PostgreSqlManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION = Region.US_WEST;
     private String resourceGroupName = "rg" + randomPadding();
     private PostgreSqlManager postgreSqlManager;
     private ResourceManager resourceManager;
@@ -52,13 +52,11 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        postgreSqlManager = PostgreSqlManager
-            .configure()
+        postgreSqlManager = PostgreSqlManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -69,10 +67,7 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -91,8 +86,8 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
         try {
             String serverName = "postgresql" + randomPadding;
             String adminName = "sqlAdmin" + randomPadding;
-            String adminPwd = "sqlAdmin"
-                + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
+            String adminPwd
+                = "sqlAdmin" + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = postgreSqlManager.servers()
                 .define(serverName)
@@ -101,17 +96,15 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
                 .withAdministratorLogin(adminName)
                 .withAdministratorLoginPassword(adminPwd)
                 .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
-                .withAuthConfig(new AuthConfig()
-                    .withActiveDirectoryAuth(ActiveDirectoryAuthEnum.DISABLED)
+                .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(ActiveDirectoryAuthEnum.DISABLED)
                     .withPasswordAuth(PasswordAuthEnum.ENABLED))
                 .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
                 .withDataEncryption(new DataEncryption().withType(ArmServerKeyType.SYSTEM_MANAGED))
                 .withVersion(ServerVersion.ONE_FOUR)
                 .withAvailabilityZone("2")
                 .withStorage(new Storage().withStorageSizeGB(128))
-                .withBackup(new Backup()
-                    .withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED)
-                    .withBackupRetentionDays(7))
+                .withBackup(
+                    new Backup().withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED).withBackupRetentionDays(7))
                 .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.DISABLED))
                 .withReplicationRole(ReplicationRole.PRIMARY)
                 .create();

@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.RecoveryPointModelInner;
 
-/** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
+ */
 public interface RecoveryPointsClient {
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -29,18 +31,14 @@ public interface RecoveryPointsClient {
      * @return the details of the recovery point of a protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoveryPointModelInner> getWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        String recoveryPointName,
-        Context context);
+    Response<RecoveryPointModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, String recoveryPointName, Context context);
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -51,14 +49,14 @@ public interface RecoveryPointsClient {
      * @return the details of the recovery point of a protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryPointModelInner get(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName);
+    RecoveryPointModelInner get(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName);
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -72,9 +70,9 @@ public interface RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -85,6 +83,6 @@ public interface RecoveryPointsClient {
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryPointModelInner> list(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context);
+    PagedIterable<RecoveryPointModelInner> list(String resourceGroupName, String vaultName, String protectedItemName,
+        Context context);
 }

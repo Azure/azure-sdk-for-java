@@ -23,8 +23,8 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response}.
      */
-    Response<AccessControlList> getByResourceGroupWithResponse(
-        String resourceGroupName, String accessControlListName, Context context);
+    Response<AccessControlList> getByResourceGroupWithResponse(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Gets a Access Control List.
@@ -131,8 +131,8 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Access Control Lists.
@@ -148,8 +148,8 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
+        String accessControlListName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync operation on the Access Control Lists.
@@ -178,8 +178,8 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate resync(
-        String resourceGroupName, String accessControlListName, Context context);
+    CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Validates the configuration of the Access Control Lists.
@@ -208,8 +208,8 @@ public interface AccessControlLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String accessControlListName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName,
+        Context context);
 
     /**
      * Gets a Access Control List.

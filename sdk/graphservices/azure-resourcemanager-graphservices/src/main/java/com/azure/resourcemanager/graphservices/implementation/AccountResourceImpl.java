@@ -84,20 +84,16 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
     }
 
     public AccountResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createAndUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createAndUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AccountResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createAndUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createAndUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -113,50 +109,42 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
     }
 
     public AccountResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .updateWithResponse(resourceGroupName, resourceName, updateAccountResource, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .updateWithResponse(resourceGroupName, resourceName, updateAccountResource, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccountResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .updateWithResponse(resourceGroupName, resourceName, updateAccountResource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .updateWithResponse(resourceGroupName, resourceName, updateAccountResource, context)
+            .getValue();
         return this;
     }
 
-    AccountResourceImpl(
-        AccountResourceInner innerObject, com.azure.resourcemanager.graphservices.GraphServicesManager serviceManager) {
+    AccountResourceImpl(AccountResourceInner innerObject,
+        com.azure.resourcemanager.graphservices.GraphServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public AccountResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccountResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

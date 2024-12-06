@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PlannedFailoverModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.ProtectedItemModelInner;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemsClient.
+ */
 public interface ProtectedItemsClient {
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -31,14 +33,14 @@ public interface ProtectedItemsClient {
      * @return the details of the protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectedItemModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context);
+    Response<ProtectedItemModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context);
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -52,9 +54,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -64,14 +66,14 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of protected item model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String protectedItemName);
+    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(String resourceGroupName,
+        String vaultName, String protectedItemName);
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -83,18 +85,14 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of protected item model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context);
+    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(String resourceGroupName,
+        String vaultName, String protectedItemName, ProtectedItemModelInner body, Context context);
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -108,9 +106,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -122,18 +120,14 @@ public interface ProtectedItemsClient {
      * @return protected item model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectedItemModelInner create(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context);
+    ProtectedItemModelInner create(String resourceGroupName, String vaultName, String protectedItemName,
+        ProtectedItemModelInner body, Context context);
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -143,14 +137,14 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String protectedItemName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String protectedItemName);
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -162,14 +156,14 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName, String protectedItemName,
+        Boolean forceDelete, Context context);
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -182,9 +176,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -195,14 +189,14 @@ public interface ProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context);
+    void delete(String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete,
+        Context context);
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,9 +209,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -231,9 +225,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -243,14 +237,14 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
-        String resourceGroupName, String vaultName, String protectedItemName);
+    SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner>
+        beginPlannedFailover(String resourceGroupName, String vaultName, String protectedItemName);
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -263,17 +257,14 @@ public interface ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
+        String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body,
         Context context);
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -287,9 +278,9 @@ public interface ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -301,10 +292,6 @@ public interface ProtectedItemsClient {
      * @return planned failover model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PlannedFailoverModelInner plannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
-        Context context);
+    PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName, String protectedItemName,
+        PlannedFailoverModelInner body, Context context);
 }

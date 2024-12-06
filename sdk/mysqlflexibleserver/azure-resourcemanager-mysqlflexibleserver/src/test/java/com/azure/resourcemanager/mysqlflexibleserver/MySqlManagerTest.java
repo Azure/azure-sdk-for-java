@@ -25,7 +25,7 @@ import java.util.UUID;
 
 public class MySqlManagerTest extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST;
+    private static final Region REGION = Region.US_EAST2;
     private String resourceGroupName = "rg" + randomPadding();
     private MySqlManager mysqlManager;
     private ResourceManager resourceManager;
@@ -36,13 +36,11 @@ public class MySqlManagerTest extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        mysqlManager = MySqlManager
-            .configure()
+        mysqlManager = MySqlManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -53,10 +51,7 @@ public class MySqlManagerTest extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -75,8 +70,8 @@ public class MySqlManagerTest extends TestProxyTestBase {
         try {
             String serverName = "mysql" + randomPadding;
             String adminName = "sqlAdmin" + randomPadding;
-            String adminPwd = "sqlAdmin"
-                + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
+            String adminPwd
+                = "sqlAdmin" + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = mysqlManager.servers()
                 .define(serverName)

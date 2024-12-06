@@ -1,8 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
-import java.util.Arrays;
-
 import io.clientcore.core.json.implementation.jackson.core.SerializableString;
 
 /**
@@ -11,14 +9,8 @@ import io.clientcore.core.json.implementation.jackson.core.SerializableString;
  * For JSON this applies to both property names and String values.
  */
 @SuppressWarnings("serial")
-public abstract class CharacterEscapes
-    implements java.io.Serializable // since 2.1
+public abstract class CharacterEscapes implements java.io.Serializable // since 2.1
 {
-    /**
-     * Value used for lookup tables to indicate that matching characters
-     * do not need to be escaped.
-     */
-    public final static int ESCAPE_NONE = 0;
 
     /**
      * Value used for lookup tables to indicate that matching characters
@@ -62,18 +54,4 @@ public abstract class CharacterEscapes
      */
     public abstract SerializableString getEscapeSequence(int ch);
 
-    /**
-     * Helper method that can be used to get a copy of standard JSON
-     * escape definitions; this is useful when just wanting to slightly
-     * customize definitions. Caller can modify this array as it sees
-     * fit and usually returns modified instance via {@link #getEscapeCodesForAscii}
-     *
-     * @return Set of escapes, similar to {@link #getEscapeCodesForAscii()} (array of
-     *    128 {@code int}s), but a copy that caller owns and is free to modify
-     */
-    public static int[] standardAsciiEscapesForJSON()
-    {
-        int[] esc = CharTypes.get7BitOutputEscapes();
-        return Arrays.copyOf(esc, esc.length);
-    }
 }

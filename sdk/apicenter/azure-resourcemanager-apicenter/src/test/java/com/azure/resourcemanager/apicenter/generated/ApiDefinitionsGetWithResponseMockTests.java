@@ -44,12 +44,15 @@ public final class ApiDefinitionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApiDefinition response = manager.apiDefinitions().getWithResponse("sxtta", "gzxnfaazpxdtnk", "mkqjj", "wuenvr",
-            "pyouaibrebqaays", "kixqtnqtt", com.azure.core.util.Context.NONE).getValue();
+        ApiDefinition response = manager.apiDefinitions()
+            .getWithResponse("sxtta", "gzxnfaazpxdtnk", "mkqjj", "wuenvr", "pyouaibrebqaays", "kixqtnqtt",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("lwfffi", response.properties().title());
         Assertions.assertEquals("pjpqqmtedltmmji", response.properties().description());

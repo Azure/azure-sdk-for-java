@@ -4,26 +4,24 @@
 
 package com.azure.resourcemanager.operationsmanagement.generated;
 
-/** Samples for ManagementAssociations Delete. */
+/**
+ * Samples for ManagementAssociations Delete.
+ */
 public final class ManagementAssociationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/ManagementAssociationDelete.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/ManagementAssociationDelete.json
      */
     /**
      * Sample code: SolutionDelete.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
-    public static void solutionDelete(
-        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
-        manager
-            .managementAssociations()
-            .deleteWithResponse(
-                "rg1",
-                "providerName",
-                "resourceType",
-                "resourceName",
-                "managementAssociationName",
+    public static void
+        solutionDelete(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {
+        manager.managementAssociations()
+            .deleteWithResponse("rg1", "providerName", "resourceType", "resourceName", "managementAssociationName",
                 com.azure.core.util.Context.NONE);
     }
 }

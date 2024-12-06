@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"nameAvailable\":true,\"name\":\"kglklbyulidwcw\",\"message\":\"zegjonfhjirwgdn\",\"reason\":\"Invalid\"}")
-                .toObject(CheckNameResultInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("kglklbyulidwcw", model.name());
-        Assertions.assertEquals("zegjonfhjirwgdn", model.message());
-        Assertions.assertEquals(Reason.INVALID, model.reason());
+        CheckNameResultInner model = BinaryData
+            .fromString("{\"nameAvailable\":false,\"name\":\"k\",\"message\":\"hu\",\"reason\":\"AlreadyExists\"}")
+            .toObject(CheckNameResultInner.class);
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("k", model.name());
+        Assertions.assertEquals("hu", model.message());
+        Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameResultInner model =
-            new CheckNameResultInner()
-                .withNameAvailable(true)
-                .withName("kglklbyulidwcw")
-                .withMessage("zegjonfhjirwgdn")
-                .withReason(Reason.INVALID);
+        CheckNameResultInner model = new CheckNameResultInner().withNameAvailable(false)
+            .withName("k")
+            .withMessage("hu")
+            .withReason(Reason.ALREADY_EXISTS);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("kglklbyulidwcw", model.name());
-        Assertions.assertEquals("zegjonfhjirwgdn", model.message());
-        Assertions.assertEquals(Reason.INVALID, model.reason());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("k", model.name());
+        Assertions.assertEquals("hu", model.message());
+        Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 }

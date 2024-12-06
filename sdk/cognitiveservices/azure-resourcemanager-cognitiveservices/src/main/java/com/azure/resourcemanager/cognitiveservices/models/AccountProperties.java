@@ -5,193 +5,181 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of Cognitive Services account. */
+/**
+ * Properties of Cognitive Services account.
+ */
 @Fluent
-public final class AccountProperties {
+public final class AccountProperties implements JsonSerializable<AccountProperties> {
     /*
      * Gets the status of the cognitive services account at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Endpoint of the created account.
      */
-    @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
     /*
      * The internal identifier (deprecated, do not use this property).
      */
-    @JsonProperty(value = "internalId", access = JsonProperty.Access.WRITE_ONLY)
     private String internalId;
 
     /*
      * Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific
      * feature. The values are read-only and for reference only.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
     /*
      * If the resource is migrated from an existing key.
      */
-    @JsonProperty(value = "isMigrated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMigrated;
 
     /*
      * Resource migration token.
      */
-    @JsonProperty(value = "migrationToken")
     private String migrationToken;
 
     /*
      * Sku change info of account.
      */
-    @JsonProperty(value = "skuChangeInfo", access = JsonProperty.Access.WRITE_ONLY)
     private SkuChangeInfo skuChangeInfo;
 
     /*
      * Optional subdomain name used for token-based authentication.
      */
-    @JsonProperty(value = "customSubDomainName")
     private String customSubDomainName;
 
     /*
      * A collection of rules governing the accessibility from specific network locations.
      */
-    @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
 
     /*
      * The encryption properties for this resource.
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * The storage accounts for this resource.
      */
-    @JsonProperty(value = "userOwnedStorage")
     private List<UserOwnedStorage> userOwnedStorage;
+
+    /*
+     * The user owned AML workspace properties.
+     */
+    private UserOwnedAmlWorkspace amlWorkspace;
 
     /*
      * The private endpoint connection associated with the Cognitive Services account.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Whether or not public endpoint access is allowed for this account.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The api properties for special APIs.
      */
-    @JsonProperty(value = "apiProperties")
     private ApiProperties apiProperties;
 
     /*
      * Gets the date of cognitive services account creation.
      */
-    @JsonProperty(value = "dateCreated", access = JsonProperty.Access.WRITE_ONLY)
     private String dateCreated;
 
     /*
      * The call rate limit Cognitive Services account.
      */
-    @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
     private CallRateLimit callRateLimit;
 
     /*
      * The flag to enable dynamic throttling.
      */
-    @JsonProperty(value = "dynamicThrottlingEnabled")
     private Boolean dynamicThrottlingEnabled;
 
     /*
      * The quotaLimit property.
      */
-    @JsonProperty(value = "quotaLimit", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaLimit quotaLimit;
 
     /*
      * The restrictOutboundNetworkAccess property.
      */
-    @JsonProperty(value = "restrictOutboundNetworkAccess")
     private Boolean restrictOutboundNetworkAccess;
 
     /*
      * The allowedFqdnList property.
      */
-    @JsonProperty(value = "allowedFqdnList")
     private List<String> allowedFqdnList;
 
     /*
      * The disableLocalAuth property.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * Dictionary of <string>
      */
-    @JsonProperty(value = "endpoints", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> endpoints;
 
     /*
      * The restore property.
      */
-    @JsonProperty(value = "restore")
     private Boolean restore;
 
     /*
      * The deletion date, only available for deleted account.
      */
-    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private String deletionDate;
 
     /*
      * The scheduled purge date, only available for deleted account.
      */
-    @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private String scheduledPurgeDate;
 
     /*
      * The multiregion settings of Cognitive Services account.
      */
-    @JsonProperty(value = "locations")
     private MultiRegionSettings locations;
 
     /*
      * The commitment plan associations of Cognitive Services account.
      */
-    @JsonProperty(value = "commitmentPlanAssociations", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentPlanAssociation> commitmentPlanAssociations;
 
     /*
      * The abuse penalty.
      */
-    @JsonProperty(value = "abusePenalty", access = JsonProperty.Access.WRITE_ONLY)
     private AbusePenalty abusePenalty;
 
-    /** Creates an instance of AccountProperties class. */
+    /*
+     * Cognitive Services Rai Monitor Config.
+     */
+    private RaiMonitorConfig raiMonitorConfig;
+
+    /**
+     * Creates an instance of AccountProperties class.
+     */
     public AccountProperties() {
     }
 
     /**
      * Get the provisioningState property: Gets the status of the cognitive services account at the time the operation
      * was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -200,7 +188,7 @@ public final class AccountProperties {
 
     /**
      * Get the endpoint property: Endpoint of the created account.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -209,7 +197,7 @@ public final class AccountProperties {
 
     /**
      * Get the internalId property: The internal identifier (deprecated, do not use this property).
-     *
+     * 
      * @return the internalId value.
      */
     public String internalId() {
@@ -219,7 +207,7 @@ public final class AccountProperties {
     /**
      * Get the capabilities property: Gets the capabilities of the cognitive services account. Each item indicates the
      * capability of a specific feature. The values are read-only and for reference only.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -228,7 +216,7 @@ public final class AccountProperties {
 
     /**
      * Get the isMigrated property: If the resource is migrated from an existing key.
-     *
+     * 
      * @return the isMigrated value.
      */
     public Boolean isMigrated() {
@@ -237,7 +225,7 @@ public final class AccountProperties {
 
     /**
      * Get the migrationToken property: Resource migration token.
-     *
+     * 
      * @return the migrationToken value.
      */
     public String migrationToken() {
@@ -246,7 +234,7 @@ public final class AccountProperties {
 
     /**
      * Set the migrationToken property: Resource migration token.
-     *
+     * 
      * @param migrationToken the migrationToken value to set.
      * @return the AccountProperties object itself.
      */
@@ -257,7 +245,7 @@ public final class AccountProperties {
 
     /**
      * Get the skuChangeInfo property: Sku change info of account.
-     *
+     * 
      * @return the skuChangeInfo value.
      */
     public SkuChangeInfo skuChangeInfo() {
@@ -266,7 +254,7 @@ public final class AccountProperties {
 
     /**
      * Get the customSubDomainName property: Optional subdomain name used for token-based authentication.
-     *
+     * 
      * @return the customSubDomainName value.
      */
     public String customSubDomainName() {
@@ -275,7 +263,7 @@ public final class AccountProperties {
 
     /**
      * Set the customSubDomainName property: Optional subdomain name used for token-based authentication.
-     *
+     * 
      * @param customSubDomainName the customSubDomainName value to set.
      * @return the AccountProperties object itself.
      */
@@ -286,7 +274,7 @@ public final class AccountProperties {
 
     /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @return the networkAcls value.
      */
     public NetworkRuleSet networkAcls() {
@@ -295,7 +283,7 @@ public final class AccountProperties {
 
     /**
      * Set the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the AccountProperties object itself.
      */
@@ -306,7 +294,7 @@ public final class AccountProperties {
 
     /**
      * Get the encryption property: The encryption properties for this resource.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -315,7 +303,7 @@ public final class AccountProperties {
 
     /**
      * Set the encryption property: The encryption properties for this resource.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the AccountProperties object itself.
      */
@@ -326,7 +314,7 @@ public final class AccountProperties {
 
     /**
      * Get the userOwnedStorage property: The storage accounts for this resource.
-     *
+     * 
      * @return the userOwnedStorage value.
      */
     public List<UserOwnedStorage> userOwnedStorage() {
@@ -335,7 +323,7 @@ public final class AccountProperties {
 
     /**
      * Set the userOwnedStorage property: The storage accounts for this resource.
-     *
+     * 
      * @param userOwnedStorage the userOwnedStorage value to set.
      * @return the AccountProperties object itself.
      */
@@ -345,9 +333,29 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the amlWorkspace property: The user owned AML workspace properties.
+     * 
+     * @return the amlWorkspace value.
+     */
+    public UserOwnedAmlWorkspace amlWorkspace() {
+        return this.amlWorkspace;
+    }
+
+    /**
+     * Set the amlWorkspace property: The user owned AML workspace properties.
+     * 
+     * @param amlWorkspace the amlWorkspace value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withAmlWorkspace(UserOwnedAmlWorkspace amlWorkspace) {
+        this.amlWorkspace = amlWorkspace;
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: The private endpoint connection associated with the Cognitive
      * Services account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -356,7 +364,7 @@ public final class AccountProperties {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this account.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -365,7 +373,7 @@ public final class AccountProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this account.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AccountProperties object itself.
      */
@@ -376,7 +384,7 @@ public final class AccountProperties {
 
     /**
      * Get the apiProperties property: The api properties for special APIs.
-     *
+     * 
      * @return the apiProperties value.
      */
     public ApiProperties apiProperties() {
@@ -385,7 +393,7 @@ public final class AccountProperties {
 
     /**
      * Set the apiProperties property: The api properties for special APIs.
-     *
+     * 
      * @param apiProperties the apiProperties value to set.
      * @return the AccountProperties object itself.
      */
@@ -396,7 +404,7 @@ public final class AccountProperties {
 
     /**
      * Get the dateCreated property: Gets the date of cognitive services account creation.
-     *
+     * 
      * @return the dateCreated value.
      */
     public String dateCreated() {
@@ -405,7 +413,7 @@ public final class AccountProperties {
 
     /**
      * Get the callRateLimit property: The call rate limit Cognitive Services account.
-     *
+     * 
      * @return the callRateLimit value.
      */
     public CallRateLimit callRateLimit() {
@@ -414,7 +422,7 @@ public final class AccountProperties {
 
     /**
      * Get the dynamicThrottlingEnabled property: The flag to enable dynamic throttling.
-     *
+     * 
      * @return the dynamicThrottlingEnabled value.
      */
     public Boolean dynamicThrottlingEnabled() {
@@ -423,7 +431,7 @@ public final class AccountProperties {
 
     /**
      * Set the dynamicThrottlingEnabled property: The flag to enable dynamic throttling.
-     *
+     * 
      * @param dynamicThrottlingEnabled the dynamicThrottlingEnabled value to set.
      * @return the AccountProperties object itself.
      */
@@ -434,7 +442,7 @@ public final class AccountProperties {
 
     /**
      * Get the quotaLimit property: The quotaLimit property.
-     *
+     * 
      * @return the quotaLimit value.
      */
     public QuotaLimit quotaLimit() {
@@ -443,7 +451,7 @@ public final class AccountProperties {
 
     /**
      * Get the restrictOutboundNetworkAccess property: The restrictOutboundNetworkAccess property.
-     *
+     * 
      * @return the restrictOutboundNetworkAccess value.
      */
     public Boolean restrictOutboundNetworkAccess() {
@@ -452,7 +460,7 @@ public final class AccountProperties {
 
     /**
      * Set the restrictOutboundNetworkAccess property: The restrictOutboundNetworkAccess property.
-     *
+     * 
      * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
      * @return the AccountProperties object itself.
      */
@@ -463,7 +471,7 @@ public final class AccountProperties {
 
     /**
      * Get the allowedFqdnList property: The allowedFqdnList property.
-     *
+     * 
      * @return the allowedFqdnList value.
      */
     public List<String> allowedFqdnList() {
@@ -472,7 +480,7 @@ public final class AccountProperties {
 
     /**
      * Set the allowedFqdnList property: The allowedFqdnList property.
-     *
+     * 
      * @param allowedFqdnList the allowedFqdnList value to set.
      * @return the AccountProperties object itself.
      */
@@ -483,7 +491,7 @@ public final class AccountProperties {
 
     /**
      * Get the disableLocalAuth property: The disableLocalAuth property.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -492,7 +500,7 @@ public final class AccountProperties {
 
     /**
      * Set the disableLocalAuth property: The disableLocalAuth property.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the AccountProperties object itself.
      */
@@ -503,7 +511,7 @@ public final class AccountProperties {
 
     /**
      * Get the endpoints property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the endpoints value.
      */
     public Map<String, String> endpoints() {
@@ -512,7 +520,7 @@ public final class AccountProperties {
 
     /**
      * Get the restore property: The restore property.
-     *
+     * 
      * @return the restore value.
      */
     public Boolean restore() {
@@ -521,7 +529,7 @@ public final class AccountProperties {
 
     /**
      * Set the restore property: The restore property.
-     *
+     * 
      * @param restore the restore value to set.
      * @return the AccountProperties object itself.
      */
@@ -532,7 +540,7 @@ public final class AccountProperties {
 
     /**
      * Get the deletionDate property: The deletion date, only available for deleted account.
-     *
+     * 
      * @return the deletionDate value.
      */
     public String deletionDate() {
@@ -541,7 +549,7 @@ public final class AccountProperties {
 
     /**
      * Get the scheduledPurgeDate property: The scheduled purge date, only available for deleted account.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public String scheduledPurgeDate() {
@@ -550,7 +558,7 @@ public final class AccountProperties {
 
     /**
      * Get the locations property: The multiregion settings of Cognitive Services account.
-     *
+     * 
      * @return the locations value.
      */
     public MultiRegionSettings locations() {
@@ -559,7 +567,7 @@ public final class AccountProperties {
 
     /**
      * Set the locations property: The multiregion settings of Cognitive Services account.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the AccountProperties object itself.
      */
@@ -570,7 +578,7 @@ public final class AccountProperties {
 
     /**
      * Get the commitmentPlanAssociations property: The commitment plan associations of Cognitive Services account.
-     *
+     * 
      * @return the commitmentPlanAssociations value.
      */
     public List<CommitmentPlanAssociation> commitmentPlanAssociations() {
@@ -579,7 +587,7 @@ public final class AccountProperties {
 
     /**
      * Get the abusePenalty property: The abuse penalty.
-     *
+     * 
      * @return the abusePenalty value.
      */
     public AbusePenalty abusePenalty() {
@@ -587,8 +595,28 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the raiMonitorConfig property: Cognitive Services Rai Monitor Config.
+     * 
+     * @return the raiMonitorConfig value.
+     */
+    public RaiMonitorConfig raiMonitorConfig() {
+        return this.raiMonitorConfig;
+    }
+
+    /**
+     * Set the raiMonitorConfig property: Cognitive Services Rai Monitor Config.
+     * 
+     * @param raiMonitorConfig the raiMonitorConfig value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withRaiMonitorConfig(RaiMonitorConfig raiMonitorConfig) {
+        this.raiMonitorConfig = raiMonitorConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -606,6 +634,9 @@ public final class AccountProperties {
         }
         if (userOwnedStorage() != null) {
             userOwnedStorage().forEach(e -> e.validate());
+        }
+        if (amlWorkspace() != null) {
+            amlWorkspace().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
@@ -628,5 +659,130 @@ public final class AccountProperties {
         if (abusePenalty() != null) {
             abusePenalty().validate();
         }
+        if (raiMonitorConfig() != null) {
+            raiMonitorConfig().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("migrationToken", this.migrationToken);
+        jsonWriter.writeStringField("customSubDomainName", this.customSubDomainName);
+        jsonWriter.writeJsonField("networkAcls", this.networkAcls);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeArrayField("userOwnedStorage", this.userOwnedStorage,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("amlWorkspace", this.amlWorkspace);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("apiProperties", this.apiProperties);
+        jsonWriter.writeBooleanField("dynamicThrottlingEnabled", this.dynamicThrottlingEnabled);
+        jsonWriter.writeBooleanField("restrictOutboundNetworkAccess", this.restrictOutboundNetworkAccess);
+        jsonWriter.writeArrayField("allowedFqdnList", this.allowedFqdnList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeBooleanField("restore", this.restore);
+        jsonWriter.writeJsonField("locations", this.locations);
+        jsonWriter.writeJsonField("raiMonitorConfig", this.raiMonitorConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountProperties.
+     */
+    public static AccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountProperties deserializedAccountProperties = new AccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAccountProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedAccountProperties.endpoint = reader.getString();
+                } else if ("internalId".equals(fieldName)) {
+                    deserializedAccountProperties.internalId = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
+                    deserializedAccountProperties.capabilities = capabilities;
+                } else if ("isMigrated".equals(fieldName)) {
+                    deserializedAccountProperties.isMigrated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("migrationToken".equals(fieldName)) {
+                    deserializedAccountProperties.migrationToken = reader.getString();
+                } else if ("skuChangeInfo".equals(fieldName)) {
+                    deserializedAccountProperties.skuChangeInfo = SkuChangeInfo.fromJson(reader);
+                } else if ("customSubDomainName".equals(fieldName)) {
+                    deserializedAccountProperties.customSubDomainName = reader.getString();
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedAccountProperties.networkAcls = NetworkRuleSet.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedAccountProperties.encryption = Encryption.fromJson(reader);
+                } else if ("userOwnedStorage".equals(fieldName)) {
+                    List<UserOwnedStorage> userOwnedStorage
+                        = reader.readArray(reader1 -> UserOwnedStorage.fromJson(reader1));
+                    deserializedAccountProperties.userOwnedStorage = userOwnedStorage;
+                } else if ("amlWorkspace".equals(fieldName)) {
+                    deserializedAccountProperties.amlWorkspace = UserOwnedAmlWorkspace.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedAccountProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedAccountProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("apiProperties".equals(fieldName)) {
+                    deserializedAccountProperties.apiProperties = ApiProperties.fromJson(reader);
+                } else if ("dateCreated".equals(fieldName)) {
+                    deserializedAccountProperties.dateCreated = reader.getString();
+                } else if ("callRateLimit".equals(fieldName)) {
+                    deserializedAccountProperties.callRateLimit = CallRateLimit.fromJson(reader);
+                } else if ("dynamicThrottlingEnabled".equals(fieldName)) {
+                    deserializedAccountProperties.dynamicThrottlingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("quotaLimit".equals(fieldName)) {
+                    deserializedAccountProperties.quotaLimit = QuotaLimit.fromJson(reader);
+                } else if ("restrictOutboundNetworkAccess".equals(fieldName)) {
+                    deserializedAccountProperties.restrictOutboundNetworkAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowedFqdnList".equals(fieldName)) {
+                    List<String> allowedFqdnList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAccountProperties.allowedFqdnList = allowedFqdnList;
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedAccountProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("endpoints".equals(fieldName)) {
+                    Map<String, String> endpoints = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccountProperties.endpoints = endpoints;
+                } else if ("restore".equals(fieldName)) {
+                    deserializedAccountProperties.restore = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedAccountProperties.deletionDate = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedAccountProperties.scheduledPurgeDate = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    deserializedAccountProperties.locations = MultiRegionSettings.fromJson(reader);
+                } else if ("commitmentPlanAssociations".equals(fieldName)) {
+                    List<CommitmentPlanAssociation> commitmentPlanAssociations
+                        = reader.readArray(reader1 -> CommitmentPlanAssociation.fromJson(reader1));
+                    deserializedAccountProperties.commitmentPlanAssociations = commitmentPlanAssociations;
+                } else if ("abusePenalty".equals(fieldName)) {
+                    deserializedAccountProperties.abusePenalty = AbusePenalty.fromJson(reader);
+                } else if ("raiMonitorConfig".equals(fieldName)) {
+                    deserializedAccountProperties.raiMonitorConfig = RaiMonitorConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountProperties;
+        });
     }
 }

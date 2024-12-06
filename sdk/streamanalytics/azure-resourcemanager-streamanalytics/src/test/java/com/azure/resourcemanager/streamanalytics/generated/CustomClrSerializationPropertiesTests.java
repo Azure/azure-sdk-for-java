@@ -11,19 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomClrSerializationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomClrSerializationProperties model = BinaryData
-            .fromString("{\"serializationDllPath\":\"mypyynpcdpu\",\"serializationClassName\":\"zgmwznmabikns\"}")
-            .toObject(CustomClrSerializationProperties.class);
-        Assertions.assertEquals("mypyynpcdpu", model.serializationDllPath());
-        Assertions.assertEquals("zgmwznmabikns", model.serializationClassName());
+        CustomClrSerializationProperties model
+            = BinaryData.fromString("{\"serializationDllPath\":\"cvokotllxdyhg\",\"serializationClassName\":\"ocogj\"}")
+                .toObject(CustomClrSerializationProperties.class);
+        Assertions.assertEquals("cvokotllxdyhg", model.serializationDllPath());
+        Assertions.assertEquals("ocogj", model.serializationClassName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomClrSerializationProperties model = new CustomClrSerializationProperties()
-            .withSerializationDllPath("mypyynpcdpu").withSerializationClassName("zgmwznmabikns");
+        CustomClrSerializationProperties model
+            = new CustomClrSerializationProperties().withSerializationDllPath("cvokotllxdyhg")
+                .withSerializationClassName("ocogj");
         model = BinaryData.fromObject(model).toObject(CustomClrSerializationProperties.class);
-        Assertions.assertEquals("mypyynpcdpu", model.serializationDllPath());
-        Assertions.assertEquals("zgmwznmabikns", model.serializationClassName());
+        Assertions.assertEquals("cvokotllxdyhg", model.serializationDllPath());
+        Assertions.assertEquals("ocogj", model.serializationClassName());
     }
 }

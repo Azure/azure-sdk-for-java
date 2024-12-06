@@ -101,7 +101,7 @@ public final class ImplUtils {
      * @return True if the character sequence is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(CharSequence charSequence) {
-        return charSequence == null || charSequence.length() == 0;
+        return charSequence == null || charSequence.isEmpty();
     }
 
     /**
@@ -124,36 +124,47 @@ public final class ImplUtils {
         switch (count) {
             case 0:
                 return "";
+
             case 1:
                 return values.get(0);
+
             case 2:
                 return values.get(0) + delimiter + values.get(1);
+
             case 3:
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+
             case 4:
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
                     + values.get(3);
+
             case 5:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4);
+
             case 6:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5);
+
             case 7:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+
             case 8:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7);
+
             case 9:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7) + delimiter + values.get(8);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8);
+
             case 10:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+
             default:
                 return String.join(delimiter, values);
         }
@@ -194,8 +205,8 @@ public final class ImplUtils {
         return retryDelay;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName, Function<String,
-                                             Duration> delayParser) {
+    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,
+        Function<String, Duration> delayParser) {
         String headerValue = headers.getValue(headerName);
 
         return isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
@@ -432,11 +443,17 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
-            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
-            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
             return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);

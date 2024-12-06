@@ -6,70 +6,44 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.logic.models.ParameterType;
 import com.azure.resourcemanager.logic.models.Workflow;
 import com.azure.resourcemanager.logic.models.WorkflowState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkflowsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"createdTime\":\"2021-06-18T20:42:22Z\",\"changedTime\":\"2021-01-15T23:52:52Z\",\"state\":\"NotSpecified\",\"version\":\"tj\",\"accessEndpoint\":\"jbpnatpymvqic\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{},{},{}],\"accessEndpointIpAddresses\":[{},{},{}]},\"connector\":{\"outgoingIpAddresses\":[{},{},{},{}],\"accessEndpointIpAddresses\":[{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"yeyzo\":{},\"vincnihmwvhcgc\":{},\"uasutdhmilhzy\":{}}}},\"contents\":{\"allowedCallerIpAddresses\":[{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"sdadyrhmpokfxcbb\":{},\"mxgajyracelnlwg\":{},\"eouhjetxupxe\":{},\"ins\":{}}}},\"actions\":{\"allowedCallerIpAddresses\":[{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"en\":{},\"fsxtsmzvaozfajal\":{}}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{\"policies\":{\"lvvazujc\":{},\"zznw\":{},\"xzmszxyfaidzv\":{},\"qvdivzjyx\":{}}}}},\"sku\":{\"name\":\"Premium\",\"plan\":{\"id\":\"lxjbrqbut\",\"name\":\"cnqudm\",\"type\":\"uvaweajq\"}},\"integrationAccount\":{\"id\":\"bvkwr\",\"name\":\"zoqyymhdbg\",\"type\":\"hltmp\"},\"integrationServiceEnvironment\":{\"id\":\"qqgr\",\"name\":\"ttosnz\",\"type\":\"xifacrhpuzcagz\"},\"definition\":\"datapbw\",\"parameters\":{\"e\":{\"type\":\"Object\",\"value\":\"datauo\",\"metadata\":\"datao\",\"description\":\"db\"}}},\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"5ceb21eb-3832-41e8-b711-ec1d0b157940\",\"principalId\":\"2a9a1065-9857-49a3-aa4a-249f39693c2a\",\"userAssignedIdentities\":{\"izcdugnzymljgay\":{\"principalId\":\"odp\",\"clientId\":\"dvytnbkvxdafil\"}}},\"location\":\"aqwnkxoqecjz\",\"tags\":{\"ewshhqgjvchl\":\"glgvm\",\"fbtczzjfzjo\":\"e\",\"qpukltfknroxmi\":\"wizjraksah\",\"esizknhcvxflz\":\"nbzczpfvqtvukc\"},\"id\":\"grnh\",\"name\":\"ysdmovbvnjyq\",\"type\":\"ofdgzl\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"InProgress\",\"createdTime\":\"2021-09-18T03:49:46Z\",\"changedTime\":\"2021-09-21T23:46:49Z\",\"state\":\"NotSpecified\",\"version\":\"mgxdgdhpabgd\",\"accessEndpoint\":\"jddvjsaqw\",\"endpointsConfiguration\":{},\"accessControl\":{},\"sku\":{\"name\":\"Free\"},\"integrationAccount\":{\"id\":\"apte\",\"name\":\"excgjokjljnhvl\",\"type\":\"bekpeeksnbksdqhj\"},\"integrationServiceEnvironment\":{\"id\":\"lxeslkhh\",\"name\":\"tcpoqma\",\"type\":\"wqjwgok\"},\"definition\":\"dataejjjkxybwfdb\",\"parameters\":{}},\"identity\":{\"type\":\"None\",\"tenantId\":\"a065a9ac-5527-416b-bfb3-4ec9c69072d9\",\"principalId\":\"ac251958-213a-4a1b-81db-46cabe2c36fd\",\"userAssignedIdentities\":{}},\"location\":\"kzykjtjk\",\"tags\":{\"rmgjfbpkuwx\":\"fwushcdpkupn\",\"yay\":\"oiojfizfavkjzwfb\"},\"id\":\"mmfz\",\"name\":\"bfw\",\"type\":\"rzx\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Workflow> response
+            = manager.workflows().list(366519820, "ulmzxhgwz", com.azure.core.util.Context.NONE);
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Workflow> response =
-            manager.workflows().list(1211586061, "hwtbbaedorvvm", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("kzykjtjk", response.iterator().next().location());
-        Assertions.assertEquals("fwushcdpkupn", response.iterator().next().tags().get("rmgjfbpkuwx"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("aqwnkxoqecjz", response.iterator().next().location());
+        Assertions.assertEquals("glgvm", response.iterator().next().tags().get("ewshhqgjvchl"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
         Assertions.assertEquals(WorkflowState.NOT_SPECIFIED, response.iterator().next().state());
-        Assertions.assertEquals("apte", response.iterator().next().integrationAccount().id());
-        Assertions.assertEquals("lxeslkhh", response.iterator().next().integrationServiceEnvironment().id());
+        Assertions.assertEquals("bvkwr", response.iterator().next().integrationAccount().id());
+        Assertions.assertEquals("qqgr", response.iterator().next().integrationServiceEnvironment().id());
+        Assertions.assertEquals(ParameterType.OBJECT, response.iterator().next().parameters().get("e").type());
+        Assertions.assertEquals("db", response.iterator().next().parameters().get("e").description());
     }
 }

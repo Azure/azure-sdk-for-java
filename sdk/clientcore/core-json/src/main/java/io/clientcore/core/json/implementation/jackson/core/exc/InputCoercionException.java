@@ -1,12 +1,14 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.exc;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
 import io.clientcore.core.json.implementation.jackson.core.util.RequestPayload;
 
 /**
  * Exception type for read-side problems that are not direct decoding ("parsing")
- * problems (those would be reported as {@link io.clientcore.core.json.implementation.jackson.core.JsonParseException}s),
+ * problems (those would be reported as {@link JsonParseException}s),
  * but rather result from failed attempts to convert specific Java value out of valid
  * but incompatible input value. One example is numeric coercions where target number type's
  * range does not allow mapping of too large/too small input value.
@@ -36,23 +38,10 @@ public class InputCoercionException extends StreamReadException {
      * @param inputType Shape of input that failed to coerce
      * @param targetType Target type of failed coercion
      */
-    public InputCoercionException(JsonParser p, String msg,
-            JsonToken inputType, Class<?> targetType) {
+    public InputCoercionException(JsonParser p, String msg, JsonToken inputType, Class<?> targetType) {
         super(p, msg);
         _inputType = inputType;
         _targetType = targetType;
-    }
-
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     */
-    @Override
-    public InputCoercionException withParser(JsonParser p) {
-        _processor = p;
-        return this;
     }
 
     @Override
@@ -61,23 +50,4 @@ public class InputCoercionException extends StreamReadException {
         return this;
     }
 
-    /**
-     * Accessor for getting information about input type (in form of token, giving "shape"
-     * of input) for which coercion failed.
-     *
-     * @return "Shape" of input for which coercion failed, as {@link JsonToken}
-     */
-    public JsonToken getInputType() {
-        return _inputType;
-    }
-
-    /**
-     * Accessor for getting information about target type (in form of Java {@link java.lang.Class})
-     * for which coercion failed.
-     *
-     * @return Target type of failed conversion
-     */
-    public Class<?> getTargetType() {
-        return _targetType;
-    }
 }

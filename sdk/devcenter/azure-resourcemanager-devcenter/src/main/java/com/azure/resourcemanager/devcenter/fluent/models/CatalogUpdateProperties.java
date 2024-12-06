@@ -5,40 +5,38 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncType;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Properties of a catalog. These properties can be updated after the resource has been created.
  */
 @Fluent
-public class CatalogUpdateProperties {
+public class CatalogUpdateProperties implements JsonSerializable<CatalogUpdateProperties> {
     /*
      * Properties for a GitHub catalog type.
      */
-    @JsonProperty(value = "gitHub")
     private GitCatalog gitHub;
 
     /*
      * Properties for an Azure DevOps catalog type.
      */
-    @JsonProperty(value = "adoGit")
     private GitCatalog adoGit;
 
     /*
      * Indicates the type of sync that is configured for the catalog.
      */
-    @JsonProperty(value = "syncType")
     private CatalogSyncType syncType;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -139,5 +137,51 @@ public class CatalogUpdateProperties {
         if (adoGit() != null) {
             adoGit().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gitHub", this.gitHub);
+        jsonWriter.writeJsonField("adoGit", this.adoGit);
+        jsonWriter.writeStringField("syncType", this.syncType == null ? null : this.syncType.toString());
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CatalogUpdateProperties.
+     */
+    public static CatalogUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogUpdateProperties deserializedCatalogUpdateProperties = new CatalogUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitHub".equals(fieldName)) {
+                    deserializedCatalogUpdateProperties.gitHub = GitCatalog.fromJson(reader);
+                } else if ("adoGit".equals(fieldName)) {
+                    deserializedCatalogUpdateProperties.adoGit = GitCatalog.fromJson(reader);
+                } else if ("syncType".equals(fieldName)) {
+                    deserializedCatalogUpdateProperties.syncType = CatalogSyncType.fromString(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCatalogUpdateProperties.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogUpdateProperties;
+        });
     }
 }

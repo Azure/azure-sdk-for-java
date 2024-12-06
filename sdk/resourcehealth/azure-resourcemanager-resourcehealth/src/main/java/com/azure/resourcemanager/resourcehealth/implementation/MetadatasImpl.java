@@ -21,29 +21,26 @@ public final class MetadatasImpl implements Metadatas {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public MetadatasImpl(
-        MetadatasClient innerClient, com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
+    public MetadatasImpl(MetadatasClient innerClient,
+        com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MetadataEntity> list() {
         PagedIterable<MetadataEntityInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MetadataEntity> list(Context context) {
         PagedIterable<MetadataEntityInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
     }
 
     public Response<MetadataEntity> getEntityWithResponse(String name, Context context) {
         Response<MetadataEntityInner> inner = this.serviceClient().getEntityWithResponse(name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MetadataEntityImpl(inner.getValue(), this.manager()));
         } else {
             return null;

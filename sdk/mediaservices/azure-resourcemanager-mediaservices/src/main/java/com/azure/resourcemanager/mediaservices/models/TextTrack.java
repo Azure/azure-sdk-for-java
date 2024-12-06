@@ -5,34 +5,35 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents a text track in an asset. A text track is usually used for sparse data related to the audio or video
  * tracks.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.TextTrack")
 @Fluent
 public final class TextTrack extends TrackBase {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.TextTrack";
+
+    /*
      * The file name to the source file. This file is located in the storage container of the asset.
      */
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
      * The display name of the text track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The RFC5646 language code for the text track.
      */
-    @JsonProperty(value = "languageCode", access = JsonProperty.Access.WRITE_ONLY)
     private String languageCode;
 
     /*
@@ -40,23 +41,33 @@ public final class TextTrack extends TrackBase {
      * when requested by a client. When the PlayerVisibility is set to "Hidden", the text will not be available to the
      * client. The default value is "Visible".
      */
-    @JsonProperty(value = "playerVisibility")
     private Visibility playerVisibility;
 
     /*
      * The HLS specific setting for the text track.
      */
-    @JsonProperty(value = "hlsSettings")
     private HlsSettings hlsSettings;
 
-    /** Creates an instance of TextTrack class. */
+    /**
+     * Creates an instance of TextTrack class.
+     */
     public TextTrack() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Get the fileName property: The file name to the source file. This file is located in the storage container of the
      * asset.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -66,7 +77,7 @@ public final class TextTrack extends TrackBase {
     /**
      * Set the fileName property: The file name to the source file. This file is located in the storage container of the
      * asset.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the TextTrack object itself.
      */
@@ -78,7 +89,7 @@ public final class TextTrack extends TrackBase {
     /**
      * Get the displayName property: The display name of the text track on a video player. In HLS, this maps to the NAME
      * attribute of EXT-X-MEDIA.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +99,7 @@ public final class TextTrack extends TrackBase {
     /**
      * Set the displayName property: The display name of the text track on a video player. In HLS, this maps to the NAME
      * attribute of EXT-X-MEDIA.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the TextTrack object itself.
      */
@@ -99,7 +110,7 @@ public final class TextTrack extends TrackBase {
 
     /**
      * Get the languageCode property: The RFC5646 language code for the text track.
-     *
+     * 
      * @return the languageCode value.
      */
     public String languageCode() {
@@ -110,7 +121,7 @@ public final class TextTrack extends TrackBase {
      * Get the playerVisibility property: When PlayerVisibility is set to "Visible", the text track will be present in
      * the DASH manifest or HLS playlist when requested by a client. When the PlayerVisibility is set to "Hidden", the
      * text will not be available to the client. The default value is "Visible".
-     *
+     * 
      * @return the playerVisibility value.
      */
     public Visibility playerVisibility() {
@@ -121,7 +132,7 @@ public final class TextTrack extends TrackBase {
      * Set the playerVisibility property: When PlayerVisibility is set to "Visible", the text track will be present in
      * the DASH manifest or HLS playlist when requested by a client. When the PlayerVisibility is set to "Hidden", the
      * text will not be available to the client. The default value is "Visible".
-     *
+     * 
      * @param playerVisibility the playerVisibility value to set.
      * @return the TextTrack object itself.
      */
@@ -132,7 +143,7 @@ public final class TextTrack extends TrackBase {
 
     /**
      * Get the hlsSettings property: The HLS specific setting for the text track.
-     *
+     * 
      * @return the hlsSettings value.
      */
     public HlsSettings hlsSettings() {
@@ -141,7 +152,7 @@ public final class TextTrack extends TrackBase {
 
     /**
      * Set the hlsSettings property: The HLS specific setting for the text track.
-     *
+     * 
      * @param hlsSettings the hlsSettings value to set.
      * @return the TextTrack object itself.
      */
@@ -152,14 +163,64 @@ public final class TextTrack extends TrackBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (hlsSettings() != null) {
             hlsSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("playerVisibility",
+            this.playerVisibility == null ? null : this.playerVisibility.toString());
+        jsonWriter.writeJsonField("hlsSettings", this.hlsSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TextTrack from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TextTrack if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TextTrack.
+     */
+    public static TextTrack fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TextTrack deserializedTextTrack = new TextTrack();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedTextTrack.odataType = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedTextTrack.fileName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedTextTrack.displayName = reader.getString();
+                } else if ("languageCode".equals(fieldName)) {
+                    deserializedTextTrack.languageCode = reader.getString();
+                } else if ("playerVisibility".equals(fieldName)) {
+                    deserializedTextTrack.playerVisibility = Visibility.fromString(reader.getString());
+                } else if ("hlsSettings".equals(fieldName)) {
+                    deserializedTextTrack.hlsSettings = HlsSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTextTrack;
+        });
     }
 }

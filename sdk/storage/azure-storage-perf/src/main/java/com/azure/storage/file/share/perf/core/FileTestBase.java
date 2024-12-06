@@ -19,7 +19,7 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
 
         String fileName = "randomfiletest-" + CoreUtils.randomUuid();
 
-        shareFileClient =  shareDirectoryClient.getFileClient(fileName);
+        shareFileClient = shareDirectoryClient.getFileClient(fileName);
         shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
     }
 }

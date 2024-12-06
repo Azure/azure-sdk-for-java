@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Features/user capabilities associated with the sku. */
 @Fluent
 public final class SkuCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapability.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SkuCapability.class);
 
     /*
      * Capability/Feature ID

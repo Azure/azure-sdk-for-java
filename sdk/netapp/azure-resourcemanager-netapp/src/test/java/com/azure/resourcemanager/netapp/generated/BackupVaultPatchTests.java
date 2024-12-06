@@ -14,17 +14,15 @@ public final class BackupVaultPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultPatch model
-            = BinaryData.fromString("{\"tags\":{\"iloxggdufiq\":\"hxmsivfo\",\"hvcyyysfg\":\"dieuzaofj\"}}")
-                .toObject(BackupVaultPatch.class);
-        Assertions.assertEquals("hxmsivfo", model.tags().get("iloxggdufiq"));
+            = BinaryData.fromString("{\"tags\":{\"ynhdwdigum\":\"xhom\"}}").toObject(BackupVaultPatch.class);
+        Assertions.assertEquals("xhom", model.tags().get("ynhdwdigum"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultPatch model
-            = new BackupVaultPatch().withTags(mapOf("iloxggdufiq", "hxmsivfo", "hvcyyysfg", "dieuzaofj"));
+        BackupVaultPatch model = new BackupVaultPatch().withTags(mapOf("ynhdwdigum", "xhom"));
         model = BinaryData.fromObject(model).toObject(BackupVaultPatch.class);
-        Assertions.assertEquals("hxmsivfo", model.tags().get("iloxggdufiq"));
+        Assertions.assertEquals("xhom", model.tags().get("ynhdwdigum"));
     }
 
     // Use "Map.of" if available

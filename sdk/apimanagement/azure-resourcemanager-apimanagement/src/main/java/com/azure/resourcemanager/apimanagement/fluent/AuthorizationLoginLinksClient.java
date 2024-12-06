@@ -11,11 +11,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationLoginR
 import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginLinksPostResponse;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginRequestContract;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationLoginLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationLoginLinksClient.
+ */
 public interface AuthorizationLoginLinksClient {
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -28,17 +30,13 @@ public interface AuthorizationLoginLinksClient {
      * @return authorization login links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationLoginLinksPostResponse postWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters,
+    AuthorizationLoginLinksPostResponse postWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters,
         Context context);
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -50,10 +48,6 @@ public interface AuthorizationLoginLinksClient {
      * @return authorization login links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationLoginResponseContractInner post(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters);
+    AuthorizationLoginResponseContractInner post(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters);
 }

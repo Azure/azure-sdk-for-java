@@ -21,7 +21,7 @@ public final class SettingsOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"nlbqnbldxeaclg\",\"gatewayProperties\":{\"gatewayResourceId\":\"orim\"}},\"id\":\"srrm\",\"name\":\"ucsofldpuviyf\",\"type\":\"aabeolhbhlvbmxuq\"}";
+            = "{\"properties\":{\"tenantId\":\"wzohm\",\"gatewayProperties\":{\"gatewayResourceId\":\"xbsojkli\"}},\"id\":\"mdptys\",\"name\":\"rqsgnzx\",\"type\":\"jp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,9 @@ public final class SettingsOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Settings response = manager.settingsOperations()
-            .getWithResponse("mfsvbpav", "opfppdbwnupgah", "kuma", "jcaacfdmmcpugm", "hqepvufhbzehewh",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("bxcea", "xcptsoqfyiaseqc", "krtt", "razisg", "kiuemv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("orim", response.gatewayResourceId());
+        Assertions.assertEquals("xbsojkli", response.gatewayResourceId());
     }
 }

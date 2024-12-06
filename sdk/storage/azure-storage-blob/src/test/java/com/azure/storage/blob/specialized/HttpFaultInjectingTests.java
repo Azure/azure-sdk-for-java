@@ -16,6 +16,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
@@ -49,8 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,10 +73,9 @@ public class HttpFaultInjectingTests {
 
     @BeforeEach
     public void setup() {
-        String testName = ("httpFaultInjectingTests" + CoreUtils.randomUuid().toString().replace("-", ""))
-            .toLowerCase();
-        containerClient = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+        String testName
+            = ("httpFaultInjectingTests" + CoreUtils.randomUuid().toString().replace("-", "")).toLowerCase();
+        containerClient = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .httpClient(BlobTestBase.getHttpClient(() -> {
                 throw new RuntimeException("Test should not run during playback.");
@@ -109,8 +108,7 @@ public class HttpFaultInjectingTests {
         containerClient.getBlobClient(containerClient.getBlobContainerName())
             .upload(BinaryData.fromBytes(realFileBytes), true);
 
-        BlobClient downloadClient = new BlobClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+        BlobClient downloadClient = new BlobClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .containerName(containerClient.getBlobContainerName())
             .blobName(containerClient.getBlobContainerName())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
@@ -126,15 +124,15 @@ public class HttpFaultInjectingTests {
         }
         AtomicInteger successCount = new AtomicInteger();
 
-        Set<OpenOption> overwriteOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
-            StandardOpenOption.TRUNCATE_EXISTING, // If the file already exists and it is opened for WRITE access, then its length is truncated to 0.
-            StandardOpenOption.READ, StandardOpenOption.WRITE));
+        Set<OpenOption> overwriteOptions
+            = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, // If the file already exists and it is opened for WRITE access, then its length is truncated to 0.
+                StandardOpenOption.READ, StandardOpenOption.WRITE));
 
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        executorService.invokeAll(files.stream().map(it -> (Callable<Void>) () -> {
+        CountDownLatch countDownLatch = new CountDownLatch(500);
+        SharedExecutorService.getInstance().invokeAll(files.stream().map(it -> (Callable<Void>) () -> {
             try {
-                downloadClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(it.getAbsolutePath())
-                        .setOpenOptions(overwriteOptions)
+                downloadClient.downloadToFileWithResponse(
+                    new BlobDownloadToFileOptions(it.getAbsolutePath()).setOpenOptions(overwriteOptions)
                         .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(2)),
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
@@ -148,13 +146,14 @@ public class HttpFaultInjectingTests {
                 LOGGER.atWarning()
                     .addKeyValue("downloadFile", it.getAbsolutePath())
                     .log("Failed to complete download.", ex);
+            } finally {
+                countDownLatch.countDown();
             }
 
             return null;
         }).collect(Collectors.toList()));
 
-        executorService.shutdown();
-        executorService.awaitTermination(10, TimeUnit.MINUTES);
+        countDownLatch.await(10, TimeUnit.MINUTES);
 
         assertTrue(successCount.get() >= 450);
         // cleanup
@@ -162,9 +161,7 @@ public class HttpFaultInjectingTests {
             try {
                 Files.deleteIfExists(it.toPath());
             } catch (IOException e) {
-                LOGGER.atWarning()
-                    .addKeyValue("file", it.getAbsolutePath())
-                    .log("Failed to delete file.", e);
+                LOGGER.atWarning().addKeyValue("file", it.getAbsolutePath()).log("Failed to delete file.", e);
             }
         });
     }
@@ -173,27 +170,26 @@ public class HttpFaultInjectingTests {
     private HttpClient getFaultInjectingWrappedHttpClient() {
         switch (ENVIRONMENT.getHttpClientType()) {
             case NETTY:
-                return HttpClient.createDefault(new HttpClientOptions()
-                    .readTimeout(Duration.ofSeconds(2))
+                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(NettyAsyncHttpClientProvider.class));
+
             case OK_HTTP:
-                return HttpClient.createDefault(new HttpClientOptions()
-                    .readTimeout(Duration.ofSeconds(2))
+                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(OkHttpAsyncClientProvider.class));
+
             case VERTX:
-                return HttpClient.createDefault(new HttpClientOptions()
-                    .readTimeout(Duration.ofSeconds(2))
+                return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(getVertxClientProviderReflectivelyUntilNameChangeReleases()));
+
             case JDK_HTTP:
                 try {
-                    return HttpClient.createDefault(new HttpClientOptions()
-                        .readTimeout(Duration.ofSeconds(2))
+                    return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(2))
                         .responseTimeout(Duration.ofSeconds(2))
-                        .setHttpClientProvider((Class<? extends HttpClientProvider>) Class.forName(
-                            "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider")));
+                        .setHttpClientProvider((Class<? extends HttpClientProvider>) Class
+                            .forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider")));
                 } catch (ClassNotFoundException e) {
                     throw new IllegalStateException(e);
                 }
@@ -241,14 +237,13 @@ public class HttpFaultInjectingTests {
             String faultType = faultInjectorHandling();
             request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
 
-            return wrappedHttpClient.send(request, context)
-                .map(response -> {
-                    HttpRequest request1 = response.getRequest();
-                    request1.getHeaders().remove(UPSTREAM_URI_HEADER);
-                    request1.setUrl(originalUrl);
+            return wrappedHttpClient.send(request, context).map(response -> {
+                HttpRequest request1 = response.getRequest();
+                request1.getHeaders().remove(UPSTREAM_URI_HEADER);
+                request1.setUrl(originalUrl);
 
-                    return response;
-                });
+                return response;
+            });
         }
 
         @Override
@@ -267,11 +262,7 @@ public class HttpFaultInjectingTests {
 
         private static URL rewriteUrl(URL originalUrl) {
             try {
-                return UrlBuilder.parse(originalUrl)
-                    .setScheme("http")
-                    .setHost("localhost")
-                    .setPort(7777)
-                    .toUrl();
+                return UrlBuilder.parse(originalUrl).setScheme("http").setHost("localhost").setPort(7777).toUrl();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
@@ -319,8 +310,6 @@ public class HttpFaultInjectingTests {
 
         // macOS has known issues running HTTP fault injector, change this once
         // https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
-        return ENVIRONMENT.getTestMode() == TestMode.LIVE
-            && !osName.contains("mac os")
-            && !osName.contains("darwin");
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE && !osName.contains("mac os") && !osName.contains("darwin");
     }
 }

@@ -20,10 +20,11 @@ import java.util.Map;
     property = "computeType",
     defaultImpl = CreateEndpointVariantRequest.class)
 @JsonTypeName("Custom")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AKS", value = AksServiceCreateRequest.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AKS", value = AksServiceCreateRequest.class) })
 @Fluent
 public class CreateEndpointVariantRequest extends CreateServiceRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateEndpointVariantRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CreateEndpointVariantRequest.class);
 
     /*
      * Is this the default variant.
@@ -133,8 +134,8 @@ public class CreateEndpointVariantRequest extends CreateServiceRequest {
 
     /** {@inheritDoc} */
     @Override
-    public CreateEndpointVariantRequest withEnvironmentImageRequest(
-        CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
+    public CreateEndpointVariantRequest
+        withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
         super.withEnvironmentImageRequest(environmentImageRequest);
         return this;
     }

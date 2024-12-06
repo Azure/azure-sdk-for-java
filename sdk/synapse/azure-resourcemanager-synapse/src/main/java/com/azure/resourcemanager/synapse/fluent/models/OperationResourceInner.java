@@ -6,68 +6,70 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** An operation. */
+/**
+ * An operation.
+ */
 @Fluent
-public final class OperationResourceInner {
+public final class OperationResourceInner implements JsonSerializable<OperationResourceInner> {
     /*
      * Operation ID
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Operation name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Operation status
      */
-    @JsonProperty(value = "status")
     private OperationStatus status;
 
     /*
      * Operation properties
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * Errors from the operation
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /*
      * Operation start time
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Operation start time
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Completion percentage of the operation
      */
-    @JsonProperty(value = "percentComplete")
     private Float percentComplete;
 
-    /** Creates an instance of OperationResourceInner class. */
+    /**
+     * Creates an instance of OperationResourceInner class.
+     */
     public OperationResourceInner() {
     }
 
     /**
      * Get the id property: Operation ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +78,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the id property: Operation ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -87,7 +89,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the name property: Operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -96,7 +98,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the name property: Operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -107,7 +109,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatus status() {
@@ -116,7 +118,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the status property: Operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -127,7 +129,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the properties property: Operation properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -136,7 +138,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the properties property: Operation properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -147,7 +149,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the error property: Errors from the operation.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -156,7 +158,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the error property: Errors from the operation.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -167,7 +169,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the startTime property: Operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -176,7 +178,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the startTime property: Operation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -187,7 +189,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the endTime property: Operation start time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -196,7 +198,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the endTime property: Operation start time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -207,7 +209,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the percentComplete property: Completion percentage of the operation.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Float percentComplete() {
@@ -216,7 +218,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the percentComplete property: Completion percentage of the operation.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -227,9 +229,70 @@ public final class OperationResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResourceInner.
+     */
+    public static OperationResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResourceInner deserializedOperationResourceInner = new OperationResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResourceInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResourceInner.status = OperationStatus.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationResourceInner.properties = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResourceInner.error = ManagementError.fromJson(reader);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedOperationResourceInner.percentComplete = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResourceInner;
+        });
     }
 }

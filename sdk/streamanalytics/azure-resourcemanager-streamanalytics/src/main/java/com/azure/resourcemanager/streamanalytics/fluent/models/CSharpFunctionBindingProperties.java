@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.UpdateMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The binding properties associated with a CSharp function.
  */
 @Fluent
-public final class CSharpFunctionBindingProperties {
+public final class CSharpFunctionBindingProperties implements JsonSerializable<CSharpFunctionBindingProperties> {
     /*
      * The Csharp code containing a single function definition.
      */
-    @JsonProperty(value = "dllPath")
     private String dllPath;
 
     /*
      * The Csharp code containing a single function definition.
      */
-    @JsonProperty(value = "class")
     private String classProperty;
 
     /*
      * The Csharp code containing a single function definition.
      */
-    @JsonProperty(value = "method")
     private String method;
 
     /*
      * Refresh modes for Stream Analytics functions.
      */
-    @JsonProperty(value = "updateMode")
     private UpdateMode updateMode;
 
     /**
@@ -129,5 +129,51 @@ public final class CSharpFunctionBindingProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dllPath", this.dllPath);
+        jsonWriter.writeStringField("class", this.classProperty);
+        jsonWriter.writeStringField("method", this.method);
+        jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CSharpFunctionBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CSharpFunctionBindingProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CSharpFunctionBindingProperties.
+     */
+    public static CSharpFunctionBindingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CSharpFunctionBindingProperties deserializedCSharpFunctionBindingProperties
+                = new CSharpFunctionBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dllPath".equals(fieldName)) {
+                    deserializedCSharpFunctionBindingProperties.dllPath = reader.getString();
+                } else if ("class".equals(fieldName)) {
+                    deserializedCSharpFunctionBindingProperties.classProperty = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedCSharpFunctionBindingProperties.method = reader.getString();
+                } else if ("updateMode".equals(fieldName)) {
+                    deserializedCSharpFunctionBindingProperties.updateMode = UpdateMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCSharpFunctionBindingProperties;
+        });
     }
 }

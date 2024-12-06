@@ -40,7 +40,6 @@ public class MetricsJavaDocCodeSnippets {
     @SuppressWarnings("try")
     public void sampleDefaultSdkConfigurationWithMetricsAndTraces() {
         // BEGIN: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default
-
         // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
         // AutoConfiguredOpenTelemetrySdk.initialize();
 
@@ -63,13 +62,11 @@ public class MetricsJavaDocCodeSnippets {
         }
 
         span.end();
-
         // END: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default
     }
 
     public void readmeSampleDefaultSdkConfiguration() {
         // BEGIN: readme-sample-defaultConfiguration
-
         // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
         // AutoConfiguredOpenTelemetrySdk.initialize();
 
@@ -81,13 +78,11 @@ public class MetricsJavaDocCodeSnippets {
 
         // use client as usual, if it emits metric, they will be exported
         sampleClient.methodCall("get items");
-
         // END: readme-sample-defaultConfiguration
     }
 
     public void readmeSampleCustomSdkConfiguration() {
         // BEGIN: readme-sample-customConfiguration
-
         // configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
@@ -107,7 +102,6 @@ public class MetricsJavaDocCodeSnippets {
 
         // use client as usual, if it emits metric, they will be exported
         sampleClient.methodCall("get items");
-
         // END: readme-sample-customConfiguration
         openTelemetry.close();
     }
@@ -117,7 +111,6 @@ public class MetricsJavaDocCodeSnippets {
      */
     public void configureClientLibraryToUseCustomMeter() {
         // BEGIN: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom
-
         // configure OpenTelemetry SDK
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(BatchSpanProcessor.builder(OtlpGrpcSpanExporter.builder().build()).build())
@@ -157,7 +150,6 @@ public class MetricsJavaDocCodeSnippets {
 
         // do more work
         span.end();
-
         // END: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom
         openTelemetry.close();
     }

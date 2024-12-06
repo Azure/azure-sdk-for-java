@@ -24,6 +24,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -46,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -94,10 +96,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
     }
 
     static Stream<Arguments> channelReadDataSupplier() {
-        return Stream.of(
-            Arguments.of(50, 40, Constants.KB),
-            Arguments.of(Constants.KB + 50, 40, Constants.KB)
-        );
+        return Stream.of(Arguments.of(50, 40, Constants.KB), Arguments.of(Constants.KB + 50, 40, Constants.KB));
     }
 
     /**
@@ -170,8 +169,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
     @CsvSource({
         "1024, " + Integer.MAX_VALUE,
         "1024, " + (Integer.MAX_VALUE + 1000L),
-        "1024, " + (Long.MAX_VALUE / 2)
-    })
+        "1024, " + (Long.MAX_VALUE / 2) })
     public void supportsGreaterThanMaxIntBlobSize(int toRead, long offset) throws Exception {
         // Given: "data"
         long blobSize = Long.MAX_VALUE;
@@ -179,8 +177,8 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
 
         // And: "read behavior to blob where length > maxint"
         BlobClientBase client = mock(BlobClientBase.class);
-        StorageSeekableByteChannelBlobReadBehavior behavior =
-            new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null);
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null);
 
         // And: "StorageSeekableByteChannel"
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(toRead, behavior, 0);
@@ -192,9 +190,8 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         assertEquals(offset, channel.position());
 
         when(client.downloadStreamWithResponse(any(),
-            argThat(r -> r != null && r.getOffset() == offset && r.getCount() == toRead),
-            any(), any(), anyBoolean(), any(), any()))
-            .thenAnswer((InvocationOnMock invocation) -> {
+            argThat(r -> r != null && r.getOffset() == offset && r.getCount() == toRead), any(), any(), anyBoolean(),
+            any(), any())).thenAnswer((InvocationOnMock invocation) -> {
                 OutputStream os = invocation.getArgument(0);
                 os.write(data.array());
                 String contentRange = "bytes " + offset + "-" + (offset + toRead - 1) + "/" + blobSize;
@@ -229,21 +226,19 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
 
         // when: "make channel in read mode"
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)));
-        StorageSeekableByteChannel channel = (StorageSeekableByteChannel) bc.openSeekableByteChannelRead(
-            new BlobSeekableByteChannelReadOptions()
-                .setRequestConditions(conditions)
+        StorageSeekableByteChannel channel = (StorageSeekableByteChannel) bc
+            .openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions().setRequestConditions(conditions)
                 .setReadSizeInBytes(blockSize)
                 .setConsistentReadControl(control)
-                .setInitialPosition(position),
-            null
-        ).getChannel();
+                .setInitialPosition(position), null)
+            .getChannel();
 
         // then: "channel WriteBehavior is null"
         assertNull(channel.getWriteBehavior());
 
         // and: "channel ReadBehavior has appropriate values"
-        StorageSeekableByteChannelBlobReadBehavior readBehavior =
-            (StorageSeekableByteChannelBlobReadBehavior) channel.getReadBehavior();
+        StorageSeekableByteChannelBlobReadBehavior readBehavior
+            = (StorageSeekableByteChannelBlobReadBehavior) channel.getReadBehavior();
         assertNotNull(readBehavior.getClient());
 
         if (conditions != null) {
@@ -264,45 +259,42 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         // and: "channel has appropriate values"
         assertEquals(blockSize == null ? 4 * Constants.MB : blockSize, channel.getChunkSize());
         assertEquals(position == null ? 0 : position, channel.position());
+
+        versionedCC.delete();
     }
 
     static Stream<Arguments> channelReadModeDataSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
+        return Stream.of(Arguments.of(null, null, null, null),
             Arguments.of(new BlobRequestConditions(), null, ConsistentReadControl.NONE, null),
             Arguments.of(new BlobRequestConditions(), null, ConsistentReadControl.ETAG, null),
             Arguments.of(new BlobRequestConditions(), null, ConsistentReadControl.VERSION_ID, null),
-            Arguments.of(null, 500, null, null),
-            Arguments.of(null, null, ConsistentReadControl.NONE, null),
+            Arguments.of(null, 500, null, null), Arguments.of(null, null, ConsistentReadControl.NONE, null),
             Arguments.of(null, null, ConsistentReadControl.ETAG, null),
-            Arguments.of(null, null, ConsistentReadControl.VERSION_ID, null),
-            Arguments.of(null, null, null, 800L)
-        );
+            Arguments.of(null, null, ConsistentReadControl.VERSION_ID, null), Arguments.of(null, null, null, 800L));
     }
 
     @ParameterizedTest
     @MethodSource("channelWriteModeDataSupplier")
     public void clientCreatesAppropriateChannelWriteModeBlock(
-        BlockBlobSeekableByteChannelWriteOptions.WriteMode writeMode, Integer blockSize,
-        BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
-        BlobRequestConditions conditions) throws IOException {
+        BlockBlobSeekableByteChannelWriteOptions.WriteMode writeMode, Integer blockSize, BlobHttpHeaders headers,
+        Map<String, String> metadata, Map<String, String> tags, AccessTier tier, BlobRequestConditions conditions)
+        throws IOException {
         // when: "make channel in write mode"
-        StorageSeekableByteChannel channel = (StorageSeekableByteChannel) blockClient.openSeekableByteChannelWrite(
-            new BlockBlobSeekableByteChannelWriteOptions(writeMode)
+        StorageSeekableByteChannel channel = (StorageSeekableByteChannel) blockClient
+            .openSeekableByteChannelWrite(new BlockBlobSeekableByteChannelWriteOptions(writeMode)
                 .setBlockSizeInBytes(blockSize != null ? Long.valueOf(blockSize) : null)
                 .setHeaders(headers)
                 .setMetadata(metadata)
                 .setTags(tags)
                 .setTier(tier)
-                .setRequestConditions(conditions)
-        );
+                .setRequestConditions(conditions));
 
         // then: "channel ReadBehavior is null"
         assertNull(channel.getReadBehavior());
 
         // and: "channel WriteBehavior has appropriate values"
-        StorageSeekableByteChannelBlockBlobWriteBehavior writeBehavior =
-            (StorageSeekableByteChannelBlockBlobWriteBehavior) channel.getWriteBehavior();
+        StorageSeekableByteChannelBlockBlobWriteBehavior writeBehavior
+            = (StorageSeekableByteChannelBlockBlobWriteBehavior) channel.getWriteBehavior();
         assertEquals(writeMode.toString().toLowerCase(), writeBehavior.getWriteMode().toString().toLowerCase());
         assertEquals(headers, writeBehavior.getHeaders());
         assertEquals(metadata, writeBehavior.getMetadata());
@@ -318,15 +310,25 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
     static Stream<Arguments> channelWriteModeDataSupplier() {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
-        return Stream.of(
-            Arguments.of(OVERWRITE, null, null, null, null, null, null),
+        return Stream.of(Arguments.of(OVERWRITE, null, null, null, null, null, null),
             Arguments.of(OVERWRITE, 500, null, null, null, null, null),
             Arguments.of(OVERWRITE, null, new BlobHttpHeaders(), null, null, null, null),
             Arguments.of(OVERWRITE, null, null, metadata, null, null, null),
             Arguments.of(OVERWRITE, null, null, null, metadata, null, null),
             Arguments.of(OVERWRITE, null, null, null, null, AccessTier.COOL, null),
-            Arguments.of(OVERWRITE, null, null, null, null, null, new BlobRequestConditions())
-        );
+            Arguments.of(OVERWRITE, null, null, null, null, null, new BlobRequestConditions()));
+    }
+
+    @Test
+    public void channelConsistentReadControlNullVersion() {
+        byte[] data = getRandomByteArray(Constants.KB);
+        bc.upload(BinaryData.fromBytes(data));
+
+        // Version ID set but not a versioned account
+        assertThrows(UnsupportedOperationException.class,
+            () -> bc.openSeekableByteChannelRead(
+                new BlobSeekableByteChannelReadOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID),
+                null));
     }
 
 }

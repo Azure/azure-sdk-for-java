@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Recommended actions of event. */
+/**
+ * Recommended actions of event.
+ */
 @Fluent
-public final class EventPropertiesRecommendedActions {
+public final class EventPropertiesRecommendedActions implements JsonSerializable<EventPropertiesRecommendedActions> {
     /*
      * Recommended action title for the service health event.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Recommended actions for the service health event.
      */
-    @JsonProperty(value = "actions")
     private List<EventPropertiesRecommendedActionsItem> actions;
 
     /*
      * Recommended action locale for the service health event.
      */
-    @JsonProperty(value = "localeCode")
     private String localeCode;
 
-    /** Creates an instance of EventPropertiesRecommendedActions class. */
+    /**
+     * Creates an instance of EventPropertiesRecommendedActions class.
+     */
     public EventPropertiesRecommendedActions() {
     }
 
     /**
      * Get the message property: Recommended action title for the service health event.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -44,7 +49,7 @@ public final class EventPropertiesRecommendedActions {
 
     /**
      * Set the message property: Recommended action title for the service health event.
-     *
+     * 
      * @param message the message value to set.
      * @return the EventPropertiesRecommendedActions object itself.
      */
@@ -55,7 +60,7 @@ public final class EventPropertiesRecommendedActions {
 
     /**
      * Get the actions property: Recommended actions for the service health event.
-     *
+     * 
      * @return the actions value.
      */
     public List<EventPropertiesRecommendedActionsItem> actions() {
@@ -64,7 +69,7 @@ public final class EventPropertiesRecommendedActions {
 
     /**
      * Set the actions property: Recommended actions for the service health event.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the EventPropertiesRecommendedActions object itself.
      */
@@ -75,7 +80,7 @@ public final class EventPropertiesRecommendedActions {
 
     /**
      * Get the localeCode property: Recommended action locale for the service health event.
-     *
+     * 
      * @return the localeCode value.
      */
     public String localeCode() {
@@ -84,7 +89,7 @@ public final class EventPropertiesRecommendedActions {
 
     /**
      * Set the localeCode property: Recommended action locale for the service health event.
-     *
+     * 
      * @param localeCode the localeCode value to set.
      * @return the EventPropertiesRecommendedActions object itself.
      */
@@ -95,12 +100,57 @@ public final class EventPropertiesRecommendedActions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actions() != null) {
             actions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("localeCode", this.localeCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventPropertiesRecommendedActions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventPropertiesRecommendedActions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventPropertiesRecommendedActions.
+     */
+    public static EventPropertiesRecommendedActions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventPropertiesRecommendedActions deserializedEventPropertiesRecommendedActions
+                = new EventPropertiesRecommendedActions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedEventPropertiesRecommendedActions.message = reader.getString();
+                } else if ("actions".equals(fieldName)) {
+                    List<EventPropertiesRecommendedActionsItem> actions
+                        = reader.readArray(reader1 -> EventPropertiesRecommendedActionsItem.fromJson(reader1));
+                    deserializedEventPropertiesRecommendedActions.actions = actions;
+                } else if ("localeCode".equals(fieldName)) {
+                    deserializedEventPropertiesRecommendedActions.localeCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventPropertiesRecommendedActions;
+        });
     }
 }

@@ -5,36 +5,33 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties related to Digital Twins Endpoint. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "endpointType",
-    defaultImpl = DigitalTwinsEndpointResourceProperties.class)
-@JsonTypeName("DigitalTwinsEndpointResourceProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ServiceBus", value = ServiceBus.class),
-    @JsonSubTypes.Type(name = "EventHub", value = EventHub.class),
-    @JsonSubTypes.Type(name = "EventGrid", value = EventGrid.class)
-})
+/**
+ * Properties related to Digital Twins Endpoint.
+ */
 @Fluent
-public class DigitalTwinsEndpointResourceProperties {
+public class DigitalTwinsEndpointResourceProperties
+    implements JsonSerializable<DigitalTwinsEndpointResourceProperties> {
+    /*
+     * The type of Digital Twins endpoint
+     */
+    private EndpointType endpointType = EndpointType.fromString("DigitalTwinsEndpointResourceProperties");
+
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private EndpointProvisioningState provisioningState;
 
     /*
      * Time when the Endpoint was added to DigitalTwinsInstance.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
@@ -42,34 +39,41 @@ public class DigitalTwinsEndpointResourceProperties {
      * 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If
      * 'IdentityBased' is select, the endpointUri and entityPath properties must be specified.
      */
-    @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
     /*
      * Dead letter storage secret for key-based authentication. Will be obfuscated during read.
      */
-    @JsonProperty(value = "deadLetterSecret")
     private String deadLetterSecret;
 
     /*
      * Dead letter storage URL for identity-based authentication.
      */
-    @JsonProperty(value = "deadLetterUri")
     private String deadLetterUri;
 
     /*
      * Managed identity properties for the endpoint.
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentityReference identity;
 
-    /** Creates an instance of DigitalTwinsEndpointResourceProperties class. */
+    /**
+     * Creates an instance of DigitalTwinsEndpointResourceProperties class.
+     */
     public DigitalTwinsEndpointResourceProperties() {
     }
 
     /**
+     * Get the endpointType property: The type of Digital Twins endpoint.
+     * 
+     * @return the endpointType value.
+     */
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EndpointProvisioningState provisioningState() {
@@ -77,8 +81,19 @@ public class DigitalTwinsEndpointResourceProperties {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the DigitalTwinsEndpointResourceProperties object itself.
+     */
+    DigitalTwinsEndpointResourceProperties withProvisioningState(EndpointProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the createdTime property: Time when the Endpoint was added to DigitalTwinsInstance.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -86,10 +101,21 @@ public class DigitalTwinsEndpointResourceProperties {
     }
 
     /**
+     * Set the createdTime property: Time when the Endpoint was added to DigitalTwinsInstance.
+     * 
+     * @param createdTime the createdTime value to set.
+     * @return the DigitalTwinsEndpointResourceProperties object itself.
+     */
+    DigitalTwinsEndpointResourceProperties withCreatedTime(OffsetDateTime createdTime) {
+        this.createdTime = createdTime;
+        return this;
+    }
+
+    /**
      * Get the authenticationType property: Specifies the authentication type being used for connecting to the endpoint.
      * Defaults to 'KeyBased'. If 'KeyBased' is selected, a connection string must be specified (at least the primary
      * connection string). If 'IdentityBased' is select, the endpointUri and entityPath properties must be specified.
-     *
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -100,7 +126,7 @@ public class DigitalTwinsEndpointResourceProperties {
      * Set the authenticationType property: Specifies the authentication type being used for connecting to the endpoint.
      * Defaults to 'KeyBased'. If 'KeyBased' is selected, a connection string must be specified (at least the primary
      * connection string). If 'IdentityBased' is select, the endpointUri and entityPath properties must be specified.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DigitalTwinsEndpointResourceProperties object itself.
      */
@@ -112,7 +138,7 @@ public class DigitalTwinsEndpointResourceProperties {
     /**
      * Get the deadLetterSecret property: Dead letter storage secret for key-based authentication. Will be obfuscated
      * during read.
-     *
+     * 
      * @return the deadLetterSecret value.
      */
     public String deadLetterSecret() {
@@ -122,7 +148,7 @@ public class DigitalTwinsEndpointResourceProperties {
     /**
      * Set the deadLetterSecret property: Dead letter storage secret for key-based authentication. Will be obfuscated
      * during read.
-     *
+     * 
      * @param deadLetterSecret the deadLetterSecret value to set.
      * @return the DigitalTwinsEndpointResourceProperties object itself.
      */
@@ -133,7 +159,7 @@ public class DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the deadLetterUri property: Dead letter storage URL for identity-based authentication.
-     *
+     * 
      * @return the deadLetterUri value.
      */
     public String deadLetterUri() {
@@ -142,7 +168,7 @@ public class DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the deadLetterUri property: Dead letter storage URL for identity-based authentication.
-     *
+     * 
      * @param deadLetterUri the deadLetterUri value to set.
      * @return the DigitalTwinsEndpointResourceProperties object itself.
      */
@@ -153,7 +179,7 @@ public class DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the identity property: Managed identity properties for the endpoint.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentityReference identity() {
@@ -162,7 +188,7 @@ public class DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the identity property: Managed identity properties for the endpoint.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DigitalTwinsEndpointResourceProperties object itself.
      */
@@ -173,12 +199,100 @@ public class DigitalTwinsEndpointResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeStringField("deadLetterSecret", this.deadLetterSecret);
+        jsonWriter.writeStringField("deadLetterUri", this.deadLetterUri);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DigitalTwinsEndpointResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DigitalTwinsEndpointResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DigitalTwinsEndpointResourceProperties.
+     */
+    public static DigitalTwinsEndpointResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("endpointType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ServiceBus".equals(discriminatorValue)) {
+                    return ServiceBus.fromJson(readerToUse.reset());
+                } else if ("EventHub".equals(discriminatorValue)) {
+                    return EventHub.fromJson(readerToUse.reset());
+                } else if ("EventGrid".equals(discriminatorValue)) {
+                    return EventGrid.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DigitalTwinsEndpointResourceProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DigitalTwinsEndpointResourceProperties deserializedDigitalTwinsEndpointResourceProperties
+                = new DigitalTwinsEndpointResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.provisioningState
+                        = EndpointProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("deadLetterSecret".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.deadLetterSecret = reader.getString();
+                } else if ("deadLetterUri".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.deadLetterUri = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDigitalTwinsEndpointResourceProperties.identity
+                        = ManagedIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDigitalTwinsEndpointResourceProperties;
+        });
     }
 }

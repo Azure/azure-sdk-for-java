@@ -329,7 +329,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksWithoutAffectingRoutesWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksWithoutAffectingRoutesWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setTrunksWithoutAffectingRoutesWithResponseSync");
         client.setRoutes(EXPECTED_ROUTES);
 
         Response<Void> response = client.setTrunksWithResponse(EXPECTED_TRUNKS, Context.NONE);
@@ -357,7 +358,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyTrunksNotEmptyBeforeWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksNotEmptyBeforeWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setEmptyTrunksNotEmptyBeforeWithResponseSync");
         client.setTrunks(EXPECTED_TRUNKS);
         validateTrunks(EXPECTED_TRUNKS, client.listTrunks());
 
@@ -385,7 +387,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyTrunksEmptyBeforeWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyTrunksEmptyBeforeWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setEmptyTrunksEmptyBeforeWithResponseSync");
         client.setTrunks(new ArrayList<>());
         assertTrue(getAsList(client.listTrunks()).size() == 0);
 
@@ -403,11 +406,9 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksInvalidFqdnSync");
 
         SipTrunk invalidTrunk = new SipTrunk(SET_TRUNK_INVALID_FQDN, SET_TRUNK_PORT);
-        assertThrows(HttpResponseException.class,
-            () -> client.setTrunk(invalidTrunk));
+        assertThrows(HttpResponseException.class, () -> client.setTrunk(invalidTrunk));
 
-        assertThrows(HttpResponseException.class,
-            () -> client.setTrunks(asList(invalidTrunk)));
+        assertThrows(HttpResponseException.class, () -> client.setTrunks(asList(invalidTrunk)));
     }
 
     @ParameterizedTest
@@ -418,11 +419,9 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         client.setTrunk(SET_TRUNK);
 
         SipTrunk invalidTrunk = new SipTrunk(SET_TRUNK_FQDN, SET_TRUNK_INVALID_PORT);
-        assertThrows(HttpResponseException.class,
-            () -> client.setTrunk(invalidTrunk));
+        assertThrows(HttpResponseException.class, () -> client.setTrunk(invalidTrunk));
 
-        assertThrows(HttpResponseException.class,
-            () -> client.setTrunks(asList(invalidTrunk)));
+        assertThrows(HttpResponseException.class, () -> client.setTrunks(asList(invalidTrunk)));
 
         SipTrunk storedTrunk = client.getTrunk(SET_TRUNK_FQDN);
         assertNotNull(storedTrunk);
@@ -447,14 +446,13 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setTrunksRemoveRequiredTrunkWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setTrunksRemoveRequiredTrunkWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setTrunksRemoveRequiredTrunkWithResponseSync");
         client.setTrunk(SET_TRUNK);
         client.setRoutes(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK);
 
-        assertThrows(HttpResponseException.class,
-            () -> client.setTrunksWithResponse(EXPECTED_TRUNKS, Context.NONE));
-        assertThrows(HttpResponseException.class,
-            () -> client.deleteTrunkWithResponse(SET_TRUNK_FQDN, Context.NONE));
+        assertThrows(HttpResponseException.class, () -> client.setTrunksWithResponse(EXPECTED_TRUNKS, Context.NONE));
+        assertThrows(HttpResponseException.class, () -> client.deleteTrunkWithResponse(SET_TRUNK_FQDN, Context.NONE));
 
         client.setRoutes(new ArrayList<>());
     }
@@ -549,7 +547,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesWithoutAffectingTrunksWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesWithoutAffectingTrunksWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setRoutesWithoutAffectingTrunksWithResponseSync");
         client.setTrunks(EXPECTED_TRUNKS);
 
         Response<Void> response = client.setRoutesWithResponse(EXPECTED_ROUTES, Context.NONE);
@@ -577,7 +576,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyRoutesNotEmptyBeforeWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesNotEmptyBeforeWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setEmptyRoutesNotEmptyBeforeWithResponseSync");
         client.setRoutes(EXPECTED_ROUTES);
 
         PagedIterable<SipTrunkRoute> iter = client.listRoutes();
@@ -607,7 +607,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setEmptyRoutesEmptyBeforeWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesEmptyBeforeWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setEmptyRoutesEmptyBeforeWithResponseSync");
         client.setRoutes(new ArrayList<>());
         assertTrue(getAsList(client.listRoutes()).size() == 0);
 
@@ -636,7 +637,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNameWithResponseSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(null, SET_TRUNK_ROUTE_NUMBER_PATTERN);
 
-        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
+        Throwable exception = assertThrows(HttpResponseException.class,
+            () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
         assertEquals(MESSAGE_INVALID_ROUTE_NAME, exception.getMessage());
     }
 
@@ -655,10 +657,12 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesInvalidNumberPatternWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesInvalidNumberPatternWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setRoutesInvalidNumberPatternWithResponseSync");
         SipTrunkRoute invalidRoute = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, null);
 
-        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
+        Throwable exception = assertThrows(HttpResponseException.class,
+            () -> client.setRoutesWithResponse(asList(invalidRoute), Context.NONE));
         assertEquals(MESSAGE_INVALID_NUMBER_PATTERN, exception.getMessage());
     }
 
@@ -677,10 +681,12 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesDuplicatedRoutesWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutesWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutesWithResponseSync");
         List<SipTrunkRoute> invalidRoutes = asList(SET_TRUNK_ROUTE, SET_TRUNK_ROUTE);
 
-        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutesWithResponse(invalidRoutes, Context.NONE));
+        Throwable exception = assertThrows(HttpResponseException.class,
+            () -> client.setRoutesWithResponse(invalidRoutes, Context.NONE));
         assertEquals(MESSAGE_DUPLICATE_ROUTES, exception.getMessage());
     }
 
@@ -690,10 +696,12 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setRoutesDuplicatedRoutingTrunks(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutingTrunksSync");
         client.setTrunk(SET_TRUNK);
-        SipTrunkRoute routeWithDuplicatedTrunks = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN)
-            .setTrunks(asList(SET_TRUNK_FQDN, SET_TRUNK_FQDN));
+        SipTrunkRoute routeWithDuplicatedTrunks
+            = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN)
+                .setTrunks(asList(SET_TRUNK_FQDN, SET_TRUNK_FQDN));
 
-        Throwable exception = assertThrows(HttpResponseException.class, () -> client.setRoutes(asList(routeWithDuplicatedTrunks)));
+        Throwable exception
+            = assertThrows(HttpResponseException.class, () -> client.setRoutes(asList(routeWithDuplicatedTrunks)));
         assertEquals(MESSAGE_DUPLICATE_TRUNKS, exception.getMessage());
     }
 
@@ -701,10 +709,12 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "SKIP_SIP_ROUTING_LIVE_TESTS", matches = "(?i)(true)")
     public void setRoutesDuplicatedRoutingTrunksWithResponse(HttpClient httpClient) {
-        SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutingTrunksWithResponseSync");
+        SipRoutingClient client
+            = getClientWithConnectionString(httpClient, "setRoutesDuplicatedRoutingTrunksWithResponseSync");
         client.setTrunk(SET_TRUNK);
-        SipTrunkRoute routeWithDuplicatedTrunks = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN)
-            .setTrunks(asList(SET_TRUNK_FQDN, SET_TRUNK_FQDN));
+        SipTrunkRoute routeWithDuplicatedTrunks
+            = new SipTrunkRoute(SET_TRUNK_ROUTE_NAME, SET_TRUNK_ROUTE_NUMBER_PATTERN)
+                .setTrunks(asList(SET_TRUNK_FQDN, SET_TRUNK_FQDN));
 
         Throwable exception = assertThrows(HttpResponseException.class,
             () -> client.setRoutesWithResponse(asList(routeWithDuplicatedTrunks), Context.NONE));
@@ -718,8 +728,8 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setRoutesMissingTrunkSync");
         client.setTrunks(new ArrayList<>());
 
-        Throwable exception = assertThrows(HttpResponseException.class,
-            () -> client.setRoutes(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK));
+        Throwable exception
+            = assertThrows(HttpResponseException.class, () -> client.setRoutes(EXPECTED_ROUTES_WITH_REFERENCED_TRUNK));
         assertEquals(MESSAGE_MISSING_TRUNK, exception.getMessage());
     }
 

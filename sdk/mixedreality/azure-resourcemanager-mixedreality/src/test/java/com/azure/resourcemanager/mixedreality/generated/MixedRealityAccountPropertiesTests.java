@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MixedRealityAccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MixedRealityAccountProperties model =
-            BinaryData
-                .fromString(
-                    "{\"storageAccountName\":\"ylihkaetckt\",\"accountId\":\"civfsnkymuctq\",\"accountDomain\":\"fbebrjcxer\"}")
-                .toObject(MixedRealityAccountProperties.class);
-        Assertions.assertEquals("ylihkaetckt", model.storageAccountName());
+        MixedRealityAccountProperties model = BinaryData
+            .fromString("{\"storageAccountName\":\"c\",\"accountId\":\"efovgmk\",\"accountDomain\":\"leyyvx\"}")
+            .toObject(MixedRealityAccountProperties.class);
+        Assertions.assertEquals("c", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MixedRealityAccountProperties model = new MixedRealityAccountProperties().withStorageAccountName("ylihkaetckt");
+        MixedRealityAccountProperties model = new MixedRealityAccountProperties().withStorageAccountName("c");
         model = BinaryData.fromObject(model).toObject(MixedRealityAccountProperties.class);
-        Assertions.assertEquals("ylihkaetckt", model.storageAccountName());
+        Assertions.assertEquals("c", model.storageAccountName());
     }
 }

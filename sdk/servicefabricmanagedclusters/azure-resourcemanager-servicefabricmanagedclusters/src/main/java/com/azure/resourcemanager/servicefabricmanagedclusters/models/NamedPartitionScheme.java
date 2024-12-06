@@ -70,7 +70,6 @@ public final class NamedPartitionScheme extends Partition {
      */
     @Override
     public void validate() {
-        super.validate();
         if (names() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property names in model NamedPartitionScheme"));

@@ -39,9 +39,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
-    <jacoco.skip>true</jacoco.skip>
+
     <javaModulesSurefireArgLine>
-      --add-opens io.clientcore.core/io.clientcore.core=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.credential=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
@@ -65,18 +64,17 @@
 
       --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
-
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
-    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/generated/**/*.java,**/aalto/**/*.java</checkstyle.excludes>
+
+    <spotbugs.excludes>**/aalto/**/*.java</spotbugs.excludes>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames>
-      io.clientcore.core.json,com.azure.json,com.azure.xml,com.azure.core*
-    </javadoc.excludePackageNames>
+    <javadoc.excludePackageNames>io.clientcore.core.json*</javadoc.excludePackageNames>
   </properties>
 
   <dependencies>
@@ -92,12 +90,6 @@
       <artifactId>core-json</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.json</groupId>
-      <artifactId>javax.json-api</artifactId>
-      <version>1.1.4</version> <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -121,13 +113,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -146,11 +138,11 @@
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in http-okhttp3 and http-jdk-httpclient -->
+      <!-- RestProxyTests is inherited by tests in http-okhttp3 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>test-jar</id>
@@ -166,7 +158,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <plugins>
             <plugin>
@@ -181,7 +173,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <dependencies>
           <!-- Inject slf4j-simple into integration testing to verify the shim works as intended. -->
           <dependency>
@@ -190,6 +182,18 @@
             <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
           </dependency>
         </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <excludes>
+            <exclude>META-INF/**</exclude>
+            <exclude>**/io/clientcore/core/serialization/xml/implementation/aalto/**</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -5,6 +5,7 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -44,10 +45,10 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
     private LivenessWithVerifyOutputs verifyResult;
 
     /*
-     * Additional properties
+     * The response body of detect liveness API call.
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of LivenessResponseBody class.
@@ -98,12 +99,12 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
     }
 
     /**
-     * Get the additionalProperties property: Additional properties.
+     * Get the additionalProperties property: The response body of detect liveness API call.
      *
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -121,8 +122,13 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
             this.modelVersionUsed == null ? null : this.modelVersionUsed.toString());
         jsonWriter.writeJsonField("verifyResult", this.verifyResult);
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -140,7 +146,7 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
     public static LivenessResponseBody fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LivenessResponseBody deserializedLivenessResponseBody = new LivenessResponseBody();
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -157,7 +163,8 @@ public final class LivenessResponseBody implements JsonSerializable<LivenessResp
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             deserializedLivenessResponseBody.additionalProperties = additionalProperties;

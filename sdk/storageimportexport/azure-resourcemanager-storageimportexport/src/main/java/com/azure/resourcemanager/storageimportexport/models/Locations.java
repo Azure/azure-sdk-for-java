@@ -8,14 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Locations. */
+/**
+ * Resource collection API of Locations.
+ */
 public interface Locations {
     /**
      * Returns a list of locations to which you can ship the disks associated with an import or export job. A location
      * is a Microsoft data center region.
-     *
+     * 
      * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return locations response as paginated response with {@link PagedIterable}.
      */
@@ -24,11 +26,11 @@ public interface Locations {
     /**
      * Returns a list of locations to which you can ship the disks associated with an import or export job. A location
      * is a Microsoft data center region.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return locations response as paginated response with {@link PagedIterable}.
      */
@@ -37,12 +39,12 @@ public interface Locations {
     /**
      * Returns the details about a location to which you can ship the disks associated with an import or export job. A
      * location is an Azure region.
-     *
+     * 
      * @param locationName The name of the location. For example, West US or westus.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provides information about an Azure data center location along with {@link Response}.
      */
@@ -51,11 +53,11 @@ public interface Locations {
     /**
      * Returns the details about a location to which you can ship the disks associated with an import or export job. A
      * location is an Azure region.
-     *
+     * 
      * @param locationName The name of the location. For example, West US or westus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provides information about an Azure data center location.
      */

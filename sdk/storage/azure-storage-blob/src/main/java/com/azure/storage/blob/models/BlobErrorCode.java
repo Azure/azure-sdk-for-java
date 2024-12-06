@@ -4,9 +4,8 @@
 
 package com.azure.storage.blob.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
  * Error codes returned by the service.
@@ -596,6 +595,12 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
      */
     public static final BlobErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH
         = fromString("AuthorizationResourceTypeMismatch");
+
+    /**
+     * Static value BlobAccessTierNotSupportedForAccountType for BlobErrorCode.
+     */
+    public static final BlobErrorCode BLOB_ACCESS_TIER_NOT_SUPPORTED_FOR_ACCOUNT_TYPE
+        = fromString("BlobAccessTierNotSupportedForAccountType");
 
     /**
      * Static value SnapshotOperationRateExceeded for BlobErrorCode.

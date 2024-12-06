@@ -46,8 +46,8 @@ public interface VCentersClient {
      * @return the {@link SyncPoller} for polling of defines the vCenter.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(
-        String resourceGroupName, String vcenterName, VCenterInner body, Context context);
+    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceGroupName, String vcenterName,
+        VCenterInner body, Context context);
 
     /**
      * Implements vCenter PUT method.
@@ -95,8 +95,8 @@ public interface VCentersClient {
      * @return defines the vCenter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VCenterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vcenterName, Context context);
+    Response<VCenterInner> getByResourceGroupWithResponse(String resourceGroupName, String vcenterName,
+        Context context);
 
     /**
      * Gets a vCenter.
@@ -128,8 +128,8 @@ public interface VCentersClient {
      * @return defines the vCenter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VCenterInner> updateWithResponse(
-        String resourceGroupName, String vcenterName, ResourcePatch body, Context context);
+    Response<VCenterInner> updateWithResponse(String resourceGroupName, String vcenterName, ResourcePatch body,
+        Context context);
 
     /**
      * Updates a vCenter.
@@ -176,8 +176,8 @@ public interface VCentersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vcenterName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vcenterName, Boolean force,
+        Context context);
 
     /**
      * Deletes an vCenter.

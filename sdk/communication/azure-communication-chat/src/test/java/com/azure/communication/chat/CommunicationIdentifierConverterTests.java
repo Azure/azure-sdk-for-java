@@ -34,35 +34,24 @@ public class CommunicationIdentifierConverterTests {
     @Test
     public void deserializerThrowsWhenMoreThanOneNestedObjectsSet() {
         CommunicationIdentifierModel[] modelsWithTooManyNestedObjects = new CommunicationIdentifierModel[] {
-            new CommunicationIdentifierModel()
-                .setRawId(rawId)
-                .setCommunicationUser(new CommunicationUserIdentifierModel()
-                    .setId(someId))
-                .setPhoneNumber(new PhoneNumberIdentifierModel()
-                    .setValue(testPhoneNumber)),
-            new CommunicationIdentifierModel()
-                .setRawId(rawId)
-                .setCommunicationUser(new CommunicationUserIdentifierModel()
-                    .setId(someId))
-                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
-                    .setUserId(teamsUserId)
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setCommunicationUser(new CommunicationUserIdentifierModel().setId(someId))
+                .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(testPhoneNumber)),
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setCommunicationUser(new CommunicationUserIdentifierModel().setId(someId))
+                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel().setUserId(teamsUserId)
                     .setIsAnonymous(true)
                     .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)),
-            new CommunicationIdentifierModel()
-                .setRawId(rawId)
-                .setPhoneNumber(new PhoneNumberIdentifierModel()
-                    .setValue(testPhoneNumber))
-                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
-                    .setUserId(teamsUserId)
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(testPhoneNumber))
+                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel().setUserId(teamsUserId)
                     .setIsAnonymous(true)
-                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC))
-        };
+                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)) };
 
         Arrays.stream(modelsWithTooManyNestedObjects).forEach(identifierModel -> {
-            assertThrows(IllegalArgumentException.class,
-                () -> {
-                    CommunicationIdentifierConverter.convert(identifierModel);
-                });
+            assertThrows(IllegalArgumentException.class, () -> {
+                CommunicationIdentifierConverter.convert(identifierModel);
+            });
         });
     }
 
@@ -70,28 +59,30 @@ public class CommunicationIdentifierConverterTests {
     public void deserializerThrowsWhenMissingProperty() {
         CommunicationIdentifierModel[] modelsWithMissingMandatoryProperty = new CommunicationIdentifierModel[] {
             new CommunicationIdentifierModel(), // Missing RawId
-            new CommunicationIdentifierModel().setRawId(rawId).setCommunicationUser(new CommunicationUserIdentifierModel()), // Missing Id
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setCommunicationUser(new CommunicationUserIdentifierModel()), // Missing Id
             new CommunicationIdentifierModel().setRawId(rawId).setPhoneNumber(new PhoneNumberIdentifierModel()), // Missing PhoneNumber
-            new CommunicationIdentifierModel().setRawId(rawId).setMicrosoftTeamsUser(
-                new MicrosoftTeamsUserIdentifierModel().setCloud(CommunicationCloudEnvironmentModel.PUBLIC)), // Missing userId
-            new CommunicationIdentifierModel().setRawId(rawId).setMicrosoftTeamsUser(
-                new MicrosoftTeamsUserIdentifierModel().setIsAnonymous(true).setCloud(CommunicationCloudEnvironmentModel.DOD)), // Missing UserId
-            new CommunicationIdentifierModel().setRawId(rawId).setMicrosoftTeamsUser(
-                new MicrosoftTeamsUserIdentifierModel().setUserId(teamsUserId).setIsAnonymous(true))
-        };
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setMicrosoftTeamsUser(
+                    new MicrosoftTeamsUserIdentifierModel().setCloud(CommunicationCloudEnvironmentModel.PUBLIC)), // Missing userId
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel().setIsAnonymous(true)
+                    .setCloud(CommunicationCloudEnvironmentModel.DOD)), // Missing UserId
+            new CommunicationIdentifierModel().setRawId(rawId)
+                .setMicrosoftTeamsUser(
+                    new MicrosoftTeamsUserIdentifierModel().setUserId(teamsUserId).setIsAnonymous(true)) };
 
         Arrays.stream(modelsWithMissingMandatoryProperty).forEach(identifierModel -> {
-            assertThrows(NullPointerException.class,
-                () -> {
-                    CommunicationIdentifierConverter.convert(identifierModel);
-                });
+            assertThrows(NullPointerException.class, () -> {
+                CommunicationIdentifierConverter.convert(identifierModel);
+            });
         });
     }
 
     @Test
     public void serializeCommunicationUser() {
-        CommunicationIdentifierModel model = CommunicationIdentifierConverter.convert(
-            new CommunicationUserIdentifier(someId));
+        CommunicationIdentifierModel model
+            = CommunicationIdentifierConverter.convert(new CommunicationUserIdentifier(someId));
 
         assertNotNull(model.getCommunicationUser());
         assertEquals(someId, model.getCommunicationUser().getId());
@@ -99,9 +90,8 @@ public class CommunicationIdentifierConverterTests {
 
     @Test
     public void deserializeCommunicationUser() {
-        CommunicationIdentifier identifier = CommunicationIdentifierConverter.convert(
-            new CommunicationIdentifierModel()
-                .setCommunicationUser(new CommunicationUserIdentifierModel().setId(someId)));
+        CommunicationIdentifier identifier = CommunicationIdentifierConverter.convert(new CommunicationIdentifierModel()
+            .setCommunicationUser(new CommunicationUserIdentifierModel().setId(someId)));
 
         assertEquals(identifier.getClass(), CommunicationUserIdentifier.class);
         assertEquals(someId, ((CommunicationUserIdentifier) identifier).getId());
@@ -109,39 +99,35 @@ public class CommunicationIdentifierConverterTests {
 
     @Test
     public void serializeUnknown() {
-        CommunicationIdentifierModel model = CommunicationIdentifierConverter.convert(
-            new UnknownIdentifier(someId));
+        CommunicationIdentifierModel model = CommunicationIdentifierConverter.convert(new UnknownIdentifier(someId));
 
         assertEquals(someId, model.getRawId());
     }
 
     @Test
     public void deserializeUnknown() {
-        CommunicationIdentifier unknownIdentifier = CommunicationIdentifierConverter.convert(
-            new CommunicationIdentifierModel()
-                .setRawId(rawId));
+        CommunicationIdentifier unknownIdentifier
+            = CommunicationIdentifierConverter.convert(new CommunicationIdentifierModel().setRawId(rawId));
         assertEquals(UnknownIdentifier.class, unknownIdentifier.getClass());
         assertEquals(rawId, ((UnknownIdentifier) unknownIdentifier).getId());
     }
 
     @Test
     public void serializeFutureTypeShouldThrow() {
-        assertThrows(IllegalArgumentException.class,
-            () -> {
-                CommunicationIdentifierConverter.convert(
-                    new CommunicationIdentifier() {
-                        public String getId() {
-                            return someId;
-                        }
-                    });
+        assertThrows(IllegalArgumentException.class, () -> {
+            CommunicationIdentifierConverter.convert(new CommunicationIdentifier() {
+                public String getId() {
+                    return someId;
+                }
             });
+        });
     }
 
     @Test
     public void serializePhoneNumber() {
         final String phoneNumber = "+12223334444";
-        CommunicationIdentifierModel model = CommunicationIdentifierConverter.convert(
-            new PhoneNumberIdentifier(phoneNumber).setRawId(rawId));
+        CommunicationIdentifierModel model
+            = CommunicationIdentifierConverter.convert(new PhoneNumberIdentifier(phoneNumber).setRawId(rawId));
 
         assertNotNull(model.getPhoneNumber());
         assertEquals(phoneNumber, model.getPhoneNumber().getValue());
@@ -150,9 +136,8 @@ public class CommunicationIdentifierConverterTests {
 
     @Test
     public void deserializePhoneNumber() {
-        CommunicationIdentifier identifier = CommunicationIdentifierConverter.convert(
-            new CommunicationIdentifierModel()
-                .setRawId(rawId)
+        CommunicationIdentifier identifier
+            = CommunicationIdentifierConverter.convert(new CommunicationIdentifierModel().setRawId(rawId)
                 .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(testPhoneNumber)));
 
         assertEquals(PhoneNumberIdentifier.class, identifier.getClass());
@@ -161,11 +146,10 @@ public class CommunicationIdentifierConverterTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void serializeMicrosoftTeamsUser(boolean isAnonymous) {
-        CommunicationIdentifierModel model = CommunicationIdentifierConverter.convert(
-            new MicrosoftTeamsUserIdentifier(teamsUserId, isAnonymous)
-                .setRawId(rawId)
+        CommunicationIdentifierModel model = CommunicationIdentifierConverter
+            .convert(new MicrosoftTeamsUserIdentifier(teamsUserId, isAnonymous).setRawId(rawId)
                 .setCloudEnvironment(CommunicationCloudEnvironment.DOD));
 
         assertNotNull(model.getMicrosoftTeamsUser());
@@ -176,13 +160,13 @@ public class CommunicationIdentifierConverterTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void deserializerMicrosoftTeamsUser(boolean isAnonymous) {
-        MicrosoftTeamsUserIdentifier identifier = (MicrosoftTeamsUserIdentifier) CommunicationIdentifierConverter.convert(
-            new CommunicationIdentifierModel()
-                .setRawId(rawId)
-                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
-                .setUserId(teamsUserId).setIsAnonymous(isAnonymous).setCloud(CommunicationCloudEnvironmentModel.GCCH)));
+        MicrosoftTeamsUserIdentifier identifier = (MicrosoftTeamsUserIdentifier) CommunicationIdentifierConverter
+            .convert(new CommunicationIdentifierModel().setRawId(rawId)
+                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel().setUserId(teamsUserId)
+                    .setIsAnonymous(isAnonymous)
+                    .setCloud(CommunicationCloudEnvironmentModel.GCCH)));
 
         assertEquals(MicrosoftTeamsUserIdentifier.class, identifier.getClass());
         assertEquals(teamsUserId, identifier.getUserId());

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The name of the quota. */
+/**
+ * The name of the quota.
+ */
 @Fluent
-public final class QuotaName {
+public final class QuotaName implements JsonSerializable<QuotaName> {
     /*
      * The localized name of the quota
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /*
      * The unlocalized name (or ID) of the quota
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of QuotaName class. */
+    /**
+     * Creates an instance of QuotaName class.
+     */
     public QuotaName() {
     }
 
     /**
      * Get the localizedValue property: The localized name of the quota.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -37,7 +43,7 @@ public final class QuotaName {
 
     /**
      * Set the localizedValue property: The localized name of the quota.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the QuotaName object itself.
      */
@@ -48,7 +54,7 @@ public final class QuotaName {
 
     /**
      * Get the value property: The unlocalized name (or ID) of the quota.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +63,7 @@ public final class QuotaName {
 
     /**
      * Set the value property: The unlocalized name (or ID) of the quota.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaName object itself.
      */
@@ -68,9 +74,48 @@ public final class QuotaName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaName if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaName.
+     */
+    public static QuotaName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaName deserializedQuotaName = new QuotaName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localizedValue".equals(fieldName)) {
+                    deserializedQuotaName.localizedValue = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedQuotaName.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaName;
+        });
     }
 }

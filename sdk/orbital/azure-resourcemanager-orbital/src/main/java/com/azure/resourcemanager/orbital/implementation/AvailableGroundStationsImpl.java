@@ -20,20 +20,20 @@ public final class AvailableGroundStationsImpl implements AvailableGroundStation
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    public AvailableGroundStationsImpl(
-        AvailableGroundStationsClient innerClient, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    public AvailableGroundStationsImpl(AvailableGroundStationsClient innerClient,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AvailableGroundStation> list(CapabilityParameter capability) {
         PagedIterable<AvailableGroundStationInner> inner = this.serviceClient().list(capability);
-        return Utils.mapPage(inner, inner1 -> new AvailableGroundStationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableGroundStationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailableGroundStation> list(CapabilityParameter capability, Context context) {
         PagedIterable<AvailableGroundStationInner> inner = this.serviceClient().list(capability, context);
-        return Utils.mapPage(inner, inner1 -> new AvailableGroundStationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableGroundStationImpl(inner1, this.manager()));
     }
 
     private AvailableGroundStationsClient serviceClient() {

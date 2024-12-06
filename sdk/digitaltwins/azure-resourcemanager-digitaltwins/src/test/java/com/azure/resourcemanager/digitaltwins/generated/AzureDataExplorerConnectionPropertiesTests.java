@@ -14,58 +14,53 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureDataExplorerConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataExplorerConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"connectionType\":\"AzureDataExplorer\",\"adxResourceId\":\"wflzlfbxzpuzy\",\"adxEndpointUri\":\"ispnqzahmgkbrp\",\"adxDatabaseName\":\"y\",\"adxTableName\":\"ibnuqqkpik\",\"adxTwinLifecycleEventsTableName\":\"rgvtqag\",\"adxRelationshipLifecycleEventsTableName\":\"uynhijg\",\"eventHubEndpointUri\":\"mebf\",\"eventHubEntityPath\":\"iarbutrcvpna\",\"eventHubNamespaceResourceId\":\"zmhjrunmp\",\"eventHubConsumerGroup\":\"tdbhrbnla\",\"recordPropertyAndItemRemovals\":\"true\",\"provisioningState\":\"Suspending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"henbtkcxywnytn\"}}")
-                .toObject(AzureDataExplorerConnectionProperties.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("henbtkcxywnytn", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("wflzlfbxzpuzy", model.adxResourceId());
-        Assertions.assertEquals("ispnqzahmgkbrp", model.adxEndpointUri());
-        Assertions.assertEquals("y", model.adxDatabaseName());
-        Assertions.assertEquals("ibnuqqkpik", model.adxTableName());
-        Assertions.assertEquals("rgvtqag", model.adxTwinLifecycleEventsTableName());
-        Assertions.assertEquals("uynhijg", model.adxRelationshipLifecycleEventsTableName());
-        Assertions.assertEquals("mebf", model.eventHubEndpointUri());
-        Assertions.assertEquals("iarbutrcvpna", model.eventHubEntityPath());
-        Assertions.assertEquals("zmhjrunmp", model.eventHubNamespaceResourceId());
-        Assertions.assertEquals("tdbhrbnla", model.eventHubConsumerGroup());
-        Assertions.assertEquals(RecordPropertyAndItemRemovals.TRUE, model.recordPropertyAndItemRemovals());
+        AzureDataExplorerConnectionProperties model = BinaryData.fromString(
+            "{\"connectionType\":\"AzureDataExplorer\",\"adxResourceId\":\"qzahmgkbrp\",\"adxEndpointUri\":\"y\",\"adxDatabaseName\":\"hibnuqqkpika\",\"adxTableName\":\"gvtqagnbuynh\",\"adxTwinLifecycleEventsTableName\":\"gg\",\"adxRelationshipLifecycleEventsTableName\":\"bfs\",\"eventHubEndpointUri\":\"arbu\",\"eventHubEntityPath\":\"rcvpnazzmhjrunmp\",\"eventHubNamespaceResourceId\":\"ttdbhrbnl\",\"eventHubConsumerGroup\":\"kx\",\"recordPropertyAndItemRemovals\":\"false\",\"provisioningState\":\"Provisioning\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"btkcxywnytnrsyn\"}}")
+            .toObject(AzureDataExplorerConnectionProperties.class);
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qzahmgkbrp", model.adxResourceId());
+        Assertions.assertEquals("y", model.adxEndpointUri());
+        Assertions.assertEquals("hibnuqqkpika", model.adxDatabaseName());
+        Assertions.assertEquals("gvtqagnbuynh", model.adxTableName());
+        Assertions.assertEquals("gg", model.adxTwinLifecycleEventsTableName());
+        Assertions.assertEquals("bfs", model.adxRelationshipLifecycleEventsTableName());
+        Assertions.assertEquals("arbu", model.eventHubEndpointUri());
+        Assertions.assertEquals("rcvpnazzmhjrunmp", model.eventHubEntityPath());
+        Assertions.assertEquals("ttdbhrbnl", model.eventHubNamespaceResourceId());
+        Assertions.assertEquals("kx", model.eventHubConsumerGroup());
+        Assertions.assertEquals(RecordPropertyAndItemRemovals.FALSE, model.recordPropertyAndItemRemovals());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerConnectionProperties model =
-            new AzureDataExplorerConnectionProperties()
-                .withIdentity(
-                    new ManagedIdentityReference()
-                        .withType(IdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("henbtkcxywnytn"))
-                .withAdxResourceId("wflzlfbxzpuzy")
-                .withAdxEndpointUri("ispnqzahmgkbrp")
-                .withAdxDatabaseName("y")
-                .withAdxTableName("ibnuqqkpik")
-                .withAdxTwinLifecycleEventsTableName("rgvtqag")
-                .withAdxRelationshipLifecycleEventsTableName("uynhijg")
-                .withEventHubEndpointUri("mebf")
-                .withEventHubEntityPath("iarbutrcvpna")
-                .withEventHubNamespaceResourceId("zmhjrunmp")
-                .withEventHubConsumerGroup("tdbhrbnla")
-                .withRecordPropertyAndItemRemovals(RecordPropertyAndItemRemovals.TRUE);
+        AzureDataExplorerConnectionProperties model = new AzureDataExplorerConnectionProperties()
+            .withIdentity(new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("btkcxywnytnrsyn"))
+            .withAdxResourceId("qzahmgkbrp")
+            .withAdxEndpointUri("y")
+            .withAdxDatabaseName("hibnuqqkpika")
+            .withAdxTableName("gvtqagnbuynh")
+            .withAdxTwinLifecycleEventsTableName("gg")
+            .withAdxRelationshipLifecycleEventsTableName("bfs")
+            .withEventHubEndpointUri("arbu")
+            .withEventHubEntityPath("rcvpnazzmhjrunmp")
+            .withEventHubNamespaceResourceId("ttdbhrbnl")
+            .withEventHubConsumerGroup("kx")
+            .withRecordPropertyAndItemRemovals(RecordPropertyAndItemRemovals.FALSE);
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerConnectionProperties.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("henbtkcxywnytn", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("wflzlfbxzpuzy", model.adxResourceId());
-        Assertions.assertEquals("ispnqzahmgkbrp", model.adxEndpointUri());
-        Assertions.assertEquals("y", model.adxDatabaseName());
-        Assertions.assertEquals("ibnuqqkpik", model.adxTableName());
-        Assertions.assertEquals("rgvtqag", model.adxTwinLifecycleEventsTableName());
-        Assertions.assertEquals("uynhijg", model.adxRelationshipLifecycleEventsTableName());
-        Assertions.assertEquals("mebf", model.eventHubEndpointUri());
-        Assertions.assertEquals("iarbutrcvpna", model.eventHubEntityPath());
-        Assertions.assertEquals("zmhjrunmp", model.eventHubNamespaceResourceId());
-        Assertions.assertEquals("tdbhrbnla", model.eventHubConsumerGroup());
-        Assertions.assertEquals(RecordPropertyAndItemRemovals.TRUE, model.recordPropertyAndItemRemovals());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qzahmgkbrp", model.adxResourceId());
+        Assertions.assertEquals("y", model.adxEndpointUri());
+        Assertions.assertEquals("hibnuqqkpika", model.adxDatabaseName());
+        Assertions.assertEquals("gvtqagnbuynh", model.adxTableName());
+        Assertions.assertEquals("gg", model.adxTwinLifecycleEventsTableName());
+        Assertions.assertEquals("bfs", model.adxRelationshipLifecycleEventsTableName());
+        Assertions.assertEquals("arbu", model.eventHubEndpointUri());
+        Assertions.assertEquals("rcvpnazzmhjrunmp", model.eventHubEntityPath());
+        Assertions.assertEquals("ttdbhrbnl", model.eventHubNamespaceResourceId());
+        Assertions.assertEquals("kx", model.eventHubConsumerGroup());
+        Assertions.assertEquals(RecordPropertyAndItemRemovals.FALSE, model.recordPropertyAndItemRemovals());
     }
 }

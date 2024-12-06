@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.apimanagement.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -121,1143 +122,1335 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ApiManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ApiManagementClientImpl type.
+ */
 @ServiceClient(builder = ApiManagementClientBuilder.class)
 public final class ApiManagementClientImpl implements ApiManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ApisClient object to access its operations. */
+    /**
+     * The ApisClient object to access its operations.
+     */
     private final ApisClient apis;
 
     /**
      * Gets the ApisClient object to access its operations.
-     *
+     * 
      * @return the ApisClient object.
      */
     public ApisClient getApis() {
         return this.apis;
     }
 
-    /** The ApiRevisionsClient object to access its operations. */
+    /**
+     * The ApiRevisionsClient object to access its operations.
+     */
     private final ApiRevisionsClient apiRevisions;
 
     /**
      * Gets the ApiRevisionsClient object to access its operations.
-     *
+     * 
      * @return the ApiRevisionsClient object.
      */
     public ApiRevisionsClient getApiRevisions() {
         return this.apiRevisions;
     }
 
-    /** The ApiReleasesClient object to access its operations. */
+    /**
+     * The ApiReleasesClient object to access its operations.
+     */
     private final ApiReleasesClient apiReleases;
 
     /**
      * Gets the ApiReleasesClient object to access its operations.
-     *
+     * 
      * @return the ApiReleasesClient object.
      */
     public ApiReleasesClient getApiReleases() {
         return this.apiReleases;
     }
 
-    /** The ApiOperationsClient object to access its operations. */
+    /**
+     * The ApiOperationsClient object to access its operations.
+     */
     private final ApiOperationsClient apiOperations;
 
     /**
      * Gets the ApiOperationsClient object to access its operations.
-     *
+     * 
      * @return the ApiOperationsClient object.
      */
     public ApiOperationsClient getApiOperations() {
         return this.apiOperations;
     }
 
-    /** The ApiOperationPoliciesClient object to access its operations. */
+    /**
+     * The ApiOperationPoliciesClient object to access its operations.
+     */
     private final ApiOperationPoliciesClient apiOperationPolicies;
 
     /**
      * Gets the ApiOperationPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ApiOperationPoliciesClient object.
      */
     public ApiOperationPoliciesClient getApiOperationPolicies() {
         return this.apiOperationPolicies;
     }
 
-    /** The TagsClient object to access its operations. */
+    /**
+     * The TagsClient object to access its operations.
+     */
     private final TagsClient tags;
 
     /**
      * Gets the TagsClient object to access its operations.
-     *
+     * 
      * @return the TagsClient object.
      */
     public TagsClient getTags() {
         return this.tags;
     }
 
-    /** The GraphQLApiResolversClient object to access its operations. */
+    /**
+     * The GraphQLApiResolversClient object to access its operations.
+     */
     private final GraphQLApiResolversClient graphQLApiResolvers;
 
     /**
      * Gets the GraphQLApiResolversClient object to access its operations.
-     *
+     * 
      * @return the GraphQLApiResolversClient object.
      */
     public GraphQLApiResolversClient getGraphQLApiResolvers() {
         return this.graphQLApiResolvers;
     }
 
-    /** The GraphQLApiResolverPoliciesClient object to access its operations. */
+    /**
+     * The GraphQLApiResolverPoliciesClient object to access its operations.
+     */
     private final GraphQLApiResolverPoliciesClient graphQLApiResolverPolicies;
 
     /**
      * Gets the GraphQLApiResolverPoliciesClient object to access its operations.
-     *
+     * 
      * @return the GraphQLApiResolverPoliciesClient object.
      */
     public GraphQLApiResolverPoliciesClient getGraphQLApiResolverPolicies() {
         return this.graphQLApiResolverPolicies;
     }
 
-    /** The ApiProductsClient object to access its operations. */
+    /**
+     * The ApiProductsClient object to access its operations.
+     */
     private final ApiProductsClient apiProducts;
 
     /**
      * Gets the ApiProductsClient object to access its operations.
-     *
+     * 
      * @return the ApiProductsClient object.
      */
     public ApiProductsClient getApiProducts() {
         return this.apiProducts;
     }
 
-    /** The ApiPoliciesClient object to access its operations. */
+    /**
+     * The ApiPoliciesClient object to access its operations.
+     */
     private final ApiPoliciesClient apiPolicies;
 
     /**
      * Gets the ApiPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ApiPoliciesClient object.
      */
     public ApiPoliciesClient getApiPolicies() {
         return this.apiPolicies;
     }
 
-    /** The ApiSchemasClient object to access its operations. */
+    /**
+     * The ApiSchemasClient object to access its operations.
+     */
     private final ApiSchemasClient apiSchemas;
 
     /**
      * Gets the ApiSchemasClient object to access its operations.
-     *
+     * 
      * @return the ApiSchemasClient object.
      */
     public ApiSchemasClient getApiSchemas() {
         return this.apiSchemas;
     }
 
-    /** The ApiDiagnosticsClient object to access its operations. */
+    /**
+     * The ApiDiagnosticsClient object to access its operations.
+     */
     private final ApiDiagnosticsClient apiDiagnostics;
 
     /**
      * Gets the ApiDiagnosticsClient object to access its operations.
-     *
+     * 
      * @return the ApiDiagnosticsClient object.
      */
     public ApiDiagnosticsClient getApiDiagnostics() {
         return this.apiDiagnostics;
     }
 
-    /** The ApiIssuesClient object to access its operations. */
+    /**
+     * The ApiIssuesClient object to access its operations.
+     */
     private final ApiIssuesClient apiIssues;
 
     /**
      * Gets the ApiIssuesClient object to access its operations.
-     *
+     * 
      * @return the ApiIssuesClient object.
      */
     public ApiIssuesClient getApiIssues() {
         return this.apiIssues;
     }
 
-    /** The ApiIssueCommentsClient object to access its operations. */
+    /**
+     * The ApiIssueCommentsClient object to access its operations.
+     */
     private final ApiIssueCommentsClient apiIssueComments;
 
     /**
      * Gets the ApiIssueCommentsClient object to access its operations.
-     *
+     * 
      * @return the ApiIssueCommentsClient object.
      */
     public ApiIssueCommentsClient getApiIssueComments() {
         return this.apiIssueComments;
     }
 
-    /** The ApiIssueAttachmentsClient object to access its operations. */
+    /**
+     * The ApiIssueAttachmentsClient object to access its operations.
+     */
     private final ApiIssueAttachmentsClient apiIssueAttachments;
 
     /**
      * Gets the ApiIssueAttachmentsClient object to access its operations.
-     *
+     * 
      * @return the ApiIssueAttachmentsClient object.
      */
     public ApiIssueAttachmentsClient getApiIssueAttachments() {
         return this.apiIssueAttachments;
     }
 
-    /** The ApiTagDescriptionsClient object to access its operations. */
+    /**
+     * The ApiTagDescriptionsClient object to access its operations.
+     */
     private final ApiTagDescriptionsClient apiTagDescriptions;
 
     /**
      * Gets the ApiTagDescriptionsClient object to access its operations.
-     *
+     * 
      * @return the ApiTagDescriptionsClient object.
      */
     public ApiTagDescriptionsClient getApiTagDescriptions() {
         return this.apiTagDescriptions;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ApiWikisClient object to access its operations. */
+    /**
+     * The ApiWikisClient object to access its operations.
+     */
     private final ApiWikisClient apiWikis;
 
     /**
      * Gets the ApiWikisClient object to access its operations.
-     *
+     * 
      * @return the ApiWikisClient object.
      */
     public ApiWikisClient getApiWikis() {
         return this.apiWikis;
     }
 
-    /** The ApiWikisOperationsClient object to access its operations. */
+    /**
+     * The ApiWikisOperationsClient object to access its operations.
+     */
     private final ApiWikisOperationsClient apiWikisOperations;
 
     /**
      * Gets the ApiWikisOperationsClient object to access its operations.
-     *
+     * 
      * @return the ApiWikisOperationsClient object.
      */
     public ApiWikisOperationsClient getApiWikisOperations() {
         return this.apiWikisOperations;
     }
 
-    /** The ApiExportsClient object to access its operations. */
+    /**
+     * The ApiExportsClient object to access its operations.
+     */
     private final ApiExportsClient apiExports;
 
     /**
      * Gets the ApiExportsClient object to access its operations.
-     *
+     * 
      * @return the ApiExportsClient object.
      */
     public ApiExportsClient getApiExports() {
         return this.apiExports;
     }
 
-    /** The ApiVersionSetsClient object to access its operations. */
+    /**
+     * The ApiVersionSetsClient object to access its operations.
+     */
     private final ApiVersionSetsClient apiVersionSets;
 
     /**
      * Gets the ApiVersionSetsClient object to access its operations.
-     *
+     * 
      * @return the ApiVersionSetsClient object.
      */
     public ApiVersionSetsClient getApiVersionSets() {
         return this.apiVersionSets;
     }
 
-    /** The AuthorizationServersClient object to access its operations. */
+    /**
+     * The AuthorizationServersClient object to access its operations.
+     */
     private final AuthorizationServersClient authorizationServers;
 
     /**
      * Gets the AuthorizationServersClient object to access its operations.
-     *
+     * 
      * @return the AuthorizationServersClient object.
      */
     public AuthorizationServersClient getAuthorizationServers() {
         return this.authorizationServers;
     }
 
-    /** The AuthorizationProvidersClient object to access its operations. */
+    /**
+     * The AuthorizationProvidersClient object to access its operations.
+     */
     private final AuthorizationProvidersClient authorizationProviders;
 
     /**
      * Gets the AuthorizationProvidersClient object to access its operations.
-     *
+     * 
      * @return the AuthorizationProvidersClient object.
      */
     public AuthorizationProvidersClient getAuthorizationProviders() {
         return this.authorizationProviders;
     }
 
-    /** The AuthorizationsClient object to access its operations. */
+    /**
+     * The AuthorizationsClient object to access its operations.
+     */
     private final AuthorizationsClient authorizations;
 
     /**
      * Gets the AuthorizationsClient object to access its operations.
-     *
+     * 
      * @return the AuthorizationsClient object.
      */
     public AuthorizationsClient getAuthorizations() {
         return this.authorizations;
     }
 
-    /** The AuthorizationLoginLinksClient object to access its operations. */
+    /**
+     * The AuthorizationLoginLinksClient object to access its operations.
+     */
     private final AuthorizationLoginLinksClient authorizationLoginLinks;
 
     /**
      * Gets the AuthorizationLoginLinksClient object to access its operations.
-     *
+     * 
      * @return the AuthorizationLoginLinksClient object.
      */
     public AuthorizationLoginLinksClient getAuthorizationLoginLinks() {
         return this.authorizationLoginLinks;
     }
 
-    /** The AuthorizationAccessPoliciesClient object to access its operations. */
+    /**
+     * The AuthorizationAccessPoliciesClient object to access its operations.
+     */
     private final AuthorizationAccessPoliciesClient authorizationAccessPolicies;
 
     /**
      * Gets the AuthorizationAccessPoliciesClient object to access its operations.
-     *
+     * 
      * @return the AuthorizationAccessPoliciesClient object.
      */
     public AuthorizationAccessPoliciesClient getAuthorizationAccessPolicies() {
         return this.authorizationAccessPolicies;
     }
 
-    /** The BackendsClient object to access its operations. */
+    /**
+     * The BackendsClient object to access its operations.
+     */
     private final BackendsClient backends;
 
     /**
      * Gets the BackendsClient object to access its operations.
-     *
+     * 
      * @return the BackendsClient object.
      */
     public BackendsClient getBackends() {
         return this.backends;
     }
 
-    /** The CachesClient object to access its operations. */
+    /**
+     * The CachesClient object to access its operations.
+     */
     private final CachesClient caches;
 
     /**
      * Gets the CachesClient object to access its operations.
-     *
+     * 
      * @return the CachesClient object.
      */
     public CachesClient getCaches() {
         return this.caches;
     }
 
-    /** The CertificatesClient object to access its operations. */
+    /**
+     * The CertificatesClient object to access its operations.
+     */
     private final CertificatesClient certificates;
 
     /**
      * Gets the CertificatesClient object to access its operations.
-     *
+     * 
      * @return the CertificatesClient object.
      */
     public CertificatesClient getCertificates() {
         return this.certificates;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The ContentTypesClient object to access its operations. */
+    /**
+     * The ContentTypesClient object to access its operations.
+     */
     private final ContentTypesClient contentTypes;
 
     /**
      * Gets the ContentTypesClient object to access its operations.
-     *
+     * 
      * @return the ContentTypesClient object.
      */
     public ContentTypesClient getContentTypes() {
         return this.contentTypes;
     }
 
-    /** The ContentItemsClient object to access its operations. */
+    /**
+     * The ContentItemsClient object to access its operations.
+     */
     private final ContentItemsClient contentItems;
 
     /**
      * Gets the ContentItemsClient object to access its operations.
-     *
+     * 
      * @return the ContentItemsClient object.
      */
     public ContentItemsClient getContentItems() {
         return this.contentItems;
     }
 
-    /** The DeletedServicesClient object to access its operations. */
+    /**
+     * The DeletedServicesClient object to access its operations.
+     */
     private final DeletedServicesClient deletedServices;
 
     /**
      * Gets the DeletedServicesClient object to access its operations.
-     *
+     * 
      * @return the DeletedServicesClient object.
      */
     public DeletedServicesClient getDeletedServices() {
         return this.deletedServices;
     }
 
-    /** The ApiManagementOperationsClient object to access its operations. */
+    /**
+     * The ApiManagementOperationsClient object to access its operations.
+     */
     private final ApiManagementOperationsClient apiManagementOperations;
 
     /**
      * Gets the ApiManagementOperationsClient object to access its operations.
-     *
+     * 
      * @return the ApiManagementOperationsClient object.
      */
     public ApiManagementOperationsClient getApiManagementOperations() {
         return this.apiManagementOperations;
     }
 
-    /** The ApiManagementServiceSkusClient object to access its operations. */
+    /**
+     * The ApiManagementServiceSkusClient object to access its operations.
+     */
     private final ApiManagementServiceSkusClient apiManagementServiceSkus;
 
     /**
      * Gets the ApiManagementServiceSkusClient object to access its operations.
-     *
+     * 
      * @return the ApiManagementServiceSkusClient object.
      */
     public ApiManagementServiceSkusClient getApiManagementServiceSkus() {
         return this.apiManagementServiceSkus;
     }
 
-    /** The ApiManagementServicesClient object to access its operations. */
+    /**
+     * The ApiManagementServicesClient object to access its operations.
+     */
     private final ApiManagementServicesClient apiManagementServices;
 
     /**
      * Gets the ApiManagementServicesClient object to access its operations.
-     *
+     * 
      * @return the ApiManagementServicesClient object.
      */
     public ApiManagementServicesClient getApiManagementServices() {
         return this.apiManagementServices;
     }
 
-    /** The DiagnosticsClient object to access its operations. */
+    /**
+     * The DiagnosticsClient object to access its operations.
+     */
     private final DiagnosticsClient diagnostics;
 
     /**
      * Gets the DiagnosticsClient object to access its operations.
-     *
+     * 
      * @return the DiagnosticsClient object.
      */
     public DiagnosticsClient getDiagnostics() {
         return this.diagnostics;
     }
 
-    /** The EmailTemplatesClient object to access its operations. */
+    /**
+     * The EmailTemplatesClient object to access its operations.
+     */
     private final EmailTemplatesClient emailTemplates;
 
     /**
      * Gets the EmailTemplatesClient object to access its operations.
-     *
+     * 
      * @return the EmailTemplatesClient object.
      */
     public EmailTemplatesClient getEmailTemplates() {
         return this.emailTemplates;
     }
 
-    /** The GatewaysClient object to access its operations. */
+    /**
+     * The GatewaysClient object to access its operations.
+     */
     private final GatewaysClient gateways;
 
     /**
      * Gets the GatewaysClient object to access its operations.
-     *
+     * 
      * @return the GatewaysClient object.
      */
     public GatewaysClient getGateways() {
         return this.gateways;
     }
 
-    /** The GatewayHostnameConfigurationsClient object to access its operations. */
+    /**
+     * The GatewayHostnameConfigurationsClient object to access its operations.
+     */
     private final GatewayHostnameConfigurationsClient gatewayHostnameConfigurations;
 
     /**
      * Gets the GatewayHostnameConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the GatewayHostnameConfigurationsClient object.
      */
     public GatewayHostnameConfigurationsClient getGatewayHostnameConfigurations() {
         return this.gatewayHostnameConfigurations;
     }
 
-    /** The GatewayApisClient object to access its operations. */
+    /**
+     * The GatewayApisClient object to access its operations.
+     */
     private final GatewayApisClient gatewayApis;
 
     /**
      * Gets the GatewayApisClient object to access its operations.
-     *
+     * 
      * @return the GatewayApisClient object.
      */
     public GatewayApisClient getGatewayApis() {
         return this.gatewayApis;
     }
 
-    /** The GatewayCertificateAuthoritiesClient object to access its operations. */
+    /**
+     * The GatewayCertificateAuthoritiesClient object to access its operations.
+     */
     private final GatewayCertificateAuthoritiesClient gatewayCertificateAuthorities;
 
     /**
      * Gets the GatewayCertificateAuthoritiesClient object to access its operations.
-     *
+     * 
      * @return the GatewayCertificateAuthoritiesClient object.
      */
     public GatewayCertificateAuthoritiesClient getGatewayCertificateAuthorities() {
         return this.gatewayCertificateAuthorities;
     }
 
-    /** The GroupsClient object to access its operations. */
+    /**
+     * The GroupsClient object to access its operations.
+     */
     private final GroupsClient groups;
 
     /**
      * Gets the GroupsClient object to access its operations.
-     *
+     * 
      * @return the GroupsClient object.
      */
     public GroupsClient getGroups() {
         return this.groups;
     }
 
-    /** The GroupUsersClient object to access its operations. */
+    /**
+     * The GroupUsersClient object to access its operations.
+     */
     private final GroupUsersClient groupUsers;
 
     /**
      * Gets the GroupUsersClient object to access its operations.
-     *
+     * 
      * @return the GroupUsersClient object.
      */
     public GroupUsersClient getGroupUsers() {
         return this.groupUsers;
     }
 
-    /** The IdentityProvidersClient object to access its operations. */
+    /**
+     * The IdentityProvidersClient object to access its operations.
+     */
     private final IdentityProvidersClient identityProviders;
 
     /**
      * Gets the IdentityProvidersClient object to access its operations.
-     *
+     * 
      * @return the IdentityProvidersClient object.
      */
     public IdentityProvidersClient getIdentityProviders() {
         return this.identityProviders;
     }
 
-    /** The IssuesClient object to access its operations. */
+    /**
+     * The IssuesClient object to access its operations.
+     */
     private final IssuesClient issues;
 
     /**
      * Gets the IssuesClient object to access its operations.
-     *
+     * 
      * @return the IssuesClient object.
      */
     public IssuesClient getIssues() {
         return this.issues;
     }
 
-    /** The LoggersClient object to access its operations. */
+    /**
+     * The LoggersClient object to access its operations.
+     */
     private final LoggersClient loggers;
 
     /**
      * Gets the LoggersClient object to access its operations.
-     *
+     * 
      * @return the LoggersClient object.
      */
     public LoggersClient getLoggers() {
         return this.loggers;
     }
 
-    /** The NamedValuesClient object to access its operations. */
+    /**
+     * The NamedValuesClient object to access its operations.
+     */
     private final NamedValuesClient namedValues;
 
     /**
      * Gets the NamedValuesClient object to access its operations.
-     *
+     * 
      * @return the NamedValuesClient object.
      */
     public NamedValuesClient getNamedValues() {
         return this.namedValues;
     }
 
-    /** The NetworkStatusClient object to access its operations. */
+    /**
+     * The NetworkStatusClient object to access its operations.
+     */
     private final NetworkStatusClient networkStatus;
 
     /**
      * Gets the NetworkStatusClient object to access its operations.
-     *
+     * 
      * @return the NetworkStatusClient object.
      */
     public NetworkStatusClient getNetworkStatus() {
         return this.networkStatus;
     }
 
-    /** The NotificationsClient object to access its operations. */
+    /**
+     * The NotificationsClient object to access its operations.
+     */
     private final NotificationsClient notifications;
 
     /**
      * Gets the NotificationsClient object to access its operations.
-     *
+     * 
      * @return the NotificationsClient object.
      */
     public NotificationsClient getNotifications() {
         return this.notifications;
     }
 
-    /** The NotificationRecipientUsersClient object to access its operations. */
+    /**
+     * The NotificationRecipientUsersClient object to access its operations.
+     */
     private final NotificationRecipientUsersClient notificationRecipientUsers;
 
     /**
      * Gets the NotificationRecipientUsersClient object to access its operations.
-     *
+     * 
      * @return the NotificationRecipientUsersClient object.
      */
     public NotificationRecipientUsersClient getNotificationRecipientUsers() {
         return this.notificationRecipientUsers;
     }
 
-    /** The NotificationRecipientEmailsClient object to access its operations. */
+    /**
+     * The NotificationRecipientEmailsClient object to access its operations.
+     */
     private final NotificationRecipientEmailsClient notificationRecipientEmails;
 
     /**
      * Gets the NotificationRecipientEmailsClient object to access its operations.
-     *
+     * 
      * @return the NotificationRecipientEmailsClient object.
      */
     public NotificationRecipientEmailsClient getNotificationRecipientEmails() {
         return this.notificationRecipientEmails;
     }
 
-    /** The OpenIdConnectProvidersClient object to access its operations. */
+    /**
+     * The OpenIdConnectProvidersClient object to access its operations.
+     */
     private final OpenIdConnectProvidersClient openIdConnectProviders;
 
     /**
      * Gets the OpenIdConnectProvidersClient object to access its operations.
-     *
+     * 
      * @return the OpenIdConnectProvidersClient object.
      */
     public OpenIdConnectProvidersClient getOpenIdConnectProviders() {
         return this.openIdConnectProviders;
     }
 
-    /** The OutboundNetworkDependenciesEndpointsClient object to access its operations. */
+    /**
+     * The OutboundNetworkDependenciesEndpointsClient object to access its operations.
+     */
     private final OutboundNetworkDependenciesEndpointsClient outboundNetworkDependenciesEndpoints;
 
     /**
      * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
-     *
+     * 
      * @return the OutboundNetworkDependenciesEndpointsClient object.
      */
     public OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints() {
         return this.outboundNetworkDependenciesEndpoints;
     }
 
-    /** The PoliciesClient object to access its operations. */
+    /**
+     * The PoliciesClient object to access its operations.
+     */
     private final PoliciesClient policies;
 
     /**
      * Gets the PoliciesClient object to access its operations.
-     *
+     * 
      * @return the PoliciesClient object.
      */
     public PoliciesClient getPolicies() {
         return this.policies;
     }
 
-    /** The PolicyDescriptionsClient object to access its operations. */
+    /**
+     * The PolicyDescriptionsClient object to access its operations.
+     */
     private final PolicyDescriptionsClient policyDescriptions;
 
     /**
      * Gets the PolicyDescriptionsClient object to access its operations.
-     *
+     * 
      * @return the PolicyDescriptionsClient object.
      */
     public PolicyDescriptionsClient getPolicyDescriptions() {
         return this.policyDescriptions;
     }
 
-    /** The PolicyFragmentsClient object to access its operations. */
+    /**
+     * The PolicyFragmentsClient object to access its operations.
+     */
     private final PolicyFragmentsClient policyFragments;
 
     /**
      * Gets the PolicyFragmentsClient object to access its operations.
-     *
+     * 
      * @return the PolicyFragmentsClient object.
      */
     public PolicyFragmentsClient getPolicyFragments() {
         return this.policyFragments;
     }
 
-    /** The PortalConfigsClient object to access its operations. */
+    /**
+     * The PortalConfigsClient object to access its operations.
+     */
     private final PortalConfigsClient portalConfigs;
 
     /**
      * Gets the PortalConfigsClient object to access its operations.
-     *
+     * 
      * @return the PortalConfigsClient object.
      */
     public PortalConfigsClient getPortalConfigs() {
         return this.portalConfigs;
     }
 
-    /** The PortalRevisionsClient object to access its operations. */
+    /**
+     * The PortalRevisionsClient object to access its operations.
+     */
     private final PortalRevisionsClient portalRevisions;
 
     /**
      * Gets the PortalRevisionsClient object to access its operations.
-     *
+     * 
      * @return the PortalRevisionsClient object.
      */
     public PortalRevisionsClient getPortalRevisions() {
         return this.portalRevisions;
     }
 
-    /** The PortalSettingsClient object to access its operations. */
+    /**
+     * The PortalSettingsClient object to access its operations.
+     */
     private final PortalSettingsClient portalSettings;
 
     /**
      * Gets the PortalSettingsClient object to access its operations.
-     *
+     * 
      * @return the PortalSettingsClient object.
      */
     public PortalSettingsClient getPortalSettings() {
         return this.portalSettings;
     }
 
-    /** The SignInSettingsClient object to access its operations. */
+    /**
+     * The SignInSettingsClient object to access its operations.
+     */
     private final SignInSettingsClient signInSettings;
 
     /**
      * Gets the SignInSettingsClient object to access its operations.
-     *
+     * 
      * @return the SignInSettingsClient object.
      */
     public SignInSettingsClient getSignInSettings() {
         return this.signInSettings;
     }
 
-    /** The SignUpSettingsClient object to access its operations. */
+    /**
+     * The SignUpSettingsClient object to access its operations.
+     */
     private final SignUpSettingsClient signUpSettings;
 
     /**
      * Gets the SignUpSettingsClient object to access its operations.
-     *
+     * 
      * @return the SignUpSettingsClient object.
      */
     public SignUpSettingsClient getSignUpSettings() {
         return this.signUpSettings;
     }
 
-    /** The DelegationSettingsClient object to access its operations. */
+    /**
+     * The DelegationSettingsClient object to access its operations.
+     */
     private final DelegationSettingsClient delegationSettings;
 
     /**
      * Gets the DelegationSettingsClient object to access its operations.
-     *
+     * 
      * @return the DelegationSettingsClient object.
      */
     public DelegationSettingsClient getDelegationSettings() {
         return this.delegationSettings;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The ProductsClient object to access its operations. */
+    /**
+     * The ProductsClient object to access its operations.
+     */
     private final ProductsClient products;
 
     /**
      * Gets the ProductsClient object to access its operations.
-     *
+     * 
      * @return the ProductsClient object.
      */
     public ProductsClient getProducts() {
         return this.products;
     }
 
-    /** The ProductApisClient object to access its operations. */
+    /**
+     * The ProductApisClient object to access its operations.
+     */
     private final ProductApisClient productApis;
 
     /**
      * Gets the ProductApisClient object to access its operations.
-     *
+     * 
      * @return the ProductApisClient object.
      */
     public ProductApisClient getProductApis() {
         return this.productApis;
     }
 
-    /** The ProductGroupsClient object to access its operations. */
+    /**
+     * The ProductGroupsClient object to access its operations.
+     */
     private final ProductGroupsClient productGroups;
 
     /**
      * Gets the ProductGroupsClient object to access its operations.
-     *
+     * 
      * @return the ProductGroupsClient object.
      */
     public ProductGroupsClient getProductGroups() {
         return this.productGroups;
     }
 
-    /** The ProductSubscriptionsClient object to access its operations. */
+    /**
+     * The ProductSubscriptionsClient object to access its operations.
+     */
     private final ProductSubscriptionsClient productSubscriptions;
 
     /**
      * Gets the ProductSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the ProductSubscriptionsClient object.
      */
     public ProductSubscriptionsClient getProductSubscriptions() {
         return this.productSubscriptions;
     }
 
-    /** The ProductPoliciesClient object to access its operations. */
+    /**
+     * The ProductPoliciesClient object to access its operations.
+     */
     private final ProductPoliciesClient productPolicies;
 
     /**
      * Gets the ProductPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ProductPoliciesClient object.
      */
     public ProductPoliciesClient getProductPolicies() {
         return this.productPolicies;
     }
 
-    /** The ProductWikisClient object to access its operations. */
+    /**
+     * The ProductWikisClient object to access its operations.
+     */
     private final ProductWikisClient productWikis;
 
     /**
      * Gets the ProductWikisClient object to access its operations.
-     *
+     * 
      * @return the ProductWikisClient object.
      */
     public ProductWikisClient getProductWikis() {
         return this.productWikis;
     }
 
-    /** The ProductWikisOperationsClient object to access its operations. */
+    /**
+     * The ProductWikisOperationsClient object to access its operations.
+     */
     private final ProductWikisOperationsClient productWikisOperations;
 
     /**
      * Gets the ProductWikisOperationsClient object to access its operations.
-     *
+     * 
      * @return the ProductWikisOperationsClient object.
      */
     public ProductWikisOperationsClient getProductWikisOperations() {
         return this.productWikisOperations;
     }
 
-    /** The QuotaByCounterKeysClient object to access its operations. */
+    /**
+     * The QuotaByCounterKeysClient object to access its operations.
+     */
     private final QuotaByCounterKeysClient quotaByCounterKeys;
 
     /**
      * Gets the QuotaByCounterKeysClient object to access its operations.
-     *
+     * 
      * @return the QuotaByCounterKeysClient object.
      */
     public QuotaByCounterKeysClient getQuotaByCounterKeys() {
         return this.quotaByCounterKeys;
     }
 
-    /** The QuotaByPeriodKeysClient object to access its operations. */
+    /**
+     * The QuotaByPeriodKeysClient object to access its operations.
+     */
     private final QuotaByPeriodKeysClient quotaByPeriodKeys;
 
     /**
      * Gets the QuotaByPeriodKeysClient object to access its operations.
-     *
+     * 
      * @return the QuotaByPeriodKeysClient object.
      */
     public QuotaByPeriodKeysClient getQuotaByPeriodKeys() {
         return this.quotaByPeriodKeys;
     }
 
-    /** The RegionsClient object to access its operations. */
+    /**
+     * The RegionsClient object to access its operations.
+     */
     private final RegionsClient regions;
 
     /**
      * Gets the RegionsClient object to access its operations.
-     *
+     * 
      * @return the RegionsClient object.
      */
     public RegionsClient getRegions() {
         return this.regions;
     }
 
-    /** The ReportsClient object to access its operations. */
+    /**
+     * The ReportsClient object to access its operations.
+     */
     private final ReportsClient reports;
 
     /**
      * Gets the ReportsClient object to access its operations.
-     *
+     * 
      * @return the ReportsClient object.
      */
     public ReportsClient getReports() {
         return this.reports;
     }
 
-    /** The GlobalSchemasClient object to access its operations. */
+    /**
+     * The GlobalSchemasClient object to access its operations.
+     */
     private final GlobalSchemasClient globalSchemas;
 
     /**
      * Gets the GlobalSchemasClient object to access its operations.
-     *
+     * 
      * @return the GlobalSchemasClient object.
      */
     public GlobalSchemasClient getGlobalSchemas() {
         return this.globalSchemas;
     }
 
-    /** The TenantSettingsClient object to access its operations. */
+    /**
+     * The TenantSettingsClient object to access its operations.
+     */
     private final TenantSettingsClient tenantSettings;
 
     /**
      * Gets the TenantSettingsClient object to access its operations.
-     *
+     * 
      * @return the TenantSettingsClient object.
      */
     public TenantSettingsClient getTenantSettings() {
         return this.tenantSettings;
     }
 
-    /** The ApiManagementSkusClient object to access its operations. */
+    /**
+     * The ApiManagementSkusClient object to access its operations.
+     */
     private final ApiManagementSkusClient apiManagementSkus;
 
     /**
      * Gets the ApiManagementSkusClient object to access its operations.
-     *
+     * 
      * @return the ApiManagementSkusClient object.
      */
     public ApiManagementSkusClient getApiManagementSkus() {
         return this.apiManagementSkus;
     }
 
-    /** The SubscriptionsClient object to access its operations. */
+    /**
+     * The SubscriptionsClient object to access its operations.
+     */
     private final SubscriptionsClient subscriptions;
 
     /**
      * Gets the SubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the SubscriptionsClient object.
      */
     public SubscriptionsClient getSubscriptions() {
         return this.subscriptions;
     }
 
-    /** The TagResourcesClient object to access its operations. */
+    /**
+     * The TagResourcesClient object to access its operations.
+     */
     private final TagResourcesClient tagResources;
 
     /**
      * Gets the TagResourcesClient object to access its operations.
-     *
+     * 
      * @return the TagResourcesClient object.
      */
     public TagResourcesClient getTagResources() {
         return this.tagResources;
     }
 
-    /** The TenantAccessClient object to access its operations. */
+    /**
+     * The TenantAccessClient object to access its operations.
+     */
     private final TenantAccessClient tenantAccess;
 
     /**
      * Gets the TenantAccessClient object to access its operations.
-     *
+     * 
      * @return the TenantAccessClient object.
      */
     public TenantAccessClient getTenantAccess() {
         return this.tenantAccess;
     }
 
-    /** The TenantAccessGitsClient object to access its operations. */
+    /**
+     * The TenantAccessGitsClient object to access its operations.
+     */
     private final TenantAccessGitsClient tenantAccessGits;
 
     /**
      * Gets the TenantAccessGitsClient object to access its operations.
-     *
+     * 
      * @return the TenantAccessGitsClient object.
      */
     public TenantAccessGitsClient getTenantAccessGits() {
         return this.tenantAccessGits;
     }
 
-    /** The TenantConfigurationsClient object to access its operations. */
+    /**
+     * The TenantConfigurationsClient object to access its operations.
+     */
     private final TenantConfigurationsClient tenantConfigurations;
 
     /**
      * Gets the TenantConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the TenantConfigurationsClient object.
      */
     public TenantConfigurationsClient getTenantConfigurations() {
         return this.tenantConfigurations;
     }
 
-    /** The UsersClient object to access its operations. */
+    /**
+     * The UsersClient object to access its operations.
+     */
     private final UsersClient users;
 
     /**
      * Gets the UsersClient object to access its operations.
-     *
+     * 
      * @return the UsersClient object.
      */
     public UsersClient getUsers() {
         return this.users;
     }
 
-    /** The UserGroupsClient object to access its operations. */
+    /**
+     * The UserGroupsClient object to access its operations.
+     */
     private final UserGroupsClient userGroups;
 
     /**
      * Gets the UserGroupsClient object to access its operations.
-     *
+     * 
      * @return the UserGroupsClient object.
      */
     public UserGroupsClient getUserGroups() {
         return this.userGroups;
     }
 
-    /** The UserSubscriptionsClient object to access its operations. */
+    /**
+     * The UserSubscriptionsClient object to access its operations.
+     */
     private final UserSubscriptionsClient userSubscriptions;
 
     /**
      * Gets the UserSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the UserSubscriptionsClient object.
      */
     public UserSubscriptionsClient getUserSubscriptions() {
         return this.userSubscriptions;
     }
 
-    /** The UserIdentitiesClient object to access its operations. */
+    /**
+     * The UserIdentitiesClient object to access its operations.
+     */
     private final UserIdentitiesClient userIdentities;
 
     /**
      * Gets the UserIdentitiesClient object to access its operations.
-     *
+     * 
      * @return the UserIdentitiesClient object.
      */
     public UserIdentitiesClient getUserIdentities() {
         return this.userIdentities;
     }
 
-    /** The UserConfirmationPasswordsClient object to access its operations. */
+    /**
+     * The UserConfirmationPasswordsClient object to access its operations.
+     */
     private final UserConfirmationPasswordsClient userConfirmationPasswords;
 
     /**
      * Gets the UserConfirmationPasswordsClient object to access its operations.
-     *
+     * 
      * @return the UserConfirmationPasswordsClient object.
      */
     public UserConfirmationPasswordsClient getUserConfirmationPasswords() {
         return this.userConfirmationPasswords;
     }
 
-    /** The DocumentationsClient object to access its operations. */
+    /**
+     * The DocumentationsClient object to access its operations.
+     */
     private final DocumentationsClient documentations;
 
     /**
      * Gets the DocumentationsClient object to access its operations.
-     *
+     * 
      * @return the DocumentationsClient object.
      */
     public DocumentationsClient getDocumentations() {
@@ -1266,7 +1459,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
 
     /**
      * Initializes an instance of ApiManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -1274,13 +1467,8 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    ApiManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ApiManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -1380,7 +1568,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -1389,7 +1577,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -1399,7 +1587,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -1409,26 +1597,15 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -1441,19 +1618,16 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -1494,7 +1668,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

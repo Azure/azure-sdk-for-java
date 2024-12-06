@@ -5,22 +5,34 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceProviderManifestReRegisterSubscriptionMetadata model. */
+/**
+ * The ResourceProviderManifestReRegisterSubscriptionMetadata model.
+ */
 @Fluent
 public final class ResourceProviderManifestReRegisterSubscriptionMetadata extends ReRegisterSubscriptionMetadata {
-    /** Creates an instance of ResourceProviderManifestReRegisterSubscriptionMetadata class. */
+    /**
+     * Creates an instance of ResourceProviderManifestReRegisterSubscriptionMetadata class.
+     */
     public ResourceProviderManifestReRegisterSubscriptionMetadata() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceProviderManifestReRegisterSubscriptionMetadata withEnabled(boolean enabled) {
         super.withEnabled(enabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceProviderManifestReRegisterSubscriptionMetadata withConcurrencyLimit(Integer concurrencyLimit) {
         super.withConcurrencyLimit(concurrencyLimit);
@@ -29,11 +41,53 @@ public final class ResourceProviderManifestReRegisterSubscriptionMetadata extend
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", enabled());
+        jsonWriter.writeNumberField("concurrencyLimit", concurrencyLimit());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderManifestReRegisterSubscriptionMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderManifestReRegisterSubscriptionMetadata if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceProviderManifestReRegisterSubscriptionMetadata.
+     */
+    public static ResourceProviderManifestReRegisterSubscriptionMetadata fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderManifestReRegisterSubscriptionMetadata deserializedResourceProviderManifestReRegisterSubscriptionMetadata
+                = new ResourceProviderManifestReRegisterSubscriptionMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedResourceProviderManifestReRegisterSubscriptionMetadata.withEnabled(reader.getBoolean());
+                } else if ("concurrencyLimit".equals(fieldName)) {
+                    deserializedResourceProviderManifestReRegisterSubscriptionMetadata
+                        .withConcurrencyLimit(reader.getNullable(JsonReader::getInt));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderManifestReRegisterSubscriptionMetadata;
+        });
     }
 }

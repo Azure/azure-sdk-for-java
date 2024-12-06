@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-/** Samples for SubAccountTagRules Get. */
+/**
+ * Samples for SubAccountTagRules Get.
+ */
 public final class SubAccountTagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccountTagRules_Get.json
+     * x-ms-original-file:
+     * specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/SubAccountTagRules_Get.json
      */
     /**
      * Sample code: SubAccountTagRules_Get.
-     *
+     * 
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountTagRulesGet(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager
-            .subAccountTagRules()
-            .getWithResponse(
-                "myResourceGroup", "myMonitor", "SubAccount1", "default", com.azure.core.util.Context.NONE);
+        manager.subAccountTagRules()
+            .getWithResponse("myResourceGroup", "myMonitor", "SubAccount1", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

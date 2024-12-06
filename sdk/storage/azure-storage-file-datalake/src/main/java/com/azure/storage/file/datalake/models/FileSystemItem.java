@@ -16,6 +16,12 @@ public class FileSystemItem {
     private Map<String, String> metadata;
 
     /**
+     * Creates a new instance of {@link FileSystemItem}.
+     */
+    public FileSystemItem() {
+    }
+
+    /**
      * Get the name property: The name property.
      *
      * @return the name value.

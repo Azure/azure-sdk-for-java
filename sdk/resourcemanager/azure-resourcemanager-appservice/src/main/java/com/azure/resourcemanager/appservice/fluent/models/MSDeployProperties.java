@@ -121,7 +121,6 @@ public final class MSDeployProperties extends MSDeployCore {
      */
     @Override
     public void validate() {
-        super.validate();
         if (addOnPackages() != null) {
             addOnPackages().forEach(e -> e.validate());
         }

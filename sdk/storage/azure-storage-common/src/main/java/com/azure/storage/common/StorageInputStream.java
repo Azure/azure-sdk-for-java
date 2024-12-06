@@ -15,8 +15,8 @@ import java.nio.ByteBuffer;
  */
 public abstract class StorageInputStream extends InputStream {
     private static final String MARK_EXPIRED = "Stream mark expired.";
-    private static final String UNEXPECTED_STREAM_READ_ERROR =
-        "Unexpected error. Stream returned unexpected number of bytes.";
+    private static final String UNEXPECTED_STREAM_READ_ERROR
+        = "Unexpected error. Stream returned unexpected number of bytes.";
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageInputStream.class);
 
@@ -29,7 +29,6 @@ public abstract class StorageInputStream extends InputStream {
      * Holds the last exception this stream encountered.
      */
     protected IOException lastError;
-
 
     /**
      * Holds the reference to the current buffered data.
@@ -96,13 +95,14 @@ public abstract class StorageInputStream extends InputStream {
      * @throws IndexOutOfBoundsException when range offset is less than 0 or rangeLength exists but less than or
      * equal to 0.
      */
-    protected StorageInputStream(long rangeOffset, final Long rangeLength,
-                                 final int chunkSize, final long contentLength) {
+    protected StorageInputStream(long rangeOffset, final Long rangeLength, final int chunkSize,
+        final long contentLength) {
         this.rangeOffset = rangeOffset;
         this.streamFaulted = false;
         this.currentAbsoluteReadPosition = rangeOffset;
         this.chunkSize = chunkSize;
-        this.streamLength = rangeLength == null ? contentLength - this.rangeOffset
+        this.streamLength = rangeLength == null
+            ? contentLength - this.rangeOffset
             : Math.min(contentLength - this.rangeOffset, rangeLength);
         if (rangeOffset < 0 || (rangeLength != null && rangeLength <= 0)) {
             throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException());
@@ -122,13 +122,14 @@ public abstract class StorageInputStream extends InputStream {
      * @throws IndexOutOfBoundsException when range offset is less than 0 or rangeLength exists but less than or
      * equal to 0.
      */
-    protected StorageInputStream(long rangeOffset, final Long rangeLength,
-        final int chunkSize, final long contentLength, ByteBuffer initialBuffer) {
+    protected StorageInputStream(long rangeOffset, final Long rangeLength, final int chunkSize,
+        final long contentLength, ByteBuffer initialBuffer) {
         this.rangeOffset = rangeOffset;
         this.streamFaulted = false;
         this.currentAbsoluteReadPosition = rangeOffset;
         this.chunkSize = chunkSize;
-        this.streamLength = rangeLength == null ? contentLength - this.rangeOffset
+        this.streamLength = rangeLength == null
+            ? contentLength - this.rangeOffset
             : Math.min(contentLength - this.rangeOffset, rangeLength);
         if (rangeOffset < 0 || (rangeLength != null && rangeLength <= 0)) {
             throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException());
@@ -343,8 +344,8 @@ public abstract class StorageInputStream extends InputStream {
         // if buffer is empty do next get operation
         if ((this.currentBuffer == null || this.currentBuffer.remaining() == 0)
             && this.currentAbsoluteReadPosition < this.streamLength + this.rangeOffset) {
-            this.currentBuffer = this.dispatchRead((int) Math.min(this.chunkSize,
-                this.streamLength + this.rangeOffset - this.currentAbsoluteReadPosition),
+            this.currentBuffer = this.dispatchRead(
+                (int) Math.min(this.chunkSize, this.streamLength + this.rangeOffset - this.currentAbsoluteReadPosition),
                 this.currentAbsoluteReadPosition);
         }
 

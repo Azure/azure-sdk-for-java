@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Test;
 public final class QuotaBucketRequestPropertiesDimensionsTests {
     @Test
     public void testDeserialize() throws Exception {
-        QuotaBucketRequestPropertiesDimensions model =
-            BinaryData
-                .fromString("{\"subscriptionId\":\"mdvpjhulsu\",\"location\":\"mkjozkrwf\"}")
+        QuotaBucketRequestPropertiesDimensions model
+            = BinaryData.fromString("{\"subscriptionId\":\"mdvpjhulsu\",\"location\":\"mkjozkrwf\"}")
                 .toObject(QuotaBucketRequestPropertiesDimensions.class);
         Assertions.assertEquals("mdvpjhulsu", model.subscriptionId());
         Assertions.assertEquals("mkjozkrwf", model.location());
@@ -22,8 +21,8 @@ public final class QuotaBucketRequestPropertiesDimensionsTests {
 
     @Test
     public void testSerialize() throws Exception {
-        QuotaBucketRequestPropertiesDimensions model =
-            new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("mdvpjhulsu").withLocation("mkjozkrwf");
+        QuotaBucketRequestPropertiesDimensions model
+            = new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("mdvpjhulsu").withLocation("mkjozkrwf");
         model = BinaryData.fromObject(model).toObject(QuotaBucketRequestPropertiesDimensions.class);
         Assertions.assertEquals("mdvpjhulsu", model.subscriptionId());
         Assertions.assertEquals("mkjozkrwf", model.location());

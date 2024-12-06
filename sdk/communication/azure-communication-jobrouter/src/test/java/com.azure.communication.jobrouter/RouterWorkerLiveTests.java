@@ -54,8 +54,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
         List<RouterChannel> channels = Collections.singletonList(channel);
         List<String> queues = Collections.singletonList(jobQueue.getId());
 
-        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
-            .setLabels(labels)
+        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10).setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)

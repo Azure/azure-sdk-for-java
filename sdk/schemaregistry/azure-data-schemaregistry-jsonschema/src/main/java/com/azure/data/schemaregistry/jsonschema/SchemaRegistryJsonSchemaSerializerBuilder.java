@@ -28,6 +28,12 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     private JsonSerializer jsonSerializer;
 
     /**
+     * Creates a new instance of {@link SchemaRegistryJsonSchemaSerializerBuilder}.
+     */
+    public SchemaRegistryJsonSchemaSerializerBuilder() {
+    }
+
+    /**
      * <p>If true, the serializer will register schemas against Azure Schema Registry service under the specified
      * group if it fails to find an existing schema to serialize.  See
      * <a href="https://learn.microsoft.com/azure/event-hubs/schema-registry-overview">Azure Schema Registry
@@ -49,7 +55,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
 
     /**
      * Specifies schema group for interacting with Azure Schema Registry service.
-     *
+     * <p>
      * If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
      * request schema ID for matching data schema under specified group.
      *
@@ -81,8 +87,8 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
      */
-    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(
-        SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
+    public SchemaRegistryJsonSchemaSerializerBuilder
+        schemaRegistryClient(SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
         this.schemaRegistryAsyncClient = schemaRegistryAsyncClient;
         return this;
     }
@@ -94,8 +100,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
      */
-    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(
-        SchemaRegistryClient schemaRegistryClient) {
+    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(SchemaRegistryClient schemaRegistryClient) {
         this.schemaRegistryClient = schemaRegistryClient;
         return this;
     }
@@ -125,8 +130,8 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      */
     public SchemaRegistryJsonSchemaSerializer buildSerializer() {
         if (Objects.isNull(schemaRegistryAsyncClient) && Objects.isNull(schemaRegistryClient)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException(
-                "'schemaRegistryAsyncClient' or 'schemaRegistryClient' is required.'"));
+            throw LOGGER.logExceptionAsError(
+                new NullPointerException("'schemaRegistryAsyncClient' or 'schemaRegistryClient' is required.'"));
         }
 
         if (Objects.isNull(jsonSchemaGenerator)) {
@@ -136,25 +141,22 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
         final boolean isAutoRegister = autoRegisterSchemas != null && autoRegisterSchemas;
 
         if (isAutoRegister && CoreUtils.isNullOrEmpty(schemaGroup)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
         }
 
-        final JsonSerializer serializerAdapterToUse = jsonSerializer != null
-            ? jsonSerializer
-            : JsonSerializerProviders.createInstance(true);
+        final JsonSerializer serializerAdapterToUse
+            = jsonSerializer != null ? jsonSerializer : JsonSerializerProviders.createInstance(true);
 
         if (Objects.isNull(serializerAdapterToUse)) {
             throw LOGGER.logExceptionAsError(new NullPointerException("Unable to find JsonSerializer to use. Pass one "
-                + "into SchemaRegistryJsonSchemaSerializerBuilder.serializer() before "
-                + "building the serializer."));
+                + "into SchemaRegistryJsonSchemaSerializerBuilder.serializer() before " + "building the serializer."));
         }
 
-        final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100,
-            serializerAdapterToUse);
+        final SerializerOptions options
+            = new SerializerOptions(schemaGroup, isAutoRegister, 100, serializerAdapterToUse);
 
         return new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient, schemaRegistryClient,
             jsonSchemaGenerator, options);
     }
 }
-

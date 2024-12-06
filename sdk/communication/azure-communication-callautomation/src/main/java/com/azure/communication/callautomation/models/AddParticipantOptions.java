@@ -3,8 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-
-
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
@@ -51,7 +49,6 @@ public final class AddParticipantOptions {
     public CallInvite getTargetParticipant() {
         return targetParticipant;
     }
-
 
     /**
      * Get the operationContext.

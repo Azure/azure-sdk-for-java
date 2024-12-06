@@ -10,10 +10,6 @@ module com.azure.resourcemanager.costmanagement {
     exports com.azure.resourcemanager.costmanagement.fluent.models;
     exports com.azure.resourcemanager.costmanagement.models;
 
-    opens com.azure.resourcemanager.costmanagement.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.costmanagement.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.costmanagement.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.costmanagement.models to com.azure.core;
 }

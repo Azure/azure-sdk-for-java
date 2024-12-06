@@ -1,10 +1,11 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
-import java.io.*;
-
 import io.clientcore.core.json.implementation.jackson.core.util.BufferRecycler;
 import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
+
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * Efficient alternative to {@link StringWriter}, based on using segmented
@@ -14,8 +15,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
  * if so, instance of this class can be given as the writer to
  * <code>JsonGenerator</code>.
  */
-public final class SegmentedStringWriter extends Writer
-{
+public final class SegmentedStringWriter extends Writer {
     final private TextBuffer _buffer;
 
     public SegmentedStringWriter(BufferRecycler br) {
@@ -24,9 +24,9 @@ public final class SegmentedStringWriter extends Writer
     }
 
     /*
-    /**********************************************************
-    /* java.io.Writer implementation
-    /**********************************************************
+     * /**********************************************************
+     * /* java.io.Writer implementation
+     * /**********************************************************
      */
 
     @Override
@@ -49,42 +49,43 @@ public final class SegmentedStringWriter extends Writer
         return this;
     }
 
-    @Override public void close() { } // NOP
-    @Override public void flush() { } // NOP
+    @Override
+    public void close() {
+    } // NOP
 
     @Override
-    public void write(char[] cbuf) { _buffer.append(cbuf, 0, cbuf.length); }
+    public void flush() {
+    } // NOP
 
     @Override
-    public void write(char[] cbuf, int off, int len) { _buffer.append(cbuf, off, len); }
+    public void write(char[] cbuf) {
+        _buffer.append(cbuf, 0, cbuf.length);
+    }
 
     @Override
-    public void write(int c) { _buffer.append((char) c); }
+    public void write(char[] cbuf, int off, int len) {
+        _buffer.append(cbuf, off, len);
+    }
 
     @Override
-    public void write(String str) { _buffer.append(str, 0, str.length()); }
+    public void write(int c) {
+        _buffer.append((char) c);
+    }
 
     @Override
-    public void write(String str, int off, int len) { _buffer.append(str, off, len); }
+    public void write(String str) {
+        _buffer.append(str, 0, str.length());
+    }
+
+    @Override
+    public void write(String str, int off, int len) {
+        _buffer.append(str, off, len);
+    }
 
     /*
-    /**********************************************************
-    /* Extended API
-    /**********************************************************
+     * /**********************************************************
+     * /* Extended API
+     * /**********************************************************
      */
 
-    /**
-     * Main access method that will construct a String that contains
-     * all the contents, release all internal buffers we may have,
-     * and return result String.
-     * Note that the method is not idempotent -- if called second time,
-     * will just return an empty String.
-     *
-     * @return String that contains all aggregated content
-     */
-    public String getAndClear() {
-        String result = _buffer.contentsAsString();
-        _buffer.releaseBuffers();
-        return result;
-    }
 }

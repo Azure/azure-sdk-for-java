@@ -71,17 +71,16 @@ public class LeaseApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> acquireBlobLeaseSupplier() {
-        return Stream.of(
-            Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
+        return Stream.of(Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
-        );
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE));
     }
 
     @Test
     public void acquireBlobLeaseMin() {
-        assertResponseStatusCode(createLeaseClient(createBlobClient()).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1), null, null), 201);
+        assertResponseStatusCode(
+            createLeaseClient(createBlobClient()).acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1), null, null),
+            201);
     }
 
     @ParameterizedTest
@@ -101,23 +100,19 @@ public class LeaseApiTests extends BlobTestBase {
         t.put("foo", "bar");
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(createLeaseClient(bc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null), 201);
+        assertResponseStatusCode(createLeaseClient(bc)
+            .acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null), 201);
     }
 
     private static Stream<Arguments> acquireBlobLeaseDurationFailSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null),
+        return Stream.of(Arguments.of(null, null, null, null, null), Arguments.of(OLD_DATE, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null), Arguments.of(null, null, RECEIVED_ETAG, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null),
             Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
     }
@@ -128,23 +123,19 @@ public class LeaseApiTests extends BlobTestBase {
         String noneMatch, String tags) {
         BlobClientBase bc = createBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(bc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(bc)
+            .acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null));
     }
 
     private static Stream<Arguments> acquireBlobLeaseACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null), Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null), Arguments.of(null, null, null, RECEIVED_ETAG, null),
             Arguments.of(null, null, null, null, "\"notfoo\" = 'notbar'"));
     }
 
@@ -162,8 +153,8 @@ public class LeaseApiTests extends BlobTestBase {
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRunningAgainstService(16000);
-        Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(
-            new BlobRenewLeaseOptions(), null, null);
+        Response<String> renewLeaseResponse
+            = leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null);
 
         assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.LEASED);
         validateBasicHeaders(renewLeaseResponse.getHeaders());
@@ -172,12 +163,25 @@ public class LeaseApiTests extends BlobTestBase {
     }
 
     @Test
+    public void renewBlobLeaseSimple() {
+        BlobClientBase bc = createBlobClient();
+        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
+        BlobLeaseClient leaseClient = createLeaseClient(bc, leaseID);
+
+        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
+        sleepIfRunningAgainstService(16000);
+        leaseClient.renewLease();
+
+        assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.LEASED);
+    }
+
+    @Test
     public void renewBlobLeaseMin() {
         BlobClientBase bc = createBlobClient();
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(createLeaseClient(bc, leaseID)
-            .renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null), 200);
+        assertResponseStatusCode(
+            createLeaseClient(bc, leaseID).renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null), 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -191,8 +195,7 @@ public class LeaseApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -209,15 +212,14 @@ public class LeaseApiTests extends BlobTestBase {
         BlobClientBase bc = createBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(bc, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions().setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(bc, leaseID)
+            .renewLeaseWithResponse(new BlobRenewLeaseOptions().setRequestConditions(mac), null, null));
     }
 
     @Test
@@ -230,19 +232,29 @@ public class LeaseApiTests extends BlobTestBase {
     public void releaseBlobLease() {
         BlobClientBase bc = createBlobClient();
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        HttpHeaders headers = createLeaseClient(bc, leaseID)
-            .releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null).getHeaders();
+        HttpHeaders headers
+            = createLeaseClient(bc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null)
+                .getHeaders();
 
         assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.AVAILABLE);
         assertTrue(validateBasicHeaders(headers));
     }
 
     @Test
+    public void releaseBlobLeaseSimple() {
+        BlobClientBase bc = createBlobClient();
+        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
+        createLeaseClient(bc, leaseID).releaseLease();
+
+        assertEquals(bc.getProperties().getLeaseState(), LeaseStateType.AVAILABLE);
+    }
+
+    @Test
     public void releaseBlobLeaseMin() {
         BlobClientBase bc = createBlobClient();
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        assertResponseStatusCode(createLeaseClient(bc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions(), null, null), 200);
+        assertResponseStatusCode(
+            createLeaseClient(bc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null), 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -256,26 +268,24 @@ public class LeaseApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(createLeaseClient(bc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null), 200);
+        assertResponseStatusCode(createLeaseClient(bc, leaseID)
+            .releaseLeaseWithResponse(new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseACFailSupplier")
-    public void releaseBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-        String tags) {
+    public void releaseBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+        String noneMatch, String tags) {
         BlobClientBase bc = createBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -297,8 +307,9 @@ public class LeaseApiTests extends BlobTestBase {
         BlobClientBase bc = createBlobClient();
         BlobLeaseClient leaseClient = createLeaseClient(bc, testResourceNamer.randomUuid());
         leaseClient.acquireLease(leaseTime);
-        Response<Integer> breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions()
-            .setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null);
+        Response<Integer> breakLeaseResponse = leaseClient.breakLeaseWithResponse(
+            new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)),
+            null, null);
         LeaseStateType leaseState = bc.getProperties().getLeaseState();
 
         assertTrue(leaseState == LeaseStateType.BROKEN || leaseState == LeaseStateType.BREAKING);
@@ -306,11 +317,19 @@ public class LeaseApiTests extends BlobTestBase {
         assertTrue(validateBasicHeaders(breakLeaseResponse.getHeaders()));
     }
 
+    @Test
+    public void breakBlobLeaseSimple() {
+        BlobClientBase bc = createBlobClient();
+        BlobLeaseClient leaseClient = createLeaseClient(bc, testResourceNamer.randomUuid());
+        leaseClient.acquireLease(-1);
+        leaseClient.breakLease();
+        LeaseStateType leaseState = bc.getProperties().getLeaseState();
+
+        assertTrue(leaseState == LeaseStateType.BROKEN || leaseState == LeaseStateType.BREAKING);
+    }
+
     private static Stream<Arguments> breakBlobLeaseSupplier() {
-        return Stream.of(
-            Arguments.of(-1, null, 0),
-            Arguments.of(-1, 20, 25),
-            Arguments.of(20, 15, 16));
+        return Stream.of(Arguments.of(-1, null, 0), Arguments.of(-1, 20, 25), Arguments.of(20, 15, 16));
     }
 
     @Test
@@ -318,8 +337,8 @@ public class LeaseApiTests extends BlobTestBase {
         BlobClientBase bc = createBlobClient();
         setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(createLeaseClient(bc).breakLeaseWithResponse(
-            new BlobBreakLeaseOptions(), null, null), 202);
+        assertResponseStatusCode(createLeaseClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions(), null, null),
+            202);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -333,15 +352,14 @@ public class LeaseApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         setupBlobLeaseCondition(bc, RECEIVED_ETAG);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setTagsConditions(tags);
 
-        assertResponseStatusCode(createLeaseClient(bc).breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setRequestConditions(mac), null, null), 202);
+        assertResponseStatusCode(createLeaseClient(bc)
+            .breakLeaseWithResponse(new BlobBreakLeaseOptions().setRequestConditions(mac), null, null), 202);
     }
 
     @ParameterizedTest
@@ -351,8 +369,7 @@ public class LeaseApiTests extends BlobTestBase {
         BlobClientBase bc = createBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -375,8 +392,8 @@ public class LeaseApiTests extends BlobTestBase {
         leaseClient.acquireLease(15);
 
         String newLeaseId = testResourceNamer.randomUuid();
-        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(newLeaseId), null, null);
+        Response<String> changeLeaseResponse
+            = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(newLeaseId), null, null);
 
         assertEquals(changeLeaseResponse.getValue(), newLeaseId);
         assertEquals(changeLeaseResponse.getValue(), leaseClient.getLeaseId());
@@ -388,11 +405,26 @@ public class LeaseApiTests extends BlobTestBase {
     }
 
     @Test
+    public void changeBlobLeaseSimple() {
+        BlobClientBase bc = createBlobClient();
+
+        String oldLease = testResourceNamer.randomUuid();
+        String newLease = testResourceNamer.randomUuid();
+
+        BlobLeaseClient leaseClient = createLeaseClient(bc, oldLease);
+        leaseClient.acquireLease(15);
+
+        leaseClient.changeLease(newLease);
+
+        assertEquals(newLease, leaseClient.getLeaseId());
+    }
+
+    @Test
     public void changeBlobLeaseMin() {
         BlobClientBase bc = createBlobClient();
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        assertResponseStatusCode(createLeaseClient(bc, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null), 200);
+        assertResponseStatusCode(createLeaseClient(bc, leaseID)
+            .changeLeaseWithResponse(new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null), 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -406,8 +438,7 @@ public class LeaseApiTests extends BlobTestBase {
         bc.setTags(t);
         match = setupBlobMatchCondition(bc, match);
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -424,8 +455,7 @@ public class LeaseApiTests extends BlobTestBase {
         BlobClientBase bc = createBlobClient();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
@@ -441,15 +471,14 @@ public class LeaseApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> createLeaseClient(bc, "id").changeLease("id"));
     }
 
-
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseSupplier")
     public void acquireContainerLease(String proposedID, int leaseTime, LeaseStateType leaseState,
         LeaseDurationType leaseDuration) {
         BlobLeaseClient leaseClient = createLeaseClient(cc, proposedID);
 
-        Response<String> leaseResponse = leaseClient.acquireLeaseWithResponse(new BlobAcquireLeaseOptions(leaseTime),
-            null, null);
+        Response<String> leaseResponse
+            = leaseClient.acquireLeaseWithResponse(new BlobAcquireLeaseOptions(leaseTime), null, null);
 
         assertEquals(leaseResponse.getValue(), leaseClient.getLeaseId());
 
@@ -462,17 +491,15 @@ public class LeaseApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> acquireContainerLeaseSupplier() {
-        return Stream.of(
-            Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
+        return Stream.of(Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
-        );
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE));
     }
 
     @Test
     public void acquireContainerLeaseMin() {
-        assertResponseStatusCode(createLeaseClient(cc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1), null, null), 201);
+        assertResponseStatusCode(
+            createLeaseClient(cc).acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1), null, null), 201);
     }
 
     @ParameterizedTest
@@ -486,40 +513,33 @@ public class LeaseApiTests extends BlobTestBase {
     @MethodSource("acquireContainerLeaseACSupplier")
     public void acquireContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch) {
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertResponseStatusCode(createLeaseClient(cc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null), 201);
+        assertResponseStatusCode(createLeaseClient(cc)
+            .acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null), 201);
     }
 
     private static Stream<Arguments> acquireContainerLeaseACSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null),
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null), Arguments.of(null, null, RECEIVED_ETAG, null),
             Arguments.of(null, null, null, GARBAGE_ETAG));
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void acquireContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc)
+            .acquireLeaseWithResponse(new BlobAcquireLeaseOptions(-1).setRequestConditions(mac), null, null));
     }
 
     private static Stream<Arguments> acquireContainerLeaseACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null),
-            Arguments.of(null, OLD_DATE));
+        return Stream.of(Arguments.of(NEW_DATE, null), Arguments.of(null, OLD_DATE));
     }
 
     @Test
@@ -535,7 +555,8 @@ public class LeaseApiTests extends BlobTestBase {
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRunningAgainstService(16000);
-        Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null);
+        Response<String> renewLeaseResponse
+            = leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null);
 
         assertEquals(renewLeaseResponse.getValue(), leaseClient.getLeaseId());
         assertEquals(cc.getProperties().getLeaseState(), LeaseStateType.LEASED);
@@ -545,38 +566,34 @@ public class LeaseApiTests extends BlobTestBase {
     @Test
     public void renewContainerLeaseMin() {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        assertResponseStatusCode(createLeaseClient(cc, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions(), null, null), 200);
+        assertResponseStatusCode(
+            createLeaseClient(cc, leaseID).renewLeaseWithResponse(new BlobRenewLeaseOptions(), null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void renewContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertResponseStatusCode(createLeaseClient(cc, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions().setRequestConditions(mac), null, null), 200);
+        assertResponseStatusCode(createLeaseClient(cc, leaseID)
+            .renewLeaseWithResponse(new BlobRenewLeaseOptions().setRequestConditions(mac), null, null), 200);
     }
 
     private static Stream<Arguments> renewContainerLeaseACSupplier() {
-        return Stream.of(
-            Arguments.of(OLD_DATE, null),
-            Arguments.of(null, NEW_DATE));
+        return Stream.of(Arguments.of(OLD_DATE, null), Arguments.of(null, NEW_DATE));
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void renewContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions().setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, leaseID)
+            .renewLeaseWithResponse(new BlobRenewLeaseOptions().setRequestConditions(mac), null, null));
     }
 
     @ParameterizedTest
@@ -600,8 +617,8 @@ public class LeaseApiTests extends BlobTestBase {
     @Test
     public void releaseContainerLease() {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        Response<Void> releaseLeaseResponse = createLeaseClient(cc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions(), null, null);
+        Response<Void> releaseLeaseResponse
+            = createLeaseClient(cc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null);
 
         assertEquals(cc.getProperties().getLeaseState(), LeaseStateType.AVAILABLE);
         assertTrue(validateBasicHeaders(releaseLeaseResponse.getHeaders()));
@@ -611,40 +628,36 @@ public class LeaseApiTests extends BlobTestBase {
     public void releaseContainerLeaseMin() {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(createLeaseClient(cc, leaseID)
-            .releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null), 200);
+        assertResponseStatusCode(
+            createLeaseClient(cc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void releaseContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertResponseStatusCode(createLeaseClient(cc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null), 200);
+        assertResponseStatusCode(createLeaseClient(cc, leaseID)
+            .releaseLeaseWithResponse(new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void releaseContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, leaseID)
+            .releaseLeaseWithResponse(new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null));
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACIllegalSupplier")
     public void releaseContainerLeaseACIllegal(String match, String noneMatch) {
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch);
+        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
         assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, RECEIVED_LEASE_ID)
             .releaseLeaseWithResponse(new BlobReleaseLeaseOptions().setRequestConditions(mac), null, null));
@@ -679,32 +692,30 @@ public class LeaseApiTests extends BlobTestBase {
     @Test
     public void breakContainerLeaseMin() {
         setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        assertResponseStatusCode(createLeaseClient(cc).breakLeaseWithResponse(new BlobBreakLeaseOptions(),
-            null, null), 202);
+        assertResponseStatusCode(createLeaseClient(cc).breakLeaseWithResponse(new BlobBreakLeaseOptions(), null, null),
+            202);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void breakContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
         setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertResponseStatusCode(createLeaseClient(cc).breakLeaseWithResponse(new BlobBreakLeaseOptions()
-            .setRequestConditions(mac), null, null), 202);
+        assertResponseStatusCode(createLeaseClient(cc)
+            .breakLeaseWithResponse(new BlobBreakLeaseOptions().setRequestConditions(mac), null, null), 202);
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void breakContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
         setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc).breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc)
+            .breakLeaseWithResponse(new BlobBreakLeaseOptions().setRequestConditions(mac), null, null));
     }
 
     @ParameterizedTest
@@ -712,8 +723,8 @@ public class LeaseApiTests extends BlobTestBase {
     public void breakContainerLeaseACIllegal(String match, String noneMatch) {
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc).breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setRequestConditions(mac), null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc)
+            .breakLeaseWithResponse(new BlobBreakLeaseOptions().setRequestConditions(mac), null, null));
     }
 
     @Test
@@ -728,45 +739,43 @@ public class LeaseApiTests extends BlobTestBase {
         BlobLeaseClient leaseClient = createLeaseClient(cc, leaseID);
 
         assertEquals(leaseClient.getLeaseId(), leaseID);
-        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null);
+        Response<String> changeLeaseResponse = leaseClient
+            .changeLeaseWithResponse(new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null);
 
         assertTrue(validateBasicHeaders(changeLeaseResponse.getHeaders()));
         String newLeaseId = changeLeaseResponse.getValue();
         assertEquals(newLeaseId, leaseClient.getLeaseId());
         assertNotEquals(newLeaseId, leaseID);
 
-        assertResponseStatusCode(createLeaseClient(cc, newLeaseId).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions(), null, null), 200);
+        assertResponseStatusCode(
+            createLeaseClient(cc, newLeaseId).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null), 200);
     }
 
     @Test
     public void changeContainerLeaseMin() {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(createLeaseClient(cc, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null), 200);
+        assertResponseStatusCode(createLeaseClient(cc, leaseID)
+            .changeLeaseWithResponse(new BlobChangeLeaseOptions(testResourceNamer.randomUuid()), null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void changeContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        assertResponseStatusCode(createLeaseClient(cc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(
-            testResourceNamer.randomUuid()).setRequestConditions(mac), null, null), 200);
+        assertResponseStatusCode(createLeaseClient(cc, leaseID).changeLeaseWithResponse(
+            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac), null, null), 200);
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void changeContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
         String leaseID = setupContainerLeaseCondition(cc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        BlobLeaseRequestConditions mac
+            = new BlobLeaseRequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
         assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, leaseID).changeLeaseWithResponse(
             new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac), null, null));
@@ -778,9 +787,8 @@ public class LeaseApiTests extends BlobTestBase {
     public void changeContainerLeaseACIllegal(String match, String noneMatch) {
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, RECEIVED_LEASE_ID)
-                .changeLeaseWithResponse(new BlobChangeLeaseOptions(GARBAGE_LEASE_ID).setRequestConditions(mac),
-                    null, null));
+        assertThrows(BlobStorageException.class, () -> createLeaseClient(cc, RECEIVED_LEASE_ID).changeLeaseWithResponse(
+            new BlobChangeLeaseOptions(GARBAGE_LEASE_ID).setRequestConditions(mac), null, null));
     }
 
     @Test

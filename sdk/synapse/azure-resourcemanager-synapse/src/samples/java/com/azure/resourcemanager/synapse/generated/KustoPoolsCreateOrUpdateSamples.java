@@ -8,19 +8,21 @@ import com.azure.resourcemanager.synapse.models.AzureSku;
 import com.azure.resourcemanager.synapse.models.SkuName;
 import com.azure.resourcemanager.synapse.models.SkuSize;
 
-/** Samples for KustoPools CreateOrUpdate. */
+/**
+ * Samples for KustoPools CreateOrUpdate.
+ */
 public final class KustoPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCreateOrUpdate.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * KustoPoolsCreateOrUpdate.json
      */
     /**
      * Sample code: kustoPoolsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPools()
+        manager.kustoPools()
             .define("kustoclusterrptest4")
             .withRegion("westus")
             .withExistingWorkspace("synapseWorkspaceName", "kustorptest")

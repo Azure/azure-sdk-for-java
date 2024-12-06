@@ -39,22 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DefaultRolloutsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DefaultRolloutsClient.
+ */
 public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DefaultRolloutsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of DefaultRolloutsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DefaultRolloutsClientImpl(ProviderHubImpl client) {
-        this.service =
-            RestProxy.create(DefaultRolloutsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DefaultRolloutsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,95 +71,64 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ProviderHubDefaultRo")
     public interface DefaultRolloutsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/defaultRollouts/{rolloutName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DefaultRolloutInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DefaultRolloutInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/defaultRollouts/{rolloutName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/defaultRollouts/{rolloutName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DefaultRolloutInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DefaultRolloutInner properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/defaultRollouts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DefaultRolloutArrayResponseWithContinuation>> listByProviderRegistration(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-                + "/defaultRollouts/{rolloutName}/stop")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}/stop")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> stop(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> stop(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DefaultRolloutArrayResponseWithContinuation>> listByProviderRegistrationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,16 +139,12 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DefaultRolloutInner>> getWithResponseAsync(String providerNamespace, String rolloutName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -184,23 +155,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, rolloutName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -210,19 +172,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return the default rollout details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DefaultRolloutInner>> getWithResponseAsync(
-        String providerNamespace, String rolloutName, Context context) {
+    private Mono<Response<DefaultRolloutInner>> getWithResponseAsync(String providerNamespace, String rolloutName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -233,20 +191,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                rolloutName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, rolloutName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +212,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -271,14 +222,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return the default rollout details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DefaultRolloutInner> getWithResponse(
-        String providerNamespace, String rolloutName, Context context) {
+    public Response<DefaultRolloutInner> getWithResponse(String providerNamespace, String rolloutName,
+        Context context) {
         return getWithResponseAsync(providerNamespace, rolloutName, context).block();
     }
 
     /**
      * Gets the default rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +244,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,16 +255,12 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String rolloutName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -324,23 +271,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, rolloutName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -350,19 +288,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String providerNamespace, String rolloutName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String rolloutName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -373,20 +307,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                rolloutName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            rolloutName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,7 +328,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -417,7 +344,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Deletes the rollout resource. Rollout must be in terminal state.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -431,7 +358,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -441,19 +368,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return default rollout definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
+        String rolloutName, DefaultRolloutInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -469,24 +392,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, rolloutName, this.client.getApiVersion(), properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -497,19 +410,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return default rollout definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
+        String rolloutName, DefaultRolloutInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -525,21 +434,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                rolloutName,
-                this.client.getApiVersion(),
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            rolloutName, this.client.getApiVersion(), properties, accept, context);
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -549,23 +450,17 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return the {@link PollerFlux} for polling of default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdateAsync(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(providerNamespace, rolloutName, properties);
-        return this
-            .client
-            .<DefaultRolloutInner, DefaultRolloutInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DefaultRolloutInner.class,
-                DefaultRolloutInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DefaultRolloutInner>, DefaultRolloutInner>
+        beginCreateOrUpdateAsync(String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(providerNamespace, rolloutName, properties);
+        return this.client.<DefaultRolloutInner, DefaultRolloutInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DefaultRolloutInner.class, DefaultRolloutInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -579,17 +474,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     private PollerFlux<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdateAsync(
         String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(providerNamespace, rolloutName, properties, context);
-        return this
-            .client
-            .<DefaultRolloutInner, DefaultRolloutInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DefaultRolloutInner.class, DefaultRolloutInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(providerNamespace, rolloutName, properties, context);
+        return this.client.<DefaultRolloutInner, DefaultRolloutInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DefaultRolloutInner.class, DefaultRolloutInner.class, context);
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -599,14 +492,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return the {@link SyncPoller} for polling of default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
+    public SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner>
+        beginCreateOrUpdate(String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
         return this.beginCreateOrUpdateAsync(providerNamespace, rolloutName, properties).getSyncPoller();
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -624,7 +517,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -634,16 +527,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return default rollout definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DefaultRolloutInner> createOrUpdateAsync(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
-        return beginCreateOrUpdateAsync(providerNamespace, rolloutName, properties)
-            .last()
+    private Mono<DefaultRolloutInner> createOrUpdateAsync(String providerNamespace, String rolloutName,
+        DefaultRolloutInner properties) {
+        return beginCreateOrUpdateAsync(providerNamespace, rolloutName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -654,16 +546,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return default rollout definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DefaultRolloutInner> createOrUpdateAsync(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context) {
-        return beginCreateOrUpdateAsync(providerNamespace, rolloutName, properties, context)
-            .last()
+    private Mono<DefaultRolloutInner> createOrUpdateAsync(String providerNamespace, String rolloutName,
+        DefaultRolloutInner properties, Context context) {
+        return beginCreateOrUpdateAsync(providerNamespace, rolloutName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -673,14 +564,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DefaultRolloutInner createOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties) {
+    public DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName,
+        DefaultRolloutInner properties) {
         return createOrUpdateAsync(providerNamespace, rolloutName, properties).block();
     }
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -691,35 +582,31 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DefaultRolloutInner createOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context) {
+    public DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName,
+        DefaultRolloutInner properties, Context context) {
         return createOrUpdateAsync(providerNamespace, rolloutName, properties, context).block();
     }
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the rollouts for the given provider along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DefaultRolloutInner>> listByProviderRegistrationSinglePageAsync(
-        String providerNamespace) {
+    private Mono<PagedResponse<DefaultRolloutInner>>
+        listByProviderRegistrationSinglePageAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -727,53 +614,34 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProviderRegistration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DefaultRolloutInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProviderRegistration(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), providerNamespace, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DefaultRolloutInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the rollouts for the given provider along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DefaultRolloutInner>> listByProviderRegistrationSinglePageAsync(
-        String providerNamespace, Context context) {
+    private Mono<PagedResponse<DefaultRolloutInner>> listByProviderRegistrationSinglePageAsync(String providerNamespace,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -782,27 +650,15 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProviderRegistration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProviderRegistration(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -811,14 +667,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DefaultRolloutInner> listByProviderRegistrationAsync(String providerNamespace) {
-        return new PagedFlux<>(
-            () -> listByProviderRegistrationSinglePageAsync(providerNamespace),
+        return new PagedFlux<>(() -> listByProviderRegistrationSinglePageAsync(providerNamespace),
             nextLink -> listByProviderRegistrationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,14 +683,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DefaultRolloutInner> listByProviderRegistrationAsync(String providerNamespace, Context context) {
-        return new PagedFlux<>(
-            () -> listByProviderRegistrationSinglePageAsync(providerNamespace, context),
+        return new PagedFlux<>(() -> listByProviderRegistrationSinglePageAsync(providerNamespace, context),
             nextLink -> listByProviderRegistrationNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -849,7 +703,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Gets the list of the rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,7 +718,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -875,16 +729,12 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> stopWithResponseAsync(String providerNamespace, String rolloutName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -895,23 +745,14 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            providerNamespace,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, rolloutName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -923,16 +764,12 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> stopWithResponseAsync(String providerNamespace, String rolloutName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
             return Mono
@@ -943,20 +780,13 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                providerNamespace,
-                rolloutName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, rolloutName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -971,7 +801,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -987,7 +817,7 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Stops or cancels the rollout, if in progress.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,9 +831,8 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1015,32 +844,22 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DefaultRolloutInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DefaultRolloutInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1048,29 +867,19 @@ public final class DefaultRolloutsClientImpl implements DefaultRolloutsClient {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DefaultRolloutInner>> listByProviderRegistrationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DefaultRolloutInner>> listByProviderRegistrationNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

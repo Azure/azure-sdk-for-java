@@ -23,8 +23,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -32,45 +31,22 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public PagedIterable<Catalog> list(String subscriptionId) {
         PagedIterable<CatalogInner> inner = this.serviceClient().list(subscriptionId);
-        return Utils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Catalog> list(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context) {
-        PagedIterable<CatalogInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    subscriptionId,
-                    reservedResourceType,
-                    location,
-                    publisherId,
-                    offerId,
-                    planId,
-                    filter,
-                    skip,
-                    take,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
+    public PagedIterable<Catalog> list(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take, Context context) {
+        PagedIterable<CatalogInner> inner = this.serviceClient()
+            .list(subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take,
+                context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
     }
 
     public Response<AppliedReservations> getAppliedReservationListWithResponse(String subscriptionId, Context context) {
-        Response<AppliedReservationsInner> inner =
-            this.serviceClient().getAppliedReservationListWithResponse(subscriptionId, context);
+        Response<AppliedReservationsInner> inner
+            = this.serviceClient().getAppliedReservationListWithResponse(subscriptionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AppliedReservationsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

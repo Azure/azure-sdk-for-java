@@ -32,26 +32,37 @@ public final class ClustersUpdateSamples {
      */
     public static void patchACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("a", "b")).withEventStoreServiceEnabled(true)
+            .getByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("a", "b"))
+            .withEventStoreServiceEnabled(true)
             .withNodeTypes(
                 Arrays
                     .asList(
-                        new NodeTypeDescription().withName("nt1vm").withClientConnectionEndpointPort(19000)
-                            .withHttpGatewayEndpointPort(19007).withDurabilityLevel(DurabilityLevel.BRONZE)
+                        new NodeTypeDescription().withName("nt1vm")
+                            .withClientConnectionEndpointPort(19000)
+                            .withHttpGatewayEndpointPort(19007)
+                            .withDurabilityLevel(DurabilityLevel.BRONZE)
                             .withApplicationPorts(
                                 new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
                             .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
-                            .withIsPrimary(true).withVmInstanceCount(5),
-                        new NodeTypeDescription().withName("testnt1").withClientConnectionEndpointPort(0)
-                            .withHttpGatewayEndpointPort(0).withDurabilityLevel(DurabilityLevel.BRONZE)
+                            .withIsPrimary(true)
+                            .withVmInstanceCount(5),
+                        new NodeTypeDescription().withName("testnt1")
+                            .withClientConnectionEndpointPort(0)
+                            .withHttpGatewayEndpointPort(0)
+                            .withDurabilityLevel(DurabilityLevel.BRONZE)
                             .withApplicationPorts(new EndpointRangeDescription().withStartPort(1000).withEndPort(2000))
                             .withEphemeralPorts(new EndpointRangeDescription().withStartPort(3000).withEndPort(4000))
-                            .withIsPrimary(false).withVmInstanceCount(3)))
-            .withReliabilityLevel(ReliabilityLevel.BRONZE).withUpgradeMode(UpgradeMode.AUTOMATIC)
+                            .withIsPrimary(false)
+                            .withVmInstanceCount(3)))
+            .withReliabilityLevel(ReliabilityLevel.BRONZE)
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
             .withUpgradeWave(ClusterUpgradeCadence.fromString("Wave"))
             .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
-            .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z")).apply();
+            .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
+            .apply();
     }
 
     // Use "Map.of" if available

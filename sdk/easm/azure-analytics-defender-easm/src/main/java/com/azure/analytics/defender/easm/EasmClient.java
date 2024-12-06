@@ -144,7 +144,7 @@ public final class EasmClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -289,7 +289,7 @@ public final class EasmClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
@@ -530,7 +530,7 @@ public final class EasmClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
@@ -1192,7 +1192,7 @@ public final class EasmClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1226,7 +1226,7 @@ public final class EasmClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1261,7 +1261,7 @@ public final class EasmClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }

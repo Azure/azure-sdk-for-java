@@ -5,54 +5,52 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * An individual health check item.
  */
 @Immutable
-public final class HealthCheck {
+public final class HealthCheck implements JsonSerializable<HealthCheck> {
     /*
      * The status of the health check item.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private HealthCheckStatus status;
 
     /*
      * The display name of this health check item.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Start time of health check item.
      */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTime;
 
     /*
      * End time of the health check item.
      */
-    @JsonProperty(value = "endDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endDateTime;
 
     /*
      * The type of error that occurred during this health check.
      */
-    @JsonProperty(value = "errorType", access = JsonProperty.Access.WRITE_ONLY)
     private String errorType;
 
     /*
      * The recommended action to fix the corresponding error.
      */
-    @JsonProperty(value = "recommendedAction", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendedAction;
 
     /*
      * Additional details about the health check or the recommended action.
      */
-    @JsonProperty(value = "additionalDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetails;
 
     /**
@@ -130,5 +128,54 @@ public final class HealthCheck {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthCheck from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthCheck if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthCheck.
+     */
+    public static HealthCheck fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthCheck deserializedHealthCheck = new HealthCheck();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedHealthCheck.status = HealthCheckStatus.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedHealthCheck.displayName = reader.getString();
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedHealthCheck.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedHealthCheck.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorType".equals(fieldName)) {
+                    deserializedHealthCheck.errorType = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedHealthCheck.recommendedAction = reader.getString();
+                } else if ("additionalDetails".equals(fieldName)) {
+                    deserializedHealthCheck.additionalDetails = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthCheck;
+        });
     }
 }

@@ -13,8 +13,8 @@ public final class PutAliasResponseImpl implements PutAliasResponse {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    PutAliasResponseImpl(
-        PutAliasResponseInner innerObject, com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
+    PutAliasResponseImpl(PutAliasResponseInner innerObject,
+        com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

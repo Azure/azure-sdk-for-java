@@ -14,32 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class TestLineInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestLineInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"phoneNumber\":\"ypnddhsgcb\",\"purpose\":\"Manual\"},\"location\":\"hejkotynqgou\",\"tags\":{\"gakeqsr\":\"dlikwyqkgfgibma\",\"qqedqytbciqfou\":\"yb\"},\"id\":\"lmmnkzsmodmglo\",\"name\":\"gpbkwtmut\",\"type\":\"uqktap\"}")
-                .toObject(TestLineInner.class);
-        Assertions.assertEquals("hejkotynqgou", model.location());
-        Assertions.assertEquals("dlikwyqkgfgibma", model.tags().get("gakeqsr"));
-        Assertions.assertEquals("ypnddhsgcb", model.phoneNumber());
+        TestLineInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"phoneNumber\":\"tymw\",\"purpose\":\"Manual\"},\"location\":\"kfthwxmntei\",\"tags\":{\"fsrpymzidnse\":\"pvkmijcmmxdcuf\",\"yc\":\"cxtbzsg\",\"mdwzjeiachboo\":\"sne\"},\"id\":\"flnrosfqpteehzz\",\"name\":\"ypyqrimzinp\",\"type\":\"swjdkirso\"}")
+            .toObject(TestLineInner.class);
+        Assertions.assertEquals("kfthwxmntei", model.location());
+        Assertions.assertEquals("pvkmijcmmxdcuf", model.tags().get("fsrpymzidnse"));
+        Assertions.assertEquals("tymw", model.phoneNumber());
         Assertions.assertEquals(TestLinePurpose.MANUAL, model.purpose());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestLineInner model =
-            new TestLineInner()
-                .withLocation("hejkotynqgou")
-                .withTags(mapOf("gakeqsr", "dlikwyqkgfgibma", "qqedqytbciqfou", "yb"))
-                .withPhoneNumber("ypnddhsgcb")
-                .withPurpose(TestLinePurpose.MANUAL);
+        TestLineInner model = new TestLineInner().withLocation("kfthwxmntei")
+            .withTags(mapOf("fsrpymzidnse", "pvkmijcmmxdcuf", "yc", "cxtbzsg", "mdwzjeiachboo", "sne"))
+            .withPhoneNumber("tymw")
+            .withPurpose(TestLinePurpose.MANUAL);
         model = BinaryData.fromObject(model).toObject(TestLineInner.class);
-        Assertions.assertEquals("hejkotynqgou", model.location());
-        Assertions.assertEquals("dlikwyqkgfgibma", model.tags().get("gakeqsr"));
-        Assertions.assertEquals("ypnddhsgcb", model.phoneNumber());
+        Assertions.assertEquals("kfthwxmntei", model.location());
+        Assertions.assertEquals("pvkmijcmmxdcuf", model.tags().get("fsrpymzidnse"));
+        Assertions.assertEquals("tymw", model.phoneNumber());
         Assertions.assertEquals(TestLinePurpose.MANUAL, model.purpose());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

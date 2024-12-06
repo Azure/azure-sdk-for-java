@@ -18,15 +18,14 @@ public final class UserConfirmationPasswordsImpl implements UserConfirmationPass
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public UserConfirmationPasswordsImpl(
-        UserConfirmationPasswordsClient innerClient,
+    public UserConfirmationPasswordsImpl(UserConfirmationPasswordsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> sendWithResponse(
-        String resourceGroupName, String serviceName, String userId, AppType appType, Context context) {
+    public Response<Void> sendWithResponse(String resourceGroupName, String serviceName, String userId, AppType appType,
+        Context context) {
         return this.serviceClient().sendWithResponse(resourceGroupName, serviceName, userId, appType, context);
     }
 

@@ -26,22 +26,28 @@ import com.azure.resourcemanager.resourcegraph.fluent.models.QueryResponseInner;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceGraphClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ResourceGraphClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,22 +57,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceGraphClientR")
-    private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+    public interface ResourceProvidersService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.ResourceGraph/resources")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResponseInner>> resources(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") QueryRequest query,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QueryResponseInner>> resources(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") QueryRequest query,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -76,10 +79,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResponseInner>> resourcesWithResponseAsync(QueryRequest query) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (query == null) {
             return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
@@ -88,15 +89,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.resources(this.client.getEndpoint(), this.client.getApiVersion(), query, accept, context))
+            .withContext(context -> service.resources(this.client.getEndpoint(), this.client.getApiVersion(), query,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,10 +107,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResponseInner>> resourcesWithResponseAsync(QueryRequest query, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (query == null) {
             return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
@@ -124,7 +122,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -138,7 +136,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +151,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

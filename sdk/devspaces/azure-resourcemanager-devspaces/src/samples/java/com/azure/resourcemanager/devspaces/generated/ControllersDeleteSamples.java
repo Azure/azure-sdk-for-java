@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.devspaces.generated;
 
-/** Samples for Controllers Delete. */
+/**
+ * Samples for Controllers Delete.
+ */
 public final class ControllersDeleteSamples {
     /*
-     * x-ms-original-file: specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/examples/ControllersDelete_example.json
+     * x-ms-original-file:
+     * specification/devspaces/resource-manager/Microsoft.DevSpaces/stable/2019-04-01/examples/ControllersDelete_example
+     * .json
      */
     /**
      * Sample code: ControllersDelete.
-     *
+     * 
      * @param manager Entry point to DevSpacesManager.
      */
     public static void controllersDelete(com.azure.resourcemanager.devspaces.DevSpacesManager manager) {

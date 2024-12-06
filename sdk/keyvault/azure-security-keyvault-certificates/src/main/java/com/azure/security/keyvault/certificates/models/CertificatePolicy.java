@@ -27,14 +27,14 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     static {
         CertificatePolicyHelper.setAccessor(new CertificatePolicyHelper.CertificatePolicyAccessor() {
             @Override
-            public CertificatePolicy createPolicy(
-                com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
+            public CertificatePolicy
+                createPolicy(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
                 return new CertificatePolicy(impl);
             }
 
             @Override
-            public com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy getPolicy(
-                CertificatePolicy policy) {
+            public com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy
+                getPolicy(CertificatePolicy policy) {
                 return policy == null ? null : policy.impl;
             }
         });
@@ -63,8 +63,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     public CertificatePolicy(String issuerName, SubjectAlternativeNames subjectAlternativeNames) {
         this.impl = new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
             .setIssuerParameters(new IssuerParameters().setName(issuerName))
-            .setX509CertificateProperties(new X509CertificateProperties()
-                .setSubjectAlternativeNames(subjectAlternativeNames));
+            .setX509CertificateProperties(
+                new X509CertificateProperties().setSubjectAlternativeNames(subjectAlternativeNames));
     }
 
     /**
@@ -238,7 +238,6 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
         return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
     }
 
-
     /**
      * Get the enabled status.
      *
@@ -268,10 +267,10 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the content type
      */
     public CertificateContentType getContentType() {
-        return impl.getSecretProperties() == null ? null
+        return impl.getSecretProperties() == null
+            ? null
             : CertificateContentType.fromString(impl.getSecretProperties().getContentType());
     }
-
 
     /**
      * Set the content type.
@@ -456,8 +455,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     public List<LifetimeAction> getLifetimeActions() {
         if (lifetimeActions == null && impl.getLifetimeActions() != null) {
             lifetimeActions = new ArrayList<>(impl.getLifetimeActions().size());
-            for (com.azure.security.keyvault.certificates.implementation.models.LifetimeAction implAction
-                : impl.getLifetimeActions()) {
+            for (com.azure.security.keyvault.certificates.implementation.models.LifetimeAction implAction : impl
+                .getLifetimeActions()) {
                 lifetimeActions.add(new LifetimeAction(implAction));
             }
         }

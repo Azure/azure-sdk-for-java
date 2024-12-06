@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingPolicyInner;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient.
+ */
 public interface DataMaskingPoliciesClient {
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -26,16 +28,12 @@ public interface DataMaskingPoliciesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataMaskingPolicyInner parameters,
-        Context context);
+    Response<DataMaskingPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, DataMaskingPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -46,12 +44,12 @@ public interface DataMaskingPoliciesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingPolicyInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters);
+    DataMaskingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        DataMaskingPolicyInner parameters);
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -62,12 +60,12 @@ public interface DataMaskingPoliciesClient {
      * @return a Sql pool data masking policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingPolicyInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<DataMaskingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

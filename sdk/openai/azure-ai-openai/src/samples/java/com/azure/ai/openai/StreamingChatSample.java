@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRequestAssistantMessage;
@@ -10,18 +11,14 @@ import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.knuddels.jtokkit.Encodings;
-import com.knuddels.jtokkit.api.Encoding;
-import com.knuddels.jtokkit.api.EncodingRegistry;
-import com.knuddels.jtokkit.api.EncodingType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Demonstrates how to get chat completions for the provided chat messages.
@@ -40,7 +37,7 @@ public class StreamingChatSample {
     public static void main(String[] args) {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String deploymentOrModelId = "gpt-4o";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -54,9 +51,7 @@ public class StreamingChatSample {
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId,
-            new ChatCompletionsOptions(chatMessages));
-
-        AtomicInteger tokenCount = new AtomicInteger();
+            new ChatCompletionsOptions(chatMessages), new ChatCompletionStreamOptions().setIncludeUsage(true));
 
         // The delta is the message content for a streaming response.
         // Subsequence of streaming delta will be like:
@@ -75,6 +70,11 @@ public class StreamingChatSample {
         chatCompletionsStream
                 .stream()
                 .forEach(chatCompletions -> {
+                    CompletionsUsage usage = chatCompletions.getUsage();
+                    if (usage != null) {
+                        System.out.println("\nTotal token count: " + usage.getTotalTokens());
+                    }
+
                     if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
                         return;
                     }
@@ -85,26 +85,10 @@ public class StreamingChatSample {
                         System.out.println("Role = " + delta.getRole());
                     }
 
-                    if (delta.getContent() != null) {
-                        String content = delta.getContent();
+                    String content = delta.getContent();
+                    if (content != null) {
                         System.out.print(content);
-                        tokenCount.addAndGet(computeToken(content));
                     }
                 });
-
-        // Use https://platform.openai.com/tokenizer to verify the token count
-        System.out.println("\nTotal token count: " + tokenCount.get());
-    }
-
-    // Compute the token count for the given input.
-    // For cl100k_base and p50k_base encodings, use 'jtokkit' library to compute the token count. https://github.com/knuddelsgmbh/jtokkit
-    // For r50k_base (gpt2) encodings, use 'gpt2-tokenizer-java' library to compute the token count. https://github.com/hyunwoongko/gpt2-tokenizer-java
-    // We use 'jtokkit' library to compute the token count for this sample.
-    private static int computeToken(String input) {
-        EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
-        Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
-        // Or get the tokenizer corresponding to a specific OpenAI model
-        // enc = registry.getEncodingForModel(ModelType.GPT_4);
-        return enc.countTokens(input);
     }
 }

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookTemplateGalleryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookTemplateGallery model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ah\",\"category\":\"jyzhpvgq\",\"type\":\"j\",\"order\":391970506,\"resourceType\":\"jzlmw\"}")
-                .toObject(WorkbookTemplateGallery.class);
+        WorkbookTemplateGallery model = BinaryData.fromString(
+            "{\"name\":\"ah\",\"category\":\"jyzhpvgq\",\"type\":\"j\",\"order\":391970506,\"resourceType\":\"jzlmw\"}")
+            .toObject(WorkbookTemplateGallery.class);
         Assertions.assertEquals("ah", model.name());
         Assertions.assertEquals("jyzhpvgq", model.category());
         Assertions.assertEquals("j", model.type());
@@ -25,13 +23,11 @@ public final class WorkbookTemplateGalleryTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookTemplateGallery model =
-            new WorkbookTemplateGallery()
-                .withName("ah")
-                .withCategory("jyzhpvgq")
-                .withType("j")
-                .withOrder(391970506)
-                .withResourceType("jzlmw");
+        WorkbookTemplateGallery model = new WorkbookTemplateGallery().withName("ah")
+            .withCategory("jyzhpvgq")
+            .withType("j")
+            .withOrder(391970506)
+            .withResourceType("jzlmw");
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateGallery.class);
         Assertions.assertEquals("ah", model.name());
         Assertions.assertEquals("jyzhpvgq", model.category());

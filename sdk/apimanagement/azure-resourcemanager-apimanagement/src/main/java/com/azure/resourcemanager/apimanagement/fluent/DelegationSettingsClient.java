@@ -13,11 +13,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingValida
 import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in DelegationSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DelegationSettingsClient.
+ */
 public interface DelegationSettingsClient {
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface DelegationSettingsClient {
      * @return the entity state (Etag) version of the DelegationSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface DelegationSettingsClient {
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface DelegationSettingsClient {
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,11 +73,11 @@ public interface DelegationSettingsClient {
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,20 +86,16 @@ public interface DelegationSettingsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalDelegationSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalDelegationSettingsInner parameters, Context context);
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,7 +106,7 @@ public interface DelegationSettingsClient {
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -120,16 +118,12 @@ public interface DelegationSettingsClient {
      * @return delegation settings for a developer portal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalDelegationSettingsInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalDelegationSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalDelegationSettingsInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -139,12 +133,12 @@ public interface DelegationSettingsClient {
      * @return delegation settings for a developer portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalDelegationSettingsInner createOrUpdate(
-        String resourceGroupName, String serviceName, PortalDelegationSettingsInner parameters);
+    PortalDelegationSettingsInner createOrUpdate(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters);
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -154,12 +148,12 @@ public interface DelegationSettingsClient {
      * @return the secret validation key of the DelegationSettings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSettingValidationKeyContractInner> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalSettingValidationKeyContractInner> listSecretsWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

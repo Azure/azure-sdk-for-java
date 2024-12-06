@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Account properties.
  */
 @Fluent
-public final class AccountProperties {
+public final class AccountProperties implements JsonSerializable<AccountProperties> {
     /*
      * The Playwright testing dashboard URI for the account resource.
      */
-    @JsonProperty(value = "dashboardUri", access = JsonProperty.Access.WRITE_ONLY)
     private String dashboardUri;
 
     /*
@@ -23,27 +26,23 @@ public final class AccountProperties {
      * workers connect to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to
      * browsers in the Azure region in which the workspace was initially created.
      */
-    @JsonProperty(value = "regionalAffinity")
     private EnablementStatus regionalAffinity;
 
     /*
      * When enabled, Playwright client workers can connect to cloud-hosted browsers. This can increase the number of
      * parallel workers for a test run, significantly minimizing test completion durations.
      */
-    @JsonProperty(value = "scalableExecution")
     private EnablementStatus scalableExecution;
 
     /*
      * When enabled, this feature allows the workspace to upload and display test results, including artifacts like
      * traces and screenshots, in the Playwright portal. This enables faster and more efficient troubleshooting.
      */
-    @JsonProperty(value = "reporting")
     private EnablementStatus reporting;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -88,9 +87,9 @@ public final class AccountProperties {
     }
 
     /**
-     * Get the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted
-     * browsers. This can increase the number of parallel workers for a test run, significantly minimizing test
-     * completion durations.
+     * Get the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted browsers.
+     * This can increase the number of parallel workers for a test run, significantly minimizing test completion
+     * durations.
      * 
      * @return the scalableExecution value.
      */
@@ -99,9 +98,9 @@ public final class AccountProperties {
     }
 
     /**
-     * Set the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted
-     * browsers. This can increase the number of parallel workers for a test run, significantly minimizing test
-     * completion durations.
+     * Set the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted browsers.
+     * This can increase the number of parallel workers for a test run, significantly minimizing test completion
+     * durations.
      * 
      * @param scalableExecution the scalableExecution value to set.
      * @return the AccountProperties object itself.
@@ -113,8 +112,8 @@ public final class AccountProperties {
 
     /**
      * Get the reporting property: When enabled, this feature allows the workspace to upload and display test results,
-     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more
-     * efficient troubleshooting.
+     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more efficient
+     * troubleshooting.
      * 
      * @return the reporting value.
      */
@@ -124,8 +123,8 @@ public final class AccountProperties {
 
     /**
      * Set the reporting property: When enabled, this feature allows the workspace to upload and display test results,
-     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more
-     * efficient troubleshooting.
+     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more efficient
+     * troubleshooting.
      * 
      * @param reporting the reporting value to set.
      * @return the AccountProperties object itself.
@@ -150,5 +149,53 @@ public final class AccountProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("regionalAffinity",
+            this.regionalAffinity == null ? null : this.regionalAffinity.toString());
+        jsonWriter.writeStringField("scalableExecution",
+            this.scalableExecution == null ? null : this.scalableExecution.toString());
+        jsonWriter.writeStringField("reporting", this.reporting == null ? null : this.reporting.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountProperties.
+     */
+    public static AccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountProperties deserializedAccountProperties = new AccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dashboardUri".equals(fieldName)) {
+                    deserializedAccountProperties.dashboardUri = reader.getString();
+                } else if ("regionalAffinity".equals(fieldName)) {
+                    deserializedAccountProperties.regionalAffinity = EnablementStatus.fromString(reader.getString());
+                } else if ("scalableExecution".equals(fieldName)) {
+                    deserializedAccountProperties.scalableExecution = EnablementStatus.fromString(reader.getString());
+                } else if ("reporting".equals(fieldName)) {
+                    deserializedAccountProperties.reporting = EnablementStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAccountProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountProperties;
+        });
     }
 }

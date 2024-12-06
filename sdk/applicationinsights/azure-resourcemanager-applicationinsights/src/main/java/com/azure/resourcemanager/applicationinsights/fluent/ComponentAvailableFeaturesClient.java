@@ -24,8 +24,8 @@ public interface ComponentAvailableFeaturesClient {
      * @return an Application Insights component available features along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentAvailableFeaturesInner> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentAvailableFeaturesInner> getWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns all available features of the application insights component.

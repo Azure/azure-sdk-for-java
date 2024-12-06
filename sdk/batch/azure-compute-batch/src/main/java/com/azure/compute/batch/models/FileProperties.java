@@ -33,8 +33,9 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
 
     /*
      * The length of the file.
+     * TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+     * regenerate once we have a more permanent solution from SDK team.
      */
-    @Generated
     private final long contentLength;
 
     /*
@@ -75,8 +76,9 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      *
      * @return the contentLength value.
      */
-    @Generated
     public long getContentLength() {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         return this.contentLength;
     }
 
@@ -102,23 +104,12 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
     }
 
     /**
-     * Creates an instance of FileProperties class.
-     *
-     * @param lastModified the lastModified value to set.
-     * @param contentLength the contentLength value to set.
-     */
-    @Generated
-    private FileProperties(OffsetDateTime lastModified, long contentLength) {
-        this.lastModified = lastModified;
-        this.contentLength = contentLength;
-    }
-
-    /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("lastModified",
             this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
@@ -140,7 +131,8 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @throws IOException If an error occurs while reading the FileProperties.
      */
     public static FileProperties fromJson(JsonReader jsonReader) throws IOException {
-        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         return jsonReader.readObject(reader -> {
             OffsetDateTime lastModified = null;
             long contentLength = 0L;
@@ -181,5 +173,18 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
             deserializedFileProperties.fileMode = fileMode;
             return deserializedFileProperties;
         });
+    }
+
+    /**
+     * Creates an instance of FileProperties class.
+     *
+     * @param lastModified the lastModified value to set.
+     * @param contentLength the contentLength value to set.
+     */
+    private FileProperties(OffsetDateTime lastModified, long contentLength) {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
+        this.lastModified = lastModified;
+        this.contentLength = contentLength;
     }
 }

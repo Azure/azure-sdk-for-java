@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for CallLocatorKindInternal. */
@@ -17,12 +17,21 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
     public static final CallLocatorKindInternal SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
     /**
+     * Creates an instance of {@link CallLocatorKindInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link CallLocatorKindInternal}
+     * instead.
+     */
+    @Deprecated
+    public CallLocatorKindInternal() {
+    }
+
+    /**
      * Creates or finds a CallLocatorKindInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding CallLocatorKindInternal.
      */
-    @JsonCreator
     public static CallLocatorKindInternal fromString(String name) {
         return fromString(name, CallLocatorKindInternal.class);
     }

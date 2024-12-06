@@ -6,79 +6,41 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.IssueContract;
 import com.azure.resourcemanager.apimanagement.models.State;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApiIssuesListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"title\":\"eyodpiovnl\",\"description\":\"rwyakzuafapwxsv\",\"userId\":\"eatjiobnir\",\"createdDate\":\"2021-07-16T12:16:52Z\",\"state\":\"resolved\",\"apiId\":\"dnwt\"},\"id\":\"ntimznup\",\"name\":\"mtbsetkodsqvhe\",\"type\":\"aakghcrzmmmjyvdh\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"title\":\"vr\",\"description\":\"ajynihtibu\",\"userId\":\"gzqzhluc\",\"createdDate\":\"2021-04-06T20:00:49Z\",\"state\":\"closed\",\"apiId\":\"bgcgyohrcmeqlj\"},\"id\":\"dumh\",\"name\":\"c\",\"type\":\"onebldxa\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<IssueContract> response = manager.apiIssues()
+            .listByService("qczouanbfulvcxgl", "oqwb", "ti", "qbzbwbgwzh", true, 801804758, 850807891,
+                com.azure.core.util.Context.NONE);
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<IssueContract> response =
-            manager
-                .apiIssues()
-                .listByService(
-                    "tpoenefnoafpcnrx",
-                    "yrxowv",
-                    "ufcmuajwblxp",
-                    "tozfrfa",
-                    true,
-                    1556184463,
-                    740491963,
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("vr", response.iterator().next().title());
-        Assertions.assertEquals("ajynihtibu", response.iterator().next().description());
-        Assertions.assertEquals("gzqzhluc", response.iterator().next().userId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T20:00:49Z"), response.iterator().next().createdDate());
-        Assertions.assertEquals(State.CLOSED, response.iterator().next().state());
-        Assertions.assertEquals("bgcgyohrcmeqlj", response.iterator().next().apiId());
+        Assertions.assertEquals("eyodpiovnl", response.iterator().next().title());
+        Assertions.assertEquals("rwyakzuafapwxsv", response.iterator().next().description());
+        Assertions.assertEquals("eatjiobnir", response.iterator().next().userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T12:16:52Z"), response.iterator().next().createdDate());
+        Assertions.assertEquals(State.RESOLVED, response.iterator().next().state());
+        Assertions.assertEquals("dnwt", response.iterator().next().apiId());
     }
 }

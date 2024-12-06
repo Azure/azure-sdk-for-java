@@ -7,33 +7,35 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AccessPolicies. */
+/**
+ * Resource collection API of AccessPolicies.
+ */
 public interface AccessPolicies {
     /**
      * Gets the access policy with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access policy with the specified name in the specified environment along with {@link Response}.
      */
-    Response<AccessPolicyResource> getWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<AccessPolicyResource> getWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, Context context);
 
     /**
      * Gets the access policy with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -43,29 +45,29 @@ public interface AccessPolicies {
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String accessPolicyName,
+        Context context);
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -74,25 +76,25 @@ public interface AccessPolicies {
 
     /**
      * Lists all the available access policies associated with the environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List access policies operation along with {@link Response}.
      */
-    Response<AccessPolicyListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<AccessPolicyListResponse> listByEnvironmentWithResponse(String resourceGroupName, String environmentName,
+        Context context);
 
     /**
      * Lists all the available access policies associated with the environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -102,7 +104,7 @@ public interface AccessPolicies {
 
     /**
      * Gets the access policy with the specified name in the specified environment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,7 +115,7 @@ public interface AccessPolicies {
 
     /**
      * Gets the access policy with the specified name in the specified environment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +127,7 @@ public interface AccessPolicies {
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,7 +137,7 @@ public interface AccessPolicies {
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +149,7 @@ public interface AccessPolicies {
 
     /**
      * Begins definition for a new AccessPolicyResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AccessPolicyResource definition.
      */

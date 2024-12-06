@@ -17,57 +17,69 @@ public final class OperationStatusResultImpl implements OperationStatusResult {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    OperationStatusResultImpl(
-        OperationStatusResultInner innerObject,
+    OperationStatusResultImpl(OperationStatusResultInner innerObject,
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-    }
-
-    public String id() {
-        return this.innerModel().id();
-    }
-
-    public String resourceId() {
-        return this.innerModel().resourceId();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String status() {
-        return this.innerModel().status();
-    }
-
-    public Float percentComplete() {
-        return this.innerModel().percentComplete();
-    }
-
-    public OffsetDateTime startTime() {
-        return this.innerModel().startTime();
     }
 
     public OffsetDateTime endTime() {
         return this.innerModel().endTime();
     }
 
+    public ManagementError error() {
+        return this.innerModel().error();
+    }
+
+    public String id() {
+        return this.innerModel().id();
+    }
+
+    public String name() {
+        return this.innerModel().name();
+    }
+
     public List<OperationStatusResult> operations() {
         List<OperationStatusResultInner> inner = this.innerModel().operations();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new OperationStatusResultImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new OperationStatusResultImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public ManagementError error() {
-        return this.innerModel().error();
+    public Float percentComplete() {
+        return this.innerModel().percentComplete();
+    }
+
+    public String resourceId() {
+        return this.innerModel().resourceId();
+    }
+
+    public OffsetDateTime startTime() {
+        return this.innerModel().startTime();
+    }
+
+    public String status() {
+        return this.innerModel().status();
+    }
+
+    public String exitCode() {
+        return this.innerModel().exitCode();
+    }
+
+    public String outputHead() {
+        return this.innerModel().outputHead();
+    }
+
+    public String resultRef() {
+        return this.innerModel().resultRef();
+    }
+
+    public String resultUrl() {
+        return this.innerModel().resultUrl();
     }
 
     public OperationStatusResultInner innerModel() {

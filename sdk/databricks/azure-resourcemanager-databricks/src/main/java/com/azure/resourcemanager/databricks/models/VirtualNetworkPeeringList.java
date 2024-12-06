@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Gets all virtual network peerings under a workspace. */
+/**
+ * Gets all virtual network peerings under a workspace.
+ */
 @Fluent
-public final class VirtualNetworkPeeringList {
+public final class VirtualNetworkPeeringList implements JsonSerializable<VirtualNetworkPeeringList> {
     /*
      * List of virtual network peerings on workspace.
      */
-    @JsonProperty(value = "value")
     private List<VirtualNetworkPeeringInner> value;
 
     /*
      * URL to get the next set of virtual network peering list results if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworkPeeringList class. */
+    /**
+     * Creates an instance of VirtualNetworkPeeringList class.
+     */
     public VirtualNetworkPeeringList() {
     }
 
     /**
      * Get the value property: List of virtual network peerings on workspace.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkPeeringInner> value() {
@@ -39,7 +45,7 @@ public final class VirtualNetworkPeeringList {
 
     /**
      * Set the value property: List of virtual network peerings on workspace.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkPeeringList object itself.
      */
@@ -50,7 +56,7 @@ public final class VirtualNetworkPeeringList {
 
     /**
      * Get the nextLink property: URL to get the next set of virtual network peering list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class VirtualNetworkPeeringList {
 
     /**
      * Set the nextLink property: URL to get the next set of virtual network peering list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworkPeeringList object itself.
      */
@@ -70,12 +76,53 @@ public final class VirtualNetworkPeeringList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPeeringList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPeeringList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPeeringList.
+     */
+    public static VirtualNetworkPeeringList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPeeringList deserializedVirtualNetworkPeeringList = new VirtualNetworkPeeringList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualNetworkPeeringInner> value
+                        = reader.readArray(reader1 -> VirtualNetworkPeeringInner.fromJson(reader1));
+                    deserializedVirtualNetworkPeeringList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPeeringList;
+        });
     }
 }

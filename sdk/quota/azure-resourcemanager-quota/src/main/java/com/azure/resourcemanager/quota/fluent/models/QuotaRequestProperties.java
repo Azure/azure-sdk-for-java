@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.models.QuotaRequestState;
 import com.azure.resourcemanager.quota.models.ServiceErrorDetail;
 import com.azure.resourcemanager.quota.models.SubRequest;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,35 +21,31 @@ import java.util.List;
  * Quota request properties.
  */
 @Fluent
-public final class QuotaRequestProperties {
+public final class QuotaRequestProperties implements JsonSerializable<QuotaRequestProperties> {
     /*
      * The quota request status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaRequestState provisioningState;
 
     /*
      * User-friendly status message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Error details of the quota request.
      */
-    @JsonProperty(value = "error")
     private ServiceErrorDetail error;
 
     /*
-     * The quota request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
+     * The quota request submission time. The date conforms to the following format specified by the ISO 8601 standard:
+     * yyyy-MM-ddTHH:mm:ssZ
      */
-    @JsonProperty(value = "requestSubmitTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime requestSubmitTime;
 
     /*
      * Quota request details.
      */
-    @JsonProperty(value = "value")
     private List<SubRequest> value;
 
     /**
@@ -133,5 +134,53 @@ public final class QuotaRequestProperties {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaRequestProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaRequestProperties.
+     */
+    public static QuotaRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaRequestProperties deserializedQuotaRequestProperties = new QuotaRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedQuotaRequestProperties.provisioningState
+                        = QuotaRequestState.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedQuotaRequestProperties.message = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedQuotaRequestProperties.error = ServiceErrorDetail.fromJson(reader);
+                } else if ("requestSubmitTime".equals(fieldName)) {
+                    deserializedQuotaRequestProperties.requestSubmitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    List<SubRequest> value = reader.readArray(reader1 -> SubRequest.fromJson(reader1));
+                    deserializedQuotaRequestProperties.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaRequestProperties;
+        });
     }
 }

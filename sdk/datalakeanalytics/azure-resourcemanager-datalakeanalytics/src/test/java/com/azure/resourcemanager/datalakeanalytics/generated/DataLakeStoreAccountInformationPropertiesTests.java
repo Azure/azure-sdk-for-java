@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeStoreAc
 public final class DataLakeStoreAccountInformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStoreAccountInformationProperties model =
-            BinaryData.fromString("{\"suffix\":\"uofqwe\"}").toObject(DataLakeStoreAccountInformationProperties.class);
+        DataLakeStoreAccountInformationProperties model
+            = BinaryData.fromString("{\"suffix\":\"e\"}").toObject(DataLakeStoreAccountInformationProperties.class);
     }
 
     @org.junit.jupiter.api.Test

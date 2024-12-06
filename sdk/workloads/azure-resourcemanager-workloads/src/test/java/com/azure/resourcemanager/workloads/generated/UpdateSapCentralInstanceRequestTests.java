@@ -13,24 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSapCentralInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSapCentralInstanceRequest model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"utqxlngx\":\"vtpgvdfgiotkf\",\"xdqmidtthzrvqdra\":\"efgugnxk\",\"skanyk\":\"hjybigehoqfbo\"}}")
-                .toObject(UpdateSapCentralInstanceRequest.class);
-        Assertions.assertEquals("vtpgvdfgiotkf", model.tags().get("utqxlngx"));
+        UpdateSapCentralInstanceRequest model = BinaryData.fromString("{\"tags\":{\"w\":\"hm\",\"a\":\"a\"}}")
+            .toObject(UpdateSapCentralInstanceRequest.class);
+        Assertions.assertEquals("hm", model.tags().get("w"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSapCentralInstanceRequest model =
-            new UpdateSapCentralInstanceRequest()
-                .withTags(
-                    mapOf("utqxlngx", "vtpgvdfgiotkf", "xdqmidtthzrvqdra", "efgugnxk", "skanyk", "hjybigehoqfbo"));
+        UpdateSapCentralInstanceRequest model
+            = new UpdateSapCentralInstanceRequest().withTags(mapOf("w", "hm", "a", "a"));
         model = BinaryData.fromObject(model).toObject(UpdateSapCentralInstanceRequest.class);
-        Assertions.assertEquals("vtpgvdfgiotkf", model.tags().get("utqxlngx"));
+        Assertions.assertEquals("hm", model.tags().get("w"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

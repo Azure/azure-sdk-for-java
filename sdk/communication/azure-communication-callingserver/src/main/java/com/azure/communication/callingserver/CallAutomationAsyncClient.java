@@ -42,7 +42,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,9 +75,8 @@ public final class CallAutomationAsyncClient {
         this.serverCallsInternal = callServiceClient.getServerCalls();
         this.contentsInternal = callServiceClient.getContents();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint(),
-            callServiceClient.getHttpPipeline());
+        this.contentDownloader
+            = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceEndpoint = callServiceClient.getEndpoint();
     }
@@ -111,7 +109,7 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
-                                                                    Context context) {
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
@@ -120,7 +118,8 @@ public final class CallAutomationAsyncClient {
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        CallConnectionAsync callConnectionAsync
+                            = getCallConnectionAsync(response.getValue().getCallConnectionId());
 
                         return new SimpleResponse<>(response,
                             new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
@@ -136,42 +135,38 @@ public final class CallAutomationAsyncClient {
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateCallOptions createCallOptions) {
         List<CommunicationIdentifierModel> targetsModel = createCallOptions.getTargets()
-            .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
 
-        CallSourceInternal callSourceDto = new CallSourceInternal().setIdentifier(
-            CommunicationIdentifierConverter.convert(createCallOptions.getSource()));
+        CallSourceInternal callSourceDto = new CallSourceInternal()
+            .setIdentifier(CommunicationIdentifierConverter.convert(createCallOptions.getSource()));
         if (createCallOptions.getSourceCallerId() != null) {
             callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(createCallOptions.getSourceCallerId()));
         }
 
-        CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSource(callSourceDto)
+        CreateCallRequestInternal request = new CreateCallRequestInternal().setSource(callSourceDto)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setSubject(createCallOptions.getSubject());
 
         if (createCallOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
+            MediaStreamingConfigurationInternal streamingConfigurationInternal
+                = getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
         return request;
     }
 
-    private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingConfiguration mediaStreamingConfiguration
-    ) {
-        return new MediaStreamingConfigurationInternal()
-            .setTransportUrl(mediaStreamingConfiguration.getTransportUrl())
-            .setAudioChannelType(
-                MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingConfiguration.getAudioChannelType().toString()))
+    private MediaStreamingConfigurationInternal
+        getMediaStreamingConfigurationInternal(MediaStreamingConfiguration mediaStreamingConfiguration) {
+        return new MediaStreamingConfigurationInternal().setTransportUrl(mediaStreamingConfiguration.getTransportUrl())
+            .setAudioChannelType(MediaStreamingAudioChannelTypeInternal
+                .fromString(mediaStreamingConfiguration.getAudioChannelType().toString()))
             .setContentType(
-                MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingConfiguration.getContentType().toString()))
-            .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingConfiguration.getTransportType().toString()));
+                MediaStreamingContentTypeInternal.fromString(mediaStreamingConfiguration.getContentType().toString()))
+            .setTransportType(MediaStreamingTransportTypeInternal
+                .fromString(mediaStreamingConfiguration.getTransportType().toString()));
     }
 
     /**
@@ -199,34 +194,34 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
-                                                                   String callbackUrl, MediaStreamingConfiguration mediaStreamingConfiguration) {
-        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context));
+    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext, String callbackUrl,
+        MediaStreamingConfiguration mediaStreamingConfiguration) {
+        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUrl,
+            mediaStreamingConfiguration, context));
     }
 
     Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUrl,
-                                                                    MediaStreamingConfiguration mediaStreamingConfiguration,
-                                                                    Context context) {
+        MediaStreamingConfiguration mediaStreamingConfiguration, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallbackUri(callbackUrl);
+            AnswerCallRequestInternal request
+                = new AnswerCallRequestInternal().setIncomingCallContext(incomingCallContext)
+                    .setCallbackUri(callbackUrl);
 
             if (mediaStreamingConfiguration != null) {
-                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    getMediaStreamingConfigurationInternal(mediaStreamingConfiguration);
+                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal
+                    = getMediaStreamingConfigurationInternal(mediaStreamingConfiguration);
 
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
-
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        CallConnectionAsync callConnectionAsync
+                            = getCallConnectionAsync(response.getValue().getCallConnectionId());
                         return new SimpleResponse<>(response,
                             new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
                                 new CallConnection(callConnectionAsync), callConnectionAsync));
@@ -268,13 +263,13 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, CommunicationIdentifier target,
-                                                          Context context) {
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            RedirectCallRequestInternal request = new RedirectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setTarget(CommunicationIdentifierConverter.convert(target));
+            RedirectCallRequestInternal request
+                = new RedirectCallRequestInternal().setIncomingCallContext(incomingCallContext)
+                    .setTarget(CommunicationIdentifierConverter.convert(target));
 
             return serverCallingInternal.redirectCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
@@ -312,13 +307,13 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, CallRejectReason callRejectReason,
-                                                        Context context) {
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            RejectCallRequestInternal request = new RejectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallRejectReason(CallRejectReasonInternal.fromString(callRejectReason.toString()));
+            RejectCallRequestInternal request
+                = new RejectCallRequestInternal().setIncomingCallContext(incomingCallContext)
+                    .setCallRejectReason(CallRejectReasonInternal.fromString(callRejectReason.toString()));
 
             return serverCallingInternal.rejectCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
@@ -347,8 +342,8 @@ public final class CallAutomationAsyncClient {
      * @return a CallRecordingAsync.
      */
     public CallRecordingAsync getCallRecordingAsync() {
-        return new CallRecordingAsync(serverCallsInternal, contentsInternal,
-            contentDownloader, httpPipelineInternal, resourceEndpoint);
+        return new CallRecordingAsync(serverCallsInternal, contentsInternal, contentDownloader, httpPipelineInternal,
+            resourceEndpoint);
     }
     //endregion
 }

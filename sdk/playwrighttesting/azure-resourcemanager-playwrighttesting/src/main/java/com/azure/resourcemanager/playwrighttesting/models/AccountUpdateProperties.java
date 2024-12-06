@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The updatable properties of the Account.
  */
 @Fluent
-public final class AccountUpdateProperties {
+public final class AccountUpdateProperties implements JsonSerializable<AccountUpdateProperties> {
     /*
      * This property sets the connection region for Playwright client workers to cloud-hosted browsers. If enabled,
      * workers connect to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to
      * browsers in the Azure region in which the workspace was initially created.
      */
-    @JsonProperty(value = "regionalAffinity")
     private EnablementStatus regionalAffinity;
 
     /*
      * When enabled, Playwright client workers can connect to cloud-hosted browsers. This can increase the number of
      * parallel workers for a test run, significantly minimizing test completion durations.
      */
-    @JsonProperty(value = "scalableExecution")
     private EnablementStatus scalableExecution;
 
     /*
      * When enabled, this feature allows the workspace to upload and display test results, including artifacts like
      * traces and screenshots, in the Playwright portal. This enables faster and more efficient troubleshooting.
      */
-    @JsonProperty(value = "reporting")
     private EnablementStatus reporting;
 
     /**
@@ -67,9 +68,9 @@ public final class AccountUpdateProperties {
     }
 
     /**
-     * Get the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted
-     * browsers. This can increase the number of parallel workers for a test run, significantly minimizing test
-     * completion durations.
+     * Get the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted browsers.
+     * This can increase the number of parallel workers for a test run, significantly minimizing test completion
+     * durations.
      * 
      * @return the scalableExecution value.
      */
@@ -78,9 +79,9 @@ public final class AccountUpdateProperties {
     }
 
     /**
-     * Set the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted
-     * browsers. This can increase the number of parallel workers for a test run, significantly minimizing test
-     * completion durations.
+     * Set the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted browsers.
+     * This can increase the number of parallel workers for a test run, significantly minimizing test completion
+     * durations.
      * 
      * @param scalableExecution the scalableExecution value to set.
      * @return the AccountUpdateProperties object itself.
@@ -92,8 +93,8 @@ public final class AccountUpdateProperties {
 
     /**
      * Get the reporting property: When enabled, this feature allows the workspace to upload and display test results,
-     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more
-     * efficient troubleshooting.
+     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more efficient
+     * troubleshooting.
      * 
      * @return the reporting value.
      */
@@ -103,8 +104,8 @@ public final class AccountUpdateProperties {
 
     /**
      * Set the reporting property: When enabled, this feature allows the workspace to upload and display test results,
-     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more
-     * efficient troubleshooting.
+     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more efficient
+     * troubleshooting.
      * 
      * @param reporting the reporting value to set.
      * @return the AccountUpdateProperties object itself.
@@ -120,5 +121,51 @@ public final class AccountUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("regionalAffinity",
+            this.regionalAffinity == null ? null : this.regionalAffinity.toString());
+        jsonWriter.writeStringField("scalableExecution",
+            this.scalableExecution == null ? null : this.scalableExecution.toString());
+        jsonWriter.writeStringField("reporting", this.reporting == null ? null : this.reporting.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountUpdateProperties.
+     */
+    public static AccountUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountUpdateProperties deserializedAccountUpdateProperties = new AccountUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regionalAffinity".equals(fieldName)) {
+                    deserializedAccountUpdateProperties.regionalAffinity
+                        = EnablementStatus.fromString(reader.getString());
+                } else if ("scalableExecution".equals(fieldName)) {
+                    deserializedAccountUpdateProperties.scalableExecution
+                        = EnablementStatus.fromString(reader.getString());
+                } else if ("reporting".equals(fieldName)) {
+                    deserializedAccountUpdateProperties.reporting = EnablementStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountUpdateProperties;
+        });
     }
 }

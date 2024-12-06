@@ -5,42 +5,50 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Create or Update Event Source operation. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = EventSourceCreateOrUpdateParameters.class)
-@JsonTypeName("EventSourceCreateOrUpdateParameters")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceCreateOrUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceCreateOrUpdateParameters.class)
-})
+/**
+ * Parameters supplied to the Create or Update Event Source operation.
+ */
 @Fluent
 public class EventSourceCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
+    /*
+     * The kind of the event source.
+     */
+    private EventSourceKind kind = EventSourceKind.fromString("EventSourceCreateOrUpdateParameters");
+
     /*
      * An object that represents the local timestamp property. It contains the format of local timestamp that needs to
      * be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if
      * null, then the local timestamp will not be ingressed with the events.
      */
-    @JsonProperty(value = "localTimestamp")
     private LocalTimestamp localTimestamp;
 
-    /** Creates an instance of EventSourceCreateOrUpdateParameters class. */
+    /**
+     * Creates an instance of EventSourceCreateOrUpdateParameters class.
+     */
     public EventSourceCreateOrUpdateParameters() {
+    }
+
+    /**
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
+     */
+    public EventSourceKind kind() {
+        return this.kind;
     }
 
     /**
      * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
      * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
      * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
+     * 
      * @return the localTimestamp value.
      */
     public LocalTimestamp localTimestamp() {
@@ -51,7 +59,7 @@ public class EventSourceCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
      * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
      * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
      * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
+     * 
      * @param localTimestamp the localTimestamp value to set.
      * @return the EventSourceCreateOrUpdateParameters object itself.
      */
@@ -60,14 +68,18 @@ public class EventSourceCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventSourceCreateOrUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventSourceCreateOrUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,14 +88,96 @@ public class EventSourceCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (localTimestamp() != null) {
             localTimestamp().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model EventSourceCreateOrUpdateParameters"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventSourceCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("localTimestamp", this.localTimestamp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSourceCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSourceCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventSourceCreateOrUpdateParameters.
+     */
+    public static EventSourceCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.EventHub".equals(discriminatorValue)) {
+                    return EventHubEventSourceCreateOrUpdateParameters.fromJson(readerToUse.reset());
+                } else if ("Microsoft.IoTHub".equals(discriminatorValue)) {
+                    return IoTHubEventSourceCreateOrUpdateParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EventSourceCreateOrUpdateParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSourceCreateOrUpdateParameters deserializedEventSourceCreateOrUpdateParameters
+                = new EventSourceCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedEventSourceCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventSourceCreateOrUpdateParameters.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEventSourceCreateOrUpdateParameters.kind
+                        = EventSourceKind.fromString(reader.getString());
+                } else if ("localTimestamp".equals(fieldName)) {
+                    deserializedEventSourceCreateOrUpdateParameters.localTimestamp = LocalTimestamp.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSourceCreateOrUpdateParameters;
+        });
     }
 }

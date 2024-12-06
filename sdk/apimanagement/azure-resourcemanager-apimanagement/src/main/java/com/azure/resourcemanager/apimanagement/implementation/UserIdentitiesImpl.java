@@ -19,23 +19,23 @@ public final class UserIdentitiesImpl implements UserIdentities {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public UserIdentitiesImpl(
-        UserIdentitiesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public UserIdentitiesImpl(UserIdentitiesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<UserIdentityContract> list(String resourceGroupName, String serviceName, String userId) {
-        PagedIterable<UserIdentityContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, userId);
-        return Utils.mapPage(inner, inner1 -> new UserIdentityContractImpl(inner1, this.manager()));
+        PagedIterable<UserIdentityContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, userId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserIdentityContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UserIdentityContract> list(
-        String resourceGroupName, String serviceName, String userId, Context context) {
-        PagedIterable<UserIdentityContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, userId, context);
-        return Utils.mapPage(inner, inner1 -> new UserIdentityContractImpl(inner1, this.manager()));
+    public PagedIterable<UserIdentityContract> list(String resourceGroupName, String serviceName, String userId,
+        Context context) {
+        PagedIterable<UserIdentityContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, userId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UserIdentityContractImpl(inner1, this.manager()));
     }
 
     private UserIdentitiesClient serviceClient() {

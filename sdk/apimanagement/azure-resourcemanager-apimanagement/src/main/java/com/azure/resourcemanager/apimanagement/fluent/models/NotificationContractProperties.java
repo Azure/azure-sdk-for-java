@@ -6,37 +6,42 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.RecipientsContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Notification Contract properties. */
+/**
+ * Notification Contract properties.
+ */
 @Fluent
-public final class NotificationContractProperties {
+public final class NotificationContractProperties implements JsonSerializable<NotificationContractProperties> {
     /*
      * Title of the Notification.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Description of the Notification.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Recipient Parameter values.
      */
-    @JsonProperty(value = "recipients")
     private RecipientsContractProperties recipients;
 
-    /** Creates an instance of NotificationContractProperties class. */
+    /**
+     * Creates an instance of NotificationContractProperties class.
+     */
     public NotificationContractProperties() {
     }
 
     /**
      * Get the title property: Title of the Notification.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -45,7 +50,7 @@ public final class NotificationContractProperties {
 
     /**
      * Set the title property: Title of the Notification.
-     *
+     * 
      * @param title the title value to set.
      * @return the NotificationContractProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class NotificationContractProperties {
 
     /**
      * Get the description property: Description of the Notification.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +70,7 @@ public final class NotificationContractProperties {
 
     /**
      * Set the description property: Description of the Notification.
-     *
+     * 
      * @param description the description value to set.
      * @return the NotificationContractProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class NotificationContractProperties {
 
     /**
      * Get the recipients property: Recipient Parameter values.
-     *
+     * 
      * @return the recipients value.
      */
     public RecipientsContractProperties recipients() {
@@ -85,7 +90,7 @@ public final class NotificationContractProperties {
 
     /**
      * Set the recipients property: Recipient Parameter values.
-     *
+     * 
      * @param recipients the recipients value to set.
      * @return the NotificationContractProperties object itself.
      */
@@ -96,15 +101,14 @@ public final class NotificationContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property title in model NotificationContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property title in model NotificationContractProperties"));
         }
         if (recipients() != null) {
             recipients().validate();
@@ -112,4 +116,49 @@ public final class NotificationContractProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NotificationContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("recipients", this.recipients);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationContractProperties.
+     */
+    public static NotificationContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationContractProperties deserializedNotificationContractProperties
+                = new NotificationContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedNotificationContractProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedNotificationContractProperties.description = reader.getString();
+                } else if ("recipients".equals(fieldName)) {
+                    deserializedNotificationContractProperties.recipients
+                        = RecipientsContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationContractProperties;
+        });
+    }
 }

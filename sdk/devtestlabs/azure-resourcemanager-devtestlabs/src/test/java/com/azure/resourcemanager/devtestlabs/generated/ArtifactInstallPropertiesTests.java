@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactInstallPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactInstallProperties model =
-            BinaryData
-                .fromString(
-                    "{\"artifactId\":\"gwfqatmt\",\"artifactTitle\":\"tmdvypgikdgs\",\"parameters\":[{\"name\":\"birryuzhl\",\"value\":\"joqrvqqaatj\"}],\"status\":\"rv\",\"deploymentStatusMessage\":\"upmfiibfg\",\"vmExtensionStatusMessage\":\"ioolvrwxkvtkkgll\",\"installTime\":\"2021-06-08T06:14:34Z\"}")
-                .toObject(ArtifactInstallProperties.class);
+        ArtifactInstallProperties model = BinaryData.fromString(
+            "{\"artifactId\":\"gwfqatmt\",\"artifactTitle\":\"tmdvypgikdgs\",\"parameters\":[{\"name\":\"birryuzhl\",\"value\":\"joqrvqqaatj\"}],\"status\":\"rv\",\"deploymentStatusMessage\":\"upmfiibfg\",\"vmExtensionStatusMessage\":\"ioolvrwxkvtkkgll\",\"installTime\":\"2021-06-08T06:14:34Z\"}")
+            .toObject(ArtifactInstallProperties.class);
         Assertions.assertEquals("gwfqatmt", model.artifactId());
         Assertions.assertEquals("tmdvypgikdgs", model.artifactTitle());
         Assertions.assertEquals("birryuzhl", model.parameters().get(0).name());
@@ -31,16 +29,14 @@ public final class ArtifactInstallPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactInstallProperties model =
-            new ArtifactInstallProperties()
-                .withArtifactId("gwfqatmt")
-                .withArtifactTitle("tmdvypgikdgs")
-                .withParameters(
-                    Arrays.asList(new ArtifactParameterProperties().withName("birryuzhl").withValue("joqrvqqaatj")))
-                .withStatus("rv")
-                .withDeploymentStatusMessage("upmfiibfg")
-                .withVmExtensionStatusMessage("ioolvrwxkvtkkgll")
-                .withInstallTime(OffsetDateTime.parse("2021-06-08T06:14:34Z"));
+        ArtifactInstallProperties model = new ArtifactInstallProperties().withArtifactId("gwfqatmt")
+            .withArtifactTitle("tmdvypgikdgs")
+            .withParameters(
+                Arrays.asList(new ArtifactParameterProperties().withName("birryuzhl").withValue("joqrvqqaatj")))
+            .withStatus("rv")
+            .withDeploymentStatusMessage("upmfiibfg")
+            .withVmExtensionStatusMessage("ioolvrwxkvtkkgll")
+            .withInstallTime(OffsetDateTime.parse("2021-06-08T06:14:34Z"));
         model = BinaryData.fromObject(model).toObject(ArtifactInstallProperties.class);
         Assertions.assertEquals("gwfqatmt", model.artifactId());
         Assertions.assertEquals("tmdvypgikdgs", model.artifactTitle());

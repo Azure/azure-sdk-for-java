@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.ReplicationExtensionModelInner;
 
-/** An instance of this class provides access to all the operations defined in ReplicationExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationExtensionsClient.
+ */
 public interface ReplicationExtensionsClient {
     /**
      * Gets the replication extension.
-     *
-     * <p>Gets the details of the replication extension.
-     *
+     * 
+     * Gets the details of the replication extension.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -30,14 +32,14 @@ public interface ReplicationExtensionsClient {
      * @return the details of the replication extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationExtensionModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context);
+    Response<ReplicationExtensionModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context);
 
     /**
      * Gets the replication extension.
-     *
-     * <p>Gets the details of the replication extension.
-     *
+     * 
+     * Gets the details of the replication extension.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -51,9 +53,9 @@ public interface ReplicationExtensionsClient {
 
     /**
      * Puts the replication extension.
-     *
-     * <p>Creates the replication extension in the given vault.
-     *
+     * 
+     * Creates the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -63,14 +65,14 @@ public interface ReplicationExtensionsClient {
      * @return the {@link SyncPoller} for polling of replication extension model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String replicationExtensionName);
+    SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner>
+        beginCreate(String resourceGroupName, String vaultName, String replicationExtensionName);
 
     /**
      * Puts the replication extension.
-     *
-     * <p>Creates the replication extension in the given vault.
-     *
+     * 
+     * Creates the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -83,17 +85,14 @@ public interface ReplicationExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationExtensionModelInner>, ReplicationExtensionModelInner> beginCreate(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context);
+        String resourceGroupName, String vaultName, String replicationExtensionName,
+        ReplicationExtensionModelInner body, Context context);
 
     /**
      * Puts the replication extension.
-     *
-     * <p>Creates the replication extension in the given vault.
-     *
+     * 
+     * Creates the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -107,9 +106,9 @@ public interface ReplicationExtensionsClient {
 
     /**
      * Puts the replication extension.
-     *
-     * <p>Creates the replication extension in the given vault.
-     *
+     * 
+     * Creates the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -121,18 +120,14 @@ public interface ReplicationExtensionsClient {
      * @return replication extension model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationExtensionModelInner create(
-        String resourceGroupName,
-        String vaultName,
-        String replicationExtensionName,
-        ReplicationExtensionModelInner body,
-        Context context);
+    ReplicationExtensionModelInner create(String resourceGroupName, String vaultName, String replicationExtensionName,
+        ReplicationExtensionModelInner body, Context context);
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -142,14 +137,14 @@ public interface ReplicationExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String replicationExtensionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String replicationExtensionName);
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -160,14 +155,14 @@ public interface ReplicationExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context);
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -180,9 +175,9 @@ public interface ReplicationExtensionsClient {
 
     /**
      * Deletes the replication extension.
-     *
-     * <p>Deletes the replication extension in the given vault.
-     *
+     * 
+     * Deletes the replication extension in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param replicationExtensionName The replication extension name.
@@ -196,9 +191,9 @@ public interface ReplicationExtensionsClient {
 
     /**
      * Lists the replication extensions.
-     *
-     * <p>Gets the list of replication extensions in the given vault.
-     *
+     * 
+     * Gets the list of replication extensions in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,9 +206,9 @@ public interface ReplicationExtensionsClient {
 
     /**
      * Lists the replication extensions.
-     *
-     * <p>Gets the list of replication extensions in the given vault.
-     *
+     * 
+     * Gets the list of replication extensions in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.

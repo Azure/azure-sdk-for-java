@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Dras. */
+/**
+ * Resource collection API of Dras.
+ */
 public interface Dras {
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -24,14 +26,14 @@ public interface Dras {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the fabric agent along with {@link Response}.
      */
-    Response<DraModel> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, Context context);
+    Response<DraModel> getWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
+        Context context);
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -44,9 +46,9 @@ public interface Dras {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -58,9 +60,9 @@ public interface Dras {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -73,9 +75,9 @@ public interface Dras {
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +89,9 @@ public interface Dras {
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -102,9 +104,9 @@ public interface Dras {
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,9 +117,9 @@ public interface Dras {
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface Dras {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,9 +143,9 @@ public interface Dras {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +156,7 @@ public interface Dras {
 
     /**
      * Begins definition for a new DraModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DraModel definition.
      */

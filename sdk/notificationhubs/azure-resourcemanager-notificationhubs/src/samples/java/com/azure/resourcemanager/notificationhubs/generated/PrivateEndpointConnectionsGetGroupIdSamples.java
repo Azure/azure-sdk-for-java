@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionsGetGroupIdSamples {
      */
     public static void privateEndpointConnectionsGetGroupId(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().getGroupIdWithResponse("5ktrial", "nh-sdk-ns", "namespace",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getGroupIdWithResponse("5ktrial", "nh-sdk-ns", "namespace", com.azure.core.util.Context.NONE);
     }
 }

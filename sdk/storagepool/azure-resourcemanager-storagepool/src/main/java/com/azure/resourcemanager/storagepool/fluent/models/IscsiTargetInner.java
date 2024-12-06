@@ -7,49 +7,67 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
 import com.azure.resourcemanager.storagepool.models.SystemMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for iSCSI Target requests. */
+/**
+ * Response for iSCSI Target requests.
+ */
 @Fluent
 public final class IscsiTargetInner extends ProxyResource {
     /*
      * Properties for iSCSI Target operations.
      */
-    @JsonProperty(value = "properties", required = true)
     private IscsiTargetProperties innerProperties = new IscsiTargetProperties();
 
     /*
      * Resource metadata required by ARM RPC
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemMetadata systemData;
 
     /*
      * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
-    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
     /*
      * List of Azure resource ids that manage this resource.
      */
-    @JsonProperty(value = "managedByExtended", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> managedByExtended;
 
-    /** Creates an instance of IscsiTargetInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IscsiTargetInner class.
+     */
     public IscsiTargetInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for iSCSI Target operations.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IscsiTargetProperties innerProperties() {
@@ -58,7 +76,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the systemData property: Resource metadata required by ARM RPC.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemMetadata systemData() {
@@ -67,7 +85,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -76,7 +94,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @return the managedByExtended value.
      */
     public List<String> managedByExtended() {
@@ -84,8 +102,38 @@ public final class IscsiTargetInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @return the aclMode value.
      */
     public IscsiTargetAclMode aclMode() {
@@ -94,7 +142,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the aclMode property: Mode for Target connectivity.
-     *
+     * 
      * @param aclMode the aclMode value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -108,7 +156,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @return the staticAcls value.
      */
     public List<Acl> staticAcls() {
@@ -117,7 +165,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.
-     *
+     * 
      * @param staticAcls the staticAcls value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -131,7 +179,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @return the luns value.
      */
     public List<IscsiLun> luns() {
@@ -140,7 +188,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the luns property: List of LUNs to be exposed through iSCSI Target.
-     *
+     * 
      * @param luns the luns value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -154,7 +202,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @return the targetIqn value.
      */
     public String targetIqn() {
@@ -163,7 +211,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @param targetIqn the targetIqn value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -177,7 +225,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -186,7 +234,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @return the status value.
      */
     public OperationalStatus status() {
@@ -195,7 +243,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @param status the status value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -209,7 +257,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the endpoints property: List of private IPv4 addresses to connect to the iSCSI Target.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<String> endpoints() {
@@ -218,7 +266,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the endpoints property: List of private IPv4 addresses to connect to the iSCSI Target.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -232,7 +280,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the port property: The port used by iSCSI Target portal group.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -241,7 +289,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Set the port property: The port used by iSCSI Target portal group.
-     *
+     * 
      * @param port the port value to set.
      * @return the IscsiTargetInner object itself.
      */
@@ -255,7 +303,7 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Get the sessions property: List of identifiers for active sessions on the iSCSI target.
-     *
+     * 
      * @return the sessions value.
      */
     public List<String> sessions() {
@@ -264,15 +312,14 @@ public final class IscsiTargetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IscsiTargetInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IscsiTargetInner"));
         } else {
             innerProperties().validate();
         }
@@ -282,4 +329,54 @@ public final class IscsiTargetInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiTargetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiTargetInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IscsiTargetInner.
+     */
+    public static IscsiTargetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiTargetInner deserializedIscsiTargetInner = new IscsiTargetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIscsiTargetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIscsiTargetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIscsiTargetInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIscsiTargetInner.innerProperties = IscsiTargetProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIscsiTargetInner.systemData = SystemMetadata.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedIscsiTargetInner.managedBy = reader.getString();
+                } else if ("managedByExtended".equals(fieldName)) {
+                    List<String> managedByExtended = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIscsiTargetInner.managedByExtended = managedByExtended;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiTargetInner;
+        });
+    }
 }

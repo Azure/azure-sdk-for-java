@@ -167,9 +167,8 @@ public final class IotHubDescriptionInner extends Resource {
             properties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model IotHubDescriptionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model IotHubDescriptionInner"));
         } else {
             sku().validate();
         }

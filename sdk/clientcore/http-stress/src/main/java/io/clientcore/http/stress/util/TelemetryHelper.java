@@ -3,7 +3,8 @@
 
 package io.clientcore.http.stress.util;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -62,8 +63,8 @@ public class TelemetryHelper {
     private static final AttributeKey<String> JRE_VERSION_ATTRIBUTE = AttributeKey.stringKey("jreVersion");
     private static final AttributeKey<String> JRE_VENDOR_ATTRIBUTE = AttributeKey.stringKey("jreVendor");
     private static final AttributeKey<String> GIT_COMMIT_ATTRIBUTE = AttributeKey.stringKey("gitCommit");
-    private static final AttributeKey<Boolean> COMPLETEABLE_FUTURE_ATTRIBUTE = AttributeKey.booleanKey(
-        "completeableFuture");
+    private static final AttributeKey<Boolean> COMPLETEABLE_FUTURE_ATTRIBUTE
+        = AttributeKey.booleanKey("completeableFuture");
     private static final AttributeKey<Boolean> EXECUTOR_SERVICE_ATTRIBUTE = AttributeKey.booleanKey("executorService");
     private static final AttributeKey<Boolean> VIRTUAL_THREAD_ATTRIBUTE = AttributeKey.booleanKey("virtualThread");
     private final Attributes commonAttributes;
@@ -85,8 +86,8 @@ public class TelemetryHelper {
     public TelemetryHelper(Class<?> scenarioClass) {
         this.scenarioName = scenarioClass.getName();
         this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
-        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE,
-            "cancelled");
+        this.canceledAttributes
+            = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
         this.tracer = GlobalOpenTelemetry.getTracer(scenarioName);
         Meter meter = GlobalOpenTelemetry.getMeter(scenarioName);
         this.logger = new ClientLogger(scenarioName);
@@ -100,7 +101,8 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder().connectionString(applicationInsightsConnectionString).install(sdkBuilder);
+            AzureMonitorExporter.customize(AutoConfiguredOpenTelemetrySdk.builder(),
+                new AzureMonitorExporterOptions().connectionString(applicationInsightsConnectionString));
         } else {
             System.setProperty("otel.traces.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
@@ -124,7 +126,10 @@ public class TelemetryHelper {
                 public String getDescription() {
                     return sampler.getDescription();
                 }
-            }).setResultAsGlobal().build().getOpenTelemetrySdk();
+            })
+            .setResultAsGlobal()
+            .build()
+            .getOpenTelemetrySdk();
         Classes.registerObservers(otel);
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
@@ -142,7 +147,7 @@ public class TelemetryHelper {
     public void instrumentRun(Runnable oneRun) {
         long start = System.currentTimeMillis();
         Span span = tracer.spanBuilder("run").startSpan();
-        try (Scope s = span.makeCurrent()) {
+        try (Scope ignored = span.makeCurrent()) {
             oneRun.run();
             trackSuccess(start, span);
         } catch (Throwable e) {
@@ -167,7 +172,7 @@ public class TelemetryHelper {
         return Mono.defer(() -> {
             long start = System.currentTimeMillis();
             Span span = tracer.spanBuilder("runAsync").startSpan();
-            try (Scope s = span.makeCurrent()) {
+            try (Scope ignored = span.makeCurrent()) {
                 return runAsync.doOnError(e -> trackFailure(start, e, span))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
@@ -196,7 +201,7 @@ public class TelemetryHelper {
             Span span = startAndSpan.getValue();
 
             return runAsyncFuture.whenComplete((result, throwable) -> {
-                try (Scope s = span.makeCurrent()) {
+                try (Scope ignored = span.makeCurrent()) {
                     if (throwable != null) {
                         trackFailure(start, throwable, span);
                     } else {
@@ -220,7 +225,7 @@ public class TelemetryHelper {
         return () -> {
             long start = System.currentTimeMillis();
             Span span = tracer.spanBuilder("runAsyncRunnable").startSpan();
-            try (Scope s = span.makeCurrent()) {
+            try (Scope ignored = span.makeCurrent()) {
                 try {
                     task.run();
                     trackSuccess(start, span);
@@ -261,8 +266,8 @@ public class TelemetryHelper {
         String errorType = unwrapped.getClass().getName();
         logger.atError().addKeyValue("error.type", errorType).log("run ended", unwrapped);
 
-        Attributes errorAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE,
-            errorType);
+        Attributes errorAttributes
+            = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
         runDuration.record(getDuration(start), errorAttributes, io.opentelemetry.context.Context.current().with(span));
         span.end();
     }
@@ -314,7 +319,8 @@ public class TelemetryHelper {
         return tracer.spanBuilder(name)
             // guarantee that we have before/after spans sampled in
             // and record duration/result of the test
-            .setAttribute(SAMPLE_IN_ATTRIBUTE, true).startSpan();
+            .setAttribute(SAMPLE_IN_ATTRIBUTE, true)
+            .startSpan();
     }
 
     private static double getDuration(long start) {

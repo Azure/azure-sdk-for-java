@@ -7,34 +7,43 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents the properties of an outbound endpoint for a DNS resolver. */
+/**
+ * Represents the properties of an outbound endpoint for a DNS resolver.
+ */
 @Fluent
-public final class OutboundEndpointProperties {
+public final class OutboundEndpointProperties implements JsonSerializable<OutboundEndpointProperties> {
     /*
      * The reference to the subnet used for the outbound endpoint.
      */
-    @JsonProperty(value = "subnet", required = true)
     private SubResource subnet;
 
     /*
-     * The current provisioning state of the outbound endpoint. This is a read-only property and any attempt to set
-     * this value will be ignored.
+     * The current provisioning state of the outbound endpoint. This is a read-only property and any attempt to set this
+     * value will be ignored.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resourceGuid property of the outbound endpoint resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
+     * Creates an instance of OutboundEndpointProperties class.
+     */
+    public OutboundEndpointProperties() {
+    }
+
+    /**
      * Get the subnet property: The reference to the subnet used for the outbound endpoint.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -43,7 +52,7 @@ public final class OutboundEndpointProperties {
 
     /**
      * Set the subnet property: The reference to the subnet used for the outbound endpoint.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the OutboundEndpointProperties object itself.
      */
@@ -55,7 +64,7 @@ public final class OutboundEndpointProperties {
     /**
      * Get the provisioningState property: The current provisioning state of the outbound endpoint. This is a read-only
      * property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -64,7 +73,7 @@ public final class OutboundEndpointProperties {
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the outbound endpoint resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -73,17 +82,58 @@ public final class OutboundEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnet in model OutboundEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnet in model OutboundEndpointProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OutboundEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundEndpointProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OutboundEndpointProperties.
+     */
+    public static OutboundEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundEndpointProperties deserializedOutboundEndpointProperties = new OutboundEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedOutboundEndpointProperties.subnet = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedOutboundEndpointProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedOutboundEndpointProperties.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundEndpointProperties;
+        });
+    }
 }

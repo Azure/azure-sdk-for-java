@@ -35,24 +35,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SecurityAdvisoryImpactedResourcesClient.
  */
 public final class SecurityAdvisoryImpactedResourcesClientImpl implements SecurityAdvisoryImpactedResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecurityAdvisoryImpactedResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of SecurityAdvisoryImpactedResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SecurityAdvisoryImpactedResourcesClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SecurityAdvisoryImpactedResourcesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SecurityAdvisoryImpactedResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,79 +63,62 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface SecurityAdvisoryImpactedResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/listSecurityAdvisoryImpactedResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/listSecurityAdvisoryImpactedResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventImpactedResourceListResult>> listBySubscriptionIdAndEventId(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("eventTrackingId") String eventTrackingId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/listSecurityAdvisoryImpactedResources")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventImpactedResourceListResult>> listByTenantIdAndEventId(
-            @HostParam("$host") String endpoint,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventImpactedResourceListResult>> listByTenantIdAndEventId(@HostParam("$host") String endpoint,
+            @PathParam("eventTrackingId") String eventTrackingId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventImpactedResourceListResult>> listBySubscriptionIdAndEventIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventImpactedResourceListResult>> listByTenantIdAndEventIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdSinglePageAsync(String eventTrackingId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -143,56 +126,36 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscriptionIdAndEventId(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            eventTrackingId,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySubscriptionIdAndEventId(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), eventTrackingId, this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdSinglePageAsync(String eventTrackingId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -201,47 +164,33 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionIdAndEventId(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                eventTrackingId,
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySubscriptionIdAndEventId(this.client.getEndpoint(), this.client.getSubscriptionId(), eventTrackingId,
+                this.client.getApiVersion(), filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(
-        String eventTrackingId, String filter) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(String eventTrackingId,
+        String filter) {
+        return new PagedFlux<>(() -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listBySubscriptionIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,17 +200,16 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(String eventTrackingId) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+        return new PagedFlux<>(() -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listBySubscriptionIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,16 +217,15 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(
-        String eventTrackingId, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
+    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(String eventTrackingId,
+        String filter, Context context) {
+        return new PagedFlux<>(() -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
             nextLink -> listBySubscriptionIdAndEventIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -293,10 +240,10 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
 
     /**
      * Lists impacted resources in the subscription by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,31 +251,29 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context) {
+    public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId,
+        String filter, Context context) {
         return new PagedIterable<>(listBySubscriptionIdAndEventIdAsync(eventTrackingId, filter, context));
     }
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listByTenantIdAndEventIdSinglePageAsync(String eventTrackingId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -336,49 +281,32 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTenantIdAndEventId(
-                            this.client.getEndpoint(),
-                            eventTrackingId,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTenantIdAndEventId(this.client.getEndpoint(), eventTrackingId,
+                this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listByTenantIdAndEventIdSinglePageAsync(String eventTrackingId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -387,25 +315,18 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTenantIdAndEventId(
-                this.client.getEndpoint(), eventTrackingId, this.client.getApiVersion(), filter, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTenantIdAndEventId(this.client.getEndpoint(), eventTrackingId, this.client.getApiVersion(), filter,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,14 +334,13 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(String eventTrackingId, String filter) {
-        return new PagedFlux<>(
-            () -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+        return new PagedFlux<>(() -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listByTenantIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -430,17 +350,16 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(String eventTrackingId) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+        return new PagedFlux<>(() -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listByTenantIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -448,16 +367,15 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(
-        String eventTrackingId, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
+    private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(String eventTrackingId, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
             nextLink -> listByTenantIdAndEventIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -472,10 +390,10 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -483,165 +401,121 @@ public final class SecurityAdvisoryImpactedResourcesClientImpl implements Securi
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context) {
+    public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context) {
         return new PagedIterable<>(listByTenantIdAndEventIdAsync(eventTrackingId, filter, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listByTenantIdAndEventIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByTenantIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTenantIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTenantIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

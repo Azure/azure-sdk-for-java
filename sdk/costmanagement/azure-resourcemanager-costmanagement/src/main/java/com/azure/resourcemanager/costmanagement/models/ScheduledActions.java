@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.costmanagement.fluent.models.ScheduledActionInner;
 
-/** Resource collection API of ScheduledActions. */
+/**
+ * Resource collection API of ScheduledActions.
+ */
 public interface ScheduledActions {
     /**
      * List all private scheduled actions.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scheduled actions list result as paginated response with {@link PagedIterable}.
@@ -22,7 +24,7 @@ public interface ScheduledActions {
 
     /**
      * List all private scheduled actions.
-     *
+     * 
      * @param filter May be used to filter scheduled actions by properties/viewId. Supported operator is 'eq'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,23 +36,21 @@ public interface ScheduledActions {
 
     /**
      * List all shared scheduled actions within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -60,23 +60,21 @@ public interface ScheduledActions {
 
     /**
      * List all shared scheduled actions within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param filter May be used to filter scheduled actions by properties/viewId. Supported operator is 'eq'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,23 +86,23 @@ public interface ScheduledActions {
 
     /**
      * Create or update a private scheduled action.
-     *
+     * 
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
      * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
-     *     be specified to achieve optimistic concurrency.
+     * be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scheduled action definition along with {@link Response}.
      */
-    Response<ScheduledAction> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
+    Response<ScheduledAction> createOrUpdateWithResponse(String name, ScheduledActionInner scheduledAction,
+        String ifMatch, Context context);
 
     /**
      * Create or update a private scheduled action.
-     *
+     * 
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +114,7 @@ public interface ScheduledActions {
 
     /**
      * Get the private scheduled action by name.
-     *
+     * 
      * @param name Scheduled action name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +126,7 @@ public interface ScheduledActions {
 
     /**
      * Get the private scheduled action by name.
-     *
+     * 
      * @param name Scheduled action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,7 +137,7 @@ public interface ScheduledActions {
 
     /**
      * Delete a private scheduled action.
-     *
+     * 
      * @param name Scheduled action name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +149,7 @@ public interface ScheduledActions {
 
     /**
      * Delete a private scheduled action.
-     *
+     * 
      * @param name Scheduled action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,23 +159,21 @@ public interface ScheduledActions {
 
     /**
      * Get the shared scheduled action from the given scope by name.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,23 +185,21 @@ public interface ScheduledActions {
 
     /**
      * Get the shared scheduled action from the given scope by name.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,23 +210,21 @@ public interface ScheduledActions {
 
     /**
      * Delete a scheduled action within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,23 +236,21 @@ public interface ScheduledActions {
 
     /**
      * Delete a scheduled action within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -270,7 +260,7 @@ public interface ScheduledActions {
 
     /**
      * Processes a private scheduled action.
-     *
+     * 
      * @param name Scheduled action name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +272,7 @@ public interface ScheduledActions {
 
     /**
      * Processes a private scheduled action.
-     *
+     * 
      * @param name Scheduled action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -292,23 +282,21 @@ public interface ScheduledActions {
 
     /**
      * Runs a shared scheduled action within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,23 +308,21 @@ public interface ScheduledActions {
 
     /**
      * Runs a shared scheduled action within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -346,7 +332,7 @@ public interface ScheduledActions {
 
     /**
      * Checks availability and correctness of the name for a scheduled action.
-     *
+     * 
      * @param checkNameAvailabilityRequest Scheduled action to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,12 +340,12 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks availability and correctness of the name for a scheduled action.
-     *
+     * 
      * @param checkNameAvailabilityRequest Scheduled action to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -370,23 +356,21 @@ public interface ScheduledActions {
 
     /**
      * Checks availability and correctness of the name for a scheduled action within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param checkNameAvailabilityRequest Scheduled action to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,40 +378,38 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityByScopeWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityByScopeWithResponse(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks availability and correctness of the name for a scheduled action within the given scope.
-     *
+     * 
      * @param scope The scope associated with scheduled action operations. This includes
-     *     'subscriptions/{subscriptionId}' for subscription scope,
-     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope,
-     *     'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for External
-     *     Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
+     * 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
+     * for External Billing Account scope and
+     * 'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External Subscription
+     * scope. Note: Insight Alerts are only available on subscription scope.
      * @param checkNameAvailabilityRequest Scheduled action to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result.
      */
-    CheckNameAvailabilityResponse checkNameAvailabilityByScope(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest);
+    CheckNameAvailabilityResponse checkNameAvailabilityByScope(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 
     /**
      * Get the shared scheduled action from the given scope by name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -438,7 +420,7 @@ public interface ScheduledActions {
 
     /**
      * Get the shared scheduled action from the given scope by name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +432,7 @@ public interface ScheduledActions {
 
     /**
      * Delete a scheduled action within the given scope.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -460,7 +442,7 @@ public interface ScheduledActions {
 
     /**
      * Delete a scheduled action within the given scope.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,7 +454,7 @@ public interface ScheduledActions {
 
     /**
      * Begins definition for a new ScheduledAction resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ScheduledAction definition.
      */

@@ -38,8 +38,8 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
 
     /**
      * Get the validationCode property: The validation code sent by Azure Event Grid to validate an event subscription.
-     * To complete the validation handshake, the subscriber must either respond with this validation code as part of
-     * the validation response, or perform a GET request on the validationUrl (available starting version
+     * To complete the validation handshake, the subscriber must either respond with this validation code as part of the
+     * validation response, or perform a GET request on the validationUrl (available starting version
      * 2018-05-01-preview).
      * 
      * @return the validationCode value.
@@ -60,6 +60,9 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
         return this.validationUrl;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

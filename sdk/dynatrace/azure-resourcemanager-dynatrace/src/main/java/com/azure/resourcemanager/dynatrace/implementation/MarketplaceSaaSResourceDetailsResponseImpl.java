@@ -13,8 +13,7 @@ public final class MarketplaceSaaSResourceDetailsResponseImpl implements Marketp
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    MarketplaceSaaSResourceDetailsResponseImpl(
-        MarketplaceSaaSResourceDetailsResponseInner innerObject,
+    MarketplaceSaaSResourceDetailsResponseImpl(MarketplaceSaaSResourceDetailsResponseInner innerObject,
         com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

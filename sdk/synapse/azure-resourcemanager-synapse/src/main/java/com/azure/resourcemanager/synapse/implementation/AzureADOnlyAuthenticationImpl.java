@@ -17,8 +17,8 @@ public final class AzureADOnlyAuthenticationImpl
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    AzureADOnlyAuthenticationImpl(
-        AzureADOnlyAuthenticationInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    AzureADOnlyAuthenticationImpl(AzureADOnlyAuthenticationInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -68,48 +68,39 @@ public final class AzureADOnlyAuthenticationImpl
     }
 
     public AzureADOnlyAuthentication create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADOnlyAuthentications()
-                .create(
-                    resourceGroupName, workspaceName, azureADOnlyAuthenticationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADOnlyAuthentications()
+            .create(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureADOnlyAuthentication create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADOnlyAuthentications()
-                .create(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADOnlyAuthentications()
+            .create(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, this.innerModel(), context);
         return this;
     }
 
-    AzureADOnlyAuthenticationImpl(
-        AzureADOnlyAuthenticationName name, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    AzureADOnlyAuthenticationImpl(AzureADOnlyAuthenticationName name,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = new AzureADOnlyAuthenticationInner();
         this.serviceManager = serviceManager;
         this.azureADOnlyAuthenticationName = name;
     }
 
     public AzureADOnlyAuthentication refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADOnlyAuthentications()
-                .getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADOnlyAuthentications()
+            .getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AzureADOnlyAuthentication refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureADOnlyAuthentications()
-                .getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureADOnlyAuthentications()
+            .getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, context)
+            .getValue();
         return this;
     }
 

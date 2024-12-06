@@ -6,41 +6,40 @@ package com.azure.resourcemanager.automanage.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ConfigurationProfiles CreateOrUpdate. */
+/**
+ * Samples for ConfigurationProfiles CreateOrUpdate.
+ */
 public final class ConfigurationProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * createOrUpdateConfigurationProfile.json
      */
     /**
      * Sample code: Create or update configuration profile.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void createOrUpdateConfigurationProfile(
         com.azure.resourcemanager.automanage.AutomanageManager manager) throws IOException {
-        manager
-            .configurationProfiles()
+        manager.configurationProfiles()
             .define("customConfigurationProfile")
             .withRegion("East US")
             .withExistingResourceGroup("myResourceGroupName")
             .withTags(mapOf("Organization", "Administration"))
-            .withProperties(
-                new ConfigurationProfileProperties()
-                    .withConfiguration(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
+            .withProperties(new ConfigurationProfileProperties().withConfiguration(SerializerFactory
+                .createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
+                    Object.class, SerializerEncoding.JSON)))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

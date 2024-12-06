@@ -19,8 +19,7 @@ public final class WorkspaceManagedSqlServerUsagesImpl implements WorkspaceManag
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public WorkspaceManagedSqlServerUsagesImpl(
-        WorkspaceManagedSqlServerUsagesClient innerClient,
+    public WorkspaceManagedSqlServerUsagesImpl(WorkspaceManagedSqlServerUsagesClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class WorkspaceManagedSqlServerUsagesImpl implements WorkspaceManag
 
     public PagedIterable<ServerUsage> list(String resourceGroupName, String workspaceName) {
         PagedIterable<ServerUsageInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new ServerUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServerUsage> list(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<ServerUsageInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new ServerUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerUsageImpl(inner1, this.manager()));
     }
 
     private WorkspaceManagedSqlServerUsagesClient serviceClient() {

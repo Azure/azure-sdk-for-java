@@ -5,48 +5,53 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.AutomationAccountUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the update automation account operation. */
+/**
+ * The parameters supplied to the update automation account operation.
+ */
 @Fluent
-public final class AutomationAccountUpdateParameters {
+public final class AutomationAccountUpdateParameters implements JsonSerializable<AutomationAccountUpdateParameters> {
     /*
      * Gets or sets account update properties.
      */
-    @JsonProperty(value = "properties")
     private AutomationAccountUpdateProperties innerProperties;
 
     /*
      * Gets or sets the name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Sets the identity property for automation account
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Gets or sets the tags attached to the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of AutomationAccountUpdateParameters class.
+     */
+    public AutomationAccountUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets account update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AutomationAccountUpdateProperties innerProperties() {
@@ -55,7 +60,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +69,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -75,7 +80,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -84,7 +89,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -95,7 +100,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the identity property: Sets the identity property for automation account.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -104,7 +109,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the identity property: Sets the identity property for automation account.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -115,7 +120,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -124,7 +129,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -135,7 +140,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the sku property: Gets or sets account SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -144,7 +149,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the sku property: Gets or sets account SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -158,7 +163,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the encryption property: Set the encryption properties for the automation account.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -167,7 +172,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the encryption property: Set the encryption properties for the automation account.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -182,7 +187,7 @@ public final class AutomationAccountUpdateParameters {
     /**
      * Get the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
      * allowed from the public internet.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public Boolean publicNetworkAccess() {
@@ -192,7 +197,7 @@ public final class AutomationAccountUpdateParameters {
     /**
      * Set the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
      * allowed from the public internet.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -206,7 +211,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Get the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -215,7 +220,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Set the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the AutomationAccountUpdateParameters object itself.
      */
@@ -229,7 +234,7 @@ public final class AutomationAccountUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -239,5 +244,56 @@ public final class AutomationAccountUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationAccountUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationAccountUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationAccountUpdateParameters.
+     */
+    public static AutomationAccountUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationAccountUpdateParameters deserializedAutomationAccountUpdateParameters
+                = new AutomationAccountUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAutomationAccountUpdateParameters.innerProperties
+                        = AutomationAccountUpdateProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutomationAccountUpdateParameters.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAutomationAccountUpdateParameters.location = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAutomationAccountUpdateParameters.identity = Identity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAutomationAccountUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationAccountUpdateParameters;
+        });
     }
 }

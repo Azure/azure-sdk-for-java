@@ -16,11 +16,13 @@ import com.azure.resourcemanager.workloads.fluent.models.SapVirtualInstanceInner
 import com.azure.resourcemanager.workloads.models.StopRequest;
 import com.azure.resourcemanager.workloads.models.UpdateSapVirtualInstanceRequest;
 
-/** An instance of this class provides access to all the operations defined in SapVirtualInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SapVirtualInstancesClient.
+ */
 public interface SapVirtualInstancesClient {
     /**
      * Creates a Virtual Instance for SAP solutions (VIS) resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,12 +31,12 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Creates a Virtual Instance for SAP solutions (VIS) resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param body Virtual Instance for SAP solutions resource request body.
@@ -45,12 +47,12 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(
-        String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context);
+    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(String resourceGroupName,
+        String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context);
 
     /**
      * Creates a Virtual Instance for SAP solutions (VIS) resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +65,7 @@ public interface SapVirtualInstancesClient {
 
     /**
      * Creates a Virtual Instance for SAP solutions (VIS) resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param body Virtual Instance for SAP solutions resource request body.
@@ -74,12 +76,12 @@ public interface SapVirtualInstancesClient {
      * @return define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapVirtualInstanceInner create(
-        String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context);
+    SapVirtualInstanceInner create(String resourceGroupName, String sapVirtualInstanceName,
+        SapVirtualInstanceInner body, Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -89,12 +91,12 @@ public interface SapVirtualInstancesClient {
      * @return a Virtual Instance for SAP solutions resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapVirtualInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    Response<SapVirtualInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sapVirtualInstanceName, Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +109,7 @@ public interface SapVirtualInstancesClient {
 
     /**
      * Updates a Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param body Request body to update a Virtual Instance for SAP solutions resource.
@@ -118,12 +120,12 @@ public interface SapVirtualInstancesClient {
      * @return define the Virtual Instance for SAP solutions resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapVirtualInstanceInner> updateWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, UpdateSapVirtualInstanceRequest body, Context context);
+    Response<SapVirtualInstanceInner> updateWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        UpdateSapVirtualInstanceRequest body, Context context);
 
     /**
      * Updates a Virtual Instance for SAP solutions resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface SapVirtualInstancesClient {
     /**
      * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
      * Services Instance, Application Server Instances and Database Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,13 +148,13 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
      * Services Instance, Application Server Instances and Database Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -162,13 +164,13 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String sapVirtualInstanceName, Context context);
 
     /**
      * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
      * Services Instance, Application Server Instances and Database Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +184,7 @@ public interface SapVirtualInstancesClient {
     /**
      * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
      * Services Instance, Application Server Instances and Database Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -196,58 +198,58 @@ public interface SapVirtualInstancesClient {
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SapVirtualInstanceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SapVirtualInstanceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SapVirtualInstanceInner> list();
 
     /**
      * Gets all Virtual Instances for SAP solutions resources in a Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SapVirtualInstanceInner> list(Context context);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,12 +258,12 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -271,12 +273,12 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String sapVirtualInstanceName, Context context);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +291,7 @@ public interface SapVirtualInstancesClient {
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
@@ -303,7 +305,7 @@ public interface SapVirtualInstancesClient {
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,12 +314,12 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param body The Virtual Instance for SAP solutions resource stop request body.
@@ -328,12 +330,12 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
-        String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(String resourceGroupName,
+        String sapVirtualInstanceName, StopRequest body, Context context);
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +348,7 @@ public interface SapVirtualInstancesClient {
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param body The Virtual Instance for SAP solutions resource stop request body.
@@ -357,6 +359,6 @@ public interface SapVirtualInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner stop(
-        String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
+    OperationStatusResultInner stop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body,
+        Context context);
 }

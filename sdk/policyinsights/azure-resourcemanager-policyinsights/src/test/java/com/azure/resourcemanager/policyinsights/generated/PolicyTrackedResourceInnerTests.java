@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyTrackedResourceInner;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyTrackedResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        PolicyTrackedResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"trackedResourceId\":\"fpikxwczb\",\"policyDetails\":{\"policyDefinitionId\":\"npqxuh\",\"policyAssignmentId\":\"y\",\"policyAssignmentDisplayName\":\"iwbybrkxvdumjg\",\"policyAssignmentScope\":\"fwvuk\",\"policySetDefinitionId\":\"audccsnhs\",\"policyDefinitionReferenceId\":\"nyejhkryhtnap\"},\"createdBy\":{\"policyDetails\":{\"policyDefinitionId\":\"okjye\",\"policyAssignmentId\":\"kvnipjoxz\",\"policyAssignmentDisplayName\":\"chgejspodm\",\"policyAssignmentScope\":\"lzydehojwyahux\",\"policySetDefinitionId\":\"pmqnja\",\"policyDefinitionReferenceId\":\"ixjsprozvcputeg\"},\"deploymentId\":\"wmfdatscmdvpjhul\",\"deploymentTime\":\"2021-11-19T18:36:28Z\"},\"lastModifiedBy\":{\"policyDetails\":{\"policyDefinitionId\":\"jozkrwfndiod\",\"policyAssignmentId\":\"slwejdpvw\",\"policyAssignmentDisplayName\":\"oqpsoa\",\"policyAssignmentScope\":\"tazak\",\"policySetDefinitionId\":\"lahbcryff\",\"policyDefinitionReferenceId\":\"dosyg\"},\"deploymentId\":\"paojakhmsbzjh\",\"deploymentTime\":\"2020-12-24T16:45:21Z\"},\"lastUpdateUtc\":\"2021-04-18T16:59:04Z\"}")
-                .toObject(PolicyTrackedResourceInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyTrackedResourceInner model = BinaryData.fromString(
+            "{\"trackedResourceId\":\"hungbwjzrnf\",\"policyDetails\":{\"policyDefinitionId\":\"gispemvtzfkufubl\",\"policyAssignmentId\":\"fxqeof\",\"policyAssignmentDisplayName\":\"e\",\"policyAssignmentScope\":\"hqjbasvmsmj\",\"policySetDefinitionId\":\"lngsntnbybkzgcwr\",\"policyDefinitionReferenceId\":\"lxxwrljdouskc\"},\"createdBy\":{\"policyDetails\":{\"policyDefinitionId\":\"cr\",\"policyAssignmentId\":\"dkwt\",\"policyAssignmentDisplayName\":\"xbnjbiksq\",\"policyAssignmentScope\":\"lssai\",\"policySetDefinitionId\":\"p\",\"policyDefinitionReferenceId\":\"nzl\"},\"deploymentId\":\"fmppe\",\"deploymentTime\":\"2021-03-28T22:28:31Z\"},\"lastModifiedBy\":{\"policyDetails\":{\"policyDefinitionId\":\"sabkyqduujitcjcz\",\"policyAssignmentId\":\"evndh\",\"policyAssignmentDisplayName\":\"wpdappdsbdkv\",\"policyAssignmentScope\":\"wjfeusnhutjel\",\"policySetDefinitionId\":\"rl\",\"policyDefinitionReferenceId\":\"ugjzzdatqxhocdge\"},\"deploymentId\":\"lgphu\",\"deploymentTime\":\"2021-10-07T02:44:54Z\"},\"lastUpdateUtc\":\"2021-05-16T15:44:09Z\"}")
+            .toObject(PolicyTrackedResourceInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyTrackedResourceInner model = new PolicyTrackedResourceInner();
         model = BinaryData.fromObject(model).toObject(PolicyTrackedResourceInner.class);
     }

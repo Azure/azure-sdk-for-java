@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisabledOnOs({OS.MAC})
+@DisabledOnOs({ OS.MAC })
 public class ValidationUtilTests {
     private static final ClientLogger LOGGER = new ClientLogger(ValidationUtilTests.class);
 
@@ -30,7 +30,6 @@ public class ValidationUtilTests {
     private static File wrongPrefix;
     private static File wrongExtension;
     private static File fileWithRelativeSegments;
-
 
     @BeforeAll
     public static void setupClass() {
@@ -49,6 +48,7 @@ public class ValidationUtilTests {
         fileWithRelativeSegments = new TestFile(Paths.get(beginning.toString(), "..", "file.key").toString());
 
     }
+
     @Test
     public void testValidPath() {
         assertDoesNotThrow(() -> ValidationUtil.validateSecretFile(good, LOGGER));
@@ -56,30 +56,35 @@ public class ValidationUtilTests {
 
     @Test
     public void testInvalidTooLong() {
-        Throwable thrown = assertThrows(ClientAuthenticationException.class, () -> ValidationUtil.validateSecretFile(fileTooLong, LOGGER));
+        Throwable thrown = assertThrows(ClientAuthenticationException.class,
+            () -> ValidationUtil.validateSecretFile(fileTooLong, LOGGER));
         assertTrue(thrown.getMessage().contains("The secret key file is too large"));
     }
 
     @Test
     public void testInvalidWrongPrefix() {
-        Throwable thrown = assertThrows(ClientAuthenticationException.class, () -> ValidationUtil.validateSecretFile(wrongPrefix, LOGGER));
+        Throwable thrown = assertThrows(ClientAuthenticationException.class,
+            () -> ValidationUtil.validateSecretFile(wrongPrefix, LOGGER));
         assertTrue(thrown.getMessage().contains("The secret key file is not located in the expected directory"));
     }
 
     @Test
     public void testInvalidWrongExtension() {
-        Throwable thrown = assertThrows(ClientAuthenticationException.class, () -> ValidationUtil.validateSecretFile(wrongExtension, LOGGER));
+        Throwable thrown = assertThrows(ClientAuthenticationException.class,
+            () -> ValidationUtil.validateSecretFile(wrongExtension, LOGGER));
         assertTrue(thrown.getMessage().contains("The secret key file does not have the expected file extension"));
     }
 
     @Test
     public void testInvalidRelativeSegments() {
-        Throwable thrown = assertThrows(ClientAuthenticationException.class, () -> ValidationUtil.validateSecretFile(fileWithRelativeSegments, LOGGER));
+        Throwable thrown = assertThrows(ClientAuthenticationException.class,
+            () -> ValidationUtil.validateSecretFile(fileWithRelativeSegments, LOGGER));
         assertTrue(thrown.getMessage().contains("The secret key file is not located in the expected directory"));
     }
 
     static class TestFile extends File {
         long length = 4096;
+
         TestFile(String pathname) {
             super(pathname);
         }

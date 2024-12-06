@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanOrderAliasModelInner;
 
-/** An instance of this class provides access to all the operations defined in SavingsPlanOrderAliasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SavingsPlanOrderAliasClient.
+ */
 public interface SavingsPlanOrderAliasClient {
     /**
      * Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851.
-     *
+     * 
      * @param savingsPlanOrderAliasName Name of the savings plan order alias.
      * @param body Request body for creating a savings plan order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,12 +27,12 @@ public interface SavingsPlanOrderAliasClient {
      * @return the {@link SyncPoller} for polling of savings plan order alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SavingsPlanOrderAliasModelInner>, SavingsPlanOrderAliasModelInner> beginCreate(
-        String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body);
+    SyncPoller<PollResult<SavingsPlanOrderAliasModelInner>, SavingsPlanOrderAliasModelInner>
+        beginCreate(String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body);
 
     /**
      * Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851.
-     *
+     * 
      * @param savingsPlanOrderAliasName Name of the savings plan order alias.
      * @param body Request body for creating a savings plan order alias.
      * @param context The context to associate with this operation.
@@ -40,12 +42,12 @@ public interface SavingsPlanOrderAliasClient {
      * @return the {@link SyncPoller} for polling of savings plan order alias.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SavingsPlanOrderAliasModelInner>, SavingsPlanOrderAliasModelInner> beginCreate(
-        String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body, Context context);
+    SyncPoller<PollResult<SavingsPlanOrderAliasModelInner>, SavingsPlanOrderAliasModelInner>
+        beginCreate(String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body, Context context);
 
     /**
      * Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851.
-     *
+     * 
      * @param savingsPlanOrderAliasName Name of the savings plan order alias.
      * @param body Request body for creating a savings plan order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +60,7 @@ public interface SavingsPlanOrderAliasClient {
 
     /**
      * Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851.
-     *
+     * 
      * @param savingsPlanOrderAliasName Name of the savings plan order alias.
      * @param body Request body for creating a savings plan order alias.
      * @param context The context to associate with this operation.
@@ -68,12 +70,12 @@ public interface SavingsPlanOrderAliasClient {
      * @return savings plan order alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SavingsPlanOrderAliasModelInner create(
-        String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body, Context context);
+    SavingsPlanOrderAliasModelInner create(String savingsPlanOrderAliasName, SavingsPlanOrderAliasModelInner body,
+        Context context);
 
     /**
      * Get a savings plan.
-     *
+     * 
      * @param savingsPlanOrderAliasName Name of the savings plan order alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,7 +88,7 @@ public interface SavingsPlanOrderAliasClient {
 
     /**
      * Get a savings plan.
-     *
+     * 
      * @param savingsPlanOrderAliasName Name of the savings plan order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

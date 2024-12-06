@@ -61,8 +61,8 @@ public final class ContentItemContractImpl
 
     private String updateIfMatch;
 
-    public ContentItemContractImpl withExistingContentType(
-        String resourceGroupName, String serviceName, String contentTypeId) {
+    public ContentItemContractImpl withExistingContentType(String resourceGroupName, String serviceName,
+        String contentTypeId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.contentTypeId = contentTypeId;
@@ -70,36 +70,20 @@ public final class ContentItemContractImpl
     }
 
     public ContentItemContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentItems()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    contentTypeId,
-                    contentItemId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentItems()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentItemContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentItems()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    contentTypeId,
-                    contentItemId,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentItems()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -116,67 +100,46 @@ public final class ContentItemContractImpl
     }
 
     public ContentItemContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentItems()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    contentTypeId,
-                    contentItemId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentItems()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentItemContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentItems()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    contentTypeId,
-                    contentItemId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentItems()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    ContentItemContractImpl(
-        ContentItemContractInner innerObject,
+    ContentItemContractImpl(ContentItemContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.contentTypeId = Utils.getValueFromIdByName(innerObject.id(), "contentTypes");
-        this.contentItemId = Utils.getValueFromIdByName(innerObject.id(), "contentItems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.contentTypeId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentTypes");
+        this.contentItemId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentItems");
     }
 
     public ContentItemContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentItems()
-                .getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentItems()
+            .getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContentItemContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContentItems()
-                .getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContentItems()
+            .getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, context)
+            .getValue();
         return this;
     }
 

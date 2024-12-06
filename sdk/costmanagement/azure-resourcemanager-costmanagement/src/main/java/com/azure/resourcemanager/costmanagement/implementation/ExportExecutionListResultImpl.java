@@ -17,8 +17,7 @@ public final class ExportExecutionListResultImpl implements ExportExecutionListR
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ExportExecutionListResultImpl(
-        ExportExecutionListResultInner innerObject,
+    ExportExecutionListResultImpl(ExportExecutionListResultInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class ExportExecutionListResultImpl implements ExportExecutionListR
     public List<ExportRun> value() {
         List<ExportRunInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ExportRunImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new ExportRunImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

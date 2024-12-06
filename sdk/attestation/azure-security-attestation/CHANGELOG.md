@@ -13,6 +13,24 @@
 
 ### Other Changes
 
+## 1.1.30 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+
+
+## 1.1.29 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+
 ## 1.1.28 (2024-09-27)
 
 ### Other Changes
