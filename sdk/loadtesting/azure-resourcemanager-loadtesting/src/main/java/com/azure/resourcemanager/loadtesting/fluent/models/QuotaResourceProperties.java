@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.loadtesting.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loadtesting.models.ResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Quota bucket resource properties. */
+/**
+ * Quota bucket resource properties.
+ */
 @Fluent
-public final class QuotaResourceProperties {
+public final class QuotaResourceProperties implements JsonSerializable<QuotaResourceProperties> {
     /*
      * Current quota limit of the quota bucket.
      */
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
      * Current quota usage of the quota bucket.
      */
-    @JsonProperty(value = "usage")
     private Integer usage;
 
     /*
      * Resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceState provisioningState;
 
-    /** Creates an instance of QuotaResourceProperties class. */
+    /**
+     * Creates an instance of QuotaResourceProperties class.
+     */
     public QuotaResourceProperties() {
     }
 
     /**
      * Get the limit property: Current quota limit of the quota bucket.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -44,7 +49,7 @@ public final class QuotaResourceProperties {
 
     /**
      * Set the limit property: Current quota limit of the quota bucket.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the QuotaResourceProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class QuotaResourceProperties {
 
     /**
      * Get the usage property: Current quota usage of the quota bucket.
-     *
+     * 
      * @return the usage value.
      */
     public Integer usage() {
@@ -64,7 +69,7 @@ public final class QuotaResourceProperties {
 
     /**
      * Set the usage property: Current quota usage of the quota bucket.
-     *
+     * 
      * @param usage the usage value to set.
      * @return the QuotaResourceProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class QuotaResourceProperties {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceState provisioningState() {
@@ -84,9 +89,51 @@ public final class QuotaResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeNumberField("usage", this.usage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaResourceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaResourceProperties.
+     */
+    public static QuotaResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaResourceProperties deserializedQuotaResourceProperties = new QuotaResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedQuotaResourceProperties.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("usage".equals(fieldName)) {
+                    deserializedQuotaResourceProperties.usage = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedQuotaResourceProperties.provisioningState
+                        = ResourceState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaResourceProperties;
+        });
     }
 }
