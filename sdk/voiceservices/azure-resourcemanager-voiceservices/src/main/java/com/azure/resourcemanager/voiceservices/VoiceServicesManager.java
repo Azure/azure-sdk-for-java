@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -40,7 +40,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to VoiceServicesManager. */
+/**
+ * Entry point to VoiceServicesManager.
+ */
 public final class VoiceServicesManager {
     private Operations operations;
 
@@ -64,7 +66,7 @@ public final class VoiceServicesManager {
 
     /**
      * Creates an instance of Voice Services service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Voice Services service API instance.
@@ -77,7 +79,7 @@ public final class VoiceServicesManager {
 
     /**
      * Creates an instance of Voice Services service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Voice Services service API instance.
@@ -90,14 +92,16 @@ public final class VoiceServicesManager {
 
     /**
      * Gets a Configurable instance that can be used to create VoiceServicesManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new VoiceServicesManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -169,8 +173,8 @@ public final class VoiceServicesManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -212,7 +216,7 @@ public final class VoiceServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.voiceservices")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -245,7 +249,7 @@ public final class VoiceServicesManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -260,7 +264,7 @@ public final class VoiceServicesManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -272,7 +276,7 @@ public final class VoiceServicesManager {
 
     /**
      * Gets the resource collection API of CommunicationsGateways. It manages CommunicationsGateway.
-     *
+     * 
      * @return Resource collection API of CommunicationsGateways.
      */
     public CommunicationsGateways communicationsGateways() {
@@ -285,7 +289,7 @@ public final class VoiceServicesManager {
 
     /**
      * Gets the resource collection API of NameAvailabilities.
-     *
+     * 
      * @return Resource collection API of NameAvailabilities.
      */
     public NameAvailabilities nameAvailabilities() {
@@ -297,7 +301,7 @@ public final class VoiceServicesManager {
 
     /**
      * Gets the resource collection API of TestLines. It manages TestLine.
-     *
+     * 
      * @return Resource collection API of TestLines.
      */
     public TestLines testLines() {
@@ -308,8 +312,10 @@ public final class VoiceServicesManager {
     }
 
     /**
-     * @return Wrapped service client MicrosoftVoiceServices providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client MicrosoftVoiceServices providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client MicrosoftVoiceServices.
      */
     public MicrosoftVoiceServices serviceClient() {
         return this.clientObject;

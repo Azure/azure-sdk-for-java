@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunicationsGatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunicationsGatewaysClient.
+ */
 public final class CommunicationsGatewaysClientImpl implements CommunicationsGatewaysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CommunicationsGatewaysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftVoiceServicesImpl client;
 
     /**
      * Initializes an instance of CommunicationsGatewaysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CommunicationsGatewaysClientImpl(MicrosoftVoiceServicesImpl client) {
@@ -144,11 +150,11 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listSinglePageAsync() {
@@ -171,13 +177,13 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listSinglePageAsync(Context context) {
@@ -200,7 +206,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation as paginated response with {@link PagedFlux}.
@@ -213,7 +219,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,7 +234,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation as paginated response with {@link PagedIterable}.
@@ -240,7 +246,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,13 +260,13 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>>
@@ -288,14 +294,14 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -323,7 +329,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,7 +344,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,7 +360,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -368,7 +374,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * List CommunicationsGateway resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,7 +389,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -419,7 +425,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -455,7 +461,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,7 +478,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -489,7 +495,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -504,7 +510,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -547,7 +553,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -589,7 +595,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -610,7 +616,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -633,7 +639,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -650,7 +656,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -670,7 +676,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -688,7 +694,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -707,7 +713,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -724,7 +730,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Create a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param resource Resource create parameters.
@@ -742,7 +748,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -778,7 +784,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -814,7 +820,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -832,7 +838,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -853,7 +859,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -868,7 +874,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -885,7 +891,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -901,7 +907,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -918,7 +924,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -932,7 +938,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Delete a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param context The context to associate with this operation.
@@ -947,7 +953,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -988,7 +994,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -1030,7 +1036,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -1048,7 +1054,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -1066,7 +1072,7 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Update a CommunicationsGateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationsGatewayName Unique identifier for this deployment.
      * @param properties The resource properties to be updated.
@@ -1083,14 +1089,13 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1112,15 +1117,14 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1141,14 +1145,13 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1170,15 +1173,14 @@ public final class CommunicationsGatewaysClientImpl implements CommunicationsGat
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CommunicationsGateway list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationsGatewayInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
