@@ -51,7 +51,7 @@ stages:
       BuildOptions: ${{ parameters.BuildOptions }}
       EnvVars: ${{ parameters.EnvVars }}
       TestGoals: "clean verify"
-      TestOptions: '${{ parameters.TestOptions }} -Dit.test=${{ TestClassPackages }}'
+      TestOptions: '${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPackages }}'
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       PreGenerationSteps:
         - script: |
