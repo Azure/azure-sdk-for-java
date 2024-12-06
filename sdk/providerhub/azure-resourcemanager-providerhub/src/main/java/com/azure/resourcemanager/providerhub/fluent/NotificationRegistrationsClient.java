@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.NotificationRegistrationInner;
 
-/** An instance of this class provides access to all the operations defined in NotificationRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationRegistrationsClient.
+ */
 public interface NotificationRegistrationsClient {
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -30,7 +32,7 @@ public interface NotificationRegistrationsClient {
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface NotificationRegistrationsClient {
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
@@ -59,7 +61,7 @@ public interface NotificationRegistrationsClient {
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
@@ -74,7 +76,7 @@ public interface NotificationRegistrationsClient {
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -88,7 +90,7 @@ public interface NotificationRegistrationsClient {
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,27 +102,27 @@ public interface NotificationRegistrationsClient {
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NotificationRegistrationInner> listByProviderRegistration(String providerNamespace);
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NotificationRegistrationInner> listByProviderRegistration(String providerNamespace, Context context);

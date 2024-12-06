@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Level of insight. */
+/**
+ * Level of insight.
+ */
 public final class LevelValues extends ExpandableStringEnum<LevelValues> {
-    /** Static value Critical for LevelValues. */
+    /**
+     * Static value Critical for LevelValues.
+     */
     public static final LevelValues CRITICAL = fromString("Critical");
 
-    /** Static value Warning for LevelValues. */
+    /**
+     * Static value Warning for LevelValues.
+     */
     public static final LevelValues WARNING = fromString("Warning");
 
     /**
      * Creates a new instance of LevelValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class LevelValues extends ExpandableStringEnum<LevelValues> {
 
     /**
      * Creates or finds a LevelValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LevelValues.
      */
-    @JsonCreator
     public static LevelValues fromString(String name) {
         return fromString(name, LevelValues.class);
     }
 
     /**
      * Gets known LevelValues values.
-     *
+     * 
      * @return known LevelValues values.
      */
     public static Collection<LevelValues> values() {

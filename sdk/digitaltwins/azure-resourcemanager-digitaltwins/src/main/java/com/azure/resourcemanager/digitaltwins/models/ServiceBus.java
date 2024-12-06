@@ -5,47 +5,73 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties related to ServiceBus. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("ServiceBus")
+/**
+ * Properties related to ServiceBus.
+ */
 @Fluent
 public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /*
+     * The type of Digital Twins endpoint
+     */
+    private EndpointType endpointType = EndpointType.SERVICE_BUS;
+
+    /*
      * PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
-    @JsonProperty(value = "primaryConnectionString")
     private String primaryConnectionString;
 
     /*
      * SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
-    @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
     /*
      * The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'.
      */
-    @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
      * The ServiceBus Topic name for identity-based authentication.
      */
-    @JsonProperty(value = "entityPath")
     private String entityPath;
 
-    /** Creates an instance of ServiceBus class. */
+    /*
+     * Time when the Endpoint was added to DigitalTwinsInstance.
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * The provisioning state.
+     */
+    private EndpointProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of ServiceBus class.
+     */
     public ServiceBus() {
+    }
+
+    /**
+     * Get the endpointType property: The type of Digital Twins endpoint.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**
      * Get the primaryConnectionString property: PrimaryConnectionString of the endpoint for key-based authentication.
      * Will be obfuscated during read.
-     *
+     * 
      * @return the primaryConnectionString value.
      */
     public String primaryConnectionString() {
@@ -55,7 +81,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /**
      * Set the primaryConnectionString property: PrimaryConnectionString of the endpoint for key-based authentication.
      * Will be obfuscated during read.
-     *
+     * 
      * @param primaryConnectionString the primaryConnectionString value to set.
      * @return the ServiceBus object itself.
      */
@@ -67,7 +93,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /**
      * Get the secondaryConnectionString property: SecondaryConnectionString of the endpoint for key-based
      * authentication. Will be obfuscated during read.
-     *
+     * 
      * @return the secondaryConnectionString value.
      */
     public String secondaryConnectionString() {
@@ -77,7 +103,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /**
      * Set the secondaryConnectionString property: SecondaryConnectionString of the endpoint for key-based
      * authentication. Will be obfuscated during read.
-     *
+     * 
      * @param secondaryConnectionString the secondaryConnectionString value to set.
      * @return the ServiceBus object itself.
      */
@@ -89,7 +115,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /**
      * Get the endpointUri property: The URL of the ServiceBus namespace for identity-based authentication. It must
      * include the protocol 'sb://'.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -99,7 +125,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /**
      * Set the endpointUri property: The URL of the ServiceBus namespace for identity-based authentication. It must
      * include the protocol 'sb://'.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the ServiceBus object itself.
      */
@@ -110,7 +136,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the entityPath property: The ServiceBus Topic name for identity-based authentication.
-     *
+     * 
      * @return the entityPath value.
      */
     public String entityPath() {
@@ -119,7 +145,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the entityPath property: The ServiceBus Topic name for identity-based authentication.
-     *
+     * 
      * @param entityPath the entityPath value to set.
      * @return the ServiceBus object itself.
      */
@@ -128,28 +154,56 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the createdTime property: Time when the Endpoint was added to DigitalTwinsInstance.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime createdTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public EndpointProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBus withAuthenticationType(AuthenticationType authenticationType) {
         super.withAuthenticationType(authenticationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBus withDeadLetterSecret(String deadLetterSecret) {
         super.withDeadLetterSecret(deadLetterSecret);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBus withDeadLetterUri(String deadLetterUri) {
         super.withDeadLetterUri(deadLetterUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBus withIdentity(ManagedIdentityReference identity) {
         super.withIdentity(identity);
@@ -158,11 +212,79 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType",
+            authenticationType() == null ? null : authenticationType().toString());
+        jsonWriter.writeStringField("deadLetterSecret", deadLetterSecret());
+        jsonWriter.writeStringField("deadLetterUri", deadLetterUri());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("primaryConnectionString", this.primaryConnectionString);
+        jsonWriter.writeStringField("secondaryConnectionString", this.secondaryConnectionString);
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeStringField("entityPath", this.entityPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceBus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBus if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceBus.
+     */
+    public static ServiceBus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBus deserializedServiceBus = new ServiceBus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedServiceBus.provisioningState = EndpointProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedServiceBus.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedServiceBus.withAuthenticationType(AuthenticationType.fromString(reader.getString()));
+                } else if ("deadLetterSecret".equals(fieldName)) {
+                    deserializedServiceBus.withDeadLetterSecret(reader.getString());
+                } else if ("deadLetterUri".equals(fieldName)) {
+                    deserializedServiceBus.withDeadLetterUri(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedServiceBus.withIdentity(ManagedIdentityReference.fromJson(reader));
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedServiceBus.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("primaryConnectionString".equals(fieldName)) {
+                    deserializedServiceBus.primaryConnectionString = reader.getString();
+                } else if ("secondaryConnectionString".equals(fieldName)) {
+                    deserializedServiceBus.secondaryConnectionString = reader.getString();
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedServiceBus.endpointUri = reader.getString();
+                } else if ("entityPath".equals(fieldName)) {
+                    deserializedServiceBus.entityPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceBus;
+        });
     }
 }

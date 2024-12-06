@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceTypeExtensionOptions model. */
+/**
+ * The ResourceTypeExtensionOptions model.
+ */
 @Fluent
-public class ResourceTypeExtensionOptions {
+public class ResourceTypeExtensionOptions implements JsonSerializable<ResourceTypeExtensionOptions> {
     /*
      * The resourceCreationBegin property.
      */
-    @JsonProperty(value = "resourceCreationBegin")
     private ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin;
 
-    /** Creates an instance of ResourceTypeExtensionOptions class. */
+    /**
+     * Creates an instance of ResourceTypeExtensionOptions class.
+     */
     public ResourceTypeExtensionOptions() {
     }
 
     /**
      * Get the resourceCreationBegin property: The resourceCreationBegin property.
-     *
+     * 
      * @return the resourceCreationBegin value.
      */
     public ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin() {
@@ -31,7 +38,7 @@ public class ResourceTypeExtensionOptions {
 
     /**
      * Set the resourceCreationBegin property: The resourceCreationBegin property.
-     *
+     * 
      * @param resourceCreationBegin the resourceCreationBegin value to set.
      * @return the ResourceTypeExtensionOptions object itself.
      */
@@ -43,12 +50,49 @@ public class ResourceTypeExtensionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceCreationBegin() != null) {
             resourceCreationBegin().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceCreationBegin", this.resourceCreationBegin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeExtensionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeExtensionOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeExtensionOptions.
+     */
+    public static ResourceTypeExtensionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeExtensionOptions deserializedResourceTypeExtensionOptions = new ResourceTypeExtensionOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceCreationBegin".equals(fieldName)) {
+                    deserializedResourceTypeExtensionOptions.resourceCreationBegin
+                        = ResourceTypeExtensionOptionsResourceCreationBegin.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeExtensionOptions;
+        });
     }
 }

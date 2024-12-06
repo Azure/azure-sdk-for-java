@@ -6,47 +6,29 @@ package com.azure.resourcemanager.digitaltwins.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
+import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DigitalTwinsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-04-27T01:09:59Z\",\"lastUpdatedTime\":\"2021-06-10T13:25:17Z\",\"provisioningState\":\"Failed\",\"hostName\":\"twrupqsxvnm\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"eil\",\"tenantId\":\"notyfjfcnjbkcn\",\"userAssignedIdentities\":{}},\"location\":\"ttkphywpnvjtoqne\",\"tags\":{\"oxuscrpabgyepsbj\":\"lfplp\"},\"id\":\"azqugxywpmueefj\",\"name\":\"wfqkquj\",\"type\":\"dsuyonobgla\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2020-12-27T06:38:54Z\",\"lastUpdatedTime\":\"2021-01-10T15:16:49Z\",\"provisioningState\":\"Canceled\",\"hostName\":\"xobbcswsrt\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Disconnected\",\"privateEndpoint\":{},\"groupIds\":[\"bewtghfg\",\"lcgwxzvlvqh\",\"kbegibt\",\"mxiebw\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"oayqc\"}},\"id\":\"rtzju\",\"name\":\"gwyzm\",\"type\":\"txon\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"groupIds\":[\"jcbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"cnojvknmefqsg\"}},\"id\":\"ah\",\"name\":\"pjyzhpv\",\"type\":\"qzcjrvxdj\"},{\"properties\":{\"provisioningState\":\"Approved\",\"privateEndpoint\":{},\"groupIds\":[\"kvugfhzovawjvzun\",\"uthnnprnxipeilpj\",\"uaejxdultsk\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"tdzumveekgpw\"}},\"id\":\"uh\",\"name\":\"fpbsjyofdxl\",\"type\":\"us\"},{\"properties\":{\"provisioningState\":\"Rejected\",\"privateEndpoint\":{},\"groupIds\":[\"aboekqv\",\"elnsmvbxw\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"flhhcaal\"}},\"id\":\"ixisxyawjoy\",\"name\":\"qcslyjpkiid\",\"type\":\"yexz\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"rzt\",\"tenantId\":\"lhbnxkna\",\"userAssignedIdentities\":{\"pgylg\":{\"clientId\":\"ppg\",\"principalId\":\"tpnapnyiropuhpig\"},\"xgk\":{\"clientId\":\"itxmedjvcslynqww\",\"principalId\":\"wzz\"},\"oellwp\":{\"clientId\":\"mgucna\",\"principalId\":\"t\"},\"rhhuaopppcqeqx\":{\"clientId\":\"d\",\"principalId\":\"pfqbuaceopzf\"}}},\"location\":\"z\",\"tags\":{\"dmoizpostmg\":\"zxctobgb\",\"rmfqjhhkxbpvj\":\"cfbu\"},\"id\":\"mjh\",\"name\":\"xjyngudivk\",\"type\":\"tswb\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -54,9 +36,27 @@ public final class DigitalTwinsListMockTests {
 
         PagedIterable<DigitalTwinsDescription> response = manager.digitalTwins().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ttkphywpnvjtoqne", response.iterator().next().location());
-        Assertions.assertEquals("lfplp", response.iterator().next().tags().get("oxuscrpabgyepsbj"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("z", response.iterator().next().location());
+        Assertions.assertEquals("zxctobgb", response.iterator().next().tags().get("dmoizpostmg"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("bewtghfg",
+            response.iterator().next().privateEndpointConnections().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+            response.iterator()
+                .next()
+                .privateEndpointConnections()
+                .get(0)
+                .properties()
+                .privateLinkServiceConnectionState()
+                .status());
+        Assertions.assertEquals("oayqc",
+            response.iterator()
+                .next()
+                .privateEndpointConnections()
+                .get(0)
+                .properties()
+                .privateLinkServiceConnectionState()
+                .description());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
     }
 }

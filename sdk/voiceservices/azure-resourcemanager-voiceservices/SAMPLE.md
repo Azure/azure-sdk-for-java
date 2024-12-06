@@ -37,40 +37,37 @@ import com.azure.resourcemanager.voiceservices.models.ServiceRegionProperties;
 import com.azure.resourcemanager.voiceservices.models.TeamsCodecs;
 import java.util.Arrays;
 
-/** Samples for CommunicationsGateways CreateOrUpdate. */
+/**
+ * Samples for CommunicationsGateways CreateOrUpdate.
+ */
 public final class CommunicationsGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_CreateOrUpdate.json
      */
     /**
      * Sample code: CreateCommunicationsGatewayResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void createCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        manager
-            .communicationsGateways()
+    public static void
+        createCommunicationsGatewayResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+        manager.communicationsGateways()
             .define("myname")
             .withRegion("useast")
             .withExistingResourceGroup("testrg")
-            .withServiceLocations(
-                Arrays
-                    .asList(
-                        new ServiceRegionProperties()
-                            .withName("useast")
-                            .withPrimaryRegionProperties(
-                                new PrimaryRegionProperties()
-                                    .withOperatorAddresses(Arrays.asList("198.51.100.1"))
-                                    .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("10.1.1.0/24"))
-                                    .withAllowedMediaSourceAddressPrefixes(Arrays.asList("10.1.2.0/24"))),
-                        new ServiceRegionProperties()
-                            .withName("useast2")
-                            .withPrimaryRegionProperties(
-                                new PrimaryRegionProperties()
-                                    .withOperatorAddresses(Arrays.asList("198.51.100.2"))
-                                    .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("10.2.1.0/24"))
-                                    .withAllowedMediaSourceAddressPrefixes(Arrays.asList("10.2.2.0/24")))))
+            .withServiceLocations(Arrays.asList(
+                new ServiceRegionProperties().withName("useast")
+                    .withPrimaryRegionProperties(
+                        new PrimaryRegionProperties().withOperatorAddresses(Arrays.asList("198.51.100.1"))
+                            .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("10.1.1.0/24"))
+                            .withAllowedMediaSourceAddressPrefixes(Arrays.asList("10.1.2.0/24"))),
+                new ServiceRegionProperties().withName("useast2")
+                    .withPrimaryRegionProperties(
+                        new PrimaryRegionProperties().withOperatorAddresses(Arrays.asList("198.51.100.2"))
+                            .withAllowedSignalingSourceAddressPrefixes(Arrays.asList("10.2.1.0/24"))
+                            .withAllowedMediaSourceAddressPrefixes(Arrays.asList("10.2.2.0/24")))))
             .withConnectivity(Connectivity.PUBLIC_ADDRESS)
             .withCodecs(Arrays.asList(TeamsCodecs.PCMA))
             .withE911Type(E911Type.STANDARD)
@@ -85,18 +82,22 @@ public final class CommunicationsGatewaysCreateOrUpdateSamples {
 ### CommunicationsGateways_Delete
 
 ```java
-/** Samples for CommunicationsGateways Delete. */
+/**
+ * Samples for CommunicationsGateways Delete.
+ */
 public final class CommunicationsGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_Delete.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_Delete.json
      */
     /**
      * Sample code: DeleteCommunicationsGatewayResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void deleteCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+    public static void
+        deleteCommunicationsGatewayResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().delete("testrg", "myname", com.azure.core.util.Context.NONE);
     }
 }
@@ -105,20 +106,23 @@ public final class CommunicationsGatewaysDeleteSamples {
 ### CommunicationsGateways_GetByResourceGroup
 
 ```java
-/** Samples for CommunicationsGateways GetByResourceGroup. */
+/**
+ * Samples for CommunicationsGateways GetByResourceGroup.
+ */
 public final class CommunicationsGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_Get.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_Get.json
      */
     /**
      * Sample code: GetCommunicationsGatewayResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void getCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        manager
-            .communicationsGateways()
+    public static void
+        getCommunicationsGatewayResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+        manager.communicationsGateways()
             .getByResourceGroupWithResponse("testrg", "myname", com.azure.core.util.Context.NONE);
     }
 }
@@ -127,18 +131,22 @@ public final class CommunicationsGatewaysGetByResourceGroupSamples {
 ### CommunicationsGateways_List
 
 ```java
-/** Samples for CommunicationsGateways List. */
+/**
+ * Samples for CommunicationsGateways List.
+ */
 public final class CommunicationsGatewaysListSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_ListBySubscription.json
      */
     /**
      * Sample code: ListCommunicationsGatewayResourceSub.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void listCommunicationsGatewayResourceSub(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+    public static void
+        listCommunicationsGatewayResourceSub(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -147,18 +155,22 @@ public final class CommunicationsGatewaysListSamples {
 ### CommunicationsGateways_ListByResourceGroup
 
 ```java
-/** Samples for CommunicationsGateways ListByResourceGroup. */
+/**
+ * Samples for CommunicationsGateways ListByResourceGroup.
+ */
 public final class CommunicationsGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_ListByResourceGroup.json
      */
     /**
      * Sample code: ListCommunicationsGatewayResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void listCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+    public static void
+        listCommunicationsGatewayResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -169,23 +181,25 @@ public final class CommunicationsGatewaysListByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.voiceservices.models.CommunicationsGateway;
 
-/** Samples for CommunicationsGateways Update. */
+/**
+ * Samples for CommunicationsGateways Update.
+ */
 public final class CommunicationsGatewaysUpdateSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/CommunicationsGateways_Update.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * CommunicationsGateways_Update.json
      */
     /**
      * Sample code: UpdateCommunicationsGatewayResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void updateCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        CommunicationsGateway resource =
-            manager
-                .communicationsGateways()
-                .getByResourceGroupWithResponse("testrg", "myname", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateCommunicationsGatewayResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+        CommunicationsGateway resource = manager.communicationsGateways()
+            .getByResourceGroupWithResponse("testrg", "myname", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -196,26 +210,25 @@ public final class CommunicationsGatewaysUpdateSamples {
 ```java
 import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityRequest;
 
-/** Samples for NameAvailability CheckLocal. */
+/**
+ * Samples for NameAvailability CheckLocal.
+ */
 public final class NameAvailabilityCheckLocalSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/NameAvailability_CheckLocal.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * NameAvailability_CheckLocal.json
      */
     /**
      * Sample code: CheckLocalNameAvailability.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
-    public static void checkLocalNameAvailability(
-        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        manager
-            .nameAvailabilities()
-            .checkLocalWithResponse(
-                "useast",
-                new CheckNameAvailabilityRequest()
-                    .withName("myname")
-                    .withType("Microsoft.VoiceServices/CommunicationsGateways"),
-                com.azure.core.util.Context.NONE);
+    public static void
+        checkLocalNameAvailability(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
+        manager.nameAvailabilities()
+            .checkLocalWithResponse("useast", new CheckNameAvailabilityRequest().withName("myname")
+                .withType("Microsoft.VoiceServices/CommunicationsGateways"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -223,14 +236,18 @@ public final class NameAvailabilityCheckLocalSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/Operations_List.
+     * json
      */
     /**
      * Sample code: OperationsList.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void operationsList(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
@@ -244,19 +261,22 @@ public final class OperationsListSamples {
 ```java
 import com.azure.resourcemanager.voiceservices.models.TestLinePurpose;
 
-/** Samples for TestLines CreateOrUpdate. */
+/**
+ * Samples for TestLines CreateOrUpdate.
+ */
 public final class TestLinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * TestLines_CreateOrUpdate.json
      */
     /**
      * Sample code: CreateTestLineResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void createTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        manager
-            .testLines()
+        manager.testLines()
             .define("myline")
             .withRegion("useast")
             .withExistingCommunicationsGateway("testrg", "myname")
@@ -270,14 +290,18 @@ public final class TestLinesCreateOrUpdateSamples {
 ### TestLines_Delete
 
 ```java
-/** Samples for TestLines Delete. */
+/**
+ * Samples for TestLines Delete.
+ */
 public final class TestLinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Delete.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Delete.
+     * json
      */
     /**
      * Sample code: DeleteTestLineResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void deleteTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
@@ -289,14 +313,18 @@ public final class TestLinesDeleteSamples {
 ### TestLines_Get
 
 ```java
-/** Samples for TestLines Get. */
+/**
+ * Samples for TestLines Get.
+ */
 public final class TestLinesGetSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Get.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Get.
+     * json
      */
     /**
      * Sample code: GetTestLineResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void getTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
@@ -308,14 +336,18 @@ public final class TestLinesGetSamples {
 ### TestLines_ListByCommunicationsGateway
 
 ```java
-/** Samples for TestLines ListByCommunicationsGateway. */
+/**
+ * Samples for TestLines ListByCommunicationsGateway.
+ */
 public final class TestLinesListByCommunicationsGatewaySamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_ListByCommunicationsGateway.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/
+     * TestLines_ListByCommunicationsGateway.json
      */
     /**
      * Sample code: ListTestLineResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void listTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
@@ -329,22 +361,24 @@ public final class TestLinesListByCommunicationsGatewaySamples {
 ```java
 import com.azure.resourcemanager.voiceservices.models.TestLine;
 
-/** Samples for TestLines Update. */
+/**
+ * Samples for TestLines Update.
+ */
 public final class TestLinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Update.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Update.
+     * json
      */
     /**
      * Sample code: UpdateTestLineResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void updateTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
-        TestLine resource =
-            manager
-                .testLines()
-                .getWithResponse("testrg", "myname", "myline", com.azure.core.util.Context.NONE)
-                .getValue();
+        TestLine resource = manager.testLines()
+            .getWithResponse("testrg", "myname", "myline", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

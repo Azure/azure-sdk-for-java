@@ -5,88 +5,95 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the provider properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
-@JsonTypeName("SapHana")
+/**
+ * Gets or sets the provider properties.
+ */
 @Fluent
 public final class HanaDbProviderInstanceProperties extends ProviderSpecificProperties {
     /*
+     * The provider type. For example, the value can be SapHana.
+     */
+    private String providerType = "SapHana";
+
+    /*
      * Gets or sets the target virtual machine size.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * Gets or sets the hana database name.
      */
-    @JsonProperty(value = "dbName")
     private String dbName;
 
     /*
      * Gets or sets the database sql port.
      */
-    @JsonProperty(value = "sqlPort")
     private String sqlPort;
 
     /*
      * Gets or sets the database instance number.
      */
-    @JsonProperty(value = "instanceNumber")
     private String instanceNumber;
 
     /*
      * Gets or sets the database user name.
      */
-    @JsonProperty(value = "dbUsername")
     private String dbUsername;
 
     /*
      * Gets or sets the database password.
      */
-    @JsonProperty(value = "dbPassword")
     private String dbPassword;
 
     /*
      * Gets or sets the key vault URI to secret with the database password.
      */
-    @JsonProperty(value = "dbPasswordUri")
     private String dbPasswordUri;
 
     /*
      * Gets or sets the blob URI to SSL certificate for the DB.
      */
-    @JsonProperty(value = "sslCertificateUri")
     private String sslCertificateUri;
 
     /*
      * Gets or sets the hostname(s) in the SSL certificate.
      */
-    @JsonProperty(value = "sslHostNameInCertificate")
     private String sslHostnameInCertificate;
 
     /*
      * Gets or sets certificate preference if secure communication is enabled.
      */
-    @JsonProperty(value = "sslPreference")
     private SslPreference sslPreference;
 
     /*
      * Gets or sets the SAP System Identifier.
      */
-    @JsonProperty(value = "sapSid")
     private String sapSid;
 
-    /** Creates an instance of HanaDbProviderInstanceProperties class. */
+    /**
+     * Creates an instance of HanaDbProviderInstanceProperties class.
+     */
     public HanaDbProviderInstanceProperties() {
     }
 
     /**
+     * Get the providerType property: The provider type. For example, the value can be SapHana.
+     * 
+     * @return the providerType value.
+     */
+    @Override
+    public String providerType() {
+        return this.providerType;
+    }
+
+    /**
      * Get the hostname property: Gets or sets the target virtual machine size.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -95,7 +102,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the hostname property: Gets or sets the target virtual machine size.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -106,7 +113,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbName property: Gets or sets the hana database name.
-     *
+     * 
      * @return the dbName value.
      */
     public String dbName() {
@@ -115,7 +122,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbName property: Gets or sets the hana database name.
-     *
+     * 
      * @param dbName the dbName value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -126,7 +133,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the sqlPort property: Gets or sets the database sql port.
-     *
+     * 
      * @return the sqlPort value.
      */
     public String sqlPort() {
@@ -135,7 +142,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sqlPort property: Gets or sets the database sql port.
-     *
+     * 
      * @param sqlPort the sqlPort value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -146,7 +153,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the instanceNumber property: Gets or sets the database instance number.
-     *
+     * 
      * @return the instanceNumber value.
      */
     public String instanceNumber() {
@@ -155,7 +162,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the instanceNumber property: Gets or sets the database instance number.
-     *
+     * 
      * @param instanceNumber the instanceNumber value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -166,7 +173,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbUsername property: Gets or sets the database user name.
-     *
+     * 
      * @return the dbUsername value.
      */
     public String dbUsername() {
@@ -175,7 +182,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbUsername property: Gets or sets the database user name.
-     *
+     * 
      * @param dbUsername the dbUsername value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -186,7 +193,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbPassword property: Gets or sets the database password.
-     *
+     * 
      * @return the dbPassword value.
      */
     public String dbPassword() {
@@ -195,7 +202,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbPassword property: Gets or sets the database password.
-     *
+     * 
      * @param dbPassword the dbPassword value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -206,7 +213,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @return the dbPasswordUri value.
      */
     public String dbPasswordUri() {
@@ -215,7 +222,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @param dbPasswordUri the dbPasswordUri value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -226,7 +233,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
-     *
+     * 
      * @return the sslCertificateUri value.
      */
     public String sslCertificateUri() {
@@ -235,7 +242,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB.
-     *
+     * 
      * @param sslCertificateUri the sslCertificateUri value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -246,7 +253,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the sslHostnameInCertificate property: Gets or sets the hostname(s) in the SSL certificate.
-     *
+     * 
      * @return the sslHostnameInCertificate value.
      */
     public String sslHostnameInCertificate() {
@@ -255,7 +262,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sslHostnameInCertificate property: Gets or sets the hostname(s) in the SSL certificate.
-     *
+     * 
      * @param sslHostnameInCertificate the sslHostnameInCertificate value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -266,7 +273,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @return the sslPreference value.
      */
     public SslPreference sslPreference() {
@@ -275,7 +282,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
-     *
+     * 
      * @param sslPreference the sslPreference value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -286,7 +293,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @return the sapSid value.
      */
     public String sapSid() {
@@ -295,7 +302,7 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Set the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @param sapSid the sapSid value to set.
      * @return the HanaDbProviderInstanceProperties object itself.
      */
@@ -306,11 +313,81 @@ public final class HanaDbProviderInstanceProperties extends ProviderSpecificProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerType", this.providerType);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("dbName", this.dbName);
+        jsonWriter.writeStringField("sqlPort", this.sqlPort);
+        jsonWriter.writeStringField("instanceNumber", this.instanceNumber);
+        jsonWriter.writeStringField("dbUsername", this.dbUsername);
+        jsonWriter.writeStringField("dbPassword", this.dbPassword);
+        jsonWriter.writeStringField("dbPasswordUri", this.dbPasswordUri);
+        jsonWriter.writeStringField("sslCertificateUri", this.sslCertificateUri);
+        jsonWriter.writeStringField("sslHostNameInCertificate", this.sslHostnameInCertificate);
+        jsonWriter.writeStringField("sslPreference", this.sslPreference == null ? null : this.sslPreference.toString());
+        jsonWriter.writeStringField("sapSid", this.sapSid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HanaDbProviderInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HanaDbProviderInstanceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HanaDbProviderInstanceProperties.
+     */
+    public static HanaDbProviderInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HanaDbProviderInstanceProperties deserializedHanaDbProviderInstanceProperties
+                = new HanaDbProviderInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerType".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.providerType = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.hostname = reader.getString();
+                } else if ("dbName".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.dbName = reader.getString();
+                } else if ("sqlPort".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.sqlPort = reader.getString();
+                } else if ("instanceNumber".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.instanceNumber = reader.getString();
+                } else if ("dbUsername".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.dbUsername = reader.getString();
+                } else if ("dbPassword".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.dbPassword = reader.getString();
+                } else if ("dbPasswordUri".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.dbPasswordUri = reader.getString();
+                } else if ("sslCertificateUri".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.sslCertificateUri = reader.getString();
+                } else if ("sslHostNameInCertificate".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.sslHostnameInCertificate = reader.getString();
+                } else if ("sslPreference".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.sslPreference
+                        = SslPreference.fromString(reader.getString());
+                } else if ("sapSid".equals(fieldName)) {
+                    deserializedHanaDbProviderInstanceProperties.sapSid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHanaDbProviderInstanceProperties;
+        });
     }
 }

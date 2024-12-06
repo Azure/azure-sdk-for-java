@@ -6,43 +6,47 @@ package com.azure.resourcemanager.voiceservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The configuration used in this region as primary, and other regions as backup. */
+/**
+ * The configuration used in this region as primary, and other regions as backup.
+ */
 @Fluent
-public final class PrimaryRegionProperties {
+public final class PrimaryRegionProperties implements JsonSerializable<PrimaryRegionProperties> {
     /*
      * IP address to use to contact the operator network from this region
      */
-    @JsonProperty(value = "operatorAddresses", required = true)
     private List<String> operatorAddresses;
 
     /*
      * IP address to use to contact the ESRP from this region
      */
-    @JsonProperty(value = "esrpAddresses")
     private List<String> esrpAddresses;
 
     /*
      * The allowed source IP address or CIDR ranges for signaling
      */
-    @JsonProperty(value = "allowedSignalingSourceAddressPrefixes")
     private List<String> allowedSignalingSourceAddressPrefixes;
 
     /*
      * The allowed source IP address or CIDR ranges for media
      */
-    @JsonProperty(value = "allowedMediaSourceAddressPrefixes")
     private List<String> allowedMediaSourceAddressPrefixes;
 
-    /** Creates an instance of PrimaryRegionProperties class. */
+    /**
+     * Creates an instance of PrimaryRegionProperties class.
+     */
     public PrimaryRegionProperties() {
     }
 
     /**
      * Get the operatorAddresses property: IP address to use to contact the operator network from this region.
-     *
+     * 
      * @return the operatorAddresses value.
      */
     public List<String> operatorAddresses() {
@@ -51,7 +55,7 @@ public final class PrimaryRegionProperties {
 
     /**
      * Set the operatorAddresses property: IP address to use to contact the operator network from this region.
-     *
+     * 
      * @param operatorAddresses the operatorAddresses value to set.
      * @return the PrimaryRegionProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class PrimaryRegionProperties {
 
     /**
      * Get the esrpAddresses property: IP address to use to contact the ESRP from this region.
-     *
+     * 
      * @return the esrpAddresses value.
      */
     public List<String> esrpAddresses() {
@@ -71,7 +75,7 @@ public final class PrimaryRegionProperties {
 
     /**
      * Set the esrpAddresses property: IP address to use to contact the ESRP from this region.
-     *
+     * 
      * @param esrpAddresses the esrpAddresses value to set.
      * @return the PrimaryRegionProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class PrimaryRegionProperties {
     /**
      * Get the allowedSignalingSourceAddressPrefixes property: The allowed source IP address or CIDR ranges for
      * signaling.
-     *
+     * 
      * @return the allowedSignalingSourceAddressPrefixes value.
      */
     public List<String> allowedSignalingSourceAddressPrefixes() {
@@ -93,7 +97,7 @@ public final class PrimaryRegionProperties {
     /**
      * Set the allowedSignalingSourceAddressPrefixes property: The allowed source IP address or CIDR ranges for
      * signaling.
-     *
+     * 
      * @param allowedSignalingSourceAddressPrefixes the allowedSignalingSourceAddressPrefixes value to set.
      * @return the PrimaryRegionProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class PrimaryRegionProperties {
 
     /**
      * Get the allowedMediaSourceAddressPrefixes property: The allowed source IP address or CIDR ranges for media.
-     *
+     * 
      * @return the allowedMediaSourceAddressPrefixes value.
      */
     public List<String> allowedMediaSourceAddressPrefixes() {
@@ -114,7 +118,7 @@ public final class PrimaryRegionProperties {
 
     /**
      * Set the allowedMediaSourceAddressPrefixes property: The allowed source IP address or CIDR ranges for media.
-     *
+     * 
      * @param allowedMediaSourceAddressPrefixes the allowedMediaSourceAddressPrefixes value to set.
      * @return the PrimaryRegionProperties object itself.
      */
@@ -126,15 +130,73 @@ public final class PrimaryRegionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operatorAddresses() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property operatorAddresses in model PrimaryRegionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operatorAddresses in model PrimaryRegionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrimaryRegionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("operatorAddresses", this.operatorAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("esrpAddresses", this.esrpAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedSignalingSourceAddressPrefixes", this.allowedSignalingSourceAddressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedMediaSourceAddressPrefixes", this.allowedMediaSourceAddressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrimaryRegionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrimaryRegionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrimaryRegionProperties.
+     */
+    public static PrimaryRegionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrimaryRegionProperties deserializedPrimaryRegionProperties = new PrimaryRegionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operatorAddresses".equals(fieldName)) {
+                    List<String> operatorAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrimaryRegionProperties.operatorAddresses = operatorAddresses;
+                } else if ("esrpAddresses".equals(fieldName)) {
+                    List<String> esrpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrimaryRegionProperties.esrpAddresses = esrpAddresses;
+                } else if ("allowedSignalingSourceAddressPrefixes".equals(fieldName)) {
+                    List<String> allowedSignalingSourceAddressPrefixes
+                        = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrimaryRegionProperties.allowedSignalingSourceAddressPrefixes
+                        = allowedSignalingSourceAddressPrefixes;
+                } else if ("allowedMediaSourceAddressPrefixes".equals(fieldName)) {
+                    List<String> allowedMediaSourceAddressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrimaryRegionProperties.allowedMediaSourceAddressPrefixes
+                        = allowedMediaSourceAddressPrefixes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrimaryRegionProperties;
+        });
+    }
 }

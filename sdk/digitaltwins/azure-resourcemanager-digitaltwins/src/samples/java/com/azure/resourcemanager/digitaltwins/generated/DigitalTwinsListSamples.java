@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-/** Samples for DigitalTwins List. */
+/**
+ * Samples for DigitalTwins List.
+ */
 public final class DigitalTwinsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsList_example.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsList_example.json
      */
     /**
      * Sample code: Get DigitalTwinsInstance resources by subscription.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
     public static void getDigitalTwinsInstanceResourcesBySubscription(

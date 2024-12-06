@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.CentralServerVmDetails;
 import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProperties;
 import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
@@ -15,103 +19,93 @@ import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the SAP Central Services Instance properties. */
+/**
+ * Defines the SAP Central Services Instance properties.
+ */
 @Fluent
-public final class SapCentralServerProperties {
+public final class SapCentralServerProperties implements JsonSerializable<SapCentralServerProperties> {
     /*
      * The central services instance number.
      */
-    @JsonProperty(value = "instanceNo", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceNo;
 
     /*
      * The central services instance subnet.
      */
-    @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private String subnet;
 
     /*
      * Defines the SAP Message Server properties.
      */
-    @JsonProperty(value = "messageServerProperties")
     private MessageServerProperties messageServerProperties;
 
     /*
      * Defines the SAP Enqueue Server properties.
      */
-    @JsonProperty(value = "enqueueServerProperties")
     private EnqueueServerProperties enqueueServerProperties;
 
     /*
      * Defines the SAP Gateway Server properties.
      */
-    @JsonProperty(value = "gatewayServerProperties")
     private GatewayServerProperties gatewayServerProperties;
 
     /*
      * Defines the SAP Enqueue Replication Server (ERS) properties.
      */
-    @JsonProperty(value = "enqueueReplicationServerProperties")
     private EnqueueReplicationServerProperties enqueueReplicationServerProperties;
 
     /*
      * The central services instance Kernel Version.
      */
-    @JsonProperty(value = "kernelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelVersion;
 
     /*
      * The central services instance Kernel Patch level.
      */
-    @JsonProperty(value = "kernelPatch", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelPatch;
 
     /*
      * The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual Machines
      */
-    @JsonProperty(value = "loadBalancerDetails", access = JsonProperty.Access.WRITE_ONLY)
     private LoadBalancerDetails loadBalancerDetails;
 
     /*
      * The list of virtual machines corresponding to the Central Services instance.
      */
-    @JsonProperty(value = "vmDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<CentralServerVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceStatus status;
 
     /*
      * Defines the health of SAP Instances.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Defines the errors related to SAP Central Services Instance resource.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceError errors;
 
-    /** Creates an instance of SapCentralServerProperties class. */
+    /**
+     * Creates an instance of SapCentralServerProperties class.
+     */
     public SapCentralServerProperties() {
     }
 
     /**
      * Get the instanceNo property: The central services instance number.
-     *
+     * 
      * @return the instanceNo value.
      */
     public String instanceNo() {
@@ -120,7 +114,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the subnet property: The central services instance subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -129,7 +123,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the messageServerProperties property: Defines the SAP Message Server properties.
-     *
+     * 
      * @return the messageServerProperties value.
      */
     public MessageServerProperties messageServerProperties() {
@@ -138,7 +132,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Set the messageServerProperties property: Defines the SAP Message Server properties.
-     *
+     * 
      * @param messageServerProperties the messageServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -149,7 +143,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
-     *
+     * 
      * @return the enqueueServerProperties value.
      */
     public EnqueueServerProperties enqueueServerProperties() {
@@ -158,7 +152,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Set the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
-     *
+     * 
      * @param enqueueServerProperties the enqueueServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -169,7 +163,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @return the gatewayServerProperties value.
      */
     public GatewayServerProperties gatewayServerProperties() {
@@ -178,7 +172,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Set the gatewayServerProperties property: Defines the SAP Gateway Server properties.
-     *
+     * 
      * @param gatewayServerProperties the gatewayServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -189,7 +183,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
-     *
+     * 
      * @return the enqueueReplicationServerProperties value.
      */
     public EnqueueReplicationServerProperties enqueueReplicationServerProperties() {
@@ -198,7 +192,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Set the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
-     *
+     * 
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
@@ -210,7 +204,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the kernelVersion property: The central services instance Kernel Version.
-     *
+     * 
      * @return the kernelVersion value.
      */
     public String kernelVersion() {
@@ -219,7 +213,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the kernelPatch property: The central services instance Kernel Patch level.
-     *
+     * 
      * @return the kernelPatch value.
      */
     public String kernelPatch() {
@@ -229,7 +223,7 @@ public final class SapCentralServerProperties {
     /**
      * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual
      * Machines.
-     *
+     * 
      * @return the loadBalancerDetails value.
      */
     public LoadBalancerDetails loadBalancerDetails() {
@@ -238,7 +232,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the vmDetails property: The list of virtual machines corresponding to the Central Services instance.
-     *
+     * 
      * @return the vmDetails value.
      */
     public List<CentralServerVmDetails> vmDetails() {
@@ -247,7 +241,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -256,7 +250,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -265,7 +259,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -274,7 +268,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Get the errors property: Defines the errors related to SAP Central Services Instance resource.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -283,7 +277,7 @@ public final class SapCentralServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -308,5 +302,78 @@ public final class SapCentralServerProperties {
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("messageServerProperties", this.messageServerProperties);
+        jsonWriter.writeJsonField("enqueueServerProperties", this.enqueueServerProperties);
+        jsonWriter.writeJsonField("gatewayServerProperties", this.gatewayServerProperties);
+        jsonWriter.writeJsonField("enqueueReplicationServerProperties", this.enqueueReplicationServerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapCentralServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapCentralServerProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapCentralServerProperties.
+     */
+    public static SapCentralServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapCentralServerProperties deserializedSapCentralServerProperties = new SapCentralServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceNo".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.instanceNo = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.subnet = reader.getString();
+                } else if ("messageServerProperties".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.messageServerProperties
+                        = MessageServerProperties.fromJson(reader);
+                } else if ("enqueueServerProperties".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.enqueueServerProperties
+                        = EnqueueServerProperties.fromJson(reader);
+                } else if ("gatewayServerProperties".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.gatewayServerProperties
+                        = GatewayServerProperties.fromJson(reader);
+                } else if ("enqueueReplicationServerProperties".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.enqueueReplicationServerProperties
+                        = EnqueueReplicationServerProperties.fromJson(reader);
+                } else if ("kernelVersion".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.kernelVersion = reader.getString();
+                } else if ("kernelPatch".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.kernelPatch = reader.getString();
+                } else if ("loadBalancerDetails".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.loadBalancerDetails = LoadBalancerDetails.fromJson(reader);
+                } else if ("vmDetails".equals(fieldName)) {
+                    List<CentralServerVmDetails> vmDetails
+                        = reader.readArray(reader1 -> CentralServerVmDetails.fromJson(reader1));
+                    deserializedSapCentralServerProperties.vmDetails = vmDetails;
+                } else if ("status".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.status
+                        = SapVirtualInstanceStatus.fromString(reader.getString());
+                } else if ("health".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.health = SapHealthState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.provisioningState
+                        = SapVirtualInstanceProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedSapCentralServerProperties.errors = SapVirtualInstanceError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapCentralServerProperties;
+        });
     }
 }

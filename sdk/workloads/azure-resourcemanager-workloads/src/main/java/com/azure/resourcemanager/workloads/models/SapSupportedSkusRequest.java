@@ -6,54 +6,56 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SAP request to get list of supported SKUs. */
+/**
+ * The SAP request to get list of supported SKUs.
+ */
 @Fluent
-public final class SapSupportedSkusRequest {
+public final class SapSupportedSkusRequest implements JsonSerializable<SapSupportedSkusRequest> {
     /*
      * The geo-location where the resource is to be created.
      */
-    @JsonProperty(value = "appLocation", required = true)
     private String appLocation;
 
     /*
      * Defines the environment type - Production/Non Production.
      */
-    @JsonProperty(value = "environment", required = true)
     private SapEnvironmentType environment;
 
     /*
      * Defines the SAP Product type.
      */
-    @JsonProperty(value = "sapProduct", required = true)
     private SapProductType sapProduct;
 
     /*
      * The deployment type. Eg: SingleServer/ThreeTier
      */
-    @JsonProperty(value = "deploymentType", required = true)
     private SapDeploymentType deploymentType;
 
     /*
      * The database type. Eg: HANA, DB2, etc
      */
-    @JsonProperty(value = "databaseType", required = true)
     private SapDatabaseType databaseType;
 
     /*
      * The high availability type.
      */
-    @JsonProperty(value = "highAvailabilityType")
     private SapHighAvailabilityType highAvailabilityType;
 
-    /** Creates an instance of SapSupportedSkusRequest class. */
+    /**
+     * Creates an instance of SapSupportedSkusRequest class.
+     */
     public SapSupportedSkusRequest() {
     }
 
     /**
      * Get the appLocation property: The geo-location where the resource is to be created.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -62,7 +64,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Set the appLocation property: The geo-location where the resource is to be created.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the SapSupportedSkusRequest object itself.
      */
@@ -73,7 +75,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Get the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @return the environment value.
      */
     public SapEnvironmentType environment() {
@@ -82,7 +84,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Set the environment property: Defines the environment type - Production/Non Production.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the SapSupportedSkusRequest object itself.
      */
@@ -93,7 +95,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -102,7 +104,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @param sapProduct the sapProduct value to set.
      * @return the SapSupportedSkusRequest object itself.
      */
@@ -113,7 +115,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Get the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
-     *
+     * 
      * @return the deploymentType value.
      */
     public SapDeploymentType deploymentType() {
@@ -122,7 +124,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Set the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the SapSupportedSkusRequest object itself.
      */
@@ -133,7 +135,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Get the databaseType property: The database type. Eg: HANA, DB2, etc.
-     *
+     * 
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -142,7 +144,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Set the databaseType property: The database type. Eg: HANA, DB2, etc.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SapSupportedSkusRequest object itself.
      */
@@ -153,7 +155,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Get the highAvailabilityType property: The high availability type.
-     *
+     * 
      * @return the highAvailabilityType value.
      */
     public SapHighAvailabilityType highAvailabilityType() {
@@ -162,7 +164,7 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Set the highAvailabilityType property: The high availability type.
-     *
+     * 
      * @param highAvailabilityType the highAvailabilityType value to set.
      * @return the SapSupportedSkusRequest object itself.
      */
@@ -173,31 +175,92 @@ public final class SapSupportedSkusRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property appLocation in model SapSupportedSkusRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appLocation in model SapSupportedSkusRequest"));
         }
         if (environment() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property environment in model SapSupportedSkusRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property environment in model SapSupportedSkusRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sapProduct in model SapSupportedSkusRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sapProduct in model SapSupportedSkusRequest"));
         }
         if (deploymentType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property deploymentType in model SapSupportedSkusRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deploymentType in model SapSupportedSkusRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property databaseType in model SapSupportedSkusRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseType in model SapSupportedSkusRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapSupportedSkusRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appLocation", this.appLocation);
+        jsonWriter.writeStringField("environment", this.environment == null ? null : this.environment.toString());
+        jsonWriter.writeStringField("sapProduct", this.sapProduct == null ? null : this.sapProduct.toString());
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
+        jsonWriter.writeStringField("highAvailabilityType",
+            this.highAvailabilityType == null ? null : this.highAvailabilityType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapSupportedSkusRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapSupportedSkusRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapSupportedSkusRequest.
+     */
+    public static SapSupportedSkusRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapSupportedSkusRequest deserializedSapSupportedSkusRequest = new SapSupportedSkusRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appLocation".equals(fieldName)) {
+                    deserializedSapSupportedSkusRequest.appLocation = reader.getString();
+                } else if ("environment".equals(fieldName)) {
+                    deserializedSapSupportedSkusRequest.environment = SapEnvironmentType.fromString(reader.getString());
+                } else if ("sapProduct".equals(fieldName)) {
+                    deserializedSapSupportedSkusRequest.sapProduct = SapProductType.fromString(reader.getString());
+                } else if ("deploymentType".equals(fieldName)) {
+                    deserializedSapSupportedSkusRequest.deploymentType
+                        = SapDeploymentType.fromString(reader.getString());
+                } else if ("databaseType".equals(fieldName)) {
+                    deserializedSapSupportedSkusRequest.databaseType = SapDatabaseType.fromString(reader.getString());
+                } else if ("highAvailabilityType".equals(fieldName)) {
+                    deserializedSapSupportedSkusRequest.highAvailabilityType
+                        = SapHighAvailabilityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapSupportedSkusRequest;
+        });
+    }
 }

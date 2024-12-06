@@ -9,7 +9,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class MigrationsGetSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_GetMigrationWithSuccessfulValidationOnly.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_GetMigrationWithSuccessfulValidationOnly.json
      */
     /**
      * Sample code: Migrations_GetMigrationWithSuccessfulValidationOnly.
@@ -24,7 +26,9 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Get.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Get.json
      */
     /**
      * Sample code: Migrations_Get.
@@ -38,7 +42,9 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.json
      */
     /**
      * Sample code: Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.
@@ -53,7 +59,9 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_GetMigrationWithSuccessfulValidationAndMigration.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_GetMigrationWithSuccessfulValidationAndMigration.json
      */
     /**
      * Sample code: Migrations_GetMigrationWithSuccessfulValidationAndMigration.
@@ -68,7 +76,9 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_GetMigrationWithValidationFailures.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_GetMigrationWithValidationFailures.json
      */
     /**
      * Sample code: Migrations_GetMigrationWithValidationFailures.

@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the SAP Enqueue Server properties. */
+/**
+ * Defines the SAP Enqueue Server properties.
+ */
 @Immutable
-public final class EnqueueServerProperties {
+public final class EnqueueServerProperties implements JsonSerializable<EnqueueServerProperties> {
     /*
      * Enqueue Server SAP Hostname.
      */
-    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * Enqueue Server SAP IP Address.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
      * Enqueue Server Port.
      */
-    @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Long port;
 
     /*
      * Defines the health of SAP Instances.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
-    /** Creates an instance of EnqueueServerProperties class. */
+    /**
+     * Creates an instance of EnqueueServerProperties class.
+     */
     public EnqueueServerProperties() {
     }
 
     /**
      * Get the hostname property: Enqueue Server SAP Hostname.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -49,7 +53,7 @@ public final class EnqueueServerProperties {
 
     /**
      * Get the ipAddress property: Enqueue Server SAP IP Address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -58,7 +62,7 @@ public final class EnqueueServerProperties {
 
     /**
      * Get the port property: Enqueue Server Port.
-     *
+     * 
      * @return the port value.
      */
     public Long port() {
@@ -67,7 +71,7 @@ public final class EnqueueServerProperties {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -76,9 +80,50 @@ public final class EnqueueServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnqueueServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnqueueServerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnqueueServerProperties.
+     */
+    public static EnqueueServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnqueueServerProperties deserializedEnqueueServerProperties = new EnqueueServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostname".equals(fieldName)) {
+                    deserializedEnqueueServerProperties.hostname = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedEnqueueServerProperties.ipAddress = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedEnqueueServerProperties.port = reader.getNullable(JsonReader::getLong);
+                } else if ("health".equals(fieldName)) {
+                    deserializedEnqueueServerProperties.health = SapHealthState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnqueueServerProperties;
+        });
     }
 }

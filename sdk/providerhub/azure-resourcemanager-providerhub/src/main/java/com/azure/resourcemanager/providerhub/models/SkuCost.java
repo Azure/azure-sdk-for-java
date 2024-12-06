@@ -6,36 +6,41 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SkuCost model. */
+/**
+ * The SkuCost model.
+ */
 @Fluent
-public final class SkuCost {
+public final class SkuCost implements JsonSerializable<SkuCost> {
     /*
      * The meterId property.
      */
-    @JsonProperty(value = "meterId", required = true)
     private String meterId;
 
     /*
      * The quantity property.
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * The extendedUnit property.
      */
-    @JsonProperty(value = "extendedUnit")
     private String extendedUnit;
 
-    /** Creates an instance of SkuCost class. */
+    /**
+     * Creates an instance of SkuCost class.
+     */
     public SkuCost() {
     }
 
     /**
      * Get the meterId property: The meterId property.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -44,7 +49,7 @@ public final class SkuCost {
 
     /**
      * Set the meterId property: The meterId property.
-     *
+     * 
      * @param meterId the meterId value to set.
      * @return the SkuCost object itself.
      */
@@ -55,7 +60,7 @@ public final class SkuCost {
 
     /**
      * Get the quantity property: The quantity property.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -64,7 +69,7 @@ public final class SkuCost {
 
     /**
      * Set the quantity property: The quantity property.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the SkuCost object itself.
      */
@@ -75,7 +80,7 @@ public final class SkuCost {
 
     /**
      * Get the extendedUnit property: The extendedUnit property.
-     *
+     * 
      * @return the extendedUnit value.
      */
     public String extendedUnit() {
@@ -84,7 +89,7 @@ public final class SkuCost {
 
     /**
      * Set the extendedUnit property: The extendedUnit property.
-     *
+     * 
      * @param extendedUnit the extendedUnit value to set.
      * @return the SkuCost object itself.
      */
@@ -95,15 +100,58 @@ public final class SkuCost {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (meterId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property meterId in model SkuCost"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property meterId in model SkuCost"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuCost.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("meterId", this.meterId);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeStringField("extendedUnit", this.extendedUnit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCost from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCost if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuCost.
+     */
+    public static SkuCost fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCost deserializedSkuCost = new SkuCost();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("meterId".equals(fieldName)) {
+                    deserializedSkuCost.meterId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedSkuCost.quantity = reader.getNullable(JsonReader::getInt);
+                } else if ("extendedUnit".equals(fieldName)) {
+                    deserializedSkuCost.extendedUnit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCost;
+        });
+    }
 }

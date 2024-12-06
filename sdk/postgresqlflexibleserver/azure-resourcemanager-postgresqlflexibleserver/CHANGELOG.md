@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,60 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.4 (2024-12-06)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2023-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.StorageTierCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `reason()` was added
+* `status()` was added
+
+#### `models.StorageMbCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.ServerVersionCapability` was modified
+
+* `reason()` was added
+* `status()` was added
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.ServerSkuCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `status()` was added
+* `reason()` was added
 
 ## 1.1.0-beta.3 (2024-04-18)
 

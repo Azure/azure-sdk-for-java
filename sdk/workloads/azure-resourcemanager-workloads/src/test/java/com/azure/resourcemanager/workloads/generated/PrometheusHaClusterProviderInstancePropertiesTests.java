@@ -13,31 +13,31 @@ public final class PrometheusHaClusterProviderInstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrometheusHaClusterProviderInstanceProperties model = BinaryData.fromString(
-            "{\"providerType\":\"PrometheusHaCluster\",\"prometheusUrl\":\"x\",\"hostname\":\"czheyd\",\"sid\":\"dshmkxmaehvbbx\",\"clusterName\":\"iplt\",\"sslPreference\":\"ServerCertificate\",\"sslCertificateUri\":\"baxk\"}")
+            "{\"providerType\":\"PrometheusHaCluster\",\"prometheusUrl\":\"opqgikyzirtxdyux\",\"hostname\":\"jntpsewgioilqu\",\"sid\":\"ydxtqm\",\"clusterName\":\"ox\",\"sslPreference\":\"ServerCertificate\",\"sslCertificateUri\":\"ufhyaomtbgh\"}")
             .toObject(PrometheusHaClusterProviderInstanceProperties.class);
-        Assertions.assertEquals("x", model.prometheusUrl());
-        Assertions.assertEquals("czheyd", model.hostname());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.sid());
-        Assertions.assertEquals("iplt", model.clusterName());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.prometheusUrl());
+        Assertions.assertEquals("jntpsewgioilqu", model.hostname());
+        Assertions.assertEquals("ydxtqm", model.sid());
+        Assertions.assertEquals("ox", model.clusterName());
         Assertions.assertEquals(SslPreference.SERVER_CERTIFICATE, model.sslPreference());
-        Assertions.assertEquals("baxk", model.sslCertificateUri());
+        Assertions.assertEquals("ufhyaomtbgh", model.sslCertificateUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrometheusHaClusterProviderInstanceProperties model
-            = new PrometheusHaClusterProviderInstanceProperties().withPrometheusUrl("x")
-                .withHostname("czheyd")
-                .withSid("dshmkxmaehvbbx")
-                .withClusterName("iplt")
+            = new PrometheusHaClusterProviderInstanceProperties().withPrometheusUrl("opqgikyzirtxdyux")
+                .withHostname("jntpsewgioilqu")
+                .withSid("ydxtqm")
+                .withClusterName("ox")
                 .withSslPreference(SslPreference.SERVER_CERTIFICATE)
-                .withSslCertificateUri("baxk");
+                .withSslCertificateUri("ufhyaomtbgh");
         model = BinaryData.fromObject(model).toObject(PrometheusHaClusterProviderInstanceProperties.class);
-        Assertions.assertEquals("x", model.prometheusUrl());
-        Assertions.assertEquals("czheyd", model.hostname());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.sid());
-        Assertions.assertEquals("iplt", model.clusterName());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.prometheusUrl());
+        Assertions.assertEquals("jntpsewgioilqu", model.hostname());
+        Assertions.assertEquals("ydxtqm", model.sid());
+        Assertions.assertEquals("ox", model.clusterName());
         Assertions.assertEquals(SslPreference.SERVER_CERTIFICATE, model.sslPreference());
-        Assertions.assertEquals("baxk", model.sslCertificateUri());
+        Assertions.assertEquals("ufhyaomtbgh", model.sslCertificateUri());
     }
 }

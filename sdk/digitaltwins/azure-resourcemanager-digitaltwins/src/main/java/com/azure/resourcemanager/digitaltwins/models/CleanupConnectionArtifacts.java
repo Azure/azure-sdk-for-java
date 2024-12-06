@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CleanupConnectionArtifacts. */
+/**
+ * Defines values for CleanupConnectionArtifacts.
+ */
 public final class CleanupConnectionArtifacts extends ExpandableStringEnum<CleanupConnectionArtifacts> {
-    /** Static value true for CleanupConnectionArtifacts. */
+    /**
+     * Static value true for CleanupConnectionArtifacts.
+     */
     public static final CleanupConnectionArtifacts TRUE = fromString("true");
 
-    /** Static value false for CleanupConnectionArtifacts. */
+    /**
+     * Static value false for CleanupConnectionArtifacts.
+     */
     public static final CleanupConnectionArtifacts FALSE = fromString("false");
 
     /**
      * Creates a new instance of CleanupConnectionArtifacts value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CleanupConnectionArtifacts extends ExpandableStringEnum<Clean
 
     /**
      * Creates or finds a CleanupConnectionArtifacts from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CleanupConnectionArtifacts.
      */
-    @JsonCreator
     public static CleanupConnectionArtifacts fromString(String name) {
         return fromString(name, CleanupConnectionArtifacts.class);
     }
 
     /**
      * Gets known CleanupConnectionArtifacts values.
-     *
+     * 
      * @return known CleanupConnectionArtifacts values.
      */
     public static Collection<CleanupConnectionArtifacts> values() {

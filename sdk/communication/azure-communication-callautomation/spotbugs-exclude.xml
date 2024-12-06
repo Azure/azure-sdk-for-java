@@ -31,6 +31,11 @@
       <Class name="com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal" />
+      <Class name="com.azure.communication.callautomation.implementation.models.MediaStreamingSubscription" />
+      <Class name="com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal" />
+      <Class name="com.azure.communication.callautomation.implementation.models.TranscriptionSubscription" />
+      <Class name="com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal" />
+      <Class name="com.azure.communication.callautomation.implementation.models.InterruptAudioAndAnnounceRequest" />
       <Class name="com.azure.communication.callautomation.models.AddParticipantEventResult" />
       <Class name="com.azure.communication.callautomation.models.AnswerCallEventResult" />
       <Class name="com.azure.communication.callautomation.models.CallConnectionProperties" />
@@ -56,6 +61,12 @@
       <Class name="com.azure.communication.callautomation.models.TransferCallToParticipantOptions" />
       <Class name="com.azure.communication.callautomation.models.events.ParticipantsUpdated" />
       <Class name="com.azure.communication.callautomation.models.streaming.transcription.TranscriptionData" />
+      <Class name="com.azure.communication.callautomation.models.AudioData" />
+      <Class name="com.azure.communication.callautomation.models.TranscriptionData" />
+      <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeOptions" />
+      <Class name="com.azure.communication.callautomation.models.MediaStreamingSubscription" />
+      <Class name="com.azure.communication.callautomation.models.TranscriptionSubscription" />
+      <Class name="com.azure.communication.callautomation.models.ConnectCallEventResult" />
     </Or>
   </Match>
   <Match>
@@ -78,6 +89,11 @@
       <Class name="com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal" />
+      <Class name="com.azure.communication.callautomation.implementation.models.MediaStreamingSubscription" />
+      <Class name="com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal" />
+      <Class name="com.azure.communication.callautomation.implementation.models.TranscriptionSubscription" />
+      <Class name="com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal" />
+      <Class name="com.azure.communication.callautomation.implementation.models.InterruptAudioAndAnnounceRequest" />
       <Class name="com.azure.communication.callautomation.models.CallInvite" />
       <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions" />
       <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions" />
@@ -94,6 +110,7 @@
       <Class name="com.azure.communication.callautomation.models.StartRecordingOptions" />
       <Class name="com.azure.communication.callautomation.models.TransferCallToParticipantOptions" />
       <Class name="com.azure.communication.callautomation.models.streaming.transcription.TranscriptionData" />
+      <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeOptions" />
     </Or>
   </Match>
   <Match>
@@ -101,12 +118,21 @@
     <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions" />
   </Match>
   <Match>
+    <Bug pattern="URF_UNREAD_FIELD" />
+    <Class name="com.azure.communication.callautomation.models.OutStreamingData" />
+  </Match>
+  <Match>
     <Bug pattern="UC_USELESS_OBJECT" />
     <Class name="com.azure.communication.callautomation.CallMediaAsync" />
   </Match>
   <Match>
     <Bug pattern="UUF_UNUSED_FIELD" />
-    <Class name="com.azure.communication.callautomation.models.DialogStateResult" />
+    <Or>
+      <Class name="com.azure.communication.callautomation.models.DialogStateResult" />
+      <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeOptions" />
+      <Class name="com.azure.communication.callautomation.models.OutStreamingData" />
+      <Class name="com.azure.communication.callautomation.models.events.CallTransferAccepted" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,68 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2024-12-06)
+
+- Azure Resource Manager AzureDigitalTwins client library for Java. This package contains Microsoft Azure SDK for AzureDigitalTwins Management SDK. Azure Digital Twins Client for managing DigitalTwinsInstance. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.ExternalResource` was modified
+
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+#### `models.EventGrid` was modified
+
+* `createdTime()` was added
+* `endpointType()` was added
+* `provisioningState()` was added
+
+#### `models.DigitalTwinsEndpointResourceProperties` was modified
+
+* `endpointType()` was added
+
+#### `models.DigitalTwinsResource` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.TimeSeriesDatabaseConnectionProperties` was modified
+
+* `connectionType()` was added
+
+#### `models.AzureDataExplorerConnectionProperties` was modified
+
+* `provisioningState()` was added
+* `connectionType()` was added
+
+#### `models.EventHub` was modified
+
+* `endpointType()` was added
+* `provisioningState()` was added
+* `createdTime()` was added
+
+#### `models.ServiceBus` was modified
+
+* `createdTime()` was added
+* `provisioningState()` was added
+* `endpointType()` was added
 
 ## 1.2.0 (2023-03-24)
 

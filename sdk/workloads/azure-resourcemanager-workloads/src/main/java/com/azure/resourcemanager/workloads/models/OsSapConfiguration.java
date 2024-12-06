@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the OS and SAP Configurations for Deployment. */
+/**
+ * Defines the OS and SAP Configurations for Deployment.
+ */
 @Fluent
-public final class OsSapConfiguration {
+public final class OsSapConfiguration implements JsonSerializable<OsSapConfiguration> {
     /*
      * The url and storage account ID where deployer VM packages are uploaded
      */
-    @JsonProperty(value = "deployerVmPackages")
     private DeployerVmPackages deployerVmPackages;
 
     /*
      * The FQDN to set for the SAP system
      */
-    @JsonProperty(value = "sapFqdn")
     private String sapFqdn;
 
-    /** Creates an instance of OsSapConfiguration class. */
+    /**
+     * Creates an instance of OsSapConfiguration class.
+     */
     public OsSapConfiguration() {
     }
 
     /**
      * Get the deployerVmPackages property: The url and storage account ID where deployer VM packages are uploaded.
-     *
+     * 
      * @return the deployerVmPackages value.
      */
     public DeployerVmPackages deployerVmPackages() {
@@ -37,7 +43,7 @@ public final class OsSapConfiguration {
 
     /**
      * Set the deployerVmPackages property: The url and storage account ID where deployer VM packages are uploaded.
-     *
+     * 
      * @param deployerVmPackages the deployerVmPackages value to set.
      * @return the OsSapConfiguration object itself.
      */
@@ -48,7 +54,7 @@ public final class OsSapConfiguration {
 
     /**
      * Get the sapFqdn property: The FQDN to set for the SAP system.
-     *
+     * 
      * @return the sapFqdn value.
      */
     public String sapFqdn() {
@@ -57,7 +63,7 @@ public final class OsSapConfiguration {
 
     /**
      * Set the sapFqdn property: The FQDN to set for the SAP system.
-     *
+     * 
      * @param sapFqdn the sapFqdn value to set.
      * @return the OsSapConfiguration object itself.
      */
@@ -68,12 +74,51 @@ public final class OsSapConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deployerVmPackages() != null) {
             deployerVmPackages().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deployerVmPackages", this.deployerVmPackages);
+        jsonWriter.writeStringField("sapFqdn", this.sapFqdn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OsSapConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OsSapConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OsSapConfiguration.
+     */
+    public static OsSapConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OsSapConfiguration deserializedOsSapConfiguration = new OsSapConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deployerVmPackages".equals(fieldName)) {
+                    deserializedOsSapConfiguration.deployerVmPackages = DeployerVmPackages.fromJson(reader);
+                } else if ("sapFqdn".equals(fieldName)) {
+                    deserializedOsSapConfiguration.sapFqdn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOsSapConfiguration;
+        });
     }
 }

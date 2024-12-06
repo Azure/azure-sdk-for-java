@@ -5,24 +5,36 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The CustomRolloutPropertiesStatus model. */
+/**
+ * The CustomRolloutPropertiesStatus model.
+ */
 @Fluent
 public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
-    /** Creates an instance of CustomRolloutPropertiesStatus class. */
+    /**
+     * Creates an instance of CustomRolloutPropertiesStatus class.
+     */
     public CustomRolloutPropertiesStatus() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomRolloutPropertiesStatus withCompletedRegions(List<String> completedRegions) {
         super.withCompletedRegions(completedRegions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomRolloutPropertiesStatus
         withFailedOrSkippedRegions(Map<String, ExtendedErrorInfo> failedOrSkippedRegions) {
@@ -32,11 +44,62 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (failedOrSkippedRegions() != null) {
+            failedOrSkippedRegions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("completedRegions", completedRegions(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("failedOrSkippedRegions", failedOrSkippedRegions(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomRolloutPropertiesStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomRolloutPropertiesStatus if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomRolloutPropertiesStatus.
+     */
+    public static CustomRolloutPropertiesStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomRolloutPropertiesStatus deserializedCustomRolloutPropertiesStatus
+                = new CustomRolloutPropertiesStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("completedRegions".equals(fieldName)) {
+                    List<String> completedRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomRolloutPropertiesStatus.withCompletedRegions(completedRegions);
+                } else if ("failedOrSkippedRegions".equals(fieldName)) {
+                    Map<String, ExtendedErrorInfo> failedOrSkippedRegions
+                        = reader.readMap(reader1 -> ExtendedErrorInfo.fromJson(reader1));
+                    deserializedCustomRolloutPropertiesStatus.withFailedOrSkippedRegions(failedOrSkippedRegions);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomRolloutPropertiesStatus;
+        });
     }
 }

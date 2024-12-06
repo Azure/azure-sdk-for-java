@@ -9,7 +9,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
 
 import java.util.List;
-import java.util.Map;
 
 public class Filter {
     public static final String CUSTOM_DIM_FIELDNAME_PREFIX = "CustomDimensions.";
@@ -81,34 +80,21 @@ public class Filter {
     }
 
     private static boolean checkAnyFieldFilter(FilterInfo filter, TelemetryColumns data) {
-
         List<String> values = data.getAllFieldValuesAsString();
         for (String value : values) {
             if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
                 return true;
             }
         }
-        Map<String, String> customDimensions = data.getCustomDimensions();
-        for (String value : customDimensions.values()) {
-            if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
-                return true;
-            }
-        }
-        return false;
+        return data.checkAllCustomDims(filter, data);
     }
 
     private static boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data) {
-        Map<String, String> customDimensions = data.getCustomDimensions();
         String fieldName = filter.getFieldName().replace(CUSTOM_DIM_FIELDNAME_PREFIX, "");
-        if (customDimensions.containsKey(fieldName)) {
-            String value = customDimensions.get(fieldName);
-            return stringCompare(value, filter.getComparand(), filter.getPredicate());
-        } else {
-            return false; // the asked for field is not present in the custom dimensions
-        }
+        return data.checkCustomDimFilter(filter, data, fieldName);
     }
 
-    private static boolean stringCompare(String fieldValue, String comparand, PredicateType predicate) {
+    public static boolean stringCompare(String fieldValue, String comparand, PredicateType predicate) {
         if (predicate.equals(PredicateType.EQUAL)) {
             return fieldValue != null && fieldValue.equals(comparand);
         } else if (predicate.equals(PredicateType.NOT_EQUAL)) {

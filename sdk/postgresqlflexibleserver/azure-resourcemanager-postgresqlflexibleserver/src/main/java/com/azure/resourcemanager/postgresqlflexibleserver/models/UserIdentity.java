@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a single user-assigned identity associated with the application.
  */
 @Fluent
-public final class UserIdentity {
+public final class UserIdentity implements JsonSerializable<UserIdentity> {
     /*
      * the object identifier of the Service Principal which this identity represents.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * the client identifier of the Service Principal which this identity represents.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /**
@@ -76,5 +78,44 @@ public final class UserIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserIdentity.
+     */
+    public static UserIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserIdentity deserializedUserIdentity = new UserIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedUserIdentity.principalId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedUserIdentity.clientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserIdentity;
+        });
     }
 }

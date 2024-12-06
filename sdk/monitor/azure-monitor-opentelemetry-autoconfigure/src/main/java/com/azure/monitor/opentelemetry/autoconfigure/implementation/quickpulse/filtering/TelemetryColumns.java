@@ -3,14 +3,17 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
+
 import java.util.List;
-import java.util.Map;
 
 public interface TelemetryColumns {
     <T> T getFieldValue(String fieldName, Class<T> type);
 
     List<String> getAllFieldValuesAsString();
 
-    Map<String, String> getCustomDimensions();
+    boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data);
+
+    boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName);
 
 }

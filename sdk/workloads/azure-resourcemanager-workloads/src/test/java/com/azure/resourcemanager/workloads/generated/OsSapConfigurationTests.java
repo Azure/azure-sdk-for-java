@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class OsSapConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OsSapConfiguration model = BinaryData.fromString(
-            "{\"deployerVmPackages\":{\"url\":\"scyhwz\",\"storageAccountId\":\"irujbz\"},\"sapFqdn\":\"mvzzbtdcqvp\"}")
+        OsSapConfiguration model = BinaryData
+            .fromString(
+                "{\"deployerVmPackages\":{\"url\":\"y\",\"storageAccountId\":\"c\"},\"sapFqdn\":\"upkvipmdsc\"}")
             .toObject(OsSapConfiguration.class);
-        Assertions.assertEquals("scyhwz", model.deployerVmPackages().url());
-        Assertions.assertEquals("irujbz", model.deployerVmPackages().storageAccountId());
-        Assertions.assertEquals("mvzzbtdcqvp", model.sapFqdn());
+        Assertions.assertEquals("y", model.deployerVmPackages().url());
+        Assertions.assertEquals("c", model.deployerVmPackages().storageAccountId());
+        Assertions.assertEquals("upkvipmdsc", model.sapFqdn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OsSapConfiguration model = new OsSapConfiguration()
-            .withDeployerVmPackages(new DeployerVmPackages().withUrl("scyhwz").withStorageAccountId("irujbz"))
-            .withSapFqdn("mvzzbtdcqvp");
+            .withDeployerVmPackages(new DeployerVmPackages().withUrl("y").withStorageAccountId("c"))
+            .withSapFqdn("upkvipmdsc");
         model = BinaryData.fromObject(model).toObject(OsSapConfiguration.class);
-        Assertions.assertEquals("scyhwz", model.deployerVmPackages().url());
-        Assertions.assertEquals("irujbz", model.deployerVmPackages().storageAccountId());
-        Assertions.assertEquals("mvzzbtdcqvp", model.sapFqdn());
+        Assertions.assertEquals("y", model.deployerVmPackages().url());
+        Assertions.assertEquals("c", model.deployerVmPackages().storageAccountId());
+        Assertions.assertEquals("upkvipmdsc", model.sapFqdn());
     }
 }
