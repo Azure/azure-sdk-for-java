@@ -2,7 +2,7 @@
 
 ## Deprecation Notice
 
-> Please note, this package has been deprecated and will no longer be maintained after May 2026. We encourage you to 
+> Please note, this package has been deprecated and will no longer be maintained. We encourage you to 
 > upgrade to the replacement package, `azure-ai-translation-document`, to continue receiving updates. 
 > Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
