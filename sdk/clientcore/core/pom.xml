@@ -185,20 +185,6 @@
       </plugin>
 
       <plugin>
-        <groupId>com.azure.tools</groupId>
-        <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
-        <configuration>
-          <additionalCodesnippets>
-            <additionalCodesnippet>
-              <root>src/test</root>
-              <glob>**/*.java</glob>
-            </additionalCodesnippet>
-          </additionalCodesnippets>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->

@@ -454,6 +454,12 @@
         <configuration>
           <skip>${codesnippet.skip}</skip>
           <readmeGlob>**/*.md</readmeGlob>
+          <additionalCodesnippets>
+            <additionalCodesnippet>
+              <root>src/test</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+          </additionalCodesnippets>
         </configuration>
         <executions>
           <execution>

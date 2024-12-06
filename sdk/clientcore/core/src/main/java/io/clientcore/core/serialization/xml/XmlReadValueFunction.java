@@ -6,13 +6,13 @@ package io.clientcore.core.serialization.xml;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(XmlReadValueCallback)}.
+ * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(XmlReadValueFunction)}.
  *
  * @param <T> Input type of the callback.
  * @param <R> Output type of the callback.
  */
 @FunctionalInterface
-public interface XmlReadValueCallback<T, R> {
+public interface XmlReadValueFunction<T, R> {
     /**
      * Applies the read callback to the {@code input}.
      *

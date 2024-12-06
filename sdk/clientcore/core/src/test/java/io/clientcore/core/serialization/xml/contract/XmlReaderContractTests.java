@@ -3,7 +3,7 @@
 
 package io.clientcore.core.serialization.xml.contract;
 
-import io.clientcore.core.serialization.xml.XmlReadValueCallback;
+import io.clientcore.core.serialization.xml.XmlReadValueFunction;
 import io.clientcore.core.serialization.xml.XmlReader;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -37,7 +37,7 @@ public abstract class XmlReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicElementOperationsSupplier")
-    public <T> void basicElementOperations(String xml, T expectedValue, XmlReadValueCallback<XmlReader, T> function)
+    public <T> void basicElementOperations(String xml, T expectedValue, XmlReadValueFunction<XmlReader, T> function)
         throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
@@ -105,7 +105,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryElementOperationsSupplier")
     public void binaryElementOperations(String xml, byte[] expectedValue,
-        XmlReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
+        XmlReadValueFunction<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -126,7 +126,7 @@ public abstract class XmlReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicAttributeOperationsSupplier")
-    public <T> void basicAttributeOperations(String xml, T expectedValue, XmlReadValueCallback<XmlReader, T> function)
+    public <T> void basicAttributeOperations(String xml, T expectedValue, XmlReadValueFunction<XmlReader, T> function)
         throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
@@ -268,7 +268,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryAttributeOperationsSupplier")
     public void binaryAttributeOperations(String xml, byte[] expectedValue,
-        XmlReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
+        XmlReadValueFunction<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -298,7 +298,7 @@ public abstract class XmlReaderContractTests {
                 createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))));
     }
 
-    private static <T> XmlReadValueCallback<XmlReader, T> createXmlConsumer(XmlReadValueCallback<XmlReader, T> func) {
+    private static <T> XmlReadValueFunction<XmlReader, T> createXmlConsumer(XmlReadValueFunction<XmlReader, T> func) {
         return func;
     }
 }
