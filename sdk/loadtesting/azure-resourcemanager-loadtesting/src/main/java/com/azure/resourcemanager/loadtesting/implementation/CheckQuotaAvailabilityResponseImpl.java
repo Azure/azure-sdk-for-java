@@ -23,16 +23,16 @@ public final class CheckQuotaAvailabilityResponseImpl implements CheckQuotaAvail
         return this.innerModel().id();
     }
 
-    public String name() {
-        return this.innerModel().name();
-    }
-
     public String type() {
         return this.innerModel().type();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public String name() {
+        return this.innerModel().name();
     }
 
     public Boolean isAvailable() {
