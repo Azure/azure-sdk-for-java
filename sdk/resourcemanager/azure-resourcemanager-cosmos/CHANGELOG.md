@@ -4,7 +4,7 @@
 
 ### Other Changes
 
-### Dependency Updates
+#### Dependency Updates
 
 - Updated `api-version` to `2024-12-01-preview`.
 
