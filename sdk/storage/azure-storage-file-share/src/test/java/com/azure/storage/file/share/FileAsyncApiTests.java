@@ -76,9 +76,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("deprecation")
 public class FileAsyncApiTests extends FileShareTestBase {
     private ShareFileAsyncClient primaryFileAsyncClient;
     private ShareAsyncClient shareAsyncClient;
@@ -99,8 +99,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
-        smbProperties
-            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
@@ -214,41 +213,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     /*
-     * Tests downloading a file using a default clientThatdoesn't have a HttpClient passed to it.
-     */
-    //    @LiveOnly
-    //    @ParameterizedTest
-    //    @ValueSource(longs = {
-    //        0, // empty file
-    //        20, // small file
-    //        16 * 1024 * 1024, // medium file in several chunks
-    //        8 * 1026 * 1024 + 10, // medium file not aligned to block
-    //        50 * Constants.MB // large file requiring multiple requests
-    //    })
-    //    public void downloadFileBufferCopy(long fileSize) throws IOException {
-    //        ShareServiceAsyncClient shareServiceAsyncClient = new ShareServiceClientBuilder()
-    //            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
-    //            .buildAsyncClient();
-    //
-    //        ShareFileAsyncClient fileClient = shareServiceAsyncClient.getShareAsyncClient(shareName)
-    //            .createFile(filePath, fileSize).block();
-    //
-    //        File file = FileShareTestHelper.getRandomFile((int) fileSize);
-    //        fileClient.uploadFromFile(file.toPath().toString()).block();
-    //        File outFile = new File(generatePathName() + ".txt");
-    //        if (outFile.exists()) {
-    //            assertTrue(outFile.delete());
-    //        }
-    //        fileClient.downloadToFile(outFile.toPath().toString()).block();
-    //        FileShareTestHelper.compareFiles(file, outFile, 0, fileSize);
-    //
-    //        // cleanup
-    //        shareServiceAsyncClient.deleteShare(shareName).block();
-    //        outFile.delete();
-    //        file.delete();
-    //    }
-
-    /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
     @LiveOnly
@@ -290,8 +254,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             }))
             .then(shareServiceAsyncClient.deleteShare(shareName))).verifyComplete();
 
-        new File(generatePathName() + ".txt").delete();
         file.delete();
+        outFile.delete();
     }
 
     @Test
@@ -817,7 +781,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier
             .create(uploadRangeMono.then(leaseIdMono)
                 .flatMap(leaseId -> client.uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset,
-                    primaryFileAsyncClient.getFileUrl().toString() + "?" + sasToken,
+                    primaryFileAsyncClient.getFileUrl() + "?" + sasToken,
                     new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
             .verifyError(ShareStorageException.class);
     }
@@ -904,9 +868,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
         PollerFlux<ShareFileCopyInfo, Void> poller
             = setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, null, null, null, false,
                 false, null, null, new ShareRequestConditions().setLeaseId(leaseId)));
-        StepVerifier.create(poller).assertNext(it -> {
-            assertNotNull(it.getValue().getCopyId());
-        }).expectComplete().verify(Duration.ofMinutes(1));
+        StepVerifier.create(poller)
+            .assertNext(it -> assertNotNull(it.getValue().getCopyId()))
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
@@ -947,8 +912,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                     .setIgnoreReadOnly(ignoreReadOnly)
                     .setArchiveAttribute(setArchiveAttribute)
                     .setPermissionCopyModeType(permissionType);
-
-                return primaryFileAsyncClient.beginCopy(sourceURL, options, null);
+                return setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null));
             }))
             .assertNext(it -> assertNotNull(it.getValue().getCopyId()))
             .expectComplete()
@@ -1706,9 +1670,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 return r.getValue().getProperties();
             });
 
-        StepVerifier.create(response).assertNext(r -> {
-            assertNotNull(r.getSmbProperties().getFilePermissionKey());
-        }).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(r -> assertNotNull(r.getSmbProperties().getFilePermissionKey()))
+            .verifyComplete();
     }
 
     @Test
