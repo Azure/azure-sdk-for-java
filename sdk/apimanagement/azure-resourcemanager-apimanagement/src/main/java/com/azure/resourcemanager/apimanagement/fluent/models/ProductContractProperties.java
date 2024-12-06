@@ -6,26 +6,32 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ProductEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Product profile. */
+/**
+ * Product profile.
+ */
 @Fluent
 public final class ProductContractProperties extends ProductEntityBaseParameters {
     /*
      * Product name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
-    /** Creates an instance of ProductContractProperties class. */
+    /**
+     * Creates an instance of ProductContractProperties class.
+     */
     public ProductContractProperties() {
     }
 
     /**
      * Get the displayName property: Product name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -34,7 +40,7 @@ public final class ProductContractProperties extends ProductEntityBaseParameters
 
     /**
      * Set the displayName property: Product name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProductContractProperties object itself.
      */
@@ -43,42 +49,54 @@ public final class ProductContractProperties extends ProductEntityBaseParameters
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductContractProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductContractProperties withTerms(String terms) {
         super.withTerms(terms);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductContractProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductContractProperties withApprovalRequired(Boolean approvalRequired) {
         super.withApprovalRequired(approvalRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductContractProperties withSubscriptionsLimit(Integer subscriptionsLimit) {
         super.withSubscriptionsLimit(subscriptionsLimit);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductContractProperties withState(ProductState state) {
         super.withState(state);
@@ -87,17 +105,75 @@ public final class ProductContractProperties extends ProductEntityBaseParameters
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property displayName in model ProductContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model ProductContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProductContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("terms", terms());
+        jsonWriter.writeBooleanField("subscriptionRequired", subscriptionRequired());
+        jsonWriter.writeBooleanField("approvalRequired", approvalRequired());
+        jsonWriter.writeNumberField("subscriptionsLimit", subscriptionsLimit());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductContractProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProductContractProperties.
+     */
+    public static ProductContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductContractProperties deserializedProductContractProperties = new ProductContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedProductContractProperties.withDescription(reader.getString());
+                } else if ("terms".equals(fieldName)) {
+                    deserializedProductContractProperties.withTerms(reader.getString());
+                } else if ("subscriptionRequired".equals(fieldName)) {
+                    deserializedProductContractProperties
+                        .withSubscriptionRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("approvalRequired".equals(fieldName)) {
+                    deserializedProductContractProperties
+                        .withApprovalRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subscriptionsLimit".equals(fieldName)) {
+                    deserializedProductContractProperties
+                        .withSubscriptionsLimit(reader.getNullable(JsonReader::getInt));
+                } else if ("state".equals(fieldName)) {
+                    deserializedProductContractProperties.withState(ProductState.fromString(reader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProductContractProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductContractProperties;
+        });
+    }
 }

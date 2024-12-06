@@ -6,17 +6,20 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * BackupRequestBase is the base for all backup request.
  */
 @Fluent
-public class BackupRequestBase {
+public class BackupRequestBase implements JsonSerializable<BackupRequestBase> {
     /*
      * Backup Settings
      */
-    @JsonProperty(value = "backupSettings", required = true)
     private BackupSettings backupSettings;
 
     /**
@@ -61,4 +64,41 @@ public class BackupRequestBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupRequestBase.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("backupSettings", this.backupSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupRequestBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupRequestBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupRequestBase.
+     */
+    public static BackupRequestBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupRequestBase deserializedBackupRequestBase = new BackupRequestBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupSettings".equals(fieldName)) {
+                    deserializedBackupRequestBase.backupSettings = BackupSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupRequestBase;
+        });
+    }
 }

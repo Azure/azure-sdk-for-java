@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class PartnerTopicActivationState extends ExpandableStringEnum<Part
      * @param name a name to look for.
      * @return the corresponding PartnerTopicActivationState.
      */
-    @JsonCreator
     public static PartnerTopicActivationState fromString(String name) {
         return fromString(name, PartnerTopicActivationState.class);
     }

@@ -7,42 +7,61 @@ package com.azure.resourcemanager.workloads.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.MonitorPropertiesErrors;
 import com.azure.resourcemanager.workloads.models.RoutingPreference;
 import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** SAP monitor info on Azure (ARM properties and SAP monitor properties). */
+/**
+ * SAP monitor info on Azure (ARM properties and SAP monitor properties).
+ */
 @Fluent
 public final class MonitorInner extends Resource {
     /*
      * [currently not in use] Managed service identity(user assigned identities)
      */
-    @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
 
     /*
      * SAP monitor properties
      */
-    @JsonProperty(value = "properties")
     private MonitorProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MonitorInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MonitorInner class.
+     */
     public MonitorInner() {
     }
 
     /**
      * Get the identity property: [currently not in use] Managed service identity(user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public UserAssignedServiceIdentity identity() {
@@ -51,7 +70,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Set the identity property: [currently not in use] Managed service identity(user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MonitorInner object itself.
      */
@@ -62,7 +81,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the innerProperties property: SAP monitor properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MonitorProperties innerProperties() {
@@ -71,21 +90,55 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MonitorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MonitorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -94,7 +147,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the provisioningState property: State of provisioning of the SAP monitor.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -103,7 +156,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the errors property: Defines the SAP monitor errors.
-     *
+     * 
      * @return the errors value.
      */
     public MonitorPropertiesErrors errors() {
@@ -113,7 +166,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
      * region should be same as the SAP monitoring region.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -123,7 +176,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
      * region should be same as the SAP monitoring region.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the MonitorInner object itself.
      */
@@ -138,7 +191,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
-     *
+     * 
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -148,7 +201,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
-     *
+     * 
      * @param routingPreference the routingPreference value to set.
      * @return the MonitorInner object itself.
      */
@@ -163,7 +216,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
      * SAP monitor. By default resources will be created which do not support zone redundancy.
-     *
+     * 
      * @return the zoneRedundancyPreference value.
      */
     public String zoneRedundancyPreference() {
@@ -173,7 +226,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
      * SAP monitor. By default resources will be created which do not support zone redundancy.
-     *
+     * 
      * @param zoneRedundancyPreference the zoneRedundancyPreference value to set.
      * @return the MonitorInner object itself.
      */
@@ -187,7 +240,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedRGConfiguration managedResourceGroupConfiguration() {
@@ -196,7 +249,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Set the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the MonitorInner object itself.
      */
@@ -212,7 +265,7 @@ public final class MonitorInner extends Resource {
     /**
      * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
-     *
+     * 
      * @return the logAnalyticsWorkspaceArmId value.
      */
     public String logAnalyticsWorkspaceArmId() {
@@ -222,7 +275,7 @@ public final class MonitorInner extends Resource {
     /**
      * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
-     *
+     * 
      * @param logAnalyticsWorkspaceArmId the logAnalyticsWorkspaceArmId value to set.
      * @return the MonitorInner object itself.
      */
@@ -236,7 +289,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the monitorSubnet property: The subnet which the SAP monitor will be deployed in.
-     *
+     * 
      * @return the monitorSubnet value.
      */
     public String monitorSubnet() {
@@ -245,7 +298,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Set the monitorSubnet property: The subnet which the SAP monitor will be deployed in.
-     *
+     * 
      * @param monitorSubnet the monitorSubnet value to set.
      * @return the MonitorInner object itself.
      */
@@ -259,7 +312,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the msiArmId property: The ARM ID of the MSI used for SAP monitoring.
-     *
+     * 
      * @return the msiArmId value.
      */
     public String msiArmId() {
@@ -268,7 +321,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Get the storageAccountArmId property: The ARM ID of the Storage account used for SAP monitoring.
-     *
+     * 
      * @return the storageAccountArmId value.
      */
     public String storageAccountArmId() {
@@ -277,7 +330,7 @@ public final class MonitorInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -287,5 +340,60 @@ public final class MonitorInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MonitorInner.
+     */
+    public static MonitorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorInner deserializedMonitorInner = new MonitorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMonitorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMonitorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMonitorInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMonitorInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMonitorInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMonitorInner.identity = UserAssignedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMonitorInner.innerProperties = MonitorProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMonitorInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorInner;
+        });
     }
 }

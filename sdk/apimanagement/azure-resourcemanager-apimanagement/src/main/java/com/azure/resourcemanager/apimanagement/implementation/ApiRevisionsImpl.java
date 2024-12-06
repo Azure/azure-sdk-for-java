@@ -29,14 +29,14 @@ public final class ApiRevisionsImpl implements ApiRevisions {
         String apiId) {
         PagedIterable<ApiRevisionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new ApiRevisionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiRevisionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiRevisionContract> listByService(String resourceGroupName, String serviceName, String apiId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<ApiRevisionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new ApiRevisionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiRevisionContractImpl(inner1, this.manager()));
     }
 
     private ApiRevisionsClient serviceClient() {

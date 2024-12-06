@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Notification Parameter contract. */
+/**
+ * Notification Parameter contract.
+ */
 @Fluent
-public final class RecipientsContractProperties {
+public final class RecipientsContractProperties implements JsonSerializable<RecipientsContractProperties> {
     /*
      * List of Emails subscribed for the notification.
      */
-    @JsonProperty(value = "emails")
     private List<String> emails;
 
     /*
      * List of Users subscribed for the notification.
      */
-    @JsonProperty(value = "users")
     private List<String> users;
 
-    /** Creates an instance of RecipientsContractProperties class. */
+    /**
+     * Creates an instance of RecipientsContractProperties class.
+     */
     public RecipientsContractProperties() {
     }
 
     /**
      * Get the emails property: List of Emails subscribed for the notification.
-     *
+     * 
      * @return the emails value.
      */
     public List<String> emails() {
@@ -38,7 +44,7 @@ public final class RecipientsContractProperties {
 
     /**
      * Set the emails property: List of Emails subscribed for the notification.
-     *
+     * 
      * @param emails the emails value to set.
      * @return the RecipientsContractProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class RecipientsContractProperties {
 
     /**
      * Get the users property: List of Users subscribed for the notification.
-     *
+     * 
      * @return the users value.
      */
     public List<String> users() {
@@ -58,7 +64,7 @@ public final class RecipientsContractProperties {
 
     /**
      * Set the users property: List of Users subscribed for the notification.
-     *
+     * 
      * @param users the users value to set.
      * @return the RecipientsContractProperties object itself.
      */
@@ -69,9 +75,50 @@ public final class RecipientsContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("emails", this.emails, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("users", this.users, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecipientsContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecipientsContractProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecipientsContractProperties.
+     */
+    public static RecipientsContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecipientsContractProperties deserializedRecipientsContractProperties = new RecipientsContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emails".equals(fieldName)) {
+                    List<String> emails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecipientsContractProperties.emails = emails;
+                } else if ("users".equals(fieldName)) {
+                    List<String> users = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecipientsContractProperties.users = users;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecipientsContractProperties;
+        });
     }
 }

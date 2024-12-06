@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ApiContactInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiCreateOrUpdatePropertiesWsdlSelector;
 import com.azure.resourcemanager.apimanagement.models.ApiLicenseInformation;
@@ -16,28 +20,27 @@ import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SoapApiType;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
 import com.azure.resourcemanager.apimanagement.models.TranslateRequiredQueryParametersConduct;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** API Create or Update Properties. */
+/**
+ * API Create or Update Properties.
+ */
 @Fluent
 public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     /*
      * Content value when Importing an API.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Format of the Content in which the API is getting imported.
      */
-    @JsonProperty(value = "format")
     private ContentFormat format;
 
     /*
      * Criteria to limit import of WSDL to a subset of the document.
      */
-    @JsonProperty(value = "wsdlSelector")
     private ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector;
 
     /*
@@ -47,23 +50,28 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      * * `websocket` creates websocket API
      * * `graphql` creates GraphQL API.
      */
-    @JsonProperty(value = "apiType")
     private SoapApiType soapApiType;
 
     /*
      * Strategy of translating required query parameters to template ones. By default has value 'template'. Possible
      * values: 'template', 'query'
      */
-    @JsonProperty(value = "translateRequiredQueryParameters")
     private TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct;
 
-    /** Creates an instance of ApiCreateOrUpdateProperties class. */
+    /*
+     * Indicates if API revision is accessible via the gateway.
+     */
+    private Boolean isOnline;
+
+    /**
+     * Creates an instance of ApiCreateOrUpdateProperties class.
+     */
     public ApiCreateOrUpdateProperties() {
     }
 
     /**
      * Get the value property: Content value when Importing an API.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -72,7 +80,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /**
      * Set the value property: Content value when Importing an API.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
      */
@@ -83,7 +91,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /**
      * Get the format property: Format of the Content in which the API is getting imported.
-     *
+     * 
      * @return the format value.
      */
     public ContentFormat format() {
@@ -92,7 +100,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /**
      * Set the format property: Format of the Content in which the API is getting imported.
-     *
+     * 
      * @param format the format value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
      */
@@ -103,7 +111,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /**
      * Get the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document.
-     *
+     * 
      * @return the wsdlSelector value.
      */
     public ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector() {
@@ -112,7 +120,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /**
      * Set the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document.
-     *
+     * 
      * @param wsdlSelector the wsdlSelector value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
      */
@@ -122,9 +130,12 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     }
 
     /**
-     * Get the soapApiType property: Type of API to create. * `http` creates a REST API * `soap` creates a SOAP
-     * pass-through API * `websocket` creates websocket API * `graphql` creates GraphQL API.
-     *
+     * Get the soapApiType property: Type of API to create.
+     * * `http` creates a REST API
+     * * `soap` creates a SOAP pass-through API
+     * * `websocket` creates websocket API
+     * * `graphql` creates GraphQL API.
+     * 
      * @return the soapApiType value.
      */
     public SoapApiType soapApiType() {
@@ -132,9 +143,12 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     }
 
     /**
-     * Set the soapApiType property: Type of API to create. * `http` creates a REST API * `soap` creates a SOAP
-     * pass-through API * `websocket` creates websocket API * `graphql` creates GraphQL API.
-     *
+     * Set the soapApiType property: Type of API to create.
+     * * `http` creates a REST API
+     * * `soap` creates a SOAP pass-through API
+     * * `websocket` creates websocket API
+     * * `graphql` creates GraphQL API.
+     * 
      * @param soapApiType the soapApiType value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
      */
@@ -146,7 +160,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     /**
      * Get the translateRequiredQueryParametersConduct property: Strategy of translating required query parameters to
      * template ones. By default has value 'template'. Possible values: 'template', 'query'.
-     *
+     * 
      * @return the translateRequiredQueryParametersConduct value.
      */
     public TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct() {
@@ -156,7 +170,7 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
     /**
      * Set the translateRequiredQueryParametersConduct property: Strategy of translating required query parameters to
      * template ones. By default has value 'template'. Possible values: 'template', 'query'.
-     *
+     * 
      * @param translateRequiredQueryParametersConduct the translateRequiredQueryParametersConduct value to set.
      * @return the ApiCreateOrUpdateProperties object itself.
      */
@@ -166,56 +180,82 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the isOnline property: Indicates if API revision is accessible via the gateway.
+     * 
+     * @return the isOnline value.
+     */
+    @Override
+    public Boolean isOnline() {
+        return this.isOnline;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withSourceApiId(String sourceApiId) {
         super.withSourceApiId(sourceApiId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withServiceUrl(String serviceUrl) {
         super.withServiceUrl(serviceUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withPath(String path) {
         super.withPath(path);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withProtocols(List<Protocol> protocols) {
         super.withProtocols(protocols);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiVersionSet(ApiVersionSetContractDetails apiVersionSet) {
         super.withApiVersionSet(apiVersionSet);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties
         withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
@@ -223,7 +263,9 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties
         withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
@@ -231,77 +273,99 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiType(ApiType apiType) {
         super.withApiType(apiType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiRevision(String apiRevision) {
         super.withApiRevision(apiRevision);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiVersion(String apiVersion) {
         super.withApiVersion(apiVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withIsCurrent(Boolean isCurrent) {
         super.withIsCurrent(isCurrent);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiRevisionDescription(String apiRevisionDescription) {
         super.withApiRevisionDescription(apiRevisionDescription);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiVersionDescription(String apiVersionDescription) {
         super.withApiVersionDescription(apiVersionDescription);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withApiVersionSetId(String apiVersionSetId) {
         super.withApiVersionSetId(apiVersionSetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withTermsOfServiceUrl(String termsOfServiceUrl) {
         super.withTermsOfServiceUrl(termsOfServiceUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withContact(ApiContactInformation contact) {
         super.withContact(contact);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiCreateOrUpdateProperties withLicense(ApiLicenseInformation license) {
         super.withLicense(license);
@@ -310,14 +374,157 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (wsdlSelector() != null) {
             wsdlSelector().validate();
         }
+        if (authenticationSettings() != null) {
+            authenticationSettings().validate();
+        }
+        if (subscriptionKeyParameterNames() != null) {
+            subscriptionKeyParameterNames().validate();
+        }
+        if (contact() != null) {
+            contact().validate();
+        }
+        if (license() != null) {
+            license().validate();
+        }
+        if (path() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property path in model ApiCreateOrUpdateProperties"));
+        }
+        if (apiVersionSet() != null) {
+            apiVersionSet().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", path());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeJsonField("authenticationSettings", authenticationSettings());
+        jsonWriter.writeJsonField("subscriptionKeyParameterNames", subscriptionKeyParameterNames());
+        jsonWriter.writeStringField("type", apiType() == null ? null : apiType().toString());
+        jsonWriter.writeStringField("apiRevision", apiRevision());
+        jsonWriter.writeStringField("apiVersion", apiVersion());
+        jsonWriter.writeBooleanField("isCurrent", isCurrent());
+        jsonWriter.writeStringField("apiRevisionDescription", apiRevisionDescription());
+        jsonWriter.writeStringField("apiVersionDescription", apiVersionDescription());
+        jsonWriter.writeStringField("apiVersionSetId", apiVersionSetId());
+        jsonWriter.writeBooleanField("subscriptionRequired", subscriptionRequired());
+        jsonWriter.writeStringField("termsOfServiceUrl", termsOfServiceUrl());
+        jsonWriter.writeJsonField("contact", contact());
+        jsonWriter.writeJsonField("license", license());
+        jsonWriter.writeStringField("sourceApiId", sourceApiId());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("serviceUrl", serviceUrl());
+        jsonWriter.writeArrayField("protocols", protocols(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("apiVersionSet", apiVersionSet());
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        jsonWriter.writeJsonField("wsdlSelector", this.wsdlSelector);
+        jsonWriter.writeStringField("apiType", this.soapApiType == null ? null : this.soapApiType.toString());
+        jsonWriter.writeStringField("translateRequiredQueryParameters",
+            this.translateRequiredQueryParametersConduct == null
+                ? null
+                : this.translateRequiredQueryParametersConduct.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiCreateOrUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiCreateOrUpdateProperties.
+     */
+    public static ApiCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiCreateOrUpdateProperties deserializedApiCreateOrUpdateProperties = new ApiCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withPath(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withDescription(reader.getString());
+                } else if ("authenticationSettings".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties
+                        .withAuthenticationSettings(AuthenticationSettingsContract.fromJson(reader));
+                } else if ("subscriptionKeyParameterNames".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties
+                        .withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withApiType(ApiType.fromString(reader.getString()));
+                } else if ("apiRevision".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withApiRevision(reader.getString());
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withApiVersion(reader.getString());
+                } else if ("isCurrent".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withIsCurrent(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isOnline".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.isOnline = reader.getNullable(JsonReader::getBoolean);
+                } else if ("apiRevisionDescription".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withApiRevisionDescription(reader.getString());
+                } else if ("apiVersionDescription".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withApiVersionDescription(reader.getString());
+                } else if ("apiVersionSetId".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withApiVersionSetId(reader.getString());
+                } else if ("subscriptionRequired".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties
+                        .withSubscriptionRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("termsOfServiceUrl".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withTermsOfServiceUrl(reader.getString());
+                } else if ("contact".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withContact(ApiContactInformation.fromJson(reader));
+                } else if ("license".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withLicense(ApiLicenseInformation.fromJson(reader));
+                } else if ("sourceApiId".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withSourceApiId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withDisplayName(reader.getString());
+                } else if ("serviceUrl".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.withServiceUrl(reader.getString());
+                } else if ("protocols".equals(fieldName)) {
+                    List<Protocol> protocols = reader.readArray(reader1 -> Protocol.fromString(reader1.getString()));
+                    deserializedApiCreateOrUpdateProperties.withProtocols(protocols);
+                } else if ("apiVersionSet".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties
+                        .withApiVersionSet(ApiVersionSetContractDetails.fromJson(reader));
+                } else if ("value".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.value = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.format = ContentFormat.fromString(reader.getString());
+                } else if ("wsdlSelector".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.wsdlSelector
+                        = ApiCreateOrUpdatePropertiesWsdlSelector.fromJson(reader);
+                } else if ("apiType".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.soapApiType = SoapApiType.fromString(reader.getString());
+                } else if ("translateRequiredQueryParameters".equals(fieldName)) {
+                    deserializedApiCreateOrUpdateProperties.translateRequiredQueryParametersConduct
+                        = TranslateRequiredQueryParametersConduct.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiCreateOrUpdateProperties;
+        });
     }
 }

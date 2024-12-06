@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the SAP Migration discovery site resource properties.
  */
 @Fluent
-public final class SapDiscoverySiteProperties {
+public final class SapDiscoverySiteProperties implements JsonSerializable<SapDiscoverySiteProperties> {
     /*
      * The master site ID from Azure Migrate.
      */
-    @JsonProperty(value = "masterSiteId")
     private String masterSiteId;
 
     /*
      * The migrate project ID from Azure Migrate.
      */
-    @JsonProperty(value = "migrateProjectId")
     private String migrateProjectId;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Indicates any errors on the SAP Migration discovery site resource.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapMigrateError errors;
 
     /**
@@ -109,5 +109,49 @@ public final class SapDiscoverySiteProperties {
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("masterSiteId", this.masterSiteId);
+        jsonWriter.writeStringField("migrateProjectId", this.migrateProjectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapDiscoverySiteProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapDiscoverySiteProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapDiscoverySiteProperties.
+     */
+    public static SapDiscoverySiteProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapDiscoverySiteProperties deserializedSapDiscoverySiteProperties = new SapDiscoverySiteProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("masterSiteId".equals(fieldName)) {
+                    deserializedSapDiscoverySiteProperties.masterSiteId = reader.getString();
+                } else if ("migrateProjectId".equals(fieldName)) {
+                    deserializedSapDiscoverySiteProperties.migrateProjectId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSapDiscoverySiteProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedSapDiscoverySiteProperties.errors = SapMigrateError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapDiscoverySiteProperties;
+        });
     }
 }

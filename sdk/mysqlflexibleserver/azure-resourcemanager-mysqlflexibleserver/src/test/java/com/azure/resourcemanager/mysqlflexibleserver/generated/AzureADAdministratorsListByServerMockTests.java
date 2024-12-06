@@ -23,7 +23,7 @@ public final class AzureADAdministratorsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"srhnjivo\",\"sid\":\"tnovqfzgemjdftul\",\"tenantId\":\"tduceamt\",\"identityResourceId\":\"zuo\"},\"id\":\"jw\",\"name\":\"w\",\"type\":\"qioknssxmojm\"}]}";
+            = "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"twbdsrezpdrhn\",\"sid\":\"yowqkdwytisibir\",\"tenantId\":\"pikpz\",\"identityResourceId\":\"ejzanlfz\"},\"id\":\"av\",\"name\":\"mbzonokix\",\"type\":\"jq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class AzureADAdministratorsListByServerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AzureADAdministrator> response = manager.azureADAdministrators()
-            .listByServer("ykqgaifmvik", "bydvkhbejdz", com.azure.core.util.Context.NONE);
+        PagedIterable<AzureADAdministrator> response
+            = manager.azureADAdministrators().listByServer("haq", "x", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.iterator().next().administratorType());
-        Assertions.assertEquals("srhnjivo", response.iterator().next().login());
-        Assertions.assertEquals("tnovqfzgemjdftul", response.iterator().next().sid());
-        Assertions.assertEquals("tduceamt", response.iterator().next().tenantId());
-        Assertions.assertEquals("zuo", response.iterator().next().identityResourceId());
+        Assertions.assertEquals("twbdsrezpdrhn", response.iterator().next().login());
+        Assertions.assertEquals("yowqkdwytisibir", response.iterator().next().sid());
+        Assertions.assertEquals("pikpz", response.iterator().next().tenantId());
+        Assertions.assertEquals("ejzanlfz", response.iterator().next().identityResourceId());
     }
 }

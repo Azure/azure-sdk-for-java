@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class UsernameDownloadedType extends ExpandableStringEnum<UsernameD
      * @param name a name to look for.
      * @return the corresponding UsernameDownloadedType.
      */
-    @JsonCreator
     public static UsernameDownloadedType fromString(String name) {
         return fromString(name, UsernameDownloadedType.class);
     }

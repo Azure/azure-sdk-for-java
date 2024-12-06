@@ -20,8 +20,8 @@ public final class AzureLargeStorageInstanceUpdateSamples {
      */
     public static void
         azureLargeStorageInstanceDeleteTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeStorageInstances().updateWithResponse("myResourceGroup", "myALSInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeStorageInstances()
+            .updateWithResponse("myResourceGroup", "myALSInstance", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class AzureLargeStorageInstanceUpdateSamples {
      */
     public static void
         azureLargeStorageInstanceUpdateTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeStorageInstances().updateWithResponse("myResourceGroup", "myALSInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeStorageInstances()
+            .updateWithResponse("myResourceGroup", "myALSInstance", null, com.azure.core.util.Context.NONE);
     }
 }

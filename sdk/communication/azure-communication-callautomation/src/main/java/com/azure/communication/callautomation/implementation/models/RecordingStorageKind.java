@@ -12,14 +12,14 @@ import java.util.Collection;
  */
 public final class RecordingStorageKind extends ExpandableStringEnum<RecordingStorageKind> {
     /**
-     * Static value azureCommunicationServices for RecordingStorageKind.
+     * Storage managed by Azure Communication Services.
      */
-    public static final RecordingStorageKind AZURE_COMMUNICATION_SERVICES = fromString("azureCommunicationServices");
+    public static final RecordingStorageKind AZURE_COMMUNICATION_SERVICES = fromString("AzureCommunicationServices");
 
     /**
-     * Static value azureBlobStorage for RecordingStorageKind.
+     * Storage managed by provided Azure blob.
      */
-    public static final RecordingStorageKind AZURE_BLOB_STORAGE = fromString("azureBlobStorage");
+    public static final RecordingStorageKind AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
     /**
      * Creates a new instance of RecordingStorageKind value.

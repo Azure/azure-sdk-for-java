@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayHostnameConfigurationContractInner;
 
-/** Contains all response data for the createOrUpdate operation. */
+/**
+ * Contains all response data for the createOrUpdate operation.
+ */
 public final class GatewayHostnameConfigurationsCreateOrUpdateResponse extends
     ResponseBase<GatewayHostnameConfigurationsCreateOrUpdateHeaders, GatewayHostnameConfigurationContractInner> {
     /**
      * Creates an instance of GatewayHostnameConfigurationsCreateOrUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this GatewayHostnameConfigurationsCreateOrUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -29,7 +31,7 @@ public final class GatewayHostnameConfigurationsCreateOrUpdateResponse extends
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

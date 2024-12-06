@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties controlling TLS Certificate Validation. */
+/**
+ * Properties controlling TLS Certificate Validation.
+ */
 @Fluent
-public final class BackendTlsProperties {
+public final class BackendTlsProperties implements JsonSerializable<BackendTlsProperties> {
     /*
      * Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for
      * this backend host.
      */
-    @JsonProperty(value = "validateCertificateChain")
     private Boolean validateCertificateChain;
 
     /*
      * Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for
      * this backend host.
      */
-    @JsonProperty(value = "validateCertificateName")
     private Boolean validateCertificateName;
 
-    /** Creates an instance of BackendTlsProperties class. */
+    /**
+     * Creates an instance of BackendTlsProperties class.
+     */
     public BackendTlsProperties() {
     }
 
     /**
      * Get the validateCertificateChain property: Flag indicating whether SSL certificate chain validation should be
      * done when using self-signed certificates for this backend host.
-     *
+     * 
      * @return the validateCertificateChain value.
      */
     public Boolean validateCertificateChain() {
@@ -41,7 +47,7 @@ public final class BackendTlsProperties {
     /**
      * Set the validateCertificateChain property: Flag indicating whether SSL certificate chain validation should be
      * done when using self-signed certificates for this backend host.
-     *
+     * 
      * @param validateCertificateChain the validateCertificateChain value to set.
      * @return the BackendTlsProperties object itself.
      */
@@ -53,7 +59,7 @@ public final class BackendTlsProperties {
     /**
      * Get the validateCertificateName property: Flag indicating whether SSL certificate name validation should be done
      * when using self-signed certificates for this backend host.
-     *
+     * 
      * @return the validateCertificateName value.
      */
     public Boolean validateCertificateName() {
@@ -63,7 +69,7 @@ public final class BackendTlsProperties {
     /**
      * Set the validateCertificateName property: Flag indicating whether SSL certificate name validation should be done
      * when using self-signed certificates for this backend host.
-     *
+     * 
      * @param validateCertificateName the validateCertificateName value to set.
      * @return the BackendTlsProperties object itself.
      */
@@ -74,9 +80,50 @@ public final class BackendTlsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("validateCertificateChain", this.validateCertificateChain);
+        jsonWriter.writeBooleanField("validateCertificateName", this.validateCertificateName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendTlsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendTlsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendTlsProperties.
+     */
+    public static BackendTlsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendTlsProperties deserializedBackendTlsProperties = new BackendTlsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validateCertificateChain".equals(fieldName)) {
+                    deserializedBackendTlsProperties.validateCertificateChain
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validateCertificateName".equals(fieldName)) {
+                    deserializedBackendTlsProperties.validateCertificateName
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendTlsProperties;
+        });
     }
 }

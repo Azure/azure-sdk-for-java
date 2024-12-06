@@ -30,14 +30,14 @@ public final class ProductGroupsImpl implements ProductGroups {
     public PagedIterable<GroupContract> listByProduct(String resourceGroupName, String serviceName, String productId) {
         PagedIterable<GroupContractInner> inner
             = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId);
-        return Utils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GroupContract> listByProduct(String resourceGroupName, String serviceName, String productId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<GroupContractInner> inner
             = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
     }
 
     public Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,

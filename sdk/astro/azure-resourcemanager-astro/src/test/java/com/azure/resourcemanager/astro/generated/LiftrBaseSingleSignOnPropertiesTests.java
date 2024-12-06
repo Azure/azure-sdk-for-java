@@ -14,25 +14,25 @@ public final class LiftrBaseSingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiftrBaseSingleSignOnProperties model = BinaryData.fromString(
-            "{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"ummajtjaod\",\"singleSignOnUrl\":\"bnbdxkqpxokajion\",\"aadDomains\":[\"ex\",\"stxgc\",\"odgmaajrmvdjwz\"],\"provisioningState\":\"Canceled\"}")
+            "{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"scpai\",\"singleSignOnUrl\":\"hhbcsglummajtjao\",\"aadDomains\":[\"bnbdxkqpxokajion\",\"imexgstxgcpodgma\",\"jrmvdjwzrlo\",\"mcl\"],\"provisioningState\":\"Succeeded\"}")
             .toObject(LiftrBaseSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
-        Assertions.assertEquals("ummajtjaod", model.enterpriseAppId());
-        Assertions.assertEquals("bnbdxkqpxokajion", model.singleSignOnUrl());
-        Assertions.assertEquals("ex", model.aadDomains().get(0));
+        Assertions.assertEquals("scpai", model.enterpriseAppId());
+        Assertions.assertEquals("hhbcsglummajtjao", model.singleSignOnUrl());
+        Assertions.assertEquals("bnbdxkqpxokajion", model.aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiftrBaseSingleSignOnProperties model
             = new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
-                .withEnterpriseAppId("ummajtjaod")
-                .withSingleSignOnUrl("bnbdxkqpxokajion")
-                .withAadDomains(Arrays.asList("ex", "stxgc", "odgmaajrmvdjwz"));
+                .withEnterpriseAppId("scpai")
+                .withSingleSignOnUrl("hhbcsglummajtjao")
+                .withAadDomains(Arrays.asList("bnbdxkqpxokajion", "imexgstxgcpodgma", "jrmvdjwzrlo", "mcl"));
         model = BinaryData.fromObject(model).toObject(LiftrBaseSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
-        Assertions.assertEquals("ummajtjaod", model.enterpriseAppId());
-        Assertions.assertEquals("bnbdxkqpxokajion", model.singleSignOnUrl());
-        Assertions.assertEquals("ex", model.aadDomains().get(0));
+        Assertions.assertEquals("scpai", model.enterpriseAppId());
+        Assertions.assertEquals("hhbcsglummajtjao", model.singleSignOnUrl());
+        Assertions.assertEquals("bnbdxkqpxokajion", model.aadDomains().get(0));
     }
 }

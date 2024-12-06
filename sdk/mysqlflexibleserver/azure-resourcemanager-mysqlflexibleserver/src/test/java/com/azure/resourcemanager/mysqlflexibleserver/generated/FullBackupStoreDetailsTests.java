@@ -13,16 +13,16 @@ public final class FullBackupStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FullBackupStoreDetails model = BinaryData.fromString(
-            "{\"objectType\":\"FullBackupStoreDetails\",\"sasUriList\":[\"kasdvlm\",\"wdgzxulucv\",\"amrsreuzv\",\"urisjnhnytxifqj\"]}")
+            "{\"objectType\":\"FullBackupStoreDetails\",\"sasUriList\":[\"cizsjqlhkrribdei\",\"qipqkghvxndz\",\"mkrefajpjorwkq\"]}")
             .toObject(FullBackupStoreDetails.class);
-        Assertions.assertEquals("kasdvlm", model.sasUriList().get(0));
+        Assertions.assertEquals("cizsjqlhkrribdei", model.sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FullBackupStoreDetails model = new FullBackupStoreDetails()
-            .withSasUriList(Arrays.asList("kasdvlm", "wdgzxulucv", "amrsreuzv", "urisjnhnytxifqj"));
+            .withSasUriList(Arrays.asList("cizsjqlhkrribdei", "qipqkghvxndz", "mkrefajpjorwkq"));
         model = BinaryData.fromObject(model).toObject(FullBackupStoreDetails.class);
-        Assertions.assertEquals("kasdvlm", model.sasUriList().get(0));
+        Assertions.assertEquals("cizsjqlhkrribdei", model.sasUriList().get(0));
     }
 }

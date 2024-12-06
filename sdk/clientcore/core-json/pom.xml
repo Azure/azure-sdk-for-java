@@ -58,7 +58,6 @@
 
     <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
-    <jacoco.skip>true</jacoco.skip>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
   </properties>
@@ -136,7 +135,7 @@
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>
-            <exclude>**/io/clientcore/json/implementation/jackson/core/**</exclude>
+            <exclude>**/io/clientcore/core/json/implementation/jackson/core/**</exclude>
           </excludes>
         </configuration>
       </plugin>

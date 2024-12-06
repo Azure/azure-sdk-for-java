@@ -36,14 +36,14 @@ public final class GraphQLApiResolverPoliciesImpl implements GraphQLApiResolverP
         String resolverId) {
         PagedIterable<PolicyContractInner> inner
             = this.serviceClient().listByResolver(resourceGroupName, serviceName, apiId, resolverId);
-        return Utils.mapPage(inner, inner1 -> new PolicyContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PolicyContract> listByResolver(String resourceGroupName, String serviceName, String apiId,
         String resolverId, Context context) {
         PagedIterable<PolicyContractInner> inner
             = this.serviceClient().listByResolver(resourceGroupName, serviceName, apiId, resolverId, context);
-        return Utils.mapPage(inner, inner1 -> new PolicyContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyContractImpl(inner1, this.manager()));
     }
 
     public GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,

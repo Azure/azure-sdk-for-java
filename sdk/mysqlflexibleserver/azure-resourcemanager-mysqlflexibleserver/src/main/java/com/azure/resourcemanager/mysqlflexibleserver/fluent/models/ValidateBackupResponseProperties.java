@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ValidateBackup Response Properties.
  */
 @Fluent
-public final class ValidateBackupResponseProperties {
+public final class ValidateBackupResponseProperties implements JsonSerializable<ValidateBackupResponseProperties> {
     /*
      * Estimated no of storage containers required for resource data to be backed up.
      */
-    @JsonProperty(value = "numberOfContainers")
     private Integer numberOfContainers;
 
     /**
@@ -52,5 +55,43 @@ public final class ValidateBackupResponseProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("numberOfContainers", this.numberOfContainers);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateBackupResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateBackupResponseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateBackupResponseProperties.
+     */
+    public static ValidateBackupResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateBackupResponseProperties deserializedValidateBackupResponseProperties
+                = new ValidateBackupResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfContainers".equals(fieldName)) {
+                    deserializedValidateBackupResponseProperties.numberOfContainers
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateBackupResponseProperties;
+        });
     }
 }

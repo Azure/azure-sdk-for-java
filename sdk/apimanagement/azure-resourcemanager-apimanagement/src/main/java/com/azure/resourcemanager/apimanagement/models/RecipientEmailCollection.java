@@ -7,32 +7,34 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.RecipientEmailCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of RecipientEmailCollection. */
+/**
+ * An immutable client-side representation of RecipientEmailCollection.
+ */
 public interface RecipientEmailCollection {
     /**
      * Gets the value property: Page values.
-     *
+     * 
      * @return the value value.
      */
     List<RecipientEmailContract> value();
 
     /**
      * Gets the count property: Total record count number across all pages.
-     *
+     * 
      * @return the count value.
      */
     Long count();
 
     /**
      * Gets the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.RecipientEmailCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     RecipientEmailCollectionInner innerModel();

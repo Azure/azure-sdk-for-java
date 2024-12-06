@@ -11,7 +11,7 @@ public final class ConfigurationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationData model = BinaryData.fromString(
-            "{\"saps\":269185067,\"cpu\":1273206758,\"cpuType\":\"dxob\",\"cpuInMhz\":1455975978,\"ram\":64161547,\"hardwareManufacturer\":\"pxokajionp\",\"model\":\"ex\",\"totalDiskSizeGB\":1260380641,\"totalDiskIops\":869325543,\"databaseType\":\"SQLServer\",\"targetHanaRamSizeGB\":524649765}")
+            "{\"saps\":968287955,\"cpu\":7278367,\"cpuType\":\"ppdsbdkvwrwj\",\"cpuInMhz\":2141844336,\"ram\":1882901501,\"hardwareManufacturer\":\"utjeltmrldhugj\",\"model\":\"datqxhocdgeabl\",\"totalDiskSizeGB\":743985587,\"totalDiskIops\":388527245,\"databaseType\":\"Db2\",\"targetHanaRamSizeGB\":1686468499}")
             .toObject(ConfigurationData.class);
     }
 

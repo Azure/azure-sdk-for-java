@@ -6,25 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Issue Comment Contract details. */
+/**
+ * Issue Comment Contract details.
+ */
 @Fluent
 public final class IssueCommentContractInner extends ProxyResource {
     /*
      * Properties of the Issue Comment.
      */
-    @JsonProperty(value = "properties")
     private IssueCommentContractProperties innerProperties;
 
-    /** Creates an instance of IssueCommentContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IssueCommentContractInner class.
+     */
     public IssueCommentContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Issue Comment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IssueCommentContractProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class IssueCommentContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the text property: Comment text.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -42,7 +93,7 @@ public final class IssueCommentContractInner extends ProxyResource {
 
     /**
      * Set the text property: Comment text.
-     *
+     * 
      * @param text the text value to set.
      * @return the IssueCommentContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class IssueCommentContractInner extends ProxyResource {
 
     /**
      * Get the createdDate property: Date and time when the comment was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -65,7 +116,7 @@ public final class IssueCommentContractInner extends ProxyResource {
 
     /**
      * Set the createdDate property: Date and time when the comment was created.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the IssueCommentContractInner object itself.
      */
@@ -79,7 +130,7 @@ public final class IssueCommentContractInner extends ProxyResource {
 
     /**
      * Get the userId property: A resource identifier for the user who left the comment.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -88,7 +139,7 @@ public final class IssueCommentContractInner extends ProxyResource {
 
     /**
      * Set the userId property: A resource identifier for the user who left the comment.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the IssueCommentContractInner object itself.
      */
@@ -102,12 +153,56 @@ public final class IssueCommentContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueCommentContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueCommentContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IssueCommentContractInner.
+     */
+    public static IssueCommentContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueCommentContractInner deserializedIssueCommentContractInner = new IssueCommentContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIssueCommentContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIssueCommentContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIssueCommentContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIssueCommentContractInner.innerProperties
+                        = IssueCommentContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueCommentContractInner;
+        });
     }
 }

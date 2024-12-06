@@ -38,7 +38,7 @@ public class GetCompletionsStreamAsyncSample {
         List<String> prompt = new ArrayList<>();
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
 
-        client.getCompletionsStream(deploymentOrModelId, new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true))
+        client.getCompletionsStream(deploymentOrModelId, new CompletionsOptions(prompt).setMaxTokens(1000))
             .map(completions -> completions.getChoices().get(0).getText())
             .subscribe(
                 System.out::print,

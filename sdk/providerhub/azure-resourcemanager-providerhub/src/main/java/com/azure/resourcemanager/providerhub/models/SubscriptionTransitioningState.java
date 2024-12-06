@@ -5,54 +5,81 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionTransitioningState. */
+/**
+ * Defines values for SubscriptionTransitioningState.
+ */
 public final class SubscriptionTransitioningState extends ExpandableStringEnum<SubscriptionTransitioningState> {
-    /** Static value Registered for SubscriptionTransitioningState. */
+    /**
+     * Static value Registered for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState REGISTERED = fromString("Registered");
 
-    /** Static value Unregistered for SubscriptionTransitioningState. */
+    /**
+     * Static value Unregistered for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState UNREGISTERED = fromString("Unregistered");
 
-    /** Static value Warned for SubscriptionTransitioningState. */
+    /**
+     * Static value Warned for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState WARNED = fromString("Warned");
 
-    /** Static value Suspended for SubscriptionTransitioningState. */
+    /**
+     * Static value Suspended for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState SUSPENDED = fromString("Suspended");
 
-    /** Static value Deleted for SubscriptionTransitioningState. */
+    /**
+     * Static value Deleted for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState DELETED = fromString("Deleted");
 
-    /** Static value WarnedToRegistered for SubscriptionTransitioningState. */
+    /**
+     * Static value WarnedToRegistered for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState WARNED_TO_REGISTERED = fromString("WarnedToRegistered");
 
-    /** Static value WarnedToSuspended for SubscriptionTransitioningState. */
+    /**
+     * Static value WarnedToSuspended for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState WARNED_TO_SUSPENDED = fromString("WarnedToSuspended");
 
-    /** Static value WarnedToDeleted for SubscriptionTransitioningState. */
+    /**
+     * Static value WarnedToDeleted for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState WARNED_TO_DELETED = fromString("WarnedToDeleted");
 
-    /** Static value WarnedToUnregistered for SubscriptionTransitioningState. */
+    /**
+     * Static value WarnedToUnregistered for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState WARNED_TO_UNREGISTERED = fromString("WarnedToUnregistered");
 
-    /** Static value SuspendedToRegistered for SubscriptionTransitioningState. */
+    /**
+     * Static value SuspendedToRegistered for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState SUSPENDED_TO_REGISTERED = fromString("SuspendedToRegistered");
 
-    /** Static value SuspendedToWarned for SubscriptionTransitioningState. */
+    /**
+     * Static value SuspendedToWarned for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState SUSPENDED_TO_WARNED = fromString("SuspendedToWarned");
 
-    /** Static value SuspendedToDeleted for SubscriptionTransitioningState. */
+    /**
+     * Static value SuspendedToDeleted for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState SUSPENDED_TO_DELETED = fromString("SuspendedToDeleted");
 
-    /** Static value SuspendedToUnregistered for SubscriptionTransitioningState. */
+    /**
+     * Static value SuspendedToUnregistered for SubscriptionTransitioningState.
+     */
     public static final SubscriptionTransitioningState SUSPENDED_TO_UNREGISTERED
         = fromString("SuspendedToUnregistered");
 
     /**
      * Creates a new instance of SubscriptionTransitioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -61,18 +88,17 @@ public final class SubscriptionTransitioningState extends ExpandableStringEnum<S
 
     /**
      * Creates or finds a SubscriptionTransitioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionTransitioningState.
      */
-    @JsonCreator
     public static SubscriptionTransitioningState fromString(String name) {
         return fromString(name, SubscriptionTransitioningState.class);
     }
 
     /**
      * Gets known SubscriptionTransitioningState values.
-     *
+     * 
      * @return known SubscriptionTransitioningState values.
      */
     public static Collection<SubscriptionTransitioningState> values() {

@@ -7,32 +7,34 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueAttachmentContractInner;
 
-/** An immutable client-side representation of IssueAttachmentContract. */
+/**
+ * An immutable client-side representation of IssueAttachmentContract.
+ */
 public interface IssueAttachmentContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the title property: Filename by which the binary data will be saved.
-     *
+     * 
      * @return the title value.
      */
     String title();
@@ -40,48 +42,56 @@ public interface IssueAttachmentContract {
     /**
      * Gets the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME type of the
      * Base64-encoded binary data provided in the 'content' property.
-     *
+     * 
      * @return the contentFormat value.
      */
     String contentFormat();
 
     /**
      * Gets the content property: An HTTP link or Base64-encoded binary data.
-     *
+     * 
      * @return the content value.
      */
     String content();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.IssueAttachmentContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     IssueAttachmentContractInner innerModel();
 
-    /** The entirety of the IssueAttachmentContract definition. */
+    /**
+     * The entirety of the IssueAttachmentContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The IssueAttachmentContract definition stages. */
+    /**
+     * The IssueAttachmentContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the IssueAttachmentContract definition. */
+        /**
+         * The first stage of the IssueAttachmentContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the IssueAttachmentContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the IssueAttachmentContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId, issueId.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -99,63 +109,71 @@ public interface IssueAttachmentContract {
             DefinitionStages.WithContent, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             IssueAttachmentContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             IssueAttachmentContract create(Context context);
         }
 
-        /** The stage of the IssueAttachmentContract definition allowing to specify title. */
+        /**
+         * The stage of the IssueAttachmentContract definition allowing to specify title.
+         */
         interface WithTitle {
             /**
              * Specifies the title property: Filename by which the binary data will be saved..
-             *
+             * 
              * @param title Filename by which the binary data will be saved.
              * @return the next definition stage.
              */
             WithCreate withTitle(String title);
         }
 
-        /** The stage of the IssueAttachmentContract definition allowing to specify contentFormat. */
+        /**
+         * The stage of the IssueAttachmentContract definition allowing to specify contentFormat.
+         */
         interface WithContentFormat {
             /**
              * Specifies the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME
              * type of the Base64-encoded binary data provided in the 'content' property..
-             *
+             * 
              * @param contentFormat Either 'link' if content is provided via an HTTP link or the MIME type of the
-             *     Base64-encoded binary data provided in the 'content' property.
+             * Base64-encoded binary data provided in the 'content' property.
              * @return the next definition stage.
              */
             WithCreate withContentFormat(String contentFormat);
         }
 
-        /** The stage of the IssueAttachmentContract definition allowing to specify content. */
+        /**
+         * The stage of the IssueAttachmentContract definition allowing to specify content.
+         */
         interface WithContent {
             /**
              * Specifies the content property: An HTTP link or Base64-encoded binary data..
-             *
+             * 
              * @param content An HTTP link or Base64-encoded binary data.
              * @return the next definition stage.
              */
             WithCreate withContent(String content);
         }
 
-        /** The stage of the IssueAttachmentContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the IssueAttachmentContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -164,75 +182,87 @@ public interface IssueAttachmentContract {
 
     /**
      * Begins update for the IssueAttachmentContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     IssueAttachmentContract.Update update();
 
-    /** The template for IssueAttachmentContract update. */
+    /**
+     * The template for IssueAttachmentContract update.
+     */
     interface Update extends UpdateStages.WithTitle, UpdateStages.WithContentFormat, UpdateStages.WithContent,
         UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         IssueAttachmentContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         IssueAttachmentContract apply(Context context);
     }
 
-    /** The IssueAttachmentContract update stages. */
+    /**
+     * The IssueAttachmentContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the IssueAttachmentContract update allowing to specify title. */
+        /**
+         * The stage of the IssueAttachmentContract update allowing to specify title.
+         */
         interface WithTitle {
             /**
              * Specifies the title property: Filename by which the binary data will be saved..
-             *
+             * 
              * @param title Filename by which the binary data will be saved.
              * @return the next definition stage.
              */
             Update withTitle(String title);
         }
 
-        /** The stage of the IssueAttachmentContract update allowing to specify contentFormat. */
+        /**
+         * The stage of the IssueAttachmentContract update allowing to specify contentFormat.
+         */
         interface WithContentFormat {
             /**
              * Specifies the contentFormat property: Either 'link' if content is provided via an HTTP link or the MIME
              * type of the Base64-encoded binary data provided in the 'content' property..
-             *
+             * 
              * @param contentFormat Either 'link' if content is provided via an HTTP link or the MIME type of the
-             *     Base64-encoded binary data provided in the 'content' property.
+             * Base64-encoded binary data provided in the 'content' property.
              * @return the next definition stage.
              */
             Update withContentFormat(String contentFormat);
         }
 
-        /** The stage of the IssueAttachmentContract update allowing to specify content. */
+        /**
+         * The stage of the IssueAttachmentContract update allowing to specify content.
+         */
         interface WithContent {
             /**
              * Specifies the content property: An HTTP link or Base64-encoded binary data..
-             *
+             * 
              * @param content An HTTP link or Base64-encoded binary data.
              * @return the next definition stage.
              */
             Update withContent(String content);
         }
 
-        /** The stage of the IssueAttachmentContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the IssueAttachmentContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -241,14 +271,14 @@ public interface IssueAttachmentContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     IssueAttachmentContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

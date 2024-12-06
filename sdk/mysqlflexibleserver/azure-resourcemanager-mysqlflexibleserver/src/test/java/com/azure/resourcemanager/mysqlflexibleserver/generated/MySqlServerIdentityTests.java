@@ -15,7 +15,7 @@ public final class MySqlServerIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MySqlServerIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"mi\",\"tenantId\":\"thz\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ehoqfbowskan\":\"dataabhjybi\",\"ywgndrv\":\"dataktzlcuiywg\",\"ocpecfvmmco\":\"datanhzgpphrcgyn\"}}")
+            "{\"principalId\":\"fionl\",\"tenantId\":\"x\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rjfeallnwsubisnj\":\"datazxdpnqbqqw\",\"hcbonqvpkvlr\":\"datampmngnzscxaqwoo\",\"y\":\"datanjeaseipheofloke\"}}")
             .toObject(MySqlServerIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
@@ -23,8 +23,8 @@ public final class MySqlServerIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MySqlServerIdentity model = new MySqlServerIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("ehoqfbowskan", "dataabhjybi", "ywgndrv", "dataktzlcuiywg", "ocpecfvmmco", "datanhzgpphrcgyn"));
+            .withUserAssignedIdentities(mapOf("rjfeallnwsubisnj", "datazxdpnqbqqw", "hcbonqvpkvlr",
+                "datampmngnzscxaqwoo", "y", "datanjeaseipheofloke"));
         model = BinaryData.fromObject(model).toObject(MySqlServerIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

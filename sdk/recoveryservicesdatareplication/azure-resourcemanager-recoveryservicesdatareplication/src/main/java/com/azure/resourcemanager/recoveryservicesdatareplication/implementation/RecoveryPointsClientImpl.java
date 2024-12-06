@@ -30,17 +30,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.R
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.RecoveryPointModelCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
+ */
 public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RecoveryPointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of RecoveryPointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RecoveryPointsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -88,9 +94,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -99,7 +105,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the recovery point of a protected item along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
@@ -137,9 +143,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -149,7 +155,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the recovery point of a protected item along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
@@ -185,9 +191,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -206,9 +212,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -228,9 +234,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -249,9 +255,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -259,7 +265,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of recovery points of the given protected item along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -294,9 +300,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -305,7 +311,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of recovery points of the given protected item along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -340,9 +346,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -360,9 +366,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -381,9 +387,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -400,9 +406,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -420,14 +426,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery point model collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return recovery point model collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -447,15 +452,14 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery point model collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return recovery point model collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointModelInner>> listNextSinglePageAsync(String nextLink, Context context) {

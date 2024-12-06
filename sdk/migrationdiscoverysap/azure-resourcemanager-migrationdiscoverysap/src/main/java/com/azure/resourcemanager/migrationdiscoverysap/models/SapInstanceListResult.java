@@ -6,25 +6,27 @@ package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.SapInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a SAPInstance list operation.
  */
 @Fluent
-public final class SapInstanceListResult {
+public final class SapInstanceListResult implements JsonSerializable<SapInstanceListResult> {
     /*
      * The SAPInstance items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<SapInstanceInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -80,12 +82,53 @@ public final class SapInstanceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SapInstanceListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SapInstanceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapInstanceListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapInstanceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapInstanceListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapInstanceListResult.
+     */
+    public static SapInstanceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapInstanceListResult deserializedSapInstanceListResult = new SapInstanceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SapInstanceInner> value = reader.readArray(reader1 -> SapInstanceInner.fromJson(reader1));
+                    deserializedSapInstanceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSapInstanceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapInstanceListResult;
+        });
+    }
 }

@@ -25,17 +25,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.Workflow
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowOperationStatusClient.
+ */
 public final class WorkflowOperationStatusClientImpl implements WorkflowOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of WorkflowOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
@@ -64,9 +70,9 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -109,9 +115,9 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -154,9 +160,9 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -175,9 +181,9 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -196,9 +202,9 @@ public final class WorkflowOperationStatusClientImpl implements WorkflowOperatio
 
     /**
      * Gets the job (workflow) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the job.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.

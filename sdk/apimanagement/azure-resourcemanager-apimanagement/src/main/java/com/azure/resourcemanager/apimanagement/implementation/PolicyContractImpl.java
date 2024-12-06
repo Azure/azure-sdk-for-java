@@ -123,11 +123,12 @@ public final class PolicyContractImpl implements PolicyContract, PolicyContract.
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.apiId = Utils.getValueFromIdByName(innerObject.id(), "apis");
-        this.operationId = Utils.getValueFromIdByName(innerObject.id(), "operations");
-        this.policyId = PolicyIdName.fromString(Utils.getValueFromIdByName(innerObject.id(), "policies"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.apiId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "apis");
+        this.operationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "operations");
+        this.policyId
+            = PolicyIdName.fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "policies"));
     }
 
     public PolicyContract refresh() {

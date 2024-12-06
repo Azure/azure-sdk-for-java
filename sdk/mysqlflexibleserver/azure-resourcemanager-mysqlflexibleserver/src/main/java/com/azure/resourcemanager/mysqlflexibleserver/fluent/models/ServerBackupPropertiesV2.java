@@ -5,44 +5,45 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.BackupType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The properties of a server backup.
  */
 @Fluent
-public final class ServerBackupPropertiesV2 {
+public final class ServerBackupPropertiesV2 implements JsonSerializable<ServerBackupPropertiesV2> {
     /*
      * Backup name
      */
-    @JsonProperty(value = "backupNameV2")
     private String backupNameV2;
 
     /*
      * The backupType property.
      */
-    @JsonProperty(value = "backupType")
     private BackupType backupType;
 
     /*
      * Backup completed time (ISO8601 format).
      */
-    @JsonProperty(value = "completedTime")
     private OffsetDateTime completedTime;
 
     /*
      * Backup source
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The provisioning state of backup resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -146,5 +147,55 @@ public final class ServerBackupPropertiesV2 {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupNameV2", this.backupNameV2);
+        jsonWriter.writeStringField("backupType", this.backupType == null ? null : this.backupType.toString());
+        jsonWriter.writeStringField("completedTime",
+            this.completedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedTime));
+        jsonWriter.writeStringField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerBackupPropertiesV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerBackupPropertiesV2 if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerBackupPropertiesV2.
+     */
+    public static ServerBackupPropertiesV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerBackupPropertiesV2 deserializedServerBackupPropertiesV2 = new ServerBackupPropertiesV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupNameV2".equals(fieldName)) {
+                    deserializedServerBackupPropertiesV2.backupNameV2 = reader.getString();
+                } else if ("backupType".equals(fieldName)) {
+                    deserializedServerBackupPropertiesV2.backupType = BackupType.fromString(reader.getString());
+                } else if ("completedTime".equals(fieldName)) {
+                    deserializedServerBackupPropertiesV2.completedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("source".equals(fieldName)) {
+                    deserializedServerBackupPropertiesV2.source = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServerBackupPropertiesV2.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerBackupPropertiesV2;
+        });
     }
 }

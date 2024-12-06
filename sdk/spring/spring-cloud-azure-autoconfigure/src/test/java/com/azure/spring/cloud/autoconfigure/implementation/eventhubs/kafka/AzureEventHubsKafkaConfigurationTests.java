@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka.AzureEventHubsKafkaAutoConfigurationTests.CONNECTION_STRING_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.TestCompatibilityUtils.invokeBuildKafkaProperties;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
@@ -36,11 +37,10 @@ class AzureEventHubsKafkaConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class, AzureEventHubsKafkaAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class, TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureTokenCredentialAutoConfiguration.class,
+                AzureTokenCredentialAutoConfiguration.class, KafkaPropertiesConfiguration.class,
                 KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
 
-    @SuppressWarnings("removal")
     @Test
     void shouldConfigureSaslPlainWhenGivenConnectionString() {
         contextRunner
@@ -55,7 +55,7 @@ class AzureEventHubsKafkaConfigurationTests {
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertSaslPlainConfigured(kafkaProperties.buildProducerProperties());
+                    assertSaslPlainConfigured(invokeBuildKafkaProperties(kafkaProperties, "buildProducerProperties"));
                     DefaultKafkaConsumerFactory<?, ?> consumerFactory = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
                     assertSaslPlainConfigured(consumerFactory.getConfigurationProperties());
                     DefaultKafkaProducerFactory<?, ?> producerFactory = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);

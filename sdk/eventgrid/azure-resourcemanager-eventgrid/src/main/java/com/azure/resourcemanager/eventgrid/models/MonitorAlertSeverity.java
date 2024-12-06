@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class MonitorAlertSeverity extends ExpandableStringEnum<MonitorAler
      * @param name a name to look for.
      * @return the corresponding MonitorAlertSeverity.
      */
-    @JsonCreator
     public static MonitorAlertSeverity fromString(String name) {
         return fromString(name, MonitorAlertSeverity.class);
     }

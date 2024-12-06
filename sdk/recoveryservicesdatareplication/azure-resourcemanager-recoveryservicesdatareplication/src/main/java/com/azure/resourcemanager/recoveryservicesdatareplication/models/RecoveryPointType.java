@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the recovery point type. */
+/**
+ * Gets or sets the recovery point type.
+ */
 public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointType> {
-    /** Static value ApplicationConsistent for RecoveryPointType. */
+    /**
+     * Static value ApplicationConsistent for RecoveryPointType.
+     */
     public static final RecoveryPointType APPLICATION_CONSISTENT = fromString("ApplicationConsistent");
 
-    /** Static value CrashConsistent for RecoveryPointType. */
+    /**
+     * Static value CrashConsistent for RecoveryPointType.
+     */
     public static final RecoveryPointType CRASH_CONSISTENT = fromString("CrashConsistent");
 
     /**
      * Creates a new instance of RecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointT
 
     /**
      * Creates or finds a RecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryPointType.
      */
-    @JsonCreator
     public static RecoveryPointType fromString(String name) {
         return fromString(name, RecoveryPointType.class);
     }
 
     /**
      * Gets known RecoveryPointType values.
-     *
+     * 
      * @return known RecoveryPointType values.
      */
     public static Collection<RecoveryPointType> values() {

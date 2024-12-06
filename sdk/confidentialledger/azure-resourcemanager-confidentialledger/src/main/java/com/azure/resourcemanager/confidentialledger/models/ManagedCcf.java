@@ -50,9 +50,7 @@ public interface ManagedCcf {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: ManagedCCFProperties
-     * 
-     * Properties of Managed CCF Resource.
+     * Gets the properties property: Properties of Managed CCF Resource.
      * 
      * @return the properties value.
      */
@@ -183,13 +181,9 @@ public interface ManagedCcf {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: ManagedCCFProperties
+             * Specifies the properties property: Properties of Managed CCF Resource..
              * 
-             * Properties of Managed CCF Resource..
-             * 
-             * @param properties ManagedCCFProperties
-             * 
-             * Properties of Managed CCF Resource.
+             * @param properties Properties of Managed CCF Resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(ManagedCcfProperties properties);
@@ -245,13 +239,9 @@ public interface ManagedCcf {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: ManagedCCFProperties
+             * Specifies the properties property: Properties of Managed CCF Resource..
              * 
-             * Properties of Managed CCF Resource..
-             * 
-             * @param properties ManagedCCFProperties
-             * 
-             * Properties of Managed CCF Resource.
+             * @param properties Properties of Managed CCF Resource.
              * @return the next definition stage.
              */
             Update withProperties(ManagedCcfProperties properties);

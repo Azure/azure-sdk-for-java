@@ -9,11 +9,13 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContractInner;
 
-/** Contains all response data for the listKeys operation. */
+/**
+ * Contains all response data for the listKeys operation.
+ */
 public final class GatewaysListKeysResponse extends ResponseBase<GatewaysListKeysHeaders, GatewayKeysContractInner> {
     /**
      * Creates an instance of GatewaysListKeysResponse.
-     *
+     * 
      * @param request the request which resulted in this GatewaysListKeysResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -27,7 +29,7 @@ public final class GatewaysListKeysResponse extends ResponseBase<GatewaysListKey
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

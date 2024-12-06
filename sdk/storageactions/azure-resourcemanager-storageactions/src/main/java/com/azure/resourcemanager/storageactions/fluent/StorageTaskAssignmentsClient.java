@@ -15,7 +15,7 @@ import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignm
  */
 public interface StorageTaskAssignmentsClient {
     /**
-     * Lists all the storage tasks available under the given resource group.
+     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
@@ -29,13 +29,13 @@ public interface StorageTaskAssignmentsClient {
     PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName);
 
     /**
-     * Lists all the storage tasks available under the given resource group.
+     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,6 +43,6 @@ public interface StorageTaskAssignmentsClient {
      * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName, String maxpagesize,
-        Context context);
+    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName,
+        Integer maxpagesize, Context context);
 }

@@ -3,106 +3,82 @@
 
 package io.clientcore.core.util.auth;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link ChallengeHandler.CompositeChallengeHandler}.
  */
 public class CompositeChallengeHandlerTest {
-    private ChallengeHandler.CompositeChallengeHandler compositeChallengeHandler;
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void firstAvailableChallengeHandlerHandlesChallenge(boolean isProxy) {
+        MockHandler digestHandler = new MockHandler(true, false);
+        MockHandler basicHandler = new MockHandler(false, true);
 
-    @Mock
-    private DigestChallengeHandler digestHandler;
-    @Mock
-    private BasicChallengeHandler basicHandler;
-    @Mock
-    private HttpRequest request;
-    @Mock
-    private Response<?> response;
-
-    private AutoCloseable closeable;
-
-    @BeforeEach
-    public void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-
-        // Initializing composite with mocked challenge handlers
-        compositeChallengeHandler
-            = new ChallengeHandler.CompositeChallengeHandler(Arrays.asList(digestHandler, basicHandler));
+        ChallengeHandler challengeHandler = ChallengeHandler.of(digestHandler, basicHandler);
+        assertDoesNotThrow(() -> challengeHandler.handleChallenge(null, null, isProxy));
     }
 
-    @AfterEach
-    public void tearDown() throws Exception {
-        closeable.close();
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void lastAvailableChallengeHandlerHandlesChallenge(boolean isProxy) {
+        MockHandler digestHandler = new MockHandler(false, true);
+        MockHandler basicHandler = new MockHandler(true, false);
+
+        ChallengeHandler challengeHandler = ChallengeHandler.of(digestHandler, basicHandler);
+        assertDoesNotThrow(() -> challengeHandler.handleChallenge(null, null, isProxy));
     }
 
-    @Test
-    public void testDigestHandlerHandlesChallengeWhenAvailable() {
-        when(digestHandler.canHandle(response, false)).thenReturn(true);
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void noChallengeHandlerHandlesChallenge(boolean isProxy) {
+        MockHandler digestHandler = new MockHandler(false, true);
+        MockHandler basicHandler = new MockHandler(false, true);
 
-        compositeChallengeHandler.handleChallenge(request, response, false);
-
-        // Digest handler should be called
-        verify(digestHandler).handleChallenge(request, response, false);
-        verify(basicHandler, never()).handleChallenge(request, response, false);
+        ChallengeHandler challengeHandler = ChallengeHandler.of(digestHandler, basicHandler);
+        assertDoesNotThrow(() -> challengeHandler.handleChallenge(null, null, isProxy));
     }
 
-    @Test
-    public void testBasicHandlerHandlesChallengeWhenDigestNotAvailable() {
-        when(digestHandler.canHandle(response, false)).thenReturn(false);
-        when(basicHandler.canHandle(response, false)).thenReturn(true);
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void firstChallengeHandlerHandlesChallengeWhenAllAreAvailable(boolean isProxy) {
+        MockHandler digestHandler = new MockHandler(true, false);
+        MockHandler basicHandler = new MockHandler(true, false);
 
-        compositeChallengeHandler.handleChallenge(request, response, false);
-
-        // Basic handler should be called
-        verify(digestHandler, never()).handleChallenge(request, response, false);
-        verify(basicHandler).handleChallenge(request, response, false);
+        ChallengeHandler challengeHandler = ChallengeHandler.of(digestHandler, basicHandler);
+        assertDoesNotThrow(() -> challengeHandler.handleChallenge(null, null, isProxy));
+        assertEquals(1, digestHandler.handleChallengeCount);
+        assertEquals(0, basicHandler.handleChallengeCount);
     }
 
-    @Test
-    public void testNoHandlerHandlesChallengeLogsErrorIsNoOp() {
-        when(digestHandler.canHandle(response, false)).thenReturn(false);
-        when(basicHandler.canHandle(response, false)).thenReturn(false);
+    private static final class MockHandler implements ChallengeHandler {
+        private final boolean canHandle;
+        private final boolean handleChallengeThrows;
 
-        compositeChallengeHandler.handleChallenge(request, response, false);
+        int handleChallengeCount = 0;
 
-        verify(digestHandler, never()).handleChallenge(request, response, false);
-        verify(basicHandler, never()).handleChallenge(request, response, false);
-    }
+        MockHandler(boolean canHandle, boolean handleChallengeThrows) {
+            this.canHandle = canHandle;
+            this.handleChallengeThrows = handleChallengeThrows;
+        }
 
-    @Test
-    public void testDigestHandlerHandlesProxyChallenge() {
-        when(digestHandler.canHandle(response, true)).thenReturn(true);
+        @Override
+        public boolean canHandle(Response<?> response, boolean isProxy) {
+            return canHandle;
+        }
 
-        compositeChallengeHandler.handleChallenge(request, response, true);
-
-        // Digest handler should handle the proxy challenge
-        verify(digestHandler).handleChallenge(request, response, true);
-        verify(basicHandler, never()).handleChallenge(request, response, true);
-    }
-
-    @Test
-    public void testBasicHandlerHandlesProxyChallengeWhenDigestNotAvailable() {
-        when(digestHandler.canHandle(response, true)).thenReturn(false);
-        when(basicHandler.canHandle(response, true)).thenReturn(true);
-
-        compositeChallengeHandler.handleChallenge(request, response, true);
-
-        // Basic handler should handle the proxy challenge
-        verify(digestHandler, never()).handleChallenge(request, response, true);
-        verify(basicHandler).handleChallenge(request, response, true);
+        @Override
+        public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
+            handleChallengeCount++;
+            if (handleChallengeThrows) {
+                throw new IllegalStateException("Should not be called");
+            }
+        }
     }
 }

@@ -6,23 +6,25 @@ package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Object representing Backup properties of a Managed CCF Resource.
  */
 @Fluent
-public final class ManagedCcfBackup {
+public final class ManagedCcfBackup implements JsonSerializable<ManagedCcfBackup> {
     /*
      * The region where the backup of the managed CCF resource will eventually be restored to.
      */
-    @JsonProperty(value = "restoreRegion")
     private String restoreRegion;
 
     /*
      * SAS URI used to access the backup Fileshare.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /**
@@ -86,4 +88,44 @@ public final class ManagedCcfBackup {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedCcfBackup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("restoreRegion", this.restoreRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedCcfBackup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedCcfBackup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedCcfBackup.
+     */
+    public static ManagedCcfBackup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedCcfBackup deserializedManagedCcfBackup = new ManagedCcfBackup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uri".equals(fieldName)) {
+                    deserializedManagedCcfBackup.uri = reader.getString();
+                } else if ("restoreRegion".equals(fieldName)) {
+                    deserializedManagedCcfBackup.restoreRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedCcfBackup;
+        });
+    }
 }

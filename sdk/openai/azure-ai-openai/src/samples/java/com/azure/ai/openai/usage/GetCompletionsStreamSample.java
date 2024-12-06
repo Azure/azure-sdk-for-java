@@ -39,7 +39,7 @@ public class GetCompletionsStreamSample {
         List<String> prompt = new ArrayList<>();
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
         IterableStream<Completions> completionsStream = client.getCompletionsStream(deploymentOrModelId,
-            new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true));
+            new CompletionsOptions(prompt).setMaxTokens(1000));
 
         completionsStream
             .stream()

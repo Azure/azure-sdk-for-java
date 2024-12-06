@@ -7,7 +7,6 @@ package com.azure.storage.blob.models;
  * A type that contains information about an object replication rule on a source blob.
  */
 public class ObjectReplicationRule {
-
     private final String ruleId;
     private final ObjectReplicationStatus status;
 
@@ -22,6 +21,8 @@ public class ObjectReplicationRule {
     }
 
     /**
+     * Gets the rule id.
+     *
      * @return The rule id.
      */
     public String getRuleId() {
@@ -29,6 +30,8 @@ public class ObjectReplicationRule {
     }
 
     /**
+     * Gets the {@link ObjectReplicationStatus}
+     *
      * @return The {@link ObjectReplicationStatus}
      */
     public ObjectReplicationStatus getStatus() {

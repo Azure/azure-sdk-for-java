@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SkuZoneDetail model. */
+/**
+ * The SkuZoneDetail model.
+ */
 @Fluent
-public final class SkuZoneDetail {
+public final class SkuZoneDetail implements JsonSerializable<SkuZoneDetail> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private List<String> name;
 
     /*
      * The capabilities property.
      */
-    @JsonProperty(value = "capabilities")
     private List<SkuCapability> capabilities;
 
-    /** Creates an instance of SkuZoneDetail class. */
+    /**
+     * Creates an instance of SkuZoneDetail class.
+     */
     public SkuZoneDetail() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public List<String> name() {
@@ -38,7 +44,7 @@ public final class SkuZoneDetail {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuZoneDetail object itself.
      */
@@ -49,7 +55,7 @@ public final class SkuZoneDetail {
 
     /**
      * Get the capabilities property: The capabilities property.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -58,7 +64,7 @@ public final class SkuZoneDetail {
 
     /**
      * Set the capabilities property: The capabilities property.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the SkuZoneDetail object itself.
      */
@@ -69,12 +75,53 @@ public final class SkuZoneDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("name", this.name, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuZoneDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuZoneDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuZoneDetail.
+     */
+    public static SkuZoneDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuZoneDetail deserializedSkuZoneDetail = new SkuZoneDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    List<String> name = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuZoneDetail.name = name;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
+                    deserializedSkuZoneDetail.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuZoneDetail;
+        });
     }
 }

@@ -142,23 +142,27 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
     public PagedIterable<ApiManagementServiceResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApiManagementServiceResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiManagementServiceResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApiManagementServiceResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiManagementServiceResource> list() {
         PagedIterable<ApiManagementServiceResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiManagementServiceResource> list(Context context) {
         PagedIterable<ApiManagementServiceResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
     }
 
     public Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(String resourceGroupName,
@@ -249,12 +253,12 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
     }
 
     public ApiManagementServiceResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
@@ -263,12 +267,12 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
     }
 
     public Response<ApiManagementServiceResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
@@ -277,12 +281,12 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
     }
 
     public ApiManagementServiceResource deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
@@ -291,12 +295,12 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
     }
 
     public ApiManagementServiceResource deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));

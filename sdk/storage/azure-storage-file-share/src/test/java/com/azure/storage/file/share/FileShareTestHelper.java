@@ -4,10 +4,8 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FileRange;
@@ -25,7 +23,6 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,8 +45,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class FileShareTestHelper {
-
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
+
+    static String getRandomString(int size) {
+        byte[] array = new byte[size];
+        ThreadLocalRandom.current().nextBytes(array);
+
+        return new String(array);
+    }
 
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
         ShareErrorCode errMessage) {
@@ -99,44 +102,6 @@ public class FileShareTestHelper {
 
     protected static InputStream getInputStream(byte[] data) {
         return new ByteArrayInputStream(data);
-    }
-
-    protected static byte[] getRandomBuffer(int length) {
-        final byte[] buff = new byte[length];
-        ThreadLocalRandom.current().nextBytes(buff);
-        return buff;
-    }
-
-    protected static File getRandomFile(int size) throws IOException {
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
-
-        if (size > Constants.MB) {
-            int mbWrites = size / Constants.MB;
-            int remainder = size % Constants.MB;
-
-            for (int i = 0; i < mbWrites; i++) {
-                fos.write(getRandomBuffer(Constants.MB));
-            }
-
-            if (remainder > 0) {
-                fos.write(getRandomBuffer(remainder));
-            }
-        } else {
-            fos.write(getRandomBuffer(size));
-        }
-
-        fos.close();
-        return file;
-    }
-
-    protected static boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
-        return StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
-    }
-
-    protected static ByteBuffer getRandomByteBuffer(int length) {
-        return ByteBuffer.wrap(FileShareTestHelper.getRandomBuffer(length));
     }
 
     protected static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {
@@ -287,7 +252,14 @@ public class FileShareTestHelper {
     //    }
 
     protected static boolean isAllWhitespace(String input) {
-        return input.matches("\\s*");
+        int length = input.length();
+        for (int i = 0; i < length; i++) {
+            if (!Character.isWhitespace(input.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

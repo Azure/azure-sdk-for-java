@@ -14,7 +14,6 @@ import java.io.IOException;
  * Encryption scope options to be used when creating a file system.
  */
 public final class FileSystemEncryptionScopeOptions implements JsonSerializable<FileSystemEncryptionScopeOptions> {
-
     /*
      * Optional.  Version 2021-06-08 and later. Specifies the default
      * encryption scope to set on the container and use for all future writes.
@@ -27,6 +26,12 @@ public final class FileSystemEncryptionScopeOptions implements JsonSerializable<
      * container.
      */
     private Boolean encryptionScopeOverridePrevented;
+
+    /**
+     * Creates a new instance of {@link FileSystemEncryptionScopeOptions}.
+     */
+    public FileSystemEncryptionScopeOptions() {
+    }
 
     /**
      * Get the defaultEncryptionScope property: Optional. Version 2021-06-08 and later. Specifies the default encryption

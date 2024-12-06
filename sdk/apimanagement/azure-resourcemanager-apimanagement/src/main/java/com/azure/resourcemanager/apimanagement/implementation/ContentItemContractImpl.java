@@ -121,10 +121,10 @@ public final class ContentItemContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.contentTypeId = Utils.getValueFromIdByName(innerObject.id(), "contentTypes");
-        this.contentItemId = Utils.getValueFromIdByName(innerObject.id(), "contentItems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.contentTypeId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentTypes");
+        this.contentItemId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contentItems");
     }
 
     public ContentItemContract refresh() {

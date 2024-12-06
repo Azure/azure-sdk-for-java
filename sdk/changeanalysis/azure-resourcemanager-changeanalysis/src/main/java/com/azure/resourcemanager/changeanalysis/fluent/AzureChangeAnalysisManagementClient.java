@@ -7,60 +7,62 @@ package com.azure.resourcemanager.changeanalysis.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AzureChangeAnalysisManagementClient class. */
+/**
+ * The interface for AzureChangeAnalysisManagementClient class.
+ */
 public interface AzureChangeAnalysisManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the ResourceChangesClient object to access its operations.
-     *
+     * 
      * @return the ResourceChangesClient object.
      */
     ResourceChangesClient getResourceChanges();
 
     /**
      * Gets the ChangesClient object to access its operations.
-     *
+     * 
      * @return the ChangesClient object.
      */
     ChangesClient getChanges();

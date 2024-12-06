@@ -26,10 +26,15 @@ public final class DataLakeMetrics {
     private DataLakeRetentionPolicy retentionPolicy;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     private Boolean includeApis;
+
+    /**
+     * Creates a new instance of {@link DataLakeMetrics}.
+     */
+    public DataLakeMetrics() {
+    }
 
     /**
      * Get the version property: The version of Storage Analytics to configure.
@@ -52,8 +57,7 @@ public final class DataLakeMetrics {
     }
 
     /**
-     * Get the enabled property: Indicates whether metrics are enabled for the
-     * DataLake service.
+     * Get the enabled property: Indicates whether metrics are enabled for the DataLake service.
      *
      * @return the enabled value.
      */
@@ -62,8 +66,7 @@ public final class DataLakeMetrics {
     }
 
     /**
-     * Set the enabled property: Indicates whether metrics are enabled for the
-     * DataLake service.
+     * Set the enabled property: Indicates whether metrics are enabled for the DataLake service.
      *
      * @param enabled the enabled value to set.
      * @return the DataLakeMetrics object itself.
@@ -94,8 +97,8 @@ public final class DataLakeMetrics {
     }
 
     /**
-     * Get the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @return the includeApis value.
      */
@@ -104,8 +107,8 @@ public final class DataLakeMetrics {
     }
 
     /**
-     * Set the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Set the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @param includeApis the includeApis value to set.
      * @return the DataLakeMetrics object itself.

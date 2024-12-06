@@ -7,6 +7,8 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.implementation.FutureTemperatureArguments;
 import com.azure.ai.openai.implementation.FutureTemperatureParameters;
 import com.azure.ai.openai.implementation.Parameters;
+import com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
+import com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper;
 import com.azure.ai.openai.models.AddUploadPartRequest;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
@@ -19,6 +21,7 @@ import com.azure.ai.openai.models.AzureChatExtensionDataSourceResponseCitation;
 import com.azure.ai.openai.models.AzureChatExtensionRetrievedDocument;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
@@ -40,7 +43,10 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.ContentFilterCitedDetectionResult;
+import com.azure.ai.openai.models.ContentFilterCompletionTextSpanResult;
 import com.azure.ai.openai.models.ContentFilterDetailedResults;
 import com.azure.ai.openai.models.ContentFilterDetectionResult;
 import com.azure.ai.openai.models.ContentFilterResult;
@@ -198,10 +204,34 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     public abstract void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
+    public abstract void testGetCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetCompletionsStreamTokenCutoff(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion);
+
+    @Test
     public abstract void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
     public abstract void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion);
 
     @Test
     public abstract void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
@@ -222,11 +252,51 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
+    void getCompletionsStreamUsageRunnerForNonAzure(BiConsumer<String, CompletionsOptions> testRunner) {
+        String deploymentId = "gpt-3.5-turbo-instruct";
+        List<String> prompt = new ArrayList<>();
+        prompt.add("Say this is a test");
+        CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
+        CompletionsOptionsAccessHelper.setStreamOptions(completionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept(deploymentId, completionsOptions);
+    }
+
+    void getCompletionsStreamTokenCutoffRunnerForNonAzure(BiConsumer<String, CompletionsOptions> testRunner) {
+        String deploymentId = "gpt-3.5-turbo-instruct";
+        List<String> prompt = new ArrayList<>();
+        prompt.add("Say this is a test");
+        CompletionsOptions completionsOptions = new CompletionsOptions(prompt).setMaxTokens(2);
+        CompletionsOptionsAccessHelper.setStreamOptions(completionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept(deploymentId, completionsOptions);
+    }
+
     void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
         String deploymentId = "gpt-35-turbo-instruct";
         List<String> prompt = new ArrayList<>();
         prompt.add("Say this is a test");
         testRunner.accept(deploymentId, prompt);
+    }
+
+    void getCompletionsStreamUsageRunner(BiConsumer<String, CompletionsOptions> testRunner) {
+        String deploymentId = "gpt-35-turbo-instruct";
+        List<String> prompt = new ArrayList<>();
+        prompt.add("Say this is a test");
+        CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
+        CompletionsOptionsAccessHelper.setStreamOptions(completionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept(deploymentId, completionsOptions);
+    }
+
+    void getCompletionsStreamTokenCutoffRunner(BiConsumer<String, CompletionsOptions> testRunner) {
+        String deploymentId = "gpt-35-turbo-instruct";
+        List<String> prompt = new ArrayList<>();
+        prompt.add("Say this is a test");
+        CompletionsOptions completionsOptions = new CompletionsOptions(prompt).setMaxTokens(2);
+        CompletionsOptionsAccessHelper.setStreamOptions(completionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept(deploymentId, completionsOptions);
     }
 
     void getCompletionsFromSinglePromptRunnerForNonAzure(BiConsumer<String, String> testRunner) {
@@ -242,7 +312,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
-        testRunner.accept("gpt-35-turbo-1106", getChatMessages());
+        testRunner.accept("gpt-4o", getChatMessages());
+    }
+
+    void getChatCompletionsStreamUsageRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(getChatMessages());
+        ChatCompletionsOptionsAccessHelper.setStreamOptions(chatCompletionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept("gpt-4o", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsStreamTokenCutoffRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(getChatMessages()).setMaxCompletionTokens(10);
+        ChatCompletionsOptionsAccessHelper.setStreamOptions(chatCompletionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept("gpt-4o", chatCompletionsOptions);
     }
 
     void getChatCompletionsStructuredOutputInResponseFormatRunner(
@@ -271,7 +356,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
-        testRunner.accept("gpt-3.5-turbo", getChatMessages());
+        testRunner.accept("gpt-4o", getChatMessages());
+    }
+
+    void getChatCompletionsUsageRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(getChatMessages());
+        ChatCompletionsOptionsAccessHelper.setStreamOptions(chatCompletionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept("gpt-4o", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsStreamTokenCutoffRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(getChatMessages()).setMaxCompletionTokens(10);
+        ChatCompletionsOptionsAccessHelper.setStreamOptions(chatCompletionsOptions,
+            new ChatCompletionStreamOptions().setIncludeUsage(true));
+        testRunner.accept("gpt-4o", chatCompletionsOptions);
     }
 
     void getChatCompletionsWithResponseRunnerForNonAzure(
@@ -327,7 +427,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
-        testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
+        testRunner.accept("gpt-4o", getChatMessages());
     }
 
     void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
@@ -646,6 +746,50 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
     }
 
+    static void assertCompletionStreamUsage(List<Completions> completions) {
+        int size = completions.size();
+        assertTrue(size > 0);
+        Completions lastCompletion = completions.get(size - 1);
+        CompletionsUsage usage = lastCompletion.getUsage();
+        assertNotNull(usage);
+        assertTrue(usage.getTotalTokens() > 0);
+    }
+
+    static void assertCompletionStreamTokenCutoff(List<Completions> completions) {
+        assertCompletionStreamUsage(completions);
+        int size = completions.size();
+        Completions lastCompletion = completions.get(size - 1);
+        CompletionsUsage usage = lastCompletion.getUsage();
+        assertTrue(usage.getCompletionTokens() <= 2);
+    }
+
+    static void assertChatCompletionStreamUsage(List<ChatCompletions> completions) {
+        int size = completions.size();
+        assertTrue(size > 0);
+        ChatCompletions lastCompletion = completions.get(size - 1);
+        CompletionsUsage usage = lastCompletion.getUsage();
+        assertNotNull(usage);
+        assertTrue(usage.getTotalTokens() > 0);
+    }
+
+    static void assertChatCompletionStreamUsageTokenDetails(List<ChatCompletions> completions) {
+        int size = completions.size();
+        assertTrue(size > 0);
+        ChatCompletions lastCompletion = completions.get(size - 1);
+        CompletionsUsage usage = lastCompletion.getUsage();
+        assertNotNull(usage);
+        assertNotNull(usage.getPromptTokensDetails());
+        assertNotNull(usage.getCompletionTokensDetails());
+    }
+
+    static void assertChatCompletionStreamTokenCutoff(List<ChatCompletions> completions) {
+        assertChatCompletionStreamUsage(completions);
+        int size = completions.size();
+        ChatCompletions lastCompletion = completions.get(size - 1);
+        CompletionsUsage usage = lastCompletion.getUsage();
+        assertTrue(usage.getCompletionTokens() <= 10);
+    }
+
     static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole,
         ChatCompletions actual) {
         List<ChatChoice> choices = actual.getChoices();
@@ -813,6 +957,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (protectedMaterialCode != null) {
             assertFalse(protectedMaterialCode.isFiltered());
             assertFalse(protectedMaterialCode.isDetected());
+        }
+
+        ContentFilterCompletionTextSpanResult ungroundedMaterial = contentFilterResults.getUngroundedMaterial();
+        if (ungroundedMaterial != null) {
+            assertFalse(ungroundedMaterial.isFiltered());
+            assertFalse(ungroundedMaterial.isDetected());
         }
     }
 

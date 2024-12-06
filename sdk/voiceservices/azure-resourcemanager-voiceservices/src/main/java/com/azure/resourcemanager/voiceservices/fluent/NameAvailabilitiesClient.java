@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.voiceservices.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityRequest;
 
-/** An instance of this class provides access to all the operations defined in NameAvailabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NameAvailabilitiesClient.
+ */
 public interface NameAvailabilitiesClient {
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @param context The context to associate with this operation.
@@ -30,7 +32,7 @@ public interface NameAvailabilitiesClient {
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure service impacted by the service health event. */
+/**
+ * Azure service impacted by the service health event.
+ */
 @Fluent
-public final class Impact {
+public final class Impact implements JsonSerializable<Impact> {
     /*
      * Impacted service name.
      */
-    @JsonProperty(value = "impactedService")
     private String impactedService;
 
     /*
      * List regions impacted by the service health event.
      */
-    @JsonProperty(value = "impactedRegions")
     private List<ImpactedServiceRegion> impactedRegions;
 
-    /** Creates an instance of Impact class. */
+    /**
+     * Creates an instance of Impact class.
+     */
     public Impact() {
     }
 
     /**
      * Get the impactedService property: Impacted service name.
-     *
+     * 
      * @return the impactedService value.
      */
     public String impactedService() {
@@ -38,7 +44,7 @@ public final class Impact {
 
     /**
      * Set the impactedService property: Impacted service name.
-     *
+     * 
      * @param impactedService the impactedService value to set.
      * @return the Impact object itself.
      */
@@ -49,7 +55,7 @@ public final class Impact {
 
     /**
      * Get the impactedRegions property: List regions impacted by the service health event.
-     *
+     * 
      * @return the impactedRegions value.
      */
     public List<ImpactedServiceRegion> impactedRegions() {
@@ -58,7 +64,7 @@ public final class Impact {
 
     /**
      * Set the impactedRegions property: List regions impacted by the service health event.
-     *
+     * 
      * @param impactedRegions the impactedRegions value to set.
      * @return the Impact object itself.
      */
@@ -69,12 +75,54 @@ public final class Impact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (impactedRegions() != null) {
             impactedRegions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("impactedService", this.impactedService);
+        jsonWriter.writeArrayField("impactedRegions", this.impactedRegions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Impact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Impact if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Impact.
+     */
+    public static Impact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Impact deserializedImpact = new Impact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("impactedService".equals(fieldName)) {
+                    deserializedImpact.impactedService = reader.getString();
+                } else if ("impactedRegions".equals(fieldName)) {
+                    List<ImpactedServiceRegion> impactedRegions
+                        = reader.readArray(reader1 -> ImpactedServiceRegion.fromJson(reader1));
+                    deserializedImpact.impactedRegions = impactedRegions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImpact;
+        });
     }
 }

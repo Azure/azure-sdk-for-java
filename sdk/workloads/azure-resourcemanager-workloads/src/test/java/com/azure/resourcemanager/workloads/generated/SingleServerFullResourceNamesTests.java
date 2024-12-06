@@ -17,34 +17,39 @@ public final class SingleServerFullResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SingleServerFullResourceNames model = BinaryData.fromString(
-            "{\"namingPatternType\":\"FullResourceName\",\"virtualMachine\":{\"vmName\":\"qztpp\",\"hostName\":\"o\",\"networkInterfaces\":[{\"networkInterfaceName\":\"jaltolmnc\"}],\"osDiskName\":\"obqwcsdbnwdcfh\",\"dataDiskNames\":{\"t\":[\"pfuvglsbjjca\",\"vxb\"],\"xqtvcofu\":[\"dut\",\"cormr\"],\"gdknnqv\":[\"lvkgju\"],\"s\":[\"znqntoru\",\"sgsahmkycgr\",\"uwjuetaeburuvdmo\"]}}}")
+            "{\"namingPatternType\":\"FullResourceName\",\"virtualMachine\":{\"vmName\":\"eqdcv\",\"hostName\":\"hvoodsotbobzd\",\"networkInterfaces\":[{\"networkInterfaceName\":\"wvnhdldwmgx\"},{\"networkInterfaceName\":\"rslpmutwuoeg\"}],\"osDiskName\":\"khjwn\",\"dataDiskNames\":{\"yhrfouyftaakcpw\":[\"luicpdggkzzlvmbm\",\"axmodfvuef\",\"wsbpfvm\"],\"mquxvypo\":[\"zvqtmnubexkp\",\"ksmond\"]}}}")
             .toObject(SingleServerFullResourceNames.class);
-        Assertions.assertEquals("qztpp", model.virtualMachine().vmName());
-        Assertions.assertEquals("o", model.virtualMachine().hostname());
-        Assertions.assertEquals("jaltolmnc", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("obqwcsdbnwdcfh", model.virtualMachine().osDiskName());
-        Assertions.assertEquals("pfuvglsbjjca", model.virtualMachine().dataDiskNames().get("t").get(0));
+        Assertions.assertEquals("eqdcv", model.virtualMachine().vmName());
+        Assertions.assertEquals("hvoodsotbobzd", model.virtualMachine().hostname());
+        Assertions.assertEquals("wvnhdldwmgx",
+            model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("khjwn", model.virtualMachine().osDiskName());
+        Assertions.assertEquals("luicpdggkzzlvmbm",
+            model.virtualMachine().dataDiskNames().get("yhrfouyftaakcpw").get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SingleServerFullResourceNames model = new SingleServerFullResourceNames()
-            .withVirtualMachine(new VirtualMachineResourceNames().withVmName("qztpp")
-                .withHostname("o")
+            .withVirtualMachine(new VirtualMachineResourceNames().withVmName("eqdcv")
+                .withHostname("hvoodsotbobzd")
                 .withNetworkInterfaces(
-                    Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("jaltolmnc")))
-                .withOsDiskName("obqwcsdbnwdcfh")
-                .withDataDiskNames(mapOf("t", Arrays.asList("pfuvglsbjjca", "vxb"), "xqtvcofu",
-                    Arrays.asList("dut", "cormr"), "gdknnqv", Arrays.asList("lvkgju"), "s",
-                    Arrays.asList("znqntoru", "sgsahmkycgr", "uwjuetaeburuvdmo"))));
+                    Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("wvnhdldwmgx"),
+                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("rslpmutwuoeg")))
+                .withOsDiskName("khjwn")
+                .withDataDiskNames(mapOf("yhrfouyftaakcpw", Arrays.asList("luicpdggkzzlvmbm", "axmodfvuef", "wsbpfvm"),
+                    "mquxvypo", Arrays.asList("zvqtmnubexkp", "ksmond"))));
         model = BinaryData.fromObject(model).toObject(SingleServerFullResourceNames.class);
-        Assertions.assertEquals("qztpp", model.virtualMachine().vmName());
-        Assertions.assertEquals("o", model.virtualMachine().hostname());
-        Assertions.assertEquals("jaltolmnc", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("obqwcsdbnwdcfh", model.virtualMachine().osDiskName());
-        Assertions.assertEquals("pfuvglsbjjca", model.virtualMachine().dataDiskNames().get("t").get(0));
+        Assertions.assertEquals("eqdcv", model.virtualMachine().vmName());
+        Assertions.assertEquals("hvoodsotbobzd", model.virtualMachine().hostname());
+        Assertions.assertEquals("wvnhdldwmgx",
+            model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("khjwn", model.virtualMachine().osDiskName());
+        Assertions.assertEquals("luicpdggkzzlvmbm",
+            model.virtualMachine().dataDiskNames().get("yhrfouyftaakcpw").get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

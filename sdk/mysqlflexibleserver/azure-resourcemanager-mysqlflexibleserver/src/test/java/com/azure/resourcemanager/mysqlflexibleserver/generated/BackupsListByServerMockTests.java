@@ -22,7 +22,7 @@ public final class BackupsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupType\":\"kokwbqplhlvnu\",\"completedTime\":\"2021-08-29T14:02:44Z\",\"source\":\"lrphwzsoldw\"},\"id\":\"uqdunvmnnrwrbi\",\"name\":\"rk\",\"type\":\"alywjhhgdn\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupType\":\"kbir\",\"completedTime\":\"2021-03-20T05:32:50Z\",\"source\":\"hlhkjoqrvqqaatj\"},\"id\":\"rv\",\"name\":\"oupmfii\",\"type\":\"fggjioolvr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class BackupsListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ServerBackup> response
-            = manager.backups().listByServer("crxgibb", "axconfozauo", com.azure.core.util.Context.NONE);
+            = manager.backups().listByServer("wfqatmtd", "tmdvypgikdgs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kokwbqplhlvnu", response.iterator().next().backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T14:02:44Z"),
+        Assertions.assertEquals("kbir", response.iterator().next().backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T05:32:50Z"),
             response.iterator().next().completedTime());
-        Assertions.assertEquals("lrphwzsoldw", response.iterator().next().source());
+        Assertions.assertEquals("hlhkjoqrvqqaatj", response.iterator().next().source());
     }
 }

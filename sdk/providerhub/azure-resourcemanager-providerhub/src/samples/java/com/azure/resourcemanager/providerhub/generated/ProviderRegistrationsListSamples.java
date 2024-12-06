@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-/** Samples for ProviderRegistrations List. */
+/**
+ * Samples for ProviderRegistrations List.
+ */
 public final class ProviderRegistrationsListSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ProviderRegistrations_List.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * ProviderRegistrations_List.json
      */
     /**
      * Sample code: ProviderRegistrations_List.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void providerRegistrationsList(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {

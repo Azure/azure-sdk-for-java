@@ -5,76 +5,70 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeAdditionalEnforcedPermission;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of a topic type.
  */
 @Fluent
-public final class TopicTypeProperties {
+public final class TopicTypeProperties implements JsonSerializable<TopicTypeProperties> {
     /*
      * Namespace of the provider of the topic type.
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * Display Name for the topic type.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Description of the topic type.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Region type of the resource.
      */
-    @JsonProperty(value = "resourceRegionType")
     private ResourceRegionType resourceRegionType;
 
     /*
      * Provisioning state of the topic type.
      */
-    @JsonProperty(value = "provisioningState")
     private TopicTypeProvisioningState provisioningState;
 
     /*
      * List of locations supported by this topic type.
      */
-    @JsonProperty(value = "supportedLocations")
     private List<String> supportedLocations;
 
     /*
      * Source resource format.
      */
-    @JsonProperty(value = "sourceResourceFormat")
     private String sourceResourceFormat;
 
     /*
      * Supported source scopes.
      */
-    @JsonProperty(value = "supportedScopesForSource")
     private List<TopicTypeSourceScope> supportedScopesForSource;
 
     /*
      * Flag to indicate that a topic type can support both regional or global system topics.
      */
-    @JsonProperty(value = "areRegionalAndGlobalSourcesSupported")
     private Boolean areRegionalAndGlobalSourcesSupported;
 
     /*
      * Permissions which are enforced for creating and updating system topics of this this topic type.
      */
-    @JsonProperty(value = "additionalEnforcedPermissions")
     private List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions;
 
     /**
@@ -297,5 +291,81 @@ public final class TopicTypeProperties {
         if (additionalEnforcedPermissions() != null) {
             additionalEnforcedPermissions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("resourceRegionType",
+            this.resourceRegionType == null ? null : this.resourceRegionType.toString());
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeArrayField("supportedLocations", this.supportedLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sourceResourceFormat", this.sourceResourceFormat);
+        jsonWriter.writeArrayField("supportedScopesForSource", this.supportedScopesForSource,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeBooleanField("areRegionalAndGlobalSourcesSupported", this.areRegionalAndGlobalSourcesSupported);
+        jsonWriter.writeArrayField("additionalEnforcedPermissions", this.additionalEnforcedPermissions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopicTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopicTypeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopicTypeProperties.
+     */
+    public static TopicTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopicTypeProperties deserializedTopicTypeProperties = new TopicTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedTopicTypeProperties.provider = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedTopicTypeProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedTopicTypeProperties.description = reader.getString();
+                } else if ("resourceRegionType".equals(fieldName)) {
+                    deserializedTopicTypeProperties.resourceRegionType
+                        = ResourceRegionType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTopicTypeProperties.provisioningState
+                        = TopicTypeProvisioningState.fromString(reader.getString());
+                } else if ("supportedLocations".equals(fieldName)) {
+                    List<String> supportedLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTopicTypeProperties.supportedLocations = supportedLocations;
+                } else if ("sourceResourceFormat".equals(fieldName)) {
+                    deserializedTopicTypeProperties.sourceResourceFormat = reader.getString();
+                } else if ("supportedScopesForSource".equals(fieldName)) {
+                    List<TopicTypeSourceScope> supportedScopesForSource
+                        = reader.readArray(reader1 -> TopicTypeSourceScope.fromString(reader1.getString()));
+                    deserializedTopicTypeProperties.supportedScopesForSource = supportedScopesForSource;
+                } else if ("areRegionalAndGlobalSourcesSupported".equals(fieldName)) {
+                    deserializedTopicTypeProperties.areRegionalAndGlobalSourcesSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalEnforcedPermissions".equals(fieldName)) {
+                    List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions
+                        = reader.readArray(reader1 -> TopicTypeAdditionalEnforcedPermission.fromJson(reader1));
+                    deserializedTopicTypeProperties.additionalEnforcedPermissions = additionalEnforcedPermissions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopicTypeProperties;
+        });
     }
 }

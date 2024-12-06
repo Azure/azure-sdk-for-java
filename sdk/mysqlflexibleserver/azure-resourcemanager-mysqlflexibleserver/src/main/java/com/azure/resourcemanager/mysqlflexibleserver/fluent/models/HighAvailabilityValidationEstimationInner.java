@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * High availability validation properties of a server.
  */
 @Fluent
-public final class HighAvailabilityValidationEstimationInner {
+public final class HighAvailabilityValidationEstimationInner
+    implements JsonSerializable<HighAvailabilityValidationEstimationInner> {
     /*
      * Estimated seconds of downtime for the deployment.
      */
-    @JsonProperty(value = "estimatedDowntime", access = JsonProperty.Access.WRITE_ONLY)
     private Integer estimatedDowntime;
 
     /*
      * Scheduled Availability zone of the standby server.
      */
-    @JsonProperty(value = "scheduledStandbyAvailabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String scheduledStandbyAvailabilityZone;
 
     /*
      * Expected Availability zone of the standby server.
      */
-    @JsonProperty(value = "expectedStandbyAvailabilityZone")
     private String expectedStandbyAvailabilityZone;
 
     /**
@@ -81,5 +83,49 @@ public final class HighAvailabilityValidationEstimationInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expectedStandbyAvailabilityZone", this.expectedStandbyAvailabilityZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HighAvailabilityValidationEstimationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HighAvailabilityValidationEstimationInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HighAvailabilityValidationEstimationInner.
+     */
+    public static HighAvailabilityValidationEstimationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HighAvailabilityValidationEstimationInner deserializedHighAvailabilityValidationEstimationInner
+                = new HighAvailabilityValidationEstimationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("estimatedDowntime".equals(fieldName)) {
+                    deserializedHighAvailabilityValidationEstimationInner.estimatedDowntime
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("scheduledStandbyAvailabilityZone".equals(fieldName)) {
+                    deserializedHighAvailabilityValidationEstimationInner.scheduledStandbyAvailabilityZone
+                        = reader.getString();
+                } else if ("expectedStandbyAvailabilityZone".equals(fieldName)) {
+                    deserializedHighAvailabilityValidationEstimationInner.expectedStandbyAvailabilityZone
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHighAvailabilityValidationEstimationInner;
+        });
     }
 }

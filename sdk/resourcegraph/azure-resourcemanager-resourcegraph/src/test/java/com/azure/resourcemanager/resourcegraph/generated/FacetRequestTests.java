@@ -9,11 +9,10 @@ import com.azure.resourcemanager.resourcegraph.models.FacetRequest;
 import com.azure.resourcemanager.resourcegraph.models.FacetRequestOptions;
 import com.azure.resourcemanager.resourcegraph.models.FacetSortOrder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FacetRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FacetRequest model = BinaryData.fromString(
             "{\"expression\":\"soqijg\",\"options\":{\"sortBy\":\"bpazlobcufpdzn\",\"sortOrder\":\"asc\",\"filter\":\"qqjnqgl\",\"$top\":2127527772}}")
             .toObject(FacetRequest.class);
@@ -24,8 +23,8 @@ public final class FacetRequestTests {
         Assertions.assertEquals(2127527772, model.options().top());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FacetRequest model = new FacetRequest().withExpression("soqijg")
             .withOptions(new FacetRequestOptions().withSortBy("bpazlobcufpdzn")
                 .withSortOrder(FacetSortOrder.ASC)
