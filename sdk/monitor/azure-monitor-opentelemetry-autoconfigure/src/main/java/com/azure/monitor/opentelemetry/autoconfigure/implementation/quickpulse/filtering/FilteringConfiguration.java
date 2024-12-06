@@ -33,11 +33,9 @@ public class FilteringConfiguration {
     }
 
     public FilteringConfiguration(CollectionConfigurationInfo configuration) {
-        validDerivedMetricInfos = new HashMap<>();
-        validDocumentFilterConjunctionGroupInfos = new HashMap<>();
+        validDerivedMetricInfos = parseMetricFilterConfiguration(configuration);
+        validDocumentFilterConjunctionGroupInfos = parseDocumentFilterConfiguration(configuration);
         etag = configuration.getETag();
-        parseDocumentFilterConfiguration(configuration);
-        parseMetricFilterConfiguration(configuration);
     }
 
     public List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(String telemetryType) {
@@ -61,7 +59,9 @@ public class FilteringConfiguration {
         return etag;
     }
 
-    private void parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
+    private Map<String, Map<String, List<FilterConjunctionGroupInfo>>>
+        parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
+        Map<String, Map<String, List<FilterConjunctionGroupInfo>>> result = new HashMap<>();
         for (DocumentStreamInfo documentStreamInfo : configuration.getDocumentStreams()) {
             String documentStreamId = documentStreamInfo.getId();
             for (DocumentFilterConjunctionGroupInfo documentFilterGroupInfo : documentStreamInfo
@@ -72,12 +72,11 @@ public class FilteringConfiguration {
                 // TODO (harskaur): In later PR, validate input before adding it to newValidDocumentsConfig
                 // TODO (harskaur): If any validator methods throw an exception, catch the exception and track the error for post request body
 
-                if (!validDocumentFilterConjunctionGroupInfos.containsKey(telemetryType)) {
-                    validDocumentFilterConjunctionGroupInfos.put(telemetryType, new HashMap<>());
+                if (!result.containsKey(telemetryType)) {
+                    result.put(telemetryType, new HashMap<>());
                 }
 
-                Map<String, List<FilterConjunctionGroupInfo>> innerMap
-                    = validDocumentFilterConjunctionGroupInfos.get(telemetryType);
+                Map<String, List<FilterConjunctionGroupInfo>> innerMap = result.get(telemetryType);
                 if (innerMap.containsKey(documentStreamId)) {
                     innerMap.get(documentStreamId).add(filterGroup);
                 } else {
@@ -87,9 +86,12 @@ public class FilteringConfiguration {
                 }
             }
         }
+        return result;
     }
 
-    private void parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
+    private Map<String, List<DerivedMetricInfo>>
+        parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
+        Map<String, List<DerivedMetricInfo>> result = new HashMap<>();
         for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
             String telemetryType = derivedMetricInfo.getTelemetryType();
             String id = derivedMetricInfo.getId();
@@ -98,15 +100,16 @@ public class FilteringConfiguration {
                 // TODO (harskaur): In later PR, validate input before adding it to newValidConfig
                 // TODO (harskaur): If any validator methods throw an exception, catch the exception and track the error for post request body
 
-                if (validDerivedMetricInfos.containsKey(telemetryType)) {
-                    validDerivedMetricInfos.get(telemetryType).add(derivedMetricInfo);
+                if (result.containsKey(telemetryType)) {
+                    result.get(telemetryType).add(derivedMetricInfo);
                 } else {
                     List<DerivedMetricInfo> infos = new ArrayList<>();
                     infos.add(derivedMetricInfo);
-                    validDerivedMetricInfos.put(telemetryType, infos);
+                    result.put(telemetryType, infos);
                 }
             }
         }
+        return result;
     }
 
 }

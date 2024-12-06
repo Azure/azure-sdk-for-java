@@ -123,17 +123,17 @@ final class QuickPulseDataCollector {
             return;
         }
         int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
-
+        FilteringConfiguration currentConfig = configuration.get();
         MonitorDomain data = telemetryItem.getData().getBaseData();
         if (data instanceof RequestData) {
             RequestData requestTelemetry = (RequestData) data;
-            addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem));
+            addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem), currentConfig);
         } else if (data instanceof RemoteDependencyData) {
-            addDependency((RemoteDependencyData) data, itemCount);
+            addDependency((RemoteDependencyData) data, itemCount, currentConfig);
         } else if (data instanceof TelemetryExceptionData) {
-            addException((TelemetryExceptionData) data, itemCount);
+            addException((TelemetryExceptionData) data, itemCount, currentConfig);
         } else if (data instanceof MessageData) {
-            addTrace((MessageData) data);
+            addTrace((MessageData) data, currentConfig);
         }
     }
 
@@ -147,11 +147,12 @@ final class QuickPulseDataCollector {
         return tags == null ? null : tags.get(ContextTagKeys.AI_OPERATION_NAME.toString());
     }
 
-    private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType) {
+    private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType,
+        FilteringConfiguration currentConfig) {
         // TODO (harskaur): In a future PR, check if the document matches any filter (using Filter class)
         // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
         Map<String, List<FilterConjunctionGroupInfo>> documentsConfig
-            = configuration.get().fetchDocumentsConfigForTelemetryType(telemetryType);
+            = currentConfig.fetchDocumentsConfigForTelemetryType(telemetryType);
         try {
             for (Map.Entry<String, List<FilterConjunctionGroupInfo>> e2 : documentsConfig.entrySet()) {
                 logger.verbose(e2.getKey());
@@ -166,11 +167,12 @@ final class QuickPulseDataCollector {
         return true; // change this
     }
 
-    private void applyMetricFilters(TelemetryColumns columns, String telemetryType) {
+    private void applyMetricFilters(TelemetryColumns columns, String telemetryType,
+        FilteringConfiguration currentConfig) {
         // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
         // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
         // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
-        List<DerivedMetricInfo> metricsConfig = configuration.get().fetchMetricConfigForTelemetryType(telemetryType);
+        List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
         try {
             for (DerivedMetricInfo dmi : metricsConfig) {
                 logger.verbose(dmi.toJsonString());
@@ -180,7 +182,7 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addDependency(RemoteDependencyData telemetry, int itemCount) {
+    private void addDependency(RemoteDependencyData telemetry, int itemCount, FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         if (counters == null) {
             return;
@@ -193,9 +195,9 @@ final class QuickPulseDataCollector {
         }
 
         DependencyDataColumns columns = new DependencyDataColumns(telemetry);
-        applyMetricFilters(columns, "Dependency");
+        applyMetricFilters(columns, "Dependency", currentConfig);
 
-        if (matchesDocumentFilters(columns, "Dependency")) {
+        if (matchesDocumentFilters(columns, "Dependency", currentConfig)) {
             RemoteDependency dependencyDoc = new RemoteDependency();
             dependencyDoc.setName(telemetry.getName());
             dependencyDoc.setCommandName(telemetry.getData());
@@ -211,7 +213,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addException(TelemetryExceptionData exceptionData, int itemCount) {
+    private void addException(TelemetryExceptionData exceptionData, int itemCount,
+        FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         if (counters == null) {
             return;
@@ -220,9 +223,9 @@ final class QuickPulseDataCollector {
         counters.exceptions.addAndGet(itemCount);
 
         ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
-        applyMetricFilters(columns, "Exception");
+        applyMetricFilters(columns, "Exception", currentConfig);
 
-        if (matchesDocumentFilters(columns, "Exception")) {
+        if (matchesDocumentFilters(columns, "Exception", currentConfig)) {
             List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
             // Exception is a class from live metrics swagger that represents a document for an exception
             Exception exceptionDoc = new Exception();
@@ -241,7 +244,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addRequest(RequestData requestTelemetry, int itemCount, String operationName) {
+    private void addRequest(RequestData requestTelemetry, int itemCount, String operationName,
+        FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         if (counters == null) {
             return;
@@ -253,9 +257,9 @@ final class QuickPulseDataCollector {
         }
 
         RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
-        applyMetricFilters(columns, "Request");
+        applyMetricFilters(columns, "Request", currentConfig);
 
-        if (matchesDocumentFilters(columns, "Request")) {
+        if (matchesDocumentFilters(columns, "Request", currentConfig)) {
             Request requestDoc = new Request();
             requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
             requestDoc.setResponseCode(requestTelemetry.getResponseCode());
@@ -271,7 +275,7 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addTrace(MessageData traceTelemetry) {
+    private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig) {
         // TODO (harskaur): implement support for filtering of trace documents in future PR
     }
 
