@@ -494,4 +494,17 @@ class FilterTest {
 
     }
 
+    @Test
+    @Description("Testing if Filter util method is able to parse valid duration strings to microseconds from filtering config")
+    void testDurationParsingFromConfig() {
+        assertEquals(5000000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:5"));
+        assertEquals(1234567890000L, Filter.getMicroSecondsFromFilterTimestampString("14.6:56:7.89"));
+        assertEquals(200000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0.2"));
+        assertEquals(999000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0.999"));
+        assertEquals(5000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0.005"));
+        assertEquals(0L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0"));
+        assertEquals(61000000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:1:1"));
+        assertEquals(3600001000L, Filter.getMicroSecondsFromFilterTimestampString("0.1:0:0.001"));
+    }
+
 }

@@ -4,14 +4,29 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownRequestColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.List;
+import java.util.ArrayList;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRemoteDependencyTelemetry;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRequestTelemetry;
@@ -233,5 +248,111 @@ class QuickPulseDataCollectorTests {
         }
         // no telemetry items are added when QP_IS_OFF
         assertThat(collector.getAndRestart().documentList.size()).isEqualTo(0);
+    }
+
+    @Test
+    void honorDefaultConfig() {
+        CollectionConfigurationInfo defaultConfig = new CollectionConfigurationInfo();
+        List<DocumentStreamInfo> documentStreams = new ArrayList<>();
+        List<DocumentFilterConjunctionGroupInfo> docFilterGroups = new ArrayList<>();
+
+        FilterInfo successFalse = new FilterInfo();
+        successFalse.setFieldName(KnownRequestColumns.SUCCESS);
+        successFalse.setPredicate(PredicateType.EQUAL);
+        successFalse.setComparand("false");
+        List<FilterInfo> filters = new ArrayList<>();
+        filters.add(successFalse);
+
+        DocumentFilterConjunctionGroupInfo requestDocFilterGroup = new DocumentFilterConjunctionGroupInfo();
+        requestDocFilterGroup.setTelemetryType(TelemetryType.REQUEST);
+        FilterConjunctionGroupInfo requestGroup = new FilterConjunctionGroupInfo();
+        requestGroup.setFilters(filters);
+        requestDocFilterGroup.setFilters(requestGroup);
+        docFilterGroups.add(requestDocFilterGroup);
+
+        DocumentFilterConjunctionGroupInfo dependencyDocFilterGroup = new DocumentFilterConjunctionGroupInfo();
+        dependencyDocFilterGroup.setTelemetryType(TelemetryType.DEPENDENCY);
+        FilterConjunctionGroupInfo dependencyGroup = new FilterConjunctionGroupInfo();
+        dependencyGroup.setFilters(filters);
+        dependencyDocFilterGroup.setFilters(dependencyGroup);
+        docFilterGroups.add(dependencyDocFilterGroup);
+
+        DocumentFilterConjunctionGroupInfo exceptionDocFilterGroup = new DocumentFilterConjunctionGroupInfo();
+        exceptionDocFilterGroup.setTelemetryType(TelemetryType.EXCEPTION);
+        FilterConjunctionGroupInfo exceptionGroup = new FilterConjunctionGroupInfo();
+        exceptionGroup.setFilters(new ArrayList<>());
+        exceptionDocFilterGroup.setFilters(exceptionGroup);
+        docFilterGroups.add(exceptionDocFilterGroup);
+
+        DocumentFilterConjunctionGroupInfo eventDocFilterGroup = new DocumentFilterConjunctionGroupInfo();
+        eventDocFilterGroup.setTelemetryType(TelemetryType.EVENT);
+        FilterConjunctionGroupInfo eventGroup = new FilterConjunctionGroupInfo();
+        eventGroup.setFilters(new ArrayList<>());
+        eventDocFilterGroup.setFilters(eventGroup);
+        docFilterGroups.add(eventDocFilterGroup);
+
+        DocumentFilterConjunctionGroupInfo traceDocFilterGroup = new DocumentFilterConjunctionGroupInfo();
+        traceDocFilterGroup.setTelemetryType(TelemetryType.TRACE);
+        FilterConjunctionGroupInfo traceGroup = new FilterConjunctionGroupInfo();
+        traceGroup.setFilters(new ArrayList<>());
+        traceDocFilterGroup.setFilters(traceGroup);
+        docFilterGroups.add(traceDocFilterGroup);
+
+        DocumentStreamInfo documentStreamInfo = new DocumentStreamInfo();
+        documentStreamInfo.setId("all-types-default");
+        documentStreamInfo.setDocumentFilterGroups(docFilterGroups);
+        documentStreams.add(documentStreamInfo);
+
+        defaultConfig.setDocumentStreams(documentStreams);
+        defaultConfig.setETag("random-etag");
+        defaultConfig.setMetrics(new ArrayList<>());
+
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration(defaultConfig));
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
+
+        collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
+        collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
+
+        TelemetryItem successRequest = createRequestTelemetry("request-success", new Date(), 300, "200", true);
+        successRequest.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(successRequest);
+
+        TelemetryItem failedRequest = createRequestTelemetry("request-failed", new Date(), 300, "400", false);
+        successRequest.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(failedRequest);
+
+        TelemetryItem sucDep = createRemoteDependencyTelemetry("dep-success", "dep-success", 300, true);
+        sucDep.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(sucDep);
+
+        TelemetryItem sucFail = createRemoteDependencyTelemetry("dep-failed", "dep-failed", 300, false);
+        sucFail.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(sucFail);
+
+        TelemetryItem exception = ExceptionTelemetryBuilder.create().build();
+        exception.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(exception);
+
+        TelemetryItem trace = MessageTelemetryBuilder.create().build();
+        trace.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(trace);
+
+        QuickPulseDataCollector.FinalCounters counters = collector.peek();
+        List<DocumentIngress> documents = counters.documentList;
+
+        assertThat(documents.size()).isEqualTo(4);
+        DocumentIngress failedReqDoc = counters.documentList.get(0);
+        assertThat(failedReqDoc.getDocumentType()).isEqualTo(DocumentType.REQUEST);
+        assertThat(((Request) failedReqDoc).getName()).isEqualTo("request-failed");
+        DocumentIngress failedDepDoc = counters.documentList.get(1);
+        assertThat(failedDepDoc.getDocumentType()).isEqualTo(DocumentType.REMOTE_DEPENDENCY);
+        assertThat(((RemoteDependency) failedDepDoc).getName()).isEqualTo("dep-failed");
+        DocumentIngress exceptionDoc = counters.documentList.get(2);
+        assertThat(exceptionDoc.getDocumentType()).isEqualTo(DocumentType.EXCEPTION);
+        DocumentIngress traceDoc = counters.documentList.get(3);
+        assertThat(traceDoc.getDocumentType()).isEqualTo(DocumentType.TRACE);
+        assertThat(counters.rdds).isEqualTo(2);
+        assertThat(counters.requests).isEqualTo(2);
+        assertThat(counters.exceptions).isEqualTo(1);
     }
 }

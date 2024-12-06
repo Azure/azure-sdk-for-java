@@ -17,6 +17,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.f
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ExceptionDataColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.RequestDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
@@ -24,6 +26,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -148,7 +151,7 @@ final class QuickPulseDataCollector {
     }
 
     private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType,
-        FilteringConfiguration currentConfig) {
+        FilteringConfiguration currentConfig, List<String> matchingDocumentStreamIds) {
         // TODO (harskaur): In a future PR, check if the document matches any filter (using Filter class)
         // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
         Map<String, List<FilterConjunctionGroupInfo>> documentsConfig
@@ -164,7 +167,22 @@ final class QuickPulseDataCollector {
             logger.error(e.getMessage());
         }
 
-        return true; // change this
+        if (documentsConfig.isEmpty()) {
+            return true;
+        }
+
+        // This will iterate through all the filtering configuration for a particular telemetry type to
+        // determine which filters from that config match the incoming telemetry item. When emitting documents,
+        // the document requires list of all applicable document stream ids - therefore tracking that here.
+        for (Map.Entry<String, List<FilterConjunctionGroupInfo>> entry: documentsConfig.entrySet()) {
+            String documentStreamId = entry.getKey();
+            for (FilterConjunctionGroupInfo filterGroup : entry.getValue()) {
+                if (Filter.checkFilterConjunctionGroup(filterGroup, columns) && !matchingDocumentStreamIds.contains(documentStreamId)) {
+                    matchingDocumentStreamIds.add(documentStreamId);
+                }
+            }
+        }
+        return !matchingDocumentStreamIds.isEmpty();
     }
 
     private void applyMetricFilters(TelemetryColumns columns, String telemetryType,
@@ -197,13 +215,15 @@ final class QuickPulseDataCollector {
         DependencyDataColumns columns = new DependencyDataColumns(telemetry);
         applyMetricFilters(columns, "Dependency", currentConfig);
 
-        if (matchesDocumentFilters(columns, "Dependency", currentConfig)) {
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, "Dependency", currentConfig, documentStreamIds)) {
             RemoteDependency dependencyDoc = new RemoteDependency();
             dependencyDoc.setName(telemetry.getName());
             dependencyDoc.setCommandName(telemetry.getData());
             dependencyDoc.setDuration(Duration.ofMillis(durationMillis).toString());
             dependencyDoc.setResultCode(telemetry.getResultCode());
             dependencyDoc.setProperties(setCustomDimensions(telemetry.getProperties(), telemetry.getMeasurements()));
+            dependencyDoc.setDocumentStreamIds(documentStreamIds);
 
             synchronized (counters.documentList) {
                 if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
@@ -225,7 +245,8 @@ final class QuickPulseDataCollector {
         ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
         applyMetricFilters(columns, "Exception", currentConfig);
 
-        if (matchesDocumentFilters(columns, "Exception", currentConfig)) {
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, "Exception", currentConfig, documentStreamIds)) {
             List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
             // Exception is a class from live metrics swagger that represents a document for an exception
             Exception exceptionDoc = new Exception();
@@ -235,6 +256,7 @@ final class QuickPulseDataCollector {
             }
             exceptionDoc
                 .setProperties(setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements()));
+            exceptionDoc.setDocumentStreamIds(documentStreamIds);
 
             synchronized (counters.documentList) {
                 if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
@@ -259,7 +281,8 @@ final class QuickPulseDataCollector {
         RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
         applyMetricFilters(columns, "Request", currentConfig);
 
-        if (matchesDocumentFilters(columns, "Request", currentConfig)) {
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, "Request", currentConfig, documentStreamIds)) {
             Request requestDoc = new Request();
             requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
             requestDoc.setResponseCode(requestTelemetry.getResponseCode());
@@ -267,6 +290,7 @@ final class QuickPulseDataCollector {
             requestDoc.setUrl(requestTelemetry.getUrl());
             requestDoc.setProperties(
                 setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+            requestDoc.setDocumentStreamIds(documentStreamIds);
             synchronized (counters.documentList) {
                 if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                     counters.documentList.add(requestDoc);
@@ -276,7 +300,21 @@ final class QuickPulseDataCollector {
     }
 
     private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig) {
-        // TODO (harskaur): implement support for filtering of trace documents in future PR
+        Counters counters = this.counters.get();
+        TraceDataColumns columns = new TraceDataColumns(traceTelemetry);
+        applyMetricFilters(columns, "Trace", currentConfig);
+        List<String> documentStreamIds = new ArrayList<>();
+        if(matchesDocumentFilters(columns, "Trace", currentConfig, documentStreamIds)) {
+            Trace traceDoc = new Trace();
+            traceDoc.setMessage(traceTelemetry.getMessage());
+            traceDoc.setProperties(setCustomDimensions(traceTelemetry.getProperties(), traceTelemetry.getMeasurements()));
+            traceDoc.setDocumentStreamIds(documentStreamIds);
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(traceDoc);
+                }
+            }
+        }
     }
 
     private static List<KeyValuePairString> setCustomDimensions(@Nullable Map<String, String> properties,
