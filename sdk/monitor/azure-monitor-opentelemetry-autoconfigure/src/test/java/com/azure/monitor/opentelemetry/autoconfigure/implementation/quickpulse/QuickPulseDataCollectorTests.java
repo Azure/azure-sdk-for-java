@@ -307,7 +307,8 @@ class QuickPulseDataCollectorTests {
         defaultConfig.setETag("random-etag");
         defaultConfig.setMetrics(new ArrayList<>());
 
-        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration(defaultConfig));
+        AtomicReference<FilteringConfiguration> configuration
+            = new AtomicReference<>(new FilteringConfiguration(defaultConfig));
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
@@ -317,17 +318,17 @@ class QuickPulseDataCollectorTests {
         successRequest.setConnectionString(FAKE_CONNECTION_STRING);
         collector.add(successRequest);
 
-        TelemetryItem failedRequest = createRequestTelemetry("request-failed", new Date(), 300, "400", false);
-        successRequest.setConnectionString(FAKE_CONNECTION_STRING);
+        TelemetryItem failedRequest = createRequestTelemetry("request-failed", new Date(), 500, "400", false);
+        failedRequest.setConnectionString(FAKE_CONNECTION_STRING);
         collector.add(failedRequest);
 
         TelemetryItem sucDep = createRemoteDependencyTelemetry("dep-success", "dep-success", 300, true);
         sucDep.setConnectionString(FAKE_CONNECTION_STRING);
         collector.add(sucDep);
 
-        TelemetryItem sucFail = createRemoteDependencyTelemetry("dep-failed", "dep-failed", 300, false);
-        sucFail.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(sucFail);
+        TelemetryItem failedDep = createRemoteDependencyTelemetry("dep-failed", "dep-failed", 500, false);
+        failedDep.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(failedDep);
 
         TelemetryItem exception = ExceptionTelemetryBuilder.create().build();
         exception.setConnectionString(FAKE_CONNECTION_STRING);
@@ -351,8 +352,17 @@ class QuickPulseDataCollectorTests {
         assertThat(exceptionDoc.getDocumentType()).isEqualTo(DocumentType.EXCEPTION);
         DocumentIngress traceDoc = counters.documentList.get(3);
         assertThat(traceDoc.getDocumentType()).isEqualTo(DocumentType.TRACE);
+
         assertThat(counters.rdds).isEqualTo(2);
+        assertThat(counters.unsuccessfulRdds).isEqualTo(1);
+        assertThat(counters.rddsDuration / counters.rdds).isEqualTo(400);
         assertThat(counters.requests).isEqualTo(2);
+        assertThat(counters.unsuccessfulRequests).isEqualTo(1);
+        assertThat(counters.requestsDuration / counters.requests).isEqualTo(400);
         assertThat(counters.exceptions).isEqualTo(1);
+
+        counters = collector.getAndRestart();
+        assertCountersReset(collector.peek());
+
     }
 }

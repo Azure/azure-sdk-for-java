@@ -173,11 +173,15 @@ final class QuickPulseDataCollector {
 
         // This will iterate through all the filtering configuration for a particular telemetry type to
         // determine which filters from that config match the incoming telemetry item. When emitting documents,
-        // the document requires list of all applicable document stream ids - therefore tracking that here.
-        for (Map.Entry<String, List<FilterConjunctionGroupInfo>> entry: documentsConfig.entrySet()) {
+        // the document requires list of all applicable document stream ids. This is because it is possible for
+        // multiple sessions of live metrics to be open, and the list of document stream ids is used by live
+        // metrics UI to determine which document shows up in which session. Thus, tracking the matching
+        // document stream ids here.
+        for (Map.Entry<String, List<FilterConjunctionGroupInfo>> entry : documentsConfig.entrySet()) {
             String documentStreamId = entry.getKey();
             for (FilterConjunctionGroupInfo filterGroup : entry.getValue()) {
-                if (Filter.checkFilterConjunctionGroup(filterGroup, columns) && !matchingDocumentStreamIds.contains(documentStreamId)) {
+                if (Filter.checkFilterConjunctionGroup(filterGroup, columns)
+                    && !matchingDocumentStreamIds.contains(documentStreamId)) {
                     matchingDocumentStreamIds.add(documentStreamId);
                 }
             }
@@ -304,10 +308,11 @@ final class QuickPulseDataCollector {
         TraceDataColumns columns = new TraceDataColumns(traceTelemetry);
         applyMetricFilters(columns, "Trace", currentConfig);
         List<String> documentStreamIds = new ArrayList<>();
-        if(matchesDocumentFilters(columns, "Trace", currentConfig, documentStreamIds)) {
+        if (matchesDocumentFilters(columns, "Trace", currentConfig, documentStreamIds)) {
             Trace traceDoc = new Trace();
             traceDoc.setMessage(traceTelemetry.getMessage());
-            traceDoc.setProperties(setCustomDimensions(traceTelemetry.getProperties(), traceTelemetry.getMeasurements()));
+            traceDoc
+                .setProperties(setCustomDimensions(traceTelemetry.getProperties(), traceTelemetry.getMeasurements()));
             traceDoc.setDocumentStreamIds(documentStreamIds);
             synchronized (counters.documentList) {
                 if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
