@@ -835,7 +835,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             }
             continue
         }
-        # plugins should always have an artifact but may not have a groupId
+        # signatures should always have an artifact but may not have a groupId
         if (!$groupId)
         {
             $hasError = $true
