@@ -206,8 +206,9 @@ public final class CommunicationsGatewayImpl
         com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.communicationsGatewayName = Utils.getValueFromIdByName(innerObject.id(), "communicationsGateways");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.communicationsGatewayName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communicationsGateways");
     }
 
     public CommunicationsGateway refresh() {
