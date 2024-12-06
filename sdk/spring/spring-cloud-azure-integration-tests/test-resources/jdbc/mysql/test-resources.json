@@ -2,6 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
     "testApplicationId": {
       "type": "string"
     },
@@ -248,6 +252,10 @@
     }
   ],
   "outputs": {
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
     "AZURE_MYSQL_ACCOUNT_NAME": {
       "type": "string",
       "value": "[parameters('serverName')]"

@@ -19,7 +19,7 @@ parameters:
     default: '-Denforcer.skip=true'
   - name: TestClassPackages
     type: string
-    default: ''
+    default: '*'
   - name: TestResourceDirectories
     type: object
     default: []
@@ -51,7 +51,7 @@ stages:
       BuildOptions: ${{ parameters.BuildOptions }}
       EnvVars: ${{ parameters.EnvVars }}
       TestGoals: "clean verify"
-      TestOptions: '${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPackages }}'
+      TestOptions: ' ${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPackages }} '
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       PreGenerationSteps:
         - script: |

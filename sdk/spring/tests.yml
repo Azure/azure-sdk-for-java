@@ -9,11 +9,40 @@ extends:
           TestName: IT_AppConfig
           TestClassPackages: com.azure.spring.cloud.integration.tests.appconfiguration.*
           TestResourceDirectories:
-            - spring/spring-cloud-azure-integration-tests/test-resources/common
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_Cosmos
+          TestClassPackages: com.azure.spring.cloud.integration.tests.cosmos.*
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_ServiceBus
+          TestClassPackages: com.azure.spring.cloud.integration.tests.servicebus.*
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_EventHubs
+          TestClassPackages: com.azure.spring.cloud.integration.tests.eventhubs.*
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_Storage
+          TestClassPackages: com.azure.spring.cloud.integration.tests.storage.*
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/storage
+      - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
+        parameters:
+          TestName: IT_Keyvault
+          TestClassPackages: com.azure.spring.cloud.integration.tests.keyvault.*
+          TestResourceDirectories:
+            - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          TestName: AppConfig_Integration
+          TestName: AppConfig_IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-test-appconfiguration-config
           Artifacts:
@@ -23,7 +52,7 @@ extends:
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           MatrixConfigs:
-            - Name: Cosmos_Integration
+            - Name: Cosmos_IT
               Path: sdk/spring/pipeline/cosmos-integration-matrix-compatible.json
               Selection: all
               GenerateVMJobs: true
