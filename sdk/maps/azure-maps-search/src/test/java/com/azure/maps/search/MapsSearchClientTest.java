@@ -44,7 +44,8 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     public void testGetPolygons(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
-        Boundary response = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL);
+        Boundary response
+            = client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL);
         assertNotNull(response);
         assertEquals(response.getType().toString(), "Feature");
         assertEquals(((GeoJsonGeometryCollection) response.getGeometry()).getGeometries().size(), 1);
@@ -57,10 +58,10 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     public void testGetPolygonsWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
-        Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE);
+        Response<Boundary> response = client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY,
+            ResolutionEnum.SMALL, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
-
 
     // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -69,8 +70,9 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         GeoPosition coordinates = new GeoPosition(47.61256, -122.204141);
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getPolygonsWithResponse(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE));
+        final HttpResponseException httpResponseException
+            = assertThrows(HttpResponseException.class, () -> client.getPolygonsWithResponse(coordinates, null,
+                BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL, Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
@@ -86,8 +88,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         assertEquals(200, response.getStatusCode());
     }
 
-
-
     // Case 2: 400 incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
@@ -97,8 +97,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
             () -> client.getGeocodingWithBaseResponse(new BaseSearchOptions(), Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
-
-
 
     // Test getGeocodeBatch
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -116,7 +114,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         assertEquals(2, response.getSummary().getTotalRequests());
     }
 
-
     // Test getGeocodeBatch with response
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -133,8 +130,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         assertEquals(200, response.getStatusCode());
     }
 
-
-
     // Case 2: 400 incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
@@ -142,8 +137,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getGeocodingBatchWithResponse(
-                new GeocodingBatchRequestBody(), Context.NONE));
+            () -> client.getGeocodingBatchWithResponse(new GeocodingBatchRequestBody(), Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
@@ -151,15 +145,13 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
-    public void testGetReverseGeocodingWithResponse(HttpClient httpClient,
-        MapsSearchServiceVersion serviceVersion) {
+    public void testGetReverseGeocodingWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         GeoPosition coordinates = new GeoPosition(-122.34255, 47.0);
-        Response<GeocodingResponse> response = client.getReverseGeocodingWithResponse(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE);
+        Response<GeocodingResponse> response = client.getReverseGeocodingWithResponse(coordinates,
+            Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
-
-
 
     // Case 2: 400 incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -168,11 +160,10 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getReverseGeocodingWithResponse(
-                new GeoPosition(-100, -100), Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE));
+            () -> client.getReverseGeocodingWithResponse(new GeoPosition(-100, -100),
+                Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
-
 
     // Test GetReverseGeocodingBatch
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -189,8 +180,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         assertEquals(2, response.getSummary().getTotalRequests());
         assertEquals(2, response.getSummary().getSuccessfulRequests());
     }
-
-
 
     // Test testGetReverseGeocodingBatch with response
     // Case 1: 200
@@ -209,8 +198,6 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         assertEquals(200, response.getStatusCode());
     }
 
-
-
     // Case 2: 400 incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
@@ -218,8 +205,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         MapsSearchServiceVersion serviceVersion) {
         client = getMapsSearchClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getReverseGeocodingBatchWithResponse(
-                new ReverseGeocodingBatchRequestBody(), Context.NONE));
+            () -> client.getReverseGeocodingBatchWithResponse(new ReverseGeocodingBatchRequestBody(), Context.NONE));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 }

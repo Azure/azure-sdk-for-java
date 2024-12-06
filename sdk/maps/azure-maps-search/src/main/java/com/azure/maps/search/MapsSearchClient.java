@@ -88,8 +88,8 @@ public final class MapsSearchClient {
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Boundary getPolygons(GeoPosition coordinates, String view,
-                                BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
+    public Boundary getPolygons(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType,
+        ResolutionEnum resolution) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -129,7 +129,7 @@ public final class MapsSearchClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boundary> getPolygonsWithResponse(GeoPosition coordinates, String view,
-                                                               BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
+        BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -169,7 +169,6 @@ public final class MapsSearchClient {
         return this.getGeocodingInternal(options);
     }
 
-
     /**
      * Use to get longitude and latitude coordinates of a street address or name of a place.
      *
@@ -198,7 +197,8 @@ public final class MapsSearchClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> getGeocodingWithBaseResponse(BaseSearchOptions options, Context context) {
+    public ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>
+        getGeocodingWithBaseResponse(BaseSearchOptions options, Context context) {
         return this.getGeocodingWithResponseInternal(options, context);
     }
 
@@ -231,7 +231,8 @@ public final class MapsSearchClient {
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options, Context context) {
+    public Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options,
+        Context context) {
         return this.getGeocodingNoCustomHeaderWithResponseInternal(options, context);
     }
 
@@ -277,13 +278,13 @@ public final class MapsSearchClient {
             coordinates.add(options.getCoordinates().getLatitude());
         }
 
-        return serviceClient.getGeocoding(options.getTop(), options.getQuery(),
-                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
-                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
-                options.getLocality(), options.getPostalCode());
+        return serviceClient.getGeocoding(options.getTop(), options.getQuery(), options.getAddressLine(),
+            options.getCountryRegion(), boundingBox, options.getView(), coordinates, options.getAdminDistrict(),
+            options.getAdminDistrict2(), options.getAdminDistrict3(), options.getLocality(), options.getPostalCode());
     }
 
-    ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse> getGeocodingWithResponseInternal(BaseSearchOptions options, Context context) {
+    ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>
+        getGeocodingWithResponseInternal(BaseSearchOptions options, Context context) {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
@@ -300,13 +301,14 @@ public final class MapsSearchClient {
             coordinates.add(options.getCoordinates().getLatitude());
         }
 
-        return serviceClient.getGeocodingWithResponse(options.getTop(), options.getQuery(),
-                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
-                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
-                options.getLocality(), options.getPostalCode(), context);
+        return serviceClient.getGeocodingWithResponse(options.getTop(), options.getQuery(), options.getAddressLine(),
+            options.getCountryRegion(), boundingBox, options.getView(), coordinates, options.getAdminDistrict(),
+            options.getAdminDistrict2(), options.getAdminDistrict3(), options.getLocality(), options.getPostalCode(),
+            context);
     }
 
-    Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponseInternal(BaseSearchOptions options, Context context) {
+    Response<GeocodingResponse> getGeocodingNoCustomHeaderWithResponseInternal(BaseSearchOptions options,
+        Context context) {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
@@ -324,9 +326,9 @@ public final class MapsSearchClient {
         }
 
         return serviceClient.getGeocodingNoCustomHeadersWithResponse(options.getTop(), options.getQuery(),
-                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
-                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
-                options.getLocality(), options.getPostalCode(), context);
+            options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
+            options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(), options.getLocality(),
+            options.getPostalCode(), context);
     }
 
     /**
@@ -516,7 +518,8 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Geocoding call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeocodingResponse getReverseGeocoding(GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
+    public GeocodingResponse getReverseGeocoding(GeoPosition coordinates,
+        List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -525,7 +528,6 @@ public final class MapsSearchClient {
         }
         return this.serviceClient.getReverseGeocoding(coordinatesList, resultTypes, view);
     }
-
 
     /**
      * Use to get a street address and location info from longitude and latitude coordinates.
@@ -572,8 +574,8 @@ public final class MapsSearchClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GeocodingResponse> getReverseGeocodingWithResponse(
-        GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view, Context context) {
+    public Response<GeocodingResponse> getReverseGeocodingWithResponse(GeoPosition coordinates,
+        List<ReverseGeocodingResultTypeEnum> resultTypes, String view, Context context) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -648,7 +650,8 @@ public final class MapsSearchClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeocodingBatchResponse getReverseGeocodingBatch(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
+    public GeocodingBatchResponse
+        getReverseGeocodingBatch(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
         return this.serviceClient.getReverseGeocodingBatch(reverseGeocodingBatchRequestBody);
     }
 

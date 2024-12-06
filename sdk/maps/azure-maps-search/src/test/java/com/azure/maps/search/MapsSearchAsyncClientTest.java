@@ -26,7 +26,7 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private MapsSearchAsyncClient getMapsSearchAsyncClient(HttpClient httpClient,
-                                                           MapsSearchServiceVersion serviceVersion) {
+        MapsSearchServiceVersion serviceVersion) {
         return getMapsSearchAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
@@ -36,7 +36,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testGetPolygons(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinates = new GeoPosition(-122.204141, 47.61256);
-        StepVerifier.create(client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL))
+        StepVerifier
+            .create(client.getPolygons(coordinates, null, BoundaryResultTypeEnum.LOCALITY, ResolutionEnum.SMALL))
             .assertNext(MapsSearchClientTestBase::validateGetPolygons)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -77,11 +78,12 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
-    public void testGetReverseGeocodingWithResponse(HttpClient httpClient,
-                                                    MapsSearchServiceVersion serviceVersion) {
+    public void testGetReverseGeocodingWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinates = new GeoPosition(-122.34255, 47.0);
-        StepVerifier.create(client.getReverseGeocodingWithResponse(coordinates, Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE))
+        StepVerifier
+            .create(client.getReverseGeocodingWithResponse(coordinates,
+                Arrays.asList(ReverseGeocodingResultTypeEnum.ADDRESS), null, Context.NONE))
             .assertNext(MapsSearchClientTestBase::validateGetReverseGeocoding)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

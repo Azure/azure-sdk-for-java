@@ -358,7 +358,7 @@ public final class SearchesImpl {
         String adminDistrict2, String adminDistrict3, String locality, String postalCode) {
         return getGeocodingWithResponseAsync(top, query, addressLine, countryRegion, bbox, view, coordinates,
             adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -430,7 +430,7 @@ public final class SearchesImpl {
         String adminDistrict2, String adminDistrict3, String locality, String postalCode, Context context) {
         return getGeocodingWithResponseAsync(top, query, addressLine, countryRegion, bbox, view, coordinates,
             adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

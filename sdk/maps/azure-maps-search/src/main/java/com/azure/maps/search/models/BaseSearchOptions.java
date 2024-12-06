@@ -13,7 +13,7 @@ import com.azure.core.models.GeoPosition;
  *
  */
 
-public  class BaseSearchOptions {
+public class BaseSearchOptions {
     private Integer top;
     private String query;
     private String addressLine;

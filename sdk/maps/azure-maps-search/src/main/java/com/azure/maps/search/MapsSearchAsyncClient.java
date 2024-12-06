@@ -107,7 +107,8 @@ public final class MapsSearchAsyncClient {
      * @return `GeoJSON GeocodingFeature` object that describe the boundaries of a geographical area.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boundary> getPolygons(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
+    public Mono<Boundary> getPolygons(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType,
+        ResolutionEnum resolution) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -144,7 +145,8 @@ public final class MapsSearchAsyncClient {
      * @return {@link Boundary} object that describe the boundaries of a geographical area along with
      * {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Boundary>> getPolygonsWithResponse(GeoPosition coordinates, String view, BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
+    public Mono<Response<Boundary>> getPolygonsWithResponse(GeoPosition coordinates, String view,
+        BoundaryResultTypeEnum resultType, ResolutionEnum resolution, Context context) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -245,7 +247,8 @@ public final class MapsSearchAsyncClient {
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithBaseResponse(BaseSearchOptions options) {
+    public Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>>
+        getGeocodingWithBaseResponse(BaseSearchOptions options) {
         return withContext(context -> getGeocodingWithBaseResponse(options, context));
     }
 
@@ -276,7 +279,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Geocoding call along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
      */
-    Mono<Response<GeocodingResponse>> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options, Context context) {
+    Mono<Response<GeocodingResponse>> getGeocodingNoCustomHeaderWithResponse(BaseSearchOptions options,
+        Context context) {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
@@ -293,7 +297,8 @@ public final class MapsSearchAsyncClient {
             coordinates.add(options.getCoordinates().getLatitude());
         }
 
-        return serviceClient.getGeocodingNoCustomHeadersWithResponseAsync(options.getTop(), options.getQuery(),
+        return serviceClient
+            .getGeocodingNoCustomHeadersWithResponseAsync(options.getTop(), options.getQuery(),
                 options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
                 options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
                 options.getLocality(), options.getPostalCode(), context)
@@ -328,7 +333,8 @@ public final class MapsSearchAsyncClient {
      * completion of {@link Mono}.
      */
 
-    Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>> getGeocodingWithBaseResponse(BaseSearchOptions options, Context context) {
+    Mono<ResponseBase<SearchesGetGeocodingHeaders, GeocodingResponse>>
+        getGeocodingWithBaseResponse(BaseSearchOptions options, Context context) {
         List<Double> boundingBox = null;
         if (options.getBoundingBox().isPresent()) {
             boundingBox = new ArrayList<>();
@@ -345,10 +351,11 @@ public final class MapsSearchAsyncClient {
             coordinates.add(options.getCoordinates().getLatitude());
         }
 
-        return serviceClient.getGeocodingWithResponseAsync(options.getTop(), options.getQuery(),
-                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
-                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
-                options.getLocality(), options.getPostalCode(), context)
+        return serviceClient
+            .getGeocodingWithResponseAsync(options.getTop(), options.getQuery(), options.getAddressLine(),
+                options.getCountryRegion(), boundingBox, options.getView(), coordinates, options.getAdminDistrict(),
+                options.getAdminDistrict2(), options.getAdminDistrict3(), options.getLocality(),
+                options.getPostalCode(), context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
 
@@ -396,13 +403,13 @@ public final class MapsSearchAsyncClient {
             coordinates.add(options.getCoordinates().getLatitude());
         }
 
-        return serviceClient.getGeocodingAsync(options.getTop(), options.getQuery(),
-                options.getAddressLine(), options.getCountryRegion(), boundingBox, options.getView(), coordinates,
-                options.getAdminDistrict(), options.getAdminDistrict2(), options.getAdminDistrict3(),
-                options.getLocality(), options.getPostalCode(), context)
+        return serviceClient
+            .getGeocodingAsync(options.getTop(), options.getQuery(), options.getAddressLine(),
+                options.getCountryRegion(), boundingBox, options.getView(), coordinates, options.getAdminDistrict(),
+                options.getAdminDistrict2(), options.getAdminDistrict3(), options.getLocality(),
+                options.getPostalCode(), context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
-
 
     /**
      * Use to send a batch of queries to the [Geocoding](/rest/api/maps/search/get-geocoding) API in a single request.
@@ -613,8 +620,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
      * successful completion of {@link Mono}.
      */
-    Mono<Response<GeocodingBatchResponse>> getGeocodingBatchWithResponse(GeocodingBatchRequestBody geocodingBatchRequestBody,
-                                                                         Context context) {
+    Mono<Response<GeocodingBatchResponse>>
+        getGeocodingBatchWithResponse(GeocodingBatchRequestBody geocodingBatchRequestBody, Context context) {
         return serviceClient.getGeocodingBatchWithResponseAsync(geocodingBatchRequestBody, context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
@@ -662,7 +669,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Geocoding call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GeocodingResponse> getReverseGeocoding(GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
+    public Mono<GeocodingResponse> getReverseGeocoding(GeoPosition coordinates,
+        List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
         List<Double> coordinatesList = null;
         if (coordinates != null) {
             coordinatesList = new ArrayList<>();
@@ -716,8 +724,8 @@ public final class MapsSearchAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponse(
-        GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
+    public Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponse(GeoPosition coordinates,
+        List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
         return withContext(context -> getReverseGeocodingWithResponse(coordinates, resultTypes, view, context));
     }
 
@@ -765,8 +773,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Geocoding call along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponse(
-        GeoPosition coordinates, List<ReverseGeocodingResultTypeEnum> resultTypes, String view, Context context) {
+    Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponse(GeoPosition coordinates,
+        List<ReverseGeocodingResultTypeEnum> resultTypes, String view, Context context) {
 
         List<Double> coordinatesList = null;
         if (coordinates != null) {
@@ -843,7 +851,8 @@ public final class MapsSearchAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GeocodingBatchResponse> getReverseGeocodingBatch(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
+    public Mono<GeocodingBatchResponse>
+        getReverseGeocodingBatch(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
         return serviceClient.getReverseGeocodingBatchAsync(reverseGeocodingBatchRequestBody);
     }
 
@@ -912,7 +921,8 @@ public final class MapsSearchAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GeocodingBatchResponse>> getReverseGeocodingBatchWithResponse(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
+    public Mono<Response<GeocodingBatchResponse>>
+        getReverseGeocodingBatchWithResponse(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
         return withContext(context -> getReverseGeocodingBatchWithResponse(reverseGeocodingBatchRequestBody, context));
     }
 
@@ -981,11 +991,11 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Geocoding Batch service call along with {@link Response} on
      * successful completion of {@link Mono}.
      */
-    Mono<Response<GeocodingBatchResponse>> getReverseGeocodingBatchWithResponse(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody, Context context) {
+    Mono<Response<GeocodingBatchResponse>> getReverseGeocodingBatchWithResponse(
+        ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody, Context context) {
         return serviceClient.getReverseGeocodingBatchWithResponseAsync(reverseGeocodingBatchRequestBody, context)
             .onErrorMap(MapsSearchAsyncClient::mapThrowable);
     }
-
 
     private static Throwable mapThrowable(Throwable throwable) {
         if (!(throwable instanceof ErrorResponseException)) {
