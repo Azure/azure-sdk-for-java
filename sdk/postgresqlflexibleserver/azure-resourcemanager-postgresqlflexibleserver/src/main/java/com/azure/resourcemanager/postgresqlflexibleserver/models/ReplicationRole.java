@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
      * @param name a name to look for.
      * @return the corresponding ReplicationRole.
      */
-    @JsonCreator
     public static ReplicationRole fromString(String name) {
         return fromString(name, ReplicationRole.class);
     }

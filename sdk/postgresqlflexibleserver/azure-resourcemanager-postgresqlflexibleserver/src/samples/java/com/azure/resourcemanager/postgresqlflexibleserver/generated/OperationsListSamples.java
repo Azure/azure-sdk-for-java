@@ -9,7 +9,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/OperationList.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * OperationList.json
      */
     /**
      * Sample code: OperationList.

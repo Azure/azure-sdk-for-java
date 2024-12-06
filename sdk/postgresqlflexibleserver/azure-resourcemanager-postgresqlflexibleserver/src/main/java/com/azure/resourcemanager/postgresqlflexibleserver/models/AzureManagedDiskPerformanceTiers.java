@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -97,7 +96,6 @@ public final class AzureManagedDiskPerformanceTiers extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding AzureManagedDiskPerformanceTiers.
      */
-    @JsonCreator
     public static AzureManagedDiskPerformanceTiers fromString(String name) {
         return fromString(name, AzureManagedDiskPerformanceTiers.class);
     }

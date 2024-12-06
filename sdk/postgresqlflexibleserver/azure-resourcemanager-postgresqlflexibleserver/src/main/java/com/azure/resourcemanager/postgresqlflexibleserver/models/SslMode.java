@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class SslMode extends ExpandableStringEnum<SslMode> {
      * @param name a name to look for.
      * @return the corresponding SslMode.
      */
-    @JsonCreator
     public static SslMode fromString(String name) {
         return fromString(name, SslMode.class);
     }
