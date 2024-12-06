@@ -7,13 +7,13 @@ extends:
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_AppConfig
-          TestClassPackages: com.azure.spring.cloud.integration.tests.appconfiguration.*
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.appconfiguration.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
       - template: /sdk/spring/pipeline/tests-single-azure-service-integration-template.yml
         parameters:
           TestName: IT_Cosmos
-          TestClassPackages: com.azure.spring.cloud.integration.tests.cosmos.*
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.cosmos.*IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
