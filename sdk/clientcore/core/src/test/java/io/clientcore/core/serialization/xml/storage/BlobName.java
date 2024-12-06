@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.xml.storage;
+package io.clientcore.core.serialization.xml.storage;
 
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlWriter;
+import io.clientcore.core.serialization.xml.XmlReader;
+import io.clientcore.core.serialization.xml.XmlSerializable;
+import io.clientcore.core.serialization.xml.XmlWriter;
 
 import javax.xml.stream.XMLStreamException;
 
-import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+import static io.clientcore.core.serialization.xml.DefaultXmlTestUtils.getRootElementName;
 
 public class BlobName implements XmlSerializable<BlobName> {
     /*
