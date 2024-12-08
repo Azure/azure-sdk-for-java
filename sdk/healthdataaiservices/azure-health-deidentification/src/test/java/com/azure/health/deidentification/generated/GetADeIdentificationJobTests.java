@@ -4,9 +4,8 @@
 
 package com.azure.health.deidentification.generated;
 
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.SourceStorageLocation;
-import com.azure.health.deidentification.models.TargetStorageLocation;
+import com.azure.health.deidentification.models.*;
+
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -25,7 +24,7 @@ public final class GetADeIdentificationJobTests extends DeidentificationClientTe
         // verify property "name"
         Assertions.assertEquals("documents_smith_1", response.getName());
         // verify property "operation"
-        Assertions.assertEquals(OperationType.REDACT, response.getOperation());
+        Assertions.assertEquals(DeidentificationOperationType.REDACT, response.getOperation());
         // verify property "sourceLocation"
         SourceStorageLocation responseSourceLocation = response.getSourceLocation();
         Assertions.assertNotNull(responseSourceLocation);
@@ -42,12 +41,12 @@ public final class GetADeIdentificationJobTests extends DeidentificationClientTe
         Assertions.assertEquals("/documents", responseTargetLocation.getPrefix());
         Assertions.assertEquals(true, responseTargetLocation.isOverwrite());
         // verify property "customizations"
-        JobCustomizationOptions responseCustomizations = response.getCustomizations();
+        DeidentificationJobCustomizationOptions responseCustomizations = response.getCustomizations();
         Assertions.assertNotNull(responseCustomizations);
         Assertions.assertEquals("[{type}]", responseCustomizations.getRedactionFormat());
         Assertions.assertEquals("en-US", responseCustomizations.getSurrogateLocale());
         // verify property "status"
-        Assertions.assertEquals(JobStatus.SUCCEEDED, response.getStatus());
+        Assertions.assertEquals(DeidentificationJobStatus.SUCCEEDED, response.getStatus());
         // verify property "lastUpdatedAt"
         Assertions.assertNotNull(response.getLastUpdatedAt());
         // verify property "createdAt"
@@ -55,7 +54,7 @@ public final class GetADeIdentificationJobTests extends DeidentificationClientTe
         // verify property "startedAt"
         Assertions.assertNotNull(response.getStartedAt());
         // verify property "summary"
-        JobSummary responseSummary = response.getSummary();
+        DeidentificationJobSummary responseSummary = response.getSummary();
         Assertions.assertNotNull(responseSummary);
         Assertions.assertEquals(10, responseSummary.getSuccessfulCount());
         Assertions.assertEquals(0, responseSummary.getFailedCount());

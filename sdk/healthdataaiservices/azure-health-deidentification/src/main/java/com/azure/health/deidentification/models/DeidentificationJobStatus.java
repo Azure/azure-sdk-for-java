@@ -11,71 +11,65 @@ import java.util.Collection;
 /**
  * List of statuses a job can have.
  */
-public final class JobStatus extends ExpandableStringEnum<JobStatus> {
+public final class DeidentificationJobStatus extends ExpandableStringEnum<DeidentificationJobStatus> {
     /**
      * Job has been submitted and is waiting to be processed.
      */
     @Generated
-    public static final JobStatus NOT_STARTED = fromString("NotStarted");
+    public static final DeidentificationJobStatus NOT_STARTED = fromString("NotStarted");
 
     /**
      * Job has been started.
      */
     @Generated
-    public static final JobStatus RUNNING = fromString("Running");
+    public static final DeidentificationJobStatus RUNNING = fromString("Running");
 
     /**
      * Job has completed successfully. All documents have succeeded.
      */
     @Generated
-    public static final JobStatus SUCCEEDED = fromString("Succeeded");
-
-    /**
-     * Job has completed with at least a single document failing.
-     */
-    @Generated
-    public static final JobStatus PARTIAL_FAILED = fromString("PartialFailed");
+    public static final DeidentificationJobStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Job has completed with all documents failing, or a validation failure.
      */
     @Generated
-    public static final JobStatus FAILED = fromString("Failed");
+    public static final DeidentificationJobStatus FAILED = fromString("Failed");
 
     /**
      * Job has been canceled after user request.
      */
     @Generated
-    public static final JobStatus CANCELED = fromString("Canceled");
+    public static final DeidentificationJobStatus CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of JobStatus value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public JobStatus() {
+    public DeidentificationJobStatus() {
     }
 
     /**
      * Creates or finds a JobStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding JobStatus.
      */
     @Generated
-    public static JobStatus fromString(String name) {
-        return fromString(name, JobStatus.class);
+    public static DeidentificationJobStatus fromString(String name) {
+        return fromString(name, DeidentificationJobStatus.class);
     }
 
     /**
      * Gets known JobStatus values.
-     * 
+     *
      * @return known JobStatus values.
      */
     @Generated
-    public static Collection<JobStatus> values() {
-        return values(JobStatus.class);
+    public static Collection<DeidentificationJobStatus> values() {
+        return values(DeidentificationJobStatus.class);
     }
 }

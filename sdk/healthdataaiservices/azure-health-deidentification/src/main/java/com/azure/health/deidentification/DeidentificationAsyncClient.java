@@ -665,8 +665,8 @@ public final class DeidentificationAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DeidentificationDocumentDetails>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DeidentificationDocumentDetails>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DeidentificationDocumentDetails.class))
@@ -699,8 +699,8 @@ public final class DeidentificationAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DeidentificationDocumentDetails>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DeidentificationDocumentDetails>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DeidentificationDocumentDetails.class))

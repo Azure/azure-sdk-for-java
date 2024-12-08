@@ -8,9 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.DeidentificationClientBuilder;
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.SourceStorageLocation;
-import com.azure.health.deidentification.models.TargetStorageLocation;
+import com.azure.health.deidentification.models.*;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 
@@ -27,9 +25,9 @@ public class CreateADeIdentificationJob {
                 new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
                     .setExtensions(Arrays.asList("*")),
                 new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
-                    .setOverwrite(true)).setOperation(OperationType.REDACT)
+                    .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
                         .setCustomizations(
-                            new JobCustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
+                            new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
         // END:com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
     }
 }

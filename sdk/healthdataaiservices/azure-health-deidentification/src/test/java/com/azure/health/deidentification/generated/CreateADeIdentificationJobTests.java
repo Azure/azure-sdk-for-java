@@ -6,9 +6,8 @@ package com.azure.health.deidentification.generated;
 
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.SourceStorageLocation;
-import com.azure.health.deidentification.models.TargetStorageLocation;
+import com.azure.health.deidentification.models.*;
+
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -26,9 +25,10 @@ public final class CreateADeIdentificationJobTests extends DeidentificationClien
                     new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
                         .setExtensions(Arrays.asList("*")),
                     new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "/documents")
-                        .setOverwrite(true)).setOperation(OperationType.REDACT)
-                            .setCustomizations(new JobCustomizationOptions().setRedactionFormat("[{type}]")
-                                .setSurrogateLocale("en-US"))));
+                        .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
+                            .setCustomizations(
+                                new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]")
+                                    .setSurrogateLocale("en-US"))));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
