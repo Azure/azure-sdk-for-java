@@ -5,12 +5,9 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
-import com.azure.health.deidentification.models.DeidentificationJobSummary;
-import com.azure.health.deidentification.models.DeidentificationOperationType;
-import com.azure.health.deidentification.models.OperationState;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -21,33 +18,36 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
     @Disabled
     public void testCancelADeIdentificationJobTests() {
         // method invocation
-        DeidentificationJob response = deidentificationClient.cancelJob("job_smith_documents_1");
+        DeidentificationJob response = deidentificationClient.cancelJob("documents_smith_1");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "name"
-        Assertions.assertEquals("job_smith_documents_1", response.getName());
+        Assertions.assertEquals("documents_smith_1", response.getName());
         // verify property "operation"
-        Assertions.assertEquals(DeidentificationOperationType.REDACT, response.getOperation());
+        Assertions.assertEquals(OperationType.REDACT, response.getOperation());
         // verify property "sourceLocation"
         SourceStorageLocation responseSourceLocation = response.getSourceLocation();
         Assertions.assertNotNull(responseSourceLocation);
         Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             responseSourceLocation.getLocation());
-        Assertions.assertEquals("documents/", responseSourceLocation.getPrefix());
+        Assertions.assertEquals("/documents", responseSourceLocation.getPrefix());
+        List<String> responseSourceLocationExtensions = responseSourceLocation.getExtensions();
+        Assertions.assertEquals("*", responseSourceLocationExtensions.iterator().next());
         // verify property "targetLocation"
         TargetStorageLocation responseTargetLocation = response.getTargetLocation();
         Assertions.assertNotNull(responseTargetLocation);
         Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             responseTargetLocation.getLocation());
-        Assertions.assertEquals("_output/", responseTargetLocation.getPrefix());
+        Assertions.assertEquals("/documents", responseTargetLocation.getPrefix());
         Assertions.assertEquals(true, responseTargetLocation.isOverwrite());
         // verify property "customizations"
-        DeidentificationJobCustomizationOptions responseCustomizations = response.getCustomizations();
+        JobCustomizationOptions responseCustomizations = response.getCustomizations();
         Assertions.assertNotNull(responseCustomizations);
         Assertions.assertEquals("[{type}]", responseCustomizations.getRedactionFormat());
+        Assertions.assertEquals("en-US", responseCustomizations.getSurrogateLocale());
         // verify property "status"
-        Assertions.assertEquals(OperationState.CANCELED, response.getStatus());
+        Assertions.assertEquals(JobStatus.CANCELED, response.getStatus());
         // verify property "lastUpdatedAt"
         Assertions.assertNotNull(response.getLastUpdatedAt());
         // verify property "createdAt"
@@ -55,7 +55,7 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
         // verify property "startedAt"
         Assertions.assertNotNull(response.getStartedAt());
         // verify property "summary"
-        DeidentificationJobSummary responseSummary = response.getSummary();
+        JobSummary responseSummary = response.getSummary();
         Assertions.assertNotNull(responseSummary);
         Assertions.assertEquals(10, responseSummary.getSuccessfulCount());
         Assertions.assertEquals(0, responseSummary.getFailedCount());

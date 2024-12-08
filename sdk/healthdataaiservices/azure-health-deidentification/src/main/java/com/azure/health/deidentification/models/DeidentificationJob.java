@@ -54,7 +54,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Current status of a job.
      */
     @Generated
-    private OperationState status;
+    private DeidentificationJobStatus status;
 
     /*
      * Error when job fails in it's entirety.
@@ -64,9 +64,9 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /*
      * Date and time when the job was completed.
-     * 
+     *
      * If the job is canceled, this is the time when the job was canceled.
-     * 
+     *
      * If the job failed, this is the time when the job failed.
      */
     @Generated
@@ -92,7 +92,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Creates an instance of DeidentificationJob class.
-     * 
+     *
      * @param sourceLocation the sourceLocation value to set.
      * @param targetLocation the targetLocation value to set.
      */
@@ -104,7 +104,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the name property: The name of a job.
-     * 
+     *
      * @return the name value.
      */
     @Generated
@@ -114,7 +114,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the operation property: Operation to perform on the input documents.
-     * 
+     *
      * @return the operation value.
      */
     @Generated
@@ -124,7 +124,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Set the operation property: Operation to perform on the input documents.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the DeidentificationJob object itself.
      */
@@ -136,7 +136,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the sourceLocation property: Storage location to perform the operation on.
-     * 
+     *
      * @return the sourceLocation value.
      */
     @Generated
@@ -146,7 +146,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the targetLocation property: Target location to store output of operation.
-     * 
+     *
      * @return the targetLocation value.
      */
     @Generated
@@ -156,7 +156,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the customizations property: Customization parameters to override default service behaviors.
-     * 
+     *
      * @return the customizations value.
      */
     @Generated
@@ -166,7 +166,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Set the customizations property: Customization parameters to override default service behaviors.
-     * 
+     *
      * @param customizations the customizations value to set.
      * @return the DeidentificationJob object itself.
      */
@@ -178,17 +178,17 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the status property: Current status of a job.
-     * 
+     *
      * @return the status value.
      */
     @Generated
-    public OperationState getStatus() {
+    public DeidentificationJobStatus getStatus() {
         return this.status;
     }
 
     /**
      * Get the error property: Error when job fails in it's entirety.
-     * 
+     *
      * @return the error value.
      */
     @Generated
@@ -198,11 +198,11 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the lastUpdatedAt property: Date and time when the job was completed.
-     * 
+     *
      * If the job is canceled, this is the time when the job was canceled.
-     * 
+     *
      * If the job failed, this is the time when the job failed.
-     * 
+     *
      * @return the lastUpdatedAt value.
      */
     @Generated
@@ -212,7 +212,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the createdAt property: Date and time when the job was created.
-     * 
+     *
      * @return the createdAt value.
      */
     @Generated
@@ -222,7 +222,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the startedAt property: Date and time when the job was started.
-     * 
+     *
      * @return the startedAt value.
      */
     @Generated
@@ -232,7 +232,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Get the summary property: Summary of a job. Exists only when the job is completed.
-     * 
+     *
      * @return the summary value.
      */
     @Generated
@@ -256,7 +256,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /**
      * Reads an instance of DeidentificationJob from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeidentificationJob if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -269,7 +269,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             String name = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
-            OperationState status = null;
+            DeidentificationJobStatus status = null;
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
             DeidentificationOperationType operation = null;
@@ -288,7 +288,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("targetLocation".equals(fieldName)) {
                     targetLocation = TargetStorageLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = OperationState.fromString(reader.getString());
+                    status = DeidentificationJobStatus.fromString(reader.getString());
                 } else if ("lastUpdatedAt".equals(fieldName)) {
                     lastUpdatedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
