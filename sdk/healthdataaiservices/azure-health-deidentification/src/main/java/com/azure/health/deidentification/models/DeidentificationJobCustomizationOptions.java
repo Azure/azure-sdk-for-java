@@ -20,6 +20,8 @@ public final class DeidentificationJobCustomizationOptions
     implements JsonSerializable<DeidentificationJobCustomizationOptions> {
     /*
      * Format of the redacted output. Only valid when Operation is Redact.
+     * Please refer to https://learn.microsoft.com/en-us/azure/healthcare-apis/deidentification/redaction-format for
+     * more details.
      */
     @Generated
     private String redactionFormat;
@@ -39,6 +41,8 @@ public final class DeidentificationJobCustomizationOptions
 
     /**
      * Get the redactionFormat property: Format of the redacted output. Only valid when Operation is Redact.
+     * Please refer to https://learn.microsoft.com/en-us/azure/healthcare-apis/deidentification/redaction-format for
+     * more details.
      * 
      * @return the redactionFormat value.
      */
@@ -49,6 +53,8 @@ public final class DeidentificationJobCustomizationOptions
 
     /**
      * Set the redactionFormat property: Format of the redacted output. Only valid when Operation is Redact.
+     * Please refer to https://learn.microsoft.com/en-us/azure/healthcare-apis/deidentification/redaction-format for
+     * more details.
      * 
      * @param redactionFormat the redactionFormat value to set.
      * @return the DeidentificationJobCustomizationOptions object itself.

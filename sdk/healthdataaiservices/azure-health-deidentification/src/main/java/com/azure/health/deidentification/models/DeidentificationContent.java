@@ -37,7 +37,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Creates an instance of DeidentificationContent class.
-     *
+     * 
      * @param inputText the inputText value to set.
      */
     @Generated
@@ -47,7 +47,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Get the inputText property: Input text to de-identify.
-     *
+     * 
      * @return the inputText value.
      */
     @Generated
@@ -57,7 +57,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Get the operation property: Operation to perform on the input documents.
-     *
+     * 
      * @return the operation value.
      */
     @Generated
@@ -67,7 +67,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Set the operation property: Operation to perform on the input documents.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the DeidentificationContent object itself.
      */
@@ -79,7 +79,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Get the customizations property: Customization parameters to override default service behaviors.
-     *
+     * 
      * @return the customizations value.
      */
     @Generated
@@ -89,7 +89,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Set the customizations property: Customization parameters to override default service behaviors.
-     *
+     * 
      * @param customizations the customizations value to set.
      * @return the DeidentificationContent object itself.
      */
@@ -114,7 +114,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
     /**
      * Reads an instance of DeidentificationContent from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeidentificationContent if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

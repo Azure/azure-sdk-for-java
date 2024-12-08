@@ -20,10 +20,10 @@ public class DeIdentifyText {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
-        DeidentificationResult response = deidentificationClient.deidentifyText(
-            new DeidentificationContent("Hello my name is John Smith.").setOperation(DeidentificationOperationType.REDACT)
-                .setCustomizations(
-                    new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
+        DeidentificationResult response
+            = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
+                .setOperation(DeidentificationOperationType.REDACT)
+                .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
         // END:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
     }
 }
