@@ -50,6 +50,7 @@
       <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
       <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails" />
     </Or>
   </Match>
   <Match>
