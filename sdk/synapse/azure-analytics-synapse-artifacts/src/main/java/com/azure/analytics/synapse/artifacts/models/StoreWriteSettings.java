@@ -22,10 +22,11 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
     /*
      * The write setting type.
      */
-    private String type;
+    private String type = "StoreWriteSettings";
 
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     private Object maxConcurrentConnections;
 
@@ -35,7 +36,8 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array
+     * of objects).
      */
     private List<MetadataItem> metadata;
 
@@ -48,7 +50,6 @@ public class StoreWriteSettings implements JsonSerializable<StoreWriteSettings> 
      * Creates an instance of StoreWriteSettings class.
      */
     public StoreWriteSettings() {
-        this.type = "StoreWriteSettings";
     }
 
     /**
