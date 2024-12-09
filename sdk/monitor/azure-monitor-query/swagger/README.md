@@ -55,7 +55,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.implementation.logs
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query
@@ -74,7 +73,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.implementation.metrics
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false 
 required-fields-as-ctor-args: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query
@@ -116,7 +114,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsnamespaces
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false 
 required-fields-as-ctor-args: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query
@@ -136,7 +133,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsdefinitions
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false 
 required-fields-as-ctor-args: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query
@@ -156,7 +152,6 @@ output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsbatch
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query

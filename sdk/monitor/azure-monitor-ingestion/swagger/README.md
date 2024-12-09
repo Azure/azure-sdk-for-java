@@ -35,7 +35,6 @@ input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specificatio
 namespace: com.azure.monitor.ingestion.implementation
 implementation-subpackage: ""
 sync-methods: all
-required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 credential-types: tokencredential
 credential-scopes: https://monitor.azure.com//.default

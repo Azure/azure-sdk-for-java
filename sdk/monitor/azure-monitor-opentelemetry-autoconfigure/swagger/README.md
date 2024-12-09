@@ -50,7 +50,6 @@ models-subpackage: implementation.models
 generate-client-as-impl: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false
 artifact-id: azure-monitor-opentelemetry-autoconfigure
 enable-sync-stack: true
 customization-class: src/main/java/MonitorOpenTelemetryAutoConfigureCustomizations.java
@@ -71,7 +70,6 @@ output-folder: ../
 namespace: com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false
 artifact-id: azure-monitor-opentelemetry-autoconfigure
 enable-sync-stack: true
 ```

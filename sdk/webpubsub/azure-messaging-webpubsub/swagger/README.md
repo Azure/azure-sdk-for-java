@@ -37,7 +37,6 @@ namespace: com.azure.messaging.webpubsub
 sync-methods: all
 client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
-required-parameter-client-methods: false 
 generate-client-as-impl: true
 use-iterable: true
 data-plane: true
