@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
@@ -66,7 +65,7 @@ public class CosmosExceptionUtilsTest {
 
     @Test
     public void testInternalServerErrorException() {
-        InternalServerErrorException internalServerErrorException = new InternalServerErrorException("Internal Server Error", HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+        InternalServerErrorException internalServerErrorException = new InternalServerErrorException("Internal Server Error", 500);
         assertThrows(CosmosInternalServerErrorException.class, () -> {
             CosmosExceptionUtils.exceptionHandler("Internal Server Error", internalServerErrorException, responseDiagnosticsProcessor).block();
         });
@@ -170,7 +169,7 @@ public class CosmosExceptionUtilsTest {
 
     @Test
     public void testServiceUnavailableException() {
-        ServiceUnavailableException serviceUnavailableException = new ServiceUnavailableException("Service Unavailable", null, null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+        ServiceUnavailableException serviceUnavailableException = new ServiceUnavailableException("Service Unavailable", null, null, 503);
         assertThrows(CosmosServiceUnavailableException.class, () -> {
             CosmosExceptionUtils.exceptionHandler("Service Unavailable", serviceUnavailableException, responseDiagnosticsProcessor).block();
         });
