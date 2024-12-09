@@ -7,7 +7,6 @@ import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import org.slf4j.Logger;
 
 import java.util.HashSet;
@@ -48,7 +47,7 @@ public class AdministrationClientCustomization extends Customization {
                 continue;
             }
 
-            replaceOffsetDateTimeParse(addImplementationToClassName(classCustomization, logger));
+            addImplementationToClassName(classCustomization, logger);
         }
 
         // Change getCreatedTime modifier on NamespaceProperties.
@@ -62,27 +61,13 @@ public class AdministrationClientCustomization extends Customization {
      * Suffix classes with {@code Impl} to avoid naming collisions where we have to explicitly reference the package
      * name and class.
      */
-    private ClassCustomization addImplementationToClassName(ClassCustomization classCustomization, Logger logger) {
+    private void addImplementationToClassName(ClassCustomization classCustomization, Logger logger) {
         String current = classCustomization.getClassName();
         String renamed = current + "Impl";
 
         logger.info("Rename: '{}' -> '{}'", current, renamed);
 
-        return classCustomization.rename(renamed);
-    }
-
-    private void replaceOffsetDateTimeParse(ClassCustomization classCustomization) {
-        Editor editor = classCustomization.getEditor();
-        String classFileName = classCustomization.getFileName();
-
-        String originalContent = editor.getFileContent(classFileName);
-        String updatedContent = originalContent.replace("OffsetDateTime.parse(dateString)",
-            "EntityHelper.parseOffsetDateTimeBest(dateString)");
-
-        if (!Objects.equals(originalContent, updatedContent)) {
-            editor.replaceFile(classFileName, updatedContent);
-            classCustomization.addImports("com.azure.messaging.servicebus.administration.implementation.EntityHelper");
-        }
+        classCustomization.rename(renamed);
     }
 
     private static void changeNamespaceModifier(LibraryCustomization libraryCustomization, Logger logger) {
@@ -94,24 +79,6 @@ public class AdministrationClientCustomization extends Customization {
 
         final MethodCustomization setCreatedTime = classCustomization.getMethod(methodName);
         setCreatedTime.setModifier(0);
-    }
-
-    private static void cleanupCoreToCodegenBridgeUtils(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(ast -> {
-            ast.getImports().removeIf(importDeclaration -> {
-                String importName = importDeclaration.getNameAsString();
-                return "com.azure.core.models.ResponseError".equals(importName)
-                    || "com.azure.json.JsonReader".equals(importName)
-                    || "com.azure.json.JsonToken".equals(importName)
-                    || "com.azure.json.JsonWriter".equals(importName)
-                    || "java.io.IOException".equals(importName);
-            });
-
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-            clazz.getMethodsByName("responseErrorToJson").get(0).remove();
-            clazz.getMethodsByName("responseErrorFromJson").get(0).remove();
-            clazz.getMethodsByName("readResponseError").get(0).remove();
-        });
     }
 
     private static void customizeKeyValueImpl(ClassCustomization classCustomization) {
@@ -130,7 +97,6 @@ public class AdministrationClientCustomization extends Customization {
 
         if (!Objects.equals(originalContent, updatedContent)) {
             editor.replaceFile(classFileName, updatedContent);
-            classCustomization.addImports("com.azure.messaging.servicebus.administration.implementation.EntityHelper");
         }
     }
 }

@@ -31,13 +31,6 @@ import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.xml.XmlReader;
 
 import javax.xml.stream.XMLStreamException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalQueries;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -765,22 +758,4 @@ public final class EntityHelper {
         }
     }
 
-    /**
-     * Attempts to parse an ISO datetime string as best possible. The initial attempt will use
-     * {@link OffsetDateTime#from(TemporalAccessor)} and will fall back to
-     * {@link java.time.LocalDateTime#from(TemporalAccessor)} and apply {@link ZoneOffset#UTC} as the
-     * timezone.
-     *
-     * @param datetimeString The datetime string to parse.
-     * @return The {@link OffsetDateTime} representing the string.
-     * @throws DateTimeParseException If the datetime is neither an ISO offset datetime or ISO local datetime.
-     */
-    public static OffsetDateTime parseOffsetDateTimeBest(String datetimeString) {
-        TemporalAccessor temporal
-            = DateTimeFormatter.ISO_DATE_TIME.parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
-
-        return (temporal.query(TemporalQueries.offset()) == null)
-            ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)
-            : OffsetDateTime.from(temporal);
-    }
 }

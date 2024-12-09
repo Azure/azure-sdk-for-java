@@ -2,27 +2,17 @@
 
 > see https://aka.ms/autorest
 
-## Getting Started
-
-To build the SDK for ServiceBusAdministrationClient and ServiceBusAdministrationAsyncClient, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
-
 ### Setup
+
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 
-There is one swagger for Service Bus management APIs.
-
 ```ps
-cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+cd <swagger-folder>****
+autorest
 ```
 
 ### Code generation settings
@@ -33,7 +23,6 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.messaging.servicebus.administration
-sync-methods: essential
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
 custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku,NamespaceType

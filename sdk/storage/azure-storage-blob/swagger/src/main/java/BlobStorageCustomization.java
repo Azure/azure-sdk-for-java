@@ -8,6 +8,7 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -18,6 +19,8 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -123,7 +126,7 @@ public class BlobStorageCustomization extends Customization {
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.blob.implementation"));
 
-        addMissingHashMapImport(implementationModels);
+        customizeQueryRequest(implementationModels.getClass("QueryRequest"));
     }
 
     private static void customizeQueryFormat(ClassCustomization classCustomization) {
@@ -356,10 +359,16 @@ public class BlobStorageCustomization extends Customization {
         method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
     }
 
-    // Temporary fix to a bug in Autorest.
-    private static void addMissingHashMapImport(PackageCustomization implementationModels) {
-        for (String className : Arrays.asList("BlobsDownloadHeaders", "BlobsQueryHeaders", "BlobsGetPropertiesHeaders", "ContainersGetPropertiesHeaders")) {
-            implementationModels.getClass(className).addImports("java.util.HashMap");
-        }
+    private static void customizeQueryRequest(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            clazz.getFieldByName("queryType").ifPresent(field -> field.removeModifier(Modifier.Keyword.FINAL));
+            clazz.addMethod("setQueryType", Modifier.Keyword.PUBLIC)
+                .addParameter("String", "queryType")
+                .setType("QueryRequest")
+                .setBody(StaticJavaParser.parseBlock("{ this.queryType = queryType; return this; }"))
+                .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the queryType property: Required. The type of the provided query expression."))
+                    .addBlockTag("param", "queryType", "the queryType value to set.")
+                    .addBlockTag("return", "the QueryRequest object itself."));
+        }));
     }
 }

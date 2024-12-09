@@ -4,14 +4,15 @@
 
 ### Setup
 
-> see https://github.com/Azure/autorest.java
+```ps
+npm install -g autorest
+```
 
 ### Generation
-> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
+
 ```ps
-cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+cd <swagger-folder>****
+autorest
 ```
 
 ### Code generation settings
