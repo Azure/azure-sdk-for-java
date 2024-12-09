@@ -33,6 +33,7 @@ public final class ShareDirectoryInfo {
         this.posixProperties = null;
     }
 
+    //Internal constructor to support FilePosixProperties class.
     private ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
         FilePosixProperties posixProperties) {
         this.eTag = eTag;
@@ -79,10 +80,10 @@ public final class ShareDirectoryInfo {
     }
 
     /**
-     * Gets the file's NFS properties.
-     * Only applicable to files in a NFS share.
+     * Gets the directory's NFS properties.
+     * Only applicable to directories in a NFS share.
      *
-     * @return The NFS Properties of the file.
+     * @return The NFS Properties of the directory.
      */
     public FilePosixProperties getPosixProperties() {
         return posixProperties;

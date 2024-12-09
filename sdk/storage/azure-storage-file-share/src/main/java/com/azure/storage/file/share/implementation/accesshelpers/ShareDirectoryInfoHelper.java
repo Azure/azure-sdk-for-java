@@ -20,12 +20,16 @@ public final class ShareDirectoryInfoHelper {
     }
 
     /**
-     * Interface defining the methods that access non-public APIs of a {@link ShareDirectoryInfo} instance.
+     * Type defining the methods to set the non-public properties of a {@link ShareDirectoryInfo} instance.
      */
     public interface ShareDirectoryInfoAccessor {
         /**
-         * Creates a new instance of {@link ShareDirectoryInfo} .
+         * Creates a new instance of {@link ShareDirectoryInfo}.
          *
+         * @param eTag Entity tag that corresponds to the directory.
+         * @param lastModified Last time the directory was modified.
+         * @param smbProperties The SMB properties of the directory.
+         * @param posixProperties The NFS properties of the directory.
          * @return A new instance of {@link ShareDirectoryInfo}.
          */
         ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
@@ -33,9 +37,9 @@ public final class ShareDirectoryInfoHelper {
     }
 
     /**
-     * The method called from the static initializer of {@link ShareDirectoryInfo} to set it's accessor.
+     * The method called from {@link ShareDirectoryInfo} to set it's accessor.
      *
-     * @param accessor The {@link ShareDirectoryInfo} accessor.
+     * @param accessor The accessor.
      */
     public static void setAccessor(final ShareDirectoryInfoAccessor accessor) {
         ShareDirectoryInfoHelper.accessor = accessor;
@@ -47,13 +51,13 @@ public final class ShareDirectoryInfoHelper {
      * @param eTag Entity tag that corresponds to the directory.
      * @param lastModified Last time the directory was modified.
      * @param smbProperties The SMB properties of the directory.
-     * @param posixProperties the POSIX properties of the directory.
+     * @param posixProperties the NFS properties of the directory.
      * @return A new instance of {@link ShareDirectoryInfo}.
      */
     public static ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
         FilePosixProperties posixProperties) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
-        // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
+        // application accesses ShareDirectoryInfo which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
             new ShareDirectoryInfo(null, null, null);

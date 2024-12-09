@@ -157,6 +157,7 @@ public final class ShareFileProperties {
         this.posixProperties = null;
     }
 
+    //Internal constructor to support FilePosixProperties class.
     private ShareFileProperties(String eTag, OffsetDateTime lastModified, Map<String, String> metadata, String fileType,
         Long contentLength, String contentType, byte[] contentMd5, String contentEncoding, String cacheControl,
         String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,

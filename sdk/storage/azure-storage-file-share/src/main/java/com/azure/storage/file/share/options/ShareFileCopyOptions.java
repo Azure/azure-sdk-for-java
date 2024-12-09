@@ -236,7 +236,7 @@ public final class ShareFileCopyOptions {
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @return The NFS file properties.
+     * @return {@link FilePosixProperties}
      */
     public FilePosixProperties getPosixProperties() {
         return posixProperties;
@@ -246,7 +246,7 @@ public final class ShareFileCopyOptions {
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @param posixProperties the file permission format.
+     * @param posixProperties {@link FilePosixProperties}
      * @return The updated options.
      */
     public ShareFileCopyOptions setPosixProperties(FilePosixProperties posixProperties) {

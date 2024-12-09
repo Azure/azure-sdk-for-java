@@ -12,44 +12,23 @@ import com.azure.storage.file.share.implementation.accesshelpers.FilePosixProper
  * Note that these properties only apply to files or directories in premium NFS file accounts.
  */
 public class FilePosixProperties {
-    /**
-     * Optional. Version TBD and newer. The mode permissions to be set on the file or directory. This can be in
-     * either symbolic or octal notation.
-     *
-     * <p>For more information, see this
-     * <a href="https://aka.ms/fileModeWikipedia">Wikipedia page</a>.</p>
-     */
+
     private String fileMode;
-
-    /**
-     * Optional. The owner user identifier (UID) to be set on the file or directory. The default value is 0 (root).
-     */
     private String owner;
-
-    /**
-     * Optional. The owner group identifier (GID) to be set on the file or directory. The default value is 0 (root group).
-     */
     private String group;
+    private final NfsFileType fileType;
+    private final Long linkCount;
 
     /**
-     * Optional, only applicable to files. The type of the file. The default value is {@link NfsFileType#REGULAR}.
-     */
-    private NfsFileType fileType;
-
-    /**
-     * The link count of the file or directory.
-     */
-    private Long linkCount;
-
-    /**
-     * Creates an instance of FilePosixProperties class.
+     * Default constructor
      */
     public FilePosixProperties() {
+        // Non user-settable properties
+        fileType = NfsFileType.REGULAR;
+        linkCount = null;
     }
 
     /**
-     * Gets the file mode permissions.
-     *
      * @return the file mode permissions.
      */
     public String getFileMode() {
@@ -57,11 +36,41 @@ public class FilePosixProperties {
     }
 
     /**
-     * Sets the file mode permissions. This can be in either symbolic or octal notation.
+     * @return the owner user identifier (UID).
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
+     * @return the owner group identifier (GID).
+     */
+    public String getGroup() {
+        return group;
+    }
+
+    /**
+     * @return the file type.
+     */
+    public NfsFileType getFileType() {
+        return fileType;
+    }
+
+    /**
+     * @return the link count of the file or directory.
+     */
+    public Long getLinkCount() {
+        return linkCount;
+    }
+
+    /**
+     * Optional. Version 2025-05-05 and newer.
+     * The mode permissions to be set on the file or directory. This can be in either symbolic or octal notation.
+     *
      * <p>For more information, see this
      * <a href="https://aka.ms/fileModeWikipedia">Wikipedia page</a>.</p>
      *
-     * @param fileMode the file mode permissions to set.
+     * @param fileMode The mode permissions to be set on the file or directory.
      * @return the FilePosixProperties object itself.
      */
     public FilePosixProperties setFileMode(String fileMode) {
@@ -70,16 +79,7 @@ public class FilePosixProperties {
     }
 
     /**
-     * Gets the owner user identifier (UID).
-     *
-     * @return the owner user identifier (UID).
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-    /**
-     * Sets the owner user identifier (UID).
+     * Optional. The owner user identifier (UID) to be set on the file or directory. The default value is 0 (root).
      *
      * @param owner the owner user identifier (UID) to set.
      * @return the FilePosixProperties object itself.
@@ -90,16 +90,7 @@ public class FilePosixProperties {
     }
 
     /**
-     * Gets the owner group identifier (GID).
-     *
-     * @return the owner group identifier (GID).
-     */
-    public String getGroup() {
-        return group;
-    }
-
-    /**
-     * Sets the owner group identifier (GID).
+     * Optional. The owner group identifier (GID) to be set on the file or directory. The default value is 0 (root group).
      *
      * @param group the owner group identifier (GID) to set.
      * @return the FilePosixProperties object itself.
@@ -110,27 +101,9 @@ public class FilePosixProperties {
     }
 
     /**
-     * Gets the file type.
+     * Creates a new FilePosixProperties object from HttpHeaders.
      *
-     * @return the file type.
-     */
-    public NfsFileType getFileType() {
-        return fileType;
-    }
-
-    /**
-     * Gets the link count of the file or directory.
-     *
-     * @return the link count of the file or directory.
-     */
-    public Long getLinkCount() {
-        return linkCount;
-    }
-
-    /**
-     * Creates a new FilePosixProperties object from HttpHeaders
-     *
-     * @param httpHeaders The headers to construct FileSmbProperties from
+     * @param httpHeaders The headers to construct FilePosixProperties from.
      */
     FilePosixProperties(HttpHeaders httpHeaders) {
         this.fileMode = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-mode"));

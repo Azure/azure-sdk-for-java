@@ -190,7 +190,7 @@ public class FileSmbProperties {
     }
 
     /**
-     * Gets the string representation of the file's {@link NtfsFileAttributes}.
+     * Gets the string representation of the file's {@link NtfsFileAttributes} or null if no value is set.
      *
      * @return The value of the file's {@link NtfsFileAttributes}.
      */
@@ -199,7 +199,7 @@ public class FileSmbProperties {
     }
 
     /**
-     * Gets the string representation of the file's creation time.
+     * Gets the string representation of the file's creation time or null if no value is set.
      *
      * @return The value of the file's creation time.
      */
@@ -208,7 +208,7 @@ public class FileSmbProperties {
     }
 
     /**
-     * Gets the string representation of the file's last write time.
+     * Gets the string representation of the file's last write time or null if no value is set.
      *
      * @return The value of the file's last write time.
      */

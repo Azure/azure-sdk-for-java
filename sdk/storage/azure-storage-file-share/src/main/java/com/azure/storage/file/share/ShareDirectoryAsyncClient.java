@@ -363,21 +363,18 @@ public class ShareDirectoryAsyncClient {
         FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Map<String, String> metadata,
         Context context) {
         context = context == null ? Context.NONE : context;
-
-        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        FilePosixProperties finalFileposixProperties
-            = posixProperties == null ? new FilePosixProperties() : posixProperties;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        posixProperties = posixProperties == null ? new FilePosixProperties() : posixProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         return azureFileStorageClient.getDirectories()
             .createWithResponseAsync(shareName, directoryPath, null, metadata, filePermission, filePermissionFormat,
-                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
-                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
-                finalSmbProperties.getFileChangeTimeString(), finalFileposixProperties.getOwner(),
-                finalFileposixProperties.getGroup(), finalFileposixProperties.getFileMode(), context)
+                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), posixProperties.getOwner(),
+                posixProperties.getGroup(), posixProperties.getFileMode(), context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -780,21 +777,18 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
         FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Context context) {
         context = context == null ? Context.NONE : context;
-
-        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        FilePosixProperties finalFileposixProperties
-            = posixProperties == null ? new FilePosixProperties() : posixProperties;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        posixProperties = posixProperties == null ? new FilePosixProperties() : posixProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         return azureFileStorageClient.getDirectories()
             .setPropertiesWithResponseAsync(shareName, directoryPath, null, filePermission, filePermissionFormat,
-                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
-                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
-                finalSmbProperties.getFileChangeTimeString(), finalFileposixProperties.getOwner(),
-                finalFileposixProperties.getGroup(), finalFileposixProperties.getFileMode(), context)
+                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), posixProperties.getOwner(),
+                posixProperties.getGroup(), posixProperties.getFileMode(), context)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 

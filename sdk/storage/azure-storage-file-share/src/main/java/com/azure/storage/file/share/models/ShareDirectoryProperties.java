@@ -42,6 +42,7 @@ public final class ShareDirectoryProperties {
         this.posixProperties = null;
     }
 
+    //Internal constructor to support FilePosixProperties class.
     private ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
         boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
         this.metadata = metadata;
@@ -113,10 +114,10 @@ public final class ShareDirectoryProperties {
     }
 
     /**
-     * Gets the file's NFS properties.
-     * Only applicable to files in a NFS share.
+     * Gets the directory's NFS properties.
+     * Only applicable to directories in a NFS share.
      *
-     * @return The NFS Properties of the file.
+     * @return The NFS Properties of the directory.
      */
     public FilePosixProperties getPosixProperties() {
         return posixProperties;

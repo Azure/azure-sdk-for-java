@@ -57,20 +57,20 @@ public class ShareDirectorySetPropertiesOptions {
     }
 
     /**
-     *  Optional properties to set on NFS files.
-     *  Note that this property is only applicable to files created in NFS shares.
+     *  Optional properties to set on NFS directories.
+     *  Note that this property is only applicable to directories created in NFS shares.
      *
-     * @return The NFS file properties.
+     * @return {@link FilePosixProperties}
      */
     public FilePosixProperties getPosixProperties() {
         return posixProperties;
     }
 
     /**
-     *  Optional properties to set on NFS files.
-     *  Note that this property is only applicable to files created in NFS shares.
+     *  Optional properties to set on NFS directories.
+     *  Note that this property is only applicable to directories created in NFS shares.
      *
-     * @param posixProperties the file permission format.
+     * @param posixProperties {@link FilePosixProperties}
      * @return The updated options.
      */
     public ShareDirectorySetPropertiesOptions setPosixProperties(FilePosixProperties posixProperties) {

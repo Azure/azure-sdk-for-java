@@ -38,6 +38,7 @@ public final class ShareFileInfo {
         this.posixProperties = null;
     }
 
+    //Internal constructor to support FilePosixProperties class.
     private ShareFileInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
         FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
         this.eTag = eTag;

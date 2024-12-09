@@ -21,8 +21,7 @@ public final class FilePosixPropertiesHelper {
      */
     public interface FilePosixPropertiesAccessor {
         /**
-         * Creates a new instance of {@link FilePosixProperties} backed by an internal instance of
-         * {@link FilePosixProperties}.
+         * Creates a new instance of {@link FilePosixProperties}.
          *
          * @param httpHeaders The internal headers.
          * @return A new instance of {@link FilePosixProperties}.
@@ -40,13 +39,15 @@ public final class FilePosixPropertiesHelper {
     }
 
     /**
-     * Creates a new instance of {@link FilePosixProperties} backed by an internal instance of
-     * {@link FilePosixProperties}.
+     * Creates a new instance of {@link FilePosixProperties}.
      *
      * @param httpHeaders The internal headers.
      * @return A new instance of {@link FilePosixProperties}.
      */
     public static FilePosixProperties create(HttpHeaders httpHeaders) {
+        // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
+        // application accesses FilePosixProperties which triggers the accessor to be configured. So, if the accessor
+        // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
             new FilePosixProperties();
         }

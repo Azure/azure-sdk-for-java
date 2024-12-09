@@ -527,9 +527,8 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createWithResponse(ShareFileCreateOptions options, Duration timeout,
         Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
         StorageImplUtils.assertNotNull("options", options);
-
+        Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
 
@@ -1714,10 +1713,9 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> setPropertiesWithResponse(ShareFileSetPropertiesOptions options, Duration timeout,
         Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
         StorageImplUtils.assertNotNull("options", options);
-
-        ShareRequestConditions requestConditions
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions finalRequestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
 
         FileSmbProperties smbProperties
@@ -1735,7 +1733,7 @@ public class ShareFileClient {
                 filePermission.getPermission(), filePermission.getPermissionFormat(),
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
+                smbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(), fileposixProperties.getOwner(),
                 fileposixProperties.getGroup(), fileposixProperties.getFileMode(), options.getHttpHeaders(),
                 finalContext);
 
