@@ -32,30 +32,6 @@ public final class DocumentClassifierCopyToOperationDetails extends OperationDet
     @Generated
     private DocumentClassifierDetails result;
 
-    /*
-     * Encountered error.
-     */
-    @Generated
-    private Error error;
-
-    /*
-     * List of key-value tag attributes associated with the document model.
-     */
-    @Generated
-    private Map<String, String> tags;
-
-    /*
-     * API version used to create this operation.
-     */
-    @Generated
-    private String apiVersion;
-
-    /*
-     * Operation progress (0-100).
-     */
-    @Generated
-    private Integer percentCompleted;
-
     /**
      * Creates an instance of DocumentClassifierCopyToOperationDetails class.
      * 
@@ -89,50 +65,6 @@ public final class DocumentClassifierCopyToOperationDetails extends OperationDet
     @Generated
     public DocumentClassifierDetails getResult() {
         return this.result;
-    }
-
-    /**
-     * Get the error property: Encountered error.
-     * 
-     * @return the error value.
-     */
-    @Generated
-    @Override
-    public Error getError() {
-        return this.error;
-    }
-
-    /**
-     * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
-     * @return the tags value.
-     */
-    @Generated
-    @Override
-    public Map<String, String> getTags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the apiVersion property: API version used to create this operation.
-     * 
-     * @return the apiVersion value.
-     */
-    @Generated
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
-     * Get the percentCompleted property: Operation progress (0-100).
-     * 
-     * @return the percentCompleted value.
-     */
-    @Generated
-    @Override
-    public Integer getPercentCompleted() {
-        return this.percentCompleted;
     }
 
     /**
@@ -218,10 +150,10 @@ public final class DocumentClassifierCopyToOperationDetails extends OperationDet
                 = new DocumentClassifierCopyToOperationDetails(status, createdDateTime, lastUpdatedDateTime,
                     resourceLocation);
             deserializedDocumentClassifierCopyToOperationDetails.setOperationId(operationId);
-            deserializedDocumentClassifierCopyToOperationDetails.percentCompleted = percentCompleted;
-            deserializedDocumentClassifierCopyToOperationDetails.apiVersion = apiVersion;
-            deserializedDocumentClassifierCopyToOperationDetails.tags = tags;
-            deserializedDocumentClassifierCopyToOperationDetails.error = error;
+            deserializedDocumentClassifierCopyToOperationDetails.setPercentCompleted(percentCompleted);
+            deserializedDocumentClassifierCopyToOperationDetails.setApiVersion(apiVersion);
+            deserializedDocumentClassifierCopyToOperationDetails.setTags(tags);
+            deserializedDocumentClassifierCopyToOperationDetails.setError(error);
             deserializedDocumentClassifierCopyToOperationDetails.kind = kind;
             deserializedDocumentClassifierCopyToOperationDetails.result = result;
 

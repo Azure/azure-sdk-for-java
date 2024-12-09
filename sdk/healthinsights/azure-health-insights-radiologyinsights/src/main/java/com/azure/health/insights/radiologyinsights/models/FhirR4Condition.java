@@ -384,74 +384,6 @@ public final class FhirR4Condition extends FhirR4DomainResource {
         return this.note;
     }
 
-    /*
-     * Extensions that cannot be ignored
-     */
-    @Generated
-    private List<FhirR4Extension> modifierExtension;
-
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /*
-     * Contained, inline Resources
-     */
-    @Generated
-    private List<FhirR4Resource> contained;
-
-    /*
-     * Text summary of the resource, for human interpretation
-     */
-    @Generated
-    private FhirR4Narrative text;
-
-    /**
-     * Get the modifierExtension property: Extensions that cannot be ignored.
-     *
-     * @return the modifierExtension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getModifierExtension() {
-        return this.modifierExtension;
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
-    /**
-     * Get the contained property: Contained, inline Resources.
-     *
-     * @return the contained value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Resource> getContained() {
-        return this.contained;
-    }
-
-    /**
-     * Get the text property: Text summary of the resource, for human interpretation.
-     *
-     * @return the text value.
-     */
-    @Generated
-    @Override
-    public FhirR4Narrative getText() {
-        return this.text;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -616,10 +548,10 @@ public final class FhirR4Condition extends FhirR4DomainResource {
             deserializedFhirR4Condition.setMeta(meta);
             deserializedFhirR4Condition.setImplicitRules(implicitRules);
             deserializedFhirR4Condition.setLanguage(language);
-            deserializedFhirR4Condition.text = text;
-            deserializedFhirR4Condition.contained = contained;
-            deserializedFhirR4Condition.extension = extension;
-            deserializedFhirR4Condition.modifierExtension = modifierExtension;
+            deserializedFhirR4Condition.setText(text);
+            deserializedFhirR4Condition.setContained(contained);
+            deserializedFhirR4Condition.setExtension(extension);
+            deserializedFhirR4Condition.setModifierExtension(modifierExtension);
             deserializedFhirR4Condition.resourceType = resourceType;
             deserializedFhirR4Condition.identifier = identifier;
             deserializedFhirR4Condition.clinicalStatus = clinicalStatus;
