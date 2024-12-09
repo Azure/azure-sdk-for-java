@@ -373,8 +373,8 @@ public class ShareDirectoryAsyncClient {
             .createWithResponseAsync(shareName, directoryPath, null, metadata, filePermission, filePermissionFormat,
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), posixProperties.getOwner(),
-                posixProperties.getGroup(), posixProperties.getFileMode(), context)
+                smbProperties.getFileChangeTimeString(), posixProperties.getOwner(), posixProperties.getGroup(),
+                posixProperties.getFileMode(), context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -787,8 +787,8 @@ public class ShareDirectoryAsyncClient {
             .setPropertiesWithResponseAsync(shareName, directoryPath, null, filePermission, filePermissionFormat,
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), posixProperties.getOwner(),
-                posixProperties.getGroup(), posixProperties.getFileMode(), context)
+                smbProperties.getFileChangeTimeString(), posixProperties.getOwner(), posixProperties.getGroup(),
+                posixProperties.getFileMode(), context)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 

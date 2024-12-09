@@ -1730,9 +1730,9 @@ public class ShareFileClient {
                 filePermission.getPermission(), filePermission.getPermissionFormat(),
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), options.getHttpHeaders(),
-                finalContext);
+                smbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(),
+                fileposixProperties.getOwner(), fileposixProperties.getGroup(), fileposixProperties.getFileMode(),
+                options.getHttpHeaders(), finalContext);
 
         return ModelHelper.setPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }

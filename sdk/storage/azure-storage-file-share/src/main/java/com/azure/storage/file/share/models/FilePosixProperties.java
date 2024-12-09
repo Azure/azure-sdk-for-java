@@ -23,7 +23,7 @@ public class FilePosixProperties {
      */
     public FilePosixProperties() {
         // Non user-settable properties
-        fileType = NfsFileType.REGULAR;
+        fileType = null;
         linkCount = null;
     }
 
