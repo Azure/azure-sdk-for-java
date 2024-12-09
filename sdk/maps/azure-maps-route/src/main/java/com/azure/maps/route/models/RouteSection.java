@@ -33,12 +33,14 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
     private RouteSectionType sectionType;
 
     /*
-     * Travel mode for the calculated route. The value will be set to `other` if the requested mode of transport is not possible in this section
+     * Travel mode for the calculated route. The value will be set to `other` if the requested mode of transport is not
+     * possible in this section
      */
     private RouteTravelMode travelMode;
 
     /*
-     * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER. See "tec" for detailed information.
+     * Type of the incident. Can currently be JAM, ROAD_WORK, ROAD_CLOSURE, or OTHER. See "tec" for detailed
+     * information.
      */
     private RouteDelayReason simpleCategory;
 
@@ -53,12 +55,14 @@ public final class RouteSection implements JsonSerializable<RouteSection> {
     private Integer delayInSeconds;
 
     /*
-     * The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of the [Get Traffic Incident Detail API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail). 
+     * The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of
+     * the [Get Traffic Incident Detail API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail).
      */
     private DelayMagnitude delayMagnitude;
 
     /*
-     * Details of the traffic event, using definitions in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can contain effectCode and causes elements.
+     * Details of the traffic event, using definitions in the [TPEG2-TEC](https://www.iso.org/standard/63116.html)
+     * standard. Can contain effectCode and causes elements.
      */
     private RouteSectionTec tec;
 

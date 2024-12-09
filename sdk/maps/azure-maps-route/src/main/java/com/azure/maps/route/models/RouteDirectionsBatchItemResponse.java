@@ -4,13 +4,13 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.route.implementation.models.ErrorDetail;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.ResponseError;
 
 /**
  * The result of the query. RouteDirections if the query completed successfully, ErrorResponse otherwise.
@@ -22,6 +22,33 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
      * The error object.
      */
     private ErrorDetail error;
+
+    /*
+     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and
+     * optimized list. For instance, a response:
+     * 
+     * ```
+     * <optimizedWaypoints>
+     * <waypoint providedIndex="0" optimizedIndex="1"/>
+     * <waypoint providedIndex="1" optimizedIndex="2"/>
+     * <waypoint providedIndex="2" optimizedIndex="0"/>
+     * </optimizedWaypoints>
+     * ```
+     * 
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
+     */
+    private List<RouteOptimizedWaypoint> optimizedWaypoints;
+
+    /*
+     * Routes array
+     */
+    private List<MapsSearchRoute> routes;
+
+    /*
+     * Format Version property
+     */
+    private String formatVersion;
 
     /**
      * Creates an instance of RouteDirectionsBatchItemResponse class.
@@ -47,6 +74,48 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
     public RouteDirectionsBatchItemResponse setError(ResponseError error) {
         this.error = new ErrorDetail().setCode(error.getCode()).setMessage(error.getMessage());
         return this;
+    }
+
+    /**
+     * Get the optimizedWaypoints property: Optimized sequence of waypoints. It shows the index from the user provided
+     * waypoint sequence for the original and optimized list. For instance, a response:
+     *
+     * ```
+     * &lt;optimizedWaypoints&gt;
+     * &lt;waypoint providedIndex="0" optimizedIndex="1"/&gt;
+     * &lt;waypoint providedIndex="1" optimizedIndex="2"/&gt;
+     * &lt;waypoint providedIndex="2" optimizedIndex="0"/&gt;
+     * &lt;/optimizedWaypoints&gt;
+     * ```
+     *
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
+     *
+     * @return the optimizedWaypoints value.
+     */
+    @Override
+    public List<RouteOptimizedWaypoint> getOptimizedWaypoints() {
+        return this.optimizedWaypoints;
+    }
+
+    /**
+     * Get the routes property: Routes array.
+     *
+     * @return the routes value.
+     */
+    @Override
+    public List<MapsSearchRoute> getRoutes() {
+        return this.routes;
+    }
+
+    /**
+     * Get the formatVersion property: Format Version property.
+     *
+     * @return the formatVersion value.
+     */
+    @Override
+    public String getFormatVersion() {
+        return this.formatVersion;
     }
 
     /**
@@ -85,14 +154,14 @@ final class RouteDirectionsBatchItemResponse extends RouteDirections {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("formatVersion".equals(fieldName)) {
-                    deserializedRouteDirectionsBatchItemResponse.setFormatVersion(reader.getString());
+                    deserializedRouteDirectionsBatchItemResponse.formatVersion = reader.getString();
                 } else if ("routes".equals(fieldName)) {
                     List<MapsSearchRoute> routes = reader.readArray(reader1 -> MapsSearchRoute.fromJson(reader1));
-                    deserializedRouteDirectionsBatchItemResponse.setRoutes(routes);
+                    deserializedRouteDirectionsBatchItemResponse.routes = routes;
                 } else if ("optimizedWaypoints".equals(fieldName)) {
                     List<RouteOptimizedWaypoint> optimizedWaypoints
                         = reader.readArray(reader1 -> RouteOptimizedWaypoint.fromJson(reader1));
-                    deserializedRouteDirectionsBatchItemResponse.setOptimizedWaypoints(optimizedWaypoints);
+                    deserializedRouteDirectionsBatchItemResponse.optimizedWaypoints = optimizedWaypoints;
                 } else if ("report".equals(fieldName)) {
                     deserializedRouteDirectionsBatchItemResponse.setReport(RouteReport.fromJson(reader));
                 } else if ("error".equals(fieldName)) {

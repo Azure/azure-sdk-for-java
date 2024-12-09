@@ -4,13 +4,13 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.LatLongPairAbbreviated;
 import java.io.IOException;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Describes the address range on both sides of the street for a search result. Coordinates for the start and end

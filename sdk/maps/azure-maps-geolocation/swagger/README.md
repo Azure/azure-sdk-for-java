@@ -45,7 +45,6 @@ license-header: MICROSOFT_MIT_SMALL
 java: true
 use: '@autorest/java@4.1.42'
 output-folder: ../
-payload-flattening-threshold: 0
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all

@@ -4,13 +4,13 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Result object for a Search Address Reverse response.
@@ -37,9 +37,9 @@ public final class ReverseSearchAddressResultItem implements JsonSerializable<Re
      * Information on the type of match.
      * 
      * One of:
-     *   * AddressPoint
-     *   * HouseNumberRange
-     *   * Street
+     * * AddressPoint
+     * * HouseNumberRange
+     * * Street
      */
     private MatchType matchType;
 

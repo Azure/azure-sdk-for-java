@@ -17,7 +17,8 @@ import java.io.IOException;
 public final class WindDirection implements JsonSerializable<WindDirection> {
 
     /*
-     * Wind direction in Azimuth degrees,  starting at true North and continuing in clockwise direction. North is 0 degrees, east is 90 degrees, south is 180 degrees, west is 270 degrees. Possible values 0-359.
+     * Wind direction in Azimuth degrees, starting at true North and continuing in clockwise direction. North is 0
+     * degrees, east is 90 degrees, south is 180 degrees, west is 270 degrees. Possible values 0-359.
      */
     private Integer degrees;
 

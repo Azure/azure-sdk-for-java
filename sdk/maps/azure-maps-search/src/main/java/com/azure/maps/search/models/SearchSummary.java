@@ -4,13 +4,13 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.LatLongPairAbbreviated;
 import java.io.IOException;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Summary object for a Search API response.
@@ -59,7 +59,9 @@ public final class SearchSummary implements JsonSerializable<SearchSummary> {
     private Integer fuzzyLevel;
 
     /*
-     * Indication when the internal search engine has applied a geospatial bias to improve the ranking of results.  In  some methods, this can be affected by setting the lat and lon parameters where available.  In other cases it is  purely internal.
+     * Indication when the internal search engine has applied a geospatial bias to improve the ranking of results. In
+     * some methods, this can be affected by setting the lat and lon parameters where available. In other cases it is
+     * purely internal.
      */
     private LatLongPairAbbreviated geoBias;
 

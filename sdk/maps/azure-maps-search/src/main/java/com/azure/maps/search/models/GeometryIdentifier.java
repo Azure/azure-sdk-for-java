@@ -17,7 +17,8 @@ import java.io.IOException;
 public final class GeometryIdentifier implements JsonSerializable<GeometryIdentifier> {
 
     /*
-     * Pass this as geometryId to the [Get Search Polygon](/rest/api/maps/search/get-search-polygon?view=rest-maps-1.0) API to fetch geometry information for this result.
+     * Pass this as geometryId to the [Get Search Polygon](/rest/api/maps/search/get-search-polygon?view=rest-maps-1.0)
+     * API to fetch geometry information for this result.
      */
     private String id;
 

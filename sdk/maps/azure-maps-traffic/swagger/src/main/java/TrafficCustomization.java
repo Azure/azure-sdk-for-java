@@ -38,9 +38,6 @@ public class TrafficCustomization extends Customization {
 
         // customize TrafficState
         customizeTrafficState(models);
-
-        // customize TrafficIncidentViewportResponse
-        customizeTrafficIncidentViewportResponse(models);
     }
 
     // Customizes the TrafficFlowSegmentDataFlowSegmentDataCoordinates class
@@ -88,7 +85,11 @@ public class TrafficCustomization extends Customization {
 
     // Customizes the TrafficIncidentViewportResponse class
     private void customizeTrafficIncidentViewportViewpResp(PackageCustomization models) {
-        models.getClass("TrafficIncidentViewportViewpResp").rename("TrafficIncidentViewportResponse");
+        models.getClass("TrafficIncidentViewportViewpResp").rename("TrafficIncidentViewportResponse")
+            .customizeAst(ast -> ast.getClassByName("TrafficIncidentViewportResponse").ifPresent(clazz ->
+                clazz.getConstructors().get(0)
+                    .setModifiers(Modifier.Keyword.PRIVATE)
+                    .setJavadocComment("Set default constructor to private")));
     }
 
      // Customizes the Point class
@@ -228,14 +229,5 @@ public class TrafficCustomization extends Customization {
              clazz.getConstructors().get(0)
                  .setModifiers(Modifier.Keyword.PRIVATE)
                  .setJavadocComment("Set default constructor to private")));
-     }
-
-     // Customizes the TrafficIncidentViewport class
-     private void customizeTrafficIncidentViewportResponse(PackageCustomization models) {
-        models.getClass("TrafficIncidentViewportResponse").customizeAst(ast ->
-            ast.getClassByName("TrafficIncidentViewportResponse").ifPresent(clazz ->
-                clazz.getConstructors().get(0)
-                    .setModifiers(Modifier.Keyword.PRIVATE)
-                    .setJavadocComment("Set default constructor to private")));
      }
 }

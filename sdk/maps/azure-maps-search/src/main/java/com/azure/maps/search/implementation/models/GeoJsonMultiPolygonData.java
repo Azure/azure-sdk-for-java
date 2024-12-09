@@ -18,7 +18,8 @@ import java.util.List;
 @Fluent
 public class GeoJsonMultiPolygonData implements JsonSerializable<GeoJsonMultiPolygonData> {
     /*
-     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
     private List<List<List<List<Double>>>> coordinates;
 

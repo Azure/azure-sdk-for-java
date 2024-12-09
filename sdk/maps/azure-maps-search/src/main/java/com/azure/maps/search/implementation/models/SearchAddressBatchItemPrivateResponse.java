@@ -4,6 +4,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -12,8 +13,6 @@ import com.azure.maps.search.models.SearchAddressResultItem;
 import com.azure.maps.search.models.SearchSummary;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.ResponseError;
-import com.azure.maps.search.implementation.helpers.SearchAddressResultPropertiesHelper;
 
 /**
  * The result of the query. SearchAddressResult if the query completed successfully, ErrorResponse otherwise.
@@ -25,6 +24,16 @@ public final class SearchAddressBatchItemPrivateResponse extends SearchAddressRe
      * The error object.
      */
     private ErrorDetail error;
+
+    /*
+     * A list of Search API results.
+     */
+    private List<SearchAddressResultItem> results;
+
+    /*
+     * Summary object for a Search API response
+     */
+    private SearchSummary summary;
 
     /**
      * Creates an instance of SearchAddressBatchItemPrivateResponse class.
@@ -56,6 +65,26 @@ public final class SearchAddressBatchItemPrivateResponse extends SearchAddressRe
     }
 
     /**
+     * Get the results property: A list of Search API results.
+     *
+     * @return the results value.
+     */
+    @Override
+    public List<SearchAddressResultItem> getResults() {
+        return this.results;
+    }
+
+    /**
+     * Get the summary property: Summary object for a Search API response.
+     *
+     * @return the summary value.
+     */
+    @Override
+    public SearchSummary getSummary() {
+        return this.summary;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,13 +110,11 @@ public final class SearchAddressBatchItemPrivateResponse extends SearchAddressRe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("summary".equals(fieldName)) {
-                    SearchAddressResultPropertiesHelper.setSummary(deserializedSearchAddressBatchItemPrivateResponse,
-                        SearchSummary.fromJson(reader));
+                    deserializedSearchAddressBatchItemPrivateResponse.summary = SearchSummary.fromJson(reader);
                 } else if ("results".equals(fieldName)) {
                     List<SearchAddressResultItem> results
                         = reader.readArray(reader1 -> SearchAddressResultItem.fromJson(reader1));
-                    SearchAddressResultPropertiesHelper.setResults(deserializedSearchAddressBatchItemPrivateResponse,
-                        results);
+                    deserializedSearchAddressBatchItemPrivateResponse.results = results;
                 } else if ("error".equals(fieldName)) {
                     deserializedSearchAddressBatchItemPrivateResponse.error = ErrorDetail.fromJson(reader);
                 } else {

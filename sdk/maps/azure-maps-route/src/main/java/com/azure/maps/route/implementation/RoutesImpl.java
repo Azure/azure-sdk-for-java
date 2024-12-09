@@ -360,6 +360,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -385,7 +389,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -528,18 +532,10 @@ public final class RoutesImpl {
             Double vehicleHeight, Double vehicleWidth, Integer vehicleMaxSpeed, Integer vehicleWeight,
             WindingnessLevel windingness, InclineLevel inclineLevel, TravelMode travelMode, List<RouteAvoidType> avoid,
             Boolean useTrafficData, RouteType routeType, VehicleLoadType vehicleLoadType) {
-        final String accept = "application/json";
-        List<String> filterSectionTypeConverted = (filterSectionType == null)
-            ? new ArrayList<>()
-            : filterSectionType.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> avoidConverted = (avoid == null)
-            ? new ArrayList<>()
-            : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.requestRouteMatrix(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, waitForResults, computeTravelTime,
-            filterSectionTypeConverted, arriveAt, departAt, vehicleAxleWeight, vehicleLength, vehicleHeight,
-            vehicleWidth, vehicleMaxSpeed, vehicleWeight, windingness, inclineLevel, travelMode, avoidConverted,
-            useTrafficData, routeType, vehicleLoadType, routeMatrixQuery, accept, context));
+        return FluxUtil.withContext(context -> requestRouteMatrixWithResponseAsync(format, routeMatrixQuery,
+            waitForResults, computeTravelTime, filterSectionType, arriveAt, departAt, vehicleAxleWeight, vehicleLength,
+            vehicleHeight, vehicleWidth, vehicleMaxSpeed, vehicleWeight, windingness, inclineLevel, travelMode, avoid,
+            useTrafficData, routeType, vehicleLoadType, context));
     }
 
     /**
@@ -564,6 +560,10 @@ public final class RoutesImpl {
      * 
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
+     * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
      * 
      * 
      * 
@@ -590,7 +590,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -771,6 +771,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -796,7 +800,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -973,6 +977,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -998,7 +1006,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -1176,6 +1184,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -1201,7 +1213,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -1374,6 +1386,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -1399,7 +1415,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -1573,6 +1589,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -1598,7 +1618,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -1741,18 +1761,10 @@ public final class RoutesImpl {
         Double vehicleWidth, Integer vehicleMaxSpeed, Integer vehicleWeight, WindingnessLevel windingness,
         InclineLevel inclineLevel, TravelMode travelMode, List<RouteAvoidType> avoid, Boolean useTrafficData,
         RouteType routeType, VehicleLoadType vehicleLoadType) {
-        final String accept = "application/json";
-        List<String> filterSectionTypeConverted = (filterSectionType == null)
-            ? new ArrayList<>()
-            : filterSectionType.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> avoidConverted = (avoid == null)
-            ? new ArrayList<>()
-            : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.requestRouteMatrixNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, waitForResults, computeTravelTime,
-            filterSectionTypeConverted, arriveAt, departAt, vehicleAxleWeight, vehicleLength, vehicleHeight,
-            vehicleWidth, vehicleMaxSpeed, vehicleWeight, windingness, inclineLevel, travelMode, avoidConverted,
-            useTrafficData, routeType, vehicleLoadType, routeMatrixQuery, accept, context));
+        return FluxUtil.withContext(context -> requestRouteMatrixNoCustomHeadersWithResponseAsync(format,
+            routeMatrixQuery, waitForResults, computeTravelTime, filterSectionType, arriveAt, departAt,
+            vehicleAxleWeight, vehicleLength, vehicleHeight, vehicleWidth, vehicleMaxSpeed, vehicleWeight, windingness,
+            inclineLevel, travelMode, avoid, useTrafficData, routeType, vehicleLoadType, context));
     }
 
     /**
@@ -1777,6 +1789,10 @@ public final class RoutesImpl {
      * 
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
+     * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
      * 
      * 
      * 
@@ -1803,7 +1819,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -1984,6 +2000,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -2009,7 +2029,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -2186,6 +2206,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -2211,7 +2235,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -2389,6 +2413,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -2414,7 +2442,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -2587,6 +2615,10 @@ public final class RoutesImpl {
      * The maximum size of a matrix for async request is **700** and for sync request it's **100** (the number of
      * origins multiplied by the number of destinations).
      * 
+     * &gt; [!NOTE]
+     * &gt; All origins and destinations should be contained in an axis-aligned 400 km x 400 km bounding box. Otherwise
+     * some matrix cells will be resolved as OUT_OF_REGION.
+     * 
      * 
      * 
      * ### Submit Synchronous Route Matrix Request
@@ -2612,7 +2644,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -2815,7 +2847,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -2876,9 +2908,7 @@ public final class RoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<RoutesGetRouteMatrixHeaders, RouteMatrixResultPrivate>>
         getRouteMatrixWithResponseAsync(String matrixId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRouteMatrix(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), matrixId, accept, context));
+        return FluxUtil.withContext(context -> getRouteMatrixWithResponseAsync(matrixId, context));
     }
 
     /**
@@ -2933,7 +2963,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3052,7 +3082,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3171,7 +3201,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3292,7 +3322,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3406,7 +3436,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3522,7 +3552,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3582,9 +3612,7 @@ public final class RoutesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteMatrixResultPrivate>> getRouteMatrixNoCustomHeadersWithResponseAsync(String matrixId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRouteMatrixNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), matrixId, accept, context));
+        return FluxUtil.withContext(context -> getRouteMatrixNoCustomHeadersWithResponseAsync(matrixId, context));
     }
 
     /**
@@ -3639,7 +3667,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3758,7 +3786,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -3879,7 +3907,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -4001,7 +4029,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -4116,7 +4144,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -4228,7 +4256,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -4372,18 +4400,10 @@ public final class RoutesImpl {
         Integer vehicleMaxSpeed, Integer vehicleWeight, WindingnessLevel windingness, InclineLevel inclineLevel,
         TravelMode travelMode, List<RouteAvoidType> avoid, Boolean useTrafficData, RouteType routeType,
         VehicleLoadType vehicleLoadType) {
-        final String accept = "application/json";
-        List<String> filterSectionTypeConverted = (filterSectionType == null)
-            ? new ArrayList<>()
-            : filterSectionType.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> avoidConverted = (avoid == null)
-            ? new ArrayList<>()
-            : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.requestRouteMatrixSync(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, waitForResults, computeTravelTime,
-            filterSectionTypeConverted, arriveAt, departAt, vehicleAxleWeight, vehicleLength, vehicleHeight,
-            vehicleWidth, vehicleMaxSpeed, vehicleWeight, windingness, inclineLevel, travelMode, avoidConverted,
-            useTrafficData, routeType, vehicleLoadType, routeMatrixQuery, accept, context));
+        return FluxUtil.withContext(context -> requestRouteMatrixSyncWithResponseAsync(format, routeMatrixQuery,
+            waitForResults, computeTravelTime, filterSectionType, arriveAt, departAt, vehicleAxleWeight, vehicleLength,
+            vehicleHeight, vehicleWidth, vehicleMaxSpeed, vehicleWeight, windingness, inclineLevel, travelMode, avoid,
+            useTrafficData, routeType, vehicleLoadType, context));
     }
 
     /**
@@ -4434,7 +4454,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -4641,7 +4661,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -4838,7 +4858,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -5036,7 +5056,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -5234,7 +5254,7 @@ public final class RoutesImpl {
      * 10x70 (it does not need to be square).
      * 
      * 
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * 
@@ -5466,7 +5486,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -5683,24 +5702,15 @@ public final class RoutesImpl {
         Double accelerationEfficiency, Double decelerationEfficiency, Double uphillEfficiency,
         Double downhillEfficiency, String constantSpeedConsumptionInKwHPerHundredKm, Double currentChargeInKwH,
         Double maxChargeInKwH, Double auxiliaryPowerInKw) {
-        final String accept = "application/json";
-        List<String> filterSectionTypeConverted = (filterSectionType == null)
-            ? new ArrayList<>()
-            : filterSectionType.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> avoidConverted = (avoid == null)
-            ? new ArrayList<>()
-            : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.getRouteDirections(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, routePoints, maxAlternatives,
+        return FluxUtil.withContext(context -> getRouteDirectionsWithResponseAsync(format, routePoints, maxAlternatives,
             alternativeType, minDeviationDistance, arriveAt, departAt, minDeviationTime, instructionsType, language,
             computeBestWaypointOrder, routeRepresentationForBestOrder, computeTravelTime, vehicleHeading, report,
-            filterSectionTypeConverted, vehicleAxleWeight, vehicleWidth, vehicleHeight, vehicleLength, vehicleMaxSpeed,
-            vehicleWeight, isCommercialVehicle, windingness, inclineLevel, travelMode, avoidConverted, useTrafficData,
-            routeType, vehicleLoadType, vehicleEngineType, constantSpeedConsumptionInLitersPerHundredKm,
-            currentFuelInLiters, auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter,
-            accelerationEfficiency, decelerationEfficiency, uphillEfficiency, downhillEfficiency,
-            constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw, accept,
-            context));
+            filterSectionType, vehicleAxleWeight, vehicleWidth, vehicleHeight, vehicleLength, vehicleMaxSpeed,
+            vehicleWeight, isCommercialVehicle, windingness, inclineLevel, travelMode, avoid, useTrafficData, routeType,
+            vehicleLoadType, vehicleEngineType, constantSpeedConsumptionInLitersPerHundredKm, currentFuelInLiters,
+            auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter, accelerationEfficiency,
+            decelerationEfficiency, uphillEfficiency, downhillEfficiency, constantSpeedConsumptionInKwHPerHundredKm,
+            currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw, context));
     }
 
     /**
@@ -5787,7 +5797,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -6108,7 +6117,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -6419,7 +6427,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -6732,7 +6739,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -7044,7 +7050,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -7351,7 +7356,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -7590,24 +7594,16 @@ public final class RoutesImpl {
         Double accelerationEfficiency, Double decelerationEfficiency, Double uphillEfficiency,
         Double downhillEfficiency, String constantSpeedConsumptionInKwHPerHundredKm, Double currentChargeInKwH,
         Double maxChargeInKwH, Double auxiliaryPowerInKw) {
-        final String accept = "application/json";
-        List<String> filterSectionTypeConverted = (filterSectionType == null)
-            ? new ArrayList<>()
-            : filterSectionType.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> avoidConverted = (avoid == null)
-            ? new ArrayList<>()
-            : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.getRouteDirectionsWithAdditionalParameters(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, routePoints, maxAlternatives,
-            alternativeType, minDeviationDistance, minDeviationTime, instructionsType, language,
-            computeBestWaypointOrder, routeRepresentationForBestOrder, computeTravelTime, vehicleHeading, report,
-            filterSectionTypeConverted, arriveAt, departAt, vehicleAxleWeight, vehicleLength, vehicleHeight,
-            vehicleWidth, vehicleMaxSpeed, vehicleWeight, isCommercialVehicle, windingness, inclineLevel, travelMode,
-            avoidConverted, useTrafficData, routeType, vehicleLoadType, vehicleEngineType,
+        return FluxUtil.withContext(context -> getRouteDirectionsWithAdditionalParametersWithResponseAsync(format,
+            routePoints, routeDirectionParameters, maxAlternatives, alternativeType, minDeviationDistance,
+            minDeviationTime, instructionsType, language, computeBestWaypointOrder, routeRepresentationForBestOrder,
+            computeTravelTime, vehicleHeading, report, filterSectionType, arriveAt, departAt, vehicleAxleWeight,
+            vehicleLength, vehicleHeight, vehicleWidth, vehicleMaxSpeed, vehicleWeight, isCommercialVehicle,
+            windingness, inclineLevel, travelMode, avoid, useTrafficData, routeType, vehicleLoadType, vehicleEngineType,
             constantSpeedConsumptionInLitersPerHundredKm, currentFuelInLiters, auxiliaryPowerInLitersPerHour,
             fuelEnergyDensityInMegajoulesPerLiter, accelerationEfficiency, decelerationEfficiency, uphillEfficiency,
             downhillEfficiency, constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH,
-            auxiliaryPowerInKw, routeDirectionParameters, accept, context));
+            auxiliaryPowerInKw, context));
     }
 
     /**
@@ -7690,7 +7686,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -8029,7 +8024,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -8359,7 +8353,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -8690,7 +8683,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -9021,7 +9013,6 @@ public final class RoutesImpl {
      * conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints. False will use the
      * locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
      * @param routeRepresentationForBestOrder Specifies the representation of the set of routes provided as response.
-     * This parameter value can only be used in conjunction with computeBestOrder=true.
      * @param computeTravelTime Specifies whether to return additional travel times using different types of traffic
      * information (none, historic, live) as well as the default best-estimate travel time.
      * @param vehicleHeading The directional heading of the vehicle in degrees starting at true North and continuing in
@@ -9512,21 +9503,14 @@ public final class RoutesImpl {
         Double accelerationEfficiency, Double decelerationEfficiency, Double uphillEfficiency,
         Double downhillEfficiency, String constantSpeedConsumptionInKwHPerHundredKm, Double currentChargeInKwH,
         Double maxChargeInKwH, Double auxiliaryPowerInKw) {
-        final String accept = "application/json";
-        String queryConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
-        List<String> avoidConverted = (avoid == null)
-            ? new ArrayList<>()
-            : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.getRouteRange(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, queryConverted, fuelBudgetInLiters, energyBudgetInKwH, timeBudgetInSec,
-            distanceBudgetInMeters, departAt, routeType, useTrafficData, avoidConverted, travelMode, inclineLevel,
-            windingness, vehicleAxleWeight, vehicleWidth, vehicleHeight, vehicleLength, vehicleMaxSpeed, vehicleWeight,
-            isCommercialVehicle, vehicleLoadType, vehicleEngineType, constantSpeedConsumptionInLitersPerHundredKm,
-            currentFuelInLiters, auxiliaryPowerInLitersPerHour, fuelEnergyDensityInMegajoulesPerLiter,
-            accelerationEfficiency, decelerationEfficiency, uphillEfficiency, downhillEfficiency,
-            constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH, auxiliaryPowerInKw, accept,
-            context));
+        return FluxUtil.withContext(context -> getRouteRangeWithResponseAsync(format, query, fuelBudgetInLiters,
+            energyBudgetInKwH, timeBudgetInSec, distanceBudgetInMeters, departAt, routeType, useTrafficData, avoid,
+            travelMode, inclineLevel, windingness, vehicleAxleWeight, vehicleWidth, vehicleHeight, vehicleLength,
+            vehicleMaxSpeed, vehicleWeight, isCommercialVehicle, vehicleLoadType, vehicleEngineType,
+            constantSpeedConsumptionInLitersPerHundredKm, currentFuelInLiters, auxiliaryPowerInLitersPerHour,
+            fuelEnergyDensityInMegajoulesPerLiter, accelerationEfficiency, decelerationEfficiency, uphillEfficiency,
+            downhillEfficiency, constantSpeedConsumptionInKwHPerHundredKm, currentChargeInKwH, maxChargeInKwH,
+            auxiliaryPowerInKw, context));
     }
 
     /**
@@ -10814,7 +10798,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -10989,10 +10973,8 @@ public final class RoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<RoutesRequestRouteDirectionsBatchHeaders, RouteDirectionsBatchResultPrivate>>
         requestRouteDirectionsBatchWithResponseAsync(JsonFormat format, BatchRequest routeDirectionsBatchQueries) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.requestRouteDirectionsBatch(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, routeDirectionsBatchQueries, accept, context));
+            context -> requestRouteDirectionsBatchWithResponseAsync(format, routeDirectionsBatchQueries, context));
     }
 
     /**
@@ -11017,7 +10999,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -11221,7 +11203,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -11427,7 +11409,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -11635,7 +11617,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -11835,7 +11817,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -12036,7 +12018,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -12212,10 +12194,8 @@ public final class RoutesImpl {
     public Mono<Response<RouteDirectionsBatchResultPrivate>>
         requestRouteDirectionsBatchNoCustomHeadersWithResponseAsync(JsonFormat format,
             BatchRequest routeDirectionsBatchQueries) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.requestRouteDirectionsBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, routeDirectionsBatchQueries, accept,
-            context));
+        return FluxUtil.withContext(context -> requestRouteDirectionsBatchNoCustomHeadersWithResponseAsync(format,
+            routeDirectionsBatchQueries, context));
     }
 
     /**
@@ -12240,7 +12220,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -12444,7 +12424,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -12651,7 +12631,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -12860,7 +12840,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -13061,7 +13041,7 @@ public final class RoutesImpl {
      * When you make a request by using async request, by default the service returns a 202 response code along a
      * redirect URL in the Location field of the response header. This URL should be checked periodically until the
      * response data or error information is available.
-     * The asynchronous responses are stored for **14** days. The redirect URL returns a 404 response if used after the
+     * The asynchronous responses are stored for **24** hours. The redirect URL returns a 404 response if used after the
      * expiration period.
      * 
      * Please note that asynchronous batch request is a long-running operation. Here's a typical sequence of operations:
@@ -13372,9 +13352,7 @@ public final class RoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<RoutesGetRouteDirectionsBatchHeaders, RouteDirectionsBatchResultPrivate>>
         getRouteDirectionsBatchWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRouteDirectionsBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil.withContext(context -> getRouteDirectionsBatchWithResponseAsync(batchId, context));
     }
 
     /**
@@ -14188,9 +14166,8 @@ public final class RoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirectionsBatchResultPrivate>>
         getRouteDirectionsBatchNoCustomHeadersWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRouteDirectionsBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil
+            .withContext(context -> getRouteDirectionsBatchNoCustomHeadersWithResponseAsync(batchId, context));
     }
 
     /**
@@ -14999,10 +14976,8 @@ public final class RoutesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirectionsBatchResultPrivate>>
         requestRouteDirectionsBatchSyncWithResponseAsync(JsonFormat format, BatchRequest routeDirectionsBatchQueries) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.requestRouteDirectionsBatchSync(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, routeDirectionsBatchQueries, accept, context));
+            context -> requestRouteDirectionsBatchSyncWithResponseAsync(format, routeDirectionsBatchQueries, context));
     }
 
     /**

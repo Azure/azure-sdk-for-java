@@ -22,7 +22,9 @@ public final class TrafficState implements JsonSerializable<TrafficState> {
     private Integer trafficAge;
 
     /*
-     * The unique ID called Traffic Model ID is used in calls to Traffic Incident services. It allows to obtain information from particular traffic updates. Traffic Model ID is updated every minute, and is valid for two minutes before it times out.
+     * The unique ID called Traffic Model ID is used in calls to Traffic Incident services. It allows to obtain
+     * information from particular traffic updates. Traffic Model ID is updated every minute, and is valid for two
+     * minutes before it times out.
      */
     private String trafficModelId;
 

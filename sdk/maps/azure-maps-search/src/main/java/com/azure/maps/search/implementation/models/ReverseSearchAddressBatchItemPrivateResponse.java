@@ -4,6 +4,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -12,8 +13,6 @@ import com.azure.maps.search.models.ReverseSearchAddressResultItem;
 import com.azure.maps.search.models.SearchSummary;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.ResponseError;
-import com.azure.maps.search.implementation.helpers.ReverseSearchAddressResultPropertiesHelper;
 
 /**
  * The result of the query. SearchAddressReverseResponse if the query completed successfully, ErrorResponse otherwise.
@@ -25,6 +24,16 @@ public final class ReverseSearchAddressBatchItemPrivateResponse extends ReverseS
      * The error object.
      */
     private ErrorDetail error;
+
+    /*
+     * Addresses array
+     */
+    private List<ReverseSearchAddressResultItem> addresses;
+
+    /*
+     * Summary object for a Search Address Reverse response
+     */
+    private SearchSummary summary;
 
     /**
      * Creates an instance of ReverseSearchAddressBatchItemPrivateResponse class.
@@ -56,6 +65,26 @@ public final class ReverseSearchAddressBatchItemPrivateResponse extends ReverseS
     }
 
     /**
+     * Get the addresses property: Addresses array.
+     *
+     * @return the addresses value.
+     */
+    @Override
+    public List<ReverseSearchAddressResultItem> getAddresses() {
+        return this.addresses;
+    }
+
+    /**
+     * Get the summary property: Summary object for a Search Address Reverse response.
+     *
+     * @return the summary value.
+     */
+    @Override
+    public SearchSummary getSummary() {
+        return this.summary;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,13 +110,11 @@ public final class ReverseSearchAddressBatchItemPrivateResponse extends ReverseS
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("summary".equals(fieldName)) {
-                    ReverseSearchAddressResultPropertiesHelper.setSummary(
-                        deserializedReverseSearchAddressBatchItemPrivateResponse, SearchSummary.fromJson(reader));
+                    deserializedReverseSearchAddressBatchItemPrivateResponse.summary = SearchSummary.fromJson(reader);
                 } else if ("addresses".equals(fieldName)) {
                     List<ReverseSearchAddressResultItem> addresses
                         = reader.readArray(reader1 -> ReverseSearchAddressResultItem.fromJson(reader1));
-                    ReverseSearchAddressResultPropertiesHelper
-                        .setAddresses(deserializedReverseSearchAddressBatchItemPrivateResponse, addresses);
+                    deserializedReverseSearchAddressBatchItemPrivateResponse.addresses = addresses;
                 } else if ("error".equals(fieldName)) {
                     deserializedReverseSearchAddressBatchItemPrivateResponse.error = ErrorDetail.fromJson(reader);
                 } else {
