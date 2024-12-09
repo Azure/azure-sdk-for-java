@@ -32,12 +32,10 @@ payload-flattening-threshold: 0
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,LocalizedMapView,MapImageStyle,RasterTileFormat,StaticMapLayer,MapTileSize,TileIndex,TilesetID,Copyright,CopyrightCaption,MapAttribution,RegionCopyrights,RegionCopyrightsCountry,MapTileset
 customization-class: src/main/java/RenderCustomization.java
-generic-response-type: true
 no-custom-headers: true
 modelerfour:
   additional-checks: false

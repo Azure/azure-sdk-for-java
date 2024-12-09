@@ -33,7 +33,6 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.messaging.servicebus.administration
-generate-client-interfaces: false
 sync-methods: essential
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
@@ -41,8 +40,6 @@ custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku,Namespa
 custom-types-subpackage: models
 customization-class: src/main/java/AdministrationClientCustomization.java
 enable-sync-stack: true
-generic-response-type: true
-custom-strongly-typed-header-deserialization: true
 disable-client-builder: true
 ```
 

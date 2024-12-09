@@ -53,11 +53,9 @@ output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
 client-logger: true
-generic-response-type: true
 generate-client-as-impl: true
 sync-methods: none
 output-model: immutable
-generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models

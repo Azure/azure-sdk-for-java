@@ -34,14 +34,12 @@ java: true
 output-folder: ./..
 generate-client-as-impl: true
 namespace: com.azure.containers.containerregistry
-generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 sync-methods: none
 models-subpackage: implementation.models
 custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciDescriptor,OciImageManifest,RepositoryProperties
 custom-types-subpackage: models
 enable-sync-stack: true
-generic-response-type: true
 disable-client-builder: true
 ```
 

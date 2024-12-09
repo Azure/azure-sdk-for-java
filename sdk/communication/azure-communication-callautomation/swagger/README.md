@@ -2,28 +2,28 @@
 
 > see https://aka.ms/autorest
 
-## Getting Started
+This is the AutoRest configuration file for Communication Call Automation.
 
-To build the SDK for Call Automation Client, simply Install AutoRest and in this folder, run:
+---
+## Getting Started
+To build the SDK for Communication Call Automation, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
-
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
-
-There is one swagger for Calling management APIs.
-
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4
+autorest
 ```
 
 ### Code generation settings

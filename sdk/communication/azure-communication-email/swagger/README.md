@@ -1,3 +1,31 @@
+# Azure Communication Email Service client library for Java
+
+> see https://aka.ms/autorest
+
+This is the AutoRest configuration file for Communication Email Service.
+
+---
+## Getting Started
+To build the SDK for Communication Email Service, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
+```ps
+npm install -g autorest
+```
+
+### Generation
+```ps
+cd <swagger-folder>
+autorest
+```
+
 ## Generate autorest code
 
 ```yaml
@@ -13,11 +41,8 @@ namespace: com.azure.communication.email
 models-subpackage: implementation.models
 custom-types: EmailSendStatus,EmailAddress
 custom-types-subpackage: models
-model-override-setter-from-superclass: true
-generate-client-interfaces: false
 required-fields-as-ctor-args: true
 generate-client-as-impl: true
-url-as-string: true
 service-versions:
 - 2024-07-01-preview
 polling:

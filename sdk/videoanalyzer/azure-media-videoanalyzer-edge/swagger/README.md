@@ -19,7 +19,6 @@ sync-methods: none
 models-subpackage: models
 custom-types-subpacakge: models
 use: '@autorest/java@4.1.42'
-model-override-setter-from-superclass: true
 required-fields-as-ctor-args: true
 customization-class: src/main/java/VideoAnalyzerEdgeCustomization.java
 ```

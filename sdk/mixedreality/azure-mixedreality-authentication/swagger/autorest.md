@@ -36,7 +36,6 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/aa19725
 title: MixedRealityStsRestClient
 namespace: com.azure.mixedreality.authentication
 models-subpackage: implementation.models
-generate-client-interfaces: false
 generate-client-as-impl: true
 license-header: MICROSOFT_MIT_SMALL
 sync-methods: none

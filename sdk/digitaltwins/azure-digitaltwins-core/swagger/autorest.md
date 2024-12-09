@@ -47,7 +47,6 @@ implementation-subpackage: implementation
 models-subpackage: implementation.models
 custom-types-subpackage: models
 required-fields-as-ctor-args: true
-generic-response-type: true
 no-custom-headers: true
 ```
 

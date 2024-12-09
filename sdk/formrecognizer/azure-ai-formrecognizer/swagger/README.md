@@ -47,13 +47,11 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.formrecognizer
-generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: LengthUnit,TextStyleName
-generic-response-type: true
 disable-client-builder: true
 ```
 
@@ -95,12 +93,9 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.formrecognizer.documentanalysis
-generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
 custom-types-subpackage: models
 custom-types: DocumentBarcodeKind,DocumentFormulaKind,DocumentPageKind,FontStyle,FontWeight,ParagraphRole,DocumentAnalysisFeature
 customization-class: src/main/java/FormRecognizerDocumentAnalysisCustomization.java

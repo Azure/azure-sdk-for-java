@@ -5,7 +5,6 @@ use: '@autorest/java@4.1.42'
 java: true
 output-folder: ../
 namespace: com.azure.ai.documenttranslator
-generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 data-plane: true

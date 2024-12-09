@@ -28,15 +28,12 @@ generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.artifacts
 artifact-id: azure-analytics-synapse-artifacts
-generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: models
 required-parameter-client-methods: true
 security: AADToken
 security-scopes: https://dev.azuresynapse.net/.default
-custom-strongly-typed-header-deserialization: true
-model-override-setter-from-superclass: true
 require: https://github.com/Azure/azure-rest-api-specs/blob/02e1bd495ad6215aacec5d636a5ef7ad6f20281e/specification/synapse/data-plane/readme.md
 tag: package-artifacts-composite-v7
 ```

@@ -34,7 +34,6 @@ use: '@autorest/java@4.1.42'
 output-folder: ../
 models-subpackage: implementation.models
 namespace: com.azure.monitor.opentelemetry.exporter
-generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 artifact-id: azure-monitor-opentelemetry-exporter

@@ -47,11 +47,9 @@ namespace: com.azure.security.keyvault.administration
 models-subpackage: implementation.models
 custom-types-subpackage: models
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-generic-response-type: true
 required-fields-as-ctor-args: true
 include-read-only-in-constructor-args: true
 partial-update: true

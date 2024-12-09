@@ -1,37 +1,35 @@
 # Azure Communication Calling Service client library for Java
 
 > see https://aka.ms/autorest
-## Getting Started
 
-To build the SDK for Server Calling Client, simply Install AutoRest and in this folder, run:
+This is the AutoRest configuration file for Communication Calling Service.
+
+---
+## Getting Started
+To build the SDK for Communication Calling Service, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
-
-There is one swagger for Calling management APIs.
-
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.42 --use=@autorest/modelerfour@4.15.442
+autorest
 ```
-
-## Update generated files for server calling service
-To update generated files for calling service, run the following command
-
-> autorest README.md --java --v4 --use=@autorest/java@4.0.42 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
 tag: package-2022-04-07-preview
+use: '@autorest/java@4.1.42'
 require:
     - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
 java: true

@@ -19,9 +19,7 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/sp
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
-enable-xml: true
 generate-client-as-impl: true
-generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
@@ -29,7 +27,6 @@ models-subpackage: implementation.models
 custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
-generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
 disable-client-builder: true

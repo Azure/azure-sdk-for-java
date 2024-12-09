@@ -73,12 +73,10 @@ payload-flattening-threshold: 0
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: MapsSearchAddress,AddressRanges,EntryPoint,BatchResultSummary,Brand,BrandName,Classification,ClassificationName,DataSource,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,MapsPolygon,ReverseSearchAddressResult,ReverseSearchAddressResultItem,ReverseSearchCrossStreetAddressResultItem,ReverseSearchCrossStreetAddressResult,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,SearchAddressResult,QueryType
 customization-class: src/main/java/SearchCustomization.java
-generic-response-type: true
 no-custom-headers: true
 ```

@@ -37,7 +37,6 @@ license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
 models-subpackage: systemevents
 customization-class: src/main/java/EventGridCustomization.java
-url-as-string: true
 enable-sync-stack: true
 require-x-ms-flattened-to-flatten: true
 directive:
@@ -84,7 +83,6 @@ directive:
 
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent,AcsRouterCommunicationError,AcsMessageChannelEventError
-model-override-setter-from-superclass: true
 
 
 

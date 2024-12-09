@@ -2,35 +2,29 @@
 
 > see https://aka.ms/autorest
 
-## Getting Started
+This is the AutoRest configuration file for Communication Chat Service.
 
-To build the SDK for Chat Client, simply Install AutoRest and in this folder, run:
+---
+## Getting Started
+To build the SDK for Communication Chat Service, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
-
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
-
-There is one swagger for Chat management APIs.
-
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/modelerfour@4.15.442
+autorest
 ```
-
-## Update generated files for chat service
-
-To update generated files for chat service, run the following command
-
-> autorest README.md --java --v4 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 
@@ -48,13 +42,8 @@ generate-client-as-impl: true
 custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
-generate-client-interfaces: false
-generate-sync-async-clients: false
 sync-methods: all
-enable-xml: false
 required-parameter-client-methods: true
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
 ```
 
 ### Rename AddChatParticipantsRequest to AddChatParticipantsOptions

@@ -34,7 +34,6 @@ java: true
 use: '@autorest/java@4.1.42'
 output-folder: ..
 namespace: com.azure.messaging.webpubsub
-generate-client-interfaces: false
 sync-methods: all
 client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL

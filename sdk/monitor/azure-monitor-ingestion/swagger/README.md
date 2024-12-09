@@ -34,7 +34,6 @@ license-header: MICROSOFT_MIT_SMALL
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json
 namespace: com.azure.monitor.ingestion.implementation
 implementation-subpackage: ""
-generate-client-interfaces: false
 sync-methods: all
 required-parameter-client-methods: false
 required-fields-as-ctor-args: true

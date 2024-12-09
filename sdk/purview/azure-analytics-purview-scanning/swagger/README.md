@@ -4,7 +4,6 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/sp
 java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.scanning
-generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 data-plane: true

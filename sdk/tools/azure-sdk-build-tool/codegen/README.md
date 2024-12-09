@@ -3,7 +3,6 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/
 java: true
 output-folder: ../
 namespace: com.azure.sdk.build.tool.implementation
-generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 directive:
     - rename-model:

@@ -38,7 +38,6 @@ regenerate-pom: false
 title: DeviceUpdateClient
 generate-sync-async-clients: true
 generate-client-as-impl: true
-generate-client-interfaces: false
 artifact-id: azure-iot-deviceupdate
 data-plane: true
 sync-methods: all

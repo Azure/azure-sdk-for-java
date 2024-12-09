@@ -23,7 +23,6 @@ output-folder: ../
 namespace: com.azure.data.schemaregistry
 generate-client-as-impl: true
 enable-sync-stack: true
-generic-response-type: true
 disable-client-builder: true
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models

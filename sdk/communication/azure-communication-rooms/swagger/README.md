@@ -32,13 +32,8 @@ generate-client-as-impl: true
 custom-types: RoomJoinPolicy
 custom-types-subpackage: models
 models-subpackage: implementation.models
-generate-client-interfaces: false
-generate-sync-async-clients: false
 sync-methods: all
-url-as-string: true
 required-parameter-client-methods: true
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
 enable-sync-stack: true
 ```
 

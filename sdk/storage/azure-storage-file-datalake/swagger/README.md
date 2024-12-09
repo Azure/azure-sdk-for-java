@@ -21,7 +21,6 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
 generate-client-as-impl: true
-generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 optional-constant-as-enum: true
@@ -30,7 +29,6 @@ models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType,LeaseAction
 custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
-generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
 disable-client-builder: true

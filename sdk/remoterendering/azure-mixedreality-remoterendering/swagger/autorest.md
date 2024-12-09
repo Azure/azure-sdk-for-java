@@ -18,7 +18,6 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.mixedreality.remoterendering
-generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models

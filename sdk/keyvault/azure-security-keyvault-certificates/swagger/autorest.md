@@ -42,11 +42,9 @@ custom-types-subpackage: models
 custom-types: AdministratorContact,CertificateContact,CertificateKeyCurveName,CertificateKeyType,CertificateKeyUsage,CertificateOperationError,CertificatePolicyAction,SubjectAlternativeNames
 customization-class: src/main/java/CertificatesCustomizations.java
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-generic-response-type: true
 directive:
     - rename-model:
         from: AdministratorDetails

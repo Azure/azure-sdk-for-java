@@ -37,10 +37,8 @@ namespace: com.azure.ai.textanalytics
 models-subpackage: implementation.models
 custom-types-subpackage: models
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
 license-header: MICROSOFT_MIT_SMALL
-generic-response-type: true
 custom-types: HealthcareEntityRelationType,ExtractiveSummarySentencesOrder,HealthcareEntityCategory
 ```
 

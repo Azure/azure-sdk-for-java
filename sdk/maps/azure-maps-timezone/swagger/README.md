@@ -65,12 +65,10 @@ payload-flattening-threshold: 0
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: CountryRecord,IanaId,TimeZoneWindows,TimeZoneResult,TimezoneOptions,TimeZoneNames,TimeZoneId,TimeZoneIanaVersionResult,ReferenceTime,TimeTransition
 customization-class: src/main/java/TimezoneCustomization.java
-generic-response-type: true
 no-custom-headers: true
 ```

@@ -49,7 +49,6 @@ payload-flattening-threshold: 0
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models

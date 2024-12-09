@@ -21,7 +21,6 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
 generate-client-as-impl: true
-generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 default-http-exception-type: com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal
@@ -29,7 +28,6 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,AccessRight,FilePermissionFormat
 customization-class: src/main/java/ShareStorageCustomization.java
-generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
 disable-client-builder: true

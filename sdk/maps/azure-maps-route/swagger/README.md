@@ -73,12 +73,10 @@ payload-flattening-threshold: 0
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AlternativeRouteType,BatchResultSummary,BatchResultItem,ComputeTravelTime,DelayMagnitude,DrivingSide,EffectiveSetting,GuidanceInstructionType,GuidanceManeuver,InclineLevel,JunctionType,Report,ResponseSectionType,ResponseTravelMode,Route,RouteAvoidType,RouteDirections,RouteDirectionsBatchItem,RouteDirectionsBatchItemResponse,RouteGuidance,RouteInstructionGroup,RouteInstruction,RouteMatrix,RouteRange,RouteInstructionsType,RouteLeg,RouteLegSummary,RouteMatrixSummary,RouteOptimizedWaypoint,RouteRangeResult,RouteReport,RouteRepresentationForBestOrder,RouteSection,RouteSectionTec,RouteSectionTecCause,RouteSummary,RouteType,SectionType,SimpleCategory,TravelMode,VehicleEngineType,VehicleLoadType,WindingnessLevel
 customization-class: src/main/java/RouteCustomization.java
-generic-response-type: true
 no-custom-headers: true
 ```

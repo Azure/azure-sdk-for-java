@@ -41,11 +41,9 @@ custom-types-subpackage: models
 custom-types: KeyCurveName,KeyExportEncryptionAlgorithm,KeyOperation,KeyRotationPolicyAction,KeyType,ReleaseKeyResult
 customization-class: src/main/java/KeysCustomizations.java
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-generic-response-type: true
 directive:
     - rename-model:
         from: KeyReleaseResult

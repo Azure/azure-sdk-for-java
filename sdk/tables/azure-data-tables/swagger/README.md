@@ -24,15 +24,12 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.data.tables
-generate-client-interfaces: false
 enable-sync-stack: true
 license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
 custom-types: TableAccessPolicy,TableServiceCorsRule,TableServiceGeoReplication,TableServiceGeoReplicationStatus,TableServiceLogging,TableServiceMetrics,TableServiceProperties,TableServiceRetentionPolicy,TableServiceStatistics,TableSignedIdentifier
 custom-types-subpackage: models
 customization-class: src/main/java/TablesCustomization.java
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
 disable-client-builder: true
 ```
 
