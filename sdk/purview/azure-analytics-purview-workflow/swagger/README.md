@@ -6,7 +6,6 @@ input-file:
 output-folder: ../
 use: '@autorest/java@4.1.42'
 java: true
-regenerate-pom: false
 title: PurviewWorkflow
 security-scopes: https://purview.azure.net/.default
 data-plane: true

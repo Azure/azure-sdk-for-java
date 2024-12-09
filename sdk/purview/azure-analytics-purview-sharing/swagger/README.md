@@ -6,13 +6,11 @@ input-file:
 output-folder: ../
 java: true
 use: '@autorest/java@4.1.42'
-regenerate-pom: false
 data-plane: true
 generate-tests: true
 artifact-id: azure-analytics-purview-sharing
 generate-samples: true
 namespace: com.azure.analytics.purview.sharing
-enable-sync-stack: false
 service-versions:
 - 2023-05-30-preview
 directive:

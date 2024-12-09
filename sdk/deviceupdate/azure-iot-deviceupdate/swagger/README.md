@@ -34,7 +34,6 @@ java: true
 output-folder: ./
 enable-sync-stack: true
 generate-tests: true
-regenerate-pom: false
 title: DeviceUpdateClient
 generate-sync-async-clients: true
 generate-client-as-impl: true

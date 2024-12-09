@@ -327,7 +327,7 @@ public final class ShareResourcesClientBuilder
      */
     @Generated
     public ShareResourcesClient buildClient() {
-        return new ShareResourcesClient(new ShareResourcesAsyncClient(buildInnerClient().getShareResources()));
+        return new ShareResourcesClient(buildInnerClient().getShareResources());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ShareResourcesClientBuilder.class);
