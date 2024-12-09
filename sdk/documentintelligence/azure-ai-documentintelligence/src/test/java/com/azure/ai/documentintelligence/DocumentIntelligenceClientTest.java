@@ -4,12 +4,12 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
@@ -26,7 +26,6 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -48,6 +47,7 @@ import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 import static com.azure.ai.documentintelligence.models.AnalyzeOutputFormat.PDF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTestBase {
     private DocumentIntelligenceClient client;
@@ -351,7 +351,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
@@ -398,7 +397,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyze(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
@@ -499,29 +497,19 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("com.azure.core.exception.AzureException: Long running operation failed.\n")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
-                .beginBuildDocumentModel(
-                    new BuildDocumentModelOptions("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
-                        .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
-                .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
-
-            String modelId = buildModelPoller.getFinalResult().getModelId();
 
             SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> syncPoller = client
-                .beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null, null,
-                    new AnalyzeBatchDocumentsOptions(trainingFilesResultUrl)
-                        .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("result")))
+                .beginAnalyzeBatchDocuments("prebuilt-layout", null, null, null, null, null, null, null,
+                    new AnalyzeBatchDocumentsOptions(trainingFilesResultUrl).setResultPrefix("result/")
+                        .setOverwriteExisting(true)
+                        .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode);
-            syncPoller.waitForCompletion();
 
             AnalyzeBatchResult analyzeBatchResult = syncPoller.getFinalResult();
-            assertEquals(trainingFilesResultUrl, analyzeBatchResult.getDetails().get(0).getResultUrl());
+            assertNotNull(analyzeBatchResult.getDetails().get(0).getResultUrl());
         });
     }
 }

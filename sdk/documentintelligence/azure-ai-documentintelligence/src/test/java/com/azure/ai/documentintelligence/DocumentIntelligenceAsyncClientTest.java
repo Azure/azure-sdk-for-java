@@ -7,26 +7,21 @@ import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
-import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
-import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
-import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -37,7 +32,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.ai.documentintelligence.TestUtils.BATCH_SAMPLE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_TIMEOUT;
@@ -51,6 +45,8 @@ import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.W2_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 import static com.azure.ai.documentintelligence.models.AnalyzeOutputFormat.PDF;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceClientTestBase {
 
@@ -291,7 +287,6 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("Long running operation failed.")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion)
         throws RuntimeException {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -330,7 +325,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                         .setPollInterval(durationTestMode)
                         .getSyncPoller();
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-                Assertions.assertNotNull(analyzeResult);
+                assertNotNull(analyzeResult);
                 // TODO: (service bug) AnalyzedDocument count should be 3
                 Assertions.assertEquals(1, analyzeResult.getDocuments().size());
                 Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
@@ -399,30 +394,20 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("com.azure.core.exception.AzureException: Long running operation failed.\n")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        DocumentIntelligenceAdministrationAsyncClient adminClient
-            = getDocumentAdminAsyncClient(httpClient, serviceVersion);
         buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
-                .beginBuildDocumentModel(
-                    new BuildDocumentModelOptions("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
+
+            SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> syncPoller = client
+                .beginAnalyzeBatchDocuments("prebuilt-layout", null, null, null, null, null, null, null,
+                    new AnalyzeBatchDocumentsOptions(trainingFilesResultUrl).setResultPrefix("result/")
+                        .setOverwriteExisting(true)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
-
-            String modelId = buildModelPoller.getFinalResult().getModelId();
-
-            urlRunner((sourceUrl) -> {
-                SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> syncPoller = client
-                    .beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null,
-                        Collections.singletonList(PDF),
-                        new AnalyzeBatchDocumentsOptions(trainingFilesUrl).setResultPrefix("trainingDocsResult/")
-                            .setAzureBlobSource(new AzureBlobContentSource(sourceUrl)))
-                    .setPollInterval(durationTestMode)
-                    .getSyncPoller();
-            }, BATCH_SAMPLE_PDF);
+            AnalyzeBatchResult analyzeResult = syncPoller.getFinalResult();
+            assertNotNull(analyzeResult);
+            assertEquals(6, analyzeResult.getSucceededCount());
         });
     }
 }
