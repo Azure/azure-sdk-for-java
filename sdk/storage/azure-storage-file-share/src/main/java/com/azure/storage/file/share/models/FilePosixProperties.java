@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share.models;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
 
@@ -106,13 +105,13 @@ public class FilePosixProperties {
      * @param httpHeaders The headers to construct FilePosixProperties from.
      */
     FilePosixProperties(HttpHeaders httpHeaders) {
-        this.fileMode = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-mode"));
-        this.owner = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-owner"));
-        this.group = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-group"));
-        this.fileType = NfsFileType.fromString(httpHeaders.getValue(HttpHeaderName.fromString("x-ms-file-file-type")));
-        this.linkCount = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-link-count")) == null
+        this.fileMode = httpHeaders.getValue("x-ms-mode");
+        this.owner = httpHeaders.getValue("x-ms-owner");
+        this.group = httpHeaders.getValue("x-ms-group");
+        this.fileType = NfsFileType.fromString(httpHeaders.getValue("x-ms-file-file-type"));
+        this.linkCount = httpHeaders.getValue("x-ms-link-count") == null
             ? null
-            : Long.valueOf(httpHeaders.getValue(HttpHeaderName.fromString("x-ms-link-count")));
+            : Long.valueOf(httpHeaders.getValue("x-ms-link-count"));
     }
 
     static {
