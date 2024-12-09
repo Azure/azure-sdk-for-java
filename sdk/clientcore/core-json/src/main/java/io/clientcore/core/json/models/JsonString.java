@@ -89,7 +89,7 @@ public final class JsonString extends JsonElement {
 
         StringBuilder sb = new StringBuilder(value.length() + 32);
         sb.append('"');
-        JsonStringEncoder.getInstance().quoteAsString(value, sb);
+        JsonStringEncoder.quoteAsString(value, sb);
         sb.append('"');
 
         jsonString = sb.toString();

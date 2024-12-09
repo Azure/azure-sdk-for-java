@@ -2,7 +2,6 @@
 package io.clientcore.core.json.implementation.jackson.core.io;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 // Based on a great idea of Eric Obermühlner to use a tree of smaller BigDecimals for parsing
 // really big numbers with O(n^1.5) complexity instead of O(n^2) when using the constructor
@@ -22,29 +21,21 @@ import java.util.Arrays;
  */
 public final class BigDecimalParser {
     private final char[] chars;
+    private final int off;
+    private final int len;
 
-    BigDecimalParser(char[] chars) {
+    BigDecimalParser(char[] chars, int off, int len) {
         this.chars = chars;
-    }
-
-    public static BigDecimal parse(String valueStr) {
-        return parse(valueStr.toCharArray());
+        this.off = off;
+        this.len = len;
     }
 
     public static BigDecimal parse(char[] chars, int off, int len) {
-        if (off > 0 || len != chars.length) {
-            chars = Arrays.copyOfRange(chars, off, off + len);
-        }
-        return parse(chars);
-    }
-
-    public static BigDecimal parse(char[] chars) {
-        final int len = chars.length;
         try {
             if (len < 500) {
-                return new BigDecimal(chars);
+                return new BigDecimal(chars, off, len);
             }
-            return new BigDecimalParser(chars).parseBigDecimal(len / 10);
+            return new BigDecimalParser(chars, off, len).parseBigDecimal(len / 10);
         } catch (NumberFormatException e) {
             String desc = e.getMessage();
             // 05-Feb-2021, tatu: Alas, JDK mostly has null message so:
@@ -56,6 +47,10 @@ public final class BigDecimalParser {
         }
     }
 
+    public static BigDecimal parse(char[] chars) {
+        return parse(chars, 0, chars.length);
+    }
+
     private BigDecimal parseBigDecimal(final int splitLen) {
         boolean numHasSign = false;
         boolean expHasSign = false;
@@ -64,9 +59,8 @@ public final class BigDecimalParser {
         int expIdx = -1;
         int dotIdx = -1;
         int scale = 0;
-        final int len = chars.length;
 
-        for (int i = 0; i < len; i++) {
+        for (int i = off; i < len; i++) {
             char c = chars[i];
             switch (c) {
                 case '+':

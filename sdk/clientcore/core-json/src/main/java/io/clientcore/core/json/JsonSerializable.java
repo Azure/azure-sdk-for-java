@@ -7,9 +7,7 @@ import io.clientcore.core.json.implementation.StringBuilderWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.Writer;
 
 /**
@@ -94,77 +92,6 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
         try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             toJson(jsonWriter).flush();
             return outputStream.toByteArray();
-        }
-    }
-
-    /**
-     * Reads a JSON stream into an object.
-     * <p>
-     * Implementations of {@link JsonSerializable} must define this method, otherwise an
-     * {@link UnsupportedOperationException} will be thrown.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @param <T> The type of the object.
-     * @return The object that the JSON stream represented, may return null.
-     * @throws IOException If an object fails to be read from the {@code jsonReader}.
-     */
-    static <T extends JsonSerializable<T>> T fromJson(JsonReader jsonReader) throws IOException {
-        throw new UnsupportedOperationException("Implementation of JsonSerializable must define this factory method.");
-    }
-
-    /**
-     * Convenience method for reading a JSON string into an object.
-     *
-     * @param string The JSON string to read.
-     * @param <T> The type of the object.
-     * @return The object that the JSON string represented, may return null.
-     * @throws IOException If an object fails to be read from the {@code string}.
-     */
-    static <T extends JsonSerializable<T>> T fromJson(String string) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(string)) {
-            return fromJson(jsonReader);
-        }
-    }
-
-    /**
-     * Convenience method for reading a JSON byte array into an object.
-     *
-     * @param bytes The JSON byte array to read.
-     * @param <T> The type of the object.
-     * @return The object that the JSON byte array represented, may return null.
-     * @throws IOException If an object fails to be read from the {@code bytes}.
-     */
-    static <T extends JsonSerializable<T>> T fromJson(byte[] bytes) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
-            return fromJson(jsonReader);
-        }
-    }
-
-    /**
-     * Convenience method for reading a JSON {@link InputStream} into an object.
-     *
-     * @param inputStream The JSON {@link InputStream} to read.
-     * @param <T> The type of the object.
-     * @return The object that the JSON {@link InputStream} represented, may return null.
-     * @throws IOException If an object fails to be read from the {@code inputStream}.
-     */
-    static <T extends JsonSerializable<T>> T fromJson(InputStream inputStream) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(inputStream)) {
-            return fromJson(jsonReader);
-        }
-    }
-
-    /**
-     * Convenience method for reading a JSON {@link Reader} into an object.
-     *
-     * @param reader The JSON {@link Reader} to read.
-     * @param <T> The type of the object.
-     * @return The object that the JSON {@link Reader} represented, may return null.
-     * @throws IOException If an object fails to be read from the {@code reader}.
-     */
-    static <T extends JsonSerializable<T>> T fromJson(Reader reader) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(reader)) {
-            return fromJson(jsonReader);
         }
     }
 }

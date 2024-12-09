@@ -30,37 +30,37 @@ public enum JsonToken {
      * they can not block to wait for more data to parse and
      * must return something.
      */
-    NOT_AVAILABLE(null, JsonTokenId.ID_NOT_AVAILABLE),
+    NOT_AVAILABLE(null, false, false, false),
 
     /**
      * START_OBJECT is returned when encountering '{'
      * which signals starting of an Object value.
      */
-    START_OBJECT("{", JsonTokenId.ID_START_OBJECT),
+    START_OBJECT("{", true, false, false),
 
     /**
      * END_OBJECT is returned when encountering '}'
      * which signals ending of an Object value
      */
-    END_OBJECT("}", JsonTokenId.ID_END_OBJECT),
+    END_OBJECT("}", false, true, false),
 
     /**
      * START_ARRAY is returned when encountering '['
      * which signals starting of an Array value
      */
-    START_ARRAY("[", JsonTokenId.ID_START_ARRAY),
+    START_ARRAY("[", true, false, false),
 
     /**
      * END_ARRAY is returned when encountering ']'
      * which signals ending of an Array value
      */
-    END_ARRAY("]", JsonTokenId.ID_END_ARRAY),
+    END_ARRAY("]", false, true, false),
 
     /**
      * FIELD_NAME is returned when a String token is encountered
      * as a field name (same lexical value, different function)
      */
-    FIELD_NAME(null, JsonTokenId.ID_FIELD_NAME),
+    FIELD_NAME(null, false, false, false),
 
     /**
      * Placeholder token returned when the input source has a concept
@@ -72,14 +72,14 @@ public enum JsonToken {
      * only by readers that expose other kinds of source (like
      * <code>JsonNode</code>-based JSON trees, Maps, Lists and such).
      */
-    VALUE_EMBEDDED_OBJECT(null, JsonTokenId.ID_EMBEDDED_OBJECT),
+    VALUE_EMBEDDED_OBJECT(null, false, false, true),
 
     /**
      * VALUE_STRING is returned when a String token is encountered
      * in value context (array element, field value, or root-level
      * stand-alone value)
      */
-    VALUE_STRING(null, JsonTokenId.ID_STRING),
+    VALUE_STRING(null, false, false, true),
 
     /**
      * VALUE_NUMBER_INT is returned when an integer numeric token is
@@ -89,7 +89,7 @@ public enum JsonToken {
      * or, for binary formats, is indicated as integral number
      * by internal representation).
      */
-    VALUE_NUMBER_INT(null, JsonTokenId.ID_NUMBER_INT),
+    VALUE_NUMBER_INT(null, false, false, true),
 
     /**
      * VALUE_NUMBER_FLOAT is returned when a numeric token other
@@ -98,94 +98,46 @@ public enum JsonToken {
      * to one or more digits (or, for non-textual formats,
      * has internal floating-point representation).
      */
-    VALUE_NUMBER_FLOAT(null, JsonTokenId.ID_NUMBER_FLOAT),
+    VALUE_NUMBER_FLOAT(null, false, false, true),
 
     /**
      * VALUE_TRUE is returned when encountering literal "true" in
      * value context
      */
-    VALUE_TRUE("true", JsonTokenId.ID_TRUE),
+    VALUE_TRUE("true", false, false, true),
 
     /**
      * VALUE_FALSE is returned when encountering literal "false" in
      * value context
      */
-    VALUE_FALSE("false", JsonTokenId.ID_FALSE),
+    VALUE_FALSE("false", false, false, true),
 
     /**
      * VALUE_NULL is returned when encountering literal "null" in
      * value context
      */
-    VALUE_NULL("null", JsonTokenId.ID_NULL),;
+    VALUE_NULL("null", false, false, true),;
 
     final String _serialized;
 
-    final char[] _serializedChars;
-
-    final byte[] _serializedBytes;
-
-    final int _id;
-
     final boolean _isStructStart, _isStructEnd;
-
-    final boolean _isNumber;
-
-    final boolean _isBoolean;
 
     final boolean _isScalar;
 
     /**
      * @param token representation for this token, if there is a
      *   single static representation; null otherwise
-     * @param id Numeric id from {@link JsonTokenId}
      */
-    JsonToken(String token, int id) {
-        if (token == null) {
-            _serialized = null;
-            _serializedChars = null;
-            _serializedBytes = null;
-        } else {
-            _serialized = token;
-            _serializedChars = token.toCharArray();
-            // It's all in ascii, can just case...
-            int len = _serializedChars.length;
-            _serializedBytes = new byte[len];
-            for (int i = 0; i < len; ++i) {
-                _serializedBytes[i] = (byte) _serializedChars[i];
-            }
-        }
-        _id = id;
+    JsonToken(String token, boolean isStructStart, boolean isStructEnd, boolean isScalar) {
+        _serialized = token;
 
-        _isBoolean = (id == JsonTokenId.ID_FALSE || id == JsonTokenId.ID_TRUE);
-        _isNumber = (id == JsonTokenId.ID_NUMBER_INT || id == JsonTokenId.ID_NUMBER_FLOAT);
-
-        _isStructStart = (id == JsonTokenId.ID_START_OBJECT || id == JsonTokenId.ID_START_ARRAY);
-        _isStructEnd = (id == JsonTokenId.ID_END_OBJECT || id == JsonTokenId.ID_END_ARRAY);
-
-        _isScalar = !_isStructStart
-            && !_isStructEnd
-            && (id != JsonTokenId.ID_FIELD_NAME)
-            && (id != JsonTokenId.ID_NOT_AVAILABLE);
-    }
-
-    public final int id() {
-        return _id;
+        _isStructStart = isStructStart;
+        _isStructEnd = isStructEnd;
+        _isScalar = isScalar;
     }
 
     public final String asString() {
         return _serialized;
-    }
-
-    public final char[] asCharArray() {
-        return _serializedChars;
-    }
-
-    /**
-     * @return {@code True} if this token is {@code VALUE_NUMBER_INT} or {@code VALUE_NUMBER_FLOAT},
-     *   {@code false} otherwise
-     */
-    public final boolean isNumeric() {
-        return _isNumber;
     }
 
     /**
@@ -229,13 +181,5 @@ public enum JsonToken {
      */
     public final boolean isScalarValue() {
         return _isScalar;
-    }
-
-    /**
-     * @return {@code True} if this token is {@code VALUE_TRUE} or {@code VALUE_FALSE},
-     *   {@code false} otherwise
-     */
-    public final boolean isBoolean() {
-        return _isBoolean;
     }
 }

@@ -1,7 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.exc;
 
-import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
 import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
 import io.clientcore.core.json.implementation.jackson.core.JsonParser;
 import io.clientcore.core.json.implementation.jackson.core.JsonProcessingException;
@@ -36,15 +35,6 @@ public abstract class StreamReadException extends JsonProcessingException {
     protected StreamReadException(JsonParser p, String msg, Throwable root) {
         super(msg, (p == null) ? null : p.getCurrentLocation(), root);
         _processor = p;
-    }
-
-    protected StreamReadException(JsonParser p, String msg, JsonLocation loc) {
-        super(msg, loc, null);
-        _processor = p;
-    }
-
-    protected StreamReadException(String msg, JsonLocation loc, Throwable rootCause) {
-        super(msg, loc, rootCause);
     }
 
     /**

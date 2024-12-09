@@ -15,9 +15,9 @@
  * provide stream-style JSON reading and writing functionality. The interface has a single implementable method
  * {@link io.clientcore.core.json.JsonSerializable#toJson(io.clientcore.core.json.JsonWriter) toJson(JsonWriter)} that defines how the
  * object is written as JSON, to the {@link io.clientcore.core.json.JsonWriter}, and a static method
- * {@link io.clientcore.core.json.JsonSerializable#fromJson(io.clientcore.core.json.JsonReader) fromJson(JsonReader)} that defines how to
+ * {@code io.clientcore.core.json.JsonSerializable#fromJson(io.clientcore.core.json.JsonReader) fromJson(JsonReader)} that defines how to
  * read an instance of the object from JSON, being read from the {@link io.clientcore.core.json.JsonReader}. The default
- * implementation of {@link io.clientcore.core.json.JsonSerializable#fromJson(io.clientcore.core.json.JsonReader) fromJson(JsonReader)}
+ * implementation of {@code io.clientcore.core.json.JsonSerializable#fromJson(io.clientcore.core.json.JsonReader) fromJson(JsonReader)}
  * throws an {@link java.lang.UnsupportedOperationException} if the static method isn't hidden (a static method with the
  * same definition) by the type implementing {@link io.clientcore.core.json.JsonSerializable}. Given that the type itself manages
  * JSON serialization the type can be fluent, immutable, or a mix of fluent and immutable, it doesn't matter as all
