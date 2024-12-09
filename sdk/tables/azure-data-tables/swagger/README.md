@@ -18,7 +18,7 @@ autorest
 ### Code generation settings
 
 ```yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58767be9a357c436ee99706edda49e9c4a8a4e05/specification/cosmos-db/data-plane/Microsoft.Tables/preview/2019-02-02/table.json
 java: true
 output-folder: ..\
@@ -27,17 +27,13 @@ namespace: com.azure.data.tables
 generate-client-interfaces: false
 enable-sync-stack: true
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
 models-subpackage: implementation.models
 custom-types: TableAccessPolicy,TableServiceCorsRule,TableServiceGeoReplication,TableServiceGeoReplicationStatus,TableServiceLogging,TableServiceMetrics,TableServiceProperties,TableServiceRetentionPolicy,TableServiceStatistics,TableSignedIdentifier
 custom-types-subpackage: models
 customization-class: src/main/java/TablesCustomization.java
-context-client-method-parameter: true
-service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 disable-client-builder: true
-stream-style-serialization: true
 ```
 
 ### Add JSON-based Error Type

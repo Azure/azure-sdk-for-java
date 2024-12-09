@@ -7,17 +7,14 @@ license-header: MICROSOFT_MIT_SMALL
 title: Azure Communication Email Service
 java: true
 use-extension:
-    "@autorest/java": "4.1.33"
+    "@autorest/java": "4.1.42"
 artifact-id: azure-communication-email
 namespace: com.azure.communication.email
 models-subpackage: implementation.models
 custom-types: EmailSendStatus,EmailAddress
 custom-types-subpackage: models
-add-context-parameter: true
-context-client-method-parameter: true
 model-override-setter-from-superclass: true
 generate-client-interfaces: false
-service-interface-as-public: true
 required-fields-as-ctor-args: true
 generate-client-as-impl: true
 url-as-string: true

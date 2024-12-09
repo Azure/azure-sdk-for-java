@@ -17,12 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class ResultInformation implements JsonSerializable<ResultInformation> {
     /*
-     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
+     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result
+     * was unexpected.
      */
     private Integer code;
 
     /*
-     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
+     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this
+     * result was unexpected.
      */
     private Integer subCode;
 

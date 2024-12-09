@@ -42,7 +42,6 @@ data-plane: true
 security: AADToken
 security-scopes: https://cnt-prod.loadtesting.azure.com/.default
 partial-update: true
-stream-style-serialization: true
 service-versions:
 - '2022-11-01'
 directive:

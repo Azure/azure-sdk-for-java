@@ -48,12 +48,10 @@ title: TrafficClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Traffic/preview/1.0/traffic.json
 namespace: com.azure.maps.traffic
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
-add-context-parameter: true
-context-client-method-parameter: true
 client-logger: true
 generic-response-type: true
 generate-client-as-impl: true

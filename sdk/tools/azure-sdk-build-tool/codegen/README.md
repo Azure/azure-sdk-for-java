@@ -4,10 +4,7 @@ java: true
 output-folder: ../
 namespace: com.azure.sdk.build.tool.implementation
 generate-client-interfaces: false
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 directive:
     - rename-model:
         from: TrackResponse

@@ -5,7 +5,6 @@ java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.scanning
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 data-plane: true
@@ -17,8 +16,6 @@ service-name: PurviewScanning
 service-versions:
   - 2018-12-01-preview
 generate-client-as-impl: true
-add-context-parameter: true
-context-client-method-parameter: true
 generate-sync-async-clients: true
 generate-samples: true
 generate-builder-per-client: false

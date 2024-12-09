@@ -30,7 +30,7 @@ autorest README.md --java --v4
 
 ``` yaml
 tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 require:
     - https://github.com/Azure/azure-rest-api-specs/blob/7347874bc2794b2770c3e7618bd1a5ccab53cb54/specification/communication/data-plane/CallAutomation/readme.md
 java: true
@@ -40,13 +40,9 @@ namespace: com.azure.communication.callautomation
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
-service-interface-as-public: true
 models-subpackage: implementation.models
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
 customization-class: src/main/java/CallautomationCustomizations.java
-stream-style-serialization: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:

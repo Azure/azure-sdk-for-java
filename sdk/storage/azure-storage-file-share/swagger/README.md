@@ -15,17 +15,15 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-01-05/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
 generate-client-as-impl: true
 generate-client-interfaces: false
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
-context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types-subpackage: models
@@ -35,7 +33,6 @@ generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
 disable-client-builder: true
-stream-style-serialization: true
 ```
 
 ### Query Parameters

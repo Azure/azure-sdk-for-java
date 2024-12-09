@@ -36,8 +36,6 @@ namespace: com.azure.monitor.ingestion.implementation
 implementation-subpackage: ""
 generate-client-interfaces: false
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
 required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 credential-types: tokencredential
@@ -47,5 +45,4 @@ artifact-id: azure-monitor-ingestion
 data-plane: true
 enable-sync-stack: true
 customization-class: src/main/java/MonitorIngestionCustomizations.java
-stream-style-serialization: true
 ```

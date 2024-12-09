@@ -24,7 +24,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ### Code generation settings
 ``` yaml
 tag: package-phonenumber-2024-03-01-preview
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b56afb26c5450157006a3a1d9be57bae429051a2/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType
@@ -35,10 +35,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.phonenumbers
 generate-client-as-impl: true
-service-interface-as-public: true
 sync-methods: all
-context-client-method-parameter: true
-stream-style-serialization: true
 ```
 
 ### Add readonly attribute to PurchasedPhoneNumber properties

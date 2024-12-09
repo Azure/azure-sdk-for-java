@@ -8,7 +8,7 @@ You can update the codegen by running the following commands:
 
 ```bash
 cd sdk/remoterendering/azure-mixedreality-remoterendering/swagger
-autorest autorest.md --java --use=@autorest/java@4.1.33
+autorest autorest.md --java --use=@autorest/java@4.1.42
 ```
 
 ### Code generation settings
@@ -19,12 +19,9 @@ output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.mixedreality.remoterendering
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
 models-subpackage: implementation.models
-context-client-method-parameter: true
 artifact-id: azure-mixedreality-remoterendering
 credential-types: tokencredential
 required-fields-as-ctor-args: true

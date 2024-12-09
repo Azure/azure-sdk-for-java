@@ -15,17 +15,15 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/feature/storage/stg96base2/specification/storage/data-plane/Microsoft.BlobStorage/stable/2025-01-05/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
 generate-client-as-impl: true
 generate-client-interfaces: false
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
-context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal
 models-subpackage: implementation.models
@@ -36,7 +34,6 @@ generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
 disable-client-builder: true
-stream-style-serialization: true
 ```
 
 ### /{containerName}/{blob}

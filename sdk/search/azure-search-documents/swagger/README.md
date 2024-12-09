@@ -167,18 +167,15 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 enable-sync-stack: true
 generate-client-interfaces: false
-context-client-method-parameter: true
 generate-client-as-impl: true
-service-interface-as-public: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
 require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
-stream-style-serialization: true
 include-read-only-in-constructor-args: true
 ```
 

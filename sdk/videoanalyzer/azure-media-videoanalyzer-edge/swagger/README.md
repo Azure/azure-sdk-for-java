@@ -16,11 +16,9 @@ require: https://github.com/Azure/azure-rest-api-specs/blob/60fcb275cbce38d343f9
 add-credentials: false
 namespace: com.azure.media.videoanalyzer.edge
 sync-methods: none
-add-context-parameter: true
 models-subpackage: models
 custom-types-subpacakge: models
-context-client-method-parameter: true
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 model-override-setter-from-superclass: true
 required-fields-as-ctor-args: true
 customization-class: src/main/java/VideoAnalyzerEdgeCustomization.java

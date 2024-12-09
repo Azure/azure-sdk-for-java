@@ -19,16 +19,13 @@ autorest
 ```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.personalizer
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
-service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: administration.models

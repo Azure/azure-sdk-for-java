@@ -36,7 +36,7 @@ To update generated files for chat service, run the following command
 
 ```yaml
 tag: package-chat-2024-03-07
-use: '@autorest/java@4.1.33'
+use: '@autorest/java@4.1.42'
 require:
     - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/72d4c8cae964a12dc27ad4684b0bddf493225338/specification/communication/data-plane/Chat/readme.md
 java: true
@@ -49,11 +49,8 @@ custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChat
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
-service-interface-as-public: true
 generate-sync-async-clients: false
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
 enable-xml: false
 required-parameter-client-methods: true
 custom-strongly-typed-header-deserialization: true

@@ -32,17 +32,14 @@ autorest
 ```yaml
 java: true
 output-folder: ..\
-use: '@autorest/java@4.1.34'
+use: '@autorest/java@4.1.42'
 generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.spark
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
 models-subpackage: models
-context-client-method-parameter: true
 required-parameter-client-methods: true
 credential-types: tokencredential
 credential-scopes: https://dev.azuresynapse.net/.default

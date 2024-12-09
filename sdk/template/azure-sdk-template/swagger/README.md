@@ -72,10 +72,8 @@ output-folder: ../ <required, where code will be generated>
 namespace: <required, the base package where files will be written, *-subpackage configurations will be extended from this>
 generate-client-as-impl: true <optional, generates the Swagger interfaces as implementation>
 generate-client-interfaces: false <optional, generates the Swagger implementations as interfaces>
-service-interface-as-public: true <optional, will generated interfaces used by RestProxy as public to prevent SecurityManager issues>
 sync-methods: none <optional, will only generate asynchronous methods in the interface layer>
 license-header: MICROSOFT_MIT_SMALL <optional, configuration of the code generation license header>
-context-client-method-parameter: true <optional, generates methods with Context as the final parameter for passing additional metadata per-call>
 default-http-exception-type: <optional, points to hand-written implementation of HttpResponseException that should be used instead of the generated error type>
 models-subpackage: <optional, package where code generated models will be placed>
 custom-types: <optional, list of model names that will be generated into the custom-types-subpackage, generally used for generated models that should be public API>
@@ -98,10 +96,8 @@ output-folder: ../
 namespace: com.azure.storage.blob
 generate-client-as-impl: true
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
 models-subpackage: implementation.models
 custom-types: <list of models that are generated into public API> 
@@ -128,10 +124,8 @@ java: true
 output-folder: ../
 generate-client-as-impl: true
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-context-client-method-parameter: true
 generic-response-type: true
 custom-strongly-typed-header-deserialization: true
 ```

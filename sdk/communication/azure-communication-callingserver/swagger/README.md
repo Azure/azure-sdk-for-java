@@ -21,13 +21,13 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java --v4 --use=@autorest/java@4.0.42 --use=@autorest/modelerfour@4.15.442
 ```
 
 ## Update generated files for server calling service
 To update generated files for calling service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+> autorest README.md --java --v4 --use=@autorest/java@4.0.42 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
@@ -41,11 +41,8 @@ namespace: com.azure.communication.callingserver
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
-service-interface-as-public: true
 models-subpackage: implementation.models
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:

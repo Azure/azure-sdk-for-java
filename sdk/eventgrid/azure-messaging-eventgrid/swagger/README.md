@@ -27,7 +27,7 @@ autorest
 ```
 
 ```yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
@@ -35,13 +35,10 @@ output-folder: ../
 namespace: com.azure.messaging.eventgrid
 license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
-context-client-method-parameter: true
 models-subpackage: systemevents
 customization-class: src/main/java/EventGridCustomization.java
-service-interface-as-public: true
 url-as-string: true
 enable-sync-stack: true
-stream-style-serialization: true
 require-x-ms-flattened-to-flatten: true
 directive:
     - rename-model:

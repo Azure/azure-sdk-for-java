@@ -29,7 +29,7 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 java: true
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/aa19725fe79aea2a9dc580f3c66f77f89cc34563/specification/mixedreality/data-plane/Microsoft.MixedReality/preview/2019-02-28-preview/mr-sts.json
@@ -38,10 +38,6 @@ namespace: com.azure.mixedreality.authentication
 models-subpackage: implementation.models
 generate-client-interfaces: false
 generate-client-as-impl: true
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 sync-methods: none
-stream-style-serialization: true
 ```

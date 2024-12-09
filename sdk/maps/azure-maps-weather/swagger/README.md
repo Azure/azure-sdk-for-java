@@ -42,12 +42,10 @@ title: WeatherClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Weather/stable/1.1/weather.json
 namespace: com.azure.maps.weather
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
-add-context-parameter: true
-context-client-method-parameter: true
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all

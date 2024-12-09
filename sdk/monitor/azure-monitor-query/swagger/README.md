@@ -54,11 +54,8 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.logs
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
@@ -66,7 +63,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/LogsCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ## Metrics Query
@@ -79,11 +75,8 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metrics
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 required-parameter-client-methods: false 
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
@@ -91,7 +84,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 directive:
     - rename-model:
         from: Response
@@ -127,11 +119,8 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsnamespaces
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 required-parameter-client-methods: false 
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
@@ -139,7 +128,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsNamespacesCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ## Metrics Definitions Query
@@ -153,11 +141,8 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsdefinitions
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 required-parameter-client-methods: false 
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
@@ -165,7 +150,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsDefinitionsCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ## Metrics Batch Query
@@ -179,18 +163,14 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsbatch
 generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
 required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query
 enable-sync-stack: true
-stream-style-serialization: true
 customization-class: src/main/java/MetricsClientCustomization.java
 ```
 
