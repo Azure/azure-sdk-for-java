@@ -18,7 +18,8 @@ import java.util.List;
 @Immutable
 public final class DeletedSecretListResult implements JsonSerializable<DeletedSecretListResult> {
     /*
-     * A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
+     * A response message containing a list of the deleted secrets in the vault along with a link to the next page of
+     * deleted secrets
      */
     private List<DeletedSecretItem> value;
 

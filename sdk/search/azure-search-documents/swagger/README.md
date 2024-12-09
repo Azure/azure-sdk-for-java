@@ -173,7 +173,6 @@ generate-client-as-impl: true
 required-fields-as-ctor-args: true
 license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
-require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
 include-read-only-in-constructor-args: true
 ```

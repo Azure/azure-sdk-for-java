@@ -38,7 +38,6 @@ generate-client-as-impl: true
 models-subpackage: systemevents
 customization-class: src/main/java/EventGridCustomization.java
 enable-sync-stack: true
-require-x-ms-flattened-to-flatten: true
 directive:
     - rename-model:
         from: ResourceActionCancelData
