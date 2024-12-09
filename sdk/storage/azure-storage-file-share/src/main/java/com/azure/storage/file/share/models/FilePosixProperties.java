@@ -13,7 +13,11 @@ import com.azure.storage.file.share.implementation.accesshelpers.FilePosixProper
  */
 public class FilePosixProperties {
     /**
-     * Optional. Version TBD and newer. The mode permissions to be set on the file or directory.
+     * Optional. Version TBD and newer. The mode permissions to be set on the file or directory. This can be in
+     * either symbolic or octal notation.
+     *
+     * <p>For more information, see this
+     * <a href="https://aka.ms/fileModeWikipedia">Wikipedia page</a>.</p>
      */
     private String fileMode;
 
@@ -28,7 +32,7 @@ public class FilePosixProperties {
     private String group;
 
     /**
-     * Optional, only applicable to files. The type of the file. The default value is .
+     * Optional, only applicable to files. The type of the file. The default value is {@link NfsFileType#REGULAR}.
      */
     private NfsFileType fileType;
 
@@ -53,7 +57,9 @@ public class FilePosixProperties {
     }
 
     /**
-     * Sets the file mode permissions.
+     * Sets the file mode permissions. This can be in either symbolic or octal notation.
+     * <p>For more information, see this
+     * <a href="https://aka.ms/fileModeWikipedia">Wikipedia page</a>.</p>
      *
      * @param fileMode the file mode permissions to set.
      * @return the FilePosixProperties object itself.

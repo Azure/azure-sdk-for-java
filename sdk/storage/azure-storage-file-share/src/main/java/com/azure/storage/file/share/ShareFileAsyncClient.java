@@ -3370,7 +3370,8 @@ public class ShareFileAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
      *
-     * @param targetFile Path of the file to create the hard link to, not including the share.
+     * @param targetFile Path of the file to create the hard link to, not including the share. For example,
+     * {@code targetDirectory/targetSubDirectory/.../targetFile}
      * @return A {@link Mono} containing a {@link ShareFileInfo} describing the state of the hard link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

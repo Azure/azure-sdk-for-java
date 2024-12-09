@@ -14,6 +14,8 @@ public final class ShareFileCreateHardLinkOptions {
 
     /**
      * Creates a new instance of {@link ShareFileCreateHardLinkOptions}.
+     * @param targetFile Path of the file to create the hard link to, not including the share. For example,
+     * {@code targetDirectory/targetSubDirectory/.../targetFile}
      */
     public ShareFileCreateHardLinkOptions(String targetFile) {
         this.targetFile = targetFile;
@@ -22,7 +24,8 @@ public final class ShareFileCreateHardLinkOptions {
     /**
      * Gets the path of the target file to create the hard link to, not including the share.
      *
-     * @return the path of the target file to create the hard link to, not including the share.
+     * @return the path of the target file to create the hard link to, not including the share. For example,
+     * {@code targetDirectory/targetSubDirectory/.../targetFile}
      */
     public String getTargetFile() {
         return targetFile;
