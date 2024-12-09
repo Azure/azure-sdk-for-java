@@ -1,3 +1,40 @@
+# Azure Confidential Ledger for Java
+
+> see https://aka.ms/autorest
+
+## Getting Started
+
+To build the SDK for Confidential Ledger, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
+```ps
+npm install -g autorest
+```
+
+### Generation
+
+There are two swaggers for Confidential Ledger, `confidential-ledger` and `confidential-ledger-certificate`. They always
+under same package version, e.g.`--tag=confidential-ledger` and `--tag=confidential-leder-certificate`.
+
+```ps
+cd <swagger-folder>
+autorest
+```
+
+e.g.
+```ps
+cd <swagger-folder>
+autorest --tag=confidential-ledger
+autorest --tag=confidential-ledger-certificate
+```
+
 ## Generate autorest code
 ### To run, use `autorest --tag:confidential-ledger README.md`
 
