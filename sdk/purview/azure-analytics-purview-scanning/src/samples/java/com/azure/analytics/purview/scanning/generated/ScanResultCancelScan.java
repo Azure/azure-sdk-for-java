@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.scanning.generated;
 
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.analytics.purview.scanning.ScanResultClient;
+import com.azure.analytics.purview.scanning.ScanResultClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,16 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanResultCancelScan {
     public static void main(String[] args) {
-        ScanResultClient scanResultClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildScanResultClient();
+        ScanResultClient scanResultClient
+            = new ScanResultClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                scanResultClient.cancelScanWithResponse(
-                        "myDataSource", "myScanName", "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
+        Response<BinaryData> response = scanResultClient.cancelScanWithResponse("myDataSource", "myScanName",
+            "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
     }
 }

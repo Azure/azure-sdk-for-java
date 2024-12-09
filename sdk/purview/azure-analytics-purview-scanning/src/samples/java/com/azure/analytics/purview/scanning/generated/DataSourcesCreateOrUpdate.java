@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.scanning.generated;
 
 import com.azure.analytics.purview.scanning.DataSourcesClient;
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
+import com.azure.analytics.purview.scanning.DataSourcesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,17 +13,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DataSourcesCreateOrUpdate {
     public static void main(String[] args) {
-        DataSourcesClient dataSourcesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildDataSourcesClient();
+        DataSourcesClient dataSourcesClient
+            = new DataSourcesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcescreateorupdate.datasourcescreateorupdate
-        RequestOptions requestOptions =
-                new RequestOptions()
-                        .setBody(
-                                BinaryData.fromString(
-                                        "{\"kind\":\"AzureStorage\",\"properties\":{\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"Collection-rZX\"},\"endpoint\":\"https://azurestorage.core.windows.net/\"}}"));
+        RequestOptions requestOptions = new RequestOptions().setBody(BinaryData.fromString(
+            "{\"kind\":\"AzureStorage\",\"properties\":{\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"Collection-rZX\"},\"endpoint\":\"https://azurestorage.core.windows.net/\"}}"));
         Response<BinaryData> response = dataSourcesClient.createOrUpdateWithResponse("myDataSource", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.datasourcescreateorupdate.datasourcescreateorupdate
     }

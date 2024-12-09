@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.scanning.generated;
 
 import com.azure.analytics.purview.scanning.KeyVaultConnectionsClient;
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
+import com.azure.analytics.purview.scanning.KeyVaultConnectionsClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,15 +13,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class KeyVaultConnectionsCreate {
     public static void main(String[] args) {
-        KeyVaultConnectionsClient keyVaultConnectionsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildKeyVaultConnectionsClient();
+        KeyVaultConnectionsClient keyVaultConnectionsClient
+            = new KeyVaultConnectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionscreate.keyvaultconnectionscreate
-        BinaryData body =
-                BinaryData.fromString(
-                        "{\"properties\":{\"description\":\"This is a Key Vault\",\"baseUrl\":\"https://babylon-sample-kv.vault.azure.net/\"}}");
+        BinaryData body = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"This is a Key Vault\",\"baseUrl\":\"https://babylon-sample-kv.vault.azure.net/\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = keyVaultConnectionsClient.createWithResponse("KeyVault1", body, requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.keyvaultconnectionscreate.keyvaultconnectionscreate

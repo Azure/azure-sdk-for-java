@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.scanning.generated;
 
 import com.azure.analytics.purview.scanning.KeyVaultConnectionsClient;
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
+import com.azure.analytics.purview.scanning.KeyVaultConnectionsClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class KeyVaultConnectionsGet {
     public static void main(String[] args) {
-        KeyVaultConnectionsClient keyVaultConnectionsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildKeyVaultConnectionsClient();
+        KeyVaultConnectionsClient keyVaultConnectionsClient
+            = new KeyVaultConnectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionsget.keyvaultconnectionsget
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = keyVaultConnectionsClient.getWithResponse("KeyVault1", requestOptions);

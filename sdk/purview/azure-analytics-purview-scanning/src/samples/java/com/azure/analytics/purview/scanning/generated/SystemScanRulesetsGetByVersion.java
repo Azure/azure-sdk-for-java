@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.scanning.generated;
 
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.analytics.purview.scanning.SystemScanRulesetsClient;
+import com.azure.analytics.purview.scanning.SystemScanRulesetsClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class SystemScanRulesetsGetByVersion {
     public static void main(String[] args) {
-        SystemScanRulesetsClient systemScanRulesetsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildSystemScanRulesetsClient();
+        SystemScanRulesetsClient systemScanRulesetsClient
+            = new SystemScanRulesetsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetsgetbyversion.systemscanrulesetsgetbyversion
         RequestOptions requestOptions = new RequestOptions().addQueryParam("dataSourceType", "AzureStorage");
         Response<BinaryData> response = systemScanRulesetsClient.getByVersionWithResponse(1, requestOptions);

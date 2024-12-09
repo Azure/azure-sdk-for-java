@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.scanning.generated;
 
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.analytics.purview.scanning.ScanRulesetsClient;
+import com.azure.analytics.purview.scanning.ScanRulesetsClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanRulesetsDelete {
     public static void main(String[] args) {
-        ScanRulesetsClient scanRulesetsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildScanRulesetsClient();
+        ScanRulesetsClient scanRulesetsClient
+            = new ScanRulesetsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.scanrulesetsdelete.scanrulesetsdelete
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scanRulesetsClient.deleteWithResponse("myRuleSetName", requestOptions);

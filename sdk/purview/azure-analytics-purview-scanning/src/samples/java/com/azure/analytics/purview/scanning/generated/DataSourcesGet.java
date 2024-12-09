@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.scanning.generated;
 
 import com.azure.analytics.purview.scanning.DataSourcesClient;
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
+import com.azure.analytics.purview.scanning.DataSourcesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DataSourcesGet {
     public static void main(String[] args) {
-        DataSourcesClient dataSourcesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildDataSourcesClient();
+        DataSourcesClient dataSourcesClient
+            = new DataSourcesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcesget.datasourcesget
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = dataSourcesClient.getWithResponse("myDataSource", requestOptions);

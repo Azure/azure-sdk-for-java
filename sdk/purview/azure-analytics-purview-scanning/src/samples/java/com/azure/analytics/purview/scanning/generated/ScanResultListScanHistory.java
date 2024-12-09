@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.scanning.generated;
 
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.analytics.purview.scanning.ScanResultClient;
+import com.azure.analytics.purview.scanning.ScanResultClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanResultListScanHistory {
     public static void main(String[] args) {
-        ScanResultClient scanResultClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildScanResultClient();
+        ScanResultClient scanResultClient
+            = new ScanResultClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultlistscanhistory.scanresultlistscanhistory
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = scanResultClient.listScanHistory("DataSource1", "scan1", requestOptions);

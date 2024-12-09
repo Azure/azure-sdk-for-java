@@ -19,15 +19,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
-@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
+/**
+ * Initializes a new instance of the asynchronous PurviewScanningClient type.
+ */
+@ServiceClient(builder = ScanResultClientBuilder.class, isAsync = true)
 public final class ScanResultAsyncClient {
     @Generated
     private final ScanResultsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanResultAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,20 +39,18 @@ public final class ScanResultAsyncClient {
 
     /**
      * Runs the scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter. Allowed values: "Full", "Incremental".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter. Allowed values: "Full",
+     * "Incremental".</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     scanResultId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -72,8 +72,9 @@ public final class ScanResultAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
@@ -93,10 +94,10 @@ public final class ScanResultAsyncClient {
 
     /**
      * Cancels a scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     scanResultId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -118,8 +119,9 @@ public final class ScanResultAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
@@ -139,10 +141,10 @@ public final class ScanResultAsyncClient {
 
     /**
      * Lists the scan history of a scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     parentId: String (Optional)
      *     id: String (Optional)
@@ -158,7 +160,7 @@ public final class ScanResultAsyncClient {
      *             }
      *         ]
      *         exceptionCountMap (Optional): {
-     *             String: int (Optional)
+     *             String: int (Required)
      *         }
      *     }
      *     startTime: OffsetDateTime (Optional)
@@ -187,8 +189,9 @@ public final class ScanResultAsyncClient {
      *     runType: String (Optional)
      *     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

@@ -19,15 +19,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
-@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
+/**
+ * Initializes a new instance of the asynchronous PurviewScanningClient type.
+ */
+@ServiceClient(builder = DataSourcesClientBuilder.class, isAsync = true)
 public final class DataSourcesAsyncClient {
     @Generated
     private final DataSourcesImpl serviceClient;
 
     /**
      * Initializes an instance of DataSourcesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,27 +39,27 @@ public final class DataSourcesAsyncClient {
 
     /**
      * Creates or Updates a data source.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Required)
      *     scans (Optional): [
      *          (Optional){
      *             id: String (Optional)
      *             name: String (Optional)
+     *             kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *             scanResults (Optional): [
      *                  (Optional){
      *                     parentId: String (Optional)
@@ -74,7 +76,7 @@ public final class DataSourcesAsyncClient {
      *                             }
      *                         ]
      *                         exceptionCountMap (Optional): {
-     *                             String: int (Optional)
+     *                             String: int (Required)
      *                         }
      *                     }
      *                     startTime: OffsetDateTime (Optional)
@@ -107,18 +109,22 @@ public final class DataSourcesAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Required)
      *     scans (Optional): [
      *          (Optional){
      *             id: String (Optional)
      *             name: String (Optional)
+     *             kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *             scanResults (Optional): [
      *                  (Optional){
      *                     parentId: String (Optional)
@@ -135,7 +141,7 @@ public final class DataSourcesAsyncClient {
      *                             }
      *                         ]
      *                         exceptionCountMap (Optional): {
-     *                             String: int (Optional)
+     *                             String: int (Required)
      *                         }
      *                     }
      *                     startTime: OffsetDateTime (Optional)
@@ -168,8 +174,9 @@ public final class DataSourcesAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -186,17 +193,19 @@ public final class DataSourcesAsyncClient {
 
     /**
      * Get a data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Required)
      *     scans (Optional): [
      *          (Optional){
      *             id: String (Optional)
      *             name: String (Optional)
+     *             kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *             scanResults (Optional): [
      *                  (Optional){
      *                     parentId: String (Optional)
@@ -213,7 +222,7 @@ public final class DataSourcesAsyncClient {
      *                             }
      *                         ]
      *                         exceptionCountMap (Optional): {
-     *                             String: int (Optional)
+     *                             String: int (Required)
      *                         }
      *                     }
      *                     startTime: OffsetDateTime (Optional)
@@ -246,8 +255,9 @@ public final class DataSourcesAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -264,17 +274,19 @@ public final class DataSourcesAsyncClient {
 
     /**
      * Deletes a data source.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Required)
      *     scans (Optional): [
      *          (Optional){
      *             id: String (Optional)
      *             name: String (Optional)
+     *             kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *             scanResults (Optional): [
      *                  (Optional){
      *                     parentId: String (Optional)
@@ -291,7 +303,7 @@ public final class DataSourcesAsyncClient {
      *                             }
      *                         ]
      *                         exceptionCountMap (Optional): {
-     *                             String: int (Optional)
+     *                             String: int (Required)
      *                         }
      *                     }
      *                     startTime: OffsetDateTime (Optional)
@@ -324,8 +336,9 @@ public final class DataSourcesAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -342,17 +355,19 @@ public final class DataSourcesAsyncClient {
 
     /**
      * List data sources in Data catalog.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI) (Required)
      *     scans (Optional): [
      *          (Optional){
      *             id: String (Optional)
      *             name: String (Optional)
+     *             kind: String(AzureSubscriptionCredential/AzureSubscriptionMsi/AzureResourceGroupCredential/AzureResourceGroupMsi/AzureSynapseWorkspaceCredential/AzureSynapseWorkspaceMsi/AzureSynapseCredential/AzureSynapseMsi/AdlsGen1Credential/AdlsGen1Msi/AdlsGen2Credential/AdlsGen2Msi/AmazonAccountCredential/AmazonS3Credential/AmazonS3RoleARN/AmazonSqlCredential/AzureCosmosDbCredential/AzureDataExplorerCredential/AzureDataExplorerMsi/AzureFileServiceCredential/AzureSqlDatabaseCredential/AzureSqlDatabaseMsi/AmazonPostgreSqlCredential/AzurePostgreSqlCredential/SqlServerDatabaseCredential/AzureSqlDatabaseManagedInstanceCredential/AzureSqlDatabaseManagedInstanceMsi/AzureSqlDataWarehouseCredential/AzureSqlDataWarehouseMsi/AzureMySqlCredential/AzureStorageCredential/AzureStorageMsi/TeradataTeradataCredential/TeradataTeradataUserPass/TeradataUserPass/OracleOracleCredential/OracleOracleUserPass/SapS4HanaSapS4HanaCredential/SapS4HanaSapS4HanaUserPass/SapEccSapEccCredential/SapEccSapEccUserPass/PowerBIDelegated/PowerBIMsi) (Required)
      *             scanResults (Optional): [
      *                  (Optional){
      *                     parentId: String (Optional)
@@ -369,7 +384,7 @@ public final class DataSourcesAsyncClient {
      *                             }
      *                         ]
      *                         exceptionCountMap (Optional): {
-     *                             String: int (Optional)
+     *                             String: int (Required)
      *                         }
      *                     }
      *                     startTime: OffsetDateTime (Optional)
@@ -402,8 +417,9 @@ public final class DataSourcesAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

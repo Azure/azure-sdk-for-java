@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.scanning.generated;
 
 import com.azure.analytics.purview.scanning.ClassificationRulesClient;
-import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
+import com.azure.analytics.purview.scanning.ClassificationRulesClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ClassificationRulesListAll {
     public static void main(String[] args) {
-        ClassificationRulesClient classificationRulesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClassificationRulesClient();
+        ClassificationRulesClient classificationRulesClient
+            = new ClassificationRulesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.classificationruleslistall.classificationruleslistall
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = classificationRulesClient.listAll(requestOptions);

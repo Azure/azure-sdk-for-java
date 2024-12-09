@@ -18,15 +18,17 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewScanningClient type. */
-@ServiceClient(builder = PurviewScanningClientBuilder.class)
+/**
+ * Initializes a new instance of the synchronous PurviewScanningClient type.
+ */
+@ServiceClient(builder = KeyVaultConnectionsClientBuilder.class)
 public final class KeyVaultConnectionsClient {
     @Generated
     private final KeyVaultConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of KeyVaultConnectionsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,10 +38,10 @@ public final class KeyVaultConnectionsClient {
 
     /**
      * Gets key vault information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -48,8 +50,9 @@ public final class KeyVaultConnectionsClient {
      *         description: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -66,10 +69,10 @@ public final class KeyVaultConnectionsClient {
 
     /**
      * Creates an instance of a key vault connection.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -78,11 +81,13 @@ public final class KeyVaultConnectionsClient {
      *         description: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -91,8 +96,9 @@ public final class KeyVaultConnectionsClient {
      *         description: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param keyVaultName The keyVaultName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -111,10 +117,10 @@ public final class KeyVaultConnectionsClient {
 
     /**
      * Deletes the key vault connection associated with the account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -123,8 +129,9 @@ public final class KeyVaultConnectionsClient {
      *         description: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -141,10 +148,10 @@ public final class KeyVaultConnectionsClient {
 
     /**
      * List key vault connections in account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -153,8 +160,9 @@ public final class KeyVaultConnectionsClient {
      *         description: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
