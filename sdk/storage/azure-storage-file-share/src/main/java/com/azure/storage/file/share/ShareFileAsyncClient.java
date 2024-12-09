@@ -463,6 +463,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createWithResponse(ShareFileCreateOptions options) {
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
                 options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
@@ -1779,6 +1780,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(ShareFileSetPropertiesOptions options) {
         try {
+            StorageImplUtils.assertNotNull("options", options);
             ShareFilePermission filePermission
                 = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
             return withContext(context -> setPropertiesWithResponse(options.getSizeInBytes(), options.getHttpHeaders(),
@@ -3400,6 +3402,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options) {
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createHardLinkWithResponse(options.getTargetFile(),
                 options.getRequestConditions(), context));
         } catch (RuntimeException ex) {

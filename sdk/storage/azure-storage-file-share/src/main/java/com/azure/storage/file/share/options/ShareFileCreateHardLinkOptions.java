@@ -43,6 +43,7 @@ public final class ShareFileCreateHardLinkOptions {
     /**
      * Optional {@link ShareRequestConditions} to add conditions on creating the hard link.
      *
+     * @param requestConditions {@link ShareRequestConditions}
      * @return the updated options.
      */
     public ShareFileCreateHardLinkOptions setRequestConditions(ShareRequestConditions requestConditions) {

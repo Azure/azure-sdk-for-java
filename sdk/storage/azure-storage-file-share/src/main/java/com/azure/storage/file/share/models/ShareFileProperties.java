@@ -6,7 +6,6 @@ package com.azure.storage.file.share.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 
 import java.time.OffsetDateTime;

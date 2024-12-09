@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 /**
  * Helper class to access private values of {@link ShareFileInfo} across package boundaries.
  */
-public class ShareFileInfoHelper {
+public final class ShareFileInfoHelper {
 
     private static ShareFileInfoAccessor accessor;
 

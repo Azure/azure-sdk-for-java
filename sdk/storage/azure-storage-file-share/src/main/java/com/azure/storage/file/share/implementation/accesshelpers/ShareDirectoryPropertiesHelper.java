@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Helper class to access private values of {@link ShareDirectoryProperties} across package boundaries.
  */
-public class ShareDirectoryPropertiesHelper {
+public final class ShareDirectoryPropertiesHelper {
 
     private static ShareDirectoryPropertiesAccessor accessor;
 

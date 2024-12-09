@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Helper class to access private values of {@link ShareFileProperties} across package boundaries.
  */
-public class ShareFilePropertiesHelper {
+public final class ShareFilePropertiesHelper {
     private static ShareFilePropertiesAccessor accessor;
 
     private ShareFilePropertiesHelper() {

@@ -53,8 +53,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
  * Contains code snippets when generating javadocs through doclets for {@link ShareFileClient} and {@link ShareFileAsyncClient}.
  */
