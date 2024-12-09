@@ -21,40 +21,6 @@ APIs in one client library, you will know how to use them in other client librar
 
 ### Include the package
 
-#### Include the BOM file
-
-Please include the <replace with clientcore BOM> to your project to take dependency on the General Availability (GA) 
-version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the <replace with clientcore BOM link>.
-
-```xml
-
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.clientcore</groupId>
-            <artifactId><!-- replace with clientcore BOM artifact ID --></artifactId>
-            <version>{bom_version_to_target}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-```
-
-and then include the direct dependency in the dependencies section without the version tag. Typically, you won't need to
-install or depend on Core, instead it will be transitively downloaded by your build tool when you depend on client
-libraries using it.
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>io.clientcore</groupId>
-        <artifactId>core</artifactId>
-    </dependency>
-</dependencies>
-```
-
 #### Include direct dependency
 
 If you want to take dependency on a particular version of the library that is not present in the BOM,
