@@ -185,7 +185,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.sdk.build.tool.*\.java"/>
 
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.json.*" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.serialization.json.*" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.core.http.client.DefaultHttpClientBuilder" />
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="io.clientcore.core.http.pipeline.HttpRetryPolicy" />

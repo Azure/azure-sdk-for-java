@@ -30,10 +30,6 @@ parameters:
     displayName: 'http-okhttp3'
     type: boolean
     default: false
-  - name: release_corejson
-    displayName: 'core-json'
-    type: boolean
-    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -54,7 +50,3 @@ extends:
         groupId: io.clientcore
         safeName: httpokhttp3
         releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
-      - name: core-json
-        groupId: io.clientcore
-        safeName: corejson
-        releaseInBatch: ${{ parameters.release_corejson }}

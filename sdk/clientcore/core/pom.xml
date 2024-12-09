@@ -67,31 +67,18 @@
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
-    <checkstyle.excludes>**/generated/**/*.java,**/aalto/**/*.java</checkstyle.excludes>
+    <checkstyle.excludes>**/generated/**/*.java,**/aalto/**/*.java,**/jackson/core/**/*.java</checkstyle.excludes>
 
-    <spotbugs.excludes>**/aalto/**/*.java</spotbugs.excludes>
+    <spotbugs.excludes>**/aalto/**/*.java,**/jackson/core/**/*.java</spotbugs.excludes>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames>io.clientcore.core.json*</javadoc.excludePackageNames>
+    <javadoc.excludePackageNames/>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>core-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
-    </dependency>
-
     <!-- Test dependencies -->
-    <dependency>
-      <groupId>io.clientcore</groupId>
-      <artifactId>core-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
@@ -192,6 +179,7 @@
           <excludes>
             <exclude>META-INF/**</exclude>
             <exclude>**/io/clientcore/core/serialization/xml/implementation/aalto/**</exclude>
+            <exclude>**/io/clientcore/core/serialization/json/implementation/jackson/core/**</exclude>
           </excludes>
         </configuration>
       </plugin>
