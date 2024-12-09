@@ -73,4 +73,11 @@ public interface DeviceRegistryClient {
      * @return the AssetEndpointProfilesClient object.
      */
     AssetEndpointProfilesClient getAssetEndpointProfiles();
+
+    /**
+     * Gets the BillingContainersClient object to access its operations.
+     * 
+     * @return the BillingContainersClient object.
+     */
+    BillingContainersClient getBillingContainers();
 }

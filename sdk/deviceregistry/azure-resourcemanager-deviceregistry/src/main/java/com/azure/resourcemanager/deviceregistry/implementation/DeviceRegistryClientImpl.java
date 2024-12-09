@@ -25,6 +25,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.BillingContainersClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
@@ -183,6 +184,20 @@ public final class DeviceRegistryClientImpl implements DeviceRegistryClient {
     }
 
     /**
+     * The BillingContainersClient object to access its operations.
+     */
+    private final BillingContainersClient billingContainers;
+
+    /**
+     * Gets the BillingContainersClient object to access its operations.
+     * 
+     * @return the BillingContainersClient object.
+     */
+    public BillingContainersClient getBillingContainers() {
+        return this.billingContainers;
+    }
+
+    /**
      * Initializes an instance of DeviceRegistryClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -199,11 +214,12 @@ public final class DeviceRegistryClientImpl implements DeviceRegistryClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-11-01-preview";
+        this.apiVersion = "2024-11-01";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetEndpointProfiles = new AssetEndpointProfilesClientImpl(this);
+        this.billingContainers = new BillingContainersClientImpl(this);
     }
 
     /**
