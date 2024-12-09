@@ -13,7 +13,6 @@ output-folder: ../
 source-code-folder-path: ./src/generated
 java: true
 require: https://github.com/Azure/azure-rest-api-specs/blob/60fcb275cbce38d343f9c35411786e672aba154e/specification/videoanalyzer/data-plane/readme.md
-add-credentials: false
 namespace: com.azure.media.videoanalyzer.edge
 sync-methods: none
 models-subpackage: models

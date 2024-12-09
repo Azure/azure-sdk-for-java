@@ -30,7 +30,6 @@ custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathIt
 custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
 use-input-stream-for-binary: true
-no-custom-headers: true
 disable-client-builder: true
 ```
 

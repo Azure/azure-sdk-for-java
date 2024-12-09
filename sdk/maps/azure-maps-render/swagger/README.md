@@ -36,7 +36,6 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,LocalizedMapView,MapImageStyle,RasterTileFormat,StaticMapLayer,MapTileSize,TileIndex,TilesetID,Copyright,CopyrightCaption,MapAttribution,RegionCopyrights,RegionCopyrightsCountry,MapTileset
 customization-class: src/main/java/RenderCustomization.java
-no-custom-headers: true
 modelerfour:
   additional-checks: false
   lenient-model-deduplication: true

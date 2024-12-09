@@ -28,7 +28,6 @@ custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessag
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
 use-input-stream-for-binary: true
-no-custom-headers: true
 disable-client-builder: true
 ```
 

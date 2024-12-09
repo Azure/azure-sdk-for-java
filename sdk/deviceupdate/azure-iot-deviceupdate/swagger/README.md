@@ -45,7 +45,6 @@ generate-samples: true
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.iot.deviceupdate
 service-name: DeviceUpdate
-azure-arm: false
 credential-types: tokencredential
 credential-scopes: https://api.adu.microsoft.com/.default
 service-versions:

@@ -70,5 +70,4 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: CountryRecord,IanaId,TimeZoneWindows,TimeZoneResult,TimezoneOptions,TimeZoneNames,TimeZoneId,TimeZoneIanaVersionResult,ReferenceTime,TimeTransition
 customization-class: src/main/java/TimezoneCustomization.java
-no-custom-headers: true
 ```

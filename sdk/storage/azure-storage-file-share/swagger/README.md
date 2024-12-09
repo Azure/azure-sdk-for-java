@@ -29,7 +29,6 @@ custom-types-subpackage: models
 custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,AccessRight,FilePermissionFormat
 customization-class: src/main/java/ShareStorageCustomization.java
 use-input-stream-for-binary: true
-no-custom-headers: true
 disable-client-builder: true
 ```
 
