@@ -734,21 +734,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void uploadRangeFromURLSourceErrorAndStatusCode() {
-        ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
-
-        StepVerifier.create(primaryFileAsyncClient.create(1024).then(destinationClient.create(1024))
-            .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
-            .verifyErrorSatisfies(r -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertTrue(e.getStatusCode() == 401);
-                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-                assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-            });
-    }*/
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
@@ -929,23 +914,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .expectComplete()
             .verify(Duration.ofMinutes(1));
     }
-
-    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void startCopySourceErrorAndStatusCode() {
-        primaryFileAsyncClient.create(1024);
-
-        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
-            primaryFileAsyncClient.beginCopy("https://error.file.core.windows.net/garbage", new ShareFileCopyOptions(), null));
-
-        StepVerifier.create(primaryFileAsyncClient.create(1024).thenMany(poller))
-            .verifyErrorSatisfies(r -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertTrue(e.getStatusCode() == 400);
-                assertTrue(e.getServiceMessage().contains("InvalidUri"));
-                assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
-            });
-    }*/
 
     @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
         + "between the time subscribed and the time we start observing events.")
