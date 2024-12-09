@@ -42,8 +42,6 @@ use-iterable: true
 data-plane: true
 generate-sync-async-clients: true
 service-name: WebPubSubService
-generate-builder-per-client: false
-use-key-credential: false
 partial-update: true
 disable-client-builder: true
 service-versions:

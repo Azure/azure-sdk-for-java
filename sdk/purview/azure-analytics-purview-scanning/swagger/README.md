@@ -18,5 +18,4 @@ service-versions:
 generate-client-as-impl: true
 generate-sync-async-clients: true
 generate-samples: true
-generate-builder-per-client: false
 ```
