@@ -25,8 +25,8 @@ public class EnvironmentConfiguration {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final Set<String> DEFAULT_CONFIGURATIONS = new HashSet<>(
-        Arrays.asList(Configuration.PROPERTY_HTTP_PROXY, Configuration.PROPERTY_HTTPS_PROXY,
+    private static final Set<String> DEFAULT_CONFIGURATIONS
+        = new HashSet<>(Arrays.asList(Configuration.PROPERTY_HTTP_PROXY, Configuration.PROPERTY_HTTPS_PROXY,
             Configuration.PROPERTY_LOG_LEVEL, Configuration.PROPERTY_HTTP_LOG_DETAIL_LEVEL,
             Configuration.PROPERTY_REQUEST_RETRY_COUNT, Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT,
             Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT, Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT,
