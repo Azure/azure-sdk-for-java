@@ -29,7 +29,8 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
     private SsisPackageLocation packageLocation;
 
     /*
-     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression with resultType string).
+     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression
+     * with resultType string).
      */
     private Object runtime;
 
