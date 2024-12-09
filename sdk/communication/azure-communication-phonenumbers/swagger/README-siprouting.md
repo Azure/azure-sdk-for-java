@@ -1,31 +1,30 @@
 # Azure Communication Phone Numbers SIP Routing library for Java
 
 > see https://aka.ms/autorest
-## Getting Started
 
-To build the SDK for Communication Phone Numbers SIP Routing library, simply Install AutoRest and in this folder, run:
+This is the AutoRest configuration file for Communication Phone Numbers SIP Routing.
+
+---
+## Getting Started
+To build the SDK for Communication Phone Numbers SIP Routing, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-mvn install
-autorest README-siprouting.md --java --v4 --use=@autorest/java@4.1.3
+autorest
 ```
-
-## Update generated files for Sip Routing service
-To update generated files for Sip Routing service, run the following command
-
-> autorest README-siprouting.md --java --v4 --use=@autorest/java@4.0.40
 
 ### Code generation settings
 ```yaml

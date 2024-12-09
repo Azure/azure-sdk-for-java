@@ -54,8 +54,7 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
     }
 
     /**
-     * Get the nextLink property: If there are more participants that can be retrieved, the next link will be
-     * populated.
+     * Get the nextLink property: If there are more participants that can be retrieved, the next link will be populated.
      * 
      * @return the nextLink value.
      */
@@ -64,8 +63,7 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
     }
 
     /**
-     * Set the nextLink property: If there are more participants that can be retrieved, the next link will be
-     * populated.
+     * Set the nextLink property: If there are more participants that can be retrieved, the next link will be populated.
      * 
      * @param nextLink the nextLink value to set.
      * @return the ParticipantsCollection object itself.
@@ -75,6 +73,9 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

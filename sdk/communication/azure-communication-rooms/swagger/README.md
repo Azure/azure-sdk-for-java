@@ -2,21 +2,29 @@
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Communication Rooms.
+
+---
 ## Getting Started
-To build the SDK for Rooms Client, simply Install AutoRest and in this folder, run the below:
+To build the SDK for Communication Rooms, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
 
-### Generation
-There is one swagger for Rooms management APIs.
+> `autorest`
 
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
 ```ps
-cd <swagger-folder>
-autorest README.md
+npm install -g autorest
 ```
 
-## Update generated files for rooms service
-To update generated files for rooms service, run the following command
-
-> autorest README.md
+### Generation
+```ps
+cd <swagger-folder>
+autorest
+```
 
 ### Code generation settings
 ``` yaml

@@ -13,7 +13,7 @@ data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerClient
-use: '@autorest/java@4.1.0'
+use: '@autorest/java@4.1.42'
 generate-samples: true
 generate-tests: true
 ```
@@ -33,7 +33,7 @@ data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerCertificateClient
-use: '@autorest/java@4.1.0'
+use: '@autorest/java@4.1.42'
 generate-samples: true
 generate-tests: true
 ```

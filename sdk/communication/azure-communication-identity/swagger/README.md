@@ -2,8 +2,6 @@
 
 > see https://aka.ms/autorest
 
-This is the AutoRest configuration file for Communication Identity
----
 ## Getting Started
 
 To build the SDK for Communication Identity library, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
@@ -32,7 +30,7 @@ tag: package-2023-10
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5797d78f04cd8ca773be82d2c99a3294009b3f0a/specification/communication/data-plane/Identity/readme.md
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.identity
-custom-types: CommunicationTokenScope,TeamsUserExchangeTokenRequest
+custom-types: CommunicationTokenScope,GetTokenForTeamsUserOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 customization-class: src/main/java/TeamsUserExchangeTokenRequestCustomization.java
@@ -51,11 +49,14 @@ directive:
       $["x-ms-enum"].name = "CommunicationTokenScope";
 ```
 
-### Directive changing GetTokenForTeamsUserOptions to required properties
+### Directive to change TeamsUserExchangeTokenRequest to GetTokenForTeamsUserOptions
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.GetTokenForTeamsUserOptions
+    where: $.definitions.TeamsUserExchangeTokenRequest
     transform: >
-     $.required = [ "token", "appId", "userId" ];
+      $["x-ms-client-name"] = "GetTokenForTeamsUserOptions";
+      $.properties.token["x-ms-client-name"] = "teamsUserAadToken";
+      $.properties.appId["x-ms-client-name"] = "clientId";
+      $.properties.userId["x-ms-client-name"] = "userObjectId";
 ```

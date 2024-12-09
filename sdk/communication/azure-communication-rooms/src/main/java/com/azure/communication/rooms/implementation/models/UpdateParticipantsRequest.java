@@ -48,6 +48,9 @@ public final class UpdateParticipantsRequest implements JsonSerializable<UpdateP
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

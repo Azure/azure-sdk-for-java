@@ -37,8 +37,6 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     private static final HttpHeaderName SEARCH_ID = HttpHeaderName.fromString("search-id");
 
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PhoneNumbersSearchAvailablePhoneNumbersHeaders class.
@@ -48,7 +46,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
     public PhoneNumbersSearchAvailablePhoneNumbersHeaders(HttpHeaders rawHeaders) {
         this.operationId = rawHeaders.getValue(OPERATION_ID);
         this.searchId = rawHeaders.getValue(SEARCH_ID);
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
         this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 

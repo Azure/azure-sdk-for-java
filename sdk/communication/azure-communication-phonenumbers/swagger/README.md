@@ -1,24 +1,29 @@
 # Azure Communication Phone Numbers library for Java
 
 > see https://aka.ms/autorest
-## Getting Started
 
-To build the SDK for Communication Phone Numbers library, simply Install AutoRest and in this folder, run:
+This is the AutoRest configuration file for Communication Phone Numbers.
+
+---
+## Getting Started
+To build the SDK for Communication Phone Numbers, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest
 ```
 
 ### Code generation settings
