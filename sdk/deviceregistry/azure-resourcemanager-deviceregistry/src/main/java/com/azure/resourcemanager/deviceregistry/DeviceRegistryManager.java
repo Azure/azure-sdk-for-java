@@ -26,11 +26,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryClient;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProfilesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryClientBuilder;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
+import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.Operations;
 import java.time.Duration;
@@ -52,6 +54,8 @@ public final class DeviceRegistryManager {
     private Assets assets;
 
     private AssetEndpointProfiles assetEndpointProfiles;
+
+    private BillingContainers billingContainers;
 
     private final DeviceRegistryClient clientObject;
 
@@ -309,6 +313,18 @@ public final class DeviceRegistryManager {
             this.assetEndpointProfiles = new AssetEndpointProfilesImpl(clientObject.getAssetEndpointProfiles(), this);
         }
         return assetEndpointProfiles;
+    }
+
+    /**
+     * Gets the resource collection API of BillingContainers.
+     * 
+     * @return Resource collection API of BillingContainers.
+     */
+    public BillingContainers billingContainers() {
+        if (this.billingContainers == null) {
+            this.billingContainers = new BillingContainersImpl(clientObject.getBillingContainers(), this);
+        }
+        return billingContainers;
     }
 
     /**

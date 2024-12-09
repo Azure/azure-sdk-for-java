@@ -19,6 +19,11 @@
 - [ListByResourceGroup](#assets_listbyresourcegroup)
 - [Update](#assets_update)
 
+## BillingContainers
+
+- [Get](#billingcontainers_get)
+- [List](#billingcontainers_list)
+
 ## OperationStatus
 
 - [Get](#operationstatus_get)
@@ -30,9 +35,9 @@
 
 ```java
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileProperties;
+import com.azure.resourcemanager.deviceregistry.models.Authentication;
+import com.azure.resourcemanager.deviceregistry.models.AuthenticationMethod;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
-import com.azure.resourcemanager.deviceregistry.models.UserAuthentication;
-import com.azure.resourcemanager.deviceregistry.models.UserAuthenticationMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,9 +46,33 @@ import java.util.Map;
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Create_AssetEndpointProfile.
-     * json
+     * x-ms-original-file: 2024-11-01/Create_AssetEndpointProfile_With_DiscoveredAepRef.json
+     */
+    /**
+     * Sample code: Create_AssetEndpointProfile_With_DiscoveredAepRef.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void createAssetEndpointProfileWithDiscoveredAepRef(
+        com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assetEndpointProfiles()
+            .define("my-assetendpointprofile")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(
+                new AssetEndpointProfileProperties().withTargetAddress("https://www.example.com/myTargetAddress")
+                    .withEndpointProfileType("myEndpointProfileType")
+                    .withAuthentication(new Authentication().withMethod(AuthenticationMethod.ANONYMOUS))
+                    .withDiscoveredAssetEndpointProfileRef("discoveredAssetEndpointProfile1"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Create_AssetEndpointProfile.json
      */
     /**
      * Sample code: Create_AssetEndpointProfile.
@@ -62,7 +91,8 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
             .withTags(mapOf("site", "building-1"))
             .withProperties(
                 new AssetEndpointProfileProperties().withTargetAddress("https://www.example.com/myTargetAddress")
-                    .withUserAuthentication(new UserAuthentication().withMode(UserAuthenticationMode.ANONYMOUS)))
+                    .withEndpointProfileType("myEndpointProfileType")
+                    .withAuthentication(new Authentication().withMethod(AuthenticationMethod.ANONYMOUS)))
             .create();
     }
 
@@ -88,9 +118,7 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
  */
 public final class AssetEndpointProfilesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Delete_AssetEndpointProfile.
-     * json
+     * x-ms-original-file: 2024-11-01/Delete_AssetEndpointProfile.json
      */
     /**
      * Sample code: Delete_AssetEndpointProfile.
@@ -113,8 +141,7 @@ public final class AssetEndpointProfilesDeleteSamples {
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_AssetEndpointProfile.json
+     * x-ms-original-file: 2024-11-01/Get_AssetEndpointProfile.json
      */
     /**
      * Sample code: Get_AssetEndpointProfile.
@@ -122,6 +149,21 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void getAssetEndpointProfile(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assetEndpointProfiles()
+            .getByResourceGroupWithResponse("myResourceGroup", "my-assetendpointprofile",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Get_AssetEndpointProfile_With_SyncStatus.json
+     */
+    /**
+     * Sample code: Get_AssetEndpointProfile_With_SyncStatus.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        getAssetEndpointProfileWithSyncStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assetEndpointProfiles()
             .getByResourceGroupWithResponse("myResourceGroup", "my-assetendpointprofile",
                 com.azure.core.util.Context.NONE);
@@ -137,8 +179,7 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
  */
 public final class AssetEndpointProfilesListSamples {
     /*
-     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
-     * List_AssetEndpointProfiles_Subscription.json
+     * x-ms-original-file: 2024-11-01/List_AssetEndpointProfiles_Subscription.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_Subscription.
@@ -160,8 +201,7 @@ public final class AssetEndpointProfilesListSamples {
  */
 public final class AssetEndpointProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
-     * List_AssetEndpointProfiles_ResourceGroup.json
+     * x-ms-original-file: 2024-11-01/List_AssetEndpointProfiles_ResourceGroup.json
      */
     /**
      * Sample code: List_AssetEndpointProfiles_ResourceGroup.
@@ -186,9 +226,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdat
  */
 public final class AssetEndpointProfilesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Update_AssetEndpointProfile.
-     * json
+     * x-ms-original-file: 2024-11-01/Update_AssetEndpointProfile.json
      */
     /**
      * Sample code: Update_AssetEndpointProfile.
@@ -214,10 +252,13 @@ public final class AssetEndpointProfilesUpdateSamples {
 ```java
 import com.azure.resourcemanager.deviceregistry.models.AssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.DataPoint;
-import com.azure.resourcemanager.deviceregistry.models.DataPointsObservabilityMode;
+import com.azure.resourcemanager.deviceregistry.models.DataPointObservabilityMode;
+import com.azure.resourcemanager.deviceregistry.models.Dataset;
 import com.azure.resourcemanager.deviceregistry.models.Event;
-import com.azure.resourcemanager.deviceregistry.models.EventsObservabilityMode;
+import com.azure.resourcemanager.deviceregistry.models.EventObservabilityMode;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
+import com.azure.resourcemanager.deviceregistry.models.Topic;
+import com.azure.resourcemanager.deviceregistry.models.TopicRetainType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -227,8 +268,205 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
-     * Create_Asset_Without_DisplayName.json
+     * x-ms-original-file: 2024-11-01/Create_Asset_With_DiscoveredAssetRef.json
+     */
+    /**
+     * Sample code: Create_Asset_With_DiscoveredAssetRefs.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createAssetWithDiscoveredAssetRefs(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .define("my-asset")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(new AssetProperties().withEnabled(true)
+                .withExternalAssetId("8ZBA6LRHU0A458969")
+                .withDisplayName("AssetDisplayName")
+                .withDescription("This is a sample Asset")
+                .withAssetEndpointProfileRef("myAssetEndpointProfile")
+                .withManufacturer("Contoso")
+                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
+                .withModel("ContosoModel")
+                .withProductCode("fakeTokenPlaceholder")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("2.0")
+                .withDocumentationUri("https://www.example.com/manual")
+                .withSerialNumber("64-103816-519918-8")
+                .withDiscoveredAssetRefs(Arrays.asList("discoveredAsset1", "discoveredAsset2"))
+                .withDefaultDatasetsConfiguration(
+                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultTopic(new Topic().withPath("/path/defaultTopic").withRetain(TopicRetainType.KEEP))
+                .withDatasets(Arrays.asList(new Dataset().withName("dataset1")
+                    .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                    .withTopic(new Topic().withPath("/path/dataset1").withRetain(TopicRetainType.KEEP))
+                    .withDataPoints(Arrays.asList(
+                        new DataPoint().withName("dataPoint1")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                            .withObservabilityMode(DataPointObservabilityMode.COUNTER),
+                        new DataPoint().withName("dataPoint2")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")
+                            .withObservabilityMode(DataPointObservabilityMode.NONE)))))
+                .withEvents(
+                    Arrays
+                        .asList(
+                            new Event().withName("event1")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                                .withTopic(new Topic().withPath("/path/event1").withRetain(TopicRetainType.KEEP))
+                                .withObservabilityMode(EventObservabilityMode.NONE),
+                            new Event().withName("event2")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
+                                .withObservabilityMode(EventObservabilityMode.LOG))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Create_Asset_Without_ExternalAssetId.json
+     */
+    /**
+     * Sample code: Create_Asset_Without_ExternalAssetId.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createAssetWithoutExternalAssetId(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .define("my-asset")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(new AssetProperties().withEnabled(true)
+                .withDisplayName("AssetDisplayName")
+                .withDescription("This is a sample Asset")
+                .withAssetEndpointProfileRef("myAssetEndpointProfile")
+                .withManufacturer("Contoso")
+                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
+                .withModel("ContosoModel")
+                .withProductCode("fakeTokenPlaceholder")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("2.0")
+                .withDocumentationUri("https://www.example.com/manual")
+                .withSerialNumber("64-103816-519918-8")
+                .withDefaultDatasetsConfiguration(
+                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultTopic(new Topic().withPath("/path/defaultTopic").withRetain(TopicRetainType.KEEP))
+                .withDatasets(Arrays.asList(new Dataset().withName("dataset1")
+                    .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                    .withTopic(new Topic().withPath("/path/dataset1").withRetain(TopicRetainType.KEEP))
+                    .withDataPoints(Arrays.asList(
+                        new DataPoint().withName("dataPoint1")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                            .withObservabilityMode(DataPointObservabilityMode.COUNTER),
+                        new DataPoint().withName("dataPoint2")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")
+                            .withObservabilityMode(DataPointObservabilityMode.NONE)))))
+                .withEvents(
+                    Arrays
+                        .asList(
+                            new Event().withName("event1")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                                .withTopic(new Topic().withPath("/path/event1").withRetain(TopicRetainType.KEEP))
+                                .withObservabilityMode(EventObservabilityMode.NONE),
+                            new Event().withName("event2")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
+                                .withObservabilityMode(EventObservabilityMode.LOG))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Create_Asset_With_ExternalAssetId.json
+     */
+    /**
+     * Sample code: Create_Asset_With_ExternalAssetId.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        createAssetWithExternalAssetId(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .define("my-asset")
+            .withRegion("West Europe")
+            .withExistingResourceGroup("myResourceGroup")
+            .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
+                .withName(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
+            .withTags(mapOf("site", "building-1"))
+            .withProperties(new AssetProperties().withEnabled(true)
+                .withExternalAssetId("8ZBA6LRHU0A458969")
+                .withDisplayName("AssetDisplayName")
+                .withDescription("This is a sample Asset")
+                .withAssetEndpointProfileRef("myAssetEndpointProfile")
+                .withManufacturer("Contoso")
+                .withManufacturerUri("https://www.contoso.com/manufacturerUri")
+                .withModel("ContosoModel")
+                .withProductCode("fakeTokenPlaceholder")
+                .withHardwareRevision("1.0")
+                .withSoftwareRevision("2.0")
+                .withDocumentationUri("https://www.example.com/manual")
+                .withSerialNumber("64-103816-519918-8")
+                .withDefaultDatasetsConfiguration(
+                    "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                .withDefaultTopic(new Topic().withPath("/path/defaultTopic").withRetain(TopicRetainType.KEEP))
+                .withDatasets(Arrays.asList(new Dataset().withName("dataset1")
+                    .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                    .withTopic(new Topic().withPath("/path/dataset1").withRetain(TopicRetainType.KEEP))
+                    .withDataPoints(Arrays.asList(
+                        new DataPoint().withName("dataPoint1")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                            .withObservabilityMode(DataPointObservabilityMode.COUNTER),
+                        new DataPoint().withName("dataPoint2")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")
+                            .withObservabilityMode(DataPointObservabilityMode.NONE)))))
+                .withEvents(
+                    Arrays
+                        .asList(
+                            new Event().withName("event1")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                                .withTopic(new Topic().withPath("/path/event1").withRetain(TopicRetainType.KEEP))
+                                .withObservabilityMode(EventObservabilityMode.NONE),
+                            new Event().withName("event2")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
+                                .withObservabilityMode(EventObservabilityMode.LOG))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Create_Asset_Without_DisplayName.json
      */
     /**
      * Sample code: Create_Asset_Without_DisplayName.
@@ -245,11 +483,10 @@ public final class AssetsCreateOrReplaceSamples {
                 .withName(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
             .withTags(mapOf("site", "building-1"))
-            .withProperties(new AssetProperties().withAssetType("MyAssetType")
-                .withEnabled(true)
+            .withProperties(new AssetProperties().withEnabled(true)
                 .withExternalAssetId("8ZBA6LRHU0A458969")
                 .withDescription("This is a sample Asset")
-                .withAssetEndpointProfileUri("https://www.example.com/myAssetEndpointProfile")
+                .withAssetEndpointProfileRef("myAssetEndpointProfile")
                 .withManufacturer("Contoso")
                 .withManufacturerUri("https://www.contoso.com/manufacturerUri")
                 .withModel("ContosoModel")
@@ -258,29 +495,38 @@ public final class AssetsCreateOrReplaceSamples {
                 .withSoftwareRevision("2.0")
                 .withDocumentationUri("https://www.example.com/manual")
                 .withSerialNumber("64-103816-519918-8")
-                .withDefaultDataPointsConfiguration(
+                .withDefaultDatasetsConfiguration(
                     "{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
                 .withDefaultEventsConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
-                .withDataPoints(Arrays.asList(
-                    new DataPoint().withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
-                        .withCapabilityId("dtmi:com:example:Thermostat:__temperature;1")
-                        .withObservabilityMode(DataPointsObservabilityMode.COUNTER)
-                        .withDataPointConfiguration(
-                            "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-                    new DataPoint().withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
-                        .withCapabilityId("dtmi:com:example:Thermostat:__pressure;1")
-                        .withObservabilityMode(DataPointsObservabilityMode.NONE)
-                        .withDataPointConfiguration(
-                            "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")))
-                .withEvents(Arrays.asList(
-                    new Event().withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                        .withCapabilityId("dtmi:com:example:Thermostat:__temperature;1")
-                        .withObservabilityMode(EventsObservabilityMode.NONE)
-                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-                    new Event().withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                        .withCapabilityId("dtmi:com:example:Thermostat:__pressure;1")
-                        .withObservabilityMode(EventsObservabilityMode.LOG)
-                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"))))
+                .withDefaultTopic(new Topic().withPath("/path/defaultTopic").withRetain(TopicRetainType.KEEP))
+                .withDatasets(Arrays.asList(new Dataset().withName("dataset1")
+                    .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
+                    .withTopic(new Topic().withPath("/path/dataset1").withRetain(TopicRetainType.KEEP))
+                    .withDataPoints(Arrays.asList(
+                        new DataPoint().withName("dataPoint1")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt1")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                            .withObservabilityMode(DataPointObservabilityMode.COUNTER),
+                        new DataPoint().withName("dataPoint2")
+                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2")
+                            .withDataPointConfiguration(
+                                "{\"publishingInterval\":4,\"samplingInterval\":4,\"queueSize\":7}")
+                            .withObservabilityMode(DataPointObservabilityMode.NONE)))))
+                .withEvents(
+                    Arrays
+                        .asList(
+                            new Event().withName("event1")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                                .withTopic(new Topic().withPath("/path/event1").withRetain(TopicRetainType.KEEP))
+                                .withObservabilityMode(EventObservabilityMode.NONE),
+                            new Event().withName("event2")
+                                .withEventNotifier("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
+                                .withEventConfiguration(
+                                    "{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}")
+                                .withObservabilityMode(EventObservabilityMode.LOG))))
             .create();
     }
 
@@ -306,8 +552,7 @@ public final class AssetsCreateOrReplaceSamples {
  */
 public final class AssetsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Delete_Asset.json
+     * x-ms-original-file: 2024-11-01/Delete_Asset.json
      */
     /**
      * Sample code: Delete_Asset.
@@ -328,8 +573,20 @@ public final class AssetsDeleteSamples {
  */
 public final class AssetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_Asset.json
+     * x-ms-original-file: 2024-11-01/Get_Asset_With_SyncStatus.json
+     */
+    /**
+     * Sample code: Get_Asset_With_SyncStatus.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getAssetWithSyncStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets()
+            .getByResourceGroupWithResponse("myResourceGroup", "my-asset", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-11-01/Get_Asset.json
      */
     /**
      * Sample code: Get_Asset.
@@ -351,8 +608,7 @@ public final class AssetsGetByResourceGroupSamples {
  */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/List_Assets_Subscription.json
+     * x-ms-original-file: 2024-11-01/List_Assets_Subscription.json
      */
     /**
      * Sample code: List_Assets_Subscription.
@@ -373,8 +629,7 @@ public final class AssetsListSamples {
  */
 public final class AssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/List_Assets_ResourceGroup.json
+     * x-ms-original-file: 2024-11-01/List_Assets_ResourceGroup.json
      */
     /**
      * Sample code: List_Assets_ResourceGroup.
@@ -398,8 +653,7 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  */
 public final class AssetsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Update_Asset.json
+     * x-ms-original-file: 2024-11-01/Update_Asset.json
      */
     /**
      * Sample code: Update_Asset.
@@ -417,6 +671,49 @@ public final class AssetsUpdateSamples {
 }
 ```
 
+### BillingContainers_Get
+
+```java
+/**
+ * Samples for BillingContainers Get.
+ */
+public final class BillingContainersGetSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/Get_BillingContainer.json
+     */
+    /**
+     * Sample code: Get_BillingContainer.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void getBillingContainer(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.billingContainers().getWithResponse("my-billingContainer", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BillingContainers_List
+
+```java
+/**
+ * Samples for BillingContainers List.
+ */
+public final class BillingContainersListSamples {
+    /*
+     * x-ms-original-file: 2024-11-01/List_BillingContainers_Subscription.json
+     */
+    /**
+     * Sample code: List_BillingContainers_Subscription.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listBillingContainersSubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.billingContainers().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### OperationStatus_Get
 
 ```java
@@ -425,8 +722,7 @@ public final class AssetsUpdateSamples {
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_OperationStatus.json
+     * x-ms-original-file: 2024-11-01/Get_OperationStatus.json
      */
     /**
      * Sample code: Get_OperationStatus.
@@ -448,8 +744,7 @@ public final class OperationStatusGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/List_Operations.json
+     * x-ms-original-file: 2024-11-01/List_Operations.json
      */
     /**
      * Sample code: List_Operations.
