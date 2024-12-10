@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -274,12 +275,13 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            Map<String, Object> systemInfo = ClientSideRequestStatistics.fetchSystemInformation().toMap();
+            CosmosDiagnosticsSystemUsageSnapshot systemInfo = ClientSideRequestStatistics.fetchSystemInformation();
 
             writeHangMessage = MessageFormat.format(
                     "{0} health check failed due to non-responding write: [lastChannelWriteAttemptTime: {1}, " +
                             "lastChannelWriteTime: {2}, writeDelayInNanos: {3}, writeDelayLimitInNanos: {4}, " +
-                            "rntbdContext: {5}, pendingRequestCount: {6}, clientVmId: {7}]",
+                            "rntbdContext: {5}, pendingRequestCount: {6}, clientVmId: {7}, clientUsedMemory: {8}, " +
+                            "clientAvailableMemory: {9}, clientSystemCpuLoad: {10}, clientAvailableProcessors: {11}]",
                     channel,
                     timestamps.lastChannelWriteAttemptTime(),
                     timestamps.lastChannelWriteTime(),
@@ -287,7 +289,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                     this.writeDelayLimitInNanos,
                     rntbdContext,
                     pendingRequestCount,
-                    this.clientVmId);
+                    this.clientVmId,
+                    systemInfo.getUsedMemory(),
+                    systemInfo.getAvailableMemory(),
+                    systemInfo.getSystemCpuLoad(),
+                    systemInfo.getAvailableProcessors());
 
             logger.warn(writeHangMessage);
         }
@@ -310,9 +316,12 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
+            CosmosDiagnosticsSystemUsageSnapshot systemInfo = ClientSideRequestStatistics.fetchSystemInformation();
+
             readHangMessage = MessageFormat.format(
                     "{0} health check failed due to non-responding read: [lastChannelWrite: {1}, lastChannelRead: {2}, "
-                            + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}, clientVmId: {7}]",
+                            + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}, clientVmId: {7}"
+                            + "clientUsedMemory: {8}, clientAvailableMemory: {9}, clientSystemCpuLoad: {10}, clientAvailableProcessors: {11}]",
                     channel,
                     timestamps.lastChannelWriteTime(),
                     timestamps.lastChannelReadTime(),
@@ -320,7 +329,11 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
                     this.readDelayLimitInNanos,
                     rntbdContext,
                     pendingRequestCount,
-                    this.clientVmId);
+                    this.clientVmId,
+                    systemInfo.getUsedMemory(),
+                    systemInfo.getAvailableMemory(),
+                    systemInfo.getSystemCpuLoad(),
+                    systemInfo.getAvailableProcessors());
 
 
             logger.warn(readHangMessage);
