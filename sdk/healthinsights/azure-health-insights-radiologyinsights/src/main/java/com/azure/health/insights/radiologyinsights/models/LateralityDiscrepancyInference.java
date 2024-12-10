@@ -79,23 +79,6 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
         return this.discrepancyType;
     }
 
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -144,7 +127,7 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
             }
             LateralityDiscrepancyInference deserializedLateralityDiscrepancyInference
                 = new LateralityDiscrepancyInference(discrepancyType);
-            deserializedLateralityDiscrepancyInference.extension = extension;
+            deserializedLateralityDiscrepancyInference.setExtension(extension);
             deserializedLateralityDiscrepancyInference.kind = kind;
             deserializedLateralityDiscrepancyInference.lateralityIndication = lateralityIndication;
             return deserializedLateralityDiscrepancyInference;

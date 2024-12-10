@@ -66,14 +66,14 @@ public final class ByteArrayBuilder extends OutputStream {
             = (br == null) ? new byte[firstBlockSize] : br.allocByteBuffer(BufferRecycler.BYTE_WRITE_CONCAT_BUFFER);
     }
 
-    private ByteArrayBuilder(BufferRecycler br, byte[] initialBlock, int initialLen) {
+    private ByteArrayBuilder(byte[] initialBlock, int initialLen) {
         _bufferRecycler = null;
         _currBlock = initialBlock;
         _currBlockPtr = initialLen;
     }
 
     public static ByteArrayBuilder fromInitial(byte[] initialBlock, int length) {
-        return new ByteArrayBuilder(null, initialBlock, length);
+        return new ByteArrayBuilder(initialBlock, length);
     }
 
     public void reset() {

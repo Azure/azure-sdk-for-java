@@ -12,7 +12,6 @@
   <modules>
     <module>core</module>
     <module>core-json</module>
-    <module>http-jdk-httpclient</module>
     <module>http-okhttp3</module>
     <module>http-stress</module>
   </modules>

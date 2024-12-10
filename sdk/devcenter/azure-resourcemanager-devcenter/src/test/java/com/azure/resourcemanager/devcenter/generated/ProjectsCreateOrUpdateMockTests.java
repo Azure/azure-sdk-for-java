@@ -29,7 +29,7 @@ public final class ProjectsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"rkywuhpsvfuu\",\"devCenterId\":\"tlwexxwlalniexz\",\"description\":\"zpgepqty\",\"maxDevBoxesPerUser\":2090759507,\"displayName\":\"pgdakchzyvli\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"51d380ec-d3ae-4969-9578-d2835649c5c8\",\"tenantId\":\"4c0ef78b-f19f-4773-8519-fcfa6980cda3\",\"type\":\"None\",\"userAssignedIdentities\":{\"ysux\":{\"principalId\":\"9625a88c-2fc6-4bc0-b589-5c39b878ad6a\",\"clientId\":\"e3fef2e7-6095-429d-a0b9-963a061aaf46\"}}},\"location\":\"qrntv\",\"tags\":{\"pwcyyufmhr\":\"jpsttexoq\",\"wmqs\":\"nc\"},\"id\":\"kcdqzhlct\",\"name\":\"dunqnd\",\"type\":\"fpch\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"zddrt\",\"devCenterId\":\"doj\",\"description\":\"xv\",\"maxDevBoxesPerUser\":1550017967,\"displayName\":\"fdeesvecuijpxtx\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"ad24a459-f833-4808-95ef-a7bae481e1a0\",\"tenantId\":\"bda0ae48-b3ab-4bf0-8e72-1c8d7efe5078\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ibabxvititvtzeex\":{\"principalId\":\"724843d0-8cd8-4170-9d8d-de504f0d0aee\",\"clientId\":\"d18e14d7-e2f3-446f-934e-aca113d7f384\"},\"xtfglecdmdqb\":{\"principalId\":\"8e39238c-de95-4efd-ae6f-c8ff08b12a55\",\"clientId\":\"81ac274a-9702-41b6-9a2b-8a041d9fdaaa\"}}},\"location\":\"ypq\",\"tags\":{\"vodhtn\":\"fjacbslhhxudb\"},\"id\":\"irudh\",\"name\":\"m\",\"type\":\"es\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,30 +39,29 @@ public final class ProjectsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Project response = manager.projects()
-            .define("zonzlrpiqywnc")
-            .withRegion("zhmkdasvflyh")
-            .withExistingResourceGroup("gnl")
-            .withTags(mapOf("wjlvizbfhfov", "udchxgsrboldforo"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("erbdk", new UserAssignedIdentity(), "idizozsdbccxjmo", new UserAssignedIdentity(),
-                        "gnwncypuuwwlt", new UserAssignedIdentity(), "jctzenkei", new UserAssignedIdentity())))
-            .withDevCenterId("e")
-            .withDescription("dhgbjkvre")
-            .withMaxDevBoxesPerUser(418560266)
-            .withDisplayName("murvzm")
-            .withCatalogSettings(new ProjectCatalogSettings()
-                .withCatalogItemSyncTypes(Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION,
-                    CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION)))
+            .define("hcans")
+            .withRegion("bjjidjksyxky")
+            .withExistingResourceGroup("zyqdrfegcealzx")
+            .withTags(mapOf("nljlageuaulx", "evblbje", "svxeizzgwklnsr", "nsmjbnkppxynen"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("gfmo", new UserAssignedIdentity(), "hpqgatjeaahhvj",
+                        new UserAssignedIdentity(), "akz", new UserAssignedIdentity())))
+            .withDevCenterId("fajuwas")
+            .withDescription("daeyygux")
+            .withMaxDevBoxesPerUser(346438296)
+            .withDisplayName("qzhzbezkgimsi")
+            .withCatalogSettings(new ProjectCatalogSettings().withCatalogItemSyncTypes(
+                Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION)))
             .create();
 
-        Assertions.assertEquals("qrntv", response.location());
-        Assertions.assertEquals("jpsttexoq", response.tags().get("pwcyyufmhr"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("tlwexxwlalniexz", response.devCenterId());
-        Assertions.assertEquals("zpgepqty", response.description());
-        Assertions.assertEquals(2090759507, response.maxDevBoxesPerUser());
-        Assertions.assertEquals("pgdakchzyvli", response.displayName());
+        Assertions.assertEquals("ypq", response.location());
+        Assertions.assertEquals("fjacbslhhxudb", response.tags().get("vodhtn"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("doj", response.devCenterId());
+        Assertions.assertEquals("xv", response.description());
+        Assertions.assertEquals(1550017967, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("fdeesvecuijpxtx", response.displayName());
         Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
             response.catalogSettings().catalogItemSyncTypes().get(0));
     }

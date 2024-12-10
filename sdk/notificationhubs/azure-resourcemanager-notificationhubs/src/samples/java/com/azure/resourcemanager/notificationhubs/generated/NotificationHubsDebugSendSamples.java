@@ -20,7 +20,7 @@ public final class NotificationHubsDebugSendSamples {
      */
     public static void
         notificationHubsDebugSend(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().debugSendWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .debugSendWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }

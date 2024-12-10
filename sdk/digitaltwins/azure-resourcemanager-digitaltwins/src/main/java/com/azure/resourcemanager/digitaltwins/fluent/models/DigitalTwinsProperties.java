@@ -5,58 +5,61 @@
 package com.azure.resourcemanager.digitaltwins.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.digitaltwins.models.ProvisioningState;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a DigitalTwinsInstance. */
+/**
+ * The properties of a DigitalTwinsInstance.
+ */
 @Fluent
-public final class DigitalTwinsProperties {
+public final class DigitalTwinsProperties implements JsonSerializable<DigitalTwinsProperties> {
     /*
      * Time when DigitalTwinsInstance was created.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Time when DigitalTwinsInstance was updated.
      */
-    @JsonProperty(value = "lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTime;
 
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Api endpoint to work with DigitalTwinsInstance.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * The private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Public network access for the DigitalTwinsInstance.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
-    /** Creates an instance of DigitalTwinsProperties class. */
+    /**
+     * Creates an instance of DigitalTwinsProperties class.
+     */
     public DigitalTwinsProperties() {
     }
 
     /**
      * Get the createdTime property: Time when DigitalTwinsInstance was created.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -65,7 +68,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Get the lastUpdatedTime property: Time when DigitalTwinsInstance was updated.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -74,7 +77,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -83,7 +86,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Get the hostname property: Api endpoint to work with DigitalTwinsInstance.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -92,7 +95,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Get the privateEndpointConnections property: The private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -101,7 +104,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Set the privateEndpointConnections property: The private endpoint connections.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the DigitalTwinsProperties object itself.
      */
@@ -113,7 +116,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Get the publicNetworkAccess property: Public network access for the DigitalTwinsInstance.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -122,7 +125,7 @@ public final class DigitalTwinsProperties {
 
     /**
      * Set the publicNetworkAccess property: Public network access for the DigitalTwinsInstance.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DigitalTwinsProperties object itself.
      */
@@ -133,12 +136,67 @@ public final class DigitalTwinsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DigitalTwinsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DigitalTwinsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DigitalTwinsProperties.
+     */
+    public static DigitalTwinsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DigitalTwinsProperties deserializedDigitalTwinsProperties = new DigitalTwinsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedDigitalTwinsProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedDigitalTwinsProperties.lastUpdatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDigitalTwinsProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedDigitalTwinsProperties.hostname = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedDigitalTwinsProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedDigitalTwinsProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDigitalTwinsProperties;
+        });
     }
 }

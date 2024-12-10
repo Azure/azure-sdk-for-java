@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-eventgrid</artifactId>
-  <version>1.2.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventgrid;current} -->
+  <version>1.2.0-beta.8</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventgrid;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for EventGrid Management</name>
@@ -46,6 +46,7 @@
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <revapi.skip>true</revapi.skip>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -73,7 +74,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.44.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+      <version>2.45.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -85,7 +86,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.19.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.19.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

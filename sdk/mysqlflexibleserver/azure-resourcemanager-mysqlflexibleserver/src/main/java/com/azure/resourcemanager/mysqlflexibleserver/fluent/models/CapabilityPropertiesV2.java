@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerEditionCapabilityV2;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersionCapabilityV2;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Location capability.
  */
 @Immutable
-public final class CapabilityPropertiesV2 {
+public final class CapabilityPropertiesV2 implements JsonSerializable<CapabilityPropertiesV2> {
     /*
      * supported geo backup regions
      */
-    @JsonProperty(value = "supportedGeoBackupRegions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedGeoBackupRegions;
 
     /*
      * A list of supported flexible server editions.
      */
-    @JsonProperty(value = "supportedFlexibleServerEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerEditionCapabilityV2> supportedFlexibleServerEditions;
 
     /*
      * A list of supported server versions.
      */
-    @JsonProperty(value = "supportedServerVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerVersionCapabilityV2> supportedServerVersions;
 
     /**
@@ -78,5 +79,50 @@ public final class CapabilityPropertiesV2 {
         if (supportedServerVersions() != null) {
             supportedServerVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityPropertiesV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityPropertiesV2 if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilityPropertiesV2.
+     */
+    public static CapabilityPropertiesV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityPropertiesV2 deserializedCapabilityPropertiesV2 = new CapabilityPropertiesV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedGeoBackupRegions".equals(fieldName)) {
+                    List<String> supportedGeoBackupRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCapabilityPropertiesV2.supportedGeoBackupRegions = supportedGeoBackupRegions;
+                } else if ("supportedFlexibleServerEditions".equals(fieldName)) {
+                    List<ServerEditionCapabilityV2> supportedFlexibleServerEditions
+                        = reader.readArray(reader1 -> ServerEditionCapabilityV2.fromJson(reader1));
+                    deserializedCapabilityPropertiesV2.supportedFlexibleServerEditions
+                        = supportedFlexibleServerEditions;
+                } else if ("supportedServerVersions".equals(fieldName)) {
+                    List<ServerVersionCapabilityV2> supportedServerVersions
+                        = reader.readArray(reader1 -> ServerVersionCapabilityV2.fromJson(reader1));
+                    deserializedCapabilityPropertiesV2.supportedServerVersions = supportedServerVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityPropertiesV2;
+        });
     }
 }

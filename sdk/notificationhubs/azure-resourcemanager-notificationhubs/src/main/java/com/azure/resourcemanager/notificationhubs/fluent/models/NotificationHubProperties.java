@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
@@ -14,90 +18,77 @@ import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * NotificationHub properties.
  */
 @Fluent
-public final class NotificationHubProperties {
+public final class NotificationHubProperties implements JsonSerializable<NotificationHubProperties> {
     /*
      * Gets or sets the NotificationHub name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the RegistrationTtl of the created NotificationHub
      */
-    @JsonProperty(value = "registrationTtl")
     private String registrationTtl;
 
     /*
      * Gets or sets the AuthorizationRules of the created NotificationHub
      */
-    @JsonProperty(value = "authorizationRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedAccessAuthorizationRuleProperties> authorizationRules;
 
     /*
      * Description of a NotificationHub ApnsCredential.
      */
-    @JsonProperty(value = "apnsCredential")
     private ApnsCredential apnsCredential;
 
     /*
      * Description of a NotificationHub WnsCredential.
      */
-    @JsonProperty(value = "wnsCredential")
     private WnsCredential wnsCredential;
 
     /*
      * Description of a NotificationHub GcmCredential.
      */
-    @JsonProperty(value = "gcmCredential")
     private GcmCredential gcmCredential;
 
     /*
      * Description of a NotificationHub MpnsCredential.
      */
-    @JsonProperty(value = "mpnsCredential")
     private MpnsCredential mpnsCredential;
 
     /*
      * Description of a NotificationHub AdmCredential.
      */
-    @JsonProperty(value = "admCredential")
     private AdmCredential admCredential;
 
     /*
      * Description of a NotificationHub BaiduCredential.
      */
-    @JsonProperty(value = "baiduCredential")
     private BaiduCredential baiduCredential;
 
     /*
      * Description of a NotificationHub BrowserCredential.
      */
-    @JsonProperty(value = "browserCredential")
     private BrowserCredential browserCredential;
 
     /*
      * Description of a NotificationHub XiaomiCredential.
      */
-    @JsonProperty(value = "xiaomiCredential")
     private XiaomiCredential xiaomiCredential;
 
     /*
      * Description of a NotificationHub FcmV1Credential.
      */
-    @JsonProperty(value = "fcmV1Credential")
     private FcmV1Credential fcmV1Credential;
 
     /*
      * The dailyMaxActiveDevices property.
      */
-    @JsonProperty(value = "dailyMaxActiveDevices", access = JsonProperty.Access.WRITE_ONLY)
     private Long dailyMaxActiveDevices;
 
     /**
@@ -380,5 +371,78 @@ public final class NotificationHubProperties {
         if (fcmV1Credential() != null) {
             fcmV1Credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("registrationTtl", this.registrationTtl);
+        jsonWriter.writeJsonField("apnsCredential", this.apnsCredential);
+        jsonWriter.writeJsonField("wnsCredential", this.wnsCredential);
+        jsonWriter.writeJsonField("gcmCredential", this.gcmCredential);
+        jsonWriter.writeJsonField("mpnsCredential", this.mpnsCredential);
+        jsonWriter.writeJsonField("admCredential", this.admCredential);
+        jsonWriter.writeJsonField("baiduCredential", this.baiduCredential);
+        jsonWriter.writeJsonField("browserCredential", this.browserCredential);
+        jsonWriter.writeJsonField("xiaomiCredential", this.xiaomiCredential);
+        jsonWriter.writeJsonField("fcmV1Credential", this.fcmV1Credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationHubProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationHubProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotificationHubProperties.
+     */
+    public static NotificationHubProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationHubProperties deserializedNotificationHubProperties = new NotificationHubProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNotificationHubProperties.name = reader.getString();
+                } else if ("registrationTtl".equals(fieldName)) {
+                    deserializedNotificationHubProperties.registrationTtl = reader.getString();
+                } else if ("authorizationRules".equals(fieldName)) {
+                    List<SharedAccessAuthorizationRuleProperties> authorizationRules
+                        = reader.readArray(reader1 -> SharedAccessAuthorizationRuleProperties.fromJson(reader1));
+                    deserializedNotificationHubProperties.authorizationRules = authorizationRules;
+                } else if ("apnsCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.apnsCredential = ApnsCredential.fromJson(reader);
+                } else if ("wnsCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.wnsCredential = WnsCredential.fromJson(reader);
+                } else if ("gcmCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.gcmCredential = GcmCredential.fromJson(reader);
+                } else if ("mpnsCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.mpnsCredential = MpnsCredential.fromJson(reader);
+                } else if ("admCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.admCredential = AdmCredential.fromJson(reader);
+                } else if ("baiduCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.baiduCredential = BaiduCredential.fromJson(reader);
+                } else if ("browserCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.browserCredential = BrowserCredential.fromJson(reader);
+                } else if ("xiaomiCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.xiaomiCredential = XiaomiCredential.fromJson(reader);
+                } else if ("fcmV1Credential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.fcmV1Credential = FcmV1Credential.fromJson(reader);
+                } else if ("dailyMaxActiveDevices".equals(fieldName)) {
+                    deserializedNotificationHubProperties.dailyMaxActiveDevices
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationHubProperties;
+        });
     }
 }

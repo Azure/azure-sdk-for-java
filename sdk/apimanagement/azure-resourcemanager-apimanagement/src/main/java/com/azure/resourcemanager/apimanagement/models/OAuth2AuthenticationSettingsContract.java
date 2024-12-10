@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** API OAuth2 Authentication settings details. */
+/**
+ * API OAuth2 Authentication settings details.
+ */
 @Fluent
-public final class OAuth2AuthenticationSettingsContract {
+public final class OAuth2AuthenticationSettingsContract
+    implements JsonSerializable<OAuth2AuthenticationSettingsContract> {
     /*
      * OAuth authorization server identifier.
      */
-    @JsonProperty(value = "authorizationServerId")
     private String authorizationServerId;
 
     /*
      * operations scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
-    /** Creates an instance of OAuth2AuthenticationSettingsContract class. */
+    /**
+     * Creates an instance of OAuth2AuthenticationSettingsContract class.
+     */
     public OAuth2AuthenticationSettingsContract() {
     }
 
     /**
      * Get the authorizationServerId property: OAuth authorization server identifier.
-     *
+     * 
      * @return the authorizationServerId value.
      */
     public String authorizationServerId() {
@@ -37,7 +44,7 @@ public final class OAuth2AuthenticationSettingsContract {
 
     /**
      * Set the authorizationServerId property: OAuth authorization server identifier.
-     *
+     * 
      * @param authorizationServerId the authorizationServerId value to set.
      * @return the OAuth2AuthenticationSettingsContract object itself.
      */
@@ -48,7 +55,7 @@ public final class OAuth2AuthenticationSettingsContract {
 
     /**
      * Get the scope property: operations scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -57,7 +64,7 @@ public final class OAuth2AuthenticationSettingsContract {
 
     /**
      * Set the scope property: operations scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the OAuth2AuthenticationSettingsContract object itself.
      */
@@ -68,9 +75,49 @@ public final class OAuth2AuthenticationSettingsContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authorizationServerId", this.authorizationServerId);
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OAuth2AuthenticationSettingsContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OAuth2AuthenticationSettingsContract if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OAuth2AuthenticationSettingsContract.
+     */
+    public static OAuth2AuthenticationSettingsContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OAuth2AuthenticationSettingsContract deserializedOAuth2AuthenticationSettingsContract
+                = new OAuth2AuthenticationSettingsContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizationServerId".equals(fieldName)) {
+                    deserializedOAuth2AuthenticationSettingsContract.authorizationServerId = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedOAuth2AuthenticationSettingsContract.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOAuth2AuthenticationSettingsContract;
+        });
     }
 }

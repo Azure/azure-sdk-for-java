@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.TrackedResourceUpdate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -20,31 +23,26 @@ public class ScheduleUpdateProperties extends TrackedResourceUpdate {
     /*
      * Supported type this scheduled task represents.
      */
-    @JsonProperty(value = "type")
     private ScheduledType type;
 
     /*
      * The frequency of this scheduled task.
      */
-    @JsonProperty(value = "frequency")
     private ScheduledFrequency frequency;
 
     /*
      * The target time to trigger the action. The format is HH:MM.
      */
-    @JsonProperty(value = "time")
     private String time;
 
     /*
      * The IANA timezone id at which the schedule should execute.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Indicates whether or not this scheduled task is enabled.
      */
-    @JsonProperty(value = "state")
     private ScheduleEnableStatus state;
 
     /**
@@ -178,6 +176,60 @@ public class ScheduleUpdateProperties extends TrackedResourceUpdate {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("time", this.time);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleUpdateProperties.
+     */
+    public static ScheduleUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleUpdateProperties deserializedScheduleUpdateProperties = new ScheduleUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleUpdateProperties.withTags(tags);
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.withLocation(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.type = ScheduledType.fromString(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.frequency = ScheduledFrequency.fromString(reader.getString());
+                } else if ("time".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.time = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.timeZone = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.state = ScheduleEnableStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleUpdateProperties;
+        });
     }
 }

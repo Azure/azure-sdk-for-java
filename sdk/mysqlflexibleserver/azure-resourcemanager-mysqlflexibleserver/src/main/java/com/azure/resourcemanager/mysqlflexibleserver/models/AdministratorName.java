@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class AdministratorName extends ExpandableStringEnum<AdministratorN
      * @param name a name to look for.
      * @return the corresponding AdministratorName.
      */
-    @JsonCreator
     public static AdministratorName fromString(String name) {
         return fromString(name, AdministratorName.class);
     }

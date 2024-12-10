@@ -42,23 +42,6 @@ public final class AgeMismatchInference extends RadiologyInsightsInference {
         return this.kind;
     }
 
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -88,7 +71,7 @@ public final class AgeMismatchInference extends RadiologyInsightsInference {
                 reader.nextToken();
                 if ("extension".equals(fieldName)) {
                     List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
-                    deserializedAgeMismatchInference.extension = extension;
+                    deserializedAgeMismatchInference.setExtension(extension);
                 } else if ("kind".equals(fieldName)) {
                     deserializedAgeMismatchInference.kind
                         = RadiologyInsightsInferenceType.fromString(reader.getString());

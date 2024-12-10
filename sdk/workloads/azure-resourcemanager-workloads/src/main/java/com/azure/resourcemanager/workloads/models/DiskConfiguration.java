@@ -5,29 +5,34 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Disk Configuration Details. */
+/**
+ * The Disk Configuration Details.
+ */
 @Fluent
-public final class DiskConfiguration {
+public final class DiskConfiguration implements JsonSerializable<DiskConfiguration> {
     /*
-     * The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log',
-     * hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
+     * The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared',
+     * 'usr/sap', 'os'], Optional volume : ['backup'].
      */
-    @JsonProperty(value = "diskVolumeConfigurations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DiskVolumeConfiguration> diskVolumeConfigurations;
 
-    /** Creates an instance of DiskConfiguration class. */
+    /**
+     * Creates an instance of DiskConfiguration class.
+     */
     public DiskConfiguration() {
     }
 
     /**
      * Get the diskVolumeConfigurations property: The disk configuration for the db volume. For HANA, Required volumes
      * are: ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
-     *
+     * 
      * @return the diskVolumeConfigurations value.
      */
     public Map<String, DiskVolumeConfiguration> diskVolumeConfigurations() {
@@ -37,7 +42,7 @@ public final class DiskConfiguration {
     /**
      * Set the diskVolumeConfigurations property: The disk configuration for the db volume. For HANA, Required volumes
      * are: ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
-     *
+     * 
      * @param diskVolumeConfigurations the diskVolumeConfigurations value to set.
      * @return the DiskConfiguration object itself.
      */
@@ -49,7 +54,7 @@ public final class DiskConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -60,5 +65,44 @@ public final class DiskConfiguration {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("diskVolumeConfigurations", this.diskVolumeConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskConfiguration.
+     */
+    public static DiskConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskConfiguration deserializedDiskConfiguration = new DiskConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskVolumeConfigurations".equals(fieldName)) {
+                    Map<String, DiskVolumeConfiguration> diskVolumeConfigurations
+                        = reader.readMap(reader1 -> DiskVolumeConfiguration.fromJson(reader1));
+                    deserializedDiskConfiguration.diskVolumeConfigurations = diskVolumeConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskConfiguration;
+        });
     }
 }

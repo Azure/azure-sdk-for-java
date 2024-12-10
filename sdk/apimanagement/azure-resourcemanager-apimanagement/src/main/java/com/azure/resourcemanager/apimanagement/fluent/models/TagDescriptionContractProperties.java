@@ -5,30 +5,35 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** TagDescription contract Properties. */
+/**
+ * TagDescription contract Properties.
+ */
 @Fluent
 public final class TagDescriptionContractProperties extends TagDescriptionBaseProperties {
     /*
      * Identifier of the tag in the form of /tags/{tagId}
      */
-    @JsonProperty(value = "tagId")
     private String tagId;
 
     /*
      * Tag name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of TagDescriptionContractProperties class. */
+    /**
+     * Creates an instance of TagDescriptionContractProperties class.
+     */
     public TagDescriptionContractProperties() {
     }
 
     /**
      * Get the tagId property: Identifier of the tag in the form of /tags/{tagId}.
-     *
+     * 
      * @return the tagId value.
      */
     public String tagId() {
@@ -37,7 +42,7 @@ public final class TagDescriptionContractProperties extends TagDescriptionBasePr
 
     /**
      * Set the tagId property: Identifier of the tag in the form of /tags/{tagId}.
-     *
+     * 
      * @param tagId the tagId value to set.
      * @return the TagDescriptionContractProperties object itself.
      */
@@ -48,7 +53,7 @@ public final class TagDescriptionContractProperties extends TagDescriptionBasePr
 
     /**
      * Get the displayName property: Tag name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -57,7 +62,7 @@ public final class TagDescriptionContractProperties extends TagDescriptionBasePr
 
     /**
      * Set the displayName property: Tag name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the TagDescriptionContractProperties object itself.
      */
@@ -66,21 +71,27 @@ public final class TagDescriptionContractProperties extends TagDescriptionBasePr
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TagDescriptionContractProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TagDescriptionContractProperties withExternalDocsUrl(String externalDocsUrl) {
         super.withExternalDocsUrl(externalDocsUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TagDescriptionContractProperties withExternalDocsDescription(String externalDocsDescription) {
         super.withExternalDocsDescription(externalDocsDescription);
@@ -89,11 +100,59 @@ public final class TagDescriptionContractProperties extends TagDescriptionBasePr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("externalDocsUrl", externalDocsUrl());
+        jsonWriter.writeStringField("externalDocsDescription", externalDocsDescription());
+        jsonWriter.writeStringField("tagId", this.tagId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagDescriptionContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagDescriptionContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagDescriptionContractProperties.
+     */
+    public static TagDescriptionContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagDescriptionContractProperties deserializedTagDescriptionContractProperties
+                = new TagDescriptionContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedTagDescriptionContractProperties.withDescription(reader.getString());
+                } else if ("externalDocsUrl".equals(fieldName)) {
+                    deserializedTagDescriptionContractProperties.withExternalDocsUrl(reader.getString());
+                } else if ("externalDocsDescription".equals(fieldName)) {
+                    deserializedTagDescriptionContractProperties.withExternalDocsDescription(reader.getString());
+                } else if ("tagId".equals(fieldName)) {
+                    deserializedTagDescriptionContractProperties.tagId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedTagDescriptionContractProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagDescriptionContractProperties;
+        });
     }
 }

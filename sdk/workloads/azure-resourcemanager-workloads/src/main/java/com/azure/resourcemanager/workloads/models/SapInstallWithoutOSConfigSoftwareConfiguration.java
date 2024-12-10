@@ -6,46 +6,61 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SAP Software configuration Input when the software is to be installed by service without OS Configurations. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "softwareInstallationType")
-@JsonTypeName("SAPInstallWithoutOSConfig")
+/**
+ * The SAP Software configuration Input when the software is to be installed by service without OS Configurations.
+ */
 @Fluent
 public final class SapInstallWithoutOSConfigSoftwareConfiguration extends SoftwareConfiguration {
     /*
+     * The SAP software installation Type.
+     */
+    private SapSoftwareInstallationType softwareInstallationType
+        = SapSoftwareInstallationType.SAPINSTALL_WITHOUT_OSCONFIG;
+
+    /*
      * The URL to the SAP Build of Materials(BOM) file.
      */
-    @JsonProperty(value = "bomUrl", required = true)
     private String bomUrl;
 
     /*
      * The SAP bits storage account id.
      */
-    @JsonProperty(value = "sapBitsStorageAccountId", required = true)
     private String sapBitsStorageAccountId;
 
     /*
      * The software version to install.
      */
-    @JsonProperty(value = "softwareVersion", required = true)
     private String softwareVersion;
 
     /*
      * Gets or sets the HA software configuration.
      */
-    @JsonProperty(value = "highAvailabilitySoftwareConfiguration")
     private HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration;
 
-    /** Creates an instance of SapInstallWithoutOSConfigSoftwareConfiguration class. */
+    /**
+     * Creates an instance of SapInstallWithoutOSConfigSoftwareConfiguration class.
+     */
     public SapInstallWithoutOSConfigSoftwareConfiguration() {
     }
 
     /**
+     * Get the softwareInstallationType property: The SAP software installation Type.
+     * 
+     * @return the softwareInstallationType value.
+     */
+    @Override
+    public SapSoftwareInstallationType softwareInstallationType() {
+        return this.softwareInstallationType;
+    }
+
+    /**
      * Get the bomUrl property: The URL to the SAP Build of Materials(BOM) file.
-     *
+     * 
      * @return the bomUrl value.
      */
     public String bomUrl() {
@@ -54,7 +69,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Set the bomUrl property: The URL to the SAP Build of Materials(BOM) file.
-     *
+     * 
      * @param bomUrl the bomUrl value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
@@ -65,7 +80,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Get the sapBitsStorageAccountId property: The SAP bits storage account id.
-     *
+     * 
      * @return the sapBitsStorageAccountId value.
      */
     public String sapBitsStorageAccountId() {
@@ -74,7 +89,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Set the sapBitsStorageAccountId property: The SAP bits storage account id.
-     *
+     * 
      * @param sapBitsStorageAccountId the sapBitsStorageAccountId value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
@@ -85,7 +100,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Get the softwareVersion property: The software version to install.
-     *
+     * 
      * @return the softwareVersion value.
      */
     public String softwareVersion() {
@@ -94,7 +109,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Set the softwareVersion property: The software version to install.
-     *
+     * 
      * @param softwareVersion the softwareVersion value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
@@ -105,7 +120,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Get the highAvailabilitySoftwareConfiguration property: Gets or sets the HA software configuration.
-     *
+     * 
      * @return the highAvailabilitySoftwareConfiguration value.
      */
     public HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration() {
@@ -114,7 +129,7 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Set the highAvailabilitySoftwareConfiguration property: Gets or sets the HA software configuration.
-     *
+     * 
      * @param highAvailabilitySoftwareConfiguration the highAvailabilitySoftwareConfiguration value to set.
      * @return the SapInstallWithoutOSConfigSoftwareConfiguration object itself.
      */
@@ -126,25 +141,25 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (bomUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property bomUrl in model SapInstallWithoutOSConfigSoftwareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property bomUrl in model SapInstallWithoutOSConfigSoftwareConfiguration"));
         }
         if (sapBitsStorageAccountId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sapBitsStorageAccountId in model"
-                    + " SapInstallWithoutOSConfigSoftwareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sapBitsStorageAccountId in model SapInstallWithoutOSConfigSoftwareConfiguration"));
         }
         if (softwareVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property softwareVersion in model"
-                    + " SapInstallWithoutOSConfigSoftwareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property softwareVersion in model SapInstallWithoutOSConfigSoftwareConfiguration"));
         }
         if (highAvailabilitySoftwareConfiguration() != null) {
             highAvailabilitySoftwareConfiguration().validate();
@@ -152,4 +167,58 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapInstallWithoutOSConfigSoftwareConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("bomUrl", this.bomUrl);
+        jsonWriter.writeStringField("sapBitsStorageAccountId", this.sapBitsStorageAccountId);
+        jsonWriter.writeStringField("softwareVersion", this.softwareVersion);
+        jsonWriter.writeStringField("softwareInstallationType",
+            this.softwareInstallationType == null ? null : this.softwareInstallationType.toString());
+        jsonWriter.writeJsonField("highAvailabilitySoftwareConfiguration", this.highAvailabilitySoftwareConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapInstallWithoutOSConfigSoftwareConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapInstallWithoutOSConfigSoftwareConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapInstallWithoutOSConfigSoftwareConfiguration.
+     */
+    public static SapInstallWithoutOSConfigSoftwareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapInstallWithoutOSConfigSoftwareConfiguration deserializedSapInstallWithoutOSConfigSoftwareConfiguration
+                = new SapInstallWithoutOSConfigSoftwareConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bomUrl".equals(fieldName)) {
+                    deserializedSapInstallWithoutOSConfigSoftwareConfiguration.bomUrl = reader.getString();
+                } else if ("sapBitsStorageAccountId".equals(fieldName)) {
+                    deserializedSapInstallWithoutOSConfigSoftwareConfiguration.sapBitsStorageAccountId
+                        = reader.getString();
+                } else if ("softwareVersion".equals(fieldName)) {
+                    deserializedSapInstallWithoutOSConfigSoftwareConfiguration.softwareVersion = reader.getString();
+                } else if ("softwareInstallationType".equals(fieldName)) {
+                    deserializedSapInstallWithoutOSConfigSoftwareConfiguration.softwareInstallationType
+                        = SapSoftwareInstallationType.fromString(reader.getString());
+                } else if ("highAvailabilitySoftwareConfiguration".equals(fieldName)) {
+                    deserializedSapInstallWithoutOSConfigSoftwareConfiguration.highAvailabilitySoftwareConfiguration
+                        = HighAvailabilitySoftwareConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapInstallWithoutOSConfigSoftwareConfiguration;
+        });
+    }
 }

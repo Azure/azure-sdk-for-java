@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
@@ -13,65 +17,56 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties that can be updated for a server.
  */
 @Fluent
-public final class ServerPropertiesForUpdate {
+public final class ServerPropertiesForUpdate implements JsonSerializable<ServerPropertiesForUpdate> {
     /*
      * The password of the administrator login.
      */
-    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
      * Server version.
      */
-    @JsonProperty(value = "version")
     private ServerVersion version;
 
     /*
      * Storage related properties of a server.
      */
-    @JsonProperty(value = "storage")
     private Storage storage;
 
     /*
      * Backup related properties of a server.
      */
-    @JsonProperty(value = "backup")
     private Backup backup;
 
     /*
      * High availability related properties of a server.
      */
-    @JsonProperty(value = "highAvailability")
     private HighAvailability highAvailability;
 
     /*
      * Maintenance window of a server.
      */
-    @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
 
     /*
      * The replication role of the server.
      */
-    @JsonProperty(value = "replicationRole")
     private ReplicationRole replicationRole;
 
     /*
      * The Data Encryption for CMK.
      */
-    @JsonProperty(value = "dataEncryption")
     private DataEncryption dataEncryption;
 
     /*
      * Network related properties of a server
      */
-    @JsonProperty(value = "network")
     private Network network;
 
     /**
@@ -284,5 +279,67 @@ public final class ServerPropertiesForUpdate {
         if (network() != null) {
             network().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
+        jsonWriter.writeJsonField("storage", this.storage);
+        jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("highAvailability", this.highAvailability);
+        jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
+        jsonWriter.writeStringField("replicationRole",
+            this.replicationRole == null ? null : this.replicationRole.toString());
+        jsonWriter.writeJsonField("dataEncryption", this.dataEncryption);
+        jsonWriter.writeJsonField("network", this.network);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerPropertiesForUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerPropertiesForUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerPropertiesForUpdate.
+     */
+    public static ServerPropertiesForUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerPropertiesForUpdate deserializedServerPropertiesForUpdate = new ServerPropertiesForUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.administratorLoginPassword = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.version = ServerVersion.fromString(reader.getString());
+                } else if ("storage".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.storage = Storage.fromJson(reader);
+                } else if ("backup".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.backup = Backup.fromJson(reader);
+                } else if ("highAvailability".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.highAvailability = HighAvailability.fromJson(reader);
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.maintenanceWindow = MaintenanceWindow.fromJson(reader);
+                } else if ("replicationRole".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.replicationRole
+                        = ReplicationRole.fromString(reader.getString());
+                } else if ("dataEncryption".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.dataEncryption = DataEncryption.fromJson(reader);
+                } else if ("network".equals(fieldName)) {
+                    deserializedServerPropertiesForUpdate.network = Network.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerPropertiesForUpdate;
+        });
     }
 }

@@ -5,81 +5,74 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsConfigPendingRestart;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsDynamicConfig;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of a configuration.
  */
 @Fluent
-public final class ConfigurationProperties {
+public final class ConfigurationProperties implements JsonSerializable<ConfigurationProperties> {
     /*
      * Value of the configuration.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Current value of the configuration.
      */
-    @JsonProperty(value = "currentValue")
     private String currentValue;
 
     /*
      * Description of the configuration.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The link used to get the document from community or Azure site.
      */
-    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
     /*
      * Default value of the configuration.
      */
-    @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
 
     /*
      * Data type of the configuration.
      */
-    @JsonProperty(value = "dataType", access = JsonProperty.Access.WRITE_ONLY)
     private String dataType;
 
     /*
      * Allowed values of the configuration.
      */
-    @JsonProperty(value = "allowedValues", access = JsonProperty.Access.WRITE_ONLY)
     private String allowedValues;
 
     /*
      * Source of the configuration.
      */
-    @JsonProperty(value = "source")
     private ConfigurationSource source;
 
     /*
      * If is the configuration read only.
      */
-    @JsonProperty(value = "isReadOnly", access = JsonProperty.Access.WRITE_ONLY)
     private IsReadOnly isReadOnly;
 
     /*
      * If is the configuration pending restart or not.
      */
-    @JsonProperty(value = "isConfigPendingRestart", access = JsonProperty.Access.WRITE_ONLY)
     private IsConfigPendingRestart isConfigPendingRestart;
 
     /*
      * If is the configuration dynamic.
      */
-    @JsonProperty(value = "isDynamicConfig", access = JsonProperty.Access.WRITE_ONLY)
     private IsDynamicConfig isDynamicConfig;
 
     /**
@@ -226,5 +219,65 @@ public final class ConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("currentValue", this.currentValue);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationProperties.
+     */
+    public static ConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationProperties deserializedConfigurationProperties = new ConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedConfigurationProperties.value = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedConfigurationProperties.currentValue = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedConfigurationProperties.description = reader.getString();
+                } else if ("documentationLink".equals(fieldName)) {
+                    deserializedConfigurationProperties.documentationLink = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedConfigurationProperties.defaultValue = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedConfigurationProperties.dataType = reader.getString();
+                } else if ("allowedValues".equals(fieldName)) {
+                    deserializedConfigurationProperties.allowedValues = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedConfigurationProperties.source = ConfigurationSource.fromString(reader.getString());
+                } else if ("isReadOnly".equals(fieldName)) {
+                    deserializedConfigurationProperties.isReadOnly = IsReadOnly.fromString(reader.getString());
+                } else if ("isConfigPendingRestart".equals(fieldName)) {
+                    deserializedConfigurationProperties.isConfigPendingRestart
+                        = IsConfigPendingRestart.fromString(reader.getString());
+                } else if ("isDynamicConfig".equals(fieldName)) {
+                    deserializedConfigurationProperties.isDynamicConfig
+                        = IsDynamicConfig.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationProperties;
+        });
     }
 }

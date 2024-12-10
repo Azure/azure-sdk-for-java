@@ -8,14 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner;
-import com.azure.resourcemanager.quantum.models.Provider;
-import com.azure.resourcemanager.quantum.models.ProvisioningStatus;
 import com.azure.resourcemanager.quantum.models.QuantumWorkspace;
 import com.azure.resourcemanager.quantum.models.QuantumWorkspaceIdentity;
 import com.azure.resourcemanager.quantum.models.TagsObject;
-import com.azure.resourcemanager.quantum.models.UsableStatus;
+import com.azure.resourcemanager.quantum.models.WorkspaceResourceProperties;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class QuantumWorkspaceImpl
@@ -49,41 +46,16 @@ public final class QuantumWorkspaceImpl
         }
     }
 
+    public WorkspaceResourceProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public QuantumWorkspaceIdentity identity() {
         return this.innerModel().identity();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public List<Provider> providers() {
-        List<Provider> inner = this.innerModel().providers();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public UsableStatus usable() {
-        return this.innerModel().usable();
-    }
-
-    public ProvisioningStatus provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String storageAccount() {
-        return this.innerModel().storageAccount();
-    }
-
-    public String endpointUri() {
-        return this.innerModel().endpointUri();
-    }
-
-    public Boolean apiKeyEnabled() {
-        return this.innerModel().apiKeyEnabled();
     }
 
     public Region region() {
@@ -202,23 +174,13 @@ public final class QuantumWorkspaceImpl
         }
     }
 
+    public QuantumWorkspaceImpl withProperties(WorkspaceResourceProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
     public QuantumWorkspaceImpl withIdentity(QuantumWorkspaceIdentity identity) {
         this.innerModel().withIdentity(identity);
-        return this;
-    }
-
-    public QuantumWorkspaceImpl withProviders(List<Provider> providers) {
-        this.innerModel().withProviders(providers);
-        return this;
-    }
-
-    public QuantumWorkspaceImpl withStorageAccount(String storageAccount) {
-        this.innerModel().withStorageAccount(storageAccount);
-        return this;
-    }
-
-    public QuantumWorkspaceImpl withApiKeyEnabled(Boolean apiKeyEnabled) {
-        this.innerModel().withApiKeyEnabled(apiKeyEnabled);
         return this;
     }
 

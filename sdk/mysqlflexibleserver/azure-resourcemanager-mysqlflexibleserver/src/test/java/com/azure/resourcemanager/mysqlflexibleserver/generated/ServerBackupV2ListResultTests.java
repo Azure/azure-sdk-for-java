@@ -16,36 +16,32 @@ public final class ServerBackupV2ListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerBackupV2ListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupNameV2\":\"ciqihnhung\",\"backupType\":\"FULL\",\"completedTime\":\"2021-01-11T23:09:53Z\",\"source\":\"fygxgispemvtzfk\",\"provisioningState\":\"Creating\"},\"id\":\"ljofxqeofjaeqjh\",\"name\":\"jbasvmsmjqulngs\",\"type\":\"tnb\"},{\"properties\":{\"backupNameV2\":\"zgcwrw\",\"backupType\":\"FULL\",\"completedTime\":\"2021-06-21T13:48:53Z\",\"source\":\"ljdousk\",\"provisioningState\":\"Deleting\"},\"id\":\"ocrcjdk\",\"name\":\"tnhxbn\",\"type\":\"biksq\"},{\"properties\":{\"backupNameV2\":\"ssainqpjwnzll\",\"backupType\":\"FULL\",\"completedTime\":\"2021-07-25T07:38:35Z\",\"source\":\"ebvmgxsabkyqd\",\"provisioningState\":\"Deleting\"},\"id\":\"tcj\",\"name\":\"zdzevndh\",\"type\":\"rwpdappdsbdkvwrw\"}],\"nextLink\":\"eusnhutj\"}")
+            "{\"value\":[{\"properties\":{\"backupNameV2\":\"nmayhuybb\",\"backupType\":\"FULL\",\"completedTime\":\"2021-04-30T05:44:17Z\",\"source\":\"ooginuvamih\",\"provisioningState\":\"Creating\"},\"id\":\"arxzxtheot\",\"name\":\"si\",\"type\":\"yevc\"},{\"properties\":{\"backupNameV2\":\"ihnhun\",\"backupType\":\"FULL\",\"completedTime\":\"2021-09-21T17:58:39Z\",\"source\":\"nfygxgispemvtz\",\"provisioningState\":\"Canceled\"},\"id\":\"ubljofxqe\",\"name\":\"fjaeq\",\"type\":\"hqjbasvmsmj\"}],\"nextLink\":\"lngsntnbybkzgcwr\"}")
             .toObject(ServerBackupV2ListResult.class);
-        Assertions.assertEquals("ciqihnhung", model.value().get(0).backupNameV2());
+        Assertions.assertEquals("nmayhuybb", model.value().get(0).backupNameV2());
         Assertions.assertEquals(BackupType.FULL, model.value().get(0).backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T23:09:53Z"), model.value().get(0).completedTime());
-        Assertions.assertEquals("fygxgispemvtzfk", model.value().get(0).source());
-        Assertions.assertEquals("eusnhutj", model.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T05:44:17Z"), model.value().get(0).completedTime());
+        Assertions.assertEquals("ooginuvamih", model.value().get(0).source());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerBackupV2ListResult model = new ServerBackupV2ListResult().withValue(Arrays.asList(
-            new ServerBackupV2Inner().withBackupNameV2("ciqihnhung")
+            new ServerBackupV2Inner().withBackupNameV2("nmayhuybb")
                 .withBackupType(BackupType.FULL)
-                .withCompletedTime(OffsetDateTime.parse("2021-01-11T23:09:53Z"))
-                .withSource("fygxgispemvtzfk"),
-            new ServerBackupV2Inner().withBackupNameV2("zgcwrw")
+                .withCompletedTime(OffsetDateTime.parse("2021-04-30T05:44:17Z"))
+                .withSource("ooginuvamih"),
+            new ServerBackupV2Inner().withBackupNameV2("ihnhun")
                 .withBackupType(BackupType.FULL)
-                .withCompletedTime(OffsetDateTime.parse("2021-06-21T13:48:53Z"))
-                .withSource("ljdousk"),
-            new ServerBackupV2Inner().withBackupNameV2("ssainqpjwnzll")
-                .withBackupType(BackupType.FULL)
-                .withCompletedTime(OffsetDateTime.parse("2021-07-25T07:38:35Z"))
-                .withSource("ebvmgxsabkyqd")))
-            .withNextLink("eusnhutj");
+                .withCompletedTime(OffsetDateTime.parse("2021-09-21T17:58:39Z"))
+                .withSource("nfygxgispemvtz")))
+            .withNextLink("lngsntnbybkzgcwr");
         model = BinaryData.fromObject(model).toObject(ServerBackupV2ListResult.class);
-        Assertions.assertEquals("ciqihnhung", model.value().get(0).backupNameV2());
+        Assertions.assertEquals("nmayhuybb", model.value().get(0).backupNameV2());
         Assertions.assertEquals(BackupType.FULL, model.value().get(0).backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T23:09:53Z"), model.value().get(0).completedTime());
-        Assertions.assertEquals("fygxgispemvtzfk", model.value().get(0).source());
-        Assertions.assertEquals("eusnhutj", model.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T05:44:17Z"), model.value().get(0).completedTime());
+        Assertions.assertEquals("ooginuvamih", model.value().get(0).source());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.nextLink());
     }
 }

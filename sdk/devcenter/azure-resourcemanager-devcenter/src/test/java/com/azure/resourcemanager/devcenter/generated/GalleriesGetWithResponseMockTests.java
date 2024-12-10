@@ -21,7 +21,7 @@ public final class GalleriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"galleryResourceId\":\"whvhczznvfb\"},\"id\":\"jsxjwwix\",\"name\":\"vumwmxqh\",\"type\":\"dvnoamldsehaohdj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"xtbjwgnyfusfzsv\"},\"id\":\"ikzhajqglcfhmlrq\",\"name\":\"yxynq\",\"type\":\"zrdpsovwxznptgoe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,9 @@ public final class GalleriesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Gallery response = manager.galleries()
-            .getWithResponse("ze", "rqbsmswziq", "fuhok", com.azure.core.util.Context.NONE)
-            .getValue();
+        Gallery response
+            = manager.galleries().getWithResponse("waz", "nqnm", "jng", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("whvhczznvfb", response.galleryResourceId());
+        Assertions.assertEquals("xtbjwgnyfusfzsv", response.galleryResourceId());
     }
 }

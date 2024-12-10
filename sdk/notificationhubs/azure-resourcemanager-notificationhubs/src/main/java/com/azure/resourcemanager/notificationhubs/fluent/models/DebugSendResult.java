@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.RegistrationResult;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of DebugSend operations.
  */
 @Immutable
-public final class DebugSendResult {
+public final class DebugSendResult implements JsonSerializable<DebugSendResult> {
     /*
      * Gets or sets successful send
      */
-    @JsonProperty(value = "success", access = JsonProperty.Access.WRITE_ONLY)
     private Long success;
 
     /*
      * Gets or sets send failure
      */
-    @JsonProperty(value = "failure", access = JsonProperty.Access.WRITE_ONLY)
     private Long failure;
 
     /*
      * Gets or sets actual failure description
      */
-    @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
     private List<RegistrationResult> results;
 
     /**
@@ -74,5 +75,46 @@ public final class DebugSendResult {
         if (results() != null) {
             results().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DebugSendResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DebugSendResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DebugSendResult.
+     */
+    public static DebugSendResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DebugSendResult deserializedDebugSendResult = new DebugSendResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("success".equals(fieldName)) {
+                    deserializedDebugSendResult.success = reader.getNullable(JsonReader::getLong);
+                } else if ("failure".equals(fieldName)) {
+                    deserializedDebugSendResult.failure = reader.getNullable(JsonReader::getLong);
+                } else if ("results".equals(fieldName)) {
+                    List<RegistrationResult> results
+                        = reader.readArray(reader1 -> RegistrationResult.fromJson(reader1));
+                    deserializedDebugSendResult.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDebugSendResult;
+        });
     }
 }

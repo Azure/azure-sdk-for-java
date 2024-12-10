@@ -11,7 +11,9 @@ import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBac
  */
 public final class LedgerBackupSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ConfidentialLedger_Backup.json
+     * x-ms-original-file:
+     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/
+     * examples/ConfidentialLedger_Backup.json
      */
     /**
      * Sample code: ConfidentialLedgerBackup.

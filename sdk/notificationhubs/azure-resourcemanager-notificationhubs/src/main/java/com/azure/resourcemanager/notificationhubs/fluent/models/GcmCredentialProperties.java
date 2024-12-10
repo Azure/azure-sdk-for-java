@@ -6,23 +6,25 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub GcmCredential.
  */
 @Fluent
-public final class GcmCredentialProperties {
+public final class GcmCredentialProperties implements JsonSerializable<GcmCredentialProperties> {
     /*
      * Gets or sets the GCM endpoint.
      */
-    @JsonProperty(value = "gcmEndpoint")
     private String gcmEndpoint;
 
     /*
      * Gets or sets the Google API key.
      */
-    @JsonProperty(value = "googleApiKey")
     private String googleApiKey;
 
     /**
@@ -78,10 +80,51 @@ public final class GcmCredentialProperties {
      */
     public void validate() {
         if (googleApiKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property googleApiKey in model GcmCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property googleApiKey in model GcmCredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GcmCredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("googleApiKey", this.googleApiKey);
+        jsonWriter.writeStringField("gcmEndpoint", this.gcmEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcmCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcmCredentialProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GcmCredentialProperties.
+     */
+    public static GcmCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcmCredentialProperties deserializedGcmCredentialProperties = new GcmCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("googleApiKey".equals(fieldName)) {
+                    deserializedGcmCredentialProperties.googleApiKey = reader.getString();
+                } else if ("gcmEndpoint".equals(fieldName)) {
+                    deserializedGcmCredentialProperties.gcmEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcmCredentialProperties;
+        });
+    }
 }

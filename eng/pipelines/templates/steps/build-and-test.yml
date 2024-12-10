@@ -41,6 +41,9 @@ parameters:
   - name: ServiceConnection
     type: string
     default: ''
+  - name: PreTestRunSteps
+    type: object
+    default: [ ]
 
 steps:
   - task: Maven@4
@@ -82,6 +85,8 @@ steps:
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
+
+  - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     # Remove preceeding "1." in the version specified by $(JavaTestVersion)
@@ -175,6 +180,8 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:

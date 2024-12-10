@@ -18,16 +18,6 @@ import io.clientcore.core.json.implementation.jackson.core.util.RequestPayload;
 public class JsonParseException extends StreamReadException {
     private static final long serialVersionUID = 2L; // 2.7
 
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc) {
-        super(msg, loc, null);
-    }
-
-    @Deprecated // since 2.7
-    public JsonParseException(String msg, JsonLocation loc, Throwable root) {
-        super(msg, loc, root);
-    }
-
     /**
      * Constructor that uses current parsing location as location, and
      * sets processor (accessible via {@link #getProcessor()}) to
@@ -47,16 +37,6 @@ public class JsonParseException extends StreamReadException {
         super(p, msg, root);
     }
 
-    // @since 2.7
-    public JsonParseException(JsonParser p, String msg, JsonLocation loc) {
-        super(p, msg, loc);
-    }
-
-    // @since 2.7
-    public JsonParseException(JsonParser p, String msg, JsonLocation loc, Throwable root) {
-        super(msg, loc, root);
-    }
-
     /**
      * Fluent method that may be used to assign payload to this exception,
      * to let recipient access it for diagnostics purposes.
@@ -73,12 +53,6 @@ public class JsonParseException extends StreamReadException {
     public JsonParseException withRequestPayload(RequestPayload payload) {
         _requestPayload = payload;
         return this;
-    }
-
-    // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override
-    public JsonParser getProcessor() {
-        return super.getProcessor();
     }
 
     // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)

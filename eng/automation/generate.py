@@ -249,6 +249,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     head_sha: str = config["headSha"]
     repo_url: str = config["repoHttpsUrl"]
     breaking: bool = False
+    changelog = ""
+    breaking_change_items = []
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID

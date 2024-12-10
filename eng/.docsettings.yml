@@ -141,7 +141,6 @@ known_content_issues:
   - ['sdk/parents/azure-code-customization-parent/README.md', '#3113']
   - ['sdk/parents/azure-perf-test-parent/README.md', '#3113']
   - ['sdk/parents/clientcore-parent/README.md', '#3113']
-  - ['sdk/clientcore/http-jdk-httpclient/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']
   - ['sdk/search/README.md', '#3113']

@@ -14,22 +14,21 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"startIpAddress\":\"gddtocj\",\"endIpAddress\":\"xhvpmoue\"},\"id\":\"dzxibqeojnxqbzvd\",\"name\":\"ntwndeicbtwnpzao\",\"type\":\"vuhrhcffcyddgl\"}],\"nextLink\":\"t\"}")
+            "{\"value\":[{\"properties\":{\"startIpAddress\":\"a\",\"endIpAddress\":\"a\"},\"id\":\"rzayv\",\"name\":\"t\",\"type\":\"gvdfgiotkftutq\"}],\"nextLink\":\"ngxlefgugnxkrxdq\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("gddtocj", model.value().get(0).startIpAddress());
-        Assertions.assertEquals("xhvpmoue", model.value().get(0).endIpAddress());
-        Assertions.assertEquals("t", model.nextLink());
+        Assertions.assertEquals("a", model.value().get(0).startIpAddress());
+        Assertions.assertEquals("a", model.value().get(0).endIpAddress());
+        Assertions.assertEquals("ngxlefgugnxkrxdq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FirewallRuleListResult model = new FirewallRuleListResult()
-            .withValue(
-                Arrays.asList(new FirewallRuleInner().withStartIpAddress("gddtocj").withEndIpAddress("xhvpmoue")))
-            .withNextLink("t");
+            .withValue(Arrays.asList(new FirewallRuleInner().withStartIpAddress("a").withEndIpAddress("a")))
+            .withNextLink("ngxlefgugnxkrxdq");
         model = BinaryData.fromObject(model).toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("gddtocj", model.value().get(0).startIpAddress());
-        Assertions.assertEquals("xhvpmoue", model.value().get(0).endIpAddress());
-        Assertions.assertEquals("t", model.nextLink());
+        Assertions.assertEquals("a", model.value().get(0).startIpAddress());
+        Assertions.assertEquals("a", model.value().get(0).endIpAddress());
+        Assertions.assertEquals("ngxlefgugnxkrxdq", model.nextLink());
     }
 }
