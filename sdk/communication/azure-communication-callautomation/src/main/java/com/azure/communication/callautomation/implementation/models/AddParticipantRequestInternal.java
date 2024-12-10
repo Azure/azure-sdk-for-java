@@ -45,15 +45,15 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     private String operationContext;
 
     /*
+     * Used by customer to send custom calling context to targets
+     */
+    private CustomCallingContext customCallingContext;
+
+    /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUri;
-
-    /*
-     * Used by customer to send custom calling context to targets
-     */
-    private CustomCallingContext customCallingContext;
 
     /**
      * Creates an instance of AddParticipantRequestInternal class.
@@ -176,6 +176,26 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     * 
+     * @return the customCallingContext value.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
+    }
+
+    /**
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     * 
+     * @param customCallingContext the customCallingContext value to set.
+     * @return the AddParticipantRequestInternal object itself.
+     */
+    public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
+        return this;
+    }
+
+    /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
@@ -200,26 +220,6 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the AddParticipantRequestInternal object itself.
-     */
-    public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -230,8 +230,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
         jsonWriter.writeStringField("sourceDisplayName", this.sourceDisplayName);
         jsonWriter.writeNumberField("invitationTimeoutInSeconds", this.invitationTimeoutInSeconds);
         jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -265,11 +265,11 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedAddParticipantRequestInternal.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedAddParticipantRequestInternal.operationCallbackUri = reader.getString();
                 } else if ("customCallingContext".equals(fieldName)) {
                     deserializedAddParticipantRequestInternal.customCallingContext
                         = CustomCallingContext.fromJson(reader);
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedAddParticipantRequestInternal.operationCallbackUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -17,27 +17,27 @@ import java.io.IOException;
 @Fluent
 public final class PlayPaused implements JsonSerializable<PlayPaused> {
     /*
-     * Call connection ID.
+     * Gets or sets call connection ID.
      */
     private String callConnectionId;
 
     /*
-     * Server call ID.
+     * Gets or sets server call ID.
      */
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
+     * Gets or sets correlation ID for event to call correlation.
      */
     private String correlationId;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Gets or sets used by customers when calling mid-call actions to correlate the request to the response event.
      */
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
+     * Gets or sets contains the resulting SIP code, sub-code and message.
      */
     private ResultInformation resultInformation;
 
@@ -48,7 +48,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Get the callConnectionId property: Call connection ID.
+     * Get the callConnectionId property: Gets or sets call connection ID.
      * 
      * @return the callConnectionId value.
      */
@@ -57,7 +57,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Set the callConnectionId property: Call connection ID.
+     * Set the callConnectionId property: Gets or sets call connection ID.
      * 
      * @param callConnectionId the callConnectionId value to set.
      * @return the PlayPaused object itself.
@@ -68,7 +68,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Get the serverCallId property: Server call ID.
+     * Get the serverCallId property: Gets or sets server call ID.
      * 
      * @return the serverCallId value.
      */
@@ -77,7 +77,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Set the serverCallId property: Server call ID.
+     * Set the serverCallId property: Gets or sets server call ID.
      * 
      * @param serverCallId the serverCallId value to set.
      * @return the PlayPaused object itself.
@@ -88,8 +88,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Get the correlationId property: Gets or sets correlation ID for event to call correlation.
      * 
      * @return the correlationId value.
      */
@@ -98,8 +97,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Set the correlationId property: Gets or sets correlation ID for event to call correlation.
      * 
      * @param correlationId the correlationId value to set.
      * @return the PlayPaused object itself.
@@ -110,8 +108,8 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
+     * Get the operationContext property: Gets or sets used by customers when calling mid-call actions to correlate the
+     * request to the response event.
      * 
      * @return the operationContext value.
      */
@@ -120,8 +118,8 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
+     * Set the operationContext property: Gets or sets used by customers when calling mid-call actions to correlate the
+     * request to the response event.
      * 
      * @param operationContext the operationContext value to set.
      * @return the PlayPaused object itself.
@@ -132,7 +130,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the resultInformation property: Gets or sets contains the resulting SIP code, sub-code and message.
      * 
      * @return the resultInformation value.
      */
@@ -141,7 +139,7 @@ public final class PlayPaused implements JsonSerializable<PlayPaused> {
     }
 
     /**
-     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Set the resultInformation property: Gets or sets contains the resulting SIP code, sub-code and message.
      * 
      * @param resultInformation the resultInformation value to set.
      * @return the PlayPaused object itself.

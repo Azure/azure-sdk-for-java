@@ -39,6 +39,11 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     private CommunicationUserIdentifierModel source;
 
     /*
+     * The identifier of the source in an OPS call
+     */
+    private MicrosoftTeamsAppIdentifierModel opsSource;
+
+    /*
      * A customer set value used to track the answering of a call.
      */
     private String operationContext;
@@ -52,11 +57,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * AI options for the call.
      */
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
-
-    /*
-     * The identifier of the source in an OPS call
-     */
-    private MicrosoftTeamsAppIdentifierModel opsSource;
 
     /*
      * Used by customer to send custom calling context to targets
@@ -164,6 +164,26 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
+     * Get the opsSource property: The identifier of the source in an OPS call.
+     * 
+     * @return the opsSource value.
+     */
+    public MicrosoftTeamsAppIdentifierModel getOpsSource() {
+        return this.opsSource;
+    }
+
+    /**
+     * Set the opsSource property: The identifier of the source in an OPS call.
+     * 
+     * @param opsSource the opsSource value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setOpsSource(MicrosoftTeamsAppIdentifierModel opsSource) {
+        this.opsSource = opsSource;
+        return this;
+    }
+
+    /**
      * Get the operationContext property: A customer set value used to track the answering of a call.
      * 
      * @return the operationContext value.
@@ -221,26 +241,6 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     public CreateCallRequestInternal
         setCallIntelligenceOptions(CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the opsSource property: The identifier of the source in an OPS call.
-     * 
-     * @return the opsSource value.
-     */
-    public MicrosoftTeamsAppIdentifierModel getOpsSource() {
-        return this.opsSource;
-    }
-
-    /**
-     * Set the opsSource property: The identifier of the source in an OPS call.
-     * 
-     * @param opsSource the opsSource value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setOpsSource(MicrosoftTeamsAppIdentifierModel opsSource) {
-        this.opsSource = opsSource;
         return this;
     }
 
@@ -315,9 +315,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeJsonField("sourceCallerIdNumber", this.sourceCallerIdNumber);
         jsonWriter.writeStringField("sourceDisplayName", this.sourceDisplayName);
         jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("opsSource", this.opsSource);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
-        jsonWriter.writeJsonField("opsSource", this.opsSource);
         jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
         jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
@@ -353,13 +353,13 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                     deserializedCreateCallRequestInternal.sourceDisplayName = reader.getString();
                 } else if ("source".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.source = CommunicationUserIdentifierModel.fromJson(reader);
+                } else if ("opsSource".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.opsSource = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.operationContext = reader.getString();
                 } else if ("callIntelligenceOptions".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.callIntelligenceOptions
                         = CallIntelligenceOptionsInternal.fromJson(reader);
-                } else if ("opsSource".equals(fieldName)) {
-                    deserializedCreateCallRequestInternal.opsSource = MicrosoftTeamsAppIdentifierModel.fromJson(reader);
                 } else if ("customCallingContext".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.customCallingContext = CustomCallingContext.fromJson(reader);
                 } else if ("mediaStreamingOptions".equals(fieldName)) {

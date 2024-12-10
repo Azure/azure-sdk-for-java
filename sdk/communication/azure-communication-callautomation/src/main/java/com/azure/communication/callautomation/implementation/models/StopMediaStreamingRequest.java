@@ -22,11 +22,6 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      */
     private String operationCallbackUri;
 
-    /*
-     * The value to identify context of the operation.
-     */
-    private String operationContext;
-
     /**
      * Creates an instance of StopMediaStreamingRequest class.
      */
@@ -58,33 +53,12 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
     }
 
     /**
-     * Get the operationContext property: The value to identify context of the operation.
-     * 
-     * @return the operationContext value.
-     */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Set the operationContext property: The value to identify context of the operation.
-     * 
-     * @param operationContext the operationContext value to set.
-     * @return the StopMediaStreamingRequest object itself.
-     */
-    public StopMediaStreamingRequest setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,8 +79,6 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
 
                 if ("operationCallbackUri".equals(fieldName)) {
                     deserializedStopMediaStreamingRequest.operationCallbackUri = reader.getString();
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedStopMediaStreamingRequest.operationContext = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

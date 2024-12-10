@@ -17,21 +17,6 @@ import java.io.IOException;
 @Fluent
 public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     /*
-     * Determines the type of the dialog.
-     */
-    private DialogInputType dialogInputType;
-
-    /*
-     * Dialog ID
-     */
-    private String dialogId;
-
-    /*
-     * IVR context
-     */
-    private Object ivrContext;
-
-    /*
      * Call connection ID.
      */
     private String callConnectionId;
@@ -47,57 +32,34 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     private String correlationId;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
+     * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     private ResultInformation resultInformation;
+
+    /*
+     * Determines the type of the dialog.
+     */
+    private DialogInputType dialogInputType;
+
+    /*
+     * Dialog ID
+     */
+    private String dialogId;
+
+    /*
+     * IVR context
+     */
+    private Object ivrContext;
 
     /**
      * Creates an instance of DialogUpdated class.
      */
     public DialogUpdated() {
-    }
-
-    /**
-     * Get the dialogInputType property: Determines the type of the dialog.
-     * 
-     * @return the dialogInputType value.
-     */
-    public DialogInputType getDialogInputType() {
-        return this.dialogInputType;
-    }
-
-    /**
-     * Set the dialogInputType property: Determines the type of the dialog.
-     * 
-     * @param dialogInputType the dialogInputType value to set.
-     * @return the DialogUpdated object itself.
-     */
-    public DialogUpdated setDialogInputType(DialogInputType dialogInputType) {
-        this.dialogInputType = dialogInputType;
-        return this;
-    }
-
-    /**
-     * Get the dialogId property: Dialog ID.
-     * 
-     * @return the dialogId value.
-     */
-    public String getDialogId() {
-        return this.dialogId;
-    }
-
-    /**
-     * Get the ivrContext property: IVR context.
-     * 
-     * @return the ivrContext value.
-     */
-    public Object getIvrContext() {
-        return this.ivrContext;
     }
 
     /**
@@ -107,17 +69,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      */
     public String getCallConnectionId() {
         return this.callConnectionId;
-    }
-
-    /**
-     * Set the callConnectionId property: Call connection ID.
-     * 
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the DialogUpdated object itself.
-     */
-    public DialogUpdated setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        return this;
     }
 
     /**
@@ -163,7 +114,7 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     }
 
     /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * Get the operationContext property: Used by customers when calling answerCall action to correlate the request to
      * the response event.
      * 
      * @return the operationContext value.
@@ -173,19 +124,7 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     }
 
     /**
-     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
-     * 
-     * @param operationContext the operationContext value to set.
-     * @return the DialogUpdated object itself.
-     */
-    public DialogUpdated setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
      * 
      * @return the resultInformation value.
      */
@@ -194,14 +133,41 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     }
 
     /**
-     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the dialogInputType property: Determines the type of the dialog.
      * 
-     * @param resultInformation the resultInformation value to set.
+     * @return the dialogInputType value.
+     */
+    public DialogInputType getDialogInputType() {
+        return this.dialogInputType;
+    }
+
+    /**
+     * Set the dialogInputType property: Determines the type of the dialog.
+     * 
+     * @param dialogInputType the dialogInputType value to set.
      * @return the DialogUpdated object itself.
      */
-    public DialogUpdated setResultInformation(ResultInformation resultInformation) {
-        this.resultInformation = resultInformation;
+    public DialogUpdated setDialogInputType(DialogInputType dialogInputType) {
+        this.dialogInputType = dialogInputType;
         return this;
+    }
+
+    /**
+     * Get the dialogId property: Dialog ID.
+     * 
+     * @return the dialogId value.
+     */
+    public String getDialogId() {
+        return this.dialogId;
+    }
+
+    /**
+     * Get the ivrContext property: IVR context.
+     * 
+     * @return the ivrContext value.
+     */
+    public Object getIvrContext() {
+        return this.ivrContext;
     }
 
     /**
@@ -210,13 +176,10 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dialogInputType",
-            this.dialogInputType == null ? null : this.dialogInputType.toString());
-        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
         jsonWriter.writeStringField("serverCallId", this.serverCallId);
         jsonWriter.writeStringField("correlationId", this.correlationId);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeJsonField("resultInformation", this.resultInformation);
+        jsonWriter.writeStringField("dialogInputType",
+            this.dialogInputType == null ? null : this.dialogInputType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -235,13 +198,7 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dialogInputType".equals(fieldName)) {
-                    deserializedDialogUpdated.dialogInputType = DialogInputType.fromString(reader.getString());
-                } else if ("dialogId".equals(fieldName)) {
-                    deserializedDialogUpdated.dialogId = reader.getString();
-                } else if ("ivrContext".equals(fieldName)) {
-                    deserializedDialogUpdated.ivrContext = reader.readUntyped();
-                } else if ("callConnectionId".equals(fieldName)) {
+                if ("callConnectionId".equals(fieldName)) {
                     deserializedDialogUpdated.callConnectionId = reader.getString();
                 } else if ("serverCallId".equals(fieldName)) {
                     deserializedDialogUpdated.serverCallId = reader.getString();
@@ -251,6 +208,12 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
                     deserializedDialogUpdated.operationContext = reader.getString();
                 } else if ("resultInformation".equals(fieldName)) {
                     deserializedDialogUpdated.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    deserializedDialogUpdated.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("dialogId".equals(fieldName)) {
+                    deserializedDialogUpdated.dialogId = reader.getString();
+                } else if ("ivrContext".equals(fieldName)) {
+                    deserializedDialogUpdated.ivrContext = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

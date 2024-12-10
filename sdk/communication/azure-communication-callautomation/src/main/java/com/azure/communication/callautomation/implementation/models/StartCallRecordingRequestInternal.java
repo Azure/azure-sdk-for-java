@@ -64,14 +64,14 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     private List<ChannelAffinityInternal> channelAffinity;
 
     /*
-     * When set to true will start recording in Pause mode, which can be resumed.
-     */
-    private Boolean pauseOnStart;
-
-    /*
      * Optional property to specify location where recording will be stored
      */
     private RecordingStorageInternal externalStorage;
+
+    /*
+     * When set to true will start recording in Pause mode, which can be resumed.
+     */
+    private Boolean pauseOnStart;
 
     /**
      * Creates an instance of StartCallRecordingRequestInternal class.
@@ -259,26 +259,6 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
-     * 
-     * @return the pauseOnStart value.
-     */
-    public Boolean isPauseOnStart() {
-        return this.pauseOnStart;
-    }
-
-    /**
-     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
-     * 
-     * @param pauseOnStart the pauseOnStart value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    public StartCallRecordingRequestInternal setPauseOnStart(Boolean pauseOnStart) {
-        this.pauseOnStart = pauseOnStart;
-        return this;
-    }
-
-    /**
      * Get the externalStorage property: Optional property to specify location where recording will be stored.
      * 
      * @return the externalStorage value.
@@ -295,6 +275,26 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      */
     public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
         this.externalStorage = externalStorage;
+        return this;
+    }
+
+    /**
+     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
+     * 
+     * @return the pauseOnStart value.
+     */
+    public Boolean isPauseOnStart() {
+        return this.pauseOnStart;
+    }
+
+    /**
+     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
+     * 
+     * @param pauseOnStart the pauseOnStart value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setPauseOnStart(Boolean pauseOnStart) {
+        this.pauseOnStart = pauseOnStart;
         return this;
     }
 
@@ -317,8 +317,8 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("channelAffinity", this.channelAffinity,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeBooleanField("pauseOnStart", this.pauseOnStart);
         jsonWriter.writeJsonField("externalStorage", this.externalStorage);
+        jsonWriter.writeBooleanField("pauseOnStart", this.pauseOnStart);
         return jsonWriter.writeEndObject();
     }
 
@@ -362,12 +362,12 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
                     List<ChannelAffinityInternal> channelAffinity
                         = reader.readArray(reader1 -> ChannelAffinityInternal.fromJson(reader1));
                     deserializedStartCallRecordingRequestInternal.channelAffinity = channelAffinity;
-                } else if ("pauseOnStart".equals(fieldName)) {
-                    deserializedStartCallRecordingRequestInternal.pauseOnStart
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("externalStorage".equals(fieldName)) {
                     deserializedStartCallRecordingRequestInternal.externalStorage
                         = RecordingStorageInternal.fromJson(reader);
+                } else if ("pauseOnStart".equals(fieldName)) {
+                    deserializedStartCallRecordingRequestInternal.pauseOnStart
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -28,11 +28,6 @@ public final class StartTranscriptionOptions {
     }
 
     /**
-     * Endpoint where the custom model was deployed.
-     */
-    private String speechRecognitionModelEndpointId;
-
-    /**
      * Get the locale.
      *
      * @return locale.
@@ -62,15 +57,6 @@ public final class StartTranscriptionOptions {
     }
 
     /**
-     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
-     * @return the speechRecognitionModelEndpointId value.
-     */
-    public String getSpeechRecognitionModelEndpointId() {
-        return this.speechRecognitionModelEndpointId;
-    }
-
-    /**
      * Sets the operation context.
      *
      * @param operationContext Operation Context
@@ -78,17 +64,6 @@ public final class StartTranscriptionOptions {
      */
     public StartTranscriptionOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
-     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
-     * @return the StartTranscriptionOptions object itself.
-     */
-    public StartTranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
-        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }
 }

@@ -27,7 +27,7 @@ public final class HoldAudioCompleted implements JsonSerializable<HoldAudioCompl
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
+     * Correlation ID for event to call correlation.
      */
     private String correlationId;
 
@@ -88,8 +88,7 @@ public final class HoldAudioCompleted implements JsonSerializable<HoldAudioCompl
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Get the correlationId property: Correlation ID for event to call correlation.
      * 
      * @return the correlationId value.
      */
@@ -98,8 +97,7 @@ public final class HoldAudioCompleted implements JsonSerializable<HoldAudioCompl
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Set the correlationId property: Correlation ID for event to call correlation.
      * 
      * @param correlationId the correlationId value to set.
      * @return the HoldAudioCompleted object itself.
