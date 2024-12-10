@@ -21,7 +21,7 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous PurviewScanningClient type.
  */
-@ServiceClient(builder = KeyVaultConnectionsClientBuilder.class)
+@ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class KeyVaultConnectionsClient {
     @Generated
     private final KeyVaultConnectionsImpl serviceClient;

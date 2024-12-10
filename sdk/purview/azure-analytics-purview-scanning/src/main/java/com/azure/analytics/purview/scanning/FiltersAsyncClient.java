@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous PurviewScanningClient type.
  */
-@ServiceClient(builder = FiltersClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class FiltersAsyncClient {
     @Generated
     private final FiltersImpl serviceClient;

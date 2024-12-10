@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.scanning.generated;
 
 import com.azure.analytics.purview.scanning.KeyVaultConnectionsClient;
-import com.azure.analytics.purview.scanning.KeyVaultConnectionsClientBuilder;
+import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,9 +14,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class KeyVaultConnectionsDelete {
     public static void main(String[] args) {
         KeyVaultConnectionsClient keyVaultConnectionsClient
-            = new KeyVaultConnectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
-                .buildClient();
+                .buildKeyVaultConnectionsClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionsdelete.keyvaultconnectionsdelete
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = keyVaultConnectionsClient.deleteWithResponse("KeyVault1", requestOptions);

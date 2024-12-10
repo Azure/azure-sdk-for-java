@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous PurviewScanningClient type.
  */
-@ServiceClient(builder = KeyVaultConnectionsClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class KeyVaultConnectionsAsyncClient {
     @Generated
     private final KeyVaultConnectionsImpl serviceClient;

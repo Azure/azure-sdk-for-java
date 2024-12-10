@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.scanning.generated;
 
+import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.analytics.purview.scanning.TriggersClient;
-import com.azure.analytics.purview.scanning.TriggersClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,9 +14,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class TriggersDeleteTrigger {
     public static void main(String[] args) {
         TriggersClient triggersClient
-            = new TriggersClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
-                .buildClient();
+                .buildTriggersClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.triggersdeletetrigger.triggersdeletetrigger
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response

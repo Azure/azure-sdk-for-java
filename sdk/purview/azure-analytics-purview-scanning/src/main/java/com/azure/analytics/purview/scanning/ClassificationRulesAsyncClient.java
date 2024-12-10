@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous PurviewScanningClient type.
  */
-@ServiceClient(builder = ClassificationRulesClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ClassificationRulesAsyncClient {
     @Generated
     private final ClassificationRulesImpl serviceClient;

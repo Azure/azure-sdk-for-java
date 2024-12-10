@@ -20,7 +20,7 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous PurviewScanningClient type.
  */
-@ServiceClient(builder = FiltersClientBuilder.class)
+@ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class FiltersClient {
     @Generated
     private final FiltersImpl serviceClient;

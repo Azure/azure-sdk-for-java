@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.scanning.generated;
 
+import com.azure.analytics.purview.scanning.PurviewScanningClientBuilder;
 import com.azure.analytics.purview.scanning.ScanResultClient;
-import com.azure.analytics.purview.scanning.ScanResultClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,9 +14,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ScanResultCancelScan {
     public static void main(String[] args) {
         ScanResultClient scanResultClient
-            = new ScanResultClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
-                .buildClient();
+                .buildScanResultClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultcancelscan.scanresultcancelscan
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scanResultClient.cancelScanWithResponse("myDataSource", "myScanName",
