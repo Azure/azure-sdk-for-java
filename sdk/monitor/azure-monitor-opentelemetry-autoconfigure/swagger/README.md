@@ -48,17 +48,10 @@ output-folder: ../
 namespace: com.azure.monitor.opentelemetry.autoconfigure
 models-subpackage: implementation.models
 generate-client-as-impl: true
-generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
-required-parameter-client-methods: false
-model-override-setter-from-superclass: true
 artifact-id: azure-monitor-opentelemetry-autoconfigure
 enable-sync-stack: true
-stream-style-serialization: true
 customization-class: src/main/java/MonitorOpenTelemetryAutoConfigureCustomizations.java
 directive:
     - rename-model:
@@ -75,16 +68,9 @@ input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specificatio
 java: true
 output-folder: ../
 namespace: com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger
-generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
-context-client-method-parameter: true
-required-parameter-client-methods: false
-model-override-setter-from-superclass: true
 artifact-id: azure-monitor-opentelemetry-autoconfigure
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
