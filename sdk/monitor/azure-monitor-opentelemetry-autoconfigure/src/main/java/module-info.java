@@ -10,7 +10,8 @@ module com.azure.monitor.opentelemetry.autoconfigure {
     requires io.opentelemetry.sdk.trace;
     requires io.opentelemetry.sdk.logs;
     requires io.opentelemetry.api;
-
+    requires io.opentelemetry.sdk.resources;
+    
     exports com.azure.monitor.opentelemetry.autoconfigure;
 
 }
