@@ -4,26 +4,24 @@
 
 package com.azure.analytics.purview.administration.generated;
 
+// The Java test files under 'generated' package are generated for your reference.
+// If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
+// See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
+
 import com.azure.analytics.purview.administration.AccountsClient;
 import com.azure.analytics.purview.administration.AccountsClientBuilder;
 import com.azure.analytics.purview.administration.CollectionsClient;
 import com.azure.analytics.purview.administration.CollectionsClientBuilder;
 import com.azure.analytics.purview.administration.ResourceSetRulesClient;
 import com.azure.analytics.purview.administration.ResourceSetRulesClientBuilder;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-import reactor.core.publisher.Mono;
 
-// TODO (savaity) separate PR
-@LiveOnly
 class PurviewAccountClientTestBase extends TestProxyTestBase {
     protected AccountsClient accountsClient;
 
@@ -35,11 +33,10 @@ class PurviewAccountClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         AccountsClientBuilder accountsClientbuilder
             = new AccountsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            accountsClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            accountsClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             accountsClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -50,11 +47,10 @@ class PurviewAccountClientTestBase extends TestProxyTestBase {
 
         CollectionsClientBuilder collectionsClientbuilder = new CollectionsClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            collectionsClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            collectionsClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             collectionsClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -65,11 +61,10 @@ class PurviewAccountClientTestBase extends TestProxyTestBase {
 
         ResourceSetRulesClientBuilder resourceSetRulesClientbuilder = new ResourceSetRulesClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            resourceSetRulesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            resourceSetRulesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             resourceSetRulesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -77,5 +72,6 @@ class PurviewAccountClientTestBase extends TestProxyTestBase {
             resourceSetRulesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         resourceSetRulesClient = resourceSetRulesClientbuilder.buildClient();
+
     }
 }

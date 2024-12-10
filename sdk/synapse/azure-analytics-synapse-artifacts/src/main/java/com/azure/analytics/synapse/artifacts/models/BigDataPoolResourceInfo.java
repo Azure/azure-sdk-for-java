@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -27,8 +28,6 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private String provisioningState;
 
     /*
-     * Spark pool auto-scaling properties
-     * 
      * Auto-scaling properties
      */
     private AutoScaleProperties autoScale;
@@ -39,8 +38,6 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private OffsetDateTime creationDate;
 
     /*
-     * Spark pool auto-pausing properties
-     * 
      * Auto-pausing properties
      */
     private AutoPauseProperties autoPause;
@@ -76,8 +73,6 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private Integer nodeCount;
 
     /*
-     * Spark pool library version requirements
-     * 
      * Library version requirements
      */
     private LibraryRequirements libraryRequirements;
@@ -88,8 +83,6 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private List<LibraryInfo> customLibraries;
 
     /*
-     * Spark pool library version requirements
-     * 
      * Spark configuration file to specify additional properties
      */
     private LibraryRequirements sparkConfigProperties;
@@ -119,6 +112,23 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      */
     private OffsetDateTime lastSucceededTimestamp;
 
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of BigDataPoolResourceInfo class.
      */
@@ -146,9 +156,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the autoScale property: Spark pool auto-scaling properties
-     * 
-     * Auto-scaling properties.
+     * Get the autoScale property: Auto-scaling properties.
      * 
      * @return the autoScale value.
      */
@@ -157,9 +165,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the autoScale property: Spark pool auto-scaling properties
-     * 
-     * Auto-scaling properties.
+     * Set the autoScale property: Auto-scaling properties.
      * 
      * @param autoScale the autoScale value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -190,9 +196,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the autoPause property: Spark pool auto-pausing properties
-     * 
-     * Auto-pausing properties.
+     * Get the autoPause property: Auto-pausing properties.
      * 
      * @return the autoPause value.
      */
@@ -201,9 +205,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the autoPause property: Spark pool auto-pausing properties
-     * 
-     * Auto-pausing properties.
+     * Set the autoPause property: Auto-pausing properties.
      * 
      * @param autoPause the autoPause value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -334,9 +336,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the libraryRequirements property: Spark pool library version requirements
-     * 
-     * Library version requirements.
+     * Get the libraryRequirements property: Library version requirements.
      * 
      * @return the libraryRequirements value.
      */
@@ -345,9 +345,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the libraryRequirements property: Spark pool library version requirements
-     * 
-     * Library version requirements.
+     * Set the libraryRequirements property: Library version requirements.
      * 
      * @param libraryRequirements the libraryRequirements value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -378,9 +376,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the sparkConfigProperties property: Spark pool library version requirements
-     * 
-     * Spark configuration file to specify additional properties.
+     * Get the sparkConfigProperties property: Spark configuration file to specify additional properties.
      * 
      * @return the sparkConfigProperties value.
      */
@@ -389,9 +385,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the sparkConfigProperties property: Spark pool library version requirements
-     * 
-     * Spark configuration file to specify additional properties.
+     * Set the sparkConfigProperties property: Spark configuration file to specify additional properties.
      * 
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -491,6 +485,38 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -579,11 +605,11 @@ public class BigDataPoolResourceInfo extends TrackedResource {
                 if ("location".equals(fieldName)) {
                     deserializedBigDataPoolResourceInfo.setLocation(reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    deserializedBigDataPoolResourceInfo.setId(reader.getString());
+                    deserializedBigDataPoolResourceInfo.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedBigDataPoolResourceInfo.setName(reader.getString());
+                    deserializedBigDataPoolResourceInfo.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedBigDataPoolResourceInfo.setType(reader.getString());
+                    deserializedBigDataPoolResourceInfo.type = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedBigDataPoolResourceInfo.setTags(tags);
@@ -597,8 +623,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
                         } else if ("autoScale".equals(fieldName)) {
                             deserializedBigDataPoolResourceInfo.autoScale = AutoScaleProperties.fromJson(reader);
                         } else if ("creationDate".equals(fieldName)) {
-                            deserializedBigDataPoolResourceInfo.creationDate
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedBigDataPoolResourceInfo.creationDate = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("autoPause".equals(fieldName)) {
                             deserializedBigDataPoolResourceInfo.autoPause = AutoPauseProperties.fromJson(reader);
                         } else if ("isComputeIsolationEnabled".equals(fieldName)) {
@@ -636,8 +662,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
                             deserializedBigDataPoolResourceInfo.nodeSizeFamily
                                 = NodeSizeFamily.fromString(reader.getString());
                         } else if ("lastSucceededTimestamp".equals(fieldName)) {
-                            deserializedBigDataPoolResourceInfo.lastSucceededTimestamp
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedBigDataPoolResourceInfo.lastSucceededTimestamp = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else {
                             reader.skipChildren();
                         }
