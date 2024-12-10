@@ -43,14 +43,7 @@ public class AnalyzeReceipts {
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
+                new AnalyzeDocumentOptions(Files.readAllBytes(sourceFile.toPath())));
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 

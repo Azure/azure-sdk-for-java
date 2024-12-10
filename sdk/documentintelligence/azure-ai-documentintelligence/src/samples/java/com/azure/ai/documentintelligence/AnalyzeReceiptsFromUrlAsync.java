@@ -41,14 +41,8 @@ public class AnalyzeReceiptsFromUrlAsync {
                 + "/azure-ai-documentintelligence/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
-            client.beginAnalyzeDocument("prebuilt-receipt", null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setSourceUrl(receiptUrl));
+            client.beginAnalyzeDocument("prebuilt-receipt",
+                new AnalyzeDocumentOptions(receiptUrl));
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller
             .last()

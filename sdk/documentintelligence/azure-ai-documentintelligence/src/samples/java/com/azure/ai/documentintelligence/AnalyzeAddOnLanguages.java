@@ -40,14 +40,8 @@ public class AnalyzeAddOnLanguages {
                 + "sample-forms/addOns/fonts_and_languages.png");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

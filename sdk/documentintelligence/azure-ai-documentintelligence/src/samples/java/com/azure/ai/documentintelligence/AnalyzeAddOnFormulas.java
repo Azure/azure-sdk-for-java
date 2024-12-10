@@ -42,14 +42,8 @@ public class AnalyzeAddOnFormulas {
             + "sample-forms/addOns/formulas.pdf");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.FORMULAS),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.FORMULAS)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

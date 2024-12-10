@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
-import com.azure.ai.documentintelligence.models.DocumentContentFormat;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -38,14 +37,7 @@ public class AnalyzeLayoutMarkdownOutputAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        DocumentContentFormat.MARKDOWN,
-                    null,
-                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller

@@ -37,14 +37,8 @@ public class AnalyzeLayout {
             + "sample-forms/forms/selectionMarkForm.pdf");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(selectionMarkDocument.toPath())));
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(selectionMarkDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

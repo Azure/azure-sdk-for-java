@@ -13,6 +13,8 @@ import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.Collections;
+
 public class AnalyzeDocumentFromUrl {
     public static void main(String[] args) {
         DocumentIntelligenceClient documentIntelligenceClient
@@ -21,8 +23,10 @@ public class AnalyzeDocumentFromUrl {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl
         SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
-            "customModel", "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, null,
-            new AnalyzeDocumentOptions().setSourceUrl("http://host.com/doc.pdf"));
+            "customModel",
+            new AnalyzeDocumentOptions("http://host.com/doc.pdf").setPages(Collections.singletonList("1-2,4"))
+                .setLocale("en-US")
+                .setStringIndexType(StringIndexType.TEXT_ELEMENTS));
         // END:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl
     }
 }

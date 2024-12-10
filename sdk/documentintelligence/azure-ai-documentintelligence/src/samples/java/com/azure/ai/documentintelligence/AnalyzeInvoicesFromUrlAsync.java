@@ -43,13 +43,7 @@ public class AnalyzeInvoicesFromUrlAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeInvoicePoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
-            null,
-            null,
-            null,
-            null,
-            null,
-                null,
-            null, new AnalyzeDocumentOptions().setSourceUrl(invoiceUrl));
+                new AnalyzeDocumentOptions(invoiceUrl));
 
         Mono<AnalyzeResult> analyzeInvoiceResultMono = analyzeInvoicePoller
             .last()

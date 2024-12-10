@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentFormula;
 import com.azure.ai.documentintelligence.models.DocumentFormulaKind;
 import com.azure.ai.documentintelligence.models.DocumentPage;
@@ -18,7 +17,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -46,14 +44,7 @@ public class AnalyzeAddOnFormulasAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.FORMULAS),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

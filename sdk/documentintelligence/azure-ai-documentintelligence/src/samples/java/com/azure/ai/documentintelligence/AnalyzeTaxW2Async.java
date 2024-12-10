@@ -39,14 +39,8 @@ public class AnalyzeTaxW2Async {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/w2/Sample-W2.jpg";
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeW2Poller =
-            client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setSourceUrl(w2Url));
+            client.beginAnalyzeDocument("prebuilt-tax.us.w2",
+                new AnalyzeDocumentOptions(w2Url));
 
         Mono<AnalyzeResult> w2Mono = analyzeW2Poller
             .last()

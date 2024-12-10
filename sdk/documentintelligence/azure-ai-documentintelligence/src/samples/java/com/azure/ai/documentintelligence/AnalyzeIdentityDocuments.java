@@ -43,14 +43,7 @@ public class AnalyzeIdentityDocuments {
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(licenseDocumentFile.toPath())));
+                new AnalyzeDocumentOptions(Files.readAllBytes(licenseDocumentFile.toPath())));
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 

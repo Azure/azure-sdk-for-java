@@ -34,14 +34,8 @@ public class AnalyzeLayoutMarkdownOutput {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/Invoice_6.pdf");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-                client.beginAnalyzeDocument("prebuilt-layout", null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        DocumentContentFormat.MARKDOWN,
-                    null,
-                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
+                client.beginAnalyzeDocument("prebuilt-layout",
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())).setOutputContentFormat(DocumentContentFormat.MARKDOWN));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
         System.out.println("Markdown output");

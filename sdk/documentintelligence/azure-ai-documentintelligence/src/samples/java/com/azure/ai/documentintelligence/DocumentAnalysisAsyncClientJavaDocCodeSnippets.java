@@ -5,9 +5,6 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
-import com.azure.ai.documentintelligence.models.DocumentContentFormat;
-import com.azure.ai.documentintelligence.models.SplitMode;
-import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -18,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.List;
 
 /**
  * Code snippet for {@link DocumentIntelligenceAsyncClient}
@@ -57,21 +53,14 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentIntelligenceAsyncClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, DocumentContentFormat, AnalyzeDocumentOptions)}
+     * Code snippet for {@link DocumentIntelligenceAsyncClient#beginAnalyzeDocument(String, AnalyzeDocumentOptions)}
      */
     public void beginAnalyzeDocumentFromUrl() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-DocumentContentFormat-AnalyzeDocumentOptions
+        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#String-AnalyzeDocumentOptions
         String documentUrl = "{document_url}";
         String modelId = "{model_id}";
         documentIntelligenceAsyncClient.beginAnalyzeDocument(modelId,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setSourceUrl(documentUrl))
+                new AnalyzeDocumentOptions(documentUrl))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult ->
@@ -83,25 +72,25 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
                             })));
-        // END: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-DocumentContentFormat-AnalyzeDocumentOptions
+        // END: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#String-AnalyzeDocumentOptions
     }
 
     /**
      * Code snippet for
-     * {@link DocumentIntelligenceAsyncClient#beginClassifyDocument(String, ClassifyDocumentOptions, StringIndexType, SplitMode)}
+     * {@link DocumentIntelligenceAsyncClient#beginClassifyDocument(String, ClassifyDocumentOptions)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginClassifyDocument() throws IOException {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginClassifyDocument#String-ClassifyDocumentOptions-StringIndexType-SplitMode
+        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginClassifyDocument#String-ClassifyDocumentOptions
         File document = new File("{local/file_path/fileName.jpg}");
         String classifierId = "{model_id}";
 
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentIntelligenceAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())))
+        documentIntelligenceAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions(Files.readAllBytes(document.toPath())))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult -> {
@@ -109,6 +98,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                 analyzeResult.getDocuments()
                     .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocumentType()));
             });
-        // END: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginClassifyDocument#String-ClassifyDocumentOptions-StringIndexType-SplitMode
+        // END: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginClassifyDocument#String-ClassifyDocumentOptions
     }
 }

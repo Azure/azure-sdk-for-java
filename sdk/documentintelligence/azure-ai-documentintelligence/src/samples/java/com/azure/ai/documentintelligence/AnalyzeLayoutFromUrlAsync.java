@@ -34,14 +34,7 @@ public class AnalyzeLayoutFromUrlAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setSourceUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
+                new AnalyzeDocumentOptions("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                     + "azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf"));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentStyle;
 import com.azure.ai.documentintelligence.models.DocumentFontStyle;
 import com.azure.ai.documentintelligence.models.DocumentFontWeight;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,14 +50,7 @@ public class AnalyzeAddOnFontsAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.STYLE_FONT),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

@@ -41,14 +41,8 @@ public class AnalyzeAddOnKeyValuePair {
                 + "sample-forms/invoices/Invoice_1.pdf");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-                client.beginAnalyzeDocument("prebuilt-layout", null,
-                        null,
-                        null,
-                        Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
-                        null,
-                        null,
-                        null,
-                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
+                client.beginAnalyzeDocument("prebuilt-layout",
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

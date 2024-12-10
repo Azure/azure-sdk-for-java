@@ -41,14 +41,7 @@ public class AnalyzeInvoicesFromUrl {
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeInvoicesPoller
-            = client.beginAnalyzeDocument("prebuilt-invoice",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null, new AnalyzeDocumentOptions().setSourceUrl(invoiceUrl));
+            = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(invoiceUrl));
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 

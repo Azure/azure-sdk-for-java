@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -15,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,14 +40,7 @@ public class AnalyzeAddOnQueryFieldsAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
-                        null,
-                        null,
-                        null,
-                        Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
-                        Arrays.asList("Address", "InvoiceNumber"),
-                        null,
-                        null,
-                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller

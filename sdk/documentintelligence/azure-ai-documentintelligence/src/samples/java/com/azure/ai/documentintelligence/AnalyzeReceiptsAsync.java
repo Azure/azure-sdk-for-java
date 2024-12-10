@@ -45,14 +45,7 @@ public class AnalyzeReceiptsAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller;
         analyzeReceiptPoller = client.beginAnalyzeDocument("prebuilt-receipt",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
+                new AnalyzeDocumentOptions(Files.readAllBytes(sourceFile.toPath())));
 
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller

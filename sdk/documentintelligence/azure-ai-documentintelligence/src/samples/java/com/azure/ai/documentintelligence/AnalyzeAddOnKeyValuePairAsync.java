@@ -7,7 +7,6 @@ import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.BoundingRegion;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentKeyValueElement;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -17,7 +16,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,14 +43,7 @@ public class AnalyzeAddOnKeyValuePairAsync {
 
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
-                        null,
-                        null,
-                        null,
-                        Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
-                        null,
-                        null,
-                        null,
-                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller

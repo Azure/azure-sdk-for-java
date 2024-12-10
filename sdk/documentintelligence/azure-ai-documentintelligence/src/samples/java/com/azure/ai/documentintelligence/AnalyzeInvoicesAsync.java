@@ -44,14 +44,7 @@ public class AnalyzeInvoicesAsync {
             + "sample-forms/invoices/sample_invoice.jpg");
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeInvoicePoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoice.toPath()))
+                    new AnalyzeDocumentOptions(Files.readAllBytes(invoice.toPath()))
             );
 
 

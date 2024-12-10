@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,14 +47,9 @@ public class AnalyzeAddOnFonts {
             + "sample-forms/addOns/fonts_and_languages.png");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.STYLE_FONT),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath()))
+                    .setDocumentAnalysisFeatures(Collections.singletonList(DocumentAnalysisFeature.STYLE_FONT)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

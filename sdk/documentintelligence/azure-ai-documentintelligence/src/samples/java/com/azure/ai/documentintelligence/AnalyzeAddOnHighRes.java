@@ -41,14 +41,8 @@ public class AnalyzeAddOnHighRes {
             + "sample-forms/addOns/highres.png");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.OCR_HIGH_RESOLUTION),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.OCR_HIGH_RESOLUTION)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

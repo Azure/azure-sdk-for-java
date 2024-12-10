@@ -15,7 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,14 +41,9 @@ public class AnalyzeAddOnBarcodes {
             + "sample-forms/addOns/barcodes.jpg");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.BARCODES),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(barcodesDocument.toPath())));
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(barcodesDocument.toPath()))
+                    .setDocumentAnalysisFeatures(Collections.singletonList(DocumentAnalysisFeature.BARCODES)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

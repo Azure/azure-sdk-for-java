@@ -4,15 +4,15 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeResult;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
-import com.azure.ai.documentintelligence.models.DocumentContentFormat;
-import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -79,22 +80,18 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
     // Analyze Custom Form
 
     /**
-     * Code snippet for {@link DocumentIntelligenceClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, DocumentContentFormat, AnalyzeDocumentOptions)}
+     * Code snippet for {@link DocumentIntelligenceClient#beginAnalyzeDocument(String, AnalyzeDocumentOptions)}
      */
     public void beginAnalyzeDocumentFromUrl() {
-        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-DocumentContentFormat-AnalyzeDocumentOptions
+        // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-AnalyzeDocumentOptions
         String documentUrl = "{document_url}";
         String modelId = "{custom_trained_model_id}";
 
         documentIntelligenceClient.beginAnalyzeDocument(modelId,
-                "1",
-            "en-US",
-            StringIndexType.TEXT_ELEMENTS,
-            Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-            null,
-            DocumentContentFormat.TEXT,
-                null,
-            new AnalyzeDocumentOptions().setSourceUrl(documentUrl)).getFinalResult()
+            new AnalyzeDocumentOptions(documentUrl).setPages(Arrays.asList("1"))
+                .setLocale("en-US").setStringIndexType(StringIndexType.TEXT_ELEMENTS)
+                .setDocumentAnalysisFeatures(Collections.singletonList(DocumentAnalysisFeature.LANGUAGES))
+                .setOutputContentFormat(DocumentContentFormat.TEXT)).getFinalResult()
             .getDocuments().stream()
             .map(AnalyzedDocument::getFields)
             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
@@ -103,7 +100,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
 
-        // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-DocumentContentFormat-AnalyzeDocumentOptions
+        // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#String-AnalyzeDocumentOptions
     }
 
     /**
@@ -117,7 +114,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         File document = new File("{local/file_path/fileName.jpg}");
         String classifierId = "{custom_trained_classifier_id}";
 
-        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())))
+        documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentOptions(Files.readAllBytes(document.toPath())))
             .getFinalResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocumentType()));
@@ -142,14 +139,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         String documentUrl = "documentUrl";
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller =
             documentIntelligenceClient.beginAnalyzeDocument(modelId,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setSourceUrl(documentUrl));
+                new AnalyzeDocumentOptions(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 

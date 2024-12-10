@@ -41,15 +41,7 @@ public class AnalyzeInvoices {
                                     + "sample-forms/invoices/sample_invoice.jpg");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeInvoicesPoller =
-            client.beginAnalyzeDocument("prebuilt-invoice",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoice.toPath())));
+            client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(Files.readAllBytes(invoice.toPath())));
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 

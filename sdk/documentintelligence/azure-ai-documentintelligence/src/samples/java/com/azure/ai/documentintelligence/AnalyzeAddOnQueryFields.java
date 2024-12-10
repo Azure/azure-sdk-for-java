@@ -38,14 +38,10 @@ public class AnalyzeAddOnQueryFields {
                 + "sample-forms/invoices/Invoice_1.pdf");
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
-                client.beginAnalyzeDocument("prebuilt-layout", null,
-                        null,
-                        null,
-                        Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
-                        Arrays.asList("Address", "InvoiceNumber"),
-                        null,
-                        null,
-                        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(invoiceDocument.toPath())));
+                client.beginAnalyzeDocument("prebuilt-layout",
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath()))
+                            .setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS))
+                            .setQueryFields(Arrays.asList("Address", "InvoiceNumber")));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

@@ -41,14 +41,7 @@ public class AnalyzeReceiptsFromUrl {
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentOptions().setSourceUrl(receiptUrl));
+                new AnalyzeDocumentOptions(receiptUrl));
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 

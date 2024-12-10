@@ -6,11 +6,8 @@ package com.azure.ai.documentintelligence;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
-import com.azure.ai.documentintelligence.models.DocumentContentFormat;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentTable;
-import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -18,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -48,12 +44,7 @@ public class AnalyzeCustomDocumentAsync {
         String modelId = "{modelId}";
         PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller
             = client.beginAnalyzeDocument(modelId,
-            "1",
-            "en-US",
-            StringIndexType.TEXT_ELEMENTS,
-            Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-            null,
-            DocumentContentFormat.TEXT, null, new AnalyzeDocumentOptions().setBytesSource(fileContent));
+                new AnalyzeDocumentOptions(fileContent));
 
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller

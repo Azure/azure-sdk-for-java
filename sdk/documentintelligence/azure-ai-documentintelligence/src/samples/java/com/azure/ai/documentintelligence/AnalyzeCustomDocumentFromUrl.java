@@ -38,14 +38,9 @@ public class AnalyzeCustomDocumentFromUrl {
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
-            "1",
-            "en-US",
-            StringIndexType.TEXT_ELEMENTS,
-            Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-            null,
-            DocumentContentFormat.TEXT,
-            null,
-            new AnalyzeDocumentOptions().setSourceUrl(documentUrl));
+            new AnalyzeDocumentOptions(documentUrl).setPages(Arrays.asList("1"))
+                .setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)).setLocale("en-US")
+                .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setOutputContentFormat(DocumentContentFormat.TEXT));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
