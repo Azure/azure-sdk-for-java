@@ -10,6 +10,10 @@
       "defaultValue": "[substring(uniqueString(parameters('baseName')), 0, 11)]",
       "type": "string"
     },
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
     "testApplicationOid": {
       "type": "String"
     },
@@ -430,6 +434,10 @@
     }
   ],
   "outputs": {
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
     "AZURE_EVENTHUBS_NAMESPACE": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
