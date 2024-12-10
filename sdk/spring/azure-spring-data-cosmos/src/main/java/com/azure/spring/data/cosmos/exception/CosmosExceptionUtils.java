@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.exception;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.springframework.util.ObjectUtils;
@@ -41,39 +42,33 @@ public class CosmosExceptionUtils {
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
 
             switch (cosmosException.getStatusCode()) {
-                case 400 -> throw new CosmosBadRequestException(message, cosmosException);
-                case 409 -> throw new CosmosConflictException(message, cosmosException);
-                case 403 -> throw new CosmosForbiddenException(message, cosmosException);
-                case 410 -> {
+                case Constants.CosmosExceptionStatusCodes.BADREQUEST -> throw new CosmosBadRequestException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.CONFLICT -> throw new CosmosConflictException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.FORBIDDEN -> throw new CosmosForbiddenException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.GONE -> {
                     switch(cosmosException.getSubStatusCode()) {
-                        case 1000 -> throw new CosmosInvalidPartitionException(message, cosmosException);
-                        case 1008 -> throw new CosmosPartitionIsMigratingException(message, cosmosException);
-                        case 1002 -> throw new CosmosPartitionKeyRangeGoneException(message, cosmosException);
-                        case 1007 -> throw new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE -> throw new CosmosInvalidPartitionException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION -> throw new CosmosPartitionIsMigratingException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE -> throw new CosmosPartitionKeyRangeGoneException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE -> throw new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
                         default -> throw new CosmosGoneException(message, cosmosException);
                     }
                 }
-                case 500 -> throw new CosmosInternalServerErrorException(message, cosmosException);
-                case 405 -> throw new CosmosMethodNotAllowedException(message, cosmosException);
-                case 404 -> {
-                    if (((CosmosException) unwrappedThrowable).getSubStatusCode() == 1002) {
-
-                    } else {
-                        throw new CosmosNotFoundException(message, cosmosException);
-                    }
-                }
-                case 408 -> {
-                    if (((CosmosException) unwrappedThrowable).getSubStatusCode() == 20008) {
+                case Constants.CosmosExceptionStatusCodes.INTERNAL_SERVER_ERROR -> throw new CosmosInternalServerErrorException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.METHOD_NOT_ALLOWED -> throw new CosmosMethodNotAllowedException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.NOTFOUND -> throw new CosmosNotFoundException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT -> {
+                    if (((CosmosException) unwrappedThrowable).getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
                         throw new CosmosOperationCancelledException(message, cosmosException);
                     }
                     throw new CosmosRequestTimeoutException(message, cosmosException);
                 }
-                case 412 -> throw new CosmosPreconditionFailedException(message, cosmosException);
-                case 413 -> throw new CosmosRequestEntityTooLargeException(message, cosmosException);
-                case 429 -> throw new CosmosRequestRateTooLargeException(message, cosmosException);
-                case 449 -> throw new CosmosRetryWithException(message, cosmosException);
-                case 503 -> throw new CosmosServiceUnavailableException(message, cosmosException);
-                case 401 -> throw new CosmosUnauthorizedException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.PRECONDITION_FAILED -> throw new CosmosPreconditionFailedException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.REQUEST_ENTITY_TOO_LARGE -> throw new CosmosRequestEntityTooLargeException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.TOO_MANY_REQUESTS -> throw new CosmosRequestRateTooLargeException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.RETRY_WITH -> throw new CosmosRetryWithException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.SERVICE_UNAVAILABLE -> throw new CosmosServiceUnavailableException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.UNAUTHORIZED -> throw new CosmosUnauthorizedException(message, cosmosException);
                 default -> throw new CosmosAccessException(message, cosmosException);
             }
 

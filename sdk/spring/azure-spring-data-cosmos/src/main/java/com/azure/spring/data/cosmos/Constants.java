@@ -91,6 +91,34 @@ public final class Constants {
      */
     public static final String ISO_8601_COMPATIBLE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss:SSSXXX";
 
+    public static class CosmosExceptionStatusCodes {
+        public static final int BADREQUEST = 400;
+        public static final int CONFLICT = 409;
+        public static final int FORBIDDEN = 403;
+        public static final int GONE = 410;
+        public static final int INTERNAL_SERVER_ERROR = 500;
+        public static final int METHOD_NOT_ALLOWED = 405;
+        public static final int NOTFOUND = 404;
+        public static final int REQUEST_TIMEOUT = 408;
+        public static final int PRECONDITION_FAILED = 412;
+        public static final int REQUEST_ENTITY_TOO_LARGE = 413;
+        public static final int TOO_MANY_REQUESTS = 429;
+        public static final int RETRY_WITH = 449;
+        public static final int SERVICE_UNAVAILABLE = 503;
+        public static final int UNAUTHORIZED = 401;
+    }
+
+    public static class CosmosExceptionSubStatusCodes {
+        // For 410 GONE
+        public static final int NAME_CACHE_IS_STALE = 1000;
+        public static final int PARTITION_KEY_RANGE_GONE = 1002;
+        public static final int COMPLETING_SPLIT_OR_MERGE = 1007;
+        public static final int COMPLETING_PARTITION_MIGRATION = 1008;
+
+        // For 408 REQUEST_TIMEOUT
+        public static final int CLIENT_OPERATION_TIMEOUT = 20008;
+    }
+
     private Constants() {
     }
 }

@@ -2,25 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
-import com.azure.cosmos.implementation.BadRequestException;
-import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.implementation.ForbiddenException;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.MethodNotAllowedException;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OperationCancelledException;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.implementation.PreconditionFailedException;
-import com.azure.cosmos.implementation.RequestEntityTooLargeException;
-import com.azure.cosmos.implementation.RequestRateTooLargeException;
-import com.azure.cosmos.implementation.RequestTimeoutException;
-import com.azure.cosmos.implementation.RetryWithException;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
-import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -33,161 +17,166 @@ public class CosmosExceptionUtilsTest {
 
     @Test
     public void testBadRequestException() {
-        BadRequestException badRequestException = new BadRequestException("Bad Request");
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.BADREQUEST, "Bad Request");
         assertThrows(CosmosBadRequestException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Bad Request", badRequestException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Bad Request", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testConflictException() {
-        ConflictException conflictException = new ConflictException("Conflict Exception", null, null);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.CONFLICT, "Conflict Exception");
         assertThrows(CosmosConflictException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Conflict", conflictException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Conflict", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testForbiddenException() {
-        ForbiddenException forbiddenException = new ForbiddenException("Forbidden", null, null);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.FORBIDDEN, "Forbidden Exception");
         assertThrows(CosmosForbiddenException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Forbidden", forbiddenException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Frobidden", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testGoneException() {
-        GoneException goneException = new GoneException("Gone");
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.GONE, "Gone Exception");
         assertThrows(CosmosGoneException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Gone", goneException, responseDiagnosticsProcessor).block();
-        });
-    }
-
-    @Test
-    public void testInternalServerErrorException() {
-        InternalServerErrorException internalServerErrorException = new InternalServerErrorException("Internal Server Error", 500);
-        assertThrows(CosmosInternalServerErrorException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Internal Server Error", internalServerErrorException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Gone", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testInvalidPartitionException() {
-        InvalidPartitionException invalidPartitionException = new InvalidPartitionException("Invalid Partition");
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.GONE, "Invalid Partition Exception");
+        BridgeInternal.setSubStatusCode(cosmosException, Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE);
         assertThrows(CosmosInvalidPartitionException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Invalid Partition", invalidPartitionException, responseDiagnosticsProcessor).block();
-        });
-    }
-
-    @Test
-    public void testMethodNotAllowedException() {
-        MethodNotAllowedException methodNotAllowedException = new MethodNotAllowedException("Method Not Allowed", null, null, null);
-        assertThrows(CosmosMethodNotAllowedException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Method Not Allowed", methodNotAllowedException, responseDiagnosticsProcessor).block();
-        });
-    }
-
-    @Test
-    public void testNotFoundException() {
-        NotFoundException notFoundException = new NotFoundException("Not Found");
-        assertThrows(CosmosNotFoundException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Not Found", notFoundException, responseDiagnosticsProcessor).block();
-        });
-    }
-
-    @Test
-    public void testOperationCancelledException() {
-        OperationCancelledException operationCancelledException = new OperationCancelledException();
-        assertThrows(CosmosOperationCancelledException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Operation Cancelled", operationCancelledException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Invalid Partition", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testPartitionIsMigratingException() {
-        PartitionIsMigratingException partitionIsMigratingException = new PartitionIsMigratingException();
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.GONE, "Partition is Migrating Exception");
+        BridgeInternal.setSubStatusCode(cosmosException, Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION);
         assertThrows(CosmosPartitionIsMigratingException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Partition Is Migrating", partitionIsMigratingException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Partition is Migrating", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testPartitionKeyRangeGoneException() {
-        PartitionKeyRangeGoneException partitionKeyRangeGoneException = new PartitionKeyRangeGoneException();
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.GONE, "Partition Key Range Gone Exception");
+        BridgeInternal.setSubStatusCode(cosmosException, Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE);
         assertThrows(CosmosPartitionKeyRangeGoneException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Partition Key Range Gone", partitionKeyRangeGoneException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Partition Key Range Gone", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testPartitionKeyRangeIsSplittingException() {
-        PartitionKeyRangeIsSplittingException partitionKeyRangeIsSplittingException = new PartitionKeyRangeIsSplittingException();
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.GONE, "Partition Key Range is Splitting Exception");
+        BridgeInternal.setSubStatusCode(cosmosException, Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
         assertThrows(CosmosPartitionKeyRangeIsSplittingException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Partition Key Range Is Splitting", partitionKeyRangeIsSplittingException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Partition Key Range is Splitting", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
-    public void testPreconditionFailedException() {
-        PreconditionFailedException preconditionFailedException = new PreconditionFailedException("Precondition Failed", null, null);
-        assertThrows(CosmosPreconditionFailedException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Precondition Failed", preconditionFailedException, responseDiagnosticsProcessor).block();
+    public void testInternalServerErrorException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.INTERNAL_SERVER_ERROR, "Internal Server Error Exception");
+        assertThrows(CosmosInternalServerErrorException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Internal Server Error", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
-    public void testRequestEntityTooLargeException() {
-        RequestEntityTooLargeException requestEntityTooLargeException = new RequestEntityTooLargeException("Request Entity Too Large", null, null);
-        assertThrows(CosmosRequestEntityTooLargeException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Request Entity Too Large", requestEntityTooLargeException, responseDiagnosticsProcessor).block();
+    public void testMethodNotAllowedException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.METHOD_NOT_ALLOWED, "Method Not Allowed Exception");
+        assertThrows(CosmosMethodNotAllowedException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Method Not Allowed", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
-    public void testRequestRateTooLargeException() {
-        RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
-        assertThrows(CosmosRequestRateTooLargeException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Request Rate Too Large", requestRateTooLargeException, responseDiagnosticsProcessor).block();
+    public void testNotFoundException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.NOTFOUND, "Not Found Exception");
+        assertThrows(CosmosNotFoundException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Not Found Allowed", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testRequestTimeoutException() {
-        RequestTimeoutException requestTimeoutException = new RequestTimeoutException();
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT, "Request Timeout Exception");
         assertThrows(CosmosRequestTimeoutException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Request Timeout", requestTimeoutException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Request Timeout", cosmosException, responseDiagnosticsProcessor).block();
+        });
+    }
+
+    @Test
+    public void testOperationCancelledException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT, "Request Timeout Exception");
+        BridgeInternal.setSubStatusCode(cosmosException, Constants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+        assertThrows(CosmosOperationCancelledException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Operation Cancelled", cosmosException, responseDiagnosticsProcessor).block();
+        });
+    }
+
+    @Test
+    public void testPreconditionFailedException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.PRECONDITION_FAILED, "Precondition Failed Exception");
+        assertThrows(CosmosPreconditionFailedException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Precondition Failed", cosmosException, responseDiagnosticsProcessor).block();
+        });
+    }
+
+    @Test
+    public void testRequestEntityTooLargeException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.REQUEST_ENTITY_TOO_LARGE, "Request Entity Too Large Exception");
+        assertThrows(CosmosRequestEntityTooLargeException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Request Entity Too Large", cosmosException, responseDiagnosticsProcessor).block();
+        });
+    }
+
+    @Test
+    public void testRequestRateTooLargeException() {
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.TOO_MANY_REQUESTS, "Request Rate Too Large Exception");
+        assertThrows(CosmosRequestRateTooLargeException.class, () -> {
+            CosmosExceptionUtils.exceptionHandler("Request Rate Too Large", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testRetryWithException() {
-        RetryWithException retryWithException = new RetryWithException("Retry With", null, null);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.RETRY_WITH, "Retry With Exception");
         assertThrows(CosmosRetryWithException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Retry With", retryWithException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Retry With", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testServiceUnavailableException() {
-        ServiceUnavailableException serviceUnavailableException = new ServiceUnavailableException("Service Unavailable", null, null, 503);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.SERVICE_UNAVAILABLE, "Service Unavailable Exception");
         assertThrows(CosmosServiceUnavailableException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Service Unavailable", serviceUnavailableException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Service Unavailable", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testUnauthorizedException() {
-        UnauthorizedException unauthorizedException = new UnauthorizedException("Unauthorized", null, null);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(Constants.CosmosExceptionStatusCodes.UNAUTHORIZED, "Unauthorized Exception");
         assertThrows(CosmosUnauthorizedException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Unauthorized", unauthorizedException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Unauthorized", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 
     @Test
     public void testDefaultException() {
-        OperationCancelledException operationCancelledException = new OperationCancelledException();
+        CosmosException cosmosException = BridgeInternal.createCosmosException(999, "Random Exception");
         assertThrows(CosmosAccessException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Random Cosmos Exception", operationCancelledException, responseDiagnosticsProcessor).block();
+            CosmosExceptionUtils.exceptionHandler("Random", cosmosException, responseDiagnosticsProcessor).block();
         });
     }
 }
