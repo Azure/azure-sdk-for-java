@@ -25,22 +25,16 @@ title: RenderClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/stable/2024-04-01/render.json
 namespace: com.azure.maps.render
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
-payload-flattening-threshold: 0
-add-context-parameter: true
-context-client-method-parameter: true
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,LocalizedMapView,MapImageStyle,RasterTileFormat,StaticMapLayer,MapTileSize,TileIndex,TilesetID,Copyright,CopyrightCaption,MapAttribution,RegionCopyrights,RegionCopyrightsCountry,MapTileset
 customization-class: src/main/java/RenderCustomization.java
-generic-response-type: true
-no-custom-headers: true
 modelerfour:
   additional-checks: false
   lenient-model-deduplication: true

@@ -4,6 +4,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -11,7 +12,6 @@ import com.azure.json.JsonWriter;
 import com.azure.maps.route.implementation.models.LatLongPair;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * A set of attributes describing a maneuver, e.g. 'Turn right', 'Keep left', 'Take the ferry', 'Take the motorway',
@@ -46,12 +46,14 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
     private GuidanceInstructionType instructionType;
 
     /*
-     * The road number(s) of the next significant road segment(s) after the maneuver, or of the road(s) to be followed. Example: ["E34", "N205"]
+     * The road number(s) of the next significant road segment(s) after the maneuver, or of the road(s) to be followed.
+     * Example: ["E34", "N205"]
      */
     private List<String> roadNumbers;
 
     /*
-     * The number(s) of a highway exit taken by the current maneuver. If an exit has multiple exit numbers, they will be separated by "," and possibly aggregated by "-", e.g., "10, 13-15".
+     * The number(s) of a highway exit taken by the current maneuver. If an exit has multiple exit numbers, they will be
+     * separated by "," and possibly aggregated by "-", e.g., "10, 13-15".
      */
     private String exitNumber;
 
@@ -71,27 +73,30 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
     private String countryCode;
 
     /*
-     * A subdivision (e.g., state) of the country, represented by the second part of an [ISO 3166-2](https://www.iso.org/standard/63546.html) code. This is only available for some countries/regions like the US, Canada, and Mexico.
+     * A subdivision (e.g., state) of the country, represented by the second part of an [ISO
+     * 3166-2](https://www.iso.org/standard/63546.html) code. This is only available for some countries/regions like the
+     * US, Canada, and Mexico.
      */
     private String stateCode;
 
     /*
-     * The type of the junction where the maneuver takes place. For larger roundabouts, two separate instructions are generated for entering and leaving the roundabout.
+     * The type of the junction where the maneuver takes place. For larger roundabouts, two separate instructions are
+     * generated for entering and leaving the roundabout.
      */
     private JunctionType junctionType;
 
     /*
      * Indicates the direction of an instruction. If junctionType indicates a turn instruction:
      * 
-     *   * 180 = U-turn
-     *   * [-179, -1] = Left turn
-     *   * 0 = Straight on (a '0 degree' turn)
-     *   * [1, 179] = Right turn
+     * * 180 = U-turn
+     * * [-179, -1] = Left turn
+     * * 0 = Straight on (a '0 degree' turn)
+     * * [1, 179] = Right turn
      * 
      * If junctionType indicates a bifurcation instruction:
      * 
-     *   * <0 - keep left
-     *   * \>0 - keep right
+     * * <0 - keep left
+     * * \>0 - keep right
      */
     private Integer turnAngleInDegrees;
 
@@ -101,7 +106,8 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
     private Long roundaboutExitNumber;
 
     /*
-     * It is possible to optionally combine the instruction with the next one. This can be used to build messages like "Turn left and then turn right".
+     * It is possible to optionally combine the instruction with the next one. This can be used to build messages like
+     * "Turn left and then turn right".
      */
     private Boolean possibleCombineWithNext;
 
@@ -121,14 +127,18 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
     private String message;
 
     /*
-     * A human-readable message for the maneuver combined with the message from the next instruction. Sometimes it is possible to combine two successive instructions into a single instruction making it easier to follow. When this is the case the possibleCombineWithNext flag will be true. For example:
+     * A human-readable message for the maneuver combined with the message from the next instruction. Sometimes it is
+     * possible to combine two successive instructions into a single instruction making it easier to follow. When this
+     * is the case the possibleCombineWithNext flag will be true. For example:
      * 
      * ```
      * 10. Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
      * 11. Follow Einsteinweg/A10/E22 towards Ring Amsterdam
      * ```
      * 
-     * The possibleCombineWithNext flag on instruction 10 is true. This indicates to the clients of coded guidance that it can be combined with instruction 11. The instructions will be combined automatically for clients requesting human-readable guidance. The combinedMessage field contains the combined message:
+     * The possibleCombineWithNext flag on instruction 10 is true. This indicates to the clients of coded guidance that
+     * it can be combined with instruction 11. The instructions will be combined automatically for clients requesting
+     * human-readable guidance. The combinedMessage field contains the combined message:
      * 
      * ```
      * Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam

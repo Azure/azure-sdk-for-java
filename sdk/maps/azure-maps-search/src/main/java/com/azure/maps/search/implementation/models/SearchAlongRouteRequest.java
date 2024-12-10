@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class SearchAlongRouteRequest implements JsonSerializable<SearchAlongRouteRequest> {
     /*
-     * A valid `GeoJSON LineString` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
+     * A valid `GeoJSON LineString` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
      */
     private GeoJsonLineString route;
 

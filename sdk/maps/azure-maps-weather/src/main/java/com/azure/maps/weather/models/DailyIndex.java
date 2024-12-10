@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,9 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
     private String indexName;
 
     /*
-     * Numeric ID used to identify the specific index. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details and to see the supported index IDs. For example, the index ID can support UI visualization scenarios.
+     * Numeric ID used to identify the specific index. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details and to see the supported
+     * index IDs. For example, the index ID can support UI visualization scenarios.
      */
     private Integer indexId;
 
@@ -34,27 +37,36 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
     private OffsetDateTime dateTime;
 
     /*
-     * Index value. Ranges from 0.0 to 10.0. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details and to see the supported ranges.
+     * Index value. Ranges from 0.0 to 10.0. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details and to see the supported
+     * ranges.
      */
     private Float value;
 
     /*
-     * Textual description for `categoryValue` corresponding to the level that the index value falls under, for example "Very Good".
+     * Textual description for `categoryValue` corresponding to the level that the index value falls under, for example
+     * "Very Good".
      */
     private String categoryDescription;
 
     /*
-     * Level that the index value falls under, represented by an integer. This value can be 1 through 5 and should be used in combination with the `ascending` flag because it can differ among indices. For example, the following values apply for Mosquito Activity: Low=1, Moderate=2, High=3, Very High=4, and Extreme=5.
+     * Level that the index value falls under, represented by an integer. This value can be 1 through 5 and should be
+     * used in combination with the `ascending` flag because it can differ among indices. For example, the following
+     * values apply for Mosquito Activity: Low=1, Moderate=2, High=3, Very High=4, and Extreme=5.
      */
     private Integer categoryValue;
 
     /*
-     * Describes the direction of the `value` and `categoryValue`. For example, when set to `true`, the poorest index value is 0 and the best index value is 10. When set to `true`, the poorest index value is 10 and the best index value is 0.
+     * Describes the direction of the `value` and `categoryValue`. For example, when set to `true`, the poorest index
+     * value is 0 and the best index value is 10. When set to `true`, the poorest index value is 10 and the best index
+     * value is 0.
      */
     private Boolean isAscending;
 
     /*
-     * A textual explanation that can be used for display purposes to summarize the index value and category. For example, when the index value for Flight Delays is very good, the description will be "Conditions are excellent for flying!".
+     * A textual explanation that can be used for display purposes to summarize the index value and category. For
+     * example, when the index value for Flight Delays is very good, the description will be
+     * "Conditions are excellent for flying!".
      */
     private String description;
 
@@ -186,8 +198,8 @@ public final class DailyIndex implements JsonSerializable<DailyIndex> {
                 } else if ("indexId".equals(fieldName)) {
                     deserializedDailyIndex.indexId = reader.getNullable(JsonReader::getInt);
                 } else if ("dateTime".equals(fieldName)) {
-                    deserializedDailyIndex.dateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyIndex.dateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("value".equals(fieldName)) {
                     deserializedDailyIndex.value = reader.getNullable(JsonReader::getFloat);
                 } else if ("category".equals(fieldName)) {

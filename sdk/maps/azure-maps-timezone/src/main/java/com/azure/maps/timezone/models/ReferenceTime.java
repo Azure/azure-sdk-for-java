@@ -4,6 +4,7 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +20,8 @@ import java.time.ZoneOffset;
 public final class ReferenceTime implements JsonSerializable<ReferenceTime> {
 
     /*
-     * Time zone name in effect at the reference timestamp (i.e. PST or PDT depending whether Daylight Savings Time is in effect).
+     * Time zone name in effect at the reference timestamp (i.e. PST or PDT depending whether Daylight Savings Time is
+     * in effect).
      */
     private String tag;
 
@@ -49,12 +51,18 @@ public final class ReferenceTime implements JsonSerializable<ReferenceTime> {
     private String posixTz;
 
     /*
-     * Sunrise at the given time zone as shown in the `Tag` property. The sunrise is described in the ISO8601 format. (Only be populated if the call is byCoordinates)
+     * Sunrise at the given time zone as shown in the `Tag` property, populated only when the call is `byCoordinates`.
+     * The sunrise is described in the [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. Note
+     * that the Timezone API does not return sunrise and sunset times when solar day is observed in the requested
+     * region.
      */
     private OffsetDateTime sunrise;
 
     /*
-     * Sunset at the given time zone as shown in the `Tag` property. The sunset is described in the ISO8601 format.(Only be populated if the call is byCoordinates)
+     * Sunset at the given time zone as shown in the `Tag` property, populated only when the call is `byCoordinates`.
+     * The sunset is described in the [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. Note
+     * that the Timezone API does not return sunrise and sunset times when solar day is observed in the requested
+     * region.
      */
     private OffsetDateTime sunset;
 
@@ -128,8 +136,10 @@ public final class ReferenceTime implements JsonSerializable<ReferenceTime> {
     }
 
     /**
-     * Get the sunrise property: Sunrise at the given time zone as shown in the `Tag` property. The sunrise is described
-     * in the ISO8601 format. (Only be populated if the call is byCoordinates).
+     * Get the sunrise property: Sunrise at the given time zone as shown in the `Tag` property, populated only when the
+     * call is `byCoordinates`. The sunrise is described in the [ISO
+     * 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. Note that the Timezone API does not return
+     * sunrise and sunset times when solar day is observed in the requested region.
      *
      * @return the sunrise value.
      */
@@ -138,8 +148,10 @@ public final class ReferenceTime implements JsonSerializable<ReferenceTime> {
     }
 
     /**
-     * Get the sunset property: Sunset at the given time zone as shown in the `Tag` property. The sunset is described in
-     * the ISO8601 format.(Only be populated if the call is byCoordinates).
+     * Get the sunset property: Sunset at the given time zone as shown in the `Tag` property, populated only when the
+     * call is `byCoordinates`. The sunset is described in the [ISO
+     * 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. Note that the Timezone API does not return
+     * sunrise and sunset times when solar day is observed in the requested region.
      *
      * @return the sunset value.
      */
@@ -183,11 +195,11 @@ public final class ReferenceTime implements JsonSerializable<ReferenceTime> {
                 } else if ("PosixTz".equals(fieldName)) {
                     deserializedReferenceTime.posixTz = reader.getString();
                 } else if ("Sunrise".equals(fieldName)) {
-                    deserializedReferenceTime.sunrise
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedReferenceTime.sunrise = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("Sunset".equals(fieldName)) {
-                    deserializedReferenceTime.sunset
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedReferenceTime.sunset = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

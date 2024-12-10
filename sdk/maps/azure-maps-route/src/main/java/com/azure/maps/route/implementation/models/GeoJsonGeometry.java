@@ -18,9 +18,10 @@ import java.io.IOException;
 @Immutable
 public class GeoJsonGeometry extends GeoJsonObject {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
-    private GeoJsonObjectType type = GeoJsonObjectType.fromString("GeoJsonGeometry");
+    private GeoJsonObjectType type;
 
     /**
      * Creates an instance of GeoJsonGeometry class.

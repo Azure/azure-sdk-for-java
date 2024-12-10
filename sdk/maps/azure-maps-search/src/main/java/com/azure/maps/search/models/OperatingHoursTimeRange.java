@@ -19,12 +19,14 @@ import java.time.LocalDateTime;
 public final class OperatingHoursTimeRange implements JsonSerializable<OperatingHoursTimeRange> {
 
     /*
-     * The point in the next 7 days range when a given POI is being opened, or the beginning of the range if it was opened before the range.
+     * The point in the next 7 days range when a given POI is being opened, or the beginning of the range if it was
+     * opened before the range.
      */
     private OperatingHoursTime startTime;
 
     /*
-     * The point in the next 7 days range when a given POI is being closed, or the beginning of the range if it was closed before the range.
+     * The point in the next 7 days range when a given POI is being closed, or the beginning of the range if it was
+     * closed before the range.
      */
     private OperatingHoursTime endTime;
 

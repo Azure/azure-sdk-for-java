@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for TimezoneOptions.
+ * Defines values for TimeZoneOptions.
  */
 public final class TimeZoneOptions extends ExpandableStringEnum<TimeZoneOptions> {
     /**
@@ -32,7 +32,7 @@ public final class TimeZoneOptions extends ExpandableStringEnum<TimeZoneOptions>
     public static final TimeZoneOptions ALL = fromString("all");
 
     /**
-     * Creates a new instance of TimezoneOptions value.
+     * Creates a new instance of TimeZoneOptions value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -41,19 +41,19 @@ public final class TimeZoneOptions extends ExpandableStringEnum<TimeZoneOptions>
     }
 
     /**
-     * Creates or finds a TimezoneOptions from its string representation.
+     * Creates or finds a TimeZoneOptions from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding TimezoneOptions.
+     * @return the corresponding TimeZoneOptions.
      */
     public static TimeZoneOptions fromString(String name) {
         return fromString(name, TimeZoneOptions.class);
     }
 
     /**
-     * Gets known TimezoneOptions values.
+     * Gets known TimeZoneOptions values.
      * 
-     * @return known TimezoneOptions values.
+     * @return known TimeZoneOptions values.
      */
     public static Collection<TimeZoneOptions> values() {
         return values(TimeZoneOptions.class);

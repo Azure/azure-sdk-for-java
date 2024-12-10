@@ -23,6 +23,11 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
      */
     private List<RouteDirectionsBatchItem> batchItems;
 
+    /*
+     * Summary of the results for the batch request
+     */
+    private BatchResultSummary batchSummary;
+
     /**
      * Creates an instance of RouteDirectionsBatchResultPrivate class.
      */
@@ -36,6 +41,16 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
      */
     public List<RouteDirectionsBatchItem> getBatchItems() {
         return this.batchItems;
+    }
+
+    /**
+     * Get the batchSummary property: Summary of the results for the batch request.
+     * 
+     * @return the batchSummary value.
+     */
+    @Override
+    public BatchResultSummary getBatchSummary() {
+        return this.batchSummary;
     }
 
     /**
@@ -64,7 +79,7 @@ public final class RouteDirectionsBatchResultPrivate extends BatchResult {
                 reader.nextToken();
 
                 if ("summary".equals(fieldName)) {
-                    deserializedRouteDirectionsBatchResultPrivate.setBatchSummary(BatchResultSummary.fromJson(reader));
+                    deserializedRouteDirectionsBatchResultPrivate.batchSummary = BatchResultSummary.fromJson(reader);
                 } else if ("batchItems".equals(fieldName)) {
                     List<RouteDirectionsBatchItem> batchItems
                         = reader.readArray(reader1 -> RouteDirectionsBatchItem.fromJson(reader1));

@@ -8,9 +8,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.search.implementation.helpers.ReverseSearchAddressResultPropertiesHelper;
 import java.io.IOException;
 import java.util.List;
-import com.azure.maps.search.implementation.helpers.ReverseSearchAddressResultPropertiesHelper;
 
 /**
  * This object is returned from a successful Search Address Reverse call.

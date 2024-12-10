@@ -46,18 +46,6 @@ public class RouteCustomization extends Customization {
         // customize route directions batch item response
         customizeRouteDirectionsBatchItemResponse(models);
 
-        // customize response section type
-        customizeResponseSectionType(models);
-
-        // customize response travel mode
-        customizeResponseTravelMode(models);
-
-        // customize route
-        customizeRoute(models);
-
-        // customize simple category
-        customizeSimpleCategory(models);
-
         // customize route summary
         customizeRouteSummary(models);
 
@@ -205,26 +193,6 @@ public class RouteCustomization extends Customization {
                         .addBlockTag("return", "the RouteDirectionsBatchItemResponse object itself."));
             });
         });
-    }
-
-    // Customizes the ResponseSectionType class by changing the class name
-    private void customizeResponseSectionType(PackageCustomization models) {
-        models.getClass("ResponseSectionType").rename("RouteSectionType");
-    }
-
-    // Customizes the ResponseTravelMode class by changing the class name
-    private void customizeResponseTravelMode(PackageCustomization models) {
-        models.getClass("ResponseTravelMode").rename("RouteTravelMode");
-    }
-
-    // Customizes the Route class by changing the class name
-    private void customizeRoute(PackageCustomization models) {
-        models.getClass("Route").rename("MapsSearchRoute");
-    }
-
-    // Customizes the SimpleCategory class by changing the class name
-    private void customizeSimpleCategory(PackageCustomization models) {
-        models.getClass("SimpleCategory").rename("RouteDelayReason");
     }
 
     // Customizes the RouteReport class

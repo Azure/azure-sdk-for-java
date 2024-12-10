@@ -4,73 +4,106 @@
 
 package com.azure.maps.weather.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.util.ExpandableEnum;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Defines values for DailyDuration.
  */
-public final class DailyDuration extends ExpandableStringEnum<DailyDuration> {
+public final class DailyDuration implements ExpandableEnum<Integer> {
+    private static final Map<Integer, DailyDuration> VALUES = new ConcurrentHashMap<>();
+
     /**
      * 1 day.
      */
-    public static final DailyDuration ONE_DAY = fromInt(1);
+    public static final DailyDuration ONE_DAY = fromValue(1);
 
     /**
      * 2 days.
      */
-    public static final DailyDuration TWO_DAYS = fromInt(2);
+    public static final DailyDuration TWO_DAYS = fromValue(2);
 
     /**
      * 3 days.
      */
-    public static final DailyDuration THREE_DAYS = fromInt(3);
+    public static final DailyDuration THREE_DAYS = fromValue(3);
 
     /**
      * 4 days.
      */
-    public static final DailyDuration FOUR_DAYS = fromInt(4);
+    public static final DailyDuration FOUR_DAYS = fromValue(4);
 
     /**
      * 5 days.
      */
-    public static final DailyDuration FIVE_DAYS = fromInt(5);
+    public static final DailyDuration FIVE_DAYS = fromValue(5);
 
     /**
      * 6 days.
      */
-    public static final DailyDuration SIX_DAYS = fromInt(6);
+    public static final DailyDuration SIX_DAYS = fromValue(6);
 
     /**
      * 7 days.
      */
-    public static final DailyDuration SEVEN_DAYS = fromInt(7);
+    public static final DailyDuration SEVEN_DAYS = fromValue(7);
 
-    /**
-     * Creates a new instance of DailyDuration value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public DailyDuration() {
+    private final Integer value;
+
+    private DailyDuration(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DailyDuration from its string representation.
+     * Creates or finds a DailyDuration.
      * 
-     * @param name a name to look for.
+     * @param value a value to look for.
      * @return the corresponding DailyDuration.
      */
-    public static DailyDuration fromInt(int name) {
-        return fromString(String.valueOf(name), DailyDuration.class);
+    public static DailyDuration fromValue(Integer value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        DailyDuration member = VALUES.get(value);
+        if (member != null) {
+            return member;
+        }
+        return VALUES.computeIfAbsent(value, key -> new DailyDuration(key));
     }
 
     /**
      * Gets known DailyDuration values.
      * 
-     * @return known DailyDuration values.
+     * @return Known DailyDuration values.
      */
     public static Collection<DailyDuration> values() {
-        return values(DailyDuration.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the DailyDuration instance.
+     * 
+     * @return the value of the DailyDuration instance.
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return Objects.equals(this.value, obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

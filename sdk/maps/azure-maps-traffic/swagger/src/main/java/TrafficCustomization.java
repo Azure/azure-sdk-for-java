@@ -1,4 +1,3 @@
-import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
@@ -20,9 +19,6 @@ public class TrafficCustomization extends Customization {
 
         // customize TrafficIncidentViewport
         customizeTrafficIncidentViewport(models);
-
-        // customize TrafficIncidentViewportViewpResp
-        customizeTrafficIncidentViewportViewpResp(models);
 
         // customize Point
         customizePoint(models);
@@ -84,11 +80,6 @@ public class TrafficCustomization extends Customization {
 
                 clazz.getMethodsByName("getViewpResp").get(0).setName("getViewportResponse");
             }));
-    }
-
-    // Customizes the TrafficIncidentViewportResponse class
-    private void customizeTrafficIncidentViewportViewpResp(PackageCustomization models) {
-        models.getClass("TrafficIncidentViewportViewpResp").rename("TrafficIncidentViewportResponse");
     }
 
      // Customizes the Point class
@@ -232,7 +223,7 @@ public class TrafficCustomization extends Customization {
 
      // Customizes the TrafficIncidentViewport class
      private void customizeTrafficIncidentViewportResponse(PackageCustomization models) {
-        models.getClass("TrafficIncidentViewportResponse").customizeAst(ast ->
+         models.getClass("TrafficIncidentViewportViewpResp").rename("TrafficIncidentViewportResponse").customizeAst(ast ->
             ast.getClassByName("TrafficIncidentViewportResponse").ifPresent(clazz ->
                 clazz.getConstructors().get(0)
                     .setModifiers(Modifier.Keyword.PRIVATE)

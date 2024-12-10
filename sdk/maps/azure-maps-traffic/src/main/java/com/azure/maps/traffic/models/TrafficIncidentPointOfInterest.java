@@ -4,6 +4,7 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,12 +24,15 @@ public final class TrafficIncidentPointOfInterest implements JsonSerializable<Tr
     private String id;
 
     /*
-     * The point where an icon of the cluster or raw incident should be drawn, expressed in the requested projection. This is affected by traffic style, zoom level and road type
+     * The point where an icon of the cluster or raw incident should be drawn, expressed in the requested projection.
+     * This is affected by traffic style, zoom level and road type
      */
     private MapsPoint point;
 
     /*
-     * The icon category associated with this incident. Values are numbers in the range 0-13, with the following meanings -- 0: Unknown, 1: Accident, 2: Fog, 3: Dangerous Conditions, 4: Rain, 5: Ice, 6: Jam, 7: Lane Closed, 8: Road Closed, 9: Road Works, 10: Wind, 11: Flooding, 12: Detour, 13: Cluster
+     * The icon category associated with this incident. Values are numbers in the range 0-13, with the following
+     * meanings -- 0: Unknown, 1: Accident, 2: Fog, 3: Dangerous Conditions, 4: Rain, 5: Ice, 6: Jam, 7: Lane Closed, 8:
+     * Road Closed, 9: Road Works, 10: Wind, 11: Flooding, 12: Detour, 13: Cluster
      */
     private IconCategory iconCategory;
 
@@ -285,10 +289,10 @@ public final class TrafficIncidentPointOfInterest implements JsonSerializable<Tr
                 } else if ("p".equals(fieldName)) {
                     deserializedTrafficIncidentPointOfInterest.point = MapsPoint.fromJson(reader);
                 } else if ("ic".equals(fieldName)) {
-                    deserializedTrafficIncidentPointOfInterest.iconCategory = IconCategory.fromInt(reader.getInt());
+                    deserializedTrafficIncidentPointOfInterest.iconCategory = IconCategory.fromValue(reader.getInt());
                 } else if ("ty".equals(fieldName)) {
                     deserializedTrafficIncidentPointOfInterest.magnitudeOfDelay
-                        = DelayMagnitude.fromInt(reader.getInt());
+                        = DelayMagnitude.fromValue(reader.getInt());
                 } else if ("cbl".equals(fieldName)) {
                     deserializedTrafficIncidentPointOfInterest.bottomLeftCoordinate = MapsPoint.fromJson(reader);
                 } else if ("ctr".equals(fieldName)) {
@@ -300,11 +304,11 @@ public final class TrafficIncidentPointOfInterest implements JsonSerializable<Tr
                 } else if ("r".equals(fieldName)) {
                     deserializedTrafficIncidentPointOfInterest.roadNumbers = reader.getString();
                 } else if ("sd".equals(fieldName)) {
-                    deserializedTrafficIncidentPointOfInterest.startDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTrafficIncidentPointOfInterest.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("ed".equals(fieldName)) {
-                    deserializedTrafficIncidentPointOfInterest.endDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTrafficIncidentPointOfInterest.endDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dl".equals(fieldName)) {
                     deserializedTrafficIncidentPointOfInterest.delayInSeconds = reader.getNullable(JsonReader::getInt);
                 } else if ("t".equals(fieldName)) {

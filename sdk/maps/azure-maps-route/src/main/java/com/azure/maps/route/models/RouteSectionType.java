@@ -72,7 +72,7 @@ public final class RouteSectionType extends ExpandableStringEnum<RouteSectionTyp
     public static final RouteSectionType URBAN = fromString("URBAN");
 
     /**
-     * Creates a new instance of ResponseSectionType value.
+     * Creates a new instance of RouteSectionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -81,19 +81,19 @@ public final class RouteSectionType extends ExpandableStringEnum<RouteSectionTyp
     }
 
     /**
-     * Creates or finds a ResponseSectionType from its string representation.
+     * Creates or finds a RouteSectionType from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding ResponseSectionType.
+     * @return the corresponding RouteSectionType.
      */
     public static RouteSectionType fromString(String name) {
         return fromString(name, RouteSectionType.class);
     }
 
     /**
-     * Gets known ResponseSectionType values.
+     * Gets known RouteSectionType values.
      * 
-     * @return known ResponseSectionType values.
+     * @return known RouteSectionType values.
      */
     public static Collection<RouteSectionType> values() {
         return values(RouteSectionType.class);

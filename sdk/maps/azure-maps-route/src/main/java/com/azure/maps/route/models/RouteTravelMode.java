@@ -58,7 +58,7 @@ public final class RouteTravelMode extends ExpandableStringEnum<RouteTravelMode>
     public static final RouteTravelMode OTHER = fromString("other");
 
     /**
-     * Creates a new instance of ResponseTravelMode value.
+     * Creates a new instance of RouteTravelMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -67,19 +67,19 @@ public final class RouteTravelMode extends ExpandableStringEnum<RouteTravelMode>
     }
 
     /**
-     * Creates or finds a ResponseTravelMode from its string representation.
+     * Creates or finds a RouteTravelMode from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding ResponseTravelMode.
+     * @return the corresponding RouteTravelMode.
      */
     public static RouteTravelMode fromString(String name) {
         return fromString(name, RouteTravelMode.class);
     }
 
     /**
-     * Gets known ResponseTravelMode values.
+     * Gets known RouteTravelMode values.
      * 
-     * @return known ResponseTravelMode values.
+     * @return known RouteTravelMode values.
      */
     public static Collection<RouteTravelMode> values() {
         return values(RouteTravelMode.class);

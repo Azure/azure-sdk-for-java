@@ -18,7 +18,8 @@ import java.util.List;
 @Immutable
 public final class PointOfInterestCategory implements JsonSerializable<PointOfInterestCategory> {
     /*
-     * Unique ID for the category. ID can be used to restrict search results to specific categories through other Search Service APIs, like [Get Search POI](/rest/api/maps/search/get-search-poi?view=rest-maps-1.0).
+     * Unique ID for the category. ID can be used to restrict search results to specific categories through other Search
+     * Service APIs, like [Get Search POI](/rest/api/maps/search/get-search-poi?view=rest-maps-1.0).
      */
     private Integer id;
 
