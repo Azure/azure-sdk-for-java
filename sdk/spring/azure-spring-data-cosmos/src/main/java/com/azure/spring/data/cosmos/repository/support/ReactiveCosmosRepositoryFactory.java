@@ -54,6 +54,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
         QueryLookupStrategy.Key key,
         QueryMethodEvaluationContextProvider evaluationContextProvider) {
@@ -61,6 +62,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
             evaluationContextProvider));
     }
 
+    @SuppressWarnings("deprecation")
     private static class ReactiveCosmosQueryLookupStrategy implements QueryLookupStrategy {
         private final ReactiveCosmosOperations cosmosOperations;
 
