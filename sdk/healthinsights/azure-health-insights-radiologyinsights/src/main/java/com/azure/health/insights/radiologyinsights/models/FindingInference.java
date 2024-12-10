@@ -61,23 +61,6 @@ public final class FindingInference extends RadiologyInsightsInference {
         return this.finding;
     }
 
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -120,7 +103,7 @@ public final class FindingInference extends RadiologyInsightsInference {
                 }
             }
             FindingInference deserializedFindingInference = new FindingInference(finding);
-            deserializedFindingInference.extension = extension;
+            deserializedFindingInference.setExtension(extension);
             deserializedFindingInference.kind = kind;
             return deserializedFindingInference;
         });
