@@ -38,7 +38,8 @@ public class SecretItem implements JsonSerializable<SecretItem> {
     private String contentType;
 
     /*
-     * True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
+     * True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
+     * be true.
      */
     private Boolean managed;
 
