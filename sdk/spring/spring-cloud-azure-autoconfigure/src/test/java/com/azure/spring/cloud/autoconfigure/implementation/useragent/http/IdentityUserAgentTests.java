@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,6 @@ class IdentityUserAgentTests {
     void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureTokenCredentialAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class
             ))

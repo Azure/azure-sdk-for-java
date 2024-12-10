@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -22,6 +21,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.WebApplica
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AadWebApplicationConfigurationTests {
+
     @Test
     void useDefaultSecurityFilterChain() {
         webApplicationContextRunner()
@@ -40,8 +40,7 @@ class AadWebApplicationConfigurationTests {
             .withConfiguration(AutoConfigurations.of(
                 HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))
-            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
                 TestSecurityFilterChain.class,
                 AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
@@ -57,7 +56,7 @@ class AadWebApplicationConfigurationTests {
     @EnableWebSecurity
     static class TestSecurityFilterChain {
 
-        @SuppressWarnings({"deprecation", "removal"})
+        @SuppressWarnings("deprecation")
         @Bean
         public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
             return http.oauth2Login(Customizer.withDefaults()).authorizeRequests(request -> request.anyRequest().authenticated()).build();

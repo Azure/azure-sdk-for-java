@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.resourcemanager;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ServiceBusArmConnectionStringProvider;
@@ -84,8 +83,7 @@ class AzureServiceBusResourceManagerAutoConfigurationTests {
     })
     void testNotCreateProviderBeanWhenMissingPropertiesConfigured(String missingProperty) {
         this.contextRunner
-            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class)
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withPropertyValues(
                 "spring.cloud.azure.profile.tenant-id=test-tenant",
