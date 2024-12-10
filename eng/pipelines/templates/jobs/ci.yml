@@ -78,6 +78,12 @@ jobs:
       os: linux
 
     steps:
+
+      - pwsh: |
+          Write-Host "ArtifactsJson=$(ArtifactsJson)"
+          Write-Host "AdditionalModulesJson=$(AdditionalModulesJson)"
+        displayName: Dump ArtifactsJson and AdditionalModulesJson
+
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
