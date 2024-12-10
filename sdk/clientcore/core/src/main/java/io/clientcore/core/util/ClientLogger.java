@@ -7,8 +7,8 @@ import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
 import io.clientcore.core.implementation.util.Slf4jLoggerShim;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.IOException;
@@ -465,7 +465,7 @@ public class ClientLogger {
                 = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
             int speculatedSize = 20 + pairsCount * 20 + message.length();
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
                 jsonWriter.writeStartObject().writeStringField("message", message);
 
                 if (globalPairs != null) {

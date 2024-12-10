@@ -18,7 +18,7 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
