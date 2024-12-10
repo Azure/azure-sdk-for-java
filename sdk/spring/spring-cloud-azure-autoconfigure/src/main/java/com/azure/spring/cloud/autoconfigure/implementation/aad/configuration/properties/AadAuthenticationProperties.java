@@ -78,7 +78,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * App ID URI which might be used in the "aud" claim of an id_token. For instance, 'api://{applicationId}'.
+     * App ID URI that might be used in the "aud" claim of an id_token. For instance, 'api://{applicationId}'.
      * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
@@ -127,7 +127,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String postLogoutRedirectUri;
 
     /**
-     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The default is false which
+     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The default is false, which
      * activates AADAuthenticationFilter.
      */
     private Boolean sessionStateless = false;
@@ -145,7 +145,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * Type of the Azure AD application. Supported types are: WEB_APPLICATION, RESOURCE_SERVER, RESOURCE_SERVER_WITH_OBO, WEB_APPLICATION_AND_RESOURCE_SERVER. The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.
+     * The type of the Microsoft Entra application. Supported types are: WEB_APPLICATION, RESOURCE_SERVER, RESOURCE_SERVER_WITH_OBO, WEB_APPLICATION_AND_RESOURCE_SERVER. The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.
      */
     private AadApplicationType applicationType;
 

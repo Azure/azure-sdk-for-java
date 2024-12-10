@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 public class AadProfileProperties {
     /**
-     * Azure Tenant ID.
+     * Azure Tenant ID. The values allowed for `tenant-id` are: `common`, `organizations`, `consumers`, or the tenant ID.
      */
     private String tenantId; // tenantId can not set to "common" here, otherwise we can not know whether it's set by customer or it is the default value.
     /**
