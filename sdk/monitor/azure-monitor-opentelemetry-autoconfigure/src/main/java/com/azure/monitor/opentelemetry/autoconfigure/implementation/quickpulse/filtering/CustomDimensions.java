@@ -41,4 +41,18 @@ public class CustomDimensions {
         }
     }
 
+    public double getCustomDimValueForProjection(String key) {
+        double result = Double.NaN;
+        if (customDimensions.containsKey(key)) {
+            String value = customDimensions.get(key);
+            try {
+                result = Double.valueOf(value);
+            } catch (NumberFormatException e) {
+                // TODO (harskaur): track this error in the error tracker, as this means a customer asked to project a dimension that did not have a numeric value
+                return result;
+            }
+        }
+        return result;
+    }
+
 }

@@ -54,4 +54,8 @@ public class ExceptionDataColumns implements TelemetryColumns {
         }
         return result;
     }
+
+    public double getCustomDimValueForProjection(String key) {
+        return customDims.getCustomDimValueForProjection(key);
+    }
 }
