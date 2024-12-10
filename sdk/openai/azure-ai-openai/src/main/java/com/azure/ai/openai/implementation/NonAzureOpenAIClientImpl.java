@@ -28,6 +28,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
+import java.util.regex.Pattern;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -81,9 +82,10 @@ public final class NonAzureOpenAIClientImpl {
     public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
 
     /**
-     * This is the EU-based endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
+     * Pattern for validating native OpenAI API endpoint URLs. This allows for subdomains to support
+     * regional endpoints.
      */
-    public static final String EU_OPEN_AI_ENDPOINT = "https://eu.api.openai.com/v1";
+    public static final Pattern OPEN_AI_ENDPOINT_PATTERN = Pattern.compile("https://(\\w*\\.)?api\\.openai\\.com/v1");
 
     /**
      * Initializes an instance of OpenAIClient client.
