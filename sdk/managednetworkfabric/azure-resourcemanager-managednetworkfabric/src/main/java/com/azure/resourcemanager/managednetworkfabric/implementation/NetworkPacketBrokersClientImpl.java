@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkPacketBrokersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkPacketBrokersClient.
+ */
 public final class NetworkPacketBrokersClientImpl implements NetworkPacketBrokersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkPacketBrokersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkPacketBrokersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkPacketBrokersClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -144,9 +150,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -154,7 +160,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -189,9 +195,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -200,7 +206,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -234,9 +240,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -257,9 +263,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -281,9 +287,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -300,9 +306,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -320,9 +326,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -340,9 +346,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -361,9 +367,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -380,9 +386,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Create Network Packet Broker.
-     *
-     * <p>Creates a Network Packet Broker.
-     *
+     * 
+     * Creates a Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Request payload.
@@ -400,16 +406,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkPacketBrokerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -440,9 +446,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -450,7 +456,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkPacketBrokerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -479,9 +485,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,9 +504,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -517,9 +523,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,9 +540,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -544,7 +550,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -579,9 +585,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -590,7 +596,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -624,9 +630,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -647,9 +653,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -671,9 +677,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -690,9 +696,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -710,9 +716,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -730,9 +736,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -751,9 +757,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -770,9 +776,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Updates the Network Packet Broker.
-     *
-     * <p>API to update certain properties of the Network Packet Broker resource.
-     *
+     * 
+     * API to update certain properties of the Network Packet Broker resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param body Network Packet Broker properties to update.
@@ -790,9 +796,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,9 +834,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -866,9 +872,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -886,9 +892,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -909,9 +915,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -926,9 +932,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -945,9 +951,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -963,9 +969,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -982,9 +988,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -998,9 +1004,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -1015,9 +1021,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1049,9 +1055,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1085,9 +1091,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1102,9 +1108,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1120,9 +1126,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1136,9 +1142,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,9 +1159,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1181,9 +1187,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1211,9 +1217,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers as paginated response with {@link PagedFlux}.
@@ -1226,9 +1232,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1243,9 +1249,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers as paginated response with {@link PagedIterable}.
@@ -1257,9 +1263,9 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1273,9 +1279,8 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1301,9 +1306,8 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1329,9 +1333,8 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1357,9 +1360,8 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -15,11 +15,13 @@ import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.ScriptInner;
 import com.azure.resourcemanager.kusto.models.ScriptCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in ScriptsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScriptsClient.
+ */
 public interface ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -33,7 +35,7 @@ public interface ScriptsClient {
 
     /**
      * Returns the list of database scripts for given database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -49,7 +51,7 @@ public interface ScriptsClient {
 
     /**
      * Gets a Kusto cluster database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -66,7 +68,7 @@ public interface ScriptsClient {
 
     /**
      * Gets a Kusto cluster database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -81,7 +83,7 @@ public interface ScriptsClient {
 
     /**
      * Creates a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -98,7 +100,7 @@ public interface ScriptsClient {
 
     /**
      * Creates a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -116,7 +118,7 @@ public interface ScriptsClient {
 
     /**
      * Creates a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -133,7 +135,7 @@ public interface ScriptsClient {
 
     /**
      * Creates a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -151,7 +153,7 @@ public interface ScriptsClient {
 
     /**
      * Updates a database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -168,7 +170,7 @@ public interface ScriptsClient {
 
     /**
      * Updates a database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -186,7 +188,7 @@ public interface ScriptsClient {
 
     /**
      * Updates a database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -203,7 +205,7 @@ public interface ScriptsClient {
 
     /**
      * Updates a database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -221,7 +223,7 @@ public interface ScriptsClient {
 
     /**
      * Deletes a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -237,7 +239,7 @@ public interface ScriptsClient {
 
     /**
      * Deletes a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -254,7 +256,7 @@ public interface ScriptsClient {
 
     /**
      * Deletes a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -268,7 +270,7 @@ public interface ScriptsClient {
 
     /**
      * Deletes a Kusto database script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -283,7 +285,7 @@ public interface ScriptsClient {
 
     /**
      * Checks that the script name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -300,7 +302,7 @@ public interface ScriptsClient {
 
     /**
      * Checks that the script name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.

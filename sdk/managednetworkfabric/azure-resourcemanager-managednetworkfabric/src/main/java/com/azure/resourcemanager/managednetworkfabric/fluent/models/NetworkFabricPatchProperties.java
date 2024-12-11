@@ -5,63 +5,63 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationPatchableProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatchablePropertiesTerminalServerConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Network Fabric Patch properties. */
+/**
+ * Network Fabric Patch properties.
+ */
 @Fluent
 public final class NetworkFabricPatchProperties extends AnnotationResource {
     /*
      * Number of compute racks associated to Network Fabric.
      */
-    @JsonProperty(value = "rackCount")
     private Integer rackCount;
 
     /*
      * Number of servers.Possible values are from 1-16.
      */
-    @JsonProperty(value = "serverCountPerRack")
     private Integer serverCountPerRack;
 
     /*
      * IPv4Prefix for Management Network. Example: 10.1.0.0/19.
      */
-    @JsonProperty(value = "ipv4Prefix")
     private String ipv4Prefix;
 
     /*
      * IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
      */
-    @JsonProperty(value = "ipv6Prefix")
     private String ipv6Prefix;
 
     /*
      * ASN of CE devices for CE/PE connectivity.
      */
-    @JsonProperty(value = "fabricASN")
     private Long fabricAsn;
 
     /*
      * Network and credentials configuration already applied to terminal server.
      */
-    @JsonProperty(value = "terminalServerConfiguration")
     private NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration;
 
     /*
      * Configuration to be used to setup the management network.
      */
-    @JsonProperty(value = "managementNetworkConfiguration")
     private ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration;
 
-    /** Creates an instance of NetworkFabricPatchProperties class. */
+    /**
+     * Creates an instance of NetworkFabricPatchProperties class.
+     */
     public NetworkFabricPatchProperties() {
     }
 
     /**
      * Get the rackCount property: Number of compute racks associated to Network Fabric.
-     *
+     * 
      * @return the rackCount value.
      */
     public Integer rackCount() {
@@ -70,7 +70,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Set the rackCount property: Number of compute racks associated to Network Fabric.
-     *
+     * 
      * @param rackCount the rackCount value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -81,7 +81,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Get the serverCountPerRack property: Number of servers.Possible values are from 1-16.
-     *
+     * 
      * @return the serverCountPerRack value.
      */
     public Integer serverCountPerRack() {
@@ -90,7 +90,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Set the serverCountPerRack property: Number of servers.Possible values are from 1-16.
-     *
+     * 
      * @param serverCountPerRack the serverCountPerRack value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -101,7 +101,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Get the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19.
-     *
+     * 
      * @return the ipv4Prefix value.
      */
     public String ipv4Prefix() {
@@ -110,7 +110,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Set the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19.
-     *
+     * 
      * @param ipv4Prefix the ipv4Prefix value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -121,7 +121,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Get the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
-     *
+     * 
      * @return the ipv6Prefix value.
      */
     public String ipv6Prefix() {
@@ -130,7 +130,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Set the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
-     *
+     * 
      * @param ipv6Prefix the ipv6Prefix value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -141,7 +141,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
-     *
+     * 
      * @return the fabricAsn value.
      */
     public Long fabricAsn() {
@@ -150,7 +150,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Set the fabricAsn property: ASN of CE devices for CE/PE connectivity.
-     *
+     * 
      * @param fabricAsn the fabricAsn value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -162,7 +162,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
     /**
      * Get the terminalServerConfiguration property: Network and credentials configuration already applied to terminal
      * server.
-     *
+     * 
      * @return the terminalServerConfiguration value.
      */
     public NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration() {
@@ -172,7 +172,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
     /**
      * Set the terminalServerConfiguration property: Network and credentials configuration already applied to terminal
      * server.
-     *
+     * 
      * @param terminalServerConfiguration the terminalServerConfiguration value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -184,7 +184,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Get the managementNetworkConfiguration property: Configuration to be used to setup the management network.
-     *
+     * 
      * @return the managementNetworkConfiguration value.
      */
     public ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration() {
@@ -193,7 +193,7 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Set the managementNetworkConfiguration property: Configuration to be used to setup the management network.
-     *
+     * 
      * @param managementNetworkConfiguration the managementNetworkConfiguration value to set.
      * @return the NetworkFabricPatchProperties object itself.
      */
@@ -203,7 +203,9 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkFabricPatchProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -212,17 +214,76 @@ public final class NetworkFabricPatchProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (terminalServerConfiguration() != null) {
             terminalServerConfiguration().validate();
         }
         if (managementNetworkConfiguration() != null) {
             managementNetworkConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeNumberField("rackCount", this.rackCount);
+        jsonWriter.writeNumberField("serverCountPerRack", this.serverCountPerRack);
+        jsonWriter.writeStringField("ipv4Prefix", this.ipv4Prefix);
+        jsonWriter.writeStringField("ipv6Prefix", this.ipv6Prefix);
+        jsonWriter.writeNumberField("fabricASN", this.fabricAsn);
+        jsonWriter.writeJsonField("terminalServerConfiguration", this.terminalServerConfiguration);
+        jsonWriter.writeJsonField("managementNetworkConfiguration", this.managementNetworkConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricPatchProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFabricPatchProperties.
+     */
+    public static NetworkFabricPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricPatchProperties deserializedNetworkFabricPatchProperties = new NetworkFabricPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.withAnnotation(reader.getString());
+                } else if ("rackCount".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.rackCount = reader.getNullable(JsonReader::getInt);
+                } else if ("serverCountPerRack".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.serverCountPerRack
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("ipv4Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.ipv4Prefix = reader.getString();
+                } else if ("ipv6Prefix".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.ipv6Prefix = reader.getString();
+                } else if ("fabricASN".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.fabricAsn = reader.getNullable(JsonReader::getLong);
+                } else if ("terminalServerConfiguration".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.terminalServerConfiguration
+                        = NetworkFabricPatchablePropertiesTerminalServerConfiguration.fromJson(reader);
+                } else if ("managementNetworkConfiguration".equals(fieldName)) {
+                    deserializedNetworkFabricPatchProperties.managementNetworkConfiguration
+                        = ManagementNetworkConfigurationPatchableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricPatchProperties;
+        });
     }
 }

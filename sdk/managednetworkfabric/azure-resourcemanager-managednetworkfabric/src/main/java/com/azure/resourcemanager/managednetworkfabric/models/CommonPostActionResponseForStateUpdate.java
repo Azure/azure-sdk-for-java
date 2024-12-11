@@ -7,18 +7,20 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 
-/** An immutable client-side representation of CommonPostActionResponseForStateUpdate. */
+/**
+ * An immutable client-side representation of CommonPostActionResponseForStateUpdate.
+ */
 public interface CommonPostActionResponseForStateUpdate {
     /**
      * Gets the configurationState property: Gets the configuration state.
-     *
+     * 
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
 
     /**
      * Gets the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
@@ -26,7 +28,7 @@ public interface CommonPostActionResponseForStateUpdate {
     /**
      * Gets the inner
      * com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner object.
-     *
+     * 
      * @return the inner object.
      */
     CommonPostActionResponseForStateUpdateInner innerModel();

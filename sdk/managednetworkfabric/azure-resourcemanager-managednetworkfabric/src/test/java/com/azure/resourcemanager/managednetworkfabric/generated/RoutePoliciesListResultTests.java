@@ -7,6 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePoliciesListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
@@ -21,55 +22,79 @@ public final class RoutePoliciesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutePoliciesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"networkFabricId\":\"mrvnuvqkrrsguogk\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"statements\":[{\"sequenceNumber\":300365337719306636,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"wpftvvqtmvifgcvs\"}],\"annotation\":\"alb\"},\"location\":\"icxgosnx\",\"tags\":{\"zxaoxlhmvjcnnls\":\"tcdf\"},\"id\":\"nucqxhpaqo\",\"name\":\"bvejo\",\"type\":\"soxovlznkleld\"},{\"properties\":{\"networkFabricId\":\"qdlqqhntqrykkxak\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Disabled\",\"statements\":[{\"sequenceNumber\":6972584664296828431,\"condition\":{},\"action\":{\"actionType\":\"Permit\"},\"annotation\":\"ccnpxiemacmzt\"}],\"annotation\":\"kxsnnbrysgkt\"},\"location\":\"ocnqbblr\",\"tags\":{\"hocqxugjx\":\"fzghfuifwxudyn\",\"hmhurosdjlzb\":\"gdcrrfbpl\",\"dghq\":\"m\"},\"id\":\"uyaorservpv\",\"name\":\"sorsbegcl\",\"type\":\"ex\"}],\"nextLink\":\"jqzyhzydy\"}")
+            "{\"value\":[{\"properties\":{\"networkFabricId\":\"kmpwyvlhnh\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"defaultAction\":\"Deny\",\"statements\":[{\"sequenceNumber\":3554896702556402412,\"condition\":{},\"action\":{\"actionType\":\"Permit\"},\"annotation\":\"giflr\"}],\"annotation\":\"got\"},\"location\":\"zwtoidhbxi\",\"tags\":{\"zhlutjsjzels\":\"p\"},\"id\":\"iemv\",\"name\":\"pmeakosysycv\",\"type\":\"de\"},{\"properties\":{\"networkFabricId\":\"hcbsaipusuo\",\"addressFamilyType\":\"IPv4\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"defaultAction\":\"Deny\",\"statements\":[{\"sequenceNumber\":4239327806826104427,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"sluazz\"},{\"sequenceNumber\":149979462311042814,\"condition\":{},\"action\":{\"actionType\":\"Continue\"},\"annotation\":\"ugpxzeempup\"},{\"sequenceNumber\":7582568444217997281,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"xr\"}],\"annotation\":\"dczmrjgobekx\"},\"location\":\"eowse\",\"tags\":{\"bmseesacuicnvq\":\"drzzbskiwrjsb\"},\"id\":\"qsuivmrfaptndrmm\",\"name\":\"lh\",\"type\":\"k\"},{\"properties\":{\"networkFabricId\":\"xrqkekcdavi\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"Disabled\",\"defaultAction\":\"Permit\",\"statements\":[{\"sequenceNumber\":1290612405435899521,\"condition\":{},\"action\":{\"actionType\":\"Deny\"},\"annotation\":\"iuceplbrzgk\"}],\"annotation\":\"rwpqbstweobptsc\"},\"location\":\"ykk\",\"tags\":{\"flsmsbnlyoifg\":\"ayynoyj\",\"cvoevcwfz\":\"fzjqthy\",\"xgbsdzcgcvypj\":\"tkxxlwwo\"},\"id\":\"ubdmg\",\"name\":\"bxehujcqgzwvx\",\"type\":\"iuaoibmjklqrljd\"}],\"nextLink\":\"kylaxrjiqoqovqhg\"}")
             .toObject(RoutePoliciesListResult.class);
-        Assertions.assertEquals("icxgosnx", model.value().get(0).location());
-        Assertions.assertEquals("tcdf", model.value().get(0).tags().get("zxaoxlhmvjcnnls"));
-        Assertions.assertEquals("mrvnuvqkrrsguogk", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("zwtoidhbxi", model.value().get(0).location());
+        Assertions.assertEquals("p", model.value().get(0).tags().get("zhlutjsjzels"));
+        Assertions.assertEquals("kmpwyvlhnh", model.value().get(0).networkFabricId());
         Assertions.assertEquals(AddressFamilyType.IPV6, model.value().get(0).addressFamilyType());
-        Assertions.assertEquals("wpftvvqtmvifgcvs", model.value().get(0).statements().get(0).annotation());
-        Assertions.assertEquals(300365337719306636L, model.value().get(0).statements().get(0).sequenceNumber());
-        Assertions.assertEquals(RoutePolicyActionType.DENY,
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).defaultAction());
+        Assertions.assertEquals("giflr", model.value().get(0).statements().get(0).annotation());
+        Assertions.assertEquals(3554896702556402412L, model.value().get(0).statements().get(0).sequenceNumber());
+        Assertions.assertEquals(RoutePolicyActionType.PERMIT,
             model.value().get(0).statements().get(0).action().actionType());
-        Assertions.assertEquals("alb", model.value().get(0).annotation());
-        Assertions.assertEquals("jqzyhzydy", model.nextLink());
+        Assertions.assertEquals("got", model.value().get(0).annotation());
+        Assertions.assertEquals("kylaxrjiqoqovqhg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutePoliciesListResult model = new RoutePoliciesListResult().withValue(Arrays.asList(
-            new RoutePolicyInner().withLocation("icxgosnx")
-                .withTags(mapOf("zxaoxlhmvjcnnls", "tcdf"))
-                .withNetworkFabricId("mrvnuvqkrrsguogk")
+            new RoutePolicyInner().withLocation("zwtoidhbxi")
+                .withTags(mapOf("zhlutjsjzels", "p"))
+                .withNetworkFabricId("kmpwyvlhnh")
                 .withAddressFamilyType(AddressFamilyType.IPV6)
-                .withStatements(Arrays.asList(new RoutePolicyStatementProperties().withAnnotation("wpftvvqtmvifgcvs")
-                    .withSequenceNumber(300365337719306636L)
-                    .withCondition(new StatementConditionProperties())
-                    .withAction(new StatementActionProperties().withActionType(RoutePolicyActionType.DENY))))
-                .withAnnotation("alb"),
-            new RoutePolicyInner().withLocation("ocnqbblr")
-                .withTags(mapOf("hocqxugjx", "fzghfuifwxudyn", "hmhurosdjlzb", "gdcrrfbpl", "dghq", "m"))
-                .withNetworkFabricId("qdlqqhntqrykkxak")
-                .withAddressFamilyType(AddressFamilyType.IPV6)
-                .withStatements(Arrays.asList(new RoutePolicyStatementProperties().withAnnotation("ccnpxiemacmzt")
-                    .withSequenceNumber(6972584664296828431L)
+                .withDefaultAction(CommunityActionTypes.DENY)
+                .withStatements(Arrays.asList(new RoutePolicyStatementProperties().withAnnotation("giflr")
+                    .withSequenceNumber(3554896702556402412L)
                     .withCondition(new StatementConditionProperties())
                     .withAction(new StatementActionProperties().withActionType(RoutePolicyActionType.PERMIT))))
-                .withAnnotation("kxsnnbrysgkt")))
-            .withNextLink("jqzyhzydy");
+                .withAnnotation("got"),
+            new RoutePolicyInner().withLocation("eowse")
+                .withTags(mapOf("bmseesacuicnvq", "drzzbskiwrjsb"))
+                .withNetworkFabricId("hcbsaipusuo")
+                .withAddressFamilyType(AddressFamilyType.IPV4)
+                .withDefaultAction(CommunityActionTypes.DENY)
+                .withStatements(Arrays.asList(
+                    new RoutePolicyStatementProperties().withAnnotation("sluazz")
+                        .withSequenceNumber(4239327806826104427L)
+                        .withCondition(new StatementConditionProperties())
+                        .withAction(new StatementActionProperties().withActionType(RoutePolicyActionType.DENY)),
+                    new RoutePolicyStatementProperties().withAnnotation("ugpxzeempup")
+                        .withSequenceNumber(149979462311042814L)
+                        .withCondition(new StatementConditionProperties())
+                        .withAction(new StatementActionProperties().withActionType(RoutePolicyActionType.CONTINUE)),
+                    new RoutePolicyStatementProperties().withAnnotation("xr")
+                        .withSequenceNumber(7582568444217997281L)
+                        .withCondition(new StatementConditionProperties())
+                        .withAction(new StatementActionProperties().withActionType(RoutePolicyActionType.DENY))))
+                .withAnnotation("dczmrjgobekx"),
+            new RoutePolicyInner().withLocation("ykk")
+                .withTags(mapOf("flsmsbnlyoifg", "ayynoyj", "cvoevcwfz", "fzjqthy", "xgbsdzcgcvypj", "tkxxlwwo"))
+                .withNetworkFabricId("xrqkekcdavi")
+                .withAddressFamilyType(AddressFamilyType.IPV6)
+                .withDefaultAction(CommunityActionTypes.PERMIT)
+                .withStatements(Arrays.asList(new RoutePolicyStatementProperties().withAnnotation("iuceplbrzgk")
+                    .withSequenceNumber(1290612405435899521L)
+                    .withCondition(new StatementConditionProperties())
+                    .withAction(new StatementActionProperties().withActionType(RoutePolicyActionType.DENY))))
+                .withAnnotation("rwpqbstweobptsc")))
+            .withNextLink("kylaxrjiqoqovqhg");
         model = BinaryData.fromObject(model).toObject(RoutePoliciesListResult.class);
-        Assertions.assertEquals("icxgosnx", model.value().get(0).location());
-        Assertions.assertEquals("tcdf", model.value().get(0).tags().get("zxaoxlhmvjcnnls"));
-        Assertions.assertEquals("mrvnuvqkrrsguogk", model.value().get(0).networkFabricId());
+        Assertions.assertEquals("zwtoidhbxi", model.value().get(0).location());
+        Assertions.assertEquals("p", model.value().get(0).tags().get("zhlutjsjzels"));
+        Assertions.assertEquals("kmpwyvlhnh", model.value().get(0).networkFabricId());
         Assertions.assertEquals(AddressFamilyType.IPV6, model.value().get(0).addressFamilyType());
-        Assertions.assertEquals("wpftvvqtmvifgcvs", model.value().get(0).statements().get(0).annotation());
-        Assertions.assertEquals(300365337719306636L, model.value().get(0).statements().get(0).sequenceNumber());
-        Assertions.assertEquals(RoutePolicyActionType.DENY,
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).defaultAction());
+        Assertions.assertEquals("giflr", model.value().get(0).statements().get(0).annotation());
+        Assertions.assertEquals(3554896702556402412L, model.value().get(0).statements().get(0).sequenceNumber());
+        Assertions.assertEquals(RoutePolicyActionType.PERMIT,
             model.value().get(0).statements().get(0).action().actionType());
-        Assertions.assertEquals("alb", model.value().get(0).annotation());
-        Assertions.assertEquals("jqzyhzydy", model.nextLink());
+        Assertions.assertEquals("got", model.value().get(0).annotation());
+        Assertions.assertEquals("kylaxrjiqoqovqhg", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

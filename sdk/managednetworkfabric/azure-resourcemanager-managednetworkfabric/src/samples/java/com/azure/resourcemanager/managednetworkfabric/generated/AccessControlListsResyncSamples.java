@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for AccessControlLists Resync. */
+/**
+ * Samples for AccessControlLists Resync.
+ */
 public final class AccessControlListsResyncSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/AccessControlLists_Resync_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * AccessControlLists_Resync_MaximumSet_Gen.json
      */
     /**
      * Sample code: AccessControlLists_Resync_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void accessControlListsResyncMaximumSetGen(

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersList.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersList.json
      */
     /**
      * Sample code: KustoClustersList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersList(com.azure.resourcemanager.kusto.KustoManager manager) {

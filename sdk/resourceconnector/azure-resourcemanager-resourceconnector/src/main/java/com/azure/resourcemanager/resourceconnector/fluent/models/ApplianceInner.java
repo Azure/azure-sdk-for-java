@@ -7,41 +7,60 @@ package com.azure.resourcemanager.resourceconnector.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourceconnector.models.AppliancePropertiesInfrastructureConfig;
 import com.azure.resourcemanager.resourceconnector.models.Distro;
 import com.azure.resourcemanager.resourceconnector.models.Identity;
 import com.azure.resourcemanager.resourceconnector.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Appliances definition. */
+/**
+ * Appliances definition.
+ */
 @Fluent
 public final class ApplianceInner extends Resource {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The set of properties specific to an Appliance
      */
-    @JsonProperty(value = "properties")
     private ApplianceProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ApplianceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApplianceInner class.
+     */
     public ApplianceInner() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -50,7 +69,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ApplianceInner object itself.
      */
@@ -61,7 +80,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the innerProperties property: The set of properties specific to an Appliance.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplianceProperties innerProperties() {
@@ -70,21 +89,55 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplianceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplianceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -93,7 +146,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the distro property: Represents a supported Fabric/Infra. (AKSEdge etc...).
-     *
+     * 
      * @return the distro value.
      */
     public Distro distro() {
@@ -102,7 +155,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Set the distro property: Represents a supported Fabric/Infra. (AKSEdge etc...).
-     *
+     * 
      * @param distro the distro value to set.
      * @return the ApplianceInner object itself.
      */
@@ -116,7 +169,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the infrastructureConfig property: Contains infrastructure information about the Appliance.
-     *
+     * 
      * @return the infrastructureConfig value.
      */
     public AppliancePropertiesInfrastructureConfig infrastructureConfig() {
@@ -125,7 +178,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Set the infrastructureConfig property: Contains infrastructure information about the Appliance.
-     *
+     * 
      * @param infrastructureConfig the infrastructureConfig value to set.
      * @return the ApplianceInner object itself.
      */
@@ -140,7 +193,7 @@ public final class ApplianceInner extends Resource {
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -149,7 +202,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -158,7 +211,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Set the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
-     *
+     * 
      * @param publicKey the publicKey value to set.
      * @return the ApplianceInner object itself.
      */
@@ -172,7 +225,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the status property: Appliance’s health and state of connection to on-prem.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -181,7 +234,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Get the version property: Version of the Appliance.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -190,7 +243,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Set the version property: Version of the Appliance.
-     *
+     * 
      * @param version the version value to set.
      * @return the ApplianceInner object itself.
      */
@@ -204,7 +257,7 @@ public final class ApplianceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -214,5 +267,60 @@ public final class ApplianceInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplianceInner.
+     */
+    public static ApplianceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceInner deserializedApplianceInner = new ApplianceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplianceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplianceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplianceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplianceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplianceInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedApplianceInner.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplianceInner.innerProperties = ApplianceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplianceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceInner;
+        });
     }
 }

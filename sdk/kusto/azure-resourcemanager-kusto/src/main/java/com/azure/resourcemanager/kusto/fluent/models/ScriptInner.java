@@ -7,31 +7,51 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Class representing a database script. */
+/**
+ * Class representing a database script.
+ */
 @Fluent
 public final class ScriptInner extends ProxyResource {
     /*
      * The database script.
      */
-    @JsonProperty(value = "properties")
     private ScriptProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ScriptInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScriptInner class.
+     */
     public ScriptInner() {
     }
 
     /**
      * Get the innerProperties property: The database script.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScriptProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,9 +68,39 @@ public final class ScriptInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
      * property.
-     *
+     * 
      * @return the scriptUrl value.
      */
     public String scriptUrl() {
@@ -60,7 +110,7 @@ public final class ScriptInner extends ProxyResource {
     /**
      * Set the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
      * property.
-     *
+     * 
      * @param scriptUrl the scriptUrl value to set.
      * @return the ScriptInner object itself.
      */
@@ -75,7 +125,7 @@ public final class ScriptInner extends ProxyResource {
     /**
      * Get the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
      * Must be provided when using scriptUrl property.
-     *
+     * 
      * @return the scriptUrlSasToken value.
      */
     public String scriptUrlSasToken() {
@@ -85,7 +135,7 @@ public final class ScriptInner extends ProxyResource {
     /**
      * Set the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
      * Must be provided when using scriptUrl property.
-     *
+     * 
      * @param scriptUrlSasToken the scriptUrlSasToken value to set.
      * @return the ScriptInner object itself.
      */
@@ -100,7 +150,7 @@ public final class ScriptInner extends ProxyResource {
     /**
      * Get the scriptContent property: The script content. This property should be used when the script is provide
      * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
-     *
+     * 
      * @return the scriptContent value.
      */
     public String scriptContent() {
@@ -110,7 +160,7 @@ public final class ScriptInner extends ProxyResource {
     /**
      * Set the scriptContent property: The script content. This property should be used when the script is provide
      * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
-     *
+     * 
      * @param scriptContent the scriptContent value to set.
      * @return the ScriptInner object itself.
      */
@@ -124,7 +174,7 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Get the forceUpdateTag property: A unique string. If changed the script will be applied again.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -133,7 +183,7 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Set the forceUpdateTag property: A unique string. If changed the script will be applied again.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the ScriptInner object itself.
      */
@@ -147,7 +197,7 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Get the continueOnErrors property: Flag that indicates whether to continue if one of the command fails.
-     *
+     * 
      * @return the continueOnErrors value.
      */
     public Boolean continueOnErrors() {
@@ -156,7 +206,7 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Set the continueOnErrors property: Flag that indicates whether to continue if one of the command fails.
-     *
+     * 
      * @param continueOnErrors the continueOnErrors value to set.
      * @return the ScriptInner object itself.
      */
@@ -170,7 +220,7 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -179,12 +229,57 @@ public final class ScriptInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptInner.
+     */
+    public static ScriptInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptInner deserializedScriptInner = new ScriptInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScriptInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScriptInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScriptInner.innerProperties = ScriptProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScriptInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptInner;
+        });
     }
 }
