@@ -14,6 +14,8 @@ import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.Collections;
+
 public class AnalyzeBatchDocuments {
     public static void main(String[] args) {
         DocumentIntelligenceClient documentIntelligenceClient
@@ -22,13 +24,15 @@ public class AnalyzeBatchDocuments {
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzebatchdocuments.analyzebatchdocuments
         SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> response
-            = documentIntelligenceClient.beginAnalyzeBatchDocuments("customModel", new AnalyzeBatchDocumentsOptions(
-                "https://myStorageAccount.blob.core.windows.net/myOutputContainer?mySasToken").setAzureBlobSource(
-                    new AzureBlobContentSource("https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken")
-                        .setPrefix("trainingDocs/"))
-                    .setResultPrefix("trainingDocsResult/")
-                    .setOverwriteExisting(true),
-                "1-5", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, null);
+            = documentIntelligenceClient.beginAnalyzeBatchDocuments("customModel",
+                new AnalyzeBatchDocumentsOptions(new AzureBlobContentSource(
+                    "https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken").setPrefix("trainingDocs/"),
+                    "https://myStorageAccount.blob.core.windows.net/myOutputContainer?mySasToken")
+                        .setResultPrefix("trainingDocsResult/")
+                        .setOverwriteExisting(true)
+                    .setPages(Collections.singletonList("1-5"))
+                    .setLocale("en-US")
+                    .setStringIndexType(StringIndexType.TEXT_ELEMENTS));
         // END:com.azure.ai.documentintelligence.generated.analyzebatchdocuments.analyzebatchdocuments
     }
 }

@@ -1,7 +1,5 @@
-import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
@@ -25,39 +23,35 @@ public class DocumentIntelligenceCustomizations extends Customization {
         customizeAnalyzeBatchOperation(customization, logger);
         customizePollingStrategy(customization, logger);
         customizePollingUtils(customization, logger);
-        // customizeModifierForOverloadMethods(customization, logger);
+        // customizeByteSourceEncoding(customization, logger);
     }
 
-    private void customizeModifierForOverloadMethods(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing to make overload methods package private");
-        PackageCustomization models = customization.getPackage("com.azure.ai.documentintelligence");
-        ClassCustomization documentIntelligenceClient = models.getClass("DocumentIntelligenceClient");
-        MethodCustomization getAnalyzeMethod = documentIntelligenceClient.getMethod("beginAnalyzeDocument(String modelId, AnalyzeDocumentOptions analyzeRequest, String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat, List<AnalyzeOutputFormat> output)");
-        getAnalyzeMethod.setModifier(0); // change to protected
+    private void customizeByteSourceEncoding(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the ClassifyDocumentOptions class");
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
+        packageCustomization.getClass("ClassifyDocumentOptions")
+            .customizeAst(ast ->
+                ast.getClassByName("ClassifyDocumentOptions").ifPresent(clazz -> {
+                    addBase64EncodingForByteSource(clazz);
+                }));
 
-        MethodCustomization beginAnalyzeBatchDocumentsMethod = documentIntelligenceClient.getMethod("beginAnalyzeBatchDocuments(String modelId,\n" +
-            "        AnalyzeBatchDocumentsOptions analyzeBatchRequest, String pages, String locale, StringIndexType stringIndexType,\n" +
-            "        List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,\n" +
-            "        List<AnalyzeOutputFormat> output)");
-        beginAnalyzeBatchDocumentsMethod.setModifier(0); // change to protected
+        logger.info("Customizing the AnalyzeDocumentOptions class");
+        PackageCustomization analyzeModelCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
+        analyzeModelCustomization.getClass("AnalyzeDocumentOptions")
+            .customizeAst(ast ->
+                ast.getClassByName("AnalyzeDocumentOptions").ifPresent(clazz -> {
+                    addBase64EncodingForByteSource(clazz);
+                }));
+    }
 
-        MethodCustomization beginClassifyDocumentMethod = documentIntelligenceClient.getMethod("beginClassifyDocument(String classifierId,\n" +
-            "        ClassifyDocumentOptions classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages)");
-        beginClassifyDocumentMethod.setModifier(0); // change to protected
-
-        ClassCustomization documentIntelligenceAsyncClient = models.getClass("DocumentIntelligenceAsyncClient");
-        MethodCustomization getAnalyzeAsyncMethod = documentIntelligenceAsyncClient.getMethod("beginAnalyzeDocument(String modelId, AnalyzeDocumentOptions analyzeRequest, String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat, List<AnalyzeOutputFormat> output)");
-        getAnalyzeMethod.setModifier(0); // change to protected
-
-        MethodCustomization beginAnalyzeBatchDocumentsAsyncMethod = documentIntelligenceAsyncClient.getMethod("beginAnalyzeBatchDocuments(String modelId,\n" +
-            "        AnalyzeBatchDocumentsOptions analyzeBatchRequest, String pages, String locale, StringIndexType stringIndexType,\n" +
-            "        List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,\n" +
-            "        List<AnalyzeOutputFormat> output)");
-        beginAnalyzeBatchDocumentsAsyncMethod.setModifier(0); // change to protected
-
-        MethodCustomization beginClassifyDocumentAsyncMethod = documentIntelligenceAsyncClient.getMethod("beginClassifyDocument(String classifierId,\n" +
-            "        ClassifyDocumentOptions classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages)");
-        beginClassifyDocumentAsyncMethod.setModifier(0); // change to protected
+    private void addBase64EncodingForByteSource(ClassOrInterfaceDeclaration clazz) {
+        clazz.getMethodsByName("setBytesSource")
+            .get(0)
+            .setBody(StaticJavaParser.parseBlock(String.join("\n",
+            "{",
+            "this.bytesSource = CoreUtils.clone(Base64.getEncoder().encode(bytesSource));",
+            "return this;",
+            "}")));
     }
 
     private void customizeAnalyzeOperation(LibraryCustomization customization, Logger logger) {

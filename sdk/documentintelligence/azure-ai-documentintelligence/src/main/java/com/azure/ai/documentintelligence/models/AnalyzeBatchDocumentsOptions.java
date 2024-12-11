@@ -10,13 +10,25 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Batch document analysis parameters.
  */
 @Fluent
 public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<AnalyzeBatchDocumentsOptions> {
+    private List<String> pages;
+    private String locale;
+    private List<DocumentAnalysisFeature> documentAnalysisFeatures;
+    private StringIndexType stringIndexType;
+    private List<String> queryFields;
+    private DocumentContentFormat outputContentFormat;
+    private List<AnalyzeOutputFormat> output;
+
     /*
      * Azure Blob Storage location containing the batch documents. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
@@ -49,20 +61,51 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
     @Generated
     private Boolean overwriteExisting;
 
+    // CUSTOM CODE NOTE: since either AzureBlobContentSource or AzureBlobFileListContentSource must be specified
+    // when building this object, we're hiding its parameterless constructor, adding
+    // custom constructors, and making both properties readonly.
+
+    /**
+     * Creates an instance of AnalyzeBatchDocumentsOptions with the specified Azure Blob source and result container URL.
+     *
+     * @param azureBlobSource the Azure Blob Storage location containing the batch documents. Cannot be null.
+     * @param resultContainerUrl the Azure Blob Storage container URL where analyze result files will be stored. Cannot be null.
+     */
+    public AnalyzeBatchDocumentsOptions(AzureBlobContentSource azureBlobSource, String resultContainerUrl) {
+        Objects.requireNonNull(azureBlobSource, "'azureBlobSource' cannot be null");
+        Objects.requireNonNull(resultContainerUrl, "'resultContainerUrl' cannot be null");
+        this.azureBlobSource = azureBlobSource;
+        this.resultContainerUrl = resultContainerUrl;
+    }
+
+    /**
+     * Creates an instance of AnalyzeBatchDocumentsOptions with the specified result container URL and Azure Blob file list source.
+     *
+     * @param azureBlobFileListSource the Azure Blob Storage file list specifying the batch documents. Cannot be null.
+     * @param resultContainerUrl the Azure Blob Storage container URL where analyze result files will be stored. Cannot be null.
+     */
+    public AnalyzeBatchDocumentsOptions(AzureBlobFileListContentSource azureBlobFileListSource,
+        String resultContainerUrl) {
+        Objects.requireNonNull(azureBlobFileListSource, "'azureBlobFileListSource' cannot be null");
+        Objects.requireNonNull(resultContainerUrl, "'resultContainerUrl' cannot be null");
+        this.resultContainerUrl = resultContainerUrl;
+        this.azureBlobFileListSource = azureBlobFileListSource;
+    }
+
     /**
      * Creates an instance of AnalyzeBatchDocumentsOptions class.
-     * 
+     *
      * @param resultContainerUrl the resultContainerUrl value to set.
      */
     @Generated
-    public AnalyzeBatchDocumentsOptions(String resultContainerUrl) {
+    AnalyzeBatchDocumentsOptions(String resultContainerUrl) {
         this.resultContainerUrl = resultContainerUrl;
     }
 
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the batch documents. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @return the azureBlobSource value.
      */
     @Generated
@@ -71,22 +114,9 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
     }
 
     /**
-     * Set the azureBlobSource property: Azure Blob Storage location containing the batch documents. Either
-     * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
-     * @param azureBlobSource the azureBlobSource value to set.
-     * @return the AnalyzeBatchDocumentsOptions object itself.
-     */
-    @Generated
-    public AnalyzeBatchDocumentsOptions setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
-        this.azureBlobSource = azureBlobSource;
-        return this;
-    }
-
-    /**
      * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the batch documents. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
+     *
      * @return the azureBlobFileListSource value.
      */
     @Generated
@@ -95,22 +125,8 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
     }
 
     /**
-     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the batch documents. Either
-     * azureBlobSource or azureBlobFileListSource must be specified.
-     * 
-     * @param azureBlobFileListSource the azureBlobFileListSource value to set.
-     * @return the AnalyzeBatchDocumentsOptions object itself.
-     */
-    @Generated
-    public AnalyzeBatchDocumentsOptions
-        setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
-        this.azureBlobFileListSource = azureBlobFileListSource;
-        return this;
-    }
-
-    /**
      * Get the resultContainerUrl property: Azure Blob Storage container URL where analyze result files will be stored.
-     * 
+     *
      * @return the resultContainerUrl value.
      */
     @Generated
@@ -120,7 +136,7 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
 
     /**
      * Get the resultPrefix property: Blob name prefix of result files.
-     * 
+     *
      * @return the resultPrefix value.
      */
     @Generated
@@ -130,7 +146,7 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
 
     /**
      * Set the resultPrefix property: Blob name prefix of result files.
-     * 
+     *
      * @param resultPrefix the resultPrefix value to set.
      * @return the AnalyzeBatchDocumentsOptions object itself.
      */
@@ -142,7 +158,7 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
 
     /**
      * Get the overwriteExisting property: Overwrite existing analyze result files?.
-     * 
+     *
      * @return the overwriteExisting value.
      */
     @Generated
@@ -152,7 +168,7 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
 
     /**
      * Set the overwriteExisting property: Overwrite existing analyze result files?.
-     * 
+     *
      * @param overwriteExisting the overwriteExisting value to set.
      * @return the AnalyzeBatchDocumentsOptions object itself.
      */
@@ -179,7 +195,7 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
 
     /**
      * Reads an instance of AnalyzeBatchDocumentsOptions from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeBatchDocumentsOptions if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
@@ -221,5 +237,164 @@ public final class AnalyzeBatchDocumentsOptions implements JsonSerializable<Anal
 
             return deserializedAnalyzeBatchDocumentsOptions;
         });
+    }
+
+    /**
+     * Gets the list of additional fields to include in the result.
+     * @return the list of additional fields to include in the result.
+     */
+    public List<String> getQueryFields() {
+        return queryFields;
+    }
+
+    /**
+     * Sets the list of additional fields to include in the result.
+     *
+     * @param queryFields the list of additional fields to include in the result.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions setQueryFields(List<String> queryFields) {
+        this.queryFields = queryFields;
+        return this;
+    }
+
+    /**
+     * Gets the output content format.
+     *
+     * @return the output content format.
+     */
+    public DocumentContentFormat getOutputContentFormat() {
+        return outputContentFormat;
+    }
+
+    /**
+     * Sets the output content format.
+     *
+     * @param outputContentFormat the output content format to set.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions setOutputContentFormat(DocumentContentFormat outputContentFormat) {
+        this.outputContentFormat = outputContentFormat;
+        return this;
+    }
+
+    /**
+     * Gets the list of output formats.
+     *
+     * @return the list of output formats.
+     */
+    public List<AnalyzeOutputFormat> getOutput() {
+        return output;
+    }
+
+    /**
+     * Sets the list of output formats.
+     *
+     * @param output the list of output formats to set.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions setOutput(List<AnalyzeOutputFormat> output) {
+        this.output = output;
+        return this;
+    }
+
+    /**
+     * Gets the string index type.
+     *
+     * @return the string index type.
+     */
+    public StringIndexType getStringIndexType() {
+        return stringIndexType;
+    }
+
+    /**
+     * Sets the string index type.
+     *
+     * @param stringIndexType the string index type to set.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions setStringIndexType(StringIndexType stringIndexType) {
+        this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /**
+     * Get the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @return the list of custom page numbers for a multipage document.
+     */
+    public List<String> getPages() {
+        return pages;
+    }
+
+    /**
+     * Set the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
+     * pages you want to get the recognized result for.
+     * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
+     * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * @param pages the custom page numbers value to set.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions setPages(List<String> pages) {
+        this.pages = pages;
+        return this;
+    }
+
+    /**
+     * Get the locale hint for text recognition and document analysis.
+     * Value may contain only the language code (ex. \"en\", \"fr\") or BCP 47 language tag (ex. \"en-US\").
+     *
+     * @return the locale value.
+     */
+    public String getLocale() {
+        return locale;
+    }
+
+    /**
+     * Set the locale value.
+     * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
+     *
+     * @param locale the locale value to set.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions setLocale(String locale) {
+        this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the list of optional analysis features.
+     * @return List of optional analysis features.
+     */
+    public List<DocumentAnalysisFeature> getDocumentAnalysisFeatures() {
+        return documentAnalysisFeatures;
+    }
+
+    /**
+     * Set the list of optional analysis features.
+     * @param documentAnalysisFeatures List of optional analysis features.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions
+        setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
+        this.documentAnalysisFeatures = documentAnalysisFeatures;
+        return this;
+    }
+
+    /**
+     * Set optional analysis features.
+     * @param documentAnalysisFeatures List of optional analysis features.
+     * @return the updated {@code AnalyzeBatchDocumentsOptions} value.
+     */
+    public AnalyzeBatchDocumentsOptions
+        setDocumentAnalysisFeatures(DocumentAnalysisFeature... documentAnalysisFeatures) {
+        if (documentAnalysisFeatures != null) {
+            this.documentAnalysisFeatures = Arrays.asList(documentAnalysisFeatures);
+        }
+        return this;
     }
 }

@@ -12,12 +12,17 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Document classification parameters.
  */
 @Fluent
 public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyDocumentOptions> {
+    private StringIndexType stringIndexType;
+    private SplitMode split;
+    private List<String> pages;
+
     /*
      * Document URL to classify. Either urlSource or base64Source must be specified.
      */
@@ -35,12 +40,33 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
      * Creates an instance of ClassifyDocumentOptions class.
      */
     @Generated
-    public ClassifyDocumentOptions() {
+    ClassifyDocumentOptions() {
+    }
+
+    // CUSTOM CODE NOTE: since either urlSource or bytesSource must be specified
+    // when building this object, we're hiding its parameterless constructor, adding
+    // custom constructors, and making both properties readonly.
+    /**
+     * Creates an instance of ClassifyDocumentOptions with the specified URL source.
+     *
+     * @param urlSource the URL of the document to classify.
+     */
+    public ClassifyDocumentOptions(String urlSource) {
+        this.urlSource = urlSource;
+    }
+
+    /**
+     * Creates an instance of ClassifyDocumentOptions with the specified Base64 encoded source.
+     *
+     * @param bytesSource the Base64 encoded bytes of the document to classify.
+     */
+    public ClassifyDocumentOptions(byte[] bytesSource) {
+        this.bytesSource = bytesSource;
     }
 
     /**
      * Get the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
-     * 
+     *
      * @return the urlSource value.
      */
     @Generated
@@ -49,39 +75,14 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Set the urlSource property: Document URL to classify. Either urlSource or base64Source must be specified.
-     * 
-     * @param urlSource the urlSource value to set.
-     * @return the ClassifyDocumentOptions object itself.
-     */
-    @Generated
-    public ClassifyDocumentOptions setUrlSource(String urlSource) {
-        this.urlSource = urlSource;
-        return this;
-    }
-
-    /**
      * Get the bytesSource property: Base64 encoding of the document to classify. Either urlSource or base64Source
      * must be specified.
-     * 
+     *
      * @return the bytesSource value.
      */
     @Generated
     public byte[] getBytesSource() {
         return CoreUtils.clone(this.bytesSource);
-    }
-
-    /**
-     * Set the bytesSource property: Base64 encoding of the document to classify. Either urlSource or base64Source
-     * must be specified.
-     * 
-     * @param bytesSource the bytesSource value to set.
-     * @return the ClassifyDocumentOptions object itself.
-     */
-    @Generated
-    public ClassifyDocumentOptions setBytesSource(byte[] bytesSource) {
-        this.bytesSource = CoreUtils.clone(bytesSource);
-        return this;
     }
 
     /**
@@ -98,7 +99,7 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
 
     /**
      * Reads an instance of ClassifyDocumentOptions from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClassifyDocumentOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -123,5 +124,65 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
 
             return deserializedClassifyDocumentOptions;
         });
+    }
+
+    /**
+     * Gets the string index type.
+     *
+     * @return the string index type.
+     */
+    public StringIndexType getStringIndexType() {
+        return stringIndexType;
+    }
+
+    /**
+     * Sets the string index type.
+     *
+     * @param stringIndexType the string index type to set.
+     * @return the updated {@code ClassifyDocumentOptions} value.
+     */
+    public ClassifyDocumentOptions setStringIndexType(StringIndexType stringIndexType) {
+        this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /**
+     * Gets the split mode.
+     *
+     * @return the split mode.
+     */
+    public SplitMode getSplit() {
+        return split;
+    }
+
+    /**
+     * Sets the split mode.
+     *
+     * @param split the split mode to set.
+     * @return the updated {@code ClassifyDocumentOptions} value.
+     */
+    public ClassifyDocumentOptions setSplit(SplitMode split) {
+        this.split = split;
+        return this;
+    }
+
+    /**
+     * Gets the pages.
+     *
+     * @return the pages.
+     */
+    public List<String> getPages() {
+        return pages;
+    }
+
+    /**
+     * Sets the pages.
+     *
+     * @param pages the pages to set.
+     * @return the updated {@code ClassifyDocumentOptions} value.
+     */
+    public ClassifyDocumentOptions setPages(List<String> pages) {
+        this.pages = pages;
+        return this;
     }
 }
