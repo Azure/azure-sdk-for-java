@@ -6,23 +6,23 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class ClassifyDocumentFromUrl {
+public class AnalyzeDocumentFromBase64 {
     public static void main(String[] args) {
         DocumentIntelligenceClient documentIntelligenceClient
             = new DocumentIntelligenceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
-        SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginClassifyDocument(
-            "classifierId", new ClassifyDocumentOptions().setUrlSource("http://host.com/doc.pdf"),
-            StringIndexType.TEXT_ELEMENTS, null, null);
-        // END:com.azure.ai.documentintelligence.generated.classifydocument.classifydocumentfromurl
+        // BEGIN:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfrombase64
+        SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
+            "prebuilt-layout", new AnalyzeDocumentOptions().setBytesSource("e2Jhc2U2NEVuY29kZWRQZGZ9".getBytes()),
+            "1-2,4", "en-US", StringIndexType.TEXT_ELEMENTS, null, null, null, null);
+        // END:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfrombase64
     }
 }

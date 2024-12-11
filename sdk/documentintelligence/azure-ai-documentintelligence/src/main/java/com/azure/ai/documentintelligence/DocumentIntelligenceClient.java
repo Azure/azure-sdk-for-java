@@ -10,8 +10,13 @@ import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
+import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
+import com.azure.ai.documentintelligence.models.SplitMode;
+import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -24,9 +29,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
-
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -40,7 +44,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -70,16 +74,8 @@ public final class DocumentIntelligenceClient {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -88,8 +84,9 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -99,20 +96,21 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
-        return this.serviceClient.beginAnalyzeDocument(modelId, requestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginAnalyzeDocument(modelId, analyzeRequest, requestOptions);
     }
 
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -132,13 +130,13 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -158,7 +156,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the result of document analysis for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -197,16 +195,8 @@ public final class DocumentIntelligenceClient {
      * the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -224,8 +214,9 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -235,15 +226,15 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId,
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId, BinaryData analyzeBatchRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginAnalyzeBatchDocuments(modelId, requestOptions);
+        return this.serviceClient.beginAnalyzeBatchDocuments(modelId, analyzeBatchRequest, requestOptions);
     }
 
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -281,7 +272,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -298,7 +289,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the batch document analysis result for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -318,7 +309,7 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the result of batch document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -356,7 +347,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -387,7 +378,7 @@ public final class DocumentIntelligenceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -396,7 +387,7 @@ public final class DocumentIntelligenceClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -415,10 +406,17 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
+     * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param analyzeDocumentOptions Analyze request parameters.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param features List of optional analysis features.
+     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * @param outputContentFormat Format of the analyze result top-level content.
+     * @param output Additional outputs to generate during analysis.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -430,54 +428,74 @@ public final class DocumentIntelligenceClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId,
-        AnalyzeDocumentOptions analyzeDocumentOptions) {
+        AnalyzeDocumentOptions analyzeRequest, String pages, String locale, StringIndexType stringIndexType,
+        List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,
+        List<AnalyzeOutputFormat> output) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
-        if (analyzeDocumentOptions.getPages() != null) {
-            requestOptions.addQueryParam("pages", CoreUtils.stringJoin(",", analyzeDocumentOptions.getPages()), false);
+        if (pages != null) {
+            requestOptions.addQueryParam("pages", pages, false);
         }
-        if (analyzeDocumentOptions.getLocale() != null) {
-            requestOptions.addQueryParam("locale", analyzeDocumentOptions.getLocale(), false);
+        if (locale != null) {
+            requestOptions.addQueryParam("locale", locale, false);
         }
-        if (analyzeDocumentOptions.getStringIndexType() != null) {
-            requestOptions.addQueryParam("stringIndexType", analyzeDocumentOptions.getStringIndexType().toString(),
-                false);
+        if (stringIndexType != null) {
+            requestOptions.addQueryParam("stringIndexType", stringIndexType.toString(), false);
         }
-        if (analyzeDocumentOptions.getDocumentAnalysisFeatures() != null) {
+        if (features != null) {
             requestOptions.addQueryParam("features",
-                analyzeDocumentOptions.getDocumentAnalysisFeatures()
-                    .stream()
+                features.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        if (analyzeDocumentOptions.getQueryFields() != null) {
+        if (queryFields != null) {
             requestOptions.addQueryParam("queryFields",
-                analyzeDocumentOptions.getQueryFields()
-                    .stream()
+                queryFields.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        if (analyzeDocumentOptions.getOutputContentFormat() != null) {
-            requestOptions.addQueryParam("outputContentFormat",
-                analyzeDocumentOptions.getOutputContentFormat().toString(), false);
+        if (outputContentFormat != null) {
+            requestOptions.addQueryParam("outputContentFormat", outputContentFormat.toString(), false);
         }
-        if (analyzeDocumentOptions.getOutput() != null) {
+        if (output != null) {
             requestOptions.addQueryParam("output",
-                analyzeDocumentOptions.getOutput()
-                    .stream()
+                output.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        requestOptions.setBody(BinaryData.fromObject(analyzeDocumentOptions));
-        return serviceClient.beginAnalyzeDocumentWithModel(modelId, requestOptions);
+        return serviceClient.beginAnalyzeDocumentWithModel(modelId, BinaryData.fromObject(analyzeRequest),
+            requestOptions);
+    }
+
+    /**
+     * Analyzes document with document model.
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId,
+        AnalyzeDocumentOptions analyzeRequest) {
+        // Generated convenience method for beginAnalyzeDocumentWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginAnalyzeDocumentWithModel(modelId, BinaryData.fromObject(analyzeRequest),
+            requestOptions);
     }
 
     /**
      * Gets the generated searchable PDF output from document analysis.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,7 +516,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Gets the generated cropped image of specified figure from document analysis.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -520,7 +538,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the result of document analysis for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -540,9 +558,17 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Analyzes batch documents with document model.
-     *
+     * 
      * @param modelId Unique document model name.
-     * @param analyzeBatchDocumentsOptions Analyze batch request parameters.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param features List of optional analysis features.
+     * @param queryFields List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * @param outputContentFormat Format of the analyze result top-level content.
+     * @param output Additional outputs to generate during analysis.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -554,58 +580,74 @@ public final class DocumentIntelligenceClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
-        AnalyzeBatchDocumentsOptions analyzeBatchDocumentsOptions) {
+        AnalyzeBatchDocumentsOptions analyzeBatchRequest, String pages, String locale, StringIndexType stringIndexType,
+        List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,
+        List<AnalyzeOutputFormat> output) {
         // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        if (analyzeBatchDocumentsOptions == null) {
-            Objects.requireNonNull(analyzeBatchDocumentsOptions, "'analyzeBatchDocumentsOptions' cannot be null");
+        if (pages != null) {
+            requestOptions.addQueryParam("pages", pages, false);
         }
-        if (analyzeBatchDocumentsOptions.getPages() != null) {
-            requestOptions.addQueryParam("pages", CoreUtils.stringJoin(",", analyzeBatchDocumentsOptions.getPages()),
-                false);
+        if (locale != null) {
+            requestOptions.addQueryParam("locale", locale, false);
         }
-        if (analyzeBatchDocumentsOptions.getLocale() != null) {
-            requestOptions.addQueryParam("locale", analyzeBatchDocumentsOptions.getLocale(), false);
+        if (stringIndexType != null) {
+            requestOptions.addQueryParam("stringIndexType", stringIndexType.toString(), false);
         }
-        if (analyzeBatchDocumentsOptions.getStringIndexType() != null) {
-            requestOptions.addQueryParam("stringIndexType",
-                analyzeBatchDocumentsOptions.getStringIndexType().toString(), false);
-        }
-        if (analyzeBatchDocumentsOptions.getDocumentAnalysisFeatures() != null) {
+        if (features != null) {
             requestOptions.addQueryParam("features",
-                analyzeBatchDocumentsOptions.getDocumentAnalysisFeatures()
-                    .stream()
+                features.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        if (analyzeBatchDocumentsOptions.getQueryFields() != null) {
+        if (queryFields != null) {
             requestOptions.addQueryParam("queryFields",
-                analyzeBatchDocumentsOptions.getQueryFields()
-                    .stream()
+                queryFields.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        if (analyzeBatchDocumentsOptions.getOutputContentFormat() != null) {
-            requestOptions.addQueryParam("outputContentFormat",
-                analyzeBatchDocumentsOptions.getOutputContentFormat().toString(), false);
+        if (outputContentFormat != null) {
+            requestOptions.addQueryParam("outputContentFormat", outputContentFormat.toString(), false);
         }
-        if (analyzeBatchDocumentsOptions.getOutput() != null) {
+        if (output != null) {
             requestOptions.addQueryParam("output",
-                analyzeBatchDocumentsOptions.getOutput()
-                    .stream()
+                output.stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        requestOptions.setBody(BinaryData.fromObject(analyzeBatchDocumentsOptions));
-        return serviceClient.beginAnalyzeBatchDocumentsWithModel(modelId, requestOptions);
+        return serviceClient.beginAnalyzeBatchDocumentsWithModel(modelId, BinaryData.fromObject(analyzeBatchRequest),
+            requestOptions);
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+        AnalyzeBatchDocumentsOptions analyzeBatchRequest) {
+        // Generated convenience method for beginAnalyzeBatchDocumentsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginAnalyzeBatchDocumentsWithModel(modelId, BinaryData.fromObject(analyzeBatchRequest),
+            requestOptions);
     }
 
     /**
      * List batch document analysis results.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -626,7 +668,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Mark the batch document analysis result for deletion.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,7 +688,7 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Gets the result of batch document analysis.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param resultId Analyze batch operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,9 +710,12 @@ public final class DocumentIntelligenceClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
-     * @param classifyDocumentOptions Classify request parameters.
+     * @param classifyRequest Classify request parameters.
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param split Document splitting mode.
+     * @param pages 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -682,23 +727,42 @@ public final class DocumentIntelligenceClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
-        ClassifyDocumentOptions classifyDocumentOptions) {
+        ClassifyDocumentOptions classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
-        if (classifyDocumentOptions == null) {
-            Objects.requireNonNull(classifyDocumentOptions, "'classifyDocumentOptions' cannot be null");
+        if (stringIndexType != null) {
+            requestOptions.addQueryParam("stringIndexType", stringIndexType.toString(), false);
         }
-        if (classifyDocumentOptions.getStringIndexType() != null) {
-            requestOptions.addQueryParam("stringIndexType", classifyDocumentOptions.getStringIndexType().toString(),
-                false);
+        if (split != null) {
+            requestOptions.addQueryParam("split", split.toString(), false);
         }
-        if (classifyDocumentOptions.getSplit() != null) {
-            requestOptions.addQueryParam("split", classifyDocumentOptions.getSplit().toString(), false);
+        if (pages != null) {
+            requestOptions.addQueryParam("pages", pages, false);
         }
-        if (classifyDocumentOptions.getPages() != null) {
-            requestOptions.addQueryParam("pages", CoreUtils.stringJoin(",", classifyDocumentOptions.getPages()), false);
-        }
-        return serviceClient.beginClassifyDocumentWithModel(classifierId,
-            BinaryData.fromObject(classifyDocumentOptions), requestOptions);
+        return serviceClient.beginClassifyDocumentWithModel(classifierId, BinaryData.fromObject(classifyRequest),
+            requestOptions);
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param classifyRequest Classify request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+        ClassifyDocumentOptions classifyRequest) {
+        // Generated convenience method for beginClassifyDocumentWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginClassifyDocumentWithModel(classifierId, BinaryData.fromObject(classifyRequest),
+            requestOptions);
     }
 }
