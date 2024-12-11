@@ -19,7 +19,7 @@ module com.azure.monitor.opentelemetry.autoconfigure {
     requires io.opentelemetry.sdk.trace;
     requires io.opentelemetry.semconv;
     requires io.opentelemetry.semconv.incubating;
-    
+
     exports com.azure.monitor.opentelemetry.autoconfigure;
 
 }
