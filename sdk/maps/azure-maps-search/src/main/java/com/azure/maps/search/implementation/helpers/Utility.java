@@ -3,7 +3,6 @@
 
 package com.azure.maps.search.implementation.helpers;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.models.GeoObject;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.serializer.JsonSerializer;
