@@ -78,7 +78,7 @@ public class FileUtils {
      * @return The path to the file.
      */
     public static Path openResourceFile(String fileName) {
-        return Paths.get("src", "test", "resources", fileName);
+        return Paths.get("src", "samples", "resources", fileName);
     }
 
     /**
