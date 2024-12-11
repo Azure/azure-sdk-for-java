@@ -21,8 +21,14 @@ module com.azure.monitor.opentelemetry.autoconfigure {
     requires io.opentelemetry.semconv.incubating;
 
     opens com.azure.monitor.opentelemetry.autoconfigure.implementation.models to com.azure.core;
-    opens com.azure.monitor.opentelemetry.autoconfigure.implementation to com.azure.core;
     opens com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models to com.azure.core;
+
+    provides io.opentelemetry.sdk.autoconfigure.spi.logs.ConfigurableLogRecordExporterProvider
+        with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider;
+    provides io.opentelemetry.sdk.autoconfigure.spi.metrics.ConfigurableMetricExporterProvider
+        with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider;
+    provides io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterProvider
+        with com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider;
 
     exports com.azure.monitor.opentelemetry.autoconfigure;
 
