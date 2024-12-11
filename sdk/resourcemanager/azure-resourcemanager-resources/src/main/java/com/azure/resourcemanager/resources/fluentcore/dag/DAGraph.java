@@ -80,7 +80,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
-     * this dag is the preparer responsible for preparing the DAG for traversal.
+     * Check whether this DAG is the preparer responsible for preparing the DAG for traversal.
      *
      * @return true if this dag is the preparer responsible for
      * preparing the DAG for traversal.
