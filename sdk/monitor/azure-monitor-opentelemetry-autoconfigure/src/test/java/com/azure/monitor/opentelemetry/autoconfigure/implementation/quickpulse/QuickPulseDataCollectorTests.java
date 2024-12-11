@@ -260,29 +260,7 @@ class QuickPulseDataCollectorTests {
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
-        TelemetryItem successRequest = createRequestTelemetry("request-success", new Date(), 300, "200", true);
-        successRequest.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(successRequest);
-
-        TelemetryItem failedRequest = createRequestTelemetry("request-failed", new Date(), 500, "400", false);
-        failedRequest.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(failedRequest);
-
-        TelemetryItem sucDep = createRemoteDependencyTelemetry("dep-success", "dep-success", 300, true);
-        sucDep.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(sucDep);
-
-        TelemetryItem failedDep = createRemoteDependencyTelemetry("dep-failed", "dep-failed", 500, false);
-        failedDep.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(failedDep);
-
-        TelemetryItem exception = ExceptionTelemetryBuilder.create().build();
-        exception.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(exception);
-
-        TelemetryItem trace = MessageTelemetryBuilder.create().build();
-        trace.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(trace);
+        createTelemetryItemsForDocsFiltering(collector);
 
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         List<DocumentIngress> documents = counters.documentList;
@@ -301,9 +279,13 @@ class QuickPulseDataCollectorTests {
 
         assertThat(counters.rdds).isEqualTo(2);
         assertThat(counters.unsuccessfulRdds).isEqualTo(1);
+        // The below line represents the "\\ApplicationInsights\\Dependency Call Duration" counter, which is meant to be an average in the 1s interval. (500 + 300) / 2 = 400.
+        // See this same logic used in the QuickPulseDataFetcher when building the monitoring point.
         assertThat(counters.rddsDuration / counters.rdds).isEqualTo(400);
         assertThat(counters.requests).isEqualTo(2);
         assertThat(counters.unsuccessfulRequests).isEqualTo(1);
+        // The below line represents the "\\ApplicationInsights\\Request Duration" counter, which is meant to be an average in the 1s interval. (500 + 300) / 2 = 400.
+        // See this same logic used in the QuickPulseDataFetcher when building the monitoring point.
         assertThat(counters.requestsDuration / counters.requests).isEqualTo(400);
         assertThat(counters.exceptions).isEqualTo(1);
 
@@ -311,6 +293,7 @@ class QuickPulseDataCollectorTests {
         assertCountersReset(collector.peek());
     }
 
+    @Test
     void honorDifferentMultipleSessionDocConfig() {
         CollectionConfigurationInfo multiSessionDocsConfig = createMultiSessionDocumentsConfig(false);
         AtomicReference<FilteringConfiguration> configuration
@@ -320,44 +303,22 @@ class QuickPulseDataCollectorTests {
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
-        TelemetryItem successRequest = createRequestTelemetry("request-success", new Date(), 300, "200", true);
-        successRequest.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(successRequest);
-
-        TelemetryItem failedRequest = createRequestTelemetry("request-failed", new Date(), 500, "400", false);
-        failedRequest.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(failedRequest);
-
-        TelemetryItem sucDep = createRemoteDependencyTelemetry("dep-success", "dep-success", 300, true);
-        sucDep.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(sucDep);
-
-        TelemetryItem failedDep = createRemoteDependencyTelemetry("dep-failed", "dep-failed", 500, false);
-        failedDep.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(failedDep);
-
-        TelemetryItem exception = ExceptionTelemetryBuilder.create().build();
-        exception.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(exception);
-
-        TelemetryItem trace = MessageTelemetryBuilder.create().build();
-        trace.setConnectionString(FAKE_CONNECTION_STRING);
-        collector.add(trace);
+        createTelemetryItemsForDocsFiltering(collector);
 
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         List<DocumentIngress> documents = counters.documentList;
 
         assertThat(documents.size()).isEqualTo(5);
 
-        DocumentIngress failedReqDoc = counters.documentList.get(0);
-        assertThat(failedReqDoc.getDocumentType()).isEqualTo(DocumentType.REQUEST);
-        assertThat(((Request) failedReqDoc).getName()).isEqualTo("request-failed");
-        assertThat(failedReqDoc.getDocumentStreamIds().get(0)).isEqualTo("all-types-default");
-
-        DocumentIngress sucReqDoc = counters.documentList.get(1);
+        DocumentIngress sucReqDoc = counters.documentList.get(0);
         assertThat(sucReqDoc.getDocumentType()).isEqualTo(DocumentType.REQUEST);
         assertThat(((Request) sucReqDoc).getName()).isEqualTo("request-success");
         assertThat(sucReqDoc.getDocumentStreamIds().get(0)).isEqualTo("random-stream-id");
+
+        DocumentIngress failedReqDoc = counters.documentList.get(1);
+        assertThat(failedReqDoc.getDocumentType()).isEqualTo(DocumentType.REQUEST);
+        assertThat(((Request) failedReqDoc).getName()).isEqualTo("request-failed");
+        assertThat(failedReqDoc.getDocumentStreamIds().get(0)).isEqualTo("all-types-default");
 
         DocumentIngress failedDepDoc = counters.documentList.get(2);
         assertThat(failedDepDoc.getDocumentType()).isEqualTo(DocumentType.REMOTE_DEPENDENCY);
@@ -376,12 +337,45 @@ class QuickPulseDataCollectorTests {
         assertCountersReset(collector.peek());
     }
 
+    @Test
     void honorDuplicateMultipleSessionDocConfig() {
         CollectionConfigurationInfo multiSessionDocsConfig = createMultiSessionDocumentsConfig(true);
         AtomicReference<FilteringConfiguration> configuration
             = new AtomicReference<>(new FilteringConfiguration(multiSessionDocsConfig));
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
+        collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
+        collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
+        createTelemetryItemsForDocsFiltering(collector);
+
+        QuickPulseDataCollector.FinalCounters counters = collector.peek();
+        List<DocumentIngress> documents = counters.documentList;
+
+        assertThat(documents.size()).isEqualTo(4);
+
+        DocumentIngress failedReqDoc = counters.documentList.get(0);
+        assertThat(failedReqDoc.getDocumentType()).isEqualTo(DocumentType.REQUEST);
+        assertThat(((Request) failedReqDoc).getName()).isEqualTo("request-failed");
+        assertThat(failedReqDoc.getDocumentStreamIds().size()).isEqualTo(1);
+
+        DocumentIngress failedDepDoc = counters.documentList.get(1);
+        assertThat(failedDepDoc.getDocumentType()).isEqualTo(DocumentType.REMOTE_DEPENDENCY);
+        assertThat(((RemoteDependency) failedDepDoc).getName()).isEqualTo("dep-failed");
+        assertThat(failedDepDoc.getDocumentStreamIds().size()).isEqualTo(1);
+
+        DocumentIngress exceptionDoc = counters.documentList.get(2);
+        assertThat(exceptionDoc.getDocumentType()).isEqualTo(DocumentType.EXCEPTION);
+        assertThat(exceptionDoc.getDocumentStreamIds().size()).isEqualTo(1);
+
+        DocumentIngress traceDoc = counters.documentList.get(3);
+        assertThat(traceDoc.getDocumentType()).isEqualTo(DocumentType.TRACE);
+        assertThat(traceDoc.getDocumentStreamIds().size()).isEqualTo(1);
+
+        counters = collector.getAndRestart();
+        assertCountersReset(collector.peek());
+    }
+
+    private void createTelemetryItemsForDocsFiltering(QuickPulseDataCollector collector) {
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
@@ -408,32 +402,6 @@ class QuickPulseDataCollectorTests {
         TelemetryItem trace = MessageTelemetryBuilder.create().build();
         trace.setConnectionString(FAKE_CONNECTION_STRING);
         collector.add(trace);
-
-        QuickPulseDataCollector.FinalCounters counters = collector.peek();
-        List<DocumentIngress> documents = counters.documentList;
-
-        assertThat(documents.size()).isEqualTo(4);
-
-        DocumentIngress failedReqDoc = counters.documentList.get(0);
-        assertThat(failedReqDoc.getDocumentType()).isEqualTo(DocumentType.REQUEST);
-        assertThat(((Request) failedReqDoc).getName()).isEqualTo("request-failed");
-        assertThat(failedReqDoc.getDocumentStreamIds().size()).isEqualTo(2);
-
-        DocumentIngress failedDepDoc = counters.documentList.get(2);
-        assertThat(failedDepDoc.getDocumentType()).isEqualTo(DocumentType.REMOTE_DEPENDENCY);
-        assertThat(((RemoteDependency) failedDepDoc).getName()).isEqualTo("dep-failed");
-        assertThat(failedDepDoc.getDocumentStreamIds().size()).isEqualTo(2);
-
-        DocumentIngress exceptionDoc = counters.documentList.get(3);
-        assertThat(exceptionDoc.getDocumentType()).isEqualTo(DocumentType.EXCEPTION);
-        assertThat(exceptionDoc.getDocumentStreamIds().size()).isEqualTo(2);
-
-        DocumentIngress traceDoc = counters.documentList.get(4);
-        assertThat(traceDoc.getDocumentType()).isEqualTo(DocumentType.TRACE);
-        assertThat(traceDoc.getDocumentStreamIds().size()).isEqualTo(2);
-
-        counters = collector.getAndRestart();
-        assertCountersReset(collector.peek());
     }
 
     private CollectionConfigurationInfo createDefaultConfig() {
@@ -453,7 +421,8 @@ class QuickPulseDataCollectorTests {
         CollectionConfigurationInfo config = new CollectionConfigurationInfo();
         List<DocumentStreamInfo> documentStreams = new ArrayList<>();
         DocumentStreamInfo defaultStream = createDocumentStream(true);
-        DocumentStreamInfo secondSessionStream = duplicateSession ? createDocumentStream(true) : createDocumentStream(false);
+        DocumentStreamInfo secondSessionStream
+            = duplicateSession ? createDocumentStream(true) : createDocumentStream(false);
         documentStreams.add(defaultStream);
         documentStreams.add(secondSessionStream);
 

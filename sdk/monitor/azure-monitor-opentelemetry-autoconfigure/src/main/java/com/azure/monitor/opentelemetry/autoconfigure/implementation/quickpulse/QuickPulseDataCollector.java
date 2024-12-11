@@ -27,6 +27,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -150,23 +151,10 @@ final class QuickPulseDataCollector {
         return tags == null ? null : tags.get(ContextTagKeys.AI_OPERATION_NAME.toString());
     }
 
-    private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType,
+    private boolean matchesDocumentFilters(TelemetryColumns columns, TelemetryType telemetryType,
         FilteringConfiguration currentConfig, List<String> matchingDocumentStreamIds) {
-        // TODO (harskaur): In a future PR, check if the document matches any filter (using Filter class)
-        // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
         Map<String, List<FilterConjunctionGroupInfo>> documentsConfig
             = currentConfig.fetchDocumentsConfigForTelemetryType(telemetryType);
-        try {
-            for (Map.Entry<String, List<FilterConjunctionGroupInfo>> e2 : documentsConfig.entrySet()) {
-                logger.verbose(e2.getKey());
-                for (FilterConjunctionGroupInfo filterGroup : e2.getValue()) {
-                    logger.verbose("  {}", filterGroup.toJsonString());
-                }
-            }
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-
         if (documentsConfig.isEmpty()) {
             return true;
         }
@@ -189,7 +177,7 @@ final class QuickPulseDataCollector {
         return !matchingDocumentStreamIds.isEmpty();
     }
 
-    private void applyMetricFilters(TelemetryColumns columns, String telemetryType,
+    private void applyMetricFilters(TelemetryColumns columns, TelemetryType telemetryType,
         FilteringConfiguration currentConfig) {
         // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
         // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
@@ -217,10 +205,10 @@ final class QuickPulseDataCollector {
         }
 
         DependencyDataColumns columns = new DependencyDataColumns(telemetry);
-        applyMetricFilters(columns, "Dependency", currentConfig);
+        applyMetricFilters(columns, TelemetryType.DEPENDENCY, currentConfig);
 
         List<String> documentStreamIds = new ArrayList<>();
-        if (matchesDocumentFilters(columns, "Dependency", currentConfig, documentStreamIds)) {
+        if (matchesDocumentFilters(columns, TelemetryType.DEPENDENCY, currentConfig, documentStreamIds)) {
             RemoteDependency dependencyDoc = new RemoteDependency();
             dependencyDoc.setName(telemetry.getName());
             dependencyDoc.setCommandName(telemetry.getData());
@@ -247,10 +235,10 @@ final class QuickPulseDataCollector {
         counters.exceptions.addAndGet(itemCount);
 
         ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
-        applyMetricFilters(columns, "Exception", currentConfig);
+        applyMetricFilters(columns, TelemetryType.EXCEPTION, currentConfig);
 
         List<String> documentStreamIds = new ArrayList<>();
-        if (matchesDocumentFilters(columns, "Exception", currentConfig, documentStreamIds)) {
+        if (matchesDocumentFilters(columns, TelemetryType.EXCEPTION, currentConfig, documentStreamIds)) {
             List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
             // Exception is a class from live metrics swagger that represents a document for an exception
             Exception exceptionDoc = new Exception();
@@ -283,10 +271,10 @@ final class QuickPulseDataCollector {
         }
 
         RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
-        applyMetricFilters(columns, "Request", currentConfig);
+        applyMetricFilters(columns, TelemetryType.REQUEST, currentConfig);
 
         List<String> documentStreamIds = new ArrayList<>();
-        if (matchesDocumentFilters(columns, "Request", currentConfig, documentStreamIds)) {
+        if (matchesDocumentFilters(columns, TelemetryType.REQUEST, currentConfig, documentStreamIds)) {
             Request requestDoc = new Request();
             requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
             requestDoc.setResponseCode(requestTelemetry.getResponseCode());
@@ -306,9 +294,9 @@ final class QuickPulseDataCollector {
     private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         TraceDataColumns columns = new TraceDataColumns(traceTelemetry);
-        applyMetricFilters(columns, "Trace", currentConfig);
+        applyMetricFilters(columns, TelemetryType.TRACE, currentConfig);
         List<String> documentStreamIds = new ArrayList<>();
-        if (matchesDocumentFilters(columns, "Trace", currentConfig, documentStreamIds)) {
+        if (matchesDocumentFilters(columns, TelemetryType.TRACE, currentConfig, documentStreamIds)) {
             Trace traceDoc = new Trace();
             traceDoc.setMessage(traceTelemetry.getMessage());
             traceDoc
