@@ -106,18 +106,25 @@ public class FilePosixProperties {
      * @param httpHeaders The headers to construct FilePosixProperties from.
      */
     FilePosixProperties(HttpHeaders httpHeaders) {
-        this.fileMode = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-mode"));
-        this.owner = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-owner"));
-        this.group = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-group"));
+        String tempFileMode = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-mode"));
+        String tempOwner = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-owner"));
+        String tempGroup = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-group"));
         String tempFileType = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-file-file-type"));
-        this.fileType = NfsFileType.fromString(tempFileType);
         String tempLinkCount = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-link-count"));
+
+        Long linkCountValue;
         try {
-            this.linkCount = tempLinkCount == null ? null : Long.valueOf(tempLinkCount);
+            linkCountValue = tempLinkCount == null ? null : Long.valueOf(tempLinkCount);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
                 "Unable to convert value of header x-ms-link-count \"" + tempLinkCount + "\" to Long. ", e);
         }
+
+        this.fileMode = tempFileMode;
+        this.owner = tempOwner;
+        this.group = tempGroup;
+        this.fileType = NfsFileType.fromString(tempFileType);
+        this.linkCount = linkCountValue;
     }
 
     static {
