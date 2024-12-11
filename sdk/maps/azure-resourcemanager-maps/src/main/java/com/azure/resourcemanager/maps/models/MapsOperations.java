@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maps.fluent.models.OperationDetailInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The set of operations available for Maps. */
+/**
+ * The set of operations available for Maps.
+ */
 @Fluent
-public final class MapsOperations {
+public final class MapsOperations implements JsonSerializable<MapsOperations> {
     /*
      * An operation available for Maps.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationDetailInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of MapsOperations class. */
+    /**
+     * Creates an instance of MapsOperations class.
+     */
     public MapsOperations() {
     }
 
     /**
      * Get the value property: An operation available for Maps.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationDetailInner> value() {
@@ -39,9 +45,9 @@ public final class MapsOperations {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -49,9 +55,9 @@ public final class MapsOperations {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MapsOperations object itself.
      */
@@ -62,12 +68,52 @@ public final class MapsOperations {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsOperations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsOperations if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapsOperations.
+     */
+    public static MapsOperations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsOperations deserializedMapsOperations = new MapsOperations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OperationDetailInner> value
+                        = reader.readArray(reader1 -> OperationDetailInner.fromJson(reader1));
+                    deserializedMapsOperations.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedMapsOperations.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsOperations;
+        });
     }
 }
