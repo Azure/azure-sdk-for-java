@@ -789,6 +789,28 @@ public final class CertificateClientImpl {
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getDeletedCertificatesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getDeletedCertificatesNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -808,7 +830,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -864,7 +886,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -919,7 +941,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -974,7 +996,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1019,7 +1041,7 @@ public final class CertificateClientImpl {
      * Delete certificate cannot be used to remove individual versions of a
      * certificate object. This operation requires the certificates/delete permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1124,7 +1146,7 @@ public final class CertificateClientImpl {
      * Delete certificate cannot be used to remove individual versions of a
      * certificate object. This operation requires the certificates/delete permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1226,7 +1248,7 @@ public final class CertificateClientImpl {
      * Sets the certificate contacts for the specified key vault. This operation
      * requires the certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1241,9 +1263,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1283,7 +1305,7 @@ public final class CertificateClientImpl {
      * Sets the certificate contacts for the specified key vault. This operation
      * requires the certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1298,9 +1320,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1339,7 +1361,7 @@ public final class CertificateClientImpl {
      * resources in the specified key vault. This operation requires the
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1377,7 +1399,7 @@ public final class CertificateClientImpl {
      * resources in the specified key vault. This operation requires the
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1413,7 +1435,7 @@ public final class CertificateClientImpl {
      * Deletes the certificate contacts for a specified key vault certificate. This
      * operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1450,7 +1472,7 @@ public final class CertificateClientImpl {
      * Deletes the certificate contacts for a specified key vault certificate. This
      * operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1496,7 +1518,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1540,7 +1562,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1582,7 +1604,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1624,7 +1646,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1656,7 +1678,7 @@ public final class CertificateClientImpl {
      * The SetCertificateIssuer operation adds or updates the specified certificate
      * issuer. This operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1684,9 +1706,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1744,7 +1766,7 @@ public final class CertificateClientImpl {
      * The SetCertificateIssuer operation adds or updates the specified certificate
      * issuer. This operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1772,9 +1794,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1831,7 +1853,7 @@ public final class CertificateClientImpl {
      * certificate issuer entity. This operation requires the certificates/setissuers
      * permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1859,9 +1881,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1918,7 +1940,7 @@ public final class CertificateClientImpl {
      * certificate issuer entity. This operation requires the certificates/setissuers
      * permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1946,9 +1968,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2003,7 +2025,7 @@ public final class CertificateClientImpl {
      * resources in the specified key vault. This operation requires the
      * certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2057,7 +2079,7 @@ public final class CertificateClientImpl {
      * resources in the specified key vault. This operation requires the
      * certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2109,7 +2131,7 @@ public final class CertificateClientImpl {
      * certificate issuer from the vault. This operation requires the
      * certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2163,7 +2185,7 @@ public final class CertificateClientImpl {
      * certificate issuer from the vault. This operation requires the
      * certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2214,7 +2236,7 @@ public final class CertificateClientImpl {
      * If this is the first version, the certificate resource is created. This
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2284,9 +2306,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2339,7 +2361,7 @@ public final class CertificateClientImpl {
      * If this is the first version, the certificate resource is created. This
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2409,9 +2431,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2465,7 +2487,7 @@ public final class CertificateClientImpl {
      * certificate is in PEM format the PEM file must contain the key as well as x509
      * certificates. Key Vault will only accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2537,9 +2559,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2647,7 +2669,7 @@ public final class CertificateClientImpl {
      * certificate is in PEM format the PEM file must contain the key as well as x509
      * certificates. Key Vault will only accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2719,9 +2741,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2834,7 +2856,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2891,7 +2913,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2946,7 +2968,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3002,7 +3024,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3048,7 +3070,7 @@ public final class CertificateClientImpl {
      * resources in the specified key vault. This operation requires the
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3136,7 +3158,7 @@ public final class CertificateClientImpl {
      * resources in the specified key vault. This operation requires the
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3223,7 +3245,7 @@ public final class CertificateClientImpl {
      * Set specified members in the certificate policy. Leave others as null. This
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3287,9 +3309,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3379,7 +3401,7 @@ public final class CertificateClientImpl {
      * Set specified members in the certificate policy. Leave others as null. This
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3443,9 +3465,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3535,7 +3557,7 @@ public final class CertificateClientImpl {
      * certificate; the only elements updated are the certificate's attributes. This
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3605,9 +3627,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3712,7 +3734,7 @@ public final class CertificateClientImpl {
      * certificate; the only elements updated are the certificate's attributes. This
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3782,9 +3804,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3886,7 +3908,7 @@ public final class CertificateClientImpl {
      * Gets information about a specific certificate. This operation requires the
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3991,7 +4013,7 @@ public final class CertificateClientImpl {
      * Gets information about a specific certificate. This operation requires the
      * certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4094,7 +4116,7 @@ public final class CertificateClientImpl {
      * Updates a certificate creation operation that is already in progress. This
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4102,9 +4124,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4155,7 +4177,7 @@ public final class CertificateClientImpl {
      * Updates a certificate creation operation that is already in progress. This
      * operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4163,9 +4185,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4214,7 +4236,7 @@ public final class CertificateClientImpl {
      * Gets the creation operation associated with a specified certificate. This
      * operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4264,7 +4286,7 @@ public final class CertificateClientImpl {
      * Gets the creation operation associated with a specified certificate. This
      * operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4314,7 +4336,7 @@ public final class CertificateClientImpl {
      * process of being created. The certificate is no longer created. This operation
      * requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4363,7 +4385,7 @@ public final class CertificateClientImpl {
      * process of being created. The certificate is no longer created. This operation
      * requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4411,7 +4433,7 @@ public final class CertificateClientImpl {
      * certificate chain with a key pair currently available in the service. This
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4433,9 +4455,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4539,7 +4561,7 @@ public final class CertificateClientImpl {
      * certificate chain with a key pair currently available in the service. This
      * operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4561,9 +4583,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4665,7 +4687,7 @@ public final class CertificateClientImpl {
      * client. All versions of the certificate will be downloaded. This operation
      * requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4698,7 +4720,7 @@ public final class CertificateClientImpl {
      * client. All versions of the certificate will be downloaded. This operation
      * requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4728,7 +4750,7 @@ public final class CertificateClientImpl {
      * Restores a backed up certificate, and all its versions, to a vault. This
      * operation requires the certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4736,9 +4758,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4839,7 +4861,7 @@ public final class CertificateClientImpl {
      * Restores a backed up certificate, and all its versions, to a vault. This
      * operation requires the certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4847,9 +4869,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4962,32 +4984,27 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *             recoveryId: String (Optional)
-     *             scheduledPurgeDate: Long (Optional)
-     *             deletedDate: Long (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
      * }
      * }
      * </pre>
@@ -4997,14 +5014,17 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeletedCertificatesWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> getDeletedCertificatesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getDeletedCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getDeletedCertificates(this.getVaultBaseUrl(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -5027,32 +5047,27 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *             recoveryId: String (Optional)
-     *             scheduledPurgeDate: Long (Optional)
-     *             deletedDate: Long (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
      * }
      * }
      * </pre>
@@ -5062,13 +5077,138 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault along with {@link Response}.
+     * @return a list of certificates that have been deleted in this vault as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> getDeletedCertificatesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> getDeletedCertificatesSinglePageAsync(requestOptions),
+            nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     *
+     * The GetDeletedCertificates operation retrieves the certificates in the current
+     * vault which are in a deleted state and ready for recovery or purging. This
+     * operation includes deletion-specific information. This operation requires the
+     * certificates/get/list permission. This operation can only be enabled on
+     * soft-delete enabled vaults.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service
+     * will return up to 25 results.</td></tr>
+     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
+     * completely provisioned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeletedCertificatesWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> getDeletedCertificatesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeletedCertificatesSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getDeletedCertificatesSync(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     *
+     * The GetDeletedCertificates operation retrieves the certificates in the current
+     * vault which are in a deleted state and ready for recovery or purging. This
+     * operation includes deletion-specific information. This operation requires the
+     * certificates/get/list permission. This operation can only be enabled on
+     * soft-delete enabled vaults.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service
+     * will return up to 25 results.</td></tr>
+     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
+     * completely provisioned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of certificates that have been deleted in this vault as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getDeletedCertificates(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> getDeletedCertificatesSinglePage(requestOptions),
+            nextLink -> getDeletedCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5079,7 +5219,7 @@ public final class CertificateClientImpl {
      * permanent deletion and the current deletion recovery level. This operation
      * requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5185,7 +5325,7 @@ public final class CertificateClientImpl {
      * permanent deletion and the current deletion recovery level. This operation
      * requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5338,7 +5478,7 @@ public final class CertificateClientImpl {
      * certificate's attributes). This operation requires the certificates/recover
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5441,7 +5581,7 @@ public final class CertificateClientImpl {
      * certificate's attributes). This operation requires the certificates/recover
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5539,7 +5679,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5584,7 +5724,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5628,7 +5768,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5663,7 +5803,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5696,7 +5836,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5742,7 +5882,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5777,6 +5917,104 @@ public final class CertificateClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res = service.getCertificateVersionsNextSync(nextLink, this.getVaultBaseUrl(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     *
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> getDeletedCertificatesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+    }
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     *
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> getDeletedCertificatesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.getDeletedCertificatesNextSync(nextLink, this.getVaultBaseUrl(), accept,
             requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);

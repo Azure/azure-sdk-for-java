@@ -200,7 +200,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateClientImpl(pipeline, serviceVersion.getVersion());
+            return new CertificateClientImpl(vaultUrl, serviceVersion);
         }
 
         if (credential == null) {
@@ -246,7 +246,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
             .clientOptions(localClientOptions)
             .build();
 
-        return new CertificateClientImpl(pipeline, serviceVersion.getVersion());
+        return new CertificateClientImpl(pipeline, vaultUrl, serviceVersion);
     }
 
     /**
