@@ -32,30 +32,6 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
     @Generated
     private DocumentClassifierDetails result;
 
-    /*
-     * Encountered error.
-     */
-    @Generated
-    private DocumentIntelligenceError error;
-
-    /*
-     * List of key-value tag attributes associated with the document model.
-     */
-    @Generated
-    private Map<String, String> tags;
-
-    /*
-     * API version used to create this operation.
-     */
-    @Generated
-    private String apiVersion;
-
-    /*
-     * Operation progress (0-100).
-     */
-    @Generated
-    private Integer percentCompleted;
-
     /**
      * Creates an instance of DocumentClassifierBuildOperationDetails class.
      * 
@@ -89,50 +65,6 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
     @Generated
     public DocumentClassifierDetails getResult() {
         return this.result;
-    }
-
-    /**
-     * Get the error property: Encountered error.
-     * 
-     * @return the error value.
-     */
-    @Generated
-    @Override
-    public DocumentIntelligenceError getError() {
-        return this.error;
-    }
-
-    /**
-     * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
-     * @return the tags value.
-     */
-    @Generated
-    @Override
-    public Map<String, String> getTags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the apiVersion property: API version used to create this operation.
-     * 
-     * @return the apiVersion value.
-     */
-    @Generated
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
-     * Get the percentCompleted property: Operation progress (0-100).
-     * 
-     * @return the percentCompleted value.
-     */
-    @Generated
-    @Override
-    public Integer getPercentCompleted() {
-        return this.percentCompleted;
     }
 
     /**
@@ -215,10 +147,10 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
             DocumentClassifierBuildOperationDetails deserializedDocumentClassifierBuildOperationDetails
                 = new DocumentClassifierBuildOperationDetails(status, createdOn, lastUpdatedOn, resourceLocation);
             deserializedDocumentClassifierBuildOperationDetails.setOperationId(operationId);
-            deserializedDocumentClassifierBuildOperationDetails.percentCompleted = percentCompleted;
-            deserializedDocumentClassifierBuildOperationDetails.apiVersion = apiVersion;
-            deserializedDocumentClassifierBuildOperationDetails.tags = tags;
-            deserializedDocumentClassifierBuildOperationDetails.error = error;
+            deserializedDocumentClassifierBuildOperationDetails.setPercentCompleted(percentCompleted);
+            deserializedDocumentClassifierBuildOperationDetails.setApiVersion(apiVersion);
+            deserializedDocumentClassifierBuildOperationDetails.setTags(tags);
+            deserializedDocumentClassifierBuildOperationDetails.setError(error);
             deserializedDocumentClassifierBuildOperationDetails.kind = kind;
             deserializedDocumentClassifierBuildOperationDetails.result = result;
 

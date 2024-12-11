@@ -43,7 +43,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
 
     /**
      * Creates an instance of AnalyzeBatchOperationDetail class.
-     *
+     * 
      * @param status the status value to set.
      * @param sourceUrl the sourceUrl value to set.
      */
@@ -55,7 +55,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
 
     /**
      * Get the status property: Analyze status. succeeded, failed, or skipped.
-     *
+     * 
      * @return the status value.
      */
     @Generated
@@ -65,7 +65,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
 
     /**
      * Get the sourceUrl property: URL of the source document.
-     *
+     * 
      * @return the sourceUrl value.
      */
     @Generated
@@ -75,7 +75,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
 
     /**
      * Get the resultUrl property: URL of the analyze result JSON.
-     *
+     * 
      * @return the resultUrl value.
      */
     @Generated
@@ -85,7 +85,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
 
     /**
      * Get the error property: Encountered error.
-     *
+     * 
      * @return the error value.
      */
     @Generated
@@ -109,7 +109,7 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
 
     /**
      * Reads an instance of AnalyzeBatchOperationDetail from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeBatchOperationDetail if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
