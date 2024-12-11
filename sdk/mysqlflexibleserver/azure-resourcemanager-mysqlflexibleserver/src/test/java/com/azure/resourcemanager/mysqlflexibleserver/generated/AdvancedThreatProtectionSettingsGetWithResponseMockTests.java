@@ -23,7 +23,7 @@ public final class AdvancedThreatProtectionSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationTime\":\"2021-07-23T04:24:07Z\",\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"},\"id\":\"k\",\"name\":\"reljeamur\",\"type\":\"zmlovuanash\"}";
+            = "{\"properties\":{\"creationTime\":\"2021-04-30T06:35:53Z\",\"state\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"pkc\",\"name\":\"ayzri\",\"type\":\"khyawfvjlboxqv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,9 @@ public final class AdvancedThreatProtectionSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AdvancedThreatProtection response = manager.advancedThreatProtectionSettings()
-            .getWithResponse("lrpiqywnc", "jtszcof", AdvancedThreatProtectionName.DEFAULT,
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("t", "ld", AdvancedThreatProtectionName.DEFAULT, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(AdvancedThreatProtectionState.DISABLED, response.state());
+        Assertions.assertEquals(AdvancedThreatProtectionState.ENABLED, response.state());
     }
 }

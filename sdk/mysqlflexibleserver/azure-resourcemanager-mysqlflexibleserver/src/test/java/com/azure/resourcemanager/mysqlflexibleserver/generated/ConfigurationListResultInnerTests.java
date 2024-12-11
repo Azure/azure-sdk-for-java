@@ -15,24 +15,31 @@ public final class ConfigurationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"szdnr\",\"currentValue\":\"qguhmuo\",\"description\":\"f\",\"documentationLink\":\"wzwbnguitn\",\"defaultValue\":\"izgazxu\",\"dataType\":\"zuckyfi\",\"allowedValues\":\"fidfvzw\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"dkfthwxmnt\",\"name\":\"i\",\"type\":\"aop\"}],\"nextLink\":\"mijcmmxdcufufs\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"rlyxwjkcprbnw\",\"currentValue\":\"gjvtbv\",\"description\":\"sszdnru\",\"documentationLink\":\"guhmuouqfpr\",\"defaultValue\":\"wbnguitnwui\",\"dataType\":\"a\",\"allowedValues\":\"ufizuckyf\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"dzuhtymwi\",\"name\":\"dkfthwxmnt\",\"type\":\"i\"},{\"properties\":{\"value\":\"pvkmijcmmxdcuf\",\"currentValue\":\"srp\",\"description\":\"zidnsezcxtbzsgfy\",\"documentationLink\":\"sne\",\"defaultValue\":\"dwzjeiach\",\"dataType\":\"osfln\",\"allowedValues\":\"sfqpteehz\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"inpvswjdkirsoodq\",\"name\":\"hc\",\"type\":\"mnoh\"},{\"properties\":{\"value\":\"kwh\",\"currentValue\":\"oifiyipjxsqwpgr\",\"description\":\"znorcj\",\"documentationLink\":\"snb\",\"defaultValue\":\"qabnmoc\",\"dataType\":\"ysh\",\"allowedValues\":\"zafb\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"jmkljavbqidtqajz\",\"name\":\"ulpkudjkrl\",\"type\":\"hbzhfepg\"}],\"nextLink\":\"qex\"}")
             .toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("szdnr", model.value().get(0).value());
-        Assertions.assertEquals("qguhmuo", model.value().get(0).currentValue());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("mijcmmxdcufufs", model.nextLink());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.value().get(0).value());
+        Assertions.assertEquals("gjvtbv", model.value().get(0).currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.value().get(0).source());
+        Assertions.assertEquals("qex", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListResultInner model
-            = new ConfigurationListResultInner().withValue(Arrays.asList(new ConfigurationInner().withValue("szdnr")
-                .withCurrentValue("qguhmuo")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT))).withNextLink("mijcmmxdcufufs");
+        ConfigurationListResultInner model = new ConfigurationListResultInner().withValue(Arrays.asList(
+            new ConfigurationInner().withValue("rlyxwjkcprbnw")
+                .withCurrentValue("gjvtbv")
+                .withSource(ConfigurationSource.USER_OVERRIDE),
+            new ConfigurationInner().withValue("pvkmijcmmxdcuf")
+                .withCurrentValue("srp")
+                .withSource(ConfigurationSource.USER_OVERRIDE),
+            new ConfigurationInner().withValue("kwh")
+                .withCurrentValue("oifiyipjxsqwpgr")
+                .withSource(ConfigurationSource.SYSTEM_DEFAULT)))
+            .withNextLink("qex");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResultInner.class);
-        Assertions.assertEquals("szdnr", model.value().get(0).value());
-        Assertions.assertEquals("qguhmuo", model.value().get(0).currentValue());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.value().get(0).source());
-        Assertions.assertEquals("mijcmmxdcufufs", model.nextLink());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.value().get(0).value());
+        Assertions.assertEquals("gjvtbv", model.value().get(0).currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.value().get(0).source());
+        Assertions.assertEquals("qex", model.nextLink());
     }
 }

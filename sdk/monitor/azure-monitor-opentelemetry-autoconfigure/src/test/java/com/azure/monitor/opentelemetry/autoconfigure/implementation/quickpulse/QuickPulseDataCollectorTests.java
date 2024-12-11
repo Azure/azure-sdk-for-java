@@ -6,10 +6,12 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRemoteDependencyTelemetry;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRequestTelemetry;
@@ -23,12 +25,14 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void initialStateIsDisabled() {
-        assertThat(new QuickPulseDataCollector().peek()).isNull();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        assertThat(new QuickPulseDataCollector(configuration).peek()).isNull();
     }
 
     @Test
     void emptyCountsAndDurationsAfterEnable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
@@ -37,7 +41,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void nullCountersAfterDisable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         collector.disable();
@@ -46,7 +51,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void requestTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -88,7 +94,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void dependencyTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -130,7 +137,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void exceptionTelemetryIsCounted() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -204,7 +212,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void checkDocumentsListSize() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);

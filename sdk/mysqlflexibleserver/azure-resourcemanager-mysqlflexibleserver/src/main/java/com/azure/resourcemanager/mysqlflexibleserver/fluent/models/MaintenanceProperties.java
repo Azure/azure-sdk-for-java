@@ -5,81 +5,76 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceProvisioningState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The properties of a maintenance resource.
  */
 @Fluent
-public final class MaintenanceProperties {
+public final class MaintenanceProperties implements JsonSerializable<MaintenanceProperties> {
     /*
      * A string defines maintenance type.
      */
-    @JsonProperty(value = "maintenanceType", access = JsonProperty.Access.WRITE_ONLY)
     private MaintenanceType maintenanceType;
 
     /*
      * A string describes the maintenance status
      */
-    @JsonProperty(value = "maintenanceState", access = JsonProperty.Access.WRITE_ONLY)
     private MaintenanceState maintenanceState;
 
     /*
      * The start time for a maintenance.
      */
-    @JsonProperty(value = "maintenanceStartTime")
     private OffsetDateTime maintenanceStartTime;
 
     /*
      * The end time for a maintenance.
      */
-    @JsonProperty(value = "maintenanceEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime maintenanceEndTime;
 
     /*
      * The start time for a maintenance execution.
      */
-    @JsonProperty(value = "maintenanceExecutionStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime maintenanceExecutionStartTime;
 
     /*
      * The end time for a maintenance execution.
      */
-    @JsonProperty(value = "maintenanceExecutionEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime maintenanceExecutionEndTime;
 
     /*
      * The min time the maintenance can be rescheduled.
      */
-    @JsonProperty(value = "maintenanceAvailableScheduleMinTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime maintenanceAvailableScheduleMinTime;
 
     /*
      * The max time the maintenance can be rescheduled.
      */
-    @JsonProperty(value = "maintenanceAvailableScheduleMaxTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime maintenanceAvailableScheduleMaxTime;
 
     /*
      * The maintenance title.
      */
-    @JsonProperty(value = "maintenanceTitle", access = JsonProperty.Access.WRITE_ONLY)
     private String maintenanceTitle;
 
     /*
      * The maintenance description.
      */
-    @JsonProperty(value = "maintenanceDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String maintenanceDescription;
 
     /*
      * Provisioning state of the Maintenance.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private MaintenanceProvisioningState provisioningState;
 
     /**
@@ -204,5 +199,72 @@ public final class MaintenanceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("maintenanceStartTime",
+            this.maintenanceStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maintenanceStartTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceProperties.
+     */
+    public static MaintenanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceProperties deserializedMaintenanceProperties = new MaintenanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maintenanceType".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceType = MaintenanceType.fromString(reader.getString());
+                } else if ("maintenanceState".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceState
+                        = MaintenanceState.fromString(reader.getString());
+                } else if ("maintenanceStartTime".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceEndTime".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceExecutionStartTime".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceExecutionStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceExecutionEndTime".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceExecutionEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceAvailableScheduleMinTime".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceAvailableScheduleMinTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceAvailableScheduleMaxTime".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceAvailableScheduleMaxTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceTitle".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceTitle = reader.getString();
+                } else if ("maintenanceDescription".equals(fieldName)) {
+                    deserializedMaintenanceProperties.maintenanceDescription = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMaintenanceProperties.provisioningState
+                        = MaintenanceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceProperties;
+        });
     }
 }

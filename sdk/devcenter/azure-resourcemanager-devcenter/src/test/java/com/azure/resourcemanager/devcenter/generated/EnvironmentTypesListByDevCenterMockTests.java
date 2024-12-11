@@ -22,7 +22,7 @@ public final class EnvironmentTypesListByDevCenterMockTests {
     @Test
     public void testListByDevCenter() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"qvbubqmamhs\"},\"tags\":{\"ttaboidvmfqh\":\"hxzga\",\"mtdherngb\":\"pubowsepdfg\",\"uahokq\":\"c\",\"phwpnulaiywzej\":\"obkauxofsh\"},\"id\":\"hs\",\"name\":\"wkojpllndnpd\",\"type\":\"rpqaf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"hsyrqunj\"},\"tags\":{\"ulkpakd\":\"enx\",\"wtqabpxuckp\":\"ifmjnn\"},\"id\":\"qoweyirdhl\",\"name\":\"sn\",\"type\":\"wfl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class EnvironmentTypesListByDevCenterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EnvironmentType> response = manager.environmentTypes()
-            .listByDevCenter("ahmnxhkxjqirw", "weooxffifhxwrs", 93927862, com.azure.core.util.Context.NONE);
+            .listByDevCenter("j", "ytunlbfjkwr", 1064304425, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hxzga", response.iterator().next().tags().get("ttaboidvmfqh"));
-        Assertions.assertEquals("qvbubqmamhs", response.iterator().next().displayName());
+        Assertions.assertEquals("enx", response.iterator().next().tags().get("ulkpakd"));
+        Assertions.assertEquals("hsyrqunj", response.iterator().next().displayName());
     }
 }

@@ -6,39 +6,41 @@ package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner;
 
-/** An immutable client-side representation of Change. */
+/**
+ * An immutable client-side representation of Change.
+ */
 public interface Change {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: The properties of a change.
-     *
+     * 
      * @return the properties value.
      */
     ChangeProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner object.
-     *
+     * 
      * @return the inner object.
      */
     ChangeInner innerModel();

@@ -19,8 +19,6 @@ import java.io.IOException;
 @Fluent
 public final class ErrorContract implements JsonSerializable<ErrorContract> {
     /*
-     * Error Response
-     * 
      * The error details.
      */
     private ErrorResponse error;
@@ -32,9 +30,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     }
 
     /**
-     * Get the error property: Error Response
-     * 
-     * The error details.
+     * Get the error property: The error details.
      * 
      * @return the error value.
      */
@@ -43,9 +39,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     }
 
     /**
-     * Set the error property: Error Response
-     * 
-     * The error details.
+     * Set the error property: The error details.
      * 
      * @param error the error value to set.
      * @return the ErrorContract object itself.

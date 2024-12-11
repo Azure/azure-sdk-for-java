@@ -6,65 +6,76 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** AzStackHCI fabric model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("AzStackHCI")
+/**
+ * AzStackHCI fabric model custom properties.
+ */
 @Fluent
 public final class AzStackHciFabricModelCustomProperties extends FabricModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "AzStackHCI";
+
+    /*
      * Gets or sets the ARM Id of the AzStackHCI site.
      */
-    @JsonProperty(value = "azStackHciSiteId", required = true)
     private String azStackHciSiteId;
 
     /*
      * Gets or sets the Appliance name.
      */
-    @JsonProperty(value = "applianceName", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> applianceName;
 
     /*
      * AzStackHCI cluster properties.
      */
-    @JsonProperty(value = "cluster", required = true)
     private AzStackHciClusterProperties cluster;
 
     /*
      * Gets or sets the fabric resource Id.
      */
-    @JsonProperty(value = "fabricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricResourceId;
 
     /*
      * Gets or sets the fabric container Id.
      */
-    @JsonProperty(value = "fabricContainerId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricContainerId;
 
     /*
      * Gets or sets the Migration solution ARM Id.
      */
-    @JsonProperty(value = "migrationSolutionId", required = true)
     private String migrationSolutionId;
 
     /*
      * Gets or sets the migration hub Uri.
      */
-    @JsonProperty(value = "migrationHubUri", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationHubUri;
 
-    /** Creates an instance of AzStackHciFabricModelCustomProperties class. */
+    /**
+     * Creates an instance of AzStackHciFabricModelCustomProperties class.
+     */
     public AzStackHciFabricModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the azStackHciSiteId property: Gets or sets the ARM Id of the AzStackHCI site.
-     *
+     * 
      * @return the azStackHciSiteId value.
      */
     public String azStackHciSiteId() {
@@ -73,7 +84,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Set the azStackHciSiteId property: Gets or sets the ARM Id of the AzStackHCI site.
-     *
+     * 
      * @param azStackHciSiteId the azStackHciSiteId value to set.
      * @return the AzStackHciFabricModelCustomProperties object itself.
      */
@@ -84,7 +95,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Get the applianceName property: Gets or sets the Appliance name.
-     *
+     * 
      * @return the applianceName value.
      */
     public List<String> applianceName() {
@@ -93,7 +104,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Get the cluster property: AzStackHCI cluster properties.
-     *
+     * 
      * @return the cluster value.
      */
     public AzStackHciClusterProperties cluster() {
@@ -102,7 +113,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Set the cluster property: AzStackHCI cluster properties.
-     *
+     * 
      * @param cluster the cluster value to set.
      * @return the AzStackHciFabricModelCustomProperties object itself.
      */
@@ -113,7 +124,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Get the fabricResourceId property: Gets or sets the fabric resource Id.
-     *
+     * 
      * @return the fabricResourceId value.
      */
     public String fabricResourceId() {
@@ -122,7 +133,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Get the fabricContainerId property: Gets or sets the fabric container Id.
-     *
+     * 
      * @return the fabricContainerId value.
      */
     public String fabricContainerId() {
@@ -131,7 +142,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Get the migrationSolutionId property: Gets or sets the Migration solution ARM Id.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -140,7 +151,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Set the migrationSolutionId property: Gets or sets the Migration solution ARM Id.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the AzStackHciFabricModelCustomProperties object itself.
      */
@@ -151,7 +162,7 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Get the migrationHubUri property: Gets or sets the migration hub Uri.
-     *
+     * 
      * @return the migrationHubUri value.
      */
     public String migrationHubUri() {
@@ -160,27 +171,86 @@ public final class AzStackHciFabricModelCustomProperties extends FabricModelCust
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (azStackHciSiteId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property azStackHciSiteId in model AzStackHciFabricModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azStackHciSiteId in model AzStackHciFabricModelCustomProperties"));
         }
         if (cluster() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cluster in model AzStackHciFabricModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cluster in model AzStackHciFabricModelCustomProperties"));
         } else {
             cluster().validate();
         }
         if (migrationSolutionId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property migrationSolutionId in model" + " AzStackHciFabricModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property migrationSolutionId in model AzStackHciFabricModelCustomProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzStackHciFabricModelCustomProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azStackHciSiteId", this.azStackHciSiteId);
+        jsonWriter.writeJsonField("cluster", this.cluster);
+        jsonWriter.writeStringField("migrationSolutionId", this.migrationSolutionId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzStackHciFabricModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzStackHciFabricModelCustomProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzStackHciFabricModelCustomProperties.
+     */
+    public static AzStackHciFabricModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzStackHciFabricModelCustomProperties deserializedAzStackHciFabricModelCustomProperties
+                = new AzStackHciFabricModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azStackHciSiteId".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.azStackHciSiteId = reader.getString();
+                } else if ("cluster".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.cluster
+                        = AzStackHciClusterProperties.fromJson(reader);
+                } else if ("migrationSolutionId".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.migrationSolutionId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.instanceType = reader.getString();
+                } else if ("applianceName".equals(fieldName)) {
+                    List<String> applianceName = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzStackHciFabricModelCustomProperties.applianceName = applianceName;
+                } else if ("fabricResourceId".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.fabricResourceId = reader.getString();
+                } else if ("fabricContainerId".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.fabricContainerId = reader.getString();
+                } else if ("migrationHubUri".equals(fieldName)) {
+                    deserializedAzStackHciFabricModelCustomProperties.migrationHubUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzStackHciFabricModelCustomProperties;
+        });
+    }
 }

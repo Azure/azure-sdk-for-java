@@ -5,40 +5,46 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.IssueContractBaseProperties;
 import com.azure.resourcemanager.apimanagement.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Issue contract Properties. */
+/**
+ * Issue contract Properties.
+ */
 @Fluent
 public final class IssueContractProperties extends IssueContractBaseProperties {
     /*
      * The issue title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Text describing the issue.
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * A resource identifier for the user created the issue.
      */
-    @JsonProperty(value = "userId", required = true)
     private String userId;
 
-    /** Creates an instance of IssueContractProperties class. */
+    /**
+     * Creates an instance of IssueContractProperties class.
+     */
     public IssueContractProperties() {
     }
 
     /**
      * Get the title property: The issue title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -47,7 +53,7 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
 
     /**
      * Set the title property: The issue title.
-     *
+     * 
      * @param title the title value to set.
      * @return the IssueContractProperties object itself.
      */
@@ -58,7 +64,7 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
 
     /**
      * Get the description property: Text describing the issue.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +73,7 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
 
     /**
      * Set the description property: Text describing the issue.
-     *
+     * 
      * @param description the description value to set.
      * @return the IssueContractProperties object itself.
      */
@@ -78,7 +84,7 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
 
     /**
      * Get the userId property: A resource identifier for the user created the issue.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -87,7 +93,7 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
 
     /**
      * Set the userId property: A resource identifier for the user created the issue.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the IssueContractProperties object itself.
      */
@@ -96,21 +102,27 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueContractProperties withCreatedDate(OffsetDateTime createdDate) {
         super.withCreatedDate(createdDate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueContractProperties withState(State state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueContractProperties withApiId(String apiId) {
         super.withApiId(apiId);
@@ -119,25 +131,79 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model IssueContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model IssueContractProperties"));
         }
         if (description() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property description in model IssueContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model IssueContractProperties"));
         }
         if (userId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property userId in model IssueContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property userId in model IssueContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IssueContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDate",
+            createdDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDate()));
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("apiId", apiId());
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("userId", this.userId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueContractProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IssueContractProperties.
+     */
+    public static IssueContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueContractProperties deserializedIssueContractProperties = new IssueContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdDate".equals(fieldName)) {
+                    deserializedIssueContractProperties.withCreatedDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("state".equals(fieldName)) {
+                    deserializedIssueContractProperties.withState(State.fromString(reader.getString()));
+                } else if ("apiId".equals(fieldName)) {
+                    deserializedIssueContractProperties.withApiId(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedIssueContractProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedIssueContractProperties.description = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedIssueContractProperties.userId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueContractProperties;
+        });
+    }
 }

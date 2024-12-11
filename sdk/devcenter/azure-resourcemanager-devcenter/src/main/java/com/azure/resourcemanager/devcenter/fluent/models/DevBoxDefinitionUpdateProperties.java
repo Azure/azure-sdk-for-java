@@ -5,38 +5,39 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of a Dev Box definition. These properties can be updated after the resource has been created.
  */
 @Fluent
-public class DevBoxDefinitionUpdateProperties {
+public class DevBoxDefinitionUpdateProperties implements JsonSerializable<DevBoxDefinitionUpdateProperties> {
     /*
      * Image reference information.
      */
-    @JsonProperty(value = "imageReference")
     private ImageReference imageReference;
 
     /*
      * The SKU for Dev Boxes created using this definition.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The storage type used for the Operating System disk of Dev Boxes created using this definition.
      */
-    @JsonProperty(value = "osStorageType")
     private String osStorageType;
 
     /*
-     * Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate
+     * Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable
+     * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate
      */
-    @JsonProperty(value = "hibernateSupport")
     private HibernateSupport hibernateSupport;
 
     /**
@@ -143,5 +144,53 @@ public class DevBoxDefinitionUpdateProperties {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("osStorageType", this.osStorageType);
+        jsonWriter.writeStringField("hibernateSupport",
+            this.hibernateSupport == null ? null : this.hibernateSupport.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxDefinitionUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxDefinitionUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxDefinitionUpdateProperties.
+     */
+    public static DevBoxDefinitionUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxDefinitionUpdateProperties deserializedDevBoxDefinitionUpdateProperties
+                = new DevBoxDefinitionUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageReference".equals(fieldName)) {
+                    deserializedDevBoxDefinitionUpdateProperties.imageReference = ImageReference.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDevBoxDefinitionUpdateProperties.sku = Sku.fromJson(reader);
+                } else if ("osStorageType".equals(fieldName)) {
+                    deserializedDevBoxDefinitionUpdateProperties.osStorageType = reader.getString();
+                } else if ("hibernateSupport".equals(fieldName)) {
+                    deserializedDevBoxDefinitionUpdateProperties.hibernateSupport
+                        = HibernateSupport.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevBoxDefinitionUpdateProperties;
+        });
     }
 }

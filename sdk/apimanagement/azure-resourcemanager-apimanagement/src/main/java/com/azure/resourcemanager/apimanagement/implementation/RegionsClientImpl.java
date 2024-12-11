@@ -30,17 +30,23 @@ import com.azure.resourcemanager.apimanagement.fluent.models.RegionContractInner
 import com.azure.resourcemanager.apimanagement.models.RegionListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RegionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RegionsClient.
+ */
 public final class RegionsClientImpl implements RegionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RegionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of RegionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RegionsClientImpl(ApiManagementClientImpl client) {
@@ -75,14 +81,14 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Lists all azure regions in which the service exists.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lists Regions operation response details along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -113,7 +119,7 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Lists all azure regions in which the service exists.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -121,7 +127,7 @@ public final class RegionsClientImpl implements RegionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lists Regions operation response details along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -152,7 +158,7 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Lists all azure regions in which the service exists.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,7 +174,7 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Lists all azure regions in which the service exists.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -186,7 +192,7 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Lists all azure regions in which the service exists.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +207,7 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Lists all azure regions in which the service exists.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -218,14 +224,13 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lists Regions operation response details along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegionContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -246,15 +251,14 @@ public final class RegionsClientImpl implements RegionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lists Regions operation response details along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegionContractInner>> listByServiceNextSinglePageAsync(String nextLink,

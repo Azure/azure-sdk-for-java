@@ -6,34 +6,25 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * FullBackupStoreDetails is used for scenarios where backup data is streamed/copied over to a storage destination.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = FullBackupStoreDetails.class,
-    visible = true)
-@JsonTypeName("FullBackupStoreDetails")
 @Fluent
 public final class FullBackupStoreDetails extends BackupStoreDetails {
     /*
      * Type of the specific object - used for deserializing
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "FullBackupStoreDetails";
 
     /*
      * SASUriList of storage containers where backup data is to be streamed/copied.
      */
-    @JsonProperty(value = "sasUriList", required = true)
     private List<String> sasUriList;
 
     /**
@@ -79,7 +70,6 @@ public final class FullBackupStoreDetails extends BackupStoreDetails {
      */
     @Override
     public void validate() {
-        super.validate();
         if (sasUriList() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -88,4 +78,45 @@ public final class FullBackupStoreDetails extends BackupStoreDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FullBackupStoreDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sasUriList", this.sasUriList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FullBackupStoreDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FullBackupStoreDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FullBackupStoreDetails.
+     */
+    public static FullBackupStoreDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FullBackupStoreDetails deserializedFullBackupStoreDetails = new FullBackupStoreDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasUriList".equals(fieldName)) {
+                    List<String> sasUriList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFullBackupStoreDetails.sasUriList = sasUriList;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedFullBackupStoreDetails.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFullBackupStoreDetails;
+        });
+    }
 }

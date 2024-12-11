@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class MySqlServerSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MySqlServerSku model = BinaryData.fromString("{\"name\":\"fsxlzevgbmqjqa\",\"tier\":\"MemoryOptimized\"}")
+        MySqlServerSku model = BinaryData.fromString("{\"name\":\"enjbdlwtgrhp\",\"tier\":\"GeneralPurpose\"}")
             .toObject(MySqlServerSku.class);
-        Assertions.assertEquals("fsxlzevgbmqjqa", model.name());
-        Assertions.assertEquals(ServerSkuTier.MEMORY_OPTIMIZED, model.tier());
+        Assertions.assertEquals("enjbdlwtgrhp", model.name());
+        Assertions.assertEquals(ServerSkuTier.GENERAL_PURPOSE, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlServerSku model = new MySqlServerSku().withName("fsxlzevgbmqjqa").withTier(ServerSkuTier.MEMORY_OPTIMIZED);
+        MySqlServerSku model = new MySqlServerSku().withName("enjbdlwtgrhp").withTier(ServerSkuTier.GENERAL_PURPOSE);
         model = BinaryData.fromObject(model).toObject(MySqlServerSku.class);
-        Assertions.assertEquals("fsxlzevgbmqjqa", model.name());
-        Assertions.assertEquals(ServerSkuTier.MEMORY_OPTIMIZED, model.tier());
+        Assertions.assertEquals("enjbdlwtgrhp", model.name());
+        Assertions.assertEquals(ServerSkuTier.GENERAL_PURPOSE, model.tier());
     }
 }

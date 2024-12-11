@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the storage configuration. */
+/**
+ * Gets or sets the storage configuration.
+ */
 @Fluent
-public final class StorageConfiguration {
+public final class StorageConfiguration implements JsonSerializable<StorageConfiguration> {
     /*
-     * The properties of the transport directory attached to the VIS. The default for transportFileShareConfiguration
-     * is the createAndMount flow if storage configuration is missing.
+     * The properties of the transport directory attached to the VIS. The default for transportFileShareConfiguration is
+     * the createAndMount flow if storage configuration is missing.
      */
-    @JsonProperty(value = "transportFileShareConfiguration")
     private FileShareConfiguration transportFileShareConfiguration;
 
-    /** Creates an instance of StorageConfiguration class. */
+    /**
+     * Creates an instance of StorageConfiguration class.
+     */
     public StorageConfiguration() {
     }
 
     /**
      * Get the transportFileShareConfiguration property: The properties of the transport directory attached to the VIS.
      * The default for transportFileShareConfiguration is the createAndMount flow if storage configuration is missing.
-     *
+     * 
      * @return the transportFileShareConfiguration value.
      */
     public FileShareConfiguration transportFileShareConfiguration() {
@@ -34,7 +41,7 @@ public final class StorageConfiguration {
     /**
      * Set the transportFileShareConfiguration property: The properties of the transport directory attached to the VIS.
      * The default for transportFileShareConfiguration is the createAndMount flow if storage configuration is missing.
-     *
+     * 
      * @param transportFileShareConfiguration the transportFileShareConfiguration value to set.
      * @return the StorageConfiguration object itself.
      */
@@ -46,12 +53,49 @@ public final class StorageConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (transportFileShareConfiguration() != null) {
             transportFileShareConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("transportFileShareConfiguration", this.transportFileShareConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageConfiguration.
+     */
+    public static StorageConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageConfiguration deserializedStorageConfiguration = new StorageConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transportFileShareConfiguration".equals(fieldName)) {
+                    deserializedStorageConfiguration.transportFileShareConfiguration
+                        = FileShareConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageConfiguration;
+        });
     }
 }

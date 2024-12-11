@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaDetailsName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Subscription Quota details.
  */
 @Fluent
-public final class SubscriptionQuotaDetails {
+public final class SubscriptionQuotaDetails implements JsonSerializable<SubscriptionQuotaDetails> {
     /*
      * Location/Azure region for the quota requested for resource.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The total quota limit for the subscription.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * The shareable quota for the subscription.
      */
-    @JsonProperty(value = "shareableQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareableQuota;
 
     /*
-     * Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response.
+     * Name of the resource provided by the resource provider. This property is already included in the request URI, so
+     * it is a readonly property returned in the response.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionQuotaDetailsName innerName;
 
     /**
@@ -129,5 +130,48 @@ public final class SubscriptionQuotaDetails {
         if (innerName() != null) {
             innerName().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeNumberField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionQuotaDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionQuotaDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionQuotaDetails.
+     */
+    public static SubscriptionQuotaDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionQuotaDetails deserializedSubscriptionQuotaDetails = new SubscriptionQuotaDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("region".equals(fieldName)) {
+                    deserializedSubscriptionQuotaDetails.region = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedSubscriptionQuotaDetails.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("shareableQuota".equals(fieldName)) {
+                    deserializedSubscriptionQuotaDetails.shareableQuota = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubscriptionQuotaDetails.innerName = SubscriptionQuotaDetailsName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionQuotaDetails;
+        });
     }
 }

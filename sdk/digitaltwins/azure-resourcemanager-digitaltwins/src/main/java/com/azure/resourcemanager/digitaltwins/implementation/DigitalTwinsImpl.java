@@ -71,23 +71,23 @@ public final class DigitalTwinsImpl implements DigitalTwins {
 
     public PagedIterable<DigitalTwinsDescription> list() {
         PagedIterable<DigitalTwinsDescriptionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DigitalTwinsDescription> list(Context context) {
         PagedIterable<DigitalTwinsDescriptionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DigitalTwinsDescription> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DigitalTwinsDescriptionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DigitalTwinsDescription> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<DigitalTwinsDescriptionInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(String location,
@@ -113,12 +113,12 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     }
 
     public DigitalTwinsDescription getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
@@ -127,12 +127,12 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     }
 
     public Response<DigitalTwinsDescription> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
@@ -141,12 +141,12 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     }
 
     public DigitalTwinsDescription deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));
@@ -155,12 +155,12 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     }
 
     public DigitalTwinsDescription deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'digitalTwinsInstances'.", id)));

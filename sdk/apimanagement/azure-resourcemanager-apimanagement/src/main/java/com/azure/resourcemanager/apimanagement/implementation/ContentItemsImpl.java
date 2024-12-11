@@ -33,14 +33,14 @@ public final class ContentItemsImpl implements ContentItems {
         String contentTypeId) {
         PagedIterable<ContentItemContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, contentTypeId);
-        return Utils.mapPage(inner, inner1 -> new ContentItemContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContentItemContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContentItemContract> listByService(String resourceGroupName, String serviceName,
         String contentTypeId, Context context) {
         PagedIterable<ContentItemContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, contentTypeId, context);
-        return Utils.mapPage(inner, inner1 -> new ContentItemContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContentItemContractImpl(inner1, this.manager()));
     }
 
     public ContentItemsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
@@ -88,22 +88,22 @@ public final class ContentItemsImpl implements ContentItems {
     }
 
     public ContentItemContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        String contentTypeId = ResourceManagerUtils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
-        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        String contentItemId = ResourceManagerUtils.getValueFromIdByName(id, "contentItems");
         if (contentItemId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
@@ -113,22 +113,22 @@ public final class ContentItemsImpl implements ContentItems {
     }
 
     public Response<ContentItemContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        String contentTypeId = ResourceManagerUtils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
-        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        String contentItemId = ResourceManagerUtils.getValueFromIdByName(id, "contentItems");
         if (contentItemId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
@@ -137,22 +137,22 @@ public final class ContentItemsImpl implements ContentItems {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        String contentTypeId = ResourceManagerUtils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
-        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        String contentItemId = ResourceManagerUtils.getValueFromIdByName(id, "contentItems");
         if (contentItemId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
@@ -163,22 +163,22 @@ public final class ContentItemsImpl implements ContentItems {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        String contentTypeId = ResourceManagerUtils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
-        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        String contentItemId = ResourceManagerUtils.getValueFromIdByName(id, "contentItems");
         if (contentItemId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));

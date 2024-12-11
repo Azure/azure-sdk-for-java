@@ -11,7 +11,9 @@ import com.azure.resourcemanager.confidentialledger.models.ManagedCcfRestore;
  */
 public final class ManagedCcfRestoreSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Restore.json
+     * x-ms-original-file:
+     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/
+     * examples/ManagedCCF_Restore.json
      */
     /**
      * Sample code: ManagedCCFRestore.

@@ -29,7 +29,7 @@ autorest
 ### Configuration
 
 ```yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 java: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/3e27c70e7c02c07b458bc0e94716c3d82d3fdd19/specification/loadtestservice/data-plane/Microsoft.LoadTestService/stable/2022-11-01/loadtestservice.json
@@ -42,7 +42,6 @@ data-plane: true
 security: AADToken
 security-scopes: https://cnt-prod.loadtesting.azure.com/.default
 partial-update: true
-stream-style-serialization: true
 service-versions:
 - '2022-11-01'
 directive:

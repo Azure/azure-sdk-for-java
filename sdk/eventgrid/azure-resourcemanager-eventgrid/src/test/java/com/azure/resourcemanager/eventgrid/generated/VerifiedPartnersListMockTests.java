@@ -24,7 +24,7 @@ public final class VerifiedPartnersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"f5b41e6d-332b-4482-8934-a409e26f5bfc\",\"organizationName\":\"epbntqq\",\"partnerDisplayName\":\"gfgsq\",\"partnerTopicDetails\":{\"description\":\"efejsewrznequqyn\",\"longDescription\":\"wknhajksbsyo\",\"setupUri\":\"mqjhgcydijnmc\"},\"partnerDestinationDetails\":{\"description\":\"ssfcriqxzixtd\",\"longDescription\":\"wmvcdkucpxpyafrw\",\"setupUri\":\"orogeuv\"},\"provisioningState\":\"Creating\"},\"id\":\"pnr\",\"name\":\"jseml\",\"type\":\"ofrsnq\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"af2fa737-b0d3-4dd5-85e1-53e8b6c10627\",\"organizationName\":\"epbntqq\",\"partnerDisplayName\":\"gfgsq\",\"partnerTopicDetails\":{\"description\":\"efejsewrznequqyn\",\"longDescription\":\"wknhajksbsyo\",\"setupUri\":\"mqjhgcydijnmc\"},\"partnerDestinationDetails\":{\"description\":\"ssfcriqxzixtd\",\"longDescription\":\"wmvcdkucpxpyafrw\",\"setupUri\":\"orogeuv\"},\"provisioningState\":\"Creating\"},\"id\":\"pnr\",\"name\":\"jseml\",\"type\":\"ofrsnq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,7 +36,7 @@ public final class VerifiedPartnersListMockTests {
         PagedIterable<VerifiedPartner> response
             = manager.verifiedPartners().list("cwwsj", 1946015970, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UUID.fromString("f5b41e6d-332b-4482-8934-a409e26f5bfc"),
+        Assertions.assertEquals(UUID.fromString("af2fa737-b0d3-4dd5-85e1-53e8b6c10627"),
             response.iterator().next().partnerRegistrationImmutableId());
         Assertions.assertEquals("epbntqq", response.iterator().next().organizationName());
         Assertions.assertEquals("gfgsq", response.iterator().next().partnerDisplayName());

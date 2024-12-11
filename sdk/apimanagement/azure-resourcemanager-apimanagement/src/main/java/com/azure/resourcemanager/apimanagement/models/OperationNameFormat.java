@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The format of the Operation Name for Application Insights telemetries. Default is Name. */
+/**
+ * The format of the Operation Name for Application Insights telemetries. Default is Name.
+ */
 public final class OperationNameFormat extends ExpandableStringEnum<OperationNameFormat> {
-    /** Static value Name for OperationNameFormat. */
+    /**
+     * Static value Name for OperationNameFormat.
+     */
     public static final OperationNameFormat NAME = fromString("Name");
 
-    /** Static value Url for OperationNameFormat. */
+    /**
+     * Static value Url for OperationNameFormat.
+     */
     public static final OperationNameFormat URL = fromString("Url");
 
     /**
      * Creates a new instance of OperationNameFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class OperationNameFormat extends ExpandableStringEnum<OperationNam
 
     /**
      * Creates or finds a OperationNameFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationNameFormat.
      */
-    @JsonCreator
     public static OperationNameFormat fromString(String name) {
         return fromString(name, OperationNameFormat.class);
     }
 
     /**
      * Gets known OperationNameFormat values.
-     *
+     * 
      * @return known OperationNameFormat values.
      */
     public static Collection<OperationNameFormat> values() {

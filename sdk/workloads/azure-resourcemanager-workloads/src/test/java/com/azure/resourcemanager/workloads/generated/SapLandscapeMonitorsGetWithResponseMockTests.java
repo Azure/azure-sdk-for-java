@@ -6,50 +6,41 @@ package com.azure.resourcemanager.workloads.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.workloads.WorkloadsManager;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitor;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SapLandscapeMonitorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"grouping\":{\"landscape\":[],\"sapApplication\":[]},\"topMetricsThresholds\":[]},\"id\":\"pssdfppyogtie\",\"name\":\"ujtv\",\"type\":\"zkc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"grouping\":{\"landscape\":[{\"name\":\"knpgoxgjiuq\",\"topSid\":[\"tozipqwj\",\"d\",\"urrxxgewpktv\"]},{\"name\":\"lkm\",\"topSid\":[\"o\",\"hlfbcgwgc\",\"oxoebqi\"]}],\"sapApplication\":[{\"name\":\"nwjfu\",\"topSid\":[\"afcba\",\"hpzpo\"]},{\"name\":\"iyjwpfilkmkkho\",\"topSid\":[\"ndviauogphuartvt\",\"ukyefchnmnahmnxh\",\"xjqirwrweoox\"]}]},\"topMetricsThresholds\":[{\"name\":\"hx\",\"green\":74.812164,\"yellow\":52.186924,\"red\":30.871212}]},\"id\":\"zqvbubqm\",\"name\":\"m\",\"type\":\"sycxhxzgaz\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         WorkloadsManager manager = WorkloadsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapLandscapeMonitor response = manager.sapLandscapeMonitors()
-            .getWithResponse("bmzyospsps", "c", com.azure.core.util.Context.NONE)
+            .getWithResponse("abuiy", "ibuz", com.azure.core.util.Context.NONE)
             .getValue();
+
+        Assertions.assertEquals("knpgoxgjiuq", response.grouping().landscape().get(0).name());
+        Assertions.assertEquals("tozipqwj", response.grouping().landscape().get(0).topSid().get(0));
+        Assertions.assertEquals("nwjfu", response.grouping().sapApplication().get(0).name());
+        Assertions.assertEquals("afcba", response.grouping().sapApplication().get(0).topSid().get(0));
+        Assertions.assertEquals("hx", response.topMetricsThresholds().get(0).name());
+        Assertions.assertEquals(74.812164F, response.topMetricsThresholds().get(0).green());
+        Assertions.assertEquals(52.186924F, response.topMetricsThresholds().get(0).yellow());
+        Assertions.assertEquals(30.871212F, response.topMetricsThresholds().get(0).red());
     }
 }

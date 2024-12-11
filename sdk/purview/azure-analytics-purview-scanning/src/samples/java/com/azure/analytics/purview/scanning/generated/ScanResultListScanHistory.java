@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanResultListScanHistory {
     public static void main(String[] args) {
-        ScanResultClient scanResultClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildScanResultClient();
+        ScanResultClient scanResultClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildScanResultClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultlistscanhistory.scanresultlistscanhistory
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = scanResultClient.listScanHistory("DataSource1", "scan1", requestOptions);

@@ -18,7 +18,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = UserRequestsClientBuilder.class, isAsync = true)
 public final class UserRequestsAsyncClient {
     @Generated
@@ -26,7 +28,7 @@ public final class UserRequestsAsyncClient {
 
     /**
      * Initializes an instance of UserRequestsAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,10 +39,10 @@ public final class UserRequestsAsyncClient {
     /**
      * Submit a user request for requestor, a user request describes user ask to do operation(s) on Purview. If any
      * workflow's trigger matches with an operation in request, a run of the workflow is created.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     operations (Required): [
      *          (Required){
@@ -50,11 +52,13 @@ public final class UserRequestsAsyncClient {
      *     ]
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     requestId: String (Required)
      *     requestor: String (Required)
@@ -70,8 +74,9 @@ public final class UserRequestsAsyncClient {
      *     comment: String (Optional)
      *     status: String(NotStarted/InProgress/Failed/Completed/Canceling/CancellationFailed/Canceled) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param userRequestsPayload The payload of submitting a user request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -79,7 +84,7 @@ public final class UserRequestsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return describes user ask to do operation(s) on Purview along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

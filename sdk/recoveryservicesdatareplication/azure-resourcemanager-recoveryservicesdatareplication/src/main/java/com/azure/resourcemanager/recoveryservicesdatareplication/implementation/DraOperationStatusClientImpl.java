@@ -25,17 +25,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.DraOpera
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DraOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DraOperationStatusClient.
+ */
 public final class DraOperationStatusClientImpl implements DraOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DraOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of DraOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DraOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
@@ -64,9 +70,9 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -111,9 +117,9 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -157,9 +163,9 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -178,9 +184,9 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -199,9 +205,9 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.

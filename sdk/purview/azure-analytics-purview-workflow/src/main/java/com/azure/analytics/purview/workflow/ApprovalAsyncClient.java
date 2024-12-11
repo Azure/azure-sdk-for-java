@@ -18,7 +18,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = ApprovalClientBuilder.class, isAsync = true)
 public final class ApprovalAsyncClient {
     @Generated
@@ -26,7 +28,7 @@ public final class ApprovalAsyncClient {
 
     /**
      * Initializes an instance of ApprovalAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,15 +38,16 @@ public final class ApprovalAsyncClient {
 
     /**
      * Approve an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of approving an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -63,15 +66,16 @@ public final class ApprovalAsyncClient {
 
     /**
      * Reject an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of rejecting an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

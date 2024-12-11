@@ -5,36 +5,53 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Display information of the operation. */
+/**
+ * Display information of the operation.
+ */
 @Fluent
 public final class OperationsDefinitionDisplay extends OperationsDisplayDefinition {
-    /** Creates an instance of OperationsDefinitionDisplay class. */
+    /**
+     * Creates an instance of OperationsDefinitionDisplay class.
+     */
     public OperationsDefinitionDisplay() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withProvider(String provider) {
         super.withProvider(provider);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withResource(String resource) {
         super.withResource(resource);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationsDefinitionDisplay withDescription(String description) {
         super.withDescription(description);
@@ -43,11 +60,78 @@ public final class OperationsDefinitionDisplay extends OperationsDisplayDefiniti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (provider() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property provider in model OperationsDefinitionDisplay"));
+        }
+        if (resource() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model OperationsDefinitionDisplay"));
+        }
+        if (operation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operation in model OperationsDefinitionDisplay"));
+        }
+        if (description() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model OperationsDefinitionDisplay"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsDefinitionDisplay.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", provider());
+        jsonWriter.writeStringField("resource", resource());
+        jsonWriter.writeStringField("operation", operation());
+        jsonWriter.writeStringField("description", description());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsDefinitionDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsDefinitionDisplay if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationsDefinitionDisplay.
+     */
+    public static OperationsDefinitionDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsDefinitionDisplay deserializedOperationsDefinitionDisplay = new OperationsDefinitionDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationsDefinitionDisplay.withProvider(reader.getString());
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationsDefinitionDisplay.withResource(reader.getString());
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationsDefinitionDisplay.withOperation(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationsDefinitionDisplay.withDescription(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsDefinitionDisplay;
+        });
     }
 }

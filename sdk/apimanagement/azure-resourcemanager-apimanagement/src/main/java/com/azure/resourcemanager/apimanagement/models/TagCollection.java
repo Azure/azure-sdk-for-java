@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged Tag list representation. */
+/**
+ * Paged Tag list representation.
+ */
 @Fluent
-public final class TagCollection {
+public final class TagCollection implements JsonSerializable<TagCollection> {
     /*
      * Page values.
      */
-    @JsonProperty(value = "value")
     private List<TagContractInner> value;
 
     /*
      * Total record count number across all pages.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Next page link if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TagCollection class. */
+    /**
+     * Creates an instance of TagCollection class.
+     */
     public TagCollection() {
     }
 
     /**
      * Get the value property: Page values.
-     *
+     * 
      * @return the value value.
      */
     public List<TagContractInner> value() {
@@ -45,7 +50,7 @@ public final class TagCollection {
 
     /**
      * Set the value property: Page values.
-     *
+     * 
      * @param value the value value to set.
      * @return the TagCollection object itself.
      */
@@ -56,7 +61,7 @@ public final class TagCollection {
 
     /**
      * Get the count property: Total record count number across all pages.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -65,7 +70,7 @@ public final class TagCollection {
 
     /**
      * Set the count property: Total record count number across all pages.
-     *
+     * 
      * @param count the count value to set.
      * @return the TagCollection object itself.
      */
@@ -76,7 +81,7 @@ public final class TagCollection {
 
     /**
      * Get the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -85,7 +90,7 @@ public final class TagCollection {
 
     /**
      * Set the nextLink property: Next page link if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TagCollection object itself.
      */
@@ -96,12 +101,55 @@ public final class TagCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagCollection.
+     */
+    public static TagCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagCollection deserializedTagCollection = new TagCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TagContractInner> value = reader.readArray(reader1 -> TagContractInner.fromJson(reader1));
+                    deserializedTagCollection.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedTagCollection.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedTagCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagCollection;
+        });
     }
 }

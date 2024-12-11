@@ -32,14 +32,14 @@ public final class TenantSettingsImpl implements TenantSettings {
     public PagedIterable<TenantSettingsContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<TenantSettingsContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TenantSettingsContract> listByService(String resourceGroupName, String serviceName,
         String filter, Context context) {
         PagedIterable<TenantSettingsContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
     }
 
     public Response<TenantSettingsContract> getWithResponse(String resourceGroupName, String serviceName,

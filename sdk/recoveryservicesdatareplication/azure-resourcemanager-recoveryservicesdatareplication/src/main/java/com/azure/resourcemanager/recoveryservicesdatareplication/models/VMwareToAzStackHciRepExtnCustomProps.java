@@ -6,118 +6,120 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMware to AzStackHCI Replication extension model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareToAzStackHCI")
+/**
+ * VMware to AzStackHCI Replication extension model custom properties.
+ */
 @Fluent
 public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExtensionModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "VMwareToAzStackHCI";
+
+    /*
      * Gets or sets the ARM Id of the source VMware fabric.
      */
-    @JsonProperty(value = "vmwareFabricArmId", required = true)
     private String vmwareFabricArmId;
 
     /*
      * Gets or sets the ARM Id of the VMware site.
      */
-    @JsonProperty(value = "vmwareSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwareSiteId;
 
     /*
      * Gets or sets the ARM Id of the target AzStackHCI fabric.
      */
-    @JsonProperty(value = "azStackHciFabricArmId", required = true)
     private String azStackHciFabricArmId;
 
     /*
      * Gets or sets the ARM Id of the AzStackHCI site.
      */
-    @JsonProperty(value = "azStackHciSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String azStackHciSiteId;
 
     /*
      * Gets or sets the storage account Id.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
      * Gets or sets the Sas Secret of storage account.
      */
-    @JsonProperty(value = "storageAccountSasSecretName")
     private String storageAccountSasSecretName;
 
     /*
      * Gets or sets the Uri of ASR.
      */
-    @JsonProperty(value = "asrServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String asrServiceUri;
 
     /*
      * Gets or sets the Uri of Rcm.
      */
-    @JsonProperty(value = "rcmServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String rcmServiceUri;
 
     /*
      * Gets or sets the Uri of Gateway.
      */
-    @JsonProperty(value = "gatewayServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String gatewayServiceUri;
 
     /*
      * Gets or sets the gateway service Id of source.
      */
-    @JsonProperty(value = "sourceGatewayServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceGatewayServiceId;
 
     /*
      * Gets or sets the gateway service Id of target.
      */
-    @JsonProperty(value = "targetGatewayServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetGatewayServiceId;
 
     /*
      * Gets or sets the source storage container name.
      */
-    @JsonProperty(value = "sourceStorageContainerName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceStorageContainerName;
 
     /*
      * Gets or sets the target storage container name.
      */
-    @JsonProperty(value = "targetStorageContainerName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetStorageContainerName;
 
     /*
      * Gets or sets the resource location.
      */
-    @JsonProperty(value = "resourceLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceLocation;
 
     /*
      * Gets or sets the subscription.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Gets or sets the resource group.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
-    /** Creates an instance of VMwareToAzStackHciRepExtnCustomProps class. */
+    /**
+     * Creates an instance of VMwareToAzStackHciRepExtnCustomProps class.
+     */
     public VMwareToAzStackHciRepExtnCustomProps() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the vmwareFabricArmId property: Gets or sets the ARM Id of the source VMware fabric.
-     *
+     * 
      * @return the vmwareFabricArmId value.
      */
     public String vmwareFabricArmId() {
@@ -126,7 +128,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the vmwareFabricArmId property: Gets or sets the ARM Id of the source VMware fabric.
-     *
+     * 
      * @param vmwareFabricArmId the vmwareFabricArmId value to set.
      * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
@@ -137,7 +139,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the vmwareSiteId property: Gets or sets the ARM Id of the VMware site.
-     *
+     * 
      * @return the vmwareSiteId value.
      */
     public String vmwareSiteId() {
@@ -146,7 +148,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the azStackHciFabricArmId property: Gets or sets the ARM Id of the target AzStackHCI fabric.
-     *
+     * 
      * @return the azStackHciFabricArmId value.
      */
     public String azStackHciFabricArmId() {
@@ -155,7 +157,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the azStackHciFabricArmId property: Gets or sets the ARM Id of the target AzStackHCI fabric.
-     *
+     * 
      * @param azStackHciFabricArmId the azStackHciFabricArmId value to set.
      * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
@@ -166,7 +168,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the azStackHciSiteId property: Gets or sets the ARM Id of the AzStackHCI site.
-     *
+     * 
      * @return the azStackHciSiteId value.
      */
     public String azStackHciSiteId() {
@@ -175,7 +177,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the storageAccountId property: Gets or sets the storage account Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -184,7 +186,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the storageAccountId property: Gets or sets the storage account Id.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
@@ -195,7 +197,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the storageAccountSasSecretName property: Gets or sets the Sas Secret of storage account.
-     *
+     * 
      * @return the storageAccountSasSecretName value.
      */
     public String storageAccountSasSecretName() {
@@ -204,7 +206,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Set the storageAccountSasSecretName property: Gets or sets the Sas Secret of storage account.
-     *
+     * 
      * @param storageAccountSasSecretName the storageAccountSasSecretName value to set.
      * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
@@ -215,7 +217,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the asrServiceUri property: Gets or sets the Uri of ASR.
-     *
+     * 
      * @return the asrServiceUri value.
      */
     public String asrServiceUri() {
@@ -224,7 +226,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the rcmServiceUri property: Gets or sets the Uri of Rcm.
-     *
+     * 
      * @return the rcmServiceUri value.
      */
     public String rcmServiceUri() {
@@ -233,7 +235,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the gatewayServiceUri property: Gets or sets the Uri of Gateway.
-     *
+     * 
      * @return the gatewayServiceUri value.
      */
     public String gatewayServiceUri() {
@@ -242,7 +244,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the sourceGatewayServiceId property: Gets or sets the gateway service Id of source.
-     *
+     * 
      * @return the sourceGatewayServiceId value.
      */
     public String sourceGatewayServiceId() {
@@ -251,7 +253,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the targetGatewayServiceId property: Gets or sets the gateway service Id of target.
-     *
+     * 
      * @return the targetGatewayServiceId value.
      */
     public String targetGatewayServiceId() {
@@ -260,7 +262,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the sourceStorageContainerName property: Gets or sets the source storage container name.
-     *
+     * 
      * @return the sourceStorageContainerName value.
      */
     public String sourceStorageContainerName() {
@@ -269,7 +271,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the targetStorageContainerName property: Gets or sets the target storage container name.
-     *
+     * 
      * @return the targetStorageContainerName value.
      */
     public String targetStorageContainerName() {
@@ -278,7 +280,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the resourceLocation property: Gets or sets the resource location.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -287,7 +289,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the subscriptionId property: Gets or sets the subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -296,7 +298,7 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Get the resourceGroup property: Gets or sets the resource group.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -305,21 +307,96 @@ public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExten
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmwareFabricArmId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vmwareFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmwareFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
         }
         if (azStackHciFabricArmId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property azStackHciFabricArmId in model" + " VMwareToAzStackHciRepExtnCustomProps"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azStackHciFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciRepExtnCustomProps.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmwareFabricArmId", this.vmwareFabricArmId);
+        jsonWriter.writeStringField("azStackHciFabricArmId", this.azStackHciFabricArmId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("storageAccountSasSecretName", this.storageAccountSasSecretName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareToAzStackHciRepExtnCustomProps from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareToAzStackHciRepExtnCustomProps if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareToAzStackHciRepExtnCustomProps.
+     */
+    public static VMwareToAzStackHciRepExtnCustomProps fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareToAzStackHciRepExtnCustomProps deserializedVMwareToAzStackHciRepExtnCustomProps
+                = new VMwareToAzStackHciRepExtnCustomProps();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmwareFabricArmId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.vmwareFabricArmId = reader.getString();
+                } else if ("azStackHciFabricArmId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.azStackHciFabricArmId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.instanceType = reader.getString();
+                } else if ("vmwareSiteId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.vmwareSiteId = reader.getString();
+                } else if ("azStackHciSiteId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.azStackHciSiteId = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.storageAccountId = reader.getString();
+                } else if ("storageAccountSasSecretName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.storageAccountSasSecretName = reader.getString();
+                } else if ("asrServiceUri".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.asrServiceUri = reader.getString();
+                } else if ("rcmServiceUri".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.rcmServiceUri = reader.getString();
+                } else if ("gatewayServiceUri".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.gatewayServiceUri = reader.getString();
+                } else if ("sourceGatewayServiceId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.sourceGatewayServiceId = reader.getString();
+                } else if ("targetGatewayServiceId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.targetGatewayServiceId = reader.getString();
+                } else if ("sourceStorageContainerName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.sourceStorageContainerName = reader.getString();
+                } else if ("targetStorageContainerName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.targetStorageContainerName = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.resourceLocation = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciRepExtnCustomProps.resourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareToAzStackHciRepExtnCustomProps;
+        });
+    }
 }

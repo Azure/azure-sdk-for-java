@@ -6,10 +6,15 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.OperationStatusResult;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +26,12 @@ public final class OperationStatusExtendedResultInner extends OperationStatusRes
     /*
      * The extended properties of Operation Results
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
+
+    /*
+     * Fully qualified ID of the resource against which the original async operation was started.
+     */
+    private String resourceId;
 
     /**
      * Creates an instance of OperationStatusExtendedResultInner class.
@@ -49,6 +57,17 @@ public final class OperationStatusExtendedResultInner extends OperationStatusRes
     public OperationStatusExtendedResultInner withProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    @Override
+    public String resourceId() {
+        return this.resourceId;
     }
 
     /**
@@ -130,6 +149,87 @@ public final class OperationStatusExtendedResultInner extends OperationStatusRes
      */
     @Override
     public void validate() {
-        super.validate();
+        if (status() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model OperationStatusExtendedResultInner"));
+        }
+        if (operations() != null) {
+            operations().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusExtendedResultInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", status());
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeNumberField("percentComplete", percentComplete());
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeArrayField("operations", operations(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("error", error());
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusExtendedResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusExtendedResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationStatusExtendedResultInner.
+     */
+    public static OperationStatusExtendedResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusExtendedResultInner deserializedOperationStatusExtendedResultInner
+                = new OperationStatusExtendedResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.withStatus(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.withId(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.resourceId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.withName(reader.getString());
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner
+                        .withPercentComplete(reader.getNullable(JsonReader::getFloat));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("operations".equals(fieldName)) {
+                    List<OperationStatusResult> operations
+                        = reader.readArray(reader1 -> OperationStatusResult.fromJson(reader1));
+                    deserializedOperationStatusExtendedResultInner.withOperations(operations);
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusExtendedResultInner.withError(ManagementError.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedOperationStatusExtendedResultInner.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusExtendedResultInner;
+        });
     }
 }

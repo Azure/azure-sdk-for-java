@@ -12,14 +12,14 @@ public final class ServerGtidSetParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerGtidSetParameter model
-            = BinaryData.fromString("{\"gtidSet\":\"wkuofoskghsauu\"}").toObject(ServerGtidSetParameter.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.gtidSet());
+            = BinaryData.fromString("{\"gtidSet\":\"csonpclhoco\"}").toObject(ServerGtidSetParameter.class);
+        Assertions.assertEquals("csonpclhoco", model.gtidSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerGtidSetParameter model = new ServerGtidSetParameter().withGtidSet("wkuofoskghsauu");
+        ServerGtidSetParameter model = new ServerGtidSetParameter().withGtidSet("csonpclhoco");
         model = BinaryData.fromObject(model).toObject(ServerGtidSetParameter.class);
-        Assertions.assertEquals("wkuofoskghsauu", model.gtidSet());
+        Assertions.assertEquals("csonpclhoco", model.gtidSet());
     }
 }

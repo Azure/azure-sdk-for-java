@@ -21,7 +21,7 @@ public final class EnvironmentDefinitionsListByProjectCatalogMockTests {
     @Test
     public void testListByProjectCatalog() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"wgnyfusfzsvtui\",\"parameters\":[{\"id\":\"jqg\",\"name\":\"fh\",\"description\":\"rqryxynqn\",\"type\":\"boolean\",\"readOnly\":true,\"required\":false},{\"id\":\"xznptgoeiyb\",\"name\":\"bp\",\"description\":\"vf\",\"type\":\"string\",\"readOnly\":false,\"required\":true},{\"id\":\"rigjkskyrioov\",\"name\":\"dsxwaab\",\"description\":\"ifrygzn\",\"type\":\"integer\",\"readOnly\":false,\"required\":true}],\"templatePath\":\"zob\",\"validationStatus\":\"Unknown\"},\"id\":\"lhslnelxieixyn\",\"name\":\"lxecwcrojphslh\",\"type\":\"awjutifd\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"pgdakchzyvli\",\"parameters\":[{\"id\":\"kcxk\",\"name\":\"bn\",\"description\":\"ysux\",\"type\":\"array\",\"readOnly\":true,\"required\":false},{\"id\":\"wijpsttexoqqpwc\",\"name\":\"ufmhrunc\",\"description\":\"mqspkcdqzhlctdd\",\"type\":\"number\",\"readOnly\":true,\"required\":false}],\"templatePath\":\"chrqb\",\"validationStatus\":\"Unknown\"},\"id\":\"cgegydcwbo\",\"name\":\"jumvqqolihrraio\",\"type\":\"aubrjtloq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class EnvironmentDefinitionsListByProjectCatalogMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EnvironmentDefinition> response = manager.environmentDefinitions()
-            .listByProjectCatalog("nqnm", "jng", "qdqx", com.azure.core.util.Context.NONE);
+            .listByProjectCatalog("utlwexxwla", "niexzsrzpgepq", "yb", com.azure.core.util.Context.NONE);
 
     }
 }

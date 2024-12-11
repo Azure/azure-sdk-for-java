@@ -9,8 +9,7 @@ import io.clientcore.http.stress.util.TelemetryHelper;
 /**
  * Stress test application
  */
-public class App {
-
+public final class App {
     /**
      * Main method to invoke other stress tests.
      *
@@ -23,5 +22,8 @@ public class App {
             // HttpPatch.class,
             // add other stress tests here
         }, args);
+    }
+
+    private App() {
     }
 }

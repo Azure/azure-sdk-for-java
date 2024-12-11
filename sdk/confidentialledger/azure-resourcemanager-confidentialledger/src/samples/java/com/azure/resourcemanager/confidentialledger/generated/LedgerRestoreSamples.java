@@ -11,7 +11,9 @@ import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerRes
  */
 public final class LedgerRestoreSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ConfidentialLedger_Restore.json
+     * x-ms-original-file:
+     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/
+     * examples/ConfidentialLedger_Restore.json
      */
     /**
      * Sample code: ConfidentialLedgerRestore.
