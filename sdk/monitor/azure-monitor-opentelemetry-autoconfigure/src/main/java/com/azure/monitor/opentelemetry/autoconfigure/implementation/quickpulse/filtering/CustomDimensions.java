@@ -46,7 +46,7 @@ public class CustomDimensions {
         if (customDimensions.containsKey(key)) {
             String value = customDimensions.get(key);
             try {
-                result = Double.valueOf(value);
+                result = Double.parseDouble(value);
             } catch (NumberFormatException e) {
                 return result;
             }
