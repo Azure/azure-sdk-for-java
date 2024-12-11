@@ -34,84 +34,84 @@ public interface Deployment extends Indexable, Refreshable<Deployment>, Updatabl
     HasInnerModel<DeploymentExtendedInner>, HasManager<ResourceManager>, HasName, HasId {
 
     /**
-     * Gets the name of this deployment's resource group
+     * Gets the name of this deployment's resource group.
      *
      * @return the name of this deployment's resource group
      */
     String resourceGroupName();
 
     /**
-     * Gets the state of the provisioning process of the resources being deployed
+     * Gets the state of the provisioning process of the resources being deployed.
      *
      * @return the state of the provisioning process of the resources being deployed
      */
     String provisioningState();
 
     /**
-     * Gets the correlation ID of the deployment
+     * Gets the correlation ID of the deployment.
      *
      * @return the correlation ID of the deployment
      */
     String correlationId();
 
     /**
-     * Gets the timestamp of the template deployment
+     * Gets the timestamp of the template deployment.
      *
      * @return the timestamp of the template deployment
      */
     OffsetDateTime timestamp();
 
     /**
-     * Gets key/value pairs that represent deployment output
+     * Gets key/value pairs that represent deployment output.
      *
      * @return key/value pairs that represent deployment output
      */
     Object outputs();
 
     /**
-     * Gets the list of resource providers needed for the deployment
+     * Gets the list of resource providers needed for the deployment.
      *
      * @return the list of resource providers needed for the deployment
      */
     List<Provider> providers();
 
     /**
-     * Gets the list of deployment dependencies
+     * Gets the list of deployment dependencies.
      *
      * @return the list of deployment dependencies
      */
     List<Dependency> dependencies();
 
     /**
-     * Gets the hash produced for the template
+     * Gets the hash produced for the template.
      *
      * @return the hash produced for the template
      */
     String templateHash();
 
     /**
-     * Gets the URI referencing the template
+     * Gets the URI referencing the template.
      *
      * @return the URI referencing the template
      */
     TemplateLink templateLink();
 
     /**
-     * Gets the deployment parameters
+     * Gets the deployment parameters.
      *
      * @return the deployment parameters
      */
     Object parameters();
 
     /**
-     * Gets the URI referencing the parameters
+     * Gets the URI referencing the parameters.
      *
      * @return the URI referencing the parameters
      */
     ParametersLink parametersLink();
 
     /**
-     * Gets the deployment mode
+     * Gets the deployment mode.
      *
      * @return the deployment mode. Possible values include:
      * 'Incremental', 'Complete'.
@@ -119,7 +119,7 @@ public interface Deployment extends Indexable, Refreshable<Deployment>, Updatabl
     DeploymentMode mode();
 
     /**
-     * Gets the ManagementError
+     * Gets the ManagementError.
      *
      * @return the {@link ManagementError}, if deployment fails.
      */
@@ -133,7 +133,7 @@ public interface Deployment extends Indexable, Refreshable<Deployment>, Updatabl
     List<ResourceReference> outputResources();
 
     /**
-     * Gets the operations related to this deployment
+     * Gets the operations related to this deployment.
      *
      * @return the operations related to this deployment
      */

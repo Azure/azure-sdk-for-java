@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface HasName {
     /**
-     * Gets the name of the resource
+     * Gets the name of the resource.
      *
      * @return the name of the resource
      */

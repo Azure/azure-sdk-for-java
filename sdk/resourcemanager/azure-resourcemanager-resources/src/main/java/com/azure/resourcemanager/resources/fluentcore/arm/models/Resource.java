@@ -61,21 +61,21 @@ public interface Resource extends Indexable, HasId, HasName {
     String type();
 
     /**
-     * Gets the name of the region the resource is in
+     * Gets the name of the region the resource is in.
      *
      * @return the name of the region the resource is in
      */
     String regionName();
 
     /**
-     * Gets the region the resource is in
+     * Gets the region the resource is in.
      *
      * @return the region the resource is in
      */
     Region region();
 
     /**
-     * Gets the tags for the resource
+     * Gets the tags for the resource.
      *
      * @return the tags for the resource
      */

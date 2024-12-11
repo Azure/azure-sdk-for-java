@@ -60,7 +60,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
-     * Gets a list of keys of nodes in DAGraph those are dependents on this node
+     * Gets a list of keys of nodes in DAGraph those are dependents on this node.
      *
      * @return a list of keys of nodes in {@link DAGraph} those are dependents on this node
      */
@@ -78,7 +78,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
-     * Gets a list of keys of nodes in DAGraph that this node depends on
+     * Gets a list of keys of nodes in DAGraph that this node depends on.
      *
      * @return a list of keys of nodes in {@link DAGraph} that this node depends on
      */
@@ -105,7 +105,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
-     * Check whether this node has any dependency
+     * Check whether this node has any dependency.
      *
      * @return true if this node has any dependency
      */
@@ -123,7 +123,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
-     * Check whether this node is marked as preparer
+     * Check whether this node is marked as preparer.
      *
      * @return true if this node is marked as preparer
      */
@@ -140,7 +140,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
-     * Check whether all dependencies of this node are resolved
+     * Check whether all dependencies of this node are resolved.
      *
      * @return true if all dependencies of this node are resolved
      */

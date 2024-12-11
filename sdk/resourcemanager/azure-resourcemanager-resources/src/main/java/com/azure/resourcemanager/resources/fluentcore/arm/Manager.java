@@ -46,7 +46,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
-     * Gets the ID of the subscription the manager is working with
+     * Gets the ID of the subscription the manager is working with.
      *
      * @return the ID of the subscription the manager is working with
      */
@@ -55,7 +55,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
-     * Gets the Azure environment the manager is working with
+     * Gets the Azure environment the manager is working with.
      *
      * @return the Azure environment the manager is working with
      */
@@ -77,7 +77,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
-     * Gets the ResourceManager associated with this manager
+     * Gets the ResourceManager associated with this manager.
      *
      * @return the {@link ResourceManager} associated with this manager
      */

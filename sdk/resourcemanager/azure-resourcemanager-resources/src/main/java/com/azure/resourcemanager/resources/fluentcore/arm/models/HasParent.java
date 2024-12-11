@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.models;
  */
 public interface HasParent<ParentT> {
     /**
-     * Gets the parent of this child object
+     * Gets the parent of this child object.
      *
      * @return the parent of this child object
      */

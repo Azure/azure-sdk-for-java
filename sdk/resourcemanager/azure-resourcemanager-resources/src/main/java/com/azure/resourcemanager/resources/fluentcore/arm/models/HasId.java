@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface HasId {
     /**
-     * Gets the resource ID
+     * Gets the resource ID.
      *
      * @return the resource ID string
      */

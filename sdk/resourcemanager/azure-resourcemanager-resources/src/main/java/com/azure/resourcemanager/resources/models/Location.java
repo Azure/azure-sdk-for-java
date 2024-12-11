@@ -16,35 +16,35 @@ import com.azure.resourcemanager.resources.fluent.models.LocationInner;
 @Fluent
 public interface Location extends Indexable, HasInnerModel<LocationInner>, HasName {
     /**
-     * Gets the subscription UUID
+     * Gets the subscription UUID.
      *
      * @return the subscription UUID
      */
     String subscriptionId();
 
     /**
-     * Gets the display name of the location readable by humans
+     * Gets the display name of the location readable by humans.
      *
      * @return the display name of the location readable by humans
      */
     String displayName();
 
     /**
-     * Gets the region of the data center location
+     * Gets the region of the data center location.
      *
      * @return the region of the data center location
      */
     Region region();
 
     /**
-     * Gets the latitude of the location
+     * Gets the latitude of the location.
      *
      * @return the latitude of the location
      */
     String latitude();
 
     /**
-     * Gets the longitude of the location
+     * Gets the longitude of the location.
      *
      * @return the longitude of the location
      */

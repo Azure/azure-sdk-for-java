@@ -14,14 +14,14 @@ import com.azure.resourcemanager.resources.fluent.models.DeploymentExportResultI
 public interface DeploymentExportResult extends HasInnerModel<DeploymentExportResultInner> {
 
     /**
-     * Gets the template content
+     * Gets the template content.
      *
      * @return the template content
      */
     Object template();
 
     /**
-     * Gets the template content as a JSON string
+     * Gets the template content as a JSON string.
      * @return the template content as a JSON string
      */
     String templateAsJson();

@@ -19,28 +19,28 @@ public interface DeploymentOperation
     extends Indexable, Refreshable<DeploymentOperation>, HasInnerModel<DeploymentOperationInner> {
 
     /**
-     * Gets the deployment operation id
+     * Gets the deployment operation id.
      *
      * @return the deployment operation id
      */
     String operationId();
 
     /**
-     * Gets the state of the provisioning resource being deployed
+     * Gets the state of the provisioning resource being deployed.
      *
      * @return the state of the provisioning resource being deployed
      */
     String provisioningState();
 
     /**
-     * Gets the name of the current provisioning operation
+     * Gets the name of the current provisioning operation.
      *
      * @return the name of the current provisioning operation
      */
     ProvisioningOperation provisioningOperation();
 
     /**
-     * Gets the date and time of the operation
+     * Gets the date and time of the operation.
      *
      * @return the date and time of the operation
      */
@@ -54,14 +54,14 @@ public interface DeploymentOperation
     String statusCode();
 
     /**
-     * Gets the operation status message
+     * Gets the operation status message.
      *
      * @return the operation status message
      */
     Object statusMessage();
 
     /**
-     * Gets the target resource
+     * Gets the target resource.
      *
      * @return the target resource
      */

@@ -48,7 +48,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
-     * Gets this node's unique id
+     * Gets this node's unique id.
      *
      * @return this node's unique id
      */
@@ -57,7 +57,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
-     * Gets data stored in this node
+     * Gets data stored in this node.
      *
      * @return data stored in this node
      */
@@ -75,7 +75,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
-     * Gets children (neighbours) of this node
+     * Gets children (neighbours) of this node.
      *
      * @return children (neighbours) of this node
      */
@@ -84,7 +84,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
-     * Sets child (neighbour) to this node
+     * Sets child (neighbour) to this node.
      *
      * @param childKey add a child (neighbour) of this node
      */
@@ -93,7 +93,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
-     * Removes child (neighbour) from this node
+     * Removes child (neighbour) from this node.
      *
      * @param childKey remove child (neighbour) of this node
      */

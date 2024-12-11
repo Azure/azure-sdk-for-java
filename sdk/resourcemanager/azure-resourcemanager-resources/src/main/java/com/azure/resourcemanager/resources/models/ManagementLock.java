@@ -27,28 +27,28 @@ public interface ManagementLock extends Indexable, Refreshable<ManagementLock>, 
     HasInnerModel<ManagementLockObjectInner>, HasManager<ResourceManager>, HasId, HasName {
 
     /**
-     * Gets the lock level
+     * Gets the lock level.
      *
      * @return the lock level
      */
     LockLevel level();
 
     /**
-     * Gets the resource ID of the locked resource
+     * Gets the resource ID of the locked resource.
      *
      * @return the resource ID of the locked resource
      */
     String lockedResourceId();
 
     /**
-     * Gets any notes associated with the lock
+     * Gets any notes associated with the lock.
      *
      * @return any notes associated with the lock
      */
     String notes();
 
     /**
-     * Gets the owners of the lock
+     * Gets the owners of the lock.
      *
      * @return the owners of the lock
      */
