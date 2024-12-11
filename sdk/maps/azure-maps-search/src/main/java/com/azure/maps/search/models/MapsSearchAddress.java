@@ -4,6 +4,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.GeoBoundingBox;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -11,7 +12,6 @@ import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoBoundingBox;
 
 /**
  * The address of the result.
@@ -55,12 +55,15 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
     private String streetNameAndNumber;
 
     /*
-     * A Neighbourhood is a geographically localized area within a city or town with distinctive characteristics and social interactions between inhabitants.
+     * A Neighbourhood is a geographically localized area within a city or town with distinctive characteristics and
+     * social interactions between inhabitants.
      */
     private String neighbourhood;
 
     /*
-     * City / Town <BR>Note:  `municipality` represents the residential municipality. Depending on the location, the `municipality` value may differ from the commonly known name of a city or town. For the commonly known name of the city or town, it’s suggested that the `localName` value be used instead of the `municipality` value.
+     * City / Town <BR>Note: `municipality` represents the residential municipality. Depending on the location, the
+     * `municipality` value may differ from the commonly known name of a city or town. For the commonly known name of
+     * the city or town, it’s suggested that the `localName` value be used instead of the `municipality` value.
      */
     private String municipality;
 
@@ -75,7 +78,8 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
     private String countrySubdivision;
 
     /*
-     * `countrySubdivisionCode` prefixed by `countryCode` ( countryCode-countrySubdivisionCode ) and the hyphen forms the ISO 3166-2 code. Examples: TX for Texas, SCT for Scotland and ON for Ontario.
+     * `countrySubdivisionCode` prefixed by `countryCode` ( countryCode-countrySubdivisionCode ) and the hyphen forms
+     * the ISO 3166-2 code. Examples: TX for Texas, SCT for Scotland and ON for Ontario.
      */
     private String countrySubdivisionCode;
 
@@ -115,17 +119,23 @@ public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddre
     private String countryCodeISO3;
 
     /*
-     * An address line formatted according to the formatting rules of a Result's country/region of origin, or in the case of a country/region, its full country/region name.
+     * An address line formatted according to the formatting rules of a Result's country/region of origin, or in the
+     * case of a country/region, its full country/region name.
      */
     private String freeformAddress;
 
     /*
-     * The full name of a first level of country/region administrative hierarchy. This field appears only in case countrySubdivision is presented in an abbreviated form. Only supported for USA, Canada, and United Kingdom.
+     * The full name of a first level of country/region administrative hierarchy. This field appears only in case
+     * countrySubdivision is presented in an abbreviated form. Only supported for USA, Canada, and United Kingdom.
      */
     private String countrySubdivisionName;
 
     /*
-     * An address component that represents the name of a geographic area or locality that groups multiple addressable objects for addressing purposes, without being an administrative unit. This field is used to build the `freeformAddress` property. `localName` represents the postal municipality. Depending on the location, `localName` is the commonly known name of a city or town. For the commonly known name of a city or town, use `localName` instead of `municipality`.
+     * An address component that represents the name of a geographic area or locality that groups multiple addressable
+     * objects for addressing purposes, without being an administrative unit. This field is used to build the
+     * `freeformAddress` property. `localName` represents the postal municipality. Depending on the location,
+     * `localName` is the commonly known name of a city or town. For the commonly known name of a city or town, use
+     * `localName` instead of `municipality`.
      */
     private String localName;
 

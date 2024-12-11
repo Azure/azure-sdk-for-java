@@ -22,7 +22,8 @@ public final class TrafficIncidentViewportResponse implements JsonSerializable<T
     private TrafficState trafficState;
 
     /*
-     * When the copyright parameter value is true, this contains the full text of the copyright information that must be displayed with the tiles in the viewport
+     * When the copyright parameter value is true, this contains the full text of the copyright information that must be
+     * displayed with the tiles in the viewport
      */
     private String copyrightInformation;
 

@@ -20,43 +20,52 @@ public final class TrafficFlowSegmentDataFlowSegmentData
     implements JsonSerializable<TrafficFlowSegmentDataFlowSegmentData> {
     /*
      * Functional Road Class. This indicates the road type:
-     *   0: Motorway, freeway or other major road.
-     *   1: Major road, less important than a motorway.
-     *   2: Other major road.
-     *   3: Secondary road.
-     *   4: Local connecting road.
-     *   5: Local road of high importance.
-     *   6: Local road.
+     * 0: Motorway, freeway or other major road.
+     * 1: Major road, less important than a motorway.
+     * 2: Other major road.
+     * 3: Secondary road.
+     * 4: Local connecting road.
+     * 5: Local road of high importance.
+     * 6: Local road.
      */
     private String functionalRoadClass;
 
     /*
-     * The current average speed at the selected point, in the units requested. This is calculated from the currentTravelTime and the length of the selected segment.
+     * The current average speed at the selected point, in the units requested. This is calculated from the
+     * currentTravelTime and the length of the selected segment.
      */
     private Integer currentSpeed;
 
     /*
-     * The free flow speed expected under ideal conditions, expressed in the units requested. This is related to the freeFlowTravelTime.
+     * The free flow speed expected under ideal conditions, expressed in the units requested. This is related to the
+     * freeFlowTravelTime.
      */
     private Integer freeFlowSpeed;
 
     /*
-     * Current travel time in seconds, across this traffic segment, based on fused real-time measurements between the defined locations in the specified direction.
+     * Current travel time in seconds, across this traffic segment, based on fused real-time measurements between the
+     * defined locations in the specified direction.
      */
     private Integer currentTravelTime;
 
     /*
-     * The travel time in seconds, across this traffic segment, which would be expected under ideal free flow conditions.
+     * The travel time in seconds, across this traffic segment, which would be expected under ideal free flow
+     * conditions.
      */
     private Integer freeFlowTravelTime;
 
     /*
-     * The confidence is a measure of the quality of the provided travel time and speed. A value of 1 means full confidence, that the response contains the highest quality data. Lower values indicate the degree that the response may vary from the actual conditions on the road. Any value greater than 0.6 means the information was based on real-time probe input. A value of 0.5 means the reported speed is based on historical info. A value between 0.5 and 0.6 has a calculated weighted average between historical and live speeds.
+     * The confidence is a measure of the quality of the provided travel time and speed. A value of 1 means full
+     * confidence, that the response contains the highest quality data. Lower values indicate the degree that the
+     * response may vary from the actual conditions on the road. Any value greater than 0.6 means the information was
+     * based on real-time probe input. A value of 0.5 means the reported speed is based on historical info. A value
+     * between 0.5 and 0.6 has a calculated weighted average between historical and live speeds.
      */
     private Float confidence;
 
     /*
-     * Includes the coordinates describing the shape of the segment. Coordinates are shifted from the road depending on the zoom level to support high quality visualization in every scale.
+     * Includes the coordinates describing the shape of the segment. Coordinates are shifted from the road depending on
+     * the zoom level to support high quality visualization in every scale.
      */
     private TrafficFlowSegmentDataPropertiesCoordinates coordinates;
 
@@ -66,7 +75,8 @@ public final class TrafficFlowSegmentDataFlowSegmentData
     private String version;
 
     /*
-     * OpenLR code for segment. See [OpenLR](https://en.wikipedia.org/wiki/OpenLR) for more information on the use of Open LR codes.
+     * OpenLR code for segment. See [OpenLR](https://en.wikipedia.org/wiki/OpenLR) for more information on the use of
+     * Open LR codes.
      */
     private String openLrCode;
 

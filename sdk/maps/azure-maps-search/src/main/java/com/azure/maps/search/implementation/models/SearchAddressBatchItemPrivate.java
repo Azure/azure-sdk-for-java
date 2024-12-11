@@ -20,6 +20,11 @@ public final class SearchAddressBatchItemPrivate extends BatchResultItem {
      */
     private SearchAddressBatchItemPrivateResponse response;
 
+    /*
+     * HTTP request status code.
+     */
+    private Integer statusCode;
+
     /**
      * Creates an instance of SearchAddressBatchItemPrivate class.
      */
@@ -34,6 +39,16 @@ public final class SearchAddressBatchItemPrivate extends BatchResultItem {
      */
     public SearchAddressBatchItemPrivateResponse getResponse() {
         return this.response;
+    }
+
+    /**
+     * Get the statusCode property: HTTP request status code.
+     * 
+     * @return the statusCode value.
+     */
+    @Override
+    public Integer getStatusCode() {
+        return this.statusCode;
     }
 
     /**
@@ -62,7 +77,7 @@ public final class SearchAddressBatchItemPrivate extends BatchResultItem {
                 reader.nextToken();
 
                 if ("statusCode".equals(fieldName)) {
-                    deserializedSearchAddressBatchItemPrivate.setStatusCode(reader.getNullable(JsonReader::getInt));
+                    deserializedSearchAddressBatchItemPrivate.statusCode = reader.getNullable(JsonReader::getInt);
                 } else if ("response".equals(fieldName)) {
                     deserializedSearchAddressBatchItemPrivate.response
                         = SearchAddressBatchItemPrivateResponse.fromJson(reader);

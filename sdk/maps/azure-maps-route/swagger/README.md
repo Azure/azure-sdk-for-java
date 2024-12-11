@@ -66,21 +66,52 @@ title: RouteClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Route/preview/1.0/route.json
 namespace: com.azure.maps.route
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
-payload-flattening-threshold: 0
-add-context-parameter: true
-context-client-method-parameter: true
 client-logger: true
 generate-client-as-impl: true
 sync-methods: all
-generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AlternativeRouteType,BatchResultSummary,BatchResultItem,ComputeTravelTime,DelayMagnitude,DrivingSide,EffectiveSetting,GuidanceInstructionType,GuidanceManeuver,InclineLevel,JunctionType,Report,ResponseSectionType,ResponseTravelMode,Route,RouteAvoidType,RouteDirections,RouteDirectionsBatchItem,RouteDirectionsBatchItemResponse,RouteGuidance,RouteInstructionGroup,RouteInstruction,RouteMatrix,RouteRange,RouteInstructionsType,RouteLeg,RouteLegSummary,RouteMatrixSummary,RouteOptimizedWaypoint,RouteRangeResult,RouteReport,RouteRepresentationForBestOrder,RouteSection,RouteSectionTec,RouteSectionTecCause,RouteSummary,RouteType,SectionType,SimpleCategory,TravelMode,VehicleEngineType,VehicleLoadType,WindingnessLevel
+custom-types: AlternativeRouteType,BatchResultSummary,BatchResultItem,ComputeTravelTime,DelayMagnitude,DrivingSide,EffectiveSetting,GuidanceInstructionType,GuidanceManeuver,InclineLevel,JunctionType,Report,RouteSectionType,RouteTravelMode,MapsSearchRoute,RouteAvoidType,RouteDirections,RouteDirectionsBatchItem,RouteDirectionsBatchItemResponse,RouteGuidance,RouteInstructionGroup,RouteInstruction,RouteMatrix,RouteRange,RouteInstructionsType,RouteLeg,RouteLegSummary,RouteMatrixSummary,RouteOptimizedWaypoint,RouteRangeResult,RouteReport,RouteRepresentationForBestOrder,RouteSection,RouteSectionTec,RouteSectionTecCause,RouteSummary,RouteType,SectionType,RouteDelayReason,TravelMode,VehicleEngineType,VehicleLoadType,WindingnessLevel
 customization-class: src/main/java/RouteCustomization.java
-generic-response-type: true
-no-custom-headers: true
+```
+
+
+### Rename ResponseSectionType to RouteSectionType
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ResponseSectionType
+    transform: >
+      $["x-ms-enum"]["name"] = "RouteSectionType";
+```
+
+### Rename ResponseTravelMode to RouteTravelMode
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ResponseTravelMode
+    transform: >
+      $["x-ms-enum"]["name"] = "RouteTravelMode";
+```
+
+### Rename Route to MapsSearchRoute
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.Route
+    transform: >
+      $["x-ms-client-name"] = "MapsSearchRoute";
+```
+
+### Rename SimpleCategory to RouteDelayReason
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.SimpleCategory
+    transform: >
+      $["x-ms-enum"]["name"] = "RouteDelayReason";
 ```

@@ -4,6 +4,7 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -92,8 +93,8 @@ public final class TimeZoneResult implements JsonSerializable<TimeZoneResult> {
                 if ("Version".equals(fieldName)) {
                     deserializedTimeZoneResult.version = reader.getString();
                 } else if ("ReferenceUtcTimestamp".equals(fieldName)) {
-                    deserializedTimeZoneResult.referenceUtcTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTimeZoneResult.referenceUtcTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("TimeZones".equals(fieldName)) {
                     List<TimeZoneId> timeZones = reader.readArray(reader1 -> TimeZoneId.fromJson(reader1));
                     deserializedTimeZoneResult.timeZones = timeZones;

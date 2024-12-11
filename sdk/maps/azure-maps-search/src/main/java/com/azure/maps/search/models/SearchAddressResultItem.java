@@ -4,6 +4,8 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,8 +14,6 @@ import com.azure.maps.search.implementation.models.BoundingBoxPrivate;
 import com.azure.maps.search.implementation.models.LatLongPairAbbreviated;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
-import com.azure.core.models.GeoBoundingBox;
 
 /**
  * Result object for a Search API response.
@@ -38,7 +38,9 @@ public final class SearchAddressResultItem implements JsonSerializable<SearchAdd
     private String id;
 
     /*
-     * The value within a result set to indicate the relative matching score between results.  You can use this to  determine that result x is twice as likely to be as relevant as result y if the value of x is 2x the value of y.   The values vary between queries and is only meant as a relative value for one result set.
+     * The value within a result set to indicate the relative matching score between results. You can use this to
+     * determine that result x is twice as likely to be as relevant as result y if the value of x is 2x the value of y.
+     * The values vary between queries and is only meant as a relative value for one result set.
      */
     private Double score;
 
@@ -78,17 +80,20 @@ public final class SearchAddressResultItem implements JsonSerializable<SearchAdd
     private BoundingBoxPrivate viewport;
 
     /*
-     * Array of EntryPoints. Those describe the types of entrances available at the location. The type can be "main" for main entrances such as a front door, or a lobby, and "minor", for side and back doors.
+     * Array of EntryPoints. Those describe the types of entrances available at the location. The type can be "main" for
+     * main entrances such as a front door, or a lobby, and "minor", for side and back doors.
      */
     private List<EntryPoint> entryPoints;
 
     /*
-     * Describes the address range on both sides of the street for a search result. Coordinates for the start and end locations of the address range are included.
+     * Describes the address range on both sides of the street for a search result. Coordinates for the start and end
+     * locations of the address range are included.
      */
     private AddressRanges addressRanges;
 
     /*
-     * Optional section. Reference geometry id for use with the [Get Search Polygon](/rest/api/maps/search/get-search-polygon?view=rest-maps-1.0) API.
+     * Optional section. Reference geometry id for use with the [Get Search
+     * Polygon](/rest/api/maps/search/get-search-polygon?view=rest-maps-1.0) API.
      */
     private DataSource dataSources;
 
@@ -96,9 +101,9 @@ public final class SearchAddressResultItem implements JsonSerializable<SearchAdd
      * Information on the type of match.
      * 
      * One of:
-     *   * AddressPoint
-     *   * HouseNumberRange
-     *   * Street
+     * * AddressPoint
+     * * HouseNumberRange
+     * * Street
      */
     private MatchType matchType;
 

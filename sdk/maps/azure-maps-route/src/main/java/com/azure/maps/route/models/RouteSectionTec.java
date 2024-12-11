@@ -19,7 +19,9 @@ import java.util.List;
 @Fluent
 public final class RouteSectionTec implements JsonSerializable<RouteSectionTec> {
     /*
-     * The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be used to color-code traffic events according to severity.
+     * The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as defined in the
+     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard. Can be used to color-code traffic events according
+     * to severity.
      */
     private Integer effectCode;
 

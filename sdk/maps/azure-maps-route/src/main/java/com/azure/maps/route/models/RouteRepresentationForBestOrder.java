@@ -22,7 +22,8 @@ public final class RouteRepresentationForBestOrder extends ExpandableStringEnum<
     public static final RouteRepresentationForBestOrder SUMMARY_ONLY = fromString("summaryOnly");
 
     /**
-     * Includes only the optimized waypoint indices but does not include the route geometry in the response.
+     * Includes only the optimized waypoint indices but does not include the route geometry in the response. This
+     * parameter value can only be used in conjunction with computeBestOrder=true.
      */
     public static final RouteRepresentationForBestOrder NONE = fromString("none");
 

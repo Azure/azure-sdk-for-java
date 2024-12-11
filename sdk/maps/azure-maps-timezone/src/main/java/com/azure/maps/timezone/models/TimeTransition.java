@@ -4,6 +4,7 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -131,11 +132,11 @@ public final class TimeTransition implements JsonSerializable<TimeTransition> {
                 } else if ("DaylightSavings".equals(fieldName)) {
                     deserializedTimeTransition.daylightSavings = reader.getString();
                 } else if ("UtcStart".equals(fieldName)) {
-                    deserializedTimeTransition.utcStart
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTimeTransition.utcStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("UtcEnd".equals(fieldName)) {
-                    deserializedTimeTransition.utcEnd
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedTimeTransition.utcEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

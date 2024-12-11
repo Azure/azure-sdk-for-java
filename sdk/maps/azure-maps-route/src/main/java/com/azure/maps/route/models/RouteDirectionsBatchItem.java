@@ -4,11 +4,11 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.ResponseError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import com.azure.core.models.ResponseError;
 
 /**
  * An item returned from Route Directions Batch service call.
@@ -21,10 +21,25 @@ public final class RouteDirectionsBatchItem extends BatchResultItem {
      */
     private RouteDirectionsBatchItemResponse response;
 
+    /*
+     * HTTP request status code.
+     */
+    private Integer statusCode;
+
     /**
      * Creates an instance of RouteDirectionsBatchItem class.
      */
     public RouteDirectionsBatchItem() {
+    }
+
+    /**
+     * Get the statusCode property: HTTP request status code.
+     *
+     * @return the statusCode value.
+     */
+    @Override
+    public Integer getStatusCode() {
+        return this.statusCode;
     }
 
     /**
@@ -51,7 +66,7 @@ public final class RouteDirectionsBatchItem extends BatchResultItem {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("statusCode".equals(fieldName)) {
-                    deserializedRouteDirectionsBatchItem.setStatusCode(reader.getNullable(JsonReader::getInt));
+                    deserializedRouteDirectionsBatchItem.statusCode = reader.getNullable(JsonReader::getInt);
                 } else if ("response".equals(fieldName)) {
                     deserializedRouteDirectionsBatchItem.response = RouteDirectionsBatchItemResponse.fromJson(reader);
                 } else {

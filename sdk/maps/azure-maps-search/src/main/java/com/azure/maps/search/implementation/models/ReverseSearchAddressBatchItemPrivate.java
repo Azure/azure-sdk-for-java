@@ -16,9 +16,15 @@ import java.io.IOException;
 @Immutable
 public final class ReverseSearchAddressBatchItemPrivate extends BatchResultItem {
     /*
-     * The result of the query. SearchAddressReverseResponse if the query completed successfully, ErrorResponse otherwise.
+     * The result of the query. SearchAddressReverseResponse if the query completed successfully, ErrorResponse
+     * otherwise.
      */
     private ReverseSearchAddressBatchItemPrivateResponse response;
+
+    /*
+     * HTTP request status code.
+     */
+    private Integer statusCode;
 
     /**
      * Creates an instance of ReverseSearchAddressBatchItemPrivate class.
@@ -34,6 +40,16 @@ public final class ReverseSearchAddressBatchItemPrivate extends BatchResultItem 
      */
     public ReverseSearchAddressBatchItemPrivateResponse getResponse() {
         return this.response;
+    }
+
+    /**
+     * Get the statusCode property: HTTP request status code.
+     * 
+     * @return the statusCode value.
+     */
+    @Override
+    public Integer getStatusCode() {
+        return this.statusCode;
     }
 
     /**
@@ -62,8 +78,8 @@ public final class ReverseSearchAddressBatchItemPrivate extends BatchResultItem 
                 reader.nextToken();
 
                 if ("statusCode".equals(fieldName)) {
-                    deserializedReverseSearchAddressBatchItemPrivate
-                        .setStatusCode(reader.getNullable(JsonReader::getInt));
+                    deserializedReverseSearchAddressBatchItemPrivate.statusCode
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("response".equals(fieldName)) {
                     deserializedReverseSearchAddressBatchItemPrivate.response
                         = ReverseSearchAddressBatchItemPrivateResponse.fromJson(reader);

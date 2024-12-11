@@ -8,9 +8,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.search.implementation.helpers.SearchAddressResultPropertiesHelper;
 import java.io.IOException;
 import java.util.List;
-import com.azure.maps.search.implementation.helpers.SearchAddressResultPropertiesHelper;
 
 /**
  * This object is returned from a successful Search calls.

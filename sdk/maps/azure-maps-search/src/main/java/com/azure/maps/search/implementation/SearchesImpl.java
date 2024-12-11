@@ -38,13 +38,13 @@ import com.azure.maps.search.implementation.models.ResponseFormat;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
+import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
 import com.azure.maps.search.implementation.models.SearchesFuzzySearchBatchHeaders;
 import com.azure.maps.search.implementation.models.SearchesGetFuzzySearchBatchHeaders;
 import com.azure.maps.search.implementation.models.SearchesGetReverseSearchAddressBatchHeaders;
 import com.azure.maps.search.implementation.models.SearchesGetSearchAddressBatchHeaders;
 import com.azure.maps.search.implementation.models.SearchesReverseSearchAddressBatchHeaders;
 import com.azure.maps.search.implementation.models.SearchesSearchAddressBatchHeaders;
-import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
 import com.azure.maps.search.models.ElectricVehicleConnector;
 import com.azure.maps.search.models.GeographicEntityType;
 import com.azure.maps.search.models.LocalizedMapView;
@@ -423,12 +423,7 @@ public final class SearchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolygonResult>> listPolygonsWithResponseAsync(JsonFormat format, List<String> geometryIds) {
-        final String accept = "application/json";
-        String geometryIdsConverted = geometryIds.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.listPolygons(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, geometryIdsConverted, accept, context));
+        return FluxUtil.withContext(context -> listPolygonsWithResponseAsync(format, geometryIds, context));
     }
 
     /**
@@ -782,39 +777,10 @@ public final class SearchesImpl {
         List<SearchIndexes> indexFilter, List<String> brandFilter,
         List<ElectricVehicleConnector> electricVehicleConnectorFilter, GeographicEntityType entityType,
         LocalizedMapView localizedMapView, OperatingHoursRange operatingHours) {
-        final String accept = "application/json";
-        String categoryFilterConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
-        String countryFilterConverted = (countryFilter == null)
-            ? null
-            : countryFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String indexFilterConverted = (indexFilter == null)
-            ? null
-            : indexFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String brandFilterConverted = (brandFilter == null)
-            ? null
-            : brandFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String electricVehicleConnectorFilterConverted = (electricVehicleConnectorFilter == null)
-            ? null
-            : electricVehicleConnectorFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.fuzzySearch(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, query, isTypeAhead, top, skip, categoryFilterConverted,
-            countryFilterConverted, lat, lon, radiusInMeters, topLeft, btmRight, language,
-            extendedPostalCodesForConverted, minFuzzyLevel, maxFuzzyLevel, indexFilterConverted, brandFilterConverted,
-            electricVehicleConnectorFilterConverted, entityType, localizedMapView, operatingHours, accept, context));
+        return FluxUtil.withContext(context -> fuzzySearchWithResponseAsync(format, query, isTypeAhead, top, skip,
+            categoryFilter, countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language,
+            extendedPostalCodesFor, minFuzzyLevel, maxFuzzyLevel, indexFilter, brandFilter,
+            electricVehicleConnectorFilter, entityType, localizedMapView, operatingHours, context));
     }
 
     /**
@@ -2029,34 +1995,10 @@ public final class SearchesImpl {
         String language, List<PointOfInterestExtendedPostalCodes> extendedPostalCodesFor, List<String> brandFilter,
         List<ElectricVehicleConnector> electricVehicleConnectorFilter, LocalizedMapView localizedMapView,
         OperatingHoursRange operatingHours) {
-        final String accept = "application/json";
-        String categoryFilterConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
-        String countryFilterConverted = (countryFilter == null)
-            ? null
-            : countryFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String brandFilterConverted = (brandFilter == null)
-            ? null
-            : brandFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String electricVehicleConnectorFilterConverted = (electricVehicleConnectorFilter == null)
-            ? null
-            : electricVehicleConnectorFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchPointOfInterest(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, query, isTypeAhead, top, skip,
-            categoryFilterConverted, countryFilterConverted, lat, lon, radiusInMeters, topLeft, btmRight, language,
-            extendedPostalCodesForConverted, brandFilterConverted, electricVehicleConnectorFilterConverted,
-            localizedMapView, operatingHours, accept, context));
+        return FluxUtil.withContext(
+            context -> searchPointOfInterestWithResponseAsync(format, query, isTypeAhead, top, skip, categoryFilter,
+                countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor,
+                brandFilter, electricVehicleConnectorFilter, localizedMapView, operatingHours, context));
     }
 
     /**
@@ -2914,33 +2856,9 @@ public final class SearchesImpl {
         double lat, double lon, Integer top, Integer skip, List<Integer> categoryFilter, List<String> countryFilter,
         Integer radiusInMeters, String language, List<SearchIndexes> extendedPostalCodesFor, List<String> brandFilter,
         List<ElectricVehicleConnector> electricVehicleConnectorFilter, LocalizedMapView localizedMapView) {
-        final String accept = "application/json";
-        String categoryFilterConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
-        String countryFilterConverted = (countryFilter == null)
-            ? null
-            : countryFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String brandFilterConverted = (brandFilter == null)
-            ? null
-            : brandFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String electricVehicleConnectorFilterConverted = (electricVehicleConnectorFilter == null)
-            ? null
-            : electricVehicleConnectorFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchNearbyPointOfInterest(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, lat, lon, top, skip,
-            categoryFilterConverted, countryFilterConverted, radiusInMeters, language, extendedPostalCodesForConverted,
-            brandFilterConverted, electricVehicleConnectorFilterConverted, localizedMapView, accept, context));
+        return FluxUtil.withContext(context -> searchNearbyPointOfInterestWithResponseAsync(format, lat, lon, top, skip,
+            categoryFilter, countryFilter, radiusInMeters, language, extendedPostalCodesFor, brandFilter,
+            electricVehicleConnectorFilter, localizedMapView, context));
     }
 
     /**
@@ -3814,34 +3732,10 @@ public final class SearchesImpl {
         String language, List<SearchIndexes> extendedPostalCodesFor, List<String> brandFilter,
         List<ElectricVehicleConnector> electricVehicleConnectorFilter, LocalizedMapView localizedMapView,
         OperatingHoursRange operatingHours) {
-        final String accept = "application/json";
-        String categoryFilterConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
-        String countryFilterConverted = (countryFilter == null)
-            ? null
-            : countryFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String brandFilterConverted = (brandFilter == null)
-            ? null
-            : brandFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String electricVehicleConnectorFilterConverted = (electricVehicleConnectorFilter == null)
-            ? null
-            : electricVehicleConnectorFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchPointOfInterestCategory(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, query, isTypeAhead, top, skip,
-            categoryFilterConverted, countryFilterConverted, lat, lon, radiusInMeters, topLeft, btmRight, language,
-            extendedPostalCodesForConverted, brandFilterConverted, electricVehicleConnectorFilterConverted,
-            localizedMapView, operatingHours, accept, context));
+        return FluxUtil.withContext(context -> searchPointOfInterestCategoryWithResponseAsync(format, query,
+            isTypeAhead, top, skip, categoryFilter, countryFilter, lat, lon, radiusInMeters, topLeft, btmRight,
+            language, extendedPostalCodesFor, brandFilter, electricVehicleConnectorFilter, localizedMapView,
+            operatingHours, context));
     }
 
     /**
@@ -4670,9 +4564,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PointOfInterestCategoryTreeResult>>
         getPointOfInterestCategoryTreeWithResponseAsync(JsonFormat format, String language) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getPointOfInterestCategoryTree(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, language, accept, context));
+        return FluxUtil
+            .withContext(context -> getPointOfInterestCategoryTreeWithResponseAsync(format, language, context));
     }
 
     /**
@@ -4922,21 +4815,9 @@ public final class SearchesImpl {
         Integer radiusInMeters, String topLeft, String btmRight, String language,
         List<SearchIndexes> extendedPostalCodesFor, GeographicEntityType entityType,
         LocalizedMapView localizedMapView) {
-        final String accept = "application/json";
-        String countryFilterConverted = (countryFilter == null)
-            ? null
-            : countryFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchAddress(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, query, isTypeAhead, top, skip, countryFilterConverted, lat, lon,
-            radiusInMeters, topLeft, btmRight, language, extendedPostalCodesForConverted, entityType, localizedMapView,
-            accept, context));
+        return FluxUtil.withContext(context -> searchAddressWithResponseAsync(format, query, isTypeAhead, top, skip,
+            countryFilter, lat, lon, radiusInMeters, topLeft, btmRight, language, extendedPostalCodesFor, entityType,
+            localizedMapView, context));
     }
 
     /**
@@ -5556,18 +5437,9 @@ public final class SearchesImpl {
         List<Double> query, String language, Boolean includeSpeedLimit, Integer heading, Integer radiusInMeters,
         String streetNumber, Boolean includeRoadUse, List<RoadUseType> roadUse, Boolean allowFreeformNewline,
         Boolean includeMatchType, GeographicEntityType entityType, LocalizedMapView localizedMapView) {
-        final String accept = "application/json";
-        String queryConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
-        String roadUseConverted = (roadUse == null)
-            ? null
-            : roadUse.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.reverseSearchAddress(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, queryConverted, language, includeSpeedLimit,
-            heading, radiusInMeters, streetNumber, includeRoadUse, roadUseConverted, allowFreeformNewline,
-            includeMatchType, entityType, localizedMapView, accept, context));
+        return FluxUtil.withContext(context -> reverseSearchAddressWithResponseAsync(format, query, language,
+            includeSpeedLimit, heading, radiusInMeters, streetNumber, includeRoadUse, roadUse, allowFreeformNewline,
+            includeMatchType, entityType, localizedMapView, context));
     }
 
     /**
@@ -6008,12 +5880,8 @@ public final class SearchesImpl {
     public Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponseAsync(
         ResponseFormat format, List<Double> query, Integer top, Integer heading, Integer radiusInMeters,
         String language, LocalizedMapView localizedMapView) {
-        final String accept = "application/json";
-        String queryConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(query, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.reverseSearchCrossStreetAddress(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, queryConverted, top, heading,
-            radiusInMeters, language, localizedMapView, accept, context));
+        return FluxUtil.withContext(context -> reverseSearchCrossStreetAddressWithResponseAsync(format, query, top,
+            heading, radiusInMeters, language, localizedMapView, context));
     }
 
     /**
@@ -6383,17 +6251,10 @@ public final class SearchesImpl {
         String countrySecondarySubdivision, String countrySubdivision, String postalCode,
         List<SearchIndexes> extendedPostalCodesFor, GeographicEntityType entityType,
         LocalizedMapView localizedMapView) {
-        final String accept = "application/json";
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchStructuredAddress(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, language, countryCode, top, skip,
-            streetNumber, streetName, crossStreet, municipality, municipalitySubdivision, countryTertiarySubdivision,
-            countrySecondarySubdivision, countrySubdivision, postalCode, extendedPostalCodesForConverted, entityType,
-            localizedMapView, accept, context));
+        return FluxUtil.withContext(context -> searchStructuredAddressWithResponseAsync(format, countryCode, language,
+            top, skip, streetNumber, streetName, crossStreet, municipality, municipalitySubdivision,
+            countryTertiarySubdivision, countrySecondarySubdivision, countrySubdivision, postalCode,
+            extendedPostalCodesFor, entityType, localizedMapView, context));
     }
 
     /**
@@ -7047,23 +6908,8 @@ public final class SearchesImpl {
         String query, SearchInsideGeometryRequest geometry, Integer top, String language, List<Integer> categoryFilter,
         List<SearchIndexes> extendedPostalCodesFor, List<SearchIndexes> indexFilter, LocalizedMapView localizedMapView,
         OperatingHoursRange operatingHours) {
-        final String accept = "application/json";
-        String categoryFilterConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
-        String extendedPostalCodesForConverted = (extendedPostalCodesFor == null)
-            ? null
-            : extendedPostalCodesFor.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String indexFilterConverted = (indexFilter == null)
-            ? null
-            : indexFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchInsideGeometry(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, query, top, language,
-            categoryFilterConverted, extendedPostalCodesForConverted, indexFilterConverted, localizedMapView,
-            operatingHours, geometry, accept, context));
+        return FluxUtil.withContext(context -> searchInsideGeometryWithResponseAsync(format, query, geometry, top,
+            language, categoryFilter, extendedPostalCodesFor, indexFilter, localizedMapView, operatingHours, context));
     }
 
     /**
@@ -7764,23 +7610,9 @@ public final class SearchesImpl {
         int maxDetourTime, SearchAlongRouteRequest route, Integer top, List<String> brandFilter,
         List<Integer> categoryFilter, List<ElectricVehicleConnector> electricVehicleConnectorFilter,
         LocalizedMapView localizedMapView, OperatingHoursRange operatingHours) {
-        final String accept = "application/json";
-        String brandFilterConverted = (brandFilter == null)
-            ? null
-            : brandFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        String categoryFilterConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(categoryFilter, CollectionFormat.CSV);
-        String electricVehicleConnectorFilterConverted = (electricVehicleConnectorFilter == null)
-            ? null
-            : electricVehicleConnectorFilter.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.searchAlongRoute(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, query, maxDetourTime, top,
-            brandFilterConverted, categoryFilterConverted, electricVehicleConnectorFilterConverted, localizedMapView,
-            operatingHours, route, accept, context));
+        return FluxUtil.withContext(
+            context -> searchAlongRouteWithResponseAsync(format, query, maxDetourTime, route, top, brandFilter,
+                categoryFilter, electricVehicleConnectorFilter, localizedMapView, operatingHours, context));
     }
 
     /**
@@ -8552,9 +8384,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressBatchResult>> fuzzySearchBatchSyncWithResponseAsync(JsonFormat format,
         BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.fuzzySearchBatchSync(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil.withContext(context -> fuzzySearchBatchSyncWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -9766,9 +9596,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SearchesFuzzySearchBatchHeaders, SearchAddressBatchResult>>
         fuzzySearchBatchWithResponseAsync(JsonFormat format, BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.fuzzySearchBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil.withContext(context -> fuzzySearchBatchWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -10979,9 +10807,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressBatchResult>> fuzzySearchBatchNoCustomHeadersWithResponseAsync(JsonFormat format,
         BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.fuzzySearchBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil
+            .withContext(context -> fuzzySearchBatchNoCustomHeadersWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -12190,9 +12017,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SearchesGetFuzzySearchBatchHeaders, SearchAddressBatchResult>>
         getFuzzySearchBatchWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getFuzzySearchBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil.withContext(context -> getFuzzySearchBatchWithResponseAsync(batchId, context));
     }
 
     /**
@@ -13389,9 +13214,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressBatchResult>>
         getFuzzySearchBatchNoCustomHeadersWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getFuzzySearchBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil.withContext(context -> getFuzzySearchBatchNoCustomHeadersWithResponseAsync(batchId, context));
     }
 
     /**
@@ -14588,9 +14411,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressBatchResult>> searchAddressBatchSyncWithResponseAsync(JsonFormat format,
         BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.searchAddressBatchSync(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil.withContext(context -> searchAddressBatchSyncWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -15760,9 +15581,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SearchesSearchAddressBatchHeaders, SearchAddressBatchResult>>
         searchAddressBatchWithResponseAsync(JsonFormat format, BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.searchAddressBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil.withContext(context -> searchAddressBatchWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -16931,9 +16750,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressBatchResult>>
         searchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat format, BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.searchAddressBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil
+            .withContext(context -> searchAddressBatchNoCustomHeadersWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -18100,9 +17918,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SearchesGetSearchAddressBatchHeaders, SearchAddressBatchResult>>
         getSearchAddressBatchWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSearchAddressBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil.withContext(context -> getSearchAddressBatchWithResponseAsync(batchId, context));
     }
 
     /**
@@ -19257,9 +19073,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressBatchResult>>
         getSearchAddressBatchNoCustomHeadersWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSearchAddressBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil.withContext(context -> getSearchAddressBatchNoCustomHeadersWithResponseAsync(batchId, context));
     }
 
     /**
@@ -20422,9 +20236,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReverseSearchAddressBatchResult>>
         reverseSearchAddressBatchSyncWithResponseAsync(JsonFormat format, BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reverseSearchAddressBatchSync(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil
+            .withContext(context -> reverseSearchAddressBatchSyncWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -21608,9 +21421,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SearchesReverseSearchAddressBatchHeaders, ReverseSearchAddressBatchResult>>
         reverseSearchAddressBatchWithResponseAsync(JsonFormat format, BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reverseSearchAddressBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil
+            .withContext(context -> reverseSearchAddressBatchWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -22821,9 +22633,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReverseSearchAddressBatchResult>>
         reverseSearchAddressBatchNoCustomHeadersWithResponseAsync(JsonFormat format, BatchRequest batchRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reverseSearchAddressBatchNoCustomHeaders(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, batchRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> reverseSearchAddressBatchNoCustomHeadersWithResponseAsync(format, batchRequest, context));
     }
 
     /**
@@ -24033,9 +23844,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SearchesGetReverseSearchAddressBatchHeaders, ReverseSearchAddressBatchResult>>
         getReverseSearchAddressBatchWithResponseAsync(String batchId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getReverseSearchAddressBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+        return FluxUtil.withContext(context -> getReverseSearchAddressBatchWithResponseAsync(batchId, context));
     }
 
     /**
@@ -25234,10 +25043,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReverseSearchAddressBatchResult>>
         getReverseSearchAddressBatchNoCustomHeadersWithResponseAsync(String batchId) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getReverseSearchAddressBatchNoCustomHeaders(this.client.getHost(),
-                this.client.getClientId(), this.client.getApiVersion(), batchId, accept, context));
+            .withContext(context -> getReverseSearchAddressBatchNoCustomHeadersWithResponseAsync(batchId, context));
     }
 
     /**

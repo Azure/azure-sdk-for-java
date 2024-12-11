@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class BatchRequestItem implements JsonSerializable<BatchRequestItem> {
     /*
-     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string will be passed verbatim to the search API for processing.
+     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string will
+     * be passed verbatim to the search API for processing.
      */
     private String query;
 

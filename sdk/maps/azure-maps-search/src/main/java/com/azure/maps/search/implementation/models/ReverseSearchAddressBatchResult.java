@@ -22,6 +22,11 @@ public final class ReverseSearchAddressBatchResult extends BatchResult {
      */
     private List<ReverseSearchAddressBatchItemPrivate> batchItems;
 
+    /*
+     * Summary of the results for the batch request
+     */
+    private BatchResultSummary batchSummary;
+
     /**
      * Creates an instance of ReverseSearchAddressBatchResult class.
      */
@@ -35,6 +40,16 @@ public final class ReverseSearchAddressBatchResult extends BatchResult {
      */
     public List<ReverseSearchAddressBatchItemPrivate> getBatchItems() {
         return this.batchItems;
+    }
+
+    /**
+     * Get the batchSummary property: Summary of the results for the batch request.
+     * 
+     * @return the batchSummary value.
+     */
+    @Override
+    public BatchResultSummary getBatchSummary() {
+        return this.batchSummary;
     }
 
     /**
@@ -63,7 +78,7 @@ public final class ReverseSearchAddressBatchResult extends BatchResult {
                 reader.nextToken();
 
                 if ("summary".equals(fieldName)) {
-                    deserializedReverseSearchAddressBatchResult.setBatchSummary(BatchResultSummary.fromJson(reader));
+                    deserializedReverseSearchAddressBatchResult.batchSummary = BatchResultSummary.fromJson(reader);
                 } else if ("batchItems".equals(fieldName)) {
                     List<ReverseSearchAddressBatchItemPrivate> batchItems
                         = reader.readArray(reader1 -> ReverseSearchAddressBatchItemPrivate.fromJson(reader1));

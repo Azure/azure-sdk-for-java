@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,7 +21,8 @@ import java.time.format.DateTimeFormatter;
 public final class DailyForecastSummary implements JsonSerializable<DailyForecastSummary> {
 
     /*
-     * Date and time that the summary is in effect, displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
+     * Date and time that the summary is in effect, displayed in ISO 8601 format, for example,
+     * 2019-10-27T19:39:57-08:00.
      */
     private OffsetDateTime startDate;
 
@@ -35,7 +37,7 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
     private Integer severity;
 
     /*
-     * Summary phrase of the daily forecast.  Displayed in specified language.
+     * Summary phrase of the daily forecast. Displayed in specified language.
      */
     private String phrase;
 
@@ -128,11 +130,11 @@ public final class DailyForecastSummary implements JsonSerializable<DailyForecas
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startDate".equals(fieldName)) {
-                    deserializedDailyForecastSummary.startDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyForecastSummary.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endDate".equals(fieldName)) {
-                    deserializedDailyForecastSummary.endDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyForecastSummary.endDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("severity".equals(fieldName)) {
                     deserializedDailyForecastSummary.severity = reader.getNullable(JsonReader::getInt);
                 } else if ("phrase".equals(fieldName)) {

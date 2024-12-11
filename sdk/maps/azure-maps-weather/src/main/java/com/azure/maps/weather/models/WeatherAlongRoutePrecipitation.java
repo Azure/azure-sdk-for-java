@@ -22,7 +22,8 @@ public final class WeatherAlongRoutePrecipitation implements JsonSerializable<We
     private Double dbz;
 
     /*
-     * Precipitation type. If precipitation should occur, the type that it will be: "RAIN," "HAIL," "SNOW," "ICE," or "MIX."
+     * Precipitation type. If precipitation should occur, the type that it will be: "RAIN," "HAIL," "SNOW," "ICE," or
+     * "MIX."
      */
     private String type;
 

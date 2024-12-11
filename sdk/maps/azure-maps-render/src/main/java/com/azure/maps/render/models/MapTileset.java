@@ -4,14 +4,14 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoBoundingBox;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Metadata for a tileset in the TileJSON format.
@@ -25,22 +25,27 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
     private String tilejson;
 
     /*
-     * A name describing the tileset. The name can contain any legal character. Implementations SHOULD NOT interpret the name as HTML.
+     * A name describing the tileset. The name can contain any legal character. Implementations SHOULD NOT interpret the
+     * name as HTML.
      */
     private String name;
 
     /*
-     * Text description of the tileset. The description can contain any legal character. Implementations SHOULD NOT interpret the description as HTML.
+     * Text description of the tileset. The description can contain any legal character. Implementations SHOULD NOT
+     * interpret the description as HTML.
      */
     private String description;
 
     /*
-     * A semver.org style version number for the tiles contained within the tileset. When changes across tiles are introduced, the minor version MUST change.
+     * A semver.org style version number for the tiles contained within the tileset. When changes across tiles are
+     * introduced, the minor version MUST change.
      */
     private String version;
 
     /*
-     * Copyright attribution to be displayed on the map. Implementations MAY decide to treat this as HTML or literal text. For security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon tracking.
+     * Copyright attribution to be displayed on the map. Implementations MAY decide to treat this as HTML or literal
+     * text. For security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon
+     * tracking.
      */
     private String attribution;
 
@@ -50,17 +55,20 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
     private String template;
 
     /*
-     * A legend to be displayed with the map. Implementations MAY decide to treat this as HTML or literal text. For security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon tracking.
+     * A legend to be displayed with the map. Implementations MAY decide to treat this as HTML or literal text. For
+     * security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon tracking.
      */
     private String legend;
 
     /*
-     * Default: "xyz". Either "xyz" or "tms". Influences the y direction of the tile coordinates. The global-mercator (aka Spherical Mercator) profile is assumed.
+     * Default: "xyz". Either "xyz" or "tms". Influences the y direction of the tile coordinates. The global-mercator
+     * (aka Spherical Mercator) profile is assumed.
      */
     private String scheme;
 
     /*
-     * An array of tile endpoints. If multiple endpoints are specified, clients may use any combination of endpoints. All endpoints MUST return the same content for the same URL. The array MUST contain at least one endpoint.
+     * An array of tile endpoints. If multiple endpoints are specified, clients may use any combination of endpoints.
+     * All endpoints MUST return the same content for the same URL. The array MUST contain at least one endpoint.
      */
     private List<String> tiles;
 
@@ -85,12 +93,15 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
     private Integer maxZoom;
 
     /*
-     * The maximum extent of available map tiles. Bounds MUST define an area covered by all zoom levels. The bounds are represented in WGS:84 latitude and longitude values, in the order left, bottom, right, top. Values may be integers or floating point numbers.
+     * The maximum extent of available map tiles. Bounds MUST define an area covered by all zoom levels. The bounds are
+     * represented in WGS:84 latitude and longitude values, in the order left, bottom, right, top. Values may be
+     * integers or floating point numbers.
      */
     private List<Float> bounds;
 
     /*
-     * The default location of the tileset in the form [longitude, latitude, zoom]. The zoom level MUST be between minzoom and maxzoom. Implementations can use this value to set the default location.
+     * The default location of the tileset in the form [longitude, latitude, zoom]. The zoom level MUST be between
+     * minzoom and maxzoom. Implementations can use this value to set the default location.
      */
     private List<Float> center;
 

@@ -4,13 +4,13 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoObject;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.GeoJsonObject;
 import java.io.IOException;
-import com.azure.core.models.GeoObject;
 
 /**
  * The MapsPolygon model.
@@ -24,7 +24,8 @@ public final class MapsPolygon implements JsonSerializable<MapsPolygon> {
     private String providerID;
 
     /*
-     * Geometry data in GeoJSON format. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946) for details. Present only if "error" is not present.
+     * Geometry data in GeoJSON format. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946) for details.
+     * Present only if "error" is not present.
      */
     private GeoJsonObject geometryData;
 

@@ -4,6 +4,7 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,7 +13,6 @@ import com.azure.maps.traffic.implementation.models.LatLongPair;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Includes the coordinates describing the shape of the segment. Coordinates are shifted from the road depending on the

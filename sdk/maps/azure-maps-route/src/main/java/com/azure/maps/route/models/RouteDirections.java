@@ -28,7 +28,8 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
     private List<MapsSearchRoute> routes;
 
     /*
-     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and optimized list. For instance, a response: 
+     * Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and
+     * optimized list. For instance, a response:
      * 
      * ```
      * <optimizedWaypoints>
@@ -38,7 +39,8 @@ public class RouteDirections implements JsonSerializable<RouteDirections> {
      * </optimizedWaypoints>
      * ```
      * 
-     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0 the original is "first, second, third" while the optimized is "second, third, first".
+     * means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0
+     * the original is "first, second, third" while the optimized is "second, third, first".
      */
     private List<RouteOptimizedWaypoint> optimizedWaypoints;
 

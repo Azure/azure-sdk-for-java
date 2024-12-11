@@ -4,6 +4,7 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,7 +13,6 @@ import com.azure.maps.route.implementation.models.LatLongPair;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.azure.core.models.GeoPosition;
 
 /**
  * A description of a part of a route, comprised of a list of points. Each additional waypoint provided in the request

@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.github.javaparser.StaticJavaParser;
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.ClassCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 public class GeoLocationCustomization extends Customization {
@@ -41,39 +44,34 @@ public class GeoLocationCustomization extends Customization {
         // Get the class customization for IpAddressToLocationResult
         ClassCustomization ipAddressToLocationResult = models.getClass("IpAddressToLocationResult");
 
-        // Add the necessary imports
-        ipAddressToLocationResult.addImports(
-            "java.net.InetAddress",
-            "java.net.UnknownHostException",
-            "com.azure.core.util.logging.ClientLogger"
-        );
-
         // Use customizeAst to declare and initialize the logger field
-        ipAddressToLocationResult.customizeAst(ast -> ast.getClassByName("IpAddressToLocationResult").ifPresent(clazz -> {
-            clazz.addMember(
-                StaticJavaParser.parseBodyDeclaration(
-                    "private static final ClientLogger LOGGER = new ClientLogger(IpAddressToLocationResult.class);"
-                )
-            );
-        }));
+        ipAddressToLocationResult.customizeAst(ast -> {
+            // Add the necessary imports
+            ast.addImport("java.net.InetAddress");
+            ast.addImport("java.net.UnknownHostException");
+            ast.addImport("com.azure.core.util.logging.ClientLogger");
 
-        // Remove the existing getIpAddress method
-        ipAddressToLocationResult.removeMethod("getIpAddress");
+            ast.getClassByName("IpAddressToLocationResult").ifPresent(clazz -> {
+                clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
+                    StaticJavaParser.parseExpression("new ClientLogger(IpAddressToLocationResult.class)"),
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
 
-        // Add the new getIpAddress method using ClientLogger
-        ipAddressToLocationResult.addMethod(
-            "/**\n" +
-                " * Get the IP address as an InetAddress.\n" +
-                " *\n" +
-                " * @return The IP address as an InetAddress.\n" +
-                " */\n" +
-                "public InetAddress getIpAddress() {\n" +
-                "    try {\n" +
-                "        return InetAddress.getByName(this.ipAddress);\n" +
-                "    } catch (UnknownHostException e) {\n" +
-                "        throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e));\n" +
-                "    }\n" +
-                "}\n"
-        );
+                // Remove the existing getIpAddress method
+                clazz.getMethodsByName("getIpAddress").forEach(Node::remove);
+
+                // Add the new getIpAddress method using ClientLogger
+                clazz.addMethod("getIpAddress", Modifier.Keyword.PUBLIC)
+                    .setType("InetAddress")
+                    .setBody(StaticJavaParser.parseBlock(
+                        "{try {\n" +
+                        "    return InetAddress.getByName(this.ipAddress);\n" +
+                        "} catch (UnknownHostException e) {\n" +
+                        "    throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e));\n" +
+                        "}}"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the IP address as an InetAddress."))
+                        .addBlockTag("return", "The IP address as an InetAddress.")
+                        .addBlockTag("throws", "IllegalArgumentException", "If the IP address is invalid."));
+            });
+        });
     }
 }

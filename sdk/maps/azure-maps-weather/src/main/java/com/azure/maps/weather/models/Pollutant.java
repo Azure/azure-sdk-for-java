@@ -27,12 +27,14 @@ public final class Pollutant implements JsonSerializable<Pollutant> {
     private String name;
 
     /*
-     * Air quality rating on a scale set by local regulating bodies. Scales can vary widely based on location. See [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index) for more information.
+     * Air quality rating on a scale set by local regulating bodies. Scales can vary widely based on location. See
+     * [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index) for more information.
      */
     private Float index;
 
     /*
-     * Internationally normalized air quality rating on a scale from 0 to 300 and up, with higher numbers representing worse air quality.
+     * Internationally normalized air quality rating on a scale from 0 to 300 and up, with higher numbers representing
+     * worse air quality.
      */
     private Float globalIndex;
 

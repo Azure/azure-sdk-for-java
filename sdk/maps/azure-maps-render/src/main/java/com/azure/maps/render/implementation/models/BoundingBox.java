@@ -13,12 +13,14 @@ import java.util.List;
 @Fluent
 public final class BoundingBox {
     /*
-     * Minimum coordinates (south-west point) of bounding box in latitude longitude coordinate system. E.g. 52.41064,4.84228
+     * Minimum coordinates (south-west point) of bounding box in latitude longitude coordinate system. E.g.
+     * 52.41064,4.84228
      */
     private List<Double> southWest;
 
     /*
-     * Maximum coordinates (north-east point) of bounding box in latitude longitude coordinate system. E.g. 52.41064,4.84228
+     * Maximum coordinates (north-east point) of bounding box in latitude longitude coordinate system. E.g.
+     * 52.41064,4.84228
      */
     private List<Double> northEast;
 

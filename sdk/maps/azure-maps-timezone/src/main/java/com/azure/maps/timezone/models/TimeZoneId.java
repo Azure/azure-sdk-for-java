@@ -4,6 +4,7 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -11,7 +12,6 @@ import com.azure.json.JsonWriter;
 import com.azure.maps.timezone.implementation.models.RepresentativePoint;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * The TimeZoneId model.

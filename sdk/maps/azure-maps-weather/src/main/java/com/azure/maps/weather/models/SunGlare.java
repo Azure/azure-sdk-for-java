@@ -17,12 +17,15 @@ import java.io.IOException;
 public final class SunGlare implements JsonSerializable<SunGlare> {
 
     /*
-     * If the vehicle heading value is not provided for a waypoint, then the service will calculate a heading based upon the location of neighboring waypoints if provided.
+     * If the vehicle heading value is not provided for a waypoint, then the service will calculate a heading based upon
+     * the location of neighboring waypoints if provided.
      */
     private Integer calculatedVehicleHeading;
 
     /*
-     * An index from 0 to 100 indicating sun glare intensity for a driver. A value of 50 and above can be considered a hazard for some drivers and a value of 100 signifies the driver is driving straight into the sun and atmospheric conditions are clear allowing for the full intensity of the sun to blind the driver.
+     * An index from 0 to 100 indicating sun glare intensity for a driver. A value of 50 and above can be considered a
+     * hazard for some drivers and a value of 100 signifies the driver is driving straight into the sun and atmospheric
+     * conditions are clear allowing for the full intensity of the sun to blind the driver.
      */
     private Integer glareIndex;
 

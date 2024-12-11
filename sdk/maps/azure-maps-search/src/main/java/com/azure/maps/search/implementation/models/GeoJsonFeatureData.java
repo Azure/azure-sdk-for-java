@@ -17,12 +17,15 @@ import java.io.IOException;
 @Fluent
 public class GeoJsonFeatureData implements JsonSerializable<GeoJsonFeatureData> {
     /*
-     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
+     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point,
+     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
      */
     private GeoJsonGeometry geometry;
 
     /*
-     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null value
+     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null
+     * value
      */
     private Object properties;
 
@@ -32,7 +35,8 @@ public class GeoJsonFeatureData implements JsonSerializable<GeoJsonFeatureData> 
     private String id;
 
     /*
-     * The type of the feature. The value depends on the data model the current feature is part of. Some data models may have an empty value.
+     * The type of the feature. The value depends on the data model the current feature is part of. Some data models may
+     * have an empty value.
      */
     private String featureType;
 

@@ -32,7 +32,7 @@ public final class RouteDelayReason extends ExpandableStringEnum<RouteDelayReaso
     public static final RouteDelayReason OTHER = fromString("OTHER");
 
     /**
-     * Creates a new instance of SimpleCategory value.
+     * Creates a new instance of RouteDelayReason value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -41,19 +41,19 @@ public final class RouteDelayReason extends ExpandableStringEnum<RouteDelayReaso
     }
 
     /**
-     * Creates or finds a SimpleCategory from its string representation.
+     * Creates or finds a RouteDelayReason from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding SimpleCategory.
+     * @return the corresponding RouteDelayReason.
      */
     public static RouteDelayReason fromString(String name) {
         return fromString(name, RouteDelayReason.class);
     }
 
     /**
-     * Gets known SimpleCategory values.
+     * Gets known RouteDelayReason values.
      * 
-     * @return known SimpleCategory values.
+     * @return known RouteDelayReason values.
      */
     public static Collection<RouteDelayReason> values() {
         return values(RouteDelayReason.class);

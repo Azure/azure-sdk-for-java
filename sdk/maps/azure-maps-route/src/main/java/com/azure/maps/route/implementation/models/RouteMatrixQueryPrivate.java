@@ -17,12 +17,14 @@ import java.io.IOException;
 @Fluent
 public final class RouteMatrixQueryPrivate implements JsonSerializable<RouteMatrixQueryPrivate> {
     /*
-     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
+     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
      */
     private GeoJsonMultiPoint origins;
 
     /*
-     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
+     * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
      */
     private GeoJsonMultiPoint destinations;
 

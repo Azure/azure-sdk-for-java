@@ -4,15 +4,15 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPolygon;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.weather.implementation.helpers.Utility;
 import com.azure.maps.weather.implementation.models.GeoJsonGeometry;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPolygon;
-import com.azure.maps.weather.implementation.helpers.Utility;
 
 /**
  * Displayed when details=true or radiiGeometry=true in the request.
@@ -31,7 +31,8 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
     private WeatherUnitDetails windSpeed;
 
     /*
-     * Contains the information needed to plot wind radius quadrants. Bearing 0–90 = NE quadrant; 90–180 = SE quadrant; 180–270 = SW quadrant; 270–360 = NW quadrant.
+     * Contains the information needed to plot wind radius quadrants. Bearing 0–90 = NE quadrant; 90–180 = SE quadrant;
+     * 180–270 = SW quadrant; 270–360 = NW quadrant.
      */
     private List<RadiusSector> radiusSectorData;
 

@@ -174,12 +174,8 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TrafficsGetTrafficFlowTileHeaders, BinaryData>> getTrafficFlowTileWithResponseAsync(
         TileFormat format, TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil
-            .withContext(context -> service.getTrafficFlowTile(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context));
+        return FluxUtil.withContext(
+            context -> getTrafficFlowTileWithResponseAsync(format, style, zoom, tileIndex, thickness, context));
     }
 
     /**
@@ -312,12 +308,8 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrafficFlowTileNoCustomHeadersWithResponseAsync(TileFormat format,
         TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil.withContext(
-            context -> service.getTrafficFlowTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context));
+        return FluxUtil.withContext(context -> getTrafficFlowTileNoCustomHeadersWithResponseAsync(format, style, zoom,
+            tileIndex, thickness, context));
     }
 
     /**
@@ -392,12 +384,8 @@ public final class TrafficsImpl {
     public Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponseAsync(ResponseFormat format,
         TrafficFlowSegmentStyle style, int zoom, List<Double> coordinates, SpeedUnit unit, Integer thickness,
         Boolean openLr) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTrafficFlowSegment(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, style, zoom, coordinatesConverted, unit,
-            thickness, openLr, accept, context));
+        return FluxUtil.withContext(context -> getTrafficFlowSegmentWithResponseAsync(format, style, zoom, coordinates,
+            unit, thickness, openLr, context));
     }
 
     /**
@@ -553,12 +541,8 @@ public final class TrafficsImpl {
     public Mono<ResponseBase<TrafficsGetTrafficIncidentTileHeaders, BinaryData>>
         getTrafficIncidentTileWithResponseAsync(TileFormat format, TrafficIncidentTileStyle style, int zoom,
             TileIndex tileIndex, String trafficState) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil
-            .withContext(context -> service.getTrafficIncidentTile(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context));
+        return FluxUtil.withContext(
+            context -> getTrafficIncidentTileWithResponseAsync(format, style, zoom, tileIndex, trafficState, context));
     }
 
     /**
@@ -691,12 +675,8 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrafficIncidentTileNoCustomHeadersWithResponseAsync(TileFormat format,
         TrafficIncidentTileStyle style, int zoom, TileIndex tileIndex, String trafficState) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil.withContext(
-            context -> service.getTrafficIncidentTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context));
+        return FluxUtil.withContext(context -> getTrafficIncidentTileNoCustomHeadersWithResponseAsync(format, style,
+            zoom, tileIndex, trafficState, context));
     }
 
     /**
@@ -788,12 +768,8 @@ public final class TrafficsImpl {
         IncidentDetailStyle style, List<Double> boundingbox, int boundingZoom, String trafficmodelid, String language,
         ProjectionStandard projection, IncidentGeometryType geometries, Boolean expandCluster,
         Boolean originalPosition) {
-        final String accept = "application/json";
-        String boundingboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTrafficIncidentDetail(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, style, boundingboxConverted, boundingZoom,
-            trafficmodelid, language, projection, geometries, expandCluster, originalPosition, accept, context));
+        return FluxUtil.withContext(context -> getTrafficIncidentDetailWithResponseAsync(format, style, boundingbox,
+            boundingZoom, trafficmodelid, language, projection, geometries, expandCluster, originalPosition, context));
     }
 
     /**
@@ -1017,14 +993,8 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponseAsync(ResponseFormat format,
         List<Double> boundingbox, int boundingzoom, List<Double> overviewbox, int overviewzoom, Boolean copyright) {
-        final String accept = "application/json";
-        String boundingboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
-        String overviewboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(overviewbox, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTrafficIncidentViewport(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, boundingboxConverted, boundingzoom,
-            overviewboxConverted, overviewzoom, copyright, accept, context));
+        return FluxUtil.withContext(context -> getTrafficIncidentViewportWithResponseAsync(format, boundingbox,
+            boundingzoom, overviewbox, overviewzoom, copyright, context));
     }
 
     /**

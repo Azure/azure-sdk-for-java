@@ -22,6 +22,11 @@ public final class SearchAddressBatchResult extends BatchResult {
      */
     private List<SearchAddressBatchItemPrivate> batchItems;
 
+    /*
+     * Summary of the results for the batch request
+     */
+    private BatchResultSummary batchSummary;
+
     /**
      * Creates an instance of SearchAddressBatchResult class.
      */
@@ -35,6 +40,16 @@ public final class SearchAddressBatchResult extends BatchResult {
      */
     public List<SearchAddressBatchItemPrivate> getBatchItems() {
         return this.batchItems;
+    }
+
+    /**
+     * Get the batchSummary property: Summary of the results for the batch request.
+     * 
+     * @return the batchSummary value.
+     */
+    @Override
+    public BatchResultSummary getBatchSummary() {
+        return this.batchSummary;
     }
 
     /**
@@ -62,7 +77,7 @@ public final class SearchAddressBatchResult extends BatchResult {
                 reader.nextToken();
 
                 if ("summary".equals(fieldName)) {
-                    deserializedSearchAddressBatchResult.setBatchSummary(BatchResultSummary.fromJson(reader));
+                    deserializedSearchAddressBatchResult.batchSummary = BatchResultSummary.fromJson(reader);
                 } else if ("batchItems".equals(fieldName)) {
                     List<SearchAddressBatchItemPrivate> batchItems
                         = reader.readArray(reader1 -> SearchAddressBatchItemPrivate.fromJson(reader1));

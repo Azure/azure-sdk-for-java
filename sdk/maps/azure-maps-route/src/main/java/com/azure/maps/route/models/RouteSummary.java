@@ -4,13 +4,14 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Summary object.
@@ -24,12 +25,16 @@ public final class RouteSummary implements JsonSerializable<RouteSummary> {
     private Integer lengthInMeters;
 
     /*
-     * Estimated travel time in seconds property that includes the delay due to real-time traffic. Note that even when traffic=false travelTimeInSeconds still includes the delay due to traffic. If DepartAt is in the future, travel time is calculated using time-dependent historic traffic data.
+     * Estimated travel time in seconds property that includes the delay due to real-time traffic. Note that even when
+     * traffic=false travelTimeInSeconds still includes the delay due to traffic. If DepartAt is in the future, travel
+     * time is calculated using time-dependent historic traffic data.
      */
     private Integer travelTimeInSeconds;
 
     /*
-     * Estimated delay in seconds caused by the real-time incident(s) according to traffic information. For routes planned with departure time in the future, delays is always 0. To return additional travel times using different types of traffic information, parameter computeTravelTimeFor=all needs to be added.
+     * Estimated delay in seconds caused by the real-time incident(s) according to traffic information. For routes
+     * planned with departure time in the future, delays is always 0. To return additional travel times using different
+     * types of traffic information, parameter computeTravelTimeFor=all needs to be added.
      */
     private Integer trafficDelayInSeconds;
 
@@ -129,11 +134,11 @@ public final class RouteSummary implements JsonSerializable<RouteSummary> {
                 } else if ("trafficDelayInSeconds".equals(fieldName)) {
                     deserializedRouteSummary.trafficDelayInSeconds = reader.getNullable(JsonReader::getInt);
                 } else if ("departureTime".equals(fieldName)) {
-                    deserializedRouteSummary.departureTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRouteSummary.departureTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("arrivalTime".equals(fieldName)) {
-                    deserializedRouteSummary.arrivalTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRouteSummary.arrivalTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

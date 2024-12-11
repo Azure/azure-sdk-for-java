@@ -4,115 +4,148 @@
 
 package com.azure.maps.traffic.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.util.ExpandableEnum;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The icon category associated with this incident. Values are numbers in the range 0-13, with the following meanings --
  * 0: Unknown, 1: Accident, 2: Fog, 3: Dangerous Conditions, 4: Rain, 5: Ice, 6: Jam, 7: Lane Closed, 8: Road Closed, 9:
  * Road Works, 10: Wind, 11: Flooding, 12: Detour, 13: Cluster.
  */
-public final class IconCategory extends ExpandableStringEnum<IconCategory> {
+public final class IconCategory implements ExpandableEnum<Integer> {
+    private static final Map<Integer, IconCategory> VALUES = new ConcurrentHashMap<>();
+
     /**
      * Unknown.
      */
-    public static final IconCategory UNKNOWN = fromInt(0);
+    public static final IconCategory UNKNOWN = fromValue(0);
 
     /**
      * Accident.
      */
-    public static final IconCategory ACCIDENT = fromInt(1);
+    public static final IconCategory ACCIDENT = fromValue(1);
 
     /**
      * Fog.
      */
-    public static final IconCategory FOG = fromInt(2);
+    public static final IconCategory FOG = fromValue(2);
 
     /**
      * Dangerous Conditions.
      */
-    public static final IconCategory DANGEROUS_CONDITIONS = fromInt(3);
+    public static final IconCategory DANGEROUS_CONDITIONS = fromValue(3);
 
     /**
      * Rain.
      */
-    public static final IconCategory RAIN = fromInt(4);
+    public static final IconCategory RAIN = fromValue(4);
 
     /**
      * Ice.
      */
-    public static final IconCategory ICE = fromInt(5);
+    public static final IconCategory ICE = fromValue(5);
 
     /**
      * Jam.
      */
-    public static final IconCategory JAM = fromInt(6);
+    public static final IconCategory JAM = fromValue(6);
 
     /**
      * Lane Closed.
      */
-    public static final IconCategory LANE_CLOSED = fromInt(7);
+    public static final IconCategory LANE_CLOSED = fromValue(7);
 
     /**
      * Road Closed.
      */
-    public static final IconCategory ROAD_CLOSED = fromInt(8);
+    public static final IconCategory ROAD_CLOSED = fromValue(8);
 
     /**
      * Road Works.
      */
-    public static final IconCategory ROAD_WORKS = fromInt(9);
+    public static final IconCategory ROAD_WORKS = fromValue(9);
 
     /**
      * Wind.
      */
-    public static final IconCategory WIND = fromInt(10);
+    public static final IconCategory WIND = fromValue(10);
 
     /**
      * Flooding.
      */
-    public static final IconCategory FLOODING = fromInt(11);
+    public static final IconCategory FLOODING = fromValue(11);
 
     /**
      * Detour.
      */
-    public static final IconCategory DETOUR = fromInt(12);
+    public static final IconCategory DETOUR = fromValue(12);
 
     /**
      * Cluster: Returned if a cluster contains incidents with different icon categories.
      */
-    public static final IconCategory CLUSTER = fromInt(13);
+    public static final IconCategory CLUSTER = fromValue(13);
 
     /**
      * Broken Down Vehicle.
      */
-    public static final IconCategory BROKEN_DOWN_VEHICLE = fromInt(14);
+    public static final IconCategory BROKEN_DOWN_VEHICLE = fromValue(14);
 
-    /**
-     * Creates a new instance of IconCategory value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public IconCategory() {
+    private final Integer value;
+
+    private IconCategory(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a IconCategory from its string representation.
+     * Creates or finds a IconCategory.
      * 
-     * @param name a name to look for.
+     * @param value a value to look for.
      * @return the corresponding IconCategory.
      */
-    public static IconCategory fromInt(int name) {
-        return fromString(String.valueOf(name), IconCategory.class);
+    public static IconCategory fromValue(Integer value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        IconCategory member = VALUES.get(value);
+        if (member != null) {
+            return member;
+        }
+        return VALUES.computeIfAbsent(value, key -> new IconCategory(key));
     }
 
     /**
      * Gets known IconCategory values.
      * 
-     * @return known IconCategory values.
+     * @return Known IconCategory values.
      */
     public static Collection<IconCategory> values() {
-        return values(IconCategory.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the IconCategory instance.
+     * 
+     * @return the value of the IconCategory instance.
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return Objects.equals(this.value, obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }
