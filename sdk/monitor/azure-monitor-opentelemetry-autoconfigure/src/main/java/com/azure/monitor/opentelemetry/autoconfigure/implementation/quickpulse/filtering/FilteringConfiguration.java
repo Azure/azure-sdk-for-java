@@ -29,7 +29,7 @@ public class FilteringConfiguration {
     private final String etag;
 
     // key is the derived metric id
-    private Map<String, AggregationType> validProjectionInfo;
+    private final Map<String, AggregationType> validProjectionInfo;
 
     public FilteringConfiguration() {
         validDerivedMetricInfos = new HashMap<>();
@@ -127,7 +127,7 @@ public class FilteringConfiguration {
     private Map<String, AggregationType> initValidProjectionInfo() {
         Map<String, AggregationType> result = new HashMap<>();
         for (List<DerivedMetricInfo> derivedMetricInfoList : validDerivedMetricInfos.values()) {
-            for (DerivedMetricInfo  derivedMetricInfo : derivedMetricInfoList) {
+            for (DerivedMetricInfo derivedMetricInfo : derivedMetricInfoList) {
                 result.put(derivedMetricInfo.getId(), derivedMetricInfo.getAggregation());
             }
         }

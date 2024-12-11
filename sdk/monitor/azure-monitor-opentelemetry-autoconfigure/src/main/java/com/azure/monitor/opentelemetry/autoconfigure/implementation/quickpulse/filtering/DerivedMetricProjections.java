@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
@@ -40,12 +43,10 @@ public class DerivedMetricProjections {
             long count = dma.count.get();
             if (count == 0) {
                 result.put(id, 0.0);
+            } else if (dma.aggregationType.equals(AggregationType.AVG)) {
+                result.put(id, intermediateValue / count);
             } else {
-                if (dma.aggregationType.equals(AggregationType.AVG)) {
-                    result.put(id, intermediateValue / count);
-                } else {
-                    result.put(id, intermediateValue);
-                }
+                result.put(id, intermediateValue);
             }
         }
         return result;
@@ -58,15 +59,12 @@ public class DerivedMetricProjections {
         if (COUNT.equals(derivedMetricInfo.getProjection())) {
             incrementBy = 1.0;
         } else if (KnownRequestColumns.DURATION.equals(derivedMetricInfo.getProjection())) {
-            if (columns instanceof RequestDataColumns || columns instanceof DependencyDataColumns) {
-                long duration = columns.getFieldValue(KnownRequestColumns.DURATION, Long.class);
-                // in case duration from telemetrycolumns doesn't parse correctly.
-                incrementBy = duration != -1 ? (double) duration : Double.NaN;
-            }
-            // The UI doesn't allow for Trace/Exception metrics charts to selection a projection that is a Duration,
-            // so letting that case slip though.
+            long duration = columns.getFieldValue(KnownRequestColumns.DURATION, Long.class);
+            // in case duration from telemetrycolumns doesn't parse correctly.
+            incrementBy = duration != -1 ? (double) duration : Double.NaN;
         } else if (derivedMetricInfo.getProjection().startsWith(Filter.CUSTOM_DIM_FIELDNAME_PREFIX)) {
-            String customDimKey = derivedMetricInfo.getProjection().substring(Filter.CUSTOM_DIM_FIELDNAME_PREFIX.length());
+            String customDimKey
+                = derivedMetricInfo.getProjection().substring(Filter.CUSTOM_DIM_FIELDNAME_PREFIX.length());
             incrementBy = columns.getCustomDimValueForProjection(customDimKey);
             // It is possible for the custom dim value to not parse to a double, or for the custom dim key to not be present.
             // For now, such cases produce Double.Nan and get skipped when calculating projection.
@@ -102,9 +100,10 @@ public class DerivedMetricProjections {
         // When metric values are retrieved by the data fetcher, the final value will
         // be determined based on the count and the aggregation.
 
-        AtomicDouble aggregation;
-        AtomicLong count = new AtomicLong(0);
-        AggregationType aggregationType;
+        final AtomicDouble aggregation;
+        final AtomicLong count = new AtomicLong(0);
+        final AggregationType aggregationType;
+
         DerivedMetricAggregation(long initValue, AggregationType type) {
             aggregation = new AtomicDouble(initValue);
             aggregationType = type;

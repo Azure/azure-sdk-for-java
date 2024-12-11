@@ -215,7 +215,6 @@ final class QuickPulseDataCollector {
         DependencyDataColumns columns = new DependencyDataColumns(telemetry);
         applyMetricFilters(columns, TelemetryType.DEPENDENCY, currentConfig, counters);
 
-
         List<String> documentStreamIds = new ArrayList<>();
         if (matchesDocumentFilters(columns, TelemetryType.DEPENDENCY, currentConfig, documentStreamIds)) {
             RemoteDependency dependencyDoc = new RemoteDependency();
@@ -283,7 +282,6 @@ final class QuickPulseDataCollector {
         RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
 
         applyMetricFilters(columns, TelemetryType.REQUEST, currentConfig, counters);
-
 
         List<String> documentStreamIds = new ArrayList<>();
         if (matchesDocumentFilters(columns, TelemetryType.REQUEST, currentConfig, documentStreamIds)) {

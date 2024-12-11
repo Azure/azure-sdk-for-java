@@ -189,7 +189,7 @@
       <dependency>
           <groupId>com.google.guava</groupId>
           <artifactId>guava</artifactId>
-          <version>33.2.1-jre</version>
+          <version>33.2.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
           <scope>compile</scope>
       </dependency>
   </dependencies>
@@ -212,6 +212,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
                 <include>io.opentelemetry.semconv:opentelemetry-semconv-incubating:[1.26.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
                 <include>com.squareup.okio:okio:[3.9.1]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
+                <include>com.google.guava:guava:[33.2.1-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
