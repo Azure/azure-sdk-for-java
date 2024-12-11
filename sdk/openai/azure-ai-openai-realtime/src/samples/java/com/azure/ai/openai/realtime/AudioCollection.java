@@ -121,8 +121,8 @@ public class AudioCollection {
             disposables.dispose();
 
             // File cleanup. Comment out these lines if you want to preserve the audio response files.
-//            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE));
-//            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_WAV_FILE));
+            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE));
+            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_WAV_FILE));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
