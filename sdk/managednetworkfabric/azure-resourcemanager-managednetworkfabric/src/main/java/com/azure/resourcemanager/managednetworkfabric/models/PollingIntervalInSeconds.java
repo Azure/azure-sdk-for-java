@@ -4,50 +4,90 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.util.ExpandableEnum;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
-/** Polling interval in seconds. */
-public final class PollingIntervalInSeconds extends ExpandableStringEnum<PollingIntervalInSeconds> {
-    /** Static value 30 for PollingIntervalInSeconds. */
-    public static final PollingIntervalInSeconds THREE_ZERO = fromInt(30);
+/**
+ * Polling interval in seconds.
+ */
+public final class PollingIntervalInSeconds implements ExpandableEnum<Integer> {
+    private static final Map<Integer, PollingIntervalInSeconds> VALUES = new ConcurrentHashMap<>();
 
-    /** Static value 60 for PollingIntervalInSeconds. */
-    public static final PollingIntervalInSeconds SIX_ZERO = fromInt(60);
-
-    /** Static value 90 for PollingIntervalInSeconds. */
-    public static final PollingIntervalInSeconds NINE_ZERO = fromInt(90);
-
-    /** Static value 120 for PollingIntervalInSeconds. */
-    public static final PollingIntervalInSeconds ONE_TWO_ZERO = fromInt(120);
+    private static final Function<Integer, PollingIntervalInSeconds> NEW_INSTANCE = PollingIntervalInSeconds::new;
 
     /**
-     * Creates a new instance of PollingIntervalInSeconds value.
-     *
-     * @deprecated Use the {@link #fromInt(int)} factory method.
+     * Static value 30 for PollingIntervalInSeconds.
      */
-    @Deprecated
-    public PollingIntervalInSeconds() {
+    public static final PollingIntervalInSeconds THREE_ZERO = fromValue(30);
+
+    /**
+     * Static value 60 for PollingIntervalInSeconds.
+     */
+    public static final PollingIntervalInSeconds SIX_ZERO = fromValue(60);
+
+    /**
+     * Static value 90 for PollingIntervalInSeconds.
+     */
+    public static final PollingIntervalInSeconds NINE_ZERO = fromValue(90);
+
+    /**
+     * Static value 120 for PollingIntervalInSeconds.
+     */
+    public static final PollingIntervalInSeconds ONE_TWO_ZERO = fromValue(120);
+
+    private final Integer value;
+
+    private PollingIntervalInSeconds(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a PollingIntervalInSeconds from its string representation.
-     *
-     * @param name a name to look for.
+     * Creates or finds a PollingIntervalInSeconds.
+     * 
+     * @param value a value to look for.
      * @return the corresponding PollingIntervalInSeconds.
      */
-    @JsonCreator
-    public static PollingIntervalInSeconds fromInt(int name) {
-        return fromString(String.valueOf(name), PollingIntervalInSeconds.class);
+    public static PollingIntervalInSeconds fromValue(Integer value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known PollingIntervalInSeconds values.
-     *
-     * @return known PollingIntervalInSeconds values.
+     * 
+     * @return Known PollingIntervalInSeconds values.
      */
     public static Collection<PollingIntervalInSeconds> values() {
-        return values(PollingIntervalInSeconds.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the PollingIntervalInSeconds instance.
+     * 
+     * @return the value of the PollingIntervalInSeconds instance.
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Supported version details of the network device. */
+/**
+ * Supported version details of the network device.
+ */
 @Fluent
-public final class SupportedVersionProperties {
+public final class SupportedVersionProperties implements JsonSerializable<SupportedVersionProperties> {
     /*
      * Operating system and firmware combined versions.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Operating system version.
      */
-    @JsonProperty(value = "vendorOsVersion")
     private String vendorOsVersion;
 
     /*
      * Firmware version.
      */
-    @JsonProperty(value = "vendorFirmwareVersion")
     private String vendorFirmwareVersion;
 
     /*
-     * If true newly provisioned Fabric will use this device version by default to bootstrap the network devices for
-     * the first time.
+     * If true newly provisioned Fabric will use this device version by default to bootstrap the network devices for the
+     * first time.
      */
-    @JsonProperty(value = "isDefault")
     private BooleanEnumProperty isDefault;
 
-    /** Creates an instance of SupportedVersionProperties class. */
+    /**
+     * Creates an instance of SupportedVersionProperties class.
+     */
     public SupportedVersionProperties() {
     }
 
     /**
      * Get the version property: Operating system and firmware combined versions.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -50,7 +54,7 @@ public final class SupportedVersionProperties {
 
     /**
      * Set the version property: Operating system and firmware combined versions.
-     *
+     * 
      * @param version the version value to set.
      * @return the SupportedVersionProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class SupportedVersionProperties {
 
     /**
      * Get the vendorOsVersion property: Operating system version.
-     *
+     * 
      * @return the vendorOsVersion value.
      */
     public String vendorOsVersion() {
@@ -70,7 +74,7 @@ public final class SupportedVersionProperties {
 
     /**
      * Set the vendorOsVersion property: Operating system version.
-     *
+     * 
      * @param vendorOsVersion the vendorOsVersion value to set.
      * @return the SupportedVersionProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class SupportedVersionProperties {
 
     /**
      * Get the vendorFirmwareVersion property: Firmware version.
-     *
+     * 
      * @return the vendorFirmwareVersion value.
      */
     public String vendorFirmwareVersion() {
@@ -90,7 +94,7 @@ public final class SupportedVersionProperties {
 
     /**
      * Set the vendorFirmwareVersion property: Firmware version.
-     *
+     * 
      * @param vendorFirmwareVersion the vendorFirmwareVersion value to set.
      * @return the SupportedVersionProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class SupportedVersionProperties {
     /**
      * Get the isDefault property: If true newly provisioned Fabric will use this device version by default to bootstrap
      * the network devices for the first time.
-     *
+     * 
      * @return the isDefault value.
      */
     public BooleanEnumProperty isDefault() {
@@ -112,7 +116,7 @@ public final class SupportedVersionProperties {
     /**
      * Set the isDefault property: If true newly provisioned Fabric will use this device version by default to bootstrap
      * the network devices for the first time.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the SupportedVersionProperties object itself.
      */
@@ -123,9 +127,55 @@ public final class SupportedVersionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("vendorOsVersion", this.vendorOsVersion);
+        jsonWriter.writeStringField("vendorFirmwareVersion", this.vendorFirmwareVersion);
+        jsonWriter.writeStringField("isDefault", this.isDefault == null ? null : this.isDefault.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedVersionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedVersionProperties.
+     */
+    public static SupportedVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedVersionProperties deserializedSupportedVersionProperties = new SupportedVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedSupportedVersionProperties.version = reader.getString();
+                } else if ("vendorOsVersion".equals(fieldName)) {
+                    deserializedSupportedVersionProperties.vendorOsVersion = reader.getString();
+                } else if ("vendorFirmwareVersion".equals(fieldName)) {
+                    deserializedSupportedVersionProperties.vendorFirmwareVersion = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedSupportedVersionProperties.isDefault
+                        = BooleanEnumProperty.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedVersionProperties;
+        });
     }
 }

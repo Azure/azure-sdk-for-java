@@ -30,17 +30,23 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkDevic
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceSkusListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkDeviceSkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkDeviceSkusClient.
+ */
 public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkDeviceSkusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkDeviceSkusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkDeviceSkusClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -84,9 +90,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Gets a Network Device Sku.
-     *
-     * <p>Get a Network Device SKU details.
-     *
+     * 
+     * Get a Network Device SKU details.
+     * 
      * @param networkDeviceSkuName Name of the Network Device SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -116,9 +122,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Gets a Network Device Sku.
-     *
-     * <p>Get a Network Device SKU details.
-     *
+     * 
+     * Get a Network Device SKU details.
+     * 
      * @param networkDeviceSkuName Name of the Network Device SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,9 +154,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Gets a Network Device Sku.
-     *
-     * <p>Get a Network Device SKU details.
-     *
+     * 
+     * Get a Network Device SKU details.
+     * 
      * @param networkDeviceSkuName Name of the Network Device SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -164,9 +170,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Gets a Network Device Sku.
-     *
-     * <p>Get a Network Device SKU details.
-     *
+     * 
+     * Get a Network Device SKU details.
+     * 
      * @param networkDeviceSkuName Name of the Network Device SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,9 +187,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Gets a Network Device Sku.
-     *
-     * <p>Get a Network Device SKU details.
-     *
+     * 
+     * Get a Network Device SKU details.
+     * 
      * @param networkDeviceSkuName Name of the Network Device SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -197,9 +203,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * List Network Device SKUs by subscription.
-     *
-     * <p>List Network Device SKUs for the given subscription.
-     *
+     * 
+     * List Network Device SKUs for the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Device SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -225,9 +231,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * List Network Device SKUs by subscription.
-     *
-     * <p>List Network Device SKUs for the given subscription.
-     *
+     * 
+     * List Network Device SKUs for the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -255,9 +261,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * List Network Device SKUs by subscription.
-     *
-     * <p>List Network Device SKUs for the given subscription.
-     *
+     * 
+     * List Network Device SKUs for the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Device SKUs as paginated response with {@link PagedFlux}.
@@ -270,9 +276,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * List Network Device SKUs by subscription.
-     *
-     * <p>List Network Device SKUs for the given subscription.
-     *
+     * 
+     * List Network Device SKUs for the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -287,9 +293,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * List Network Device SKUs by subscription.
-     *
-     * <p>List Network Device SKUs for the given subscription.
-     *
+     * 
+     * List Network Device SKUs for the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Device SKUs as paginated response with {@link PagedIterable}.
@@ -301,9 +307,9 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * List Network Device SKUs by subscription.
-     *
-     * <p>List Network Device SKUs for the given subscription.
-     *
+     * 
+     * List Network Device SKUs for the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -317,9 +323,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -345,9 +350,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

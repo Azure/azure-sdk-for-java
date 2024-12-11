@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternetGatewayRuleInner;
 import com.azure.resourcemanager.managednetworkfabric.models.InternetGatewayRulePatch;
 
-/** An instance of this class provides access to all the operations defined in InternetGatewayRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InternetGatewayRulesClient.
+ */
 public interface InternetGatewayRulesClient {
     /**
      * Creates an Internet Gateway rule.
-     *
-     * <p>Creates an Internet Gateway rule resource.
-     *
+     * 
+     * Creates an Internet Gateway rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Request payload.
@@ -35,9 +37,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Creates an Internet Gateway rule.
-     *
-     * <p>Creates an Internet Gateway rule resource.
-     *
+     * 
+     * Creates an Internet Gateway rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Request payload.
@@ -53,9 +55,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Creates an Internet Gateway rule.
-     *
-     * <p>Creates an Internet Gateway rule resource.
-     *
+     * 
+     * Creates an Internet Gateway rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Request payload.
@@ -70,9 +72,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Creates an Internet Gateway rule.
-     *
-     * <p>Creates an Internet Gateway rule resource.
-     *
+     * 
+     * Creates an Internet Gateway rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Request payload.
@@ -88,9 +90,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Gets an Internet Gateway Rule.
-     *
-     * <p>Gets an Internet Gateway Rule resource.
-     *
+     * 
+     * Gets an Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param context The context to associate with this operation.
@@ -105,9 +107,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Gets an Internet Gateway Rule.
-     *
-     * <p>Gets an Internet Gateway Rule resource.
-     *
+     * 
+     * Gets an Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,9 +122,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Updates an Internet Gateway Rule.
-     *
-     * <p>API to update certain properties of the Internet Gateway Rule resource.
-     *
+     * 
+     * API to update certain properties of the Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Internet Gateway Rule properties to update.
@@ -137,9 +139,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Updates an Internet Gateway Rule.
-     *
-     * <p>API to update certain properties of the Internet Gateway Rule resource.
-     *
+     * 
+     * API to update certain properties of the Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Internet Gateway Rule properties to update.
@@ -155,9 +157,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Updates an Internet Gateway Rule.
-     *
-     * <p>API to update certain properties of the Internet Gateway Rule resource.
-     *
+     * 
+     * API to update certain properties of the Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Internet Gateway Rule properties to update.
@@ -172,9 +174,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Updates an Internet Gateway Rule.
-     *
-     * <p>API to update certain properties of the Internet Gateway Rule resource.
-     *
+     * 
+     * API to update certain properties of the Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param body Internet Gateway Rule properties to update.
@@ -190,9 +192,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,9 +207,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param context The context to associate with this operation.
@@ -222,9 +224,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +238,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param context The context to associate with this operation.
@@ -251,9 +253,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * List Internet Gateway Rules by resource group.
-     *
-     * <p>Implements Internet Gateway Rules list by resource group GET method.
-     *
+     * 
+     * Implements Internet Gateway Rules list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,9 +267,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * List Internet Gateway Rules by resource group.
-     *
-     * <p>Implements Internet Gateway Rules list by resource group GET method.
-     *
+     * 
+     * Implements Internet Gateway Rules list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,9 +282,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * List Internet Gateway Rules by subscription.
-     *
-     * <p>List all Internet Gateway rules in the given subscription.
-     *
+     * 
+     * List all Internet Gateway rules in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Internet Gateway Rules as paginated response with {@link PagedIterable}.
@@ -292,9 +294,9 @@ public interface InternetGatewayRulesClient {
 
     /**
      * List Internet Gateway Rules by subscription.
-     *
-     * <p>List all Internet Gateway rules in the given subscription.
-     *
+     * 
+     * List all Internet Gateway rules in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
