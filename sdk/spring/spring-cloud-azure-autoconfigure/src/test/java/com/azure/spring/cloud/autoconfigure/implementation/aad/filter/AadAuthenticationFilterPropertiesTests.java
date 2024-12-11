@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.AzureAuthenticationFilterTestConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -31,8 +30,7 @@ public class AadAuthenticationFilterPropertiesTests {
     public void canSetProperties() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             configureAllRequiredProperties(context);
-            context.register(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureAuthenticationFilterTestConfiguration.class);
+            context.register(AzureAuthenticationFilterTestConfiguration.class);
             context.refresh();
 
             final AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);

@@ -13,7 +13,6 @@ import com.azure.messaging.eventgrid.EventGridServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventgrid.properties.AzureEventGridProperties;
 import com.azure.spring.cloud.service.implementation.eventgrid.factory.EventGridPublisherClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,6 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(
-            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureEventGridAutoConfiguration.class));
 

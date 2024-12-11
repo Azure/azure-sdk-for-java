@@ -1,18 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.spring.cloud.integration.tests.servicebus.binder;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -24,22 +21,13 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
-@ActiveProfiles("servicebus-binder-multi")
-class ServiceBusMultiBindersIT {
+public class TestServiceBusSingleBinder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestServiceBusSingleBinder.class);
 
-    private static String message = UUID.randomUUID().toString();
+    private static final String MESSAGE = UUID.randomUUID().toString();
 
-    private static CountDownLatch latch = new CountDownLatch(2);
-
-    @Autowired
-    private Sinks.Many<Message<String>> manyQueue;
-
-    @Autowired
-    private Sinks.Many<Message<String>> manyTopic;
+    private static final CountDownLatch LATCH = new CountDownLatch(2);
 
     @TestConfiguration
     static class TestQueueConfig {
@@ -59,9 +47,9 @@ class ServiceBusMultiBindersIT {
         @Bean
         Consumer<Message<String>> queueConsume() {
             return message -> {
-                LOGGER.info("Test queue new message received: '{}'", message);
-                if (message.getPayload().equals(ServiceBusMultiBindersIT.message)) {
-                    latch.countDown();
+                LOGGER.info("---Test queue new message received: '{}'", message);
+                if (message.getPayload().equals(TestServiceBusSingleBinder.MESSAGE)) {
+                    LATCH.countDown();
                 }
             };
         }
@@ -85,26 +73,22 @@ class ServiceBusMultiBindersIT {
         @Bean
         Consumer<Message<String>> topicConsume() {
             return message -> {
-                LOGGER.info("Test topic new message received: '{}'", message);
-                if (message.getPayload().equals(ServiceBusMultiBindersIT.message)) {
-                    latch.countDown();
+                LOGGER.info("---Test topic new message received: '{}'", message);
+                if (message.getPayload().equals(TestServiceBusSingleBinder.MESSAGE)) {
+                    LATCH.countDown();
                 }
             };
         }
     }
 
-    @Test
-    void testMultiServiceBusSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT begin.");
-        GenericMessage<String> genericMessage = new GenericMessage<>(message);
+    protected void exchangeMessageAndVerify(Sinks.Many<Message<String>> manyQueue, Sinks.Many<Message<String>> manyTopic) throws InterruptedException {
+        GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
 
-        LOGGER.info("Send a message:" + message + " to the queue.");
+        LOGGER.info("Send a message:" + MESSAGE + " to the queue.");
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
-        LOGGER.info("Send a message:" + message + " to the topic.");
+        LOGGER.info("Send a message:" + MESSAGE + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(ServiceBusMultiBindersIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT end.");
+        assertThat(TestServiceBusSingleBinder.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
     }
-
 }
