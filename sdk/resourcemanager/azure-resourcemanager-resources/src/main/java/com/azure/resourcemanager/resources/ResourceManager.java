@@ -272,40 +272,50 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
-     * @return wrapped inner feature client providing direct access to auto-generated API implementation,
+     * Gets wrapped inner feature client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
+     *
+     * @return wrapped inner feature client.
      */
     public FeatureClient featureClient() {
         return featureClient;
     }
 
     /**
-     * @return wrapped inner subscription client providing direct access to auto-generated API implementation,
+     * Gets wrapped inner subscription client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
+     *
+     * @return wrapped inner subscription client.
      */
     public SubscriptionClient subscriptionClient() {
         return subscriptionClient;
     }
 
     /**
-     * @return wrapped inner policy client providing direct access to auto-generated API implementation,
+     * Gets wrapped inner policy client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
+     *
+     * @return wrapped inner policy client.
      */
     public PolicyClient policyClient() {
         return policyClient;
     }
 
     /**
-     * @return wrapped inner policy client providing direct access to auto-generated API implementation,
+     * Gets wrapped inner policy client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
+     *
+     * @return wrapped inner policy client.
      */
     public ManagementLockClient managementLockClient() {
         return managementLockClient;
     }
 
     /**
-     * @return wrapped inner resource change client providing direct access to auto-generated API implementation,
+     * Gets wrapped inner resource change client providing direct access to auto-generated API implementation,
      * based on Azure REST API.
+     *
+     * @return wrapped inner resource change client.
      */
     public ChangesManagementClient resourceChangeClient() {
         return resourceChangeClient;
@@ -332,6 +342,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the resource group management API entry point.
+     *
      * @return the resource group management API entry point
      */
     public ResourceGroups resourceGroups() {
@@ -342,6 +354,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the generic resource management API entry point.
+     *
      * @return the generic resource management API entry point
      */
     public GenericResources genericResources() {
@@ -352,6 +366,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the deployment management API entry point.
+     *
      * @return the deployment management API entry point
      */
     public Deployments deployments() {
@@ -362,6 +378,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the feature management API entry point.
+     *
      * @return the feature management API entry point
      */
     public Features features() {
@@ -372,6 +390,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the resource provider management API entry point.
+     *
      * @return the resource provider management API entry point
      */
     public Providers providers() {
@@ -382,6 +402,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the policy definition management API entry point.
+     *
      * @return the policy definition management API entry point
      */
     public PolicyDefinitions policyDefinitions() {
@@ -392,6 +414,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the policy assignment management API entry point.
+     *
      * @return the policy assignment management API entry point
      */
     public PolicyAssignments policyAssignments() {
@@ -402,6 +426,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the subscription management API entry point.
+     *
      * @return the subscription management API entry point
      */
     public Subscriptions subscriptions() {
@@ -412,6 +438,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the tenant management API entry point.
+     *
      * @return the tenant management API entry point
      */
     public Tenants tenants() {
@@ -422,6 +450,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the locks management API entry point.
+     *
      * @return the locks management API entry point
      */
     public ManagementLocks managementLocks() {
@@ -432,6 +462,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the tag management API entry point.
+     *
      * @return the tag management API entry point
      */
     public TagOperations tagOperations() {
@@ -442,6 +474,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Gets the ResourceManagerUtils.InternalRuntimeContext associated with this manager
+     *
      * @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager
      */
     public ResourceManagerUtils.InternalRuntimeContext internalContext() {

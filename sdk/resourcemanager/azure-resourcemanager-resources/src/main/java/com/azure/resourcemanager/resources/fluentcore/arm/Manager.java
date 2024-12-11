@@ -86,6 +86,8 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
+     * Gets the HttpPipeline associated with this manager.
+     *
      * @return the {@link HttpPipeline} associated with this manager
      */
     public HttpPipeline httpPipeline() {

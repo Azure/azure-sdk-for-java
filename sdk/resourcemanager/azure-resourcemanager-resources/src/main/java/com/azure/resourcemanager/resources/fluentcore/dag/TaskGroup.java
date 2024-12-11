@@ -580,6 +580,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     }
 
     /**
+     * Gets a new clean context instance.
+     *
      * @return a new clean context instance.
      */
     public InvocationContext newInvocationContext() {
@@ -622,6 +624,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         }
 
         /**
+         * Gets the TaskGroup this invocation context associated with.
+         *
          * @return the TaskGroup this invocation context associated with.
          */
         public TaskGroup taskGroup() {
@@ -644,6 +648,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         }
 
         /**
+         * Gets the termination strategy to use upon error during the current invocation of the TaskGroup.
+         *
          * @return the termination strategy to use upon error during the current invocation of the TaskGroup.
          */
         public TaskGroupTerminateOnErrorStrategy terminateOnErrorStrategy() {
