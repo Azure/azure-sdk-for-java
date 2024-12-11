@@ -6,17 +6,16 @@ package com.azure.resourcemanager.loadtesting.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.models.UserAssignedIdentity;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"7f6b70cb-eae3-4ed3-8692-0bc4b2559fbc\",\"clientId\":\"5e9f85fd-01b0-4f54-a44b-0d25d9c5cd11\"}")
+            "{\"principalId\":\"e932e809-60c7-4e24-8b35-5b117e41bb50\",\"clientId\":\"512c7a8f-6784-4b81-a5e2-0ba7b35e6da0\"}")
             .toObject(UserAssignedIdentity.class);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserAssignedIdentity model = new UserAssignedIdentity();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
