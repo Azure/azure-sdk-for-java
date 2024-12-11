@@ -24,7 +24,8 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     private String from;
 
     /*
-     * The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100 recipients in the list are supported.
+     * The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100 recipients in the list
+     * are supported.
      */
     private List<SmsRecipient> smsRecipients;
 

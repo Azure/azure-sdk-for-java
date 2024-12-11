@@ -86,20 +86,8 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("trunks", this.trunks, (writer, element) -> {
-            if (element == null) {
-                writer.writeNull();
-            } else {
-                writer.writeJson(element);
-            }
-        });
-        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> {
-            if (element == null) {
-                writer.writeNull();
-            } else {
-                writer.writeJson(element);
-            }
-        });
+        jsonWriter.writeMapField("trunks", this.trunks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

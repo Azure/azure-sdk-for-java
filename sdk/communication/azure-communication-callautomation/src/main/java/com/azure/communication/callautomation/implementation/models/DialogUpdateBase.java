@@ -20,7 +20,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
     /*
      * Determines the type of the dialog.
      */
-    private DialogInputType kind;
+    private DialogInputType kind = DialogInputType.fromString("DialogUpdateBase");
 
     /*
      * Dialog context.
@@ -31,7 +31,6 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
      * Creates an instance of DialogUpdateBase class.
      */
     public DialogUpdateBase() {
-        this.kind = DialogInputType.fromString("DialogUpdateBase");
     }
 
     /**

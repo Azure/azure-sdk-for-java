@@ -6,20 +6,14 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
-import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
-import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
@@ -33,6 +27,8 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
+import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
+import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -343,7 +339,7 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.searchAvailablePhoneNumbersWithResponseAsync(countryCode, searchRequest, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                    .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse response) -> {
+                    .flatMap(response -> {
                         pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                         pollingContext.setData("searchId", response.getDeserializedHeaders().getSearchId());
                         return getOperation(pollingContext.getData("operationId"));
@@ -457,7 +453,7 @@ public final class PhoneNumbersAsyncClient {
                     .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId),
                         contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                    .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
+                    .flatMap(response -> {
                         pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                         return getOperation(pollingContext.getData("operationId"));
                     });
@@ -522,7 +518,7 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.releasePhoneNumberWithResponseAsync(phoneNumber, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                    .flatMap((PhoneNumbersReleasePhoneNumberResponse response) -> {
+                    .flatMap(response -> {
                         pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                         return getOperation(pollingContext.getData("operationId"));
                     });
@@ -603,7 +599,7 @@ public final class PhoneNumbersAsyncClient {
                 }
                 return client.updateCapabilitiesWithResponseAsync(phoneNumber, capabilitiesUpdateRequest, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                    .flatMap((PhoneNumbersUpdateCapabilitiesResponse response) -> {
+                    .flatMap(response -> {
                         pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                         return getOperation(pollingContext.getData("operationId"));
                     });

@@ -23,7 +23,8 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
 
     /*
      * Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to null
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * null
      */
     private String recognizedPhrase;
 

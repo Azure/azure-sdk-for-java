@@ -76,9 +76,7 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.send(this.client.getEndpoint(), this.client.getApiVersion(),
-            sendMessageRequest, accept, context));
+        return FluxUtil.withContext(context -> sendWithResponseAsync(sendMessageRequest, context));
     }
 
     /**
@@ -127,34 +125,5 @@ public final class SmsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest, Context context) {
         return sendWithResponseAsync(sendMessageRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Sends a SMS message from a phone number that belongs to the authenticated account.
-     * 
-     * @param sendMessageRequest Represents the body of the send message request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SmsSendResponse> sendWithResponse(SendMessageRequest sendMessageRequest, Context context) {
-        return sendWithResponseAsync(sendMessageRequest, context).block();
-    }
-
-    /**
-     * Sends a SMS message from a phone number that belongs to the authenticated account.
-     * 
-     * @param sendMessageRequest Represents the body of the send message request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SmsSendResponse send(SendMessageRequest sendMessageRequest) {
-        return sendWithResponse(sendMessageRequest, Context.NONE).getValue();
     }
 }

@@ -79,6 +79,9 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -27,25 +27,19 @@ autorest --java
 ``` yaml
 java: true
 output-folder: ..\
-use: '@autorest/java@4.1.27'
+use: '@autorest/java@4.1.42'
 tag: package-2023-10
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5797d78f04cd8ca773be82d2c99a3294009b3f0a/specification/communication/data-plane/Identity/readme.md
-add-context-parameter: true
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.identity
-custom-types: CommunicationTokenScope,TeamsUserExchangeTokenRequest
+custom-types: CommunicationTokenScope,GetTokenForTeamsUserOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 customization-class: src/main/java/TeamsUserExchangeTokenRequestCustomization.java
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
 sync-methods: all
 disable-client-builder: true
 generate-client-as-impl: true
-service-interface-as-public: true
-context-client-method-parameter: true
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ### Rename CommunicationIdentityTokenScope to CommunicationTokenScope
@@ -57,11 +51,19 @@ directive:
       $["x-ms-enum"].name = "CommunicationTokenScope";
 ```
 
-### Directive changing GetTokenForTeamsUserOptions to required properties
+### Modify TeamsUserExchangeTokenRequest
+
+Renames the class to GetTokenForTeamsUserOptions.
+Renames appId -> clientId, token -> teamsUserAadToken, and userId -> userObjectId.
+
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.GetTokenForTeamsUserOptions
+    where: $.definitions.TeamsUserExchangeTokenRequest
     transform: >
-     $.required = [ "token", "appId", "userId" ];
+      $["x-ms-client-name"] = "GetTokenForTeamsUserOptions";
+        
+      $.properties.appId["x-ms-client-name"] = "clientId";
+      $.properties.token["x-ms-client-name"] = "teamsUserAadToken";
+      $.properties.userId["x-ms-client-name"] = "userObjectId";
 ```

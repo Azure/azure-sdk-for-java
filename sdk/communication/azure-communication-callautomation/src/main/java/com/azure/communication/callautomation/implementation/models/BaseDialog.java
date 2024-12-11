@@ -20,7 +20,7 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
     /*
      * Determines the type of the dialog.
      */
-    private DialogInputType kind;
+    private DialogInputType kind = DialogInputType.fromString("BaseDialog");
 
     /*
      * Dialog context.
@@ -31,7 +31,6 @@ public class BaseDialog implements JsonSerializable<BaseDialog> {
      * Creates an instance of BaseDialog class.
      */
     public BaseDialog() {
-        this.kind = DialogInputType.fromString("BaseDialog");
     }
 
     /**

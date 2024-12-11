@@ -6,11 +6,8 @@
 To build the SDK for Server Calling Client, simply Install AutoRest and in this folder, run:
 
 ### Setup
+
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
 npm install
 npm install -g autorest
 ```
@@ -21,17 +18,13 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md
 ```
-
-## Update generated files for server calling service
-To update generated files for calling service, run the following command
-
-> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
 tag: package-2022-04-07-preview
+use: '@autorest/java@4.1.42'
 require:
     - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
 java: true
@@ -41,11 +34,8 @@ namespace: com.azure.communication.callingserver
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
-service-interface-as-public: true
 models-subpackage: implementation.models
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:

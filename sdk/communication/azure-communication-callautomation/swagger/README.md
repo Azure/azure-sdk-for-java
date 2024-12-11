@@ -9,10 +9,6 @@ To build the SDK for Call Automation Client, simply Install AutoRest and in this
 ### Setup
 
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
 npm install
 npm install -g autorest
 ```
@@ -23,14 +19,14 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4
+autorest README.md
 ```
 
 ### Code generation settings
 
 ``` yaml
 tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 require:
     - https://github.com/Azure/azure-rest-api-specs/blob/7347874bc2794b2770c3e7618bd1a5ccab53cb54/specification/communication/data-plane/CallAutomation/readme.md
 java: true
@@ -40,13 +36,9 @@ namespace: com.azure.communication.callautomation
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
-service-interface-as-public: true
 models-subpackage: implementation.models
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
 customization-class: src/main/java/CallautomationCustomizations.java
-stream-style-serialization: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
@@ -552,4 +544,18 @@ directive:
   where: $.definitions.AudioFormat["x-ms-enum"]
   transform: >
     $.name = "AudioFormatInternal";
+```
+
+### Have participantRawId be encoded
+
+getParticipant participantRawId is not encoded which results HMAC failures on the backend, to fix the issue, currently
+overriding the getParticipant signature and sending the participantRawId as encoded
+This needs to be fixed in the GA release
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths["/calling/callConnections/{callConnectionId}/participants/{participantRawId}"]
+    transform: >
+      $.get.parameters[1]["x-ms-skip-url-encoding"] = true;
 ```

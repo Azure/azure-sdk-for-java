@@ -3,35 +3,28 @@
 > see https://aka.ms/autorest
 ## Getting Started
 
-To build the SDK for Communication Phone Numbers SIP Routing library, simply Install AutoRest and in this folder, run:
+To build the SDK for Communication Phone Numbers library, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+> `autorest --java`
+
+To see additional help and options, run:
+> `autorest --help`
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
 ```ps
 cd <swagger-folder>
-mvn install
-autorest README-siprouting.md --java --v4 --use=@autorest/java@4.1.3
+autorest README-siprouting.md
 ```
-
-## Update generated files for Sip Routing service
-To update generated files for Sip Routing service, run the following command
-
-> autorest README-siprouting.md --java --v4 --use=@autorest/java@4.0.40
 
 ### Code generation settings
 ```yaml
 title: Azure Communication Phone Numbers SIP Routing Service
 tag: package-2023-03
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
 custom-types-subpackage: models
@@ -42,11 +35,6 @@ license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.phonenumbers.siprouting
 generate-client-as-impl: true
 sync-methods: all
-context-client-method-parameter: true
-add-context-parameter: true
-service-interface-as-public: true
-customization-class: src/main/java/SipRoutingCustomizations.java
-stream-style-serialization: true
 ```
 
 ### Use SipConfiguration instead of SipConfigurationUpdate
