@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * When enabled, the cluster is deployed into the configured subnet, when disabled it will be removed from the subnet.
  */
 public final class VnetState extends ExpandableStringEnum<VnetState> {
-    /** Static value Enabled for VnetState. */
+    /**
+     * Static value Enabled for VnetState.
+     */
     public static final VnetState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for VnetState. */
+    /**
+     * Static value Disabled for VnetState.
+     */
     public static final VnetState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of VnetState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,18 +32,17 @@ public final class VnetState extends ExpandableStringEnum<VnetState> {
 
     /**
      * Creates or finds a VnetState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VnetState.
      */
-    @JsonCreator
     public static VnetState fromString(String name) {
         return fromString(name, VnetState.class);
     }
 
     /**
      * Gets known VnetState values.
-     *
+     * 
      * @return known VnetState values.
      */
     public static Collection<VnetState> values() {

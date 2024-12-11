@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SandboxCustomImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SandboxCustomImagesClient.
+ */
 public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SandboxCustomImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of SandboxCustomImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SandboxCustomImagesClientImpl(KustoManagementClientImpl client) {
@@ -134,14 +140,14 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto sandbox custom images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SandboxCustomImageInner>> listByClusterSinglePageAsync(String resourceGroupName,
@@ -172,7 +178,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -180,7 +186,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto sandbox custom images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SandboxCustomImageInner>> listByClusterSinglePageAsync(String resourceGroupName,
@@ -211,7 +217,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +232,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -243,7 +249,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +264,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -275,7 +281,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -283,7 +289,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SandboxCustomImageInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
@@ -316,7 +322,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -325,7 +331,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SandboxCustomImageInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
@@ -357,7 +363,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -375,7 +381,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -393,7 +399,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -409,7 +415,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -418,7 +424,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -457,7 +463,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -467,7 +473,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -504,7 +510,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -527,7 +533,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -551,7 +557,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -571,7 +577,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -593,7 +599,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -612,7 +618,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -633,7 +639,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -651,7 +657,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -670,7 +676,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -679,7 +685,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -718,7 +724,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -728,7 +734,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -765,7 +771,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -788,7 +794,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -812,7 +818,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -832,7 +838,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -853,7 +859,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -872,7 +878,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -892,7 +898,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -910,7 +916,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -929,7 +935,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -969,7 +975,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1009,7 +1015,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1029,7 +1035,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1051,7 +1057,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1068,7 +1074,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1086,7 +1092,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1103,7 +1109,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1122,7 +1128,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1137,7 +1143,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -1153,7 +1159,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1161,7 +1167,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
@@ -1196,7 +1202,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1205,7 +1211,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
@@ -1238,7 +1244,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1256,7 +1262,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -1274,7 +1280,7 @@ public final class SandboxCustomImagesClientImpl implements SandboxCustomImagesC
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.

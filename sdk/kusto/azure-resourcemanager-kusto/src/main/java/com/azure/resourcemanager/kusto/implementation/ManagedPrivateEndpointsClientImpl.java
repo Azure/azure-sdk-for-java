@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedPrivateEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedPrivateEndpointsClient.
+ */
 public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedPrivateEndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedPrivateEndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedPrivateEndpointsClientImpl(KustoManagementClientImpl client) {
@@ -134,7 +140,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -142,7 +148,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
@@ -177,7 +183,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -186,7 +192,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
@@ -219,7 +225,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -237,7 +243,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -255,7 +261,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -272,14 +278,14 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list managed private endpoints operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedPrivateEndpointInner>> listSinglePageAsync(String resourceGroupName,
@@ -310,7 +316,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -318,7 +324,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list managed private endpoints operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedPrivateEndpointInner>> listSinglePageAsync(String resourceGroupName,
@@ -349,7 +355,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +370,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -381,7 +387,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,7 +402,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -413,7 +419,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -454,7 +460,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -494,7 +500,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -512,7 +518,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -530,7 +536,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -547,7 +553,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -556,7 +562,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a managed private endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -595,7 +601,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -605,7 +611,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a managed private endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -643,7 +649,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -666,7 +672,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -691,7 +697,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -711,7 +717,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -733,7 +739,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -752,7 +758,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -773,7 +779,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -791,7 +797,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Creates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -811,7 +817,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -820,7 +826,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a managed private endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -859,7 +865,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -869,7 +875,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a managed private endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -906,7 +912,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -929,7 +935,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -954,7 +960,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -974,7 +980,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -995,7 +1001,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1014,7 +1020,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1034,7 +1040,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1052,7 +1058,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Updates a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1071,7 +1077,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1112,7 +1118,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1152,7 +1158,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1172,7 +1178,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1194,7 +1200,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1211,7 +1217,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1230,7 +1236,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1247,7 +1253,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1266,7 +1272,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -1281,7 +1287,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.

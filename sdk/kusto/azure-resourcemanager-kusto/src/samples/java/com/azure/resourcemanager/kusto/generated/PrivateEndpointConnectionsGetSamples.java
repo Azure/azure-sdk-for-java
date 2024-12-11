@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for PrivateEndpointConnections Get. */
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoPrivateEndpointConnectionsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoPrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .privateEndpointConnections()
+        manager.privateEndpointConnections()
             .getWithResponse("kustorptest", "kustoCluster", "privateEndpointTest", com.azure.core.util.Context.NONE);
     }
 }
