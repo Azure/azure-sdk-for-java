@@ -4,25 +4,66 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
+import com.azure.resourcemanager.datadog.models.FilteringTag;
+import com.azure.resourcemanager.datadog.models.LogRules;
+import com.azure.resourcemanager.datadog.models.MetricRules;
+import com.azure.resourcemanager.datadog.models.MonitoredSubscription;
 import com.azure.resourcemanager.datadog.models.MonitoredSubscriptionProperties;
+import com.azure.resourcemanager.datadog.models.MonitoringTagRulesProperties;
+import com.azure.resourcemanager.datadog.models.Operation;
+import com.azure.resourcemanager.datadog.models.Status;
+import com.azure.resourcemanager.datadog.models.SubscriptionList;
+import com.azure.resourcemanager.datadog.models.TagAction;
+import java.util.Arrays;
 
-/** Samples for MonitoredSubscriptions Update. */
+/**
+ * Samples for MonitoredSubscriptions Update.
+ */
 public final class MonitoredSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_Update.json
+     * x-ms-original-file:
+     * specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_Update
+     * .json
      */
     /**
      * Sample code: Monitors_UpdateMonitoredSubscriptions.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
-    public static void monitorsUpdateMonitoredSubscriptions(
-        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
-        MonitoredSubscriptionProperties resource =
-            manager
-                .monitoredSubscriptions()
-                .getWithResponse("myResourceGroup", "myMonitor", "default", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().apply();
+    public static void
+        monitorsUpdateMonitoredSubscriptions(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        MonitoredSubscriptionProperties resource = manager.monitoredSubscriptions()
+            .getWithResponse("myResourceGroup", "myMonitor", "default", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new SubscriptionList().withOperation(Operation.ADD_COMPLETE)
+                .withMonitoredSubscriptionList(Arrays.asList(new MonitoredSubscription()
+                    .withSubscriptionId("/subscriptions/00000000-0000-0000-0000-000000000000")
+                    .withStatus(Status.ACTIVE)
+                    .withTagRules(new MonitoringTagRulesProperties().withLogRules(new LogRules().withSendAadLogs(false)
+                        .withSendSubscriptionLogs(true)
+                        .withSendResourceLogs(true)
+                        .withFilteringTags(Arrays.asList(
+                            new FilteringTag().withName("Environment").withValue("Prod").withAction(TagAction.INCLUDE),
+                            new FilteringTag().withName("Environment").withValue("Dev").withAction(TagAction.EXCLUDE))))
+                        .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList()))
+                        .withAutomuting(true)),
+                    new MonitoredSubscription()
+                        .withSubscriptionId("/subscriptions/00000000-0000-0000-0000-000000000001")
+                        .withStatus(Status.FAILED)
+                        .withTagRules(new MonitoringTagRulesProperties()
+                            .withLogRules(new LogRules().withSendAadLogs(false)
+                                .withSendSubscriptionLogs(true)
+                                .withSendResourceLogs(true)
+                                .withFilteringTags(Arrays.asList(
+                                    new FilteringTag().withName("Environment")
+                                        .withValue("Prod")
+                                        .withAction(TagAction.INCLUDE),
+                                    new FilteringTag().withName("Environment")
+                                        .withValue("Dev")
+                                        .withAction(TagAction.EXCLUDE))))
+                            .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList()))
+                            .withAutomuting(true)))))
+            .apply();
     }
 }
