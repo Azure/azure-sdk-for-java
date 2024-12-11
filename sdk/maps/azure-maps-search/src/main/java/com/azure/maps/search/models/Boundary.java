@@ -186,7 +186,12 @@ public final class Boundary extends GeoJsonFeature {
     }
 
     /**
-     * {@inheritDoc}
+     * /**
+     * Sets the bounding box of this feature using a {@link GeoBoundingBox}.
+     *
+     * @param bbox The bounding box to set.
+     * @return The updated Boundary object.
+     * /
      */
     public Boundary setBbox(GeoBoundingBox bbox) {
         List<Double> bboxList = new ArrayList<>();

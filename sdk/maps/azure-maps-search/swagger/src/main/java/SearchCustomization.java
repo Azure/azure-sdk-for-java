@@ -41,6 +41,12 @@ public class SearchCustomization extends Customization {
                 .setParameters(new NodeList<>(new Parameter().setName("bbox").setType("GeoBoundingBox")))
                 .setBody(StaticJavaParser.parseBlock(
                     "{ List<Double> bboxList = new ArrayList<>(); bboxList.add(bbox.getNorth()); bboxList.add(bbox.getWest()); bboxList.add(bbox.getSouth()); bboxList.add(bbox.getEast()); super.setBbox(bboxList); return this; }"))
+                .setJavadocComment("/**\n" +
+                " * Sets the bounding box of this feature using a {@link GeoBoundingBox}.\n" +
+                " *\n" +
+                " * @param bbox The bounding box to set.\n" +
+                " * @return The updated Boundary object.\n" +
+                " */")
                 .getAnnotationByName("Override").ifPresent(Node::remove));
         });
     }
