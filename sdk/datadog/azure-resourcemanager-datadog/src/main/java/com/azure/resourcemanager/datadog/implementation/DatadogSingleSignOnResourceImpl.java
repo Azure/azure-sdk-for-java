@@ -103,9 +103,10 @@ public final class DatadogSingleSignOnResourceImpl
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.configurationName = Utils.getValueFromIdByName(innerObject.id(), "singleSignOnConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.configurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "singleSignOnConfigurations");
     }
 
     public DatadogSingleSignOnResource refresh() {
