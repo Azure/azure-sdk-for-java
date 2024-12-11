@@ -123,13 +123,13 @@ public final class ServiceConfigurationResourceImpl implements ServiceConfigurat
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceUri = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
             "resourceUri");
-        this.endpointName = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
             "endpointName");
-        this.serviceConfigurationName = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.serviceConfigurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
             "serviceConfigurationName");
     }
