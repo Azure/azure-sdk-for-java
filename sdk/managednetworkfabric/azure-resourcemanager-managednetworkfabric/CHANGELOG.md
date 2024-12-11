@@ -1,14 +1,155 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-11)
 
-### Features Added
+- Azure Resource Manager Managed Network Fabric client library for Java. This package contains Microsoft Azure SDK for Managed Network Fabric Management SDK. Self service experience for Azure Network Fabric API. Package tag package-2023-06-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.PollingIntervalInSeconds` was modified
+
+* `fromInt(int)` was removed
+
+#### `models.NetworkFabric` was modified
+
+* `upgrade(models.UpdateVersion)` was removed
+* `upgrade(models.UpdateVersion,com.azure.core.util.Context)` was removed
+
+#### `models.NetworkFabrics` was modified
+
+* `upgrade(java.lang.String,java.lang.String,models.UpdateVersion)` was removed
+* `upgrade(java.lang.String,java.lang.String,models.UpdateVersion,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.UpgradeNetworkFabricProperties` was added
+
+* `models.NetworkFabricUpgradeAction` was added
+
+#### `models.AccessControlList` was modified
+
+* `defaultAction()` was added
+
+#### `models.AccessControlListPatchableProperties` was modified
+
+* `defaultAction()` was added
+* `withDefaultAction(models.CommunityActionTypes)` was added
+
+#### `models.NetworkToNetworkInterconnect` was modified
+
+* `systemData()` was added
+
+#### `models.NetworkToNetworkInterconnectPatch` was modified
+
+* `systemData()` was added
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+#### `models.NetworkFabricSku` was modified
+
+* `systemData()` was added
+
+#### `models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration` was modified
+
+* `fabricAsn()` was added
+
+#### `models.RoutePolicy` was modified
+
+* `defaultAction()` was added
+
+#### `models.ExternalNetworkPatch` was modified
+
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was added
+* `networkToNetworkInterconnectId()` was added
+
+#### `models.AccessControlList$Definition` was modified
+
+* `withDefaultAction(models.CommunityActionTypes)` was added
+
+#### `models.NetworkInterface` was modified
+
+* `systemData()` was added
+
+#### `models.ExternalNetwork$Update` was modified
+
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was added
+
+#### `models.AccessControlList$Update` was modified
+
+* `withDefaultAction(models.CommunityActionTypes)` was added
+
+#### `models.NetworkDeviceSku` was modified
+
+* `systemData()` was added
+
+#### `models.PollingIntervalInSeconds` was modified
+
+* `fromValue(java.lang.Integer)` was added
+* `hashCode()` was added
+* `toString()` was added
+* `equals(java.lang.Object)` was added
+* `getValue()` was added
+
+#### `models.NetworkFabric` was modified
+
+* `upgrade(models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)` was added
+* `upgrade(models.UpgradeNetworkFabricProperties)` was added
+
+#### `models.ExternalNetwork` was modified
+
+* `systemData()` was added
+
+#### `models.InternalNetworkPropertiesBgpConfiguration` was modified
+
+* `fabricAsn()` was added
+
+#### `models.RoutePolicyPatch` was modified
+
+* `withDefaultAction(models.CommunityActionTypes)` was added
+* `defaultAction()` was added
+
+#### `models.AccessControlListPatch` was modified
+
+* `withDefaultAction(models.CommunityActionTypes)` was added
+* `defaultAction()` was added
+
+#### `models.RoutePolicy$Update` was modified
+
+* `withDefaultAction(models.CommunityActionTypes)` was added
+
+#### `models.ExternalNetwork$Definition` was modified
+
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was added
+
+#### `models.NetworkFabric$Definition` was modified
+
+* `withFabricVersion(java.lang.String)` was added
+
+#### `models.NetworkFabrics` was modified
+
+* `upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties)` was added
+* `upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)` was added
+
+#### `models.ExternalNetworkPatchableProperties` was modified
+
+* `networkToNetworkInterconnectId()` was added
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was added
+
+#### `models.RoutePolicy$Definition` was modified
+
+* `withDefaultAction(models.CommunityActionTypes)` was added
 
 ## 1.0.0 (2023-07-17)
 

@@ -6,57 +6,58 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.GatewayType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Internet Gateway Properties defines the properties of the resource. */
+/**
+ * Internet Gateway Properties defines the properties of the resource.
+ */
 @Fluent
 public final class InternetGatewayProperties extends AnnotationResource {
     /*
      * IPv4 Address of Internet Gateway.
      */
-    @JsonProperty(value = "ipv4Address", access = JsonProperty.Access.WRITE_ONLY)
     private String ipv4Address;
 
     /*
      * Port number of Internet Gateway.
      */
-    @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Integer port;
 
     /*
      * Gateway Type of the resource.
      */
-    @JsonProperty(value = "type", required = true)
     private GatewayType type;
 
     /*
      * ARM Resource ID of the Network Fabric Controller.
      */
-    @JsonProperty(value = "networkFabricControllerId", required = true)
     private String networkFabricControllerId;
 
     /*
      * Provisioning state of resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * ARM Resource ID of the Internet Gateway Rule.
      */
-    @JsonProperty(value = "internetGatewayRuleId")
     private String internetGatewayRuleId;
 
-    /** Creates an instance of InternetGatewayProperties class. */
+    /**
+     * Creates an instance of InternetGatewayProperties class.
+     */
     public InternetGatewayProperties() {
     }
 
     /**
      * Get the ipv4Address property: IPv4 Address of Internet Gateway.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -65,7 +66,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Get the port property: Port number of Internet Gateway.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -74,7 +75,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Get the type property: Gateway Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public GatewayType type() {
@@ -83,7 +84,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Set the type property: Gateway Type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the InternetGatewayProperties object itself.
      */
@@ -94,7 +95,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Get the networkFabricControllerId property: ARM Resource ID of the Network Fabric Controller.
-     *
+     * 
      * @return the networkFabricControllerId value.
      */
     public String networkFabricControllerId() {
@@ -103,7 +104,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Set the networkFabricControllerId property: ARM Resource ID of the Network Fabric Controller.
-     *
+     * 
      * @param networkFabricControllerId the networkFabricControllerId value to set.
      * @return the InternetGatewayProperties object itself.
      */
@@ -114,7 +115,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -123,7 +124,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Get the internetGatewayRuleId property: ARM Resource ID of the Internet Gateway Rule.
-     *
+     * 
      * @return the internetGatewayRuleId value.
      */
     public String internetGatewayRuleId() {
@@ -132,7 +133,7 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Set the internetGatewayRuleId property: ARM Resource ID of the Internet Gateway Rule.
-     *
+     * 
      * @param internetGatewayRuleId the internetGatewayRuleId value to set.
      * @return the InternetGatewayProperties object itself.
      */
@@ -141,7 +142,9 @@ public final class InternetGatewayProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InternetGatewayProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -150,21 +153,74 @@ public final class InternetGatewayProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model InternetGatewayProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model InternetGatewayProperties"));
         }
         if (networkFabricControllerId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkFabricControllerId in model InternetGatewayProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFabricControllerId in model InternetGatewayProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InternetGatewayProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("networkFabricControllerId", this.networkFabricControllerId);
+        jsonWriter.writeStringField("internetGatewayRuleId", this.internetGatewayRuleId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternetGatewayProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternetGatewayProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InternetGatewayProperties.
+     */
+    public static InternetGatewayProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternetGatewayProperties deserializedInternetGatewayProperties = new InternetGatewayProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.withAnnotation(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.type = GatewayType.fromString(reader.getString());
+                } else if ("networkFabricControllerId".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.networkFabricControllerId = reader.getString();
+                } else if ("ipv4Address".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.ipv4Address = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.port = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("internetGatewayRuleId".equals(fieldName)) {
+                    deserializedInternetGatewayProperties.internetGatewayRuleId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternetGatewayProperties;
+        });
+    }
 }

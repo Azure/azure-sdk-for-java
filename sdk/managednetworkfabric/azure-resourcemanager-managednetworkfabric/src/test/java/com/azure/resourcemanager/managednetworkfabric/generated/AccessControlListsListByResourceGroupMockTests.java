@@ -6,65 +6,47 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessControlListsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-11-30T00:20:31Z\",\"configurationState\":\"Failed\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"configurationType\":\"File\",\"aclsUrl\":\"rgyoimmssz\",\"matchConfigurations\":[{\"matchConfigurationName\":\"vkognhtv\",\"sequenceNumber\":5591618762734770844,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{}]},{\"ipGroups\":[{}],\"vlanGroups\":[{}],\"portGroups\":[{},{},{},{}]}],\"annotation\":\"rjlqdoqeje\"},\"location\":\"d\",\"tags\":{\"lpdyehj\":\"hdkubgywadr\"},\"id\":\"wc\",\"name\":\"lvxboc\",\"type\":\"yw\"}]}";
+            = "{\"value\":[{\"properties\":{\"lastSyncedTime\":\"2021-06-10T23:25:07Z\",\"configurationState\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"configurationType\":\"File\",\"aclsUrl\":\"qzfxaitiqmcjbs\",\"defaultAction\":\"Deny\",\"matchConfigurations\":[{\"matchConfigurationName\":\"n\",\"sequenceNumber\":4707408565326769917,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{},{}]},{\"matchConfigurationName\":\"obwkeuzlte\",\"sequenceNumber\":349078752510706470,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{}],\"vlanGroups\":[{},{},{}],\"portGroups\":[{},{},{}]}],\"annotation\":\"txjbrixy\"},\"location\":\"kikkqyvurhwishy\",\"tags\":{\"evnkyakck\":\"zcq\",\"uaz\":\"ehognsddjkkdede\",\"g\":\"gfcnxc\",\"ifjc\":\"umtcqxmyvkxixypa\"},\"id\":\"g\",\"name\":\"hvpsuwichm\",\"type\":\"czbyfkocgm\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AccessControlList> response
-            = manager.accessControlLists().listByResourceGroup("gspjlf", com.azure.core.util.Context.NONE);
+            = manager.accessControlLists().listByResourceGroup("frppwwqclmdmt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("d", response.iterator().next().location());
-        Assertions.assertEquals("hdkubgywadr", response.iterator().next().tags().get("lpdyehj"));
+        Assertions.assertEquals("kikkqyvurhwishy", response.iterator().next().location());
+        Assertions.assertEquals("zcq", response.iterator().next().tags().get("evnkyakck"));
         Assertions.assertEquals(ConfigurationType.FILE, response.iterator().next().configurationType());
-        Assertions.assertEquals("rgyoimmssz", response.iterator().next().aclsUrl());
-        Assertions.assertEquals("vkognhtv",
-            response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(5591618762734770844L,
+        Assertions.assertEquals("qzfxaitiqmcjbs", response.iterator().next().aclsUrl());
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.iterator().next().defaultAction());
+        Assertions.assertEquals("n", response.iterator().next().matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(4707408565326769917L,
             response.iterator().next().matchConfigurations().get(0).sequenceNumber());
         Assertions.assertEquals(IpAddressType.IPV6,
             response.iterator().next().matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("rjlqdoqeje", response.iterator().next().annotation());
+        Assertions.assertEquals("txjbrixy", response.iterator().next().annotation());
     }
 }

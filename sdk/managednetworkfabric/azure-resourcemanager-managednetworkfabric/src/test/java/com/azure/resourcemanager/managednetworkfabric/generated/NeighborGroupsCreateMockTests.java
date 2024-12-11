@@ -6,15 +6,12 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroup;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroupDestination;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -22,55 +19,40 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NeighborGroupsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"networkTapIds\":[\"llitpqvpivr\",\"gqbmolxeomeb\",\"vtvxxfsfo\"],\"networkTapRuleIds\":[\"gihnalpc\",\"edybkbgdwbmi\"],\"provisioningState\":\"Succeeded\",\"destination\":{\"ipv4Addresses\":[\"ywedbpirbzpauzbb\"],\"ipv6Addresses\":[\"cszdwpaveuxgmi\",\"soebdltni\",\"iimerffhgvcymdd\",\"eilhggajfeudb\"]},\"annotation\":\"moljirchhwlzihv\"},\"location\":\"quajpo\",\"tags\":{\"szk\":\"jxyotgvraxhntoiw\",\"sjwrretsluqfgksd\":\"lk\",\"whdq\":\"imioixviobuwbnge\",\"zaffzqodokst\":\"gqamhbmggnqxnex\"},\"id\":\"vomdqxnoyzqipapi\",\"name\":\"ccydbjghunqnttrw\",\"type\":\"cbzvvxd\"}";
+            = "{\"properties\":{\"networkTapIds\":[\"ygkxrlfojlclp\",\"mveybodhrv\"],\"networkTapRuleIds\":[\"u\",\"mwb\"],\"provisioningState\":\"Succeeded\",\"destination\":{\"ipv4Addresses\":[\"gpdxtsaujtco\"],\"ipv6Addresses\":[\"bolqoxuptsl\",\"ivmlkwkzli\",\"vamtyk\",\"szde\"]},\"annotation\":\"xcsq\"},\"location\":\"do\",\"tags\":{\"eohpl\":\"kdpc\",\"edaxkuyorfjidqo\":\"gcnbvmhvqp\",\"vfyihuzsbpwn\":\"aweog\",\"zgkooagrlwpame\":\"fjcypazwiimd\"},\"id\":\"itwqadewhu\",\"name\":\"xkyxiatfamrna\",\"type\":\"fllxc\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NeighborGroup response = manager.neighborGroups()
-            .define("pcroxp")
-            .withRegion("qneaqkgttbarg")
-            .withExistingResourceGroup("pfivypmwdza")
-            .withTags(mapOf("gjjpfyxhsppvj", "nqlsnrgaxoy", "eqeapaseqcppyp", "duouoqtenqsomuo"))
-            .withDestination(new NeighborGroupDestination()
-                .withIpv4Addresses(Arrays.asList("znymwzl", "pkihqhnfubevwa", "xcezxevltfebqo"))
-                .withIpv6Addresses(Arrays.asList("klqakpstifmftw")))
-            .withAnnotation("hmriipzgfofuad")
+            .define("qmbinpxmiwt")
+            .withRegion("tohgpzwxyv")
+            .withExistingResourceGroup("fz")
+            .withTags(mapOf("xpu", "bhi", "wnfhmjusuqnku", "dd"))
+            .withDestination(
+                new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("ipssv", "o", "ijcqcjozz", "kug"))
+                    .withIpv6Addresses(Arrays.asList("qbtokvocuzxl")))
+            .withAnnotation("pwarhw")
             .create();
 
-        Assertions.assertEquals("quajpo", response.location());
-        Assertions.assertEquals("jxyotgvraxhntoiw", response.tags().get("szk"));
-        Assertions.assertEquals("ywedbpirbzpauzbb", response.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("cszdwpaveuxgmi", response.destination().ipv6Addresses().get(0));
-        Assertions.assertEquals("moljirchhwlzihv", response.annotation());
+        Assertions.assertEquals("do", response.location());
+        Assertions.assertEquals("kdpc", response.tags().get("eohpl"));
+        Assertions.assertEquals("gpdxtsaujtco", response.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("bolqoxuptsl", response.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("xcsq", response.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

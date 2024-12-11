@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateDeviceAdministrativeStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateDeviceAdministrativeState model
-            = BinaryData.fromString("{\"state\":\"Resync\",\"resourceIds\":[\"cao\"]}")
-                .toObject(UpdateDeviceAdministrativeState.class);
-        Assertions.assertEquals("cao", model.resourceIds().get(0));
+        UpdateDeviceAdministrativeState model = BinaryData.fromString(
+            "{\"state\":\"Resync\",\"resourceIds\":[\"aprhknqiijgencdg\",\"oqueqihkkyowltj\",\"uwhldxwhieproqks\"]}")
+            .toObject(UpdateDeviceAdministrativeState.class);
+        Assertions.assertEquals("aprhknqiijgencdg", model.resourceIds().get(0));
         Assertions.assertEquals(DeviceAdministrativeState.RESYNC, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateDeviceAdministrativeState model
-            = new UpdateDeviceAdministrativeState().withResourceIds(Arrays.asList("cao"))
-                .withState(DeviceAdministrativeState.RESYNC);
+        UpdateDeviceAdministrativeState model = new UpdateDeviceAdministrativeState()
+            .withResourceIds(Arrays.asList("aprhknqiijgencdg", "oqueqihkkyowltj", "uwhldxwhieproqks"))
+            .withState(DeviceAdministrativeState.RESYNC);
         model = BinaryData.fromObject(model).toObject(UpdateDeviceAdministrativeState.class);
-        Assertions.assertEquals("cao", model.resourceIds().get(0));
+        Assertions.assertEquals("aprhknqiijgencdg", model.resourceIds().get(0));
         Assertions.assertEquals(DeviceAdministrativeState.RESYNC, model.state());
     }
 }
