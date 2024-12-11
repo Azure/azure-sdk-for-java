@@ -27,10 +27,10 @@ public class SearchCustomization extends Customization {
 
         customizeErrorDetail(implementationModels);
         customizeReverseGeocodingBatchRequestItem(implementationModels);
+        customizeBoundaryProperties(implementationModels);
         customizeGeoJsonObject(models);
         customizeBoundary(models);
         customizeBoundaryBbox(models);
-        customizeBoundaryProperties(models);
 
     }
 
