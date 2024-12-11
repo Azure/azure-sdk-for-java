@@ -167,14 +167,7 @@ BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocume
 
 SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(layoutDocument.toPath())));
+        new AnalyzeDocumentOptions(Files.readAllBytes(layoutDocument.toPath())));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -228,14 +221,7 @@ File sourceFile = new File("../documentintelligence/azure-ai-documentintelligenc
 
 SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(sourceFile.toPath())));
+        new AnalyzeDocumentOptions(Files.readAllBytes(sourceFile.toPath())));
 
 AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
@@ -329,14 +315,9 @@ was built on.
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
 SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
-    "1",
-    "en-US",
-    StringIndexType.TEXT_ELEMENTS,
-    Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-    null,
-    DocumentContentFormat.TEXT,
-    null,
-    new AnalyzeDocumentOptions().setSourceUrl(documentUrl));
+    new AnalyzeDocumentOptions(documentUrl).setPages(Collections.singletonList("1")).setLocale("en-US")
+        .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES))
+        .setOutputContentFormat(DocumentContentFormat.TEXT));
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
