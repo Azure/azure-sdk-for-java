@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai.realtime;
 
-import com.azure.ai.openai.realtime.implementation.AudioFile;
-import com.azure.ai.openai.realtime.implementation.FileUtils;
+import com.azure.ai.openai.realtime.utils.AudioFile;
+import com.azure.ai.openai.realtime.utils.FileUtils;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.SessionUpdateEvent;
@@ -121,8 +121,8 @@ public class AudioCollection {
             disposables.dispose();
 
             // File cleanup. Comment out these lines if you want to preserve the audio response files.
-            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE));
-            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_WAV_FILE));
+//            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_DATA_FILE));
+//            Files.deleteIfExists(FileUtils.openResourceFile(AUDIO_RESPONSE_WAV_FILE));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
