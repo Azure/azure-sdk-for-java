@@ -20,6 +20,9 @@ module com.azure.monitor.opentelemetry.autoconfigure {
     requires io.opentelemetry.semconv;
     requires io.opentelemetry.semconv.incubating;
 
+    opens com.azure.monitor.opentelemetry.autoconfigure.implementation.models to com.azure.core;
+    opens com.azure.monitor.opentelemetry.autoconfigure.implementation to com.azure.core;
+
     exports com.azure.monitor.opentelemetry.autoconfigure;
 
 }
