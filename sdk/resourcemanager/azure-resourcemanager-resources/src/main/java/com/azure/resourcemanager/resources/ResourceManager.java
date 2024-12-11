@@ -143,11 +143,15 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      */
     public interface Authenticated {
         /**
+         * Gets the entry point to tenant management API.
+         *
          * @return the entry point to tenant management API.
          */
         Tenants tenants();
 
         /**
+         * Gets the entry point to subscription management API.
+         *
          * @return the entry point to subscription management API.
          */
         Subscriptions subscriptions();
