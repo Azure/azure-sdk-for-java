@@ -145,16 +145,29 @@ public class ToolCall {
         System.out.println("Tool call requested by the server.");
         System.out.println("Requested tool name: " + functionCallItem.getName());
         System.out.println("Requested tool call ID: " + functionCallItem.getCallId());
+
         WeatherToolServiceArguments arguments = BinaryData.fromString(functionCallItem.getArguments())
                 .toObject(WeatherToolServiceArguments.class);
-        System.out.println("Requested location by the service: " + arguments.location);
-        System.out.println("Requested unit by the service: " + arguments.unit);
 
         client.sendMessage(ConversationItem.createFunctionCallOutput(functionCallItem.getCallId(),
-                        "71 degrees Fahrenheit, sunny")).block();
+                        fakeWeatherToolCallMethod(arguments.location, arguments.unit))).block();
         client.sendMessage(
             new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()))
         .block();
+    }
+
+    /**
+     * This is the tool call implemented on the client side. In this case for the sake of the example it ignores
+     * the arguments and returns a hardcoded response.
+     *
+     * @param location requested by the service requesting a tool call.
+     * @param unit requested by the service requesting a tool call.
+     * @return A fake weather response to be returned to the service requesting the tool call.
+     */
+    private static String fakeWeatherToolCallMethod(String location, String unit) {
+        System.out.println("Requested location by the service: " + location);
+        System.out.println("Requested unit by the service: " + unit);
+        return "71 degrees Fahrenheit, sunny";
     }
 
     /**
