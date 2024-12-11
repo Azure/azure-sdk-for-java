@@ -27,7 +27,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -173,6 +172,7 @@ final class QuickPulseDataCollector {
         for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
             if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
                 synchronized (currentCounters.derivedMetrics) {
+                    // TODO (harskaur): In future PR, track any error that comes from calculateProjection
                     currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
                 }
             }

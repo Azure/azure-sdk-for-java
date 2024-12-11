@@ -2,6 +2,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +36,8 @@ public class DerivedMetricProjections {
         for (Map.Entry<String, DerivedMetricAggregation> entry : derivedMetricValues.entrySet()) {
             String id = entry.getKey();
             DerivedMetricAggregation dma = entry.getValue();
-            double intermediateValue = dma.aggregation.doubleValue();
-            double count = dma.count.doubleValue();
+            double intermediateValue = dma.aggregation.get();
+            long count = dma.count.get();
             if (count == 0) {
                 result.put(id, 0.0);
             } else {
@@ -50,6 +51,8 @@ public class DerivedMetricProjections {
         return result;
     }
 
+    // Once a telemetry item passes a metric chart filter, we use that telemetry item to increment
+    // a derived metric
     public void calculateProjection(DerivedMetricInfo derivedMetricInfo, TelemetryColumns columns) {
         double incrementBy = Double.NaN;
         if (COUNT.equals(derivedMetricInfo.getProjection())) {
@@ -67,7 +70,6 @@ public class DerivedMetricProjections {
             incrementBy = columns.getCustomDimValueForProjection(customDimKey);
             // It is possible for the custom dim value to not parse to a double, or for the custom dim key to not be present.
             // For now, such cases produce Double.Nan and get skipped when calculating projection.
-            // TODO (harskaur): For future PR, the error tracker should track the errors mentioned in lines above.
         }
 
         if (incrementBy != Double.NaN) {
@@ -78,13 +80,12 @@ public class DerivedMetricProjections {
     private void calculateAggregation(AggregationType type, String id, double incrementBy) {
         DerivedMetricAggregation dma = derivedMetricValues.get(id);
         dma.count.getAndAdd(1);
-        // TODO (harskaur): Use atomic double?? Long will turn out inaccurate with custom dim projections
         if (type.equals(AggregationType.SUM) || type.equals(AggregationType.AVG)) {
-            dma.aggregation.getAndAdd((long) incrementBy);
+            dma.aggregation.getAndAdd(incrementBy);
         } else if (type.equals(AggregationType.MIN)) {
-            dma.aggregation.getAndAccumulate((long) incrementBy , Math::min);
+            dma.aggregation.getAndAccumulate(incrementBy, Math::min);
         } else if (type.equals(AggregationType.MAX)) {
-            dma.aggregation.getAndAccumulate((long) incrementBy , Math::max);
+            dma.aggregation.getAndAccumulate(incrementBy, Math::max);
         }
     }
 
@@ -101,12 +102,11 @@ public class DerivedMetricProjections {
         // When metric values are retrieved by the data fetcher, the final value will
         // be determined based on the count and the aggregation.
 
-        // TODO (harskaur): Use atomic double?? Long will turn out inaccurate with custom dim projections
-        AtomicLong aggregation;
+        AtomicDouble aggregation;
         AtomicLong count = new AtomicLong(0);
         AggregationType aggregationType;
         DerivedMetricAggregation(long initValue, AggregationType type) {
-            aggregation = new AtomicLong(initValue);
+            aggregation = new AtomicDouble(initValue);
             aggregationType = type;
         }
     }
