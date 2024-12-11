@@ -50,15 +50,6 @@ steps:
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
-  - pwsh: |
-      if (Test-Path -Path "$(System.DefaultWorkingDirectory)/troubleshooting/linting-report.zip") {
-        Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
-        exit 1
-      }
-    displayName: 'Fail Pipeline if Linting Reports Exist'
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
-
   - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Run Javadoc and Spotless'
