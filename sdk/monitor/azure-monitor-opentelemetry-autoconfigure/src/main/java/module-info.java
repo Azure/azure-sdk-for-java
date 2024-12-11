@@ -22,6 +22,7 @@ module com.azure.monitor.opentelemetry.autoconfigure {
 
     opens com.azure.monitor.opentelemetry.autoconfigure.implementation.models to com.azure.core;
     opens com.azure.monitor.opentelemetry.autoconfigure.implementation to com.azure.core;
+    opens com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models to com.azure.core;
 
     exports com.azure.monitor.opentelemetry.autoconfigure;
 
