@@ -23,16 +23,21 @@ public class Utility {
     /**
      * Returns a GeoPosition from a comma-separated position string.
      * @param position
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return
      */
     public static GeoPosition fromCommaSeparatedString(String position) {
         final String[] coords = position.split(",");
 
         if (coords.length == 2) {
-            return new GeoPosition(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
+            return new GeoPosition(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]));
+        } else if (coords.length == 3) {
+            return new GeoPosition(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]),
+                Double.parseDouble(coords[2]));
+        } else {
+            throw new IllegalArgumentException(
+                "Position must contain 2 or 3 elements (longitude, latitude, [altitude])");
         }
-
-        return null;
     }
 
     /**
@@ -48,7 +53,7 @@ public class Utility {
             return new GeoPosition(position.get(0), position.get(1), position.get(2));
         } else {
             throw new IllegalArgumentException(
-                "Position must contain 2 or 3 elements (latitude, longitude, [altitude])");
+                "Position must contain 2 or 3 elements (longitude, latitude, [altitude])");
         }
     }
 
