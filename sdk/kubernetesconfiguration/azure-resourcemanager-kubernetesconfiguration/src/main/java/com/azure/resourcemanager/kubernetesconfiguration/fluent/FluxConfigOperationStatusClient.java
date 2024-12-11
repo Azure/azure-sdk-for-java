@@ -10,16 +10,18 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.OperationStatusResultInner;
 
-/** An instance of this class provides access to all the operations defined in FluxConfigOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FluxConfigOperationStatusClient.
+ */
 public interface FluxConfigOperationStatusClient {
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.
@@ -36,12 +38,12 @@ public interface FluxConfigOperationStatusClient {
 
     /**
      * Get Async Operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param fluxConfigurationName Name of the Flux Configuration.
      * @param operationId operation Id.

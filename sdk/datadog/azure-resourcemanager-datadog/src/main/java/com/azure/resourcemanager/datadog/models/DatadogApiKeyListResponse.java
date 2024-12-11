@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response of a list operation. */
+/**
+ * Response of a list operation.
+ */
 @Fluent
-public final class DatadogApiKeyListResponse {
+public final class DatadogApiKeyListResponse implements JsonSerializable<DatadogApiKeyListResponse> {
     /*
      * Results of a list operation.
      */
-    @JsonProperty(value = "value")
     private List<DatadogApiKeyInner> value;
 
     /*
      * Link to the next set of results, if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DatadogApiKeyListResponse class. */
+    /**
+     * Creates an instance of DatadogApiKeyListResponse class.
+     */
     public DatadogApiKeyListResponse() {
     }
 
     /**
      * Get the value property: Results of a list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<DatadogApiKeyInner> value() {
@@ -39,7 +45,7 @@ public final class DatadogApiKeyListResponse {
 
     /**
      * Set the value property: Results of a list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the DatadogApiKeyListResponse object itself.
      */
@@ -50,7 +56,7 @@ public final class DatadogApiKeyListResponse {
 
     /**
      * Get the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class DatadogApiKeyListResponse {
 
     /**
      * Set the nextLink property: Link to the next set of results, if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DatadogApiKeyListResponse object itself.
      */
@@ -70,12 +76,52 @@ public final class DatadogApiKeyListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogApiKeyListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogApiKeyListResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogApiKeyListResponse.
+     */
+    public static DatadogApiKeyListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogApiKeyListResponse deserializedDatadogApiKeyListResponse = new DatadogApiKeyListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DatadogApiKeyInner> value = reader.readArray(reader1 -> DatadogApiKeyInner.fromJson(reader1));
+                    deserializedDatadogApiKeyListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDatadogApiKeyListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogApiKeyListResponse;
+        });
     }
 }

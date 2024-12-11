@@ -1,14 +1,79 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-11)
 
-### Features Added
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2023-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.DataConnection` was modified
+
+* `kind()` was added
+
+#### `models.IotHubDataConnection` was modified
+
+* `id()` was added
+* `type()` was added
+* `kind()` was added
+* `name()` was added
+
+#### `models.EventHubDataConnection` was modified
+
+* `name()` was added
+* `id()` was added
+* `kind()` was added
+* `type()` was added
+
+#### `models.EventGridDataConnection` was modified
+
+* `type()` was added
+* `name()` was added
+* `kind()` was added
+* `id()` was added
+
+#### `models.ReadOnlyFollowingDatabase` was modified
+
+* `type()` was added
+* `kind()` was added
+* `id()` was added
+* `name()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+#### `models.ReadWriteDatabase` was modified
+
+* `kind()` was added
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.CosmosDbDataConnection` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+* `kind()` was added
+
+#### `models.Database` was modified
+
+* `kind()` was added
 
 ## 1.0.0 (2023-10-20)
 

@@ -106,9 +106,9 @@ public final class MonitoringTagRulesImpl
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.ruleSetName = Utils.getValueFromIdByName(innerObject.id(), "tagRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.ruleSetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tagRules");
     }
 
     public MonitoringTagRules refresh() {

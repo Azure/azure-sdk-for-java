@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for Scripts CreateOrUpdate. */
+/**
+ * Samples for Scripts CreateOrUpdate.
+ */
 public final class ScriptsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCreateOrUpdate.
+     * json
      */
     /**
      * Sample code: KustoScriptsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
+        manager.scripts()
             .define("kustoScript")
             .withExistingDatabase("kustorptest", "kustoCluster", "KustoDatabase8")
             .withScriptUrl("https://mysa.blob.core.windows.net/container/script.txt")
