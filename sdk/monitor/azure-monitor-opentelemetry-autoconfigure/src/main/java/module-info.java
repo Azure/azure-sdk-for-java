@@ -4,7 +4,7 @@
 
 module com.azure.monitor.opentelemetry.autoconfigure {
 
-    requires com.azure.core;
+    requires transitive com.azure.core;
 
     requires java.management;
 
