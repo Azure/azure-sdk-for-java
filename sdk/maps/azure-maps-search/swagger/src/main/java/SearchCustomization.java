@@ -30,6 +30,7 @@ public class SearchCustomization extends Customization {
         customizeGeoJsonObject(models);
         customizeBoundary(models);
         customizeBoundaryBbox(models);
+        customizeBoundaryProperties(models);
 
     }
 
@@ -69,6 +70,16 @@ public class SearchCustomization extends Customization {
                 .setName("getCopyrightUrl"));
 
             ast.getClassByName("Boundary").ifPresent(clazz -> clazz.getMethodsByName("setCopyrightURL").get(0)
+                .setName("setCopyrightUrl"));
+        });
+    }
+
+    private void customizeBoundaryProperties(PackageCustomization models) {
+        models.getClass("BoundaryProperties").customizeAst(ast -> {
+            ast.getClassByName("BoundaryProperties").ifPresent(clazz -> clazz.getMethodsByName("getCopyrightURL").get(0)
+                .setName("getCopyrightUrl"));
+
+            ast.getClassByName("BoundaryProperties").ifPresent(clazz -> clazz.getMethodsByName("setCopyrightURL").get(0)
                 .setName("setCopyrightUrl"));
         });
     }

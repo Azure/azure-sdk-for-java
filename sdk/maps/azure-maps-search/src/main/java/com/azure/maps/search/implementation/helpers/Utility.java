@@ -3,6 +3,7 @@
 
 package com.azure.maps.search.implementation.helpers;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.models.GeoObject;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -35,6 +36,12 @@ public class Utility {
         return null;
     }
 
+    /**
+     * Returns a GeoPosition from a list of positions.
+     * @param position
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return
+     */
     public static GeoPosition fromDoubleList(List<Double> position) {
         if (position.size() == 2) {
             return new GeoPosition(position.get(0), position.get(1));
