@@ -112,7 +112,12 @@ public class FilePosixProperties {
         String tempFileType = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-file-file-type"));
         this.fileType = NfsFileType.fromString(tempFileType);
         String tempLinkCount = httpHeaders.getValue(HttpHeaderName.fromString("x-ms-link-count"));
-        this.linkCount = tempLinkCount == null ? null : Long.valueOf(tempLinkCount);
+        try {
+            this.linkCount = tempLinkCount == null ? null : Long.valueOf(tempLinkCount);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                "Unable to convert value of header x-ms-link-count \"" + tempLinkCount + "\" to Long. ", e);
+        }
     }
 
     static {
