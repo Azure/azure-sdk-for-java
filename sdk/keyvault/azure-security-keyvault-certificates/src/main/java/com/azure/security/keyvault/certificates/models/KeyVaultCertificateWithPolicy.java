@@ -10,6 +10,7 @@ import com.azure.security.keyvault.certificates.implementation.CertificatePolicy
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
 
 import java.io.IOException;
 import java.util.Map;
@@ -32,6 +33,11 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
     }
 
     KeyVaultCertificateWithPolicy(CertificateBundle bundle) {
+        this(bundle.getCer(), bundle.getKid(), bundle.getSid(), new CertificateProperties(bundle),
+            CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy()));
+    }
+
+    KeyVaultCertificateWithPolicy(DeletedCertificateBundle bundle) {
         this(bundle.getCer(), bundle.getKid(), bundle.getSid(), new CertificateProperties(bundle),
             CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy()));
     }

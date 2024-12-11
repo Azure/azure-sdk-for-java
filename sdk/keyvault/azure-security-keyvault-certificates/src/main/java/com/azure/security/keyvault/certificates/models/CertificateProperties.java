@@ -14,6 +14,8 @@ import com.azure.security.keyvault.certificates.implementation.IdMetadata;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -30,7 +32,17 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     private static final ClientLogger LOGGER = new ClientLogger(CertificateProperties.class);
 
     static {
-        CertificatePropertiesHelper.setAccessor(CertificateProperties::new);
+        CertificatePropertiesHelper.setAccessor(new CertificatePropertiesHelper.CertificatePropertiesAccessor() {
+            @Override
+            public CertificateProperties createCertificateProperties(CertificateItem item) {
+                return new CertificateProperties(item);
+            }
+
+            @Override
+            public CertificateProperties createCertificateProperties(DeletedCertificateItem item) {
+                return null;
+            }
+        });
     }
 
     /**
@@ -115,6 +127,11 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
             bundle.getAttributes().getRecoverableDays());
     }
 
+    CertificateProperties(DeletedCertificateBundle bundle) {
+        this(bundle.getId(), bundle.getAttributes(), bundle.getTags(), bundle.getX509Thumbprint(),
+            bundle.getAttributes().getRecoverableDays());
+    }
+
     CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags, byte[] wireThumbprint,
         Integer recoverableDays) {
         IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
@@ -129,7 +146,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
             this.expiresOn = attributes.getExpires();
             this.createdOn = attributes.getCreated();
             this.updatedOn = attributes.getUpdated();
-            this.recoveryLevel = Objects.toString(attributes.getRecoveryLevel(), null);
+            this.recoveryLevel = Objects.toString(attributes.getAdminContacts(), null);
         } else {
             this.enabled = null;
             this.notBefore = null;
@@ -254,7 +271,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     /**
      * Get the recovery level of the certificate.
-    
+
      * @return The recovery level of the certificate.
      */
     public String getRecoveryLevel() {

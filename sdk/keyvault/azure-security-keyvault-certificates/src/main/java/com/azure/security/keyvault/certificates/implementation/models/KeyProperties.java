@@ -20,8 +20,8 @@ import java.io.IOException;
 public final class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /*
-     * Indicates if the private key can be exported. Release policy must be provided
-     * when creating the first version of an exportable key.
+     * Indicates if the private key can be exported. Release policy must be provided when creating the first version of
+     * an exportable key.
      */
     @Generated
     private Boolean exportable;
@@ -58,8 +58,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Get the exportable property: Indicates if the private key can be exported. Release policy must be provided
-     * when creating the first version of an exportable key.
+     * Get the exportable property: Indicates if the private key can be exported. Release policy must be provided when
+     * creating the first version of an exportable key.
      *
      * @return the exportable value.
      */
@@ -69,8 +69,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Set the exportable property: Indicates if the private key can be exported. Release policy must be provided
-     * when creating the first version of an exportable key.
+     * Set the exportable property: Indicates if the private key can be exported. Release policy must be provided when
+     * creating the first version of an exportable key.
      *
      * @param exportable the exportable value to set.
      * @return the KeyProperties object itself.
@@ -89,6 +89,18 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     @Generated
     public CertificateKeyType getKeyType() {
         return this.keyType;
+    }
+
+    /**
+     * Set the keyType property: The type of key pair to be used for the certificate.
+     *
+     * @param keyType the keyType value to set.
+     * @return the KeyProperties object itself.
+     */
+    @Generated
+    public KeyProperties setKeyType(CertificateKeyType keyType) {
+        this.keyType = keyType;
+        return this;
     }
 
     /**
@@ -146,6 +158,18 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
+     * Set the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     *
+     * @param curve the curve value to set.
+     * @return the KeyProperties object itself.
+     */
+    @Generated
+    public KeyProperties setCurve(CertificateKeyCurveName curve) {
+        this.curve = curve;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -191,29 +215,5 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
             }
             return deserializedKeyProperties;
         });
-    }
-
-    /**
-     * Set the keyType property: The type of key pair to be used for the certificate.
-     *
-     * @param keyType the keyType value to set.
-     * @return the KeyProperties object itself.
-     */
-    @Generated
-    public KeyProperties setKeyType(CertificateKeyType keyType) {
-        this.keyType = keyType;
-        return this;
-    }
-
-    /**
-     * Set the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-     *
-     * @param curve the curve value to set.
-     * @return the KeyProperties object itself.
-     */
-    @Generated
-    public KeyProperties setCurve(CertificateKeyCurveName curve) {
-        this.curve = curve;
-        return this;
     }
 }

@@ -816,21 +816,20 @@ public final class CertificateClientImpl {
     /**
      * List certificates in a specified key vault
      *
-     * The GetCertificates operation returns the set of certificates resources in the
-     * specified key vault. This operation requires the certificates/list permission.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -842,7 +841,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -872,21 +871,20 @@ public final class CertificateClientImpl {
     /**
      * List certificates in a specified key vault
      *
-     * The GetCertificates operation returns the set of certificates resources in the
-     * specified key vault. This operation requires the certificates/list permission.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -898,7 +896,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -927,21 +925,20 @@ public final class CertificateClientImpl {
     /**
      * List certificates in a specified key vault
      *
-     * The GetCertificates operation returns the set of certificates resources in the
-     * specified key vault. This operation requires the certificates/list permission.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -953,7 +950,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -982,21 +979,20 @@ public final class CertificateClientImpl {
     /**
      * List certificates in a specified key vault
      *
-     * The GetCertificates operation returns the set of certificates resources in the
-     * specified key vault. This operation requires the certificates/list permission.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1008,7 +1004,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1037,11 +1033,11 @@ public final class CertificateClientImpl {
     /**
      * Deletes a certificate from a specified key vault.
      *
-     * Deletes all versions of a certificate object along with its associated policy.
-     * Delete certificate cannot be used to remove individual versions of a
-     * certificate object. This operation requires the certificates/delete permission.
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1105,7 +1101,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -1127,9 +1123,8 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a Deleted Certificate consisting of its previous id, attributes and its tags,
-     * as well as information on when it will be purged along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
+     * when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteCertificateWithResponseAsync(String certificateName,
@@ -1142,11 +1137,11 @@ public final class CertificateClientImpl {
     /**
      * Deletes a certificate from a specified key vault.
      *
-     * Deletes all versions of a certificate object along with its associated policy.
-     * Delete certificate cannot be used to remove individual versions of a
-     * certificate object. This operation requires the certificates/delete permission.
+     * Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used
+     * to remove individual versions of a certificate object. This operation requires the certificates/delete
+     * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1210,7 +1205,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -1232,8 +1227,8 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a Deleted Certificate consisting of its previous id, attributes and its tags,
-     * as well as information on when it will be purged along with {@link Response}.
+     * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
+     * when it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteCertificateWithResponse(String certificateName, RequestOptions requestOptions) {
@@ -1245,10 +1240,10 @@ public final class CertificateClientImpl {
     /**
      * Sets the certificate contacts for the specified key vault.
      *
-     * Sets the certificate contacts for the specified key vault. This operation
-     * requires the certificates/managecontacts permission.
+     * Sets the certificate contacts for the specified key vault. This operation requires the
+     * certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1263,9 +1258,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1302,10 +1297,10 @@ public final class CertificateClientImpl {
     /**
      * Sets the certificate contacts for the specified key vault.
      *
-     * Sets the certificate contacts for the specified key vault. This operation
-     * requires the certificates/managecontacts permission.
+     * Sets the certificate contacts for the specified key vault. This operation requires the
+     * certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1320,9 +1315,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1357,11 +1352,10 @@ public final class CertificateClientImpl {
     /**
      * Lists the certificate contacts for a specified key vault.
      *
-     * The GetCertificateContacts operation returns the set of certificate contact
-     * resources in the specified key vault. This operation requires the
-     * certificates/managecontacts permission.
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1395,11 +1389,10 @@ public final class CertificateClientImpl {
     /**
      * Lists the certificate contacts for a specified key vault.
      *
-     * The GetCertificateContacts operation returns the set of certificate contact
-     * resources in the specified key vault. This operation requires the
-     * certificates/managecontacts permission.
+     * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
+     * This operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1432,10 +1425,10 @@ public final class CertificateClientImpl {
     /**
      * Deletes the certificate contacts for a specified key vault.
      *
-     * Deletes the certificate contacts for a specified key vault certificate. This
-     * operation requires the certificates/managecontacts permission.
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1469,10 +1462,10 @@ public final class CertificateClientImpl {
     /**
      * Deletes the certificate contacts for a specified key vault.
      *
-     * Deletes the certificate contacts for a specified key vault certificate. This
-     * operation requires the certificates/managecontacts permission.
+     * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
+     * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1505,20 +1498,18 @@ public final class CertificateClientImpl {
     /**
      * List certificate issuers for a specified key vault.
      *
-     * The GetCertificateIssuers operation returns the set of certificate issuer
-     * resources in the specified key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1549,20 +1540,18 @@ public final class CertificateClientImpl {
     /**
      * List certificate issuers for a specified key vault.
      *
-     * The GetCertificateIssuers operation returns the set of certificate issuer
-     * resources in the specified key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1591,20 +1580,18 @@ public final class CertificateClientImpl {
     /**
      * List certificate issuers for a specified key vault.
      *
-     * The GetCertificateIssuers operation returns the set of certificate issuer
-     * resources in the specified key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1633,20 +1620,18 @@ public final class CertificateClientImpl {
     /**
      * List certificate issuers for a specified key vault.
      *
-     * The GetCertificateIssuers operation returns the set of certificate issuer
-     * resources in the specified key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1675,10 +1660,10 @@ public final class CertificateClientImpl {
     /**
      * Sets the specified certificate issuer.
      *
-     * The SetCertificateIssuer operation adds or updates the specified certificate
-     * issuer. This operation requires the certificates/setissuers permission.
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1706,9 +1691,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1738,9 +1723,8 @@ public final class CertificateClientImpl {
      * }
      * </pre>
      *
-     * @param issuerName The name of the issuer. The value you provide may be copied globally for the
-     * purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameter Certificate issuer set parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1763,10 +1747,10 @@ public final class CertificateClientImpl {
     /**
      * Sets the specified certificate issuer.
      *
-     * The SetCertificateIssuer operation adds or updates the specified certificate
-     * issuer. This operation requires the certificates/setissuers permission.
+     * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
+     * certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1794,9 +1778,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1826,9 +1810,8 @@ public final class CertificateClientImpl {
      * }
      * </pre>
      *
-     * @param issuerName The name of the issuer. The value you provide may be copied globally for the
-     * purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
+     * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameter Certificate issuer set parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1849,11 +1832,10 @@ public final class CertificateClientImpl {
     /**
      * Updates the specified certificate issuer.
      *
-     * The UpdateCertificateIssuer operation performs an update on the specified
-     * certificate issuer entity. This operation requires the certificates/setissuers
-     * permission.
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1881,9 +1863,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1936,11 +1918,10 @@ public final class CertificateClientImpl {
     /**
      * Updates the specified certificate issuer.
      *
-     * The UpdateCertificateIssuer operation performs an update on the specified
-     * certificate issuer entity. This operation requires the certificates/setissuers
-     * permission.
+     * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
+     * operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1968,9 +1949,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2021,11 +2002,10 @@ public final class CertificateClientImpl {
     /**
      * Lists the specified certificate issuer.
      *
-     * The GetCertificateIssuer operation returns the specified certificate issuer
-     * resources in the specified key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2075,11 +2055,10 @@ public final class CertificateClientImpl {
     /**
      * Lists the specified certificate issuer.
      *
-     * The GetCertificateIssuer operation returns the specified certificate issuer
-     * resources in the specified key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2127,11 +2106,10 @@ public final class CertificateClientImpl {
     /**
      * Deletes the specified certificate issuer.
      *
-     * The DeleteCertificateIssuer operation permanently removes the specified
-     * certificate issuer from the vault. This operation requires the
-     * certificates/manageissuers/deleteissuers permission.
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2181,11 +2159,10 @@ public final class CertificateClientImpl {
     /**
      * Deletes the specified certificate issuer.
      *
-     * The DeleteCertificateIssuer operation permanently removes the specified
-     * certificate issuer from the vault. This operation requires the
-     * certificates/manageissuers/deleteissuers permission.
+     * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
+     * operation requires the certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2233,10 +2210,10 @@ public final class CertificateClientImpl {
     /**
      * Creates a new certificate.
      *
-     * If this is the first version, the certificate resource is created. This
-     * operation requires the certificates/create permission.
+     * If this is the first version, the certificate resource is created. This operation requires the
+     * certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2296,7 +2273,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2306,9 +2283,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2333,9 +2310,8 @@ public final class CertificateClientImpl {
      * }
      * </pre>
      *
-     * @param certificateName The name of the certificate. The value you provide may be copied globally for
-     * the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to create a certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2358,10 +2334,10 @@ public final class CertificateClientImpl {
     /**
      * Creates a new certificate.
      *
-     * If this is the first version, the certificate resource is created. This
-     * operation requires the certificates/create permission.
+     * If this is the first version, the certificate resource is created. This operation requires the
+     * certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2421,7 +2397,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2431,9 +2407,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2458,9 +2434,8 @@ public final class CertificateClientImpl {
      * }
      * </pre>
      *
-     * @param certificateName The name of the certificate. The value you provide may be copied globally for
-     * the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to create a certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2481,13 +2456,12 @@ public final class CertificateClientImpl {
     /**
      * Imports a certificate into a specified key vault.
      *
-     * Imports an existing valid certificate, containing a private key, into Azure Key
-     * Vault. This operation requires the certificates/import permission. The
-     * certificate to be imported can be in either PFX or PEM format. If the
-     * certificate is in PEM format the PEM file must contain the key as well as x509
-     * certificates. Key Vault will only accept a key in PKCS#8 format.
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
+     * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
+     * accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2549,7 +2523,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2559,9 +2533,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2625,7 +2599,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -2638,9 +2612,8 @@ public final class CertificateClientImpl {
      * }
      * </pre>
      *
-     * @param certificateName The name of the certificate. The value you provide may be copied globally for
-     * the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to import the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2663,13 +2636,12 @@ public final class CertificateClientImpl {
     /**
      * Imports a certificate into a specified key vault.
      *
-     * Imports an existing valid certificate, containing a private key, into Azure Key
-     * Vault. This operation requires the certificates/import permission. The
-     * certificate to be imported can be in either PFX or PEM format. If the
-     * certificate is in PEM format the PEM file must contain the key as well as x509
-     * certificates. Key Vault will only accept a key in PKCS#8 format.
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * the certificates/import permission. The certificate to be imported can be in either PFX or PEM format. If the
+     * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
+     * accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2731,7 +2703,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2741,9 +2713,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2807,7 +2779,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -2820,9 +2792,8 @@ public final class CertificateClientImpl {
      * }
      * </pre>
      *
-     * @param certificateName The name of the certificate. The value you provide may be copied globally for
-     * the purpose of running the service. The value provided should not include
-     * personally identifiable or sensitive information.
+     * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
+     * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to import the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2843,20 +2814,18 @@ public final class CertificateClientImpl {
     /**
      * List the versions of a certificate.
      *
-     * The GetCertificateVersions operation returns the versions of a certificate in
-     * the specified key vault. This operation requires the certificates/list
-     * permission.
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2868,7 +2837,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2900,20 +2869,18 @@ public final class CertificateClientImpl {
     /**
      * List the versions of a certificate.
      *
-     * The GetCertificateVersions operation returns the versions of a certificate in
-     * the specified key vault. This operation requires the certificates/list
-     * permission.
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2925,7 +2892,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2955,20 +2922,18 @@ public final class CertificateClientImpl {
     /**
      * List the versions of a certificate.
      *
-     * The GetCertificateVersions operation returns the versions of a certificate in
-     * the specified key vault. This operation requires the certificates/list
-     * permission.
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2980,7 +2945,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3011,20 +2976,18 @@ public final class CertificateClientImpl {
     /**
      * List the versions of a certificate.
      *
-     * The GetCertificateVersions operation returns the versions of a certificate in
-     * the specified key vault. This operation requires the certificates/list
-     * permission.
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * operation requires the certificates/list permission.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3036,7 +2999,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3066,11 +3029,10 @@ public final class CertificateClientImpl {
     /**
      * Lists the policy for a certificate.
      *
-     * The GetCertificatePolicy operation returns the specified certificate policy
-     * resources in the specified key vault. This operation requires the
-     * certificates/get permission.
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3129,7 +3091,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
      * }
@@ -3154,11 +3116,10 @@ public final class CertificateClientImpl {
     /**
      * Lists the policy for a certificate.
      *
-     * The GetCertificatePolicy operation returns the specified certificate policy
-     * resources in the specified key vault. This operation requires the
-     * certificates/get permission.
+     * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
+     * This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3217,7 +3178,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
      * }
@@ -3242,10 +3203,10 @@ public final class CertificateClientImpl {
     /**
      * Updates the policy for a certificate.
      *
-     * Set specified members in the certificate policy. Leave others as null. This
-     * operation requires the certificates/update permission.
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3304,14 +3265,14 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3370,7 +3331,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
      * }
@@ -3398,10 +3359,10 @@ public final class CertificateClientImpl {
     /**
      * Updates the policy for a certificate.
      *
-     * Set specified members in the certificate policy. Leave others as null. This
-     * operation requires the certificates/update permission.
+     * Set specified members in the certificate policy. Leave others as null. This operation requires the
+     * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3460,14 +3421,14 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3526,7 +3487,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      * }
      * }
@@ -3553,11 +3514,10 @@ public final class CertificateClientImpl {
     /**
      * Updates the specified attributes associated with the given certificate.
      *
-     * The UpdateCertificate operation applies the specified update on the given
-     * certificate; the only elements updated are the certificate's attributes. This
-     * operation requires the certificates/update permission.
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3617,7 +3577,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -3627,9 +3587,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3693,7 +3653,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3730,11 +3690,10 @@ public final class CertificateClientImpl {
     /**
      * Updates the specified attributes associated with the given certificate.
      *
-     * The UpdateCertificate operation applies the specified update on the given
-     * certificate; the only elements updated are the certificate's attributes. This
-     * operation requires the certificates/update permission.
+     * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
+     * are the certificate's attributes. This operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3794,7 +3753,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -3804,9 +3763,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3870,7 +3829,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3905,10 +3864,9 @@ public final class CertificateClientImpl {
     /**
      * Gets information about a certificate.
      *
-     * Gets information about a specific certificate. This operation requires the
-     * certificates/get permission.
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3972,7 +3930,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3986,8 +3944,8 @@ public final class CertificateClientImpl {
      * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
-     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not
-     * specified, the latest version of the certificate is returned.
+     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
+     * latest version of the certificate is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4010,10 +3968,9 @@ public final class CertificateClientImpl {
     /**
      * Gets information about a certificate.
      *
-     * Gets information about a specific certificate. This operation requires the
-     * certificates/get permission.
+     * Gets information about a specific certificate. This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4077,7 +4034,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4091,8 +4048,8 @@ public final class CertificateClientImpl {
      * </pre>
      *
      * @param certificateName The name of the certificate in the given vault.
-     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not
-     * specified, the latest version of the certificate is returned.
+     * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
+     * latest version of the certificate is returned.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4113,10 +4070,10 @@ public final class CertificateClientImpl {
     /**
      * Updates a certificate operation.
      *
-     * Updates a certificate creation operation that is already in progress. This
-     * operation requires the certificates/update permission.
+     * Updates a certificate creation operation that is already in progress. This operation requires the
+     * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4124,9 +4081,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4174,10 +4131,10 @@ public final class CertificateClientImpl {
     /**
      * Updates a certificate operation.
      *
-     * Updates a certificate creation operation that is already in progress. This
-     * operation requires the certificates/update permission.
+     * Updates a certificate creation operation that is already in progress. This operation requires the
+     * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4185,9 +4142,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4233,10 +4190,10 @@ public final class CertificateClientImpl {
     /**
      * Gets the creation operation of a certificate.
      *
-     * Gets the creation operation associated with a specified certificate. This
-     * operation requires the certificates/get permission.
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4283,10 +4240,10 @@ public final class CertificateClientImpl {
     /**
      * Gets the creation operation of a certificate.
      *
-     * Gets the creation operation associated with a specified certificate. This
-     * operation requires the certificates/get permission.
+     * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
+     * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4332,11 +4289,10 @@ public final class CertificateClientImpl {
     /**
      * Deletes the creation operation for a specific certificate.
      *
-     * Deletes the creation operation for a specified certificate that is in the
-     * process of being created. The certificate is no longer created. This operation
-     * requires the certificates/update permission.
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * certificate is no longer created. This operation requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4381,11 +4337,10 @@ public final class CertificateClientImpl {
     /**
      * Deletes the creation operation for a specific certificate.
      *
-     * Deletes the creation operation for a specified certificate that is in the
-     * process of being created. The certificate is no longer created. This operation
-     * requires the certificates/update permission.
+     * Deletes the creation operation for a specified certificate that is in the process of being created. The
+     * certificate is no longer created. This operation requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4429,11 +4384,10 @@ public final class CertificateClientImpl {
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
      *
-     * The MergeCertificate operation performs the merging of a certificate or
-     * certificate chain with a key pair currently available in the service. This
-     * operation requires the certificates/create permission.
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * currently available in the service. This operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4447,7 +4401,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4455,9 +4409,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4521,7 +4475,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4557,11 +4511,10 @@ public final class CertificateClientImpl {
     /**
      * Merges a certificate or a certificate chain with a key pair existing on the server.
      *
-     * The MergeCertificate operation performs the merging of a certificate or
-     * certificate chain with a key pair currently available in the service. This
-     * operation requires the certificates/create permission.
+     * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
+     * currently available in the service. This operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4575,7 +4528,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4583,9 +4536,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4649,7 +4602,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4683,11 +4636,10 @@ public final class CertificateClientImpl {
     /**
      * Backs up the specified certificate.
      *
-     * Requests that a backup of the specified certificate be downloaded to the
-     * client. All versions of the certificate will be downloaded. This operation
-     * requires the certificates/backup permission.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4716,11 +4668,10 @@ public final class CertificateClientImpl {
     /**
      * Backs up the specified certificate.
      *
-     * Requests that a backup of the specified certificate be downloaded to the
-     * client. All versions of the certificate will be downloaded. This operation
-     * requires the certificates/backup permission.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
+     * will be downloaded. This operation requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4747,10 +4698,10 @@ public final class CertificateClientImpl {
     /**
      * Restores a backed up certificate to a vault.
      *
-     * Restores a backed up certificate, and all its versions, to a vault. This
-     * operation requires the certificates/restore permission.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4758,9 +4709,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4824,7 +4775,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4858,10 +4809,10 @@ public final class CertificateClientImpl {
     /**
      * Restores a backed up certificate to a vault.
      *
-     * Restores a backed up certificate, and all its versions, to a vault. This
-     * operation requires the certificates/restore permission.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
+     * certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4869,9 +4820,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4935,7 +4886,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4967,24 +4918,21 @@ public final class CertificateClientImpl {
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      *
-     * The GetDeletedCertificates operation retrieves the certificates in the current
-     * vault which are in a deleted state and ready for recovery or purging. This
-     * operation includes deletion-specific information. This operation requires the
-     * certificates/get/list permission. This operation can only be enabled on
-     * soft-delete enabled vaults.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4996,7 +4944,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5030,24 +4978,21 @@ public final class CertificateClientImpl {
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      *
-     * The GetDeletedCertificates operation retrieves the certificates in the current
-     * vault which are in a deleted state and ready for recovery or purging. This
-     * operation includes deletion-specific information. This operation requires the
-     * certificates/get/list permission. This operation can only be enabled on
-     * soft-delete enabled vaults.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5059,7 +5004,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5091,24 +5036,21 @@ public final class CertificateClientImpl {
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      *
-     * The GetDeletedCertificates operation retrieves the certificates in the current
-     * vault which are in a deleted state and ready for recovery or purging. This
-     * operation includes deletion-specific information. This operation requires the
-     * certificates/get/list permission. This operation can only be enabled on
-     * soft-delete enabled vaults.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5120,7 +5062,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5152,24 +5094,21 @@ public final class CertificateClientImpl {
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      *
-     * The GetDeletedCertificates operation retrieves the certificates in the current
-     * vault which are in a deleted state and ready for recovery or purging. This
-     * operation includes deletion-specific information. This operation requires the
-     * certificates/get/list permission. This operation can only be enabled on
-     * soft-delete enabled vaults.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service
-     * will return up to 25 results.</td></tr>
+     * specified the service will return up to 25 results.</td></tr>
      * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
      * completely provisioned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5181,7 +5120,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5214,12 +5153,11 @@ public final class CertificateClientImpl {
     /**
      * Retrieves information about the specified deleted certificate.
      *
-     * The GetDeletedCertificate operation retrieves the deleted certificate
-     * information plus its attributes, such as retention interval, scheduled
-     * permanent deletion and the current deletion recovery level. This operation
-     * requires the certificates/get permission.
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
+     * the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5283,7 +5221,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5305,9 +5243,8 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a Deleted Certificate consisting of its previous id, attributes and its tags,
-     * as well as information on when it will be purged along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
+     * when it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeletedCertificateWithResponseAsync(String certificateName,
@@ -5320,12 +5257,11 @@ public final class CertificateClientImpl {
     /**
      * Retrieves information about the specified deleted certificate.
      *
-     * The GetDeletedCertificate operation retrieves the deleted certificate
-     * information plus its attributes, such as retention interval, scheduled
-     * permanent deletion and the current deletion recovery level. This operation
-     * requires the certificates/get permission.
+     * The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as
+     * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
+     * the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5389,7 +5325,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5411,8 +5347,8 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a Deleted Certificate consisting of its previous id, attributes and its tags,
-     * as well as information on when it will be purged along with {@link Response}.
+     * @return a Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on
+     * when it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeletedCertificateWithResponse(String certificateName,
@@ -5425,10 +5361,9 @@ public final class CertificateClientImpl {
     /**
      * Permanently deletes the specified deleted certificate.
      *
-     * The PurgeDeletedCertificate operation performs an irreversible deletion of the
-     * specified certificate, without possibility for recovery. The operation is not
-     * available if the recovery level does not specify 'Purgeable'. This operation
-     * requires the certificate/purge permission.
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
+     * operation requires the certificate/purge permission.
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5449,10 +5384,9 @@ public final class CertificateClientImpl {
     /**
      * Permanently deletes the specified deleted certificate.
      *
-     * The PurgeDeletedCertificate operation performs an irreversible deletion of the
-     * specified certificate, without possibility for recovery. The operation is not
-     * available if the recovery level does not specify 'Purgeable'. This operation
-     * requires the certificate/purge permission.
+     * The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without
+     * possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This
+     * operation requires the certificate/purge permission.
      *
      * @param certificateName The name of the certificate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5472,13 +5406,11 @@ public final class CertificateClientImpl {
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
      *
-     * The RecoverDeletedCertificate operation performs the reversal of the Delete
-     * operation. The operation is applicable in vaults enabled for soft-delete, and
-     * must be issued during the retention interval (available in the deleted
-     * certificate's attributes). This operation requires the certificates/recover
-     * permission.
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
+     * deleted certificate's attributes). This operation requires the certificates/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5542,7 +5474,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5575,13 +5507,11 @@ public final class CertificateClientImpl {
     /**
      * Recovers the deleted certificate back to its current version under /certificates.
      *
-     * The RecoverDeletedCertificate operation performs the reversal of the Delete
-     * operation. The operation is applicable in vaults enabled for soft-delete, and
-     * must be issued during the retention interval (available in the deleted
-     * certificate's attributes). This operation requires the certificates/recover
-     * permission.
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is
+     * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
+     * deleted certificate's attributes). This operation requires the certificates/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5645,7 +5575,7 @@ public final class CertificateClientImpl {
      *             created: Long (Optional)
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
-     *             recoveryLevel: String (Optional)
+     *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5679,7 +5609,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5691,7 +5621,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5724,7 +5654,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5736,7 +5666,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5768,7 +5698,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5803,7 +5733,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5836,7 +5766,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5848,7 +5778,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5882,7 +5812,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5894,7 +5824,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5927,7 +5857,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5939,7 +5869,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -5977,7 +5907,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5989,7 +5919,7 @@ public final class CertificateClientImpl {
      *         created: Long (Optional)
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)

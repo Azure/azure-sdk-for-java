@@ -57,8 +57,7 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
     private byte[] cer;
 
     /*
-     * The content type of the secret. eg. 'application/x-pem-file' or
-     * 'application/x-pkcs12',
+     * The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
      */
     @Generated
     private String contentType;

@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import java.io.IOException;
 
 /**

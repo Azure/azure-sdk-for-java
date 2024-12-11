@@ -51,11 +51,18 @@ public final class CertificateAttributes implements JsonSerializable<Certificate
     private Long updated;
 
     /*
-     * softDelete data retention days. Value should be >=7 and <=90 when softDelete
-     * enabled, otherwise 0.
+     * softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
      */
     @Generated
     private Integer recoverableDays;
+
+    /*
+     * Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
+     * 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise, only the system can
+     * purge the certificate, at the end of the retention interval.
+     */
+    @Generated
+    private DeletionRecoveryLevel adminContacts;
 
     /**
      * Creates an instance of CertificateAttributes class.
@@ -172,14 +179,25 @@ public final class CertificateAttributes implements JsonSerializable<Certificate
 
     /**
      * Get the recoverableDays property: softDelete data retention days. Value should be &gt;=7 and &lt;=90 when
-     * softDelete
-     * enabled, otherwise 0.
+     * softDelete enabled, otherwise 0.
      *
      * @return the recoverableDays value.
      */
     @Generated
     public Integer getRecoverableDays() {
         return this.recoverableDays;
+    }
+
+    /**
+     * Get the adminContacts property: Reflects the deletion recovery level currently in effect for certificates in the
+     * current vault. If it contains 'Purgeable', the certificate can be permanently deleted by a privileged user;
+     * otherwise, only the system can purge the certificate, at the end of the retention interval.
+     *
+     * @return the adminContacts value.
+     */
+    @Generated
+    public DeletionRecoveryLevel getAdminContacts() {
+        return this.adminContacts;
     }
 
     /**
@@ -223,34 +241,13 @@ public final class CertificateAttributes implements JsonSerializable<Certificate
                 } else if ("recoverableDays".equals(fieldName)) {
                     deserializedCertificateAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
                 } else if ("recoveryLevel".equals(fieldName)) {
-                    deserializedCertificateAttributes.adminContacts = reader.getString();
+                    deserializedCertificateAttributes.adminContacts
+                        = DeletionRecoveryLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedCertificateAttributes;
         });
-    }
-
-    /*
-     * Reflects the deletion recovery level currently in effect for certificates in
-     * the current vault. If it contains 'Purgeable', the certificate can be
-     * permanently deleted by a privileged user; otherwise, only the system can purge
-     * the certificate, at the end of the retention interval.
-     */
-    @Generated
-    private String adminContacts;
-
-    /**
-     * Get the adminContacts property: Reflects the deletion recovery level currently in effect for certificates in
-     * the current vault. If it contains 'Purgeable', the certificate can be
-     * permanently deleted by a privileged user; otherwise, only the system can purge
-     * the certificate, at the end of the retention interval.
-     *
-     * @return the adminContacts value.
-     */
-    @Generated
-    public String getAdminContacts() {
-        return this.adminContacts;
     }
 }

@@ -18,22 +18,19 @@ import java.io.IOException;
 public final class IssuerParameters implements JsonSerializable<IssuerParameters> {
 
     /*
-     * Name of the referenced issuer object or reserved names; for example, 'Self' or
-     * 'Unknown'.
+     * Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
      */
     @Generated
     private String name;
 
     /*
-     * Certificate type as supported by the provider (optional); for example 'OV-SSL',
-     * 'EV-SSL'
+     * Certificate type as supported by the provider (optional); for example 'OV-SSL', 'EV-SSL'
      */
     @Generated
     private String certificateType;
 
     /*
-     * Indicates if the certificates generated under this policy should be published
-     * to certificate transparency logs.
+     * Indicates if the certificates generated under this policy should be published to certificate transparency logs.
      */
     @Generated
     private Boolean certificateTransparency;
@@ -46,8 +43,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     }
 
     /**
-     * Get the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or
-     * 'Unknown'.
+     * Get the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
      *
      * @return the name value.
      */
@@ -57,8 +53,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
     }
 
     /**
-     * Set the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or
-     * 'Unknown'.
+     * Set the name property: Name of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
      *
      * @param name the name value to set.
      * @return the IssuerParameters object itself.
@@ -95,8 +90,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
 
     /**
      * Get the certificateTransparency property: Indicates if the certificates generated under this policy should be
-     * published
-     * to certificate transparency logs.
+     * published to certificate transparency logs.
      *
      * @return the certificateTransparency value.
      */
@@ -107,8 +101,7 @@ public final class IssuerParameters implements JsonSerializable<IssuerParameters
 
     /**
      * Set the certificateTransparency property: Indicates if the certificates generated under this policy should be
-     * published
-     * to certificate transparency logs.
+     * published to certificate transparency logs.
      *
      * @param certificateTransparency the certificateTransparency value to set.
      * @return the IssuerParameters object itself.

@@ -24,9 +24,8 @@ public final class Trigger implements JsonSerializable<Trigger> {
     private Integer lifetimePercentage;
 
     /*
-     * Days before expiry to attempt renewal. Value should be between 1 and
-     * validity_in_months multiplied by 27. If validity_in_months is 36, then value
-     * should be between 1 and 972 (36 * 27).
+     * Days before expiry to attempt renewal. Value should be between 1 and validity_in_months multiplied by 27. If
+     * validity_in_months is 36, then value should be between 1 and 972 (36 * 27).
      */
     @Generated
     private Integer daysBeforeExpiry;
@@ -64,8 +63,8 @@ public final class Trigger implements JsonSerializable<Trigger> {
 
     /**
      * Get the daysBeforeExpiry property: Days before expiry to attempt renewal. Value should be between 1 and
-     * validity_in_months multiplied by 27. If validity_in_months is 36, then value
-     * should be between 1 and 972 (36 * 27).
+     * validity_in_months multiplied by 27. If validity_in_months is 36, then value should be between 1 and 972 (36 *
+     * 27).
      *
      * @return the daysBeforeExpiry value.
      */
@@ -76,8 +75,8 @@ public final class Trigger implements JsonSerializable<Trigger> {
 
     /**
      * Set the daysBeforeExpiry property: Days before expiry to attempt renewal. Value should be between 1 and
-     * validity_in_months multiplied by 27. If validity_in_months is 36, then value
-     * should be between 1 and 972 (36 * 27).
+     * validity_in_months multiplied by 27. If validity_in_months is 36, then value should be between 1 and 972 (36 *
+     * 27).
      *
      * @param daysBeforeExpiry the daysBeforeExpiry value to set.
      * @return the Trigger object itself.

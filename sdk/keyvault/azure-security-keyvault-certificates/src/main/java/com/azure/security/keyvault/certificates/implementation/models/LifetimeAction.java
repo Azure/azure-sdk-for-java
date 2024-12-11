@@ -12,8 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Action and its trigger that will be performed by Key Vault over the lifetime of
- * a certificate.
+ * Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
  */
 @Fluent
 public final class LifetimeAction implements JsonSerializable<LifetimeAction> {

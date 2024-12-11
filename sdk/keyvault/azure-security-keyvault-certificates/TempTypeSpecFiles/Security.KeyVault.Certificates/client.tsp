@@ -8,8 +8,9 @@ using Azure.ClientGenerator.Core;
 
 using KeyVault;
 
-@@usage(DeletionRecoveryLevel, Usage.output);
-
+@@usage(CertificateIssuerItem, Usage.input, "java");
+@@usage(CertificateOperation, Usage.input, "java");
+@@usage(IssuerBundle, Usage.input, "java");
 @@clientName(AdministratorDetails, "AdministratorContact", "java");
 @@clientName(AdministratorDetails.EmailAddress, "email", "java");
 @@clientName(CertificateAttributes.recoveryLevel, "adminContacts", "java");

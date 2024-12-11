@@ -19,15 +19,14 @@ import java.util.Map;
 public final class CertificateImportParameters implements JsonSerializable<CertificateImportParameters> {
 
     /*
-     * Base64 encoded representation of the certificate object to import. This
-     * certificate needs to contain the private key.
+     * Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
+     * key.
      */
     @Generated
     private final String base64EncodedCertificate;
 
     /*
-     * If the private key in base64EncodedCertificate is encrypted, the password used
-     * for encryption.
+     * If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      */
     @Generated
     private String password;
@@ -62,8 +61,7 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
 
     /**
      * Get the base64EncodedCertificate property: Base64 encoded representation of the certificate object to import.
-     * This
-     * certificate needs to contain the private key.
+     * This certificate needs to contain the private key.
      *
      * @return the base64EncodedCertificate value.
      */
@@ -73,8 +71,8 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
     }
 
     /**
-     * Get the password property: If the private key in base64EncodedCertificate is encrypted, the password used
-     * for encryption.
+     * Get the password property: If the private key in base64EncodedCertificate is encrypted, the password used for
+     * encryption.
      *
      * @return the password value.
      */
@@ -84,8 +82,8 @@ public final class CertificateImportParameters implements JsonSerializable<Certi
     }
 
     /**
-     * Set the password property: If the private key in base64EncodedCertificate is encrypted, the password used
-     * for encryption.
+     * Set the password property: If the private key in base64EncodedCertificate is encrypted, the password used for
+     * encryption.
      *
      * @param password the password value to set.
      * @return the CertificateImportParameters object itself.

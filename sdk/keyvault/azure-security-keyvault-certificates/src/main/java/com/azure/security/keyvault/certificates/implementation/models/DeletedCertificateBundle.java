@@ -18,8 +18,8 @@ import java.time.ZoneOffset;
 import java.util.Map;
 
 /**
- * A Deleted Certificate consisting of its previous id, attributes and its tags,
- * as well as information on when it will be purged.
+ * A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will
+ * be purged.
  */
 @Immutable
 public final class DeletedCertificateBundle implements JsonSerializable<DeletedCertificateBundle> {
@@ -61,8 +61,7 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
     private byte[] cer;
 
     /*
-     * The content type of the secret. eg. 'application/x-pem-file' or
-     * 'application/x-pkcs12',
+     * The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
      */
     @Generated
     private String contentType;
@@ -80,8 +79,7 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
     private Map<String, String> tags;
 
     /*
-     * The url of the recovery object, used to identify and recover the deleted
-     * certificate.
+     * The url of the recovery object, used to identify and recover the deleted certificate.
      */
     @Generated
     private String recoveryId;
