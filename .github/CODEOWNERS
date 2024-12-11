@@ -851,10 +851,10 @@
 /sdk/spring-experimental/                            @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan
 
 # ServiceLabel:  %Monitor - Spring
 # AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar
