@@ -33,14 +33,14 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     public PagedIterable<SandboxCustomImage> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<SandboxCustomImageInner> inner
             = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new SandboxCustomImageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SandboxCustomImageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SandboxCustomImage> listByCluster(String resourceGroupName, String clusterName,
         Context context) {
         PagedIterable<SandboxCustomImageInner> inner
             = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new SandboxCustomImageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SandboxCustomImageImpl(inner1, this.manager()));
     }
 
     public Response<SandboxCustomImage> getWithResponse(String resourceGroupName, String clusterName,
@@ -97,17 +97,17 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     }
 
     public SandboxCustomImage getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
+        String sandboxCustomImageName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
@@ -116,17 +116,17 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     }
 
     public Response<SandboxCustomImage> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
+        String sandboxCustomImageName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
@@ -135,17 +135,17 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
+        String sandboxCustomImageName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));
@@ -154,17 +154,17 @@ public final class SandboxCustomImagesImpl implements SandboxCustomImages {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String sandboxCustomImageName = Utils.getValueFromIdByName(id, "sandboxCustomImages");
+        String sandboxCustomImageName = ResourceManagerUtils.getValueFromIdByName(id, "sandboxCustomImages");
         if (sandboxCustomImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sandboxCustomImages'.", id)));

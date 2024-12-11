@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the KustoManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the KustoManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { KustoManagementClientImpl.class })
 public final class KustoManagementClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the KustoManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the KustoManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the KustoManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the KustoManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the KustoManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the KustoManagementClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class KustoManagementClientBuilder {
 
     /**
      * Builds an instance of KustoManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of KustoManagementClientImpl.
      */
     public KustoManagementClientImpl buildClient() {

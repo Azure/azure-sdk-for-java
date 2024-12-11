@@ -6,85 +6,82 @@ package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the move resource properties. */
+/**
+ * Defines the move resource properties.
+ */
 @Fluent
-public final class MoveResourceProperties {
+public final class MoveResourceProperties implements JsonSerializable<MoveResourceProperties> {
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets the Source ARM Id of the resource.
      */
-    @JsonProperty(value = "sourceId", required = true)
     private String sourceId;
 
     /*
      * Gets or sets the Target ARM Id of the resource.
      */
-    @JsonProperty(value = "targetId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetId;
 
     /*
      * Gets or sets the existing target ARM Id of the resource.
      */
-    @JsonProperty(value = "existingTargetId")
     private String existingTargetId;
 
     /*
      * Gets or sets the resource settings.
      */
-    @JsonProperty(value = "resourceSettings")
     private ResourceSettings resourceSettings;
 
     /*
      * Gets or sets the source resource settings.
      */
-    @JsonProperty(value = "sourceResourceSettings", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSettings sourceResourceSettings;
 
     /*
      * Defines the move resource status.
      */
-    @JsonProperty(value = "moveStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MoveResourcePropertiesMoveStatus moveStatus;
 
     /*
      * Gets or sets the move resource dependencies.
      */
-    @JsonProperty(value = "dependsOn", access = JsonProperty.Access.WRITE_ONLY)
     private List<MoveResourceDependency> dependsOn;
 
     /*
      * Gets or sets the move resource dependencies overrides.
      */
-    @JsonProperty(value = "dependsOnOverrides")
     private List<MoveResourceDependencyOverride> dependsOnOverrides;
 
     /*
      * Gets a value indicating whether the resolve action is required over the move collection.
      */
-    @JsonProperty(value = "isResolveRequired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isResolveRequired;
 
     /*
      * Defines the move resource errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private MoveResourcePropertiesErrors errors;
 
-    /** Creates an instance of MoveResourceProperties class. */
+    /**
+     * Creates an instance of MoveResourceProperties class.
+     */
     public MoveResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,7 +90,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the sourceId property: Gets or sets the Source ARM Id of the resource.
-     *
+     * 
      * @return the sourceId value.
      */
     public String sourceId() {
@@ -102,7 +99,7 @@ public final class MoveResourceProperties {
 
     /**
      * Set the sourceId property: Gets or sets the Source ARM Id of the resource.
-     *
+     * 
      * @param sourceId the sourceId value to set.
      * @return the MoveResourceProperties object itself.
      */
@@ -113,7 +110,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the targetId property: Gets or sets the Target ARM Id of the resource.
-     *
+     * 
      * @return the targetId value.
      */
     public String targetId() {
@@ -122,7 +119,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the existingTargetId property: Gets or sets the existing target ARM Id of the resource.
-     *
+     * 
      * @return the existingTargetId value.
      */
     public String existingTargetId() {
@@ -131,7 +128,7 @@ public final class MoveResourceProperties {
 
     /**
      * Set the existingTargetId property: Gets or sets the existing target ARM Id of the resource.
-     *
+     * 
      * @param existingTargetId the existingTargetId value to set.
      * @return the MoveResourceProperties object itself.
      */
@@ -142,7 +139,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the resourceSettings property: Gets or sets the resource settings.
-     *
+     * 
      * @return the resourceSettings value.
      */
     public ResourceSettings resourceSettings() {
@@ -151,7 +148,7 @@ public final class MoveResourceProperties {
 
     /**
      * Set the resourceSettings property: Gets or sets the resource settings.
-     *
+     * 
      * @param resourceSettings the resourceSettings value to set.
      * @return the MoveResourceProperties object itself.
      */
@@ -162,7 +159,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the sourceResourceSettings property: Gets or sets the source resource settings.
-     *
+     * 
      * @return the sourceResourceSettings value.
      */
     public ResourceSettings sourceResourceSettings() {
@@ -171,7 +168,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the moveStatus property: Defines the move resource status.
-     *
+     * 
      * @return the moveStatus value.
      */
     public MoveResourcePropertiesMoveStatus moveStatus() {
@@ -180,7 +177,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the dependsOn property: Gets or sets the move resource dependencies.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<MoveResourceDependency> dependsOn() {
@@ -189,7 +186,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the dependsOnOverrides property: Gets or sets the move resource dependencies overrides.
-     *
+     * 
      * @return the dependsOnOverrides value.
      */
     public List<MoveResourceDependencyOverride> dependsOnOverrides() {
@@ -198,7 +195,7 @@ public final class MoveResourceProperties {
 
     /**
      * Set the dependsOnOverrides property: Gets or sets the move resource dependencies overrides.
-     *
+     * 
      * @param dependsOnOverrides the dependsOnOverrides value to set.
      * @return the MoveResourceProperties object itself.
      */
@@ -210,7 +207,7 @@ public final class MoveResourceProperties {
     /**
      * Get the isResolveRequired property: Gets a value indicating whether the resolve action is required over the move
      * collection.
-     *
+     * 
      * @return the isResolveRequired value.
      */
     public Boolean isResolveRequired() {
@@ -219,7 +216,7 @@ public final class MoveResourceProperties {
 
     /**
      * Get the errors property: Defines the move resource errors.
-     *
+     * 
      * @return the errors value.
      */
     public MoveResourcePropertiesErrors errors() {
@@ -228,13 +225,14 @@ public final class MoveResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceId in model MoveResourceProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property sourceId in model MoveResourceProperties"));
         }
         if (resourceSettings() != null) {
             resourceSettings().validate();
@@ -257,4 +255,70 @@ public final class MoveResourceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MoveResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceId", this.sourceId);
+        jsonWriter.writeStringField("existingTargetId", this.existingTargetId);
+        jsonWriter.writeJsonField("resourceSettings", this.resourceSettings);
+        jsonWriter.writeArrayField("dependsOnOverrides", this.dependsOnOverrides,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MoveResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MoveResourceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MoveResourceProperties.
+     */
+    public static MoveResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MoveResourceProperties deserializedMoveResourceProperties = new MoveResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceId".equals(fieldName)) {
+                    deserializedMoveResourceProperties.sourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMoveResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("targetId".equals(fieldName)) {
+                    deserializedMoveResourceProperties.targetId = reader.getString();
+                } else if ("existingTargetId".equals(fieldName)) {
+                    deserializedMoveResourceProperties.existingTargetId = reader.getString();
+                } else if ("resourceSettings".equals(fieldName)) {
+                    deserializedMoveResourceProperties.resourceSettings = ResourceSettings.fromJson(reader);
+                } else if ("sourceResourceSettings".equals(fieldName)) {
+                    deserializedMoveResourceProperties.sourceResourceSettings = ResourceSettings.fromJson(reader);
+                } else if ("moveStatus".equals(fieldName)) {
+                    deserializedMoveResourceProperties.moveStatus = MoveResourcePropertiesMoveStatus.fromJson(reader);
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<MoveResourceDependency> dependsOn
+                        = reader.readArray(reader1 -> MoveResourceDependency.fromJson(reader1));
+                    deserializedMoveResourceProperties.dependsOn = dependsOn;
+                } else if ("dependsOnOverrides".equals(fieldName)) {
+                    List<MoveResourceDependencyOverride> dependsOnOverrides
+                        = reader.readArray(reader1 -> MoveResourceDependencyOverride.fromJson(reader1));
+                    deserializedMoveResourceProperties.dependsOnOverrides = dependsOnOverrides;
+                } else if ("isResolveRequired".equals(fieldName)) {
+                    deserializedMoveResourceProperties.isResolveRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("errors".equals(fieldName)) {
+                    deserializedMoveResourceProperties.errors = MoveResourcePropertiesErrors.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMoveResourceProperties;
+        });
+    }
 }

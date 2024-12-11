@@ -35,17 +35,23 @@ import com.azure.resourcemanager.maps.models.CreatorList;
 import com.azure.resourcemanager.maps.models.CreatorUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CreatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreatorsClient.
+ */
 public final class CreatorsClientImpl implements CreatorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CreatorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMapsManagementClientImpl client;
 
     /**
      * Initializes an instance of CreatorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CreatorsClientImpl(AzureMapsManagementClientImpl client) {
@@ -118,14 +124,14 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Creator instances for an Azure Maps Account along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(String resourceGroupName,
@@ -156,7 +162,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -164,7 +170,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Creator instances for an Azure Maps Account along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CreatorInner>> listByAccountSinglePageAsync(String resourceGroupName, String accountName,
@@ -195,7 +201,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +217,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -228,7 +234,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,7 +249,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -260,7 +266,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -269,7 +275,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response} on successful completion of {@link Mono}.
+     * data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
@@ -309,7 +315,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -319,7 +325,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response} on successful completion of {@link Mono}.
+     * data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName,
@@ -358,7 +364,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -367,7 +373,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data on successful completion of {@link Mono}.
+     * data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreatorInner> createOrUpdateAsync(String resourceGroupName, String accountName, String creatorName,
@@ -379,7 +385,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -389,7 +395,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response}.
+     * data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreatorInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
@@ -401,7 +407,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -410,7 +416,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     * data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreatorInner createOrUpdate(String resourceGroupName, String accountName, String creatorName,
@@ -421,7 +427,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -430,7 +436,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response} on successful completion of {@link Mono}.
+     * data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
@@ -469,7 +475,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -479,7 +485,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response} on successful completion of {@link Mono}.
+     * data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreatorInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
@@ -516,7 +522,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -525,7 +531,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data on successful completion of {@link Mono}.
+     * data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreatorInner> updateAsync(String resourceGroupName, String accountName, String creatorName,
@@ -536,7 +542,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -546,7 +552,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response}.
+     * data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreatorInner> updateWithResponse(String resourceGroupName, String accountName, String creatorName,
@@ -557,7 +563,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -566,7 +572,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     * data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreatorInner update(String resourceGroupName, String accountName, String creatorName,
@@ -577,7 +583,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -616,7 +622,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -655,7 +661,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -671,7 +677,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -689,7 +695,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -704,7 +710,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -743,7 +749,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -782,7 +788,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -799,7 +805,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -817,7 +823,7 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -833,9 +839,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,9 +865,8 @@ public final class CreatorsClientImpl implements CreatorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for Clusters Stop. */
+/**
+ * Samples for Clusters Stop.
+ */
 public final class ClustersStopSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersStop.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersStop.json
      */
     /**
      * Sample code: KustoClustersStop.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersStop(com.azure.resourcemanager.kusto.KustoManager manager) {

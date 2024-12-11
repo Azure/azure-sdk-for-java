@@ -5,60 +5,60 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** option A properties object. */
+/**
+ * option A properties object.
+ */
 @Fluent
 public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer3IpPrefixProperties {
     /*
      * MTU to use for option A peering.
      */
-    @JsonProperty(value = "mtu")
     private Integer mtu;
 
     /*
      * Vlan identifier. Example : 501
      */
-    @JsonProperty(value = "vlanId")
     private Integer vlanId;
 
     /*
      * Fabric ASN number. Example 65001
      */
-    @JsonProperty(value = "fabricASN", access = JsonProperty.Access.WRITE_ONLY)
     private Long fabricAsn;
 
     /*
      * Peer ASN number.Example : 28
      */
-    @JsonProperty(value = "peerASN")
     private Long peerAsn;
 
     /*
      * BFD configuration properties
      */
-    @JsonProperty(value = "bfdConfiguration")
     private BfdConfiguration bfdConfiguration;
 
     /*
      * Ingress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "ingressAclId")
     private String ingressAclId;
 
     /*
      * Egress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "egressAclId")
     private String egressAclId;
 
-    /** Creates an instance of ExternalNetworkPatchPropertiesOptionAProperties class. */
+    /**
+     * Creates an instance of ExternalNetworkPatchPropertiesOptionAProperties class.
+     */
     public ExternalNetworkPatchPropertiesOptionAProperties() {
     }
 
     /**
      * Get the mtu property: MTU to use for option A peering.
-     *
+     * 
      * @return the mtu value.
      */
     public Integer mtu() {
@@ -67,7 +67,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Set the mtu property: MTU to use for option A peering.
-     *
+     * 
      * @param mtu the mtu value to set.
      * @return the ExternalNetworkPatchPropertiesOptionAProperties object itself.
      */
@@ -78,7 +78,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Get the vlanId property: Vlan identifier. Example : 501.
-     *
+     * 
      * @return the vlanId value.
      */
     public Integer vlanId() {
@@ -87,7 +87,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Set the vlanId property: Vlan identifier. Example : 501.
-     *
+     * 
      * @param vlanId the vlanId value to set.
      * @return the ExternalNetworkPatchPropertiesOptionAProperties object itself.
      */
@@ -98,7 +98,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Get the fabricAsn property: Fabric ASN number. Example 65001.
-     *
+     * 
      * @return the fabricAsn value.
      */
     public Long fabricAsn() {
@@ -107,7 +107,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Get the peerAsn property: Peer ASN number.Example : 28.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -116,7 +116,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Set the peerAsn property: Peer ASN number.Example : 28.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the ExternalNetworkPatchPropertiesOptionAProperties object itself.
      */
@@ -127,7 +127,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Get the bfdConfiguration property: BFD configuration properties.
-     *
+     * 
      * @return the bfdConfiguration value.
      */
     public BfdConfiguration bfdConfiguration() {
@@ -136,7 +136,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Set the bfdConfiguration property: BFD configuration properties.
-     *
+     * 
      * @param bfdConfiguration the bfdConfiguration value to set.
      * @return the ExternalNetworkPatchPropertiesOptionAProperties object itself.
      */
@@ -147,7 +147,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the ingressAclId value.
      */
     public String ingressAclId() {
@@ -156,7 +156,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param ingressAclId the ingressAclId value to set.
      * @return the ExternalNetworkPatchPropertiesOptionAProperties object itself.
      */
@@ -167,7 +167,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the egressAclId value.
      */
     public String egressAclId() {
@@ -176,7 +176,7 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param egressAclId the egressAclId value to set.
      * @return the ExternalNetworkPatchPropertiesOptionAProperties object itself.
      */
@@ -185,28 +185,36 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExternalNetworkPatchPropertiesOptionAProperties withPrimaryIpv4Prefix(String primaryIpv4Prefix) {
         super.withPrimaryIpv4Prefix(primaryIpv4Prefix);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExternalNetworkPatchPropertiesOptionAProperties withPrimaryIpv6Prefix(String primaryIpv6Prefix) {
         super.withPrimaryIpv6Prefix(primaryIpv6Prefix);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExternalNetworkPatchPropertiesOptionAProperties withSecondaryIpv4Prefix(String secondaryIpv4Prefix) {
         super.withSecondaryIpv4Prefix(secondaryIpv4Prefix);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExternalNetworkPatchPropertiesOptionAProperties withSecondaryIpv6Prefix(String secondaryIpv6Prefix) {
         super.withSecondaryIpv6Prefix(secondaryIpv6Prefix);
@@ -215,14 +223,88 @@ public final class ExternalNetworkPatchPropertiesOptionAProperties extends Layer
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (bfdConfiguration() != null) {
             bfdConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryIpv4Prefix", primaryIpv4Prefix());
+        jsonWriter.writeStringField("primaryIpv6Prefix", primaryIpv6Prefix());
+        jsonWriter.writeStringField("secondaryIpv4Prefix", secondaryIpv4Prefix());
+        jsonWriter.writeStringField("secondaryIpv6Prefix", secondaryIpv6Prefix());
+        jsonWriter.writeNumberField("mtu", this.mtu);
+        jsonWriter.writeNumberField("vlanId", this.vlanId);
+        jsonWriter.writeNumberField("peerASN", this.peerAsn);
+        jsonWriter.writeJsonField("bfdConfiguration", this.bfdConfiguration);
+        jsonWriter.writeStringField("ingressAclId", this.ingressAclId);
+        jsonWriter.writeStringField("egressAclId", this.egressAclId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalNetworkPatchPropertiesOptionAProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalNetworkPatchPropertiesOptionAProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalNetworkPatchPropertiesOptionAProperties.
+     */
+    public static ExternalNetworkPatchPropertiesOptionAProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalNetworkPatchPropertiesOptionAProperties deserializedExternalNetworkPatchPropertiesOptionAProperties
+                = new ExternalNetworkPatchPropertiesOptionAProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryIpv4Prefix".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties
+                        .withPrimaryIpv4Prefix(reader.getString());
+                } else if ("primaryIpv6Prefix".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties
+                        .withPrimaryIpv6Prefix(reader.getString());
+                } else if ("secondaryIpv4Prefix".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties
+                        .withSecondaryIpv4Prefix(reader.getString());
+                } else if ("secondaryIpv6Prefix".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties
+                        .withSecondaryIpv6Prefix(reader.getString());
+                } else if ("mtu".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.mtu
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.vlanId
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("fabricASN".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.fabricAsn
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("peerASN".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.peerAsn
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("bfdConfiguration".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.bfdConfiguration
+                        = BfdConfiguration.fromJson(reader);
+                } else if ("ingressAclId".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.ingressAclId = reader.getString();
+                } else if ("egressAclId".equals(fieldName)) {
+                    deserializedExternalNetworkPatchPropertiesOptionAProperties.egressAclId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalNetworkPatchPropertiesOptionAProperties;
+        });
     }
 }

@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class CreateDataFlowDebugSessionRequest implements JsonSerializable<CreateDataFlowDebugSessionRequest> {
     /*
-     * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
+     * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if
+     * provided.
      */
     private String computeType;
 

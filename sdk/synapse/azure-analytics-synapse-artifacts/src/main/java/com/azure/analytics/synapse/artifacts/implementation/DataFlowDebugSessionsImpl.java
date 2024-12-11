@@ -12,8 +12,8 @@ import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandRequest;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandResponse;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugPackage;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionInfo;
-import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionResponse;
-import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandResponse;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandHeaders;
 import com.azure.analytics.synapse.artifacts.models.DeleteDataFlowDebugSessionRequest;
 import com.azure.analytics.synapse.artifacts.models.QueryDataFlowDebugSessionsResponse;
 import com.azure.core.annotation.BodyParam;
@@ -34,6 +34,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -74,7 +75,16 @@ public final class DataFlowDebugSessionsImpl {
         @Post("/createDataFlowDebugSession")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<DataFlowDebugSessionsCreateDataFlowDebugSessionResponse> createDataFlowDebugSession(
+        Mono<ResponseBase<DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders, CreateDataFlowDebugSessionResponse>>
+            createDataFlowDebugSession(@HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CreateDataFlowDebugSessionRequest request,
+                @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/createDataFlowDebugSession")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<CreateDataFlowDebugSessionResponse>> createDataFlowDebugSessionNoCustomHeaders(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateDataFlowDebugSessionRequest request,
             @HeaderParam("Accept") String accept, Context context);
@@ -104,8 +114,16 @@ public final class DataFlowDebugSessionsImpl {
         @Post("/executeDataFlowDebugCommand")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<DataFlowDebugSessionsExecuteCommandResponse> executeCommand(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<ResponseBase<DataFlowDebugSessionsExecuteCommandHeaders, DataFlowDebugCommandResponse>> executeCommand(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataFlowDebugCommandRequest request, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/executeDataFlowDebugCommand")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<DataFlowDebugCommandResponse>> executeCommandNoCustomHeaders(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DataFlowDebugCommandRequest request, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -124,15 +142,14 @@ public final class DataFlowDebugSessionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session on successful completion of {@link Mono}.
+     * @return response body structure for creating data flow debug session along with {@link ResponseBase} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowDebugSessionsCreateDataFlowDebugSessionResponse>
+    public
+        Mono<ResponseBase<DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders, CreateDataFlowDebugSessionResponse>>
         createDataFlowDebugSessionWithResponseAsync(CreateDataFlowDebugSessionRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createDataFlowDebugSession(this.client.getEndpoint(), apiVersion,
-            request, accept, context));
+        return FluxUtil.withContext(context -> createDataFlowDebugSessionWithResponseAsync(request, context));
     }
 
     /**
@@ -143,10 +160,12 @@ public final class DataFlowDebugSessionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session on successful completion of {@link Mono}.
+     * @return response body structure for creating data flow debug session along with {@link ResponseBase} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowDebugSessionsCreateDataFlowDebugSessionResponse>
+    public
+        Mono<ResponseBase<DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders, CreateDataFlowDebugSessionResponse>>
         createDataFlowDebugSessionWithResponseAsync(CreateDataFlowDebugSessionRequest request, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
@@ -193,10 +212,10 @@ public final class DataFlowDebugSessionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
+     * @return response body structure for creating data flow debug session along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse
+    public ResponseBase<DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders, CreateDataFlowDebugSessionResponse>
         createDataFlowDebugSessionWithResponse(CreateDataFlowDebugSessionRequest request, Context context) {
         return createDataFlowDebugSessionWithResponseAsync(request, context).block();
     }
@@ -213,6 +232,60 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
         return createDataFlowDebugSessionWithResponse(request, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a data flow debug session.
+     * 
+     * @param request Data flow debug session definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateDataFlowDebugSessionResponse>>
+        createDataFlowDebugSessionNoCustomHeadersWithResponseAsync(CreateDataFlowDebugSessionRequest request) {
+        return FluxUtil
+            .withContext(context -> createDataFlowDebugSessionNoCustomHeadersWithResponseAsync(request, context));
+    }
+
+    /**
+     * Creates a data flow debug session.
+     * 
+     * @param request Data flow debug session definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateDataFlowDebugSessionResponse>>
+        createDataFlowDebugSessionNoCustomHeadersWithResponseAsync(CreateDataFlowDebugSessionRequest request,
+            Context context) {
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
+        return service.createDataFlowDebugSessionNoCustomHeaders(this.client.getEndpoint(), apiVersion, request, accept,
+            context);
+    }
+
+    /**
+     * Creates a data flow debug session.
+     * 
+     * @param request Data flow debug session definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionNoCustomHeadersWithResponse(
+        CreateDataFlowDebugSessionRequest request, Context context) {
+        return createDataFlowDebugSessionNoCustomHeadersWithResponseAsync(request, context).block();
     }
 
     /**
@@ -347,10 +420,7 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddDataFlowToDebugSessionResponse>>
         addDataFlowWithResponseAsync(DataFlowDebugPackage request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.addDataFlow(this.client.getEndpoint(), apiVersion, request, accept, context));
+        return FluxUtil.withContext(context -> addDataFlowWithResponseAsync(request, context));
     }
 
     /**
@@ -442,10 +512,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowDebugSessionWithResponseAsync(DeleteDataFlowDebugSessionRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteDataFlowDebugSession(this.client.getEndpoint(), apiVersion,
-            request, accept, context));
+        return FluxUtil.withContext(context -> deleteDataFlowDebugSessionWithResponseAsync(request, context));
     }
 
     /**
@@ -531,16 +598,13 @@ public final class DataFlowDebugSessionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview on
-     * successful completion of {@link Mono}.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowDebugSessionsExecuteCommandResponse>
+    public Mono<ResponseBase<DataFlowDebugSessionsExecuteCommandHeaders, DataFlowDebugCommandResponse>>
         executeCommandWithResponseAsync(DataFlowDebugCommandRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.executeCommand(this.client.getEndpoint(), apiVersion, request, accept, context));
+        return FluxUtil.withContext(context -> executeCommandWithResponseAsync(request, context));
     }
 
     /**
@@ -551,11 +615,11 @@ public final class DataFlowDebugSessionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview on
-     * successful completion of {@link Mono}.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowDebugSessionsExecuteCommandResponse>
+    public Mono<ResponseBase<DataFlowDebugSessionsExecuteCommandHeaders, DataFlowDebugCommandResponse>>
         executeCommandWithResponseAsync(DataFlowDebugCommandRequest request, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
@@ -602,11 +666,12 @@ public final class DataFlowDebugSessionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugSessionsExecuteCommandResponse executeCommandWithResponse(DataFlowDebugCommandRequest request,
-        Context context) {
+    public ResponseBase<DataFlowDebugSessionsExecuteCommandHeaders, DataFlowDebugCommandResponse>
+        executeCommandWithResponse(DataFlowDebugCommandRequest request, Context context) {
         return executeCommandWithResponseAsync(request, context).block();
     }
 
@@ -625,11 +690,61 @@ public final class DataFlowDebugSessionsImpl {
     }
 
     /**
+     * Execute a data flow debug command.
+     * 
+     * @param request Data flow debug command definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataFlowDebugCommandResponse>>
+        executeCommandNoCustomHeadersWithResponseAsync(DataFlowDebugCommandRequest request) {
+        return FluxUtil.withContext(context -> executeCommandNoCustomHeadersWithResponseAsync(request, context));
+    }
+
+    /**
+     * Execute a data flow debug command.
+     * 
+     * @param request Data flow debug command definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataFlowDebugCommandResponse>>
+        executeCommandNoCustomHeadersWithResponseAsync(DataFlowDebugCommandRequest request, Context context) {
+        final String apiVersion = "2020-12-01";
+        final String accept = "application/json";
+        return service.executeCommandNoCustomHeaders(this.client.getEndpoint(), apiVersion, request, accept, context);
+    }
+
+    /**
+     * Execute a data flow debug command.
+     * 
+     * @param request Data flow debug command definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowDebugCommandResponse>
+        executeCommandNoCustomHeadersWithResponse(DataFlowDebugCommandRequest request, Context context) {
+        return executeCommandNoCustomHeadersWithResponseAsync(request, context).block();
+    }
+
+    /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -650,9 +765,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -672,9 +785,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -689,9 +800,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for ClusterPrincipalAssignments List. */
+/**
+ * Samples for ClusterPrincipalAssignments List.
+ */
 public final class ClusterPrincipalAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterPrincipalAssignmentsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoClusterPrincipalAssignmentsList.json
      */
     /**
      * Sample code: KustoPrincipalAssignmentsList.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoPrincipalAssignmentsList(com.azure.resourcemanager.kusto.KustoManager manager) {

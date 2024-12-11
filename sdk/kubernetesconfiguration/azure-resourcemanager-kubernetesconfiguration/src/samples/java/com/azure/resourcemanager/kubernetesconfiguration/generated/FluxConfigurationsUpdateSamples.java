@@ -10,43 +10,31 @@ import com.azure.resourcemanager.kubernetesconfiguration.models.KustomizationPat
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for FluxConfigurations Update. */
+/**
+ * Samples for FluxConfigurations Update.
+ */
 public final class FluxConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/PatchFluxConfiguration.json
+     * x-ms-original-file:
+     * specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/
+     * examples/PatchFluxConfiguration.json
      */
     /**
      * Sample code: Patch Flux Configuration.
-     *
+     * 
      * @param manager Entry point to SourceControlConfigurationManager.
      */
     public static void patchFluxConfiguration(
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager manager) {
-        manager
-            .fluxConfigurations()
-            .update(
-                "rg1",
-                "Microsoft.Kubernetes",
-                "connectedClusters",
-                "clusterName1",
-                "srs-fluxconfig",
-                new FluxConfigurationPatch()
-                    .withSuspend(true)
-                    .withGitRepository(
-                        new GitRepositoryPatchDefinition()
-                            .withUrl("https://github.com/jonathan-innis/flux2-kustomize-helm-example.git"))
-                    .withKustomizations(
-                        mapOf(
-                            "srs-kustomization1",
-                            null,
-                            "srs-kustomization2",
-                            new KustomizationPatchDefinition()
-                                .withPath("./test/alt-path")
-                                .withSyncIntervalInSeconds(300L),
-                            "srs-kustomization3",
-                            new KustomizationPatchDefinition()
-                                .withPath("./test/another-path")
-                                .withSyncIntervalInSeconds(300L))),
+        manager.fluxConfigurations()
+            .update("rg1", "Microsoft.Kubernetes", "connectedClusters", "clusterName1", "srs-fluxconfig",
+                new FluxConfigurationPatch().withSuspend(true)
+                    .withGitRepository(new GitRepositoryPatchDefinition()
+                        .withUrl("https://github.com/jonathan-innis/flux2-kustomize-helm-example.git"))
+                    .withKustomizations(mapOf("srs-kustomization1", null, "srs-kustomization2",
+                        new KustomizationPatchDefinition().withPath("./test/alt-path").withSyncIntervalInSeconds(300L),
+                        "srs-kustomization3", new KustomizationPatchDefinition().withPath("./test/another-path")
+                            .withSyncIntervalInSeconds(300L))),
                 com.azure.core.util.Context.NONE);
     }
 

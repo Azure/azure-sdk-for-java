@@ -4,22 +4,56 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
-/** Samples for Monitors Create. */
+import com.azure.resourcemanager.datadog.models.DatadogOrganizationProperties;
+import com.azure.resourcemanager.datadog.models.MonitorProperties;
+import com.azure.resourcemanager.datadog.models.MonitoringStatus;
+import com.azure.resourcemanager.datadog.models.ResourceSku;
+import com.azure.resourcemanager.datadog.models.UserInfo;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Monitors Create.
+ */
 public final class MonitorsCreateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Create.json
+     * x-ms-original-file:
+     * specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/Monitors_Create.json
      */
     /**
      * Sample code: Monitors_Create.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
     public static void monitorsCreate(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
-        manager
-            .monitors()
+        manager.monitors()
             .define("myMonitor")
-            .withRegion((String) null)
+            .withRegion("West US")
             .withExistingResourceGroup("myResourceGroup")
+            .withTags(mapOf("Environment", "Dev"))
+            .withSku(new ResourceSku().withName("free_Monthly"))
+            .withProperties(new MonitorProperties().withMonitoringStatus(MonitoringStatus.ENABLED)
+                .withDatadogOrganizationProperties(new DatadogOrganizationProperties().withName("myOrg")
+                    .withId("myOrg123")
+                    .withLinkingAuthCode("fakeTokenPlaceholder")
+                    .withLinkingClientId("00000000-0000-0000-0000-000000000000")
+                    .withEnterpriseAppId("00000000-0000-0000-0000-000000000000")
+                    .withCspm(false))
+                .withUserInfo(new UserInfo().withName("Alice")
+                    .withEmailAddress("alice@microsoft.com")
+                    .withPhoneNumber("123-456-7890")))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

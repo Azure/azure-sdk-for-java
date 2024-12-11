@@ -14,28 +14,29 @@ public final class NetworkDevicePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDevicePatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"hostName\":\"awkikcdgfh\",\"serialNumber\":\"sd\",\"annotation\":\"ey\"},\"tags\":{\"gxsur\":\"dedecfiwh\",\"bgullc\":\"jqrshz\"}}")
+            "{\"properties\":{\"hostName\":\"zwzlp\",\"serialNumber\":\"tzuykykipfsdye\",\"annotation\":\"noc\"},\"tags\":{\"qejg\":\"zacfpztgazw\",\"gkqzkcyzmffngdyf\":\"aokctgkp\",\"qvhoej\":\"ixrhl\"}}")
             .toObject(NetworkDevicePatchParameters.class);
-        Assertions.assertEquals("dedecfiwh", model.tags().get("gxsur"));
-        Assertions.assertEquals("awkikcdgfh", model.hostname());
-        Assertions.assertEquals("sd", model.serialNumber());
-        Assertions.assertEquals("ey", model.annotation());
+        Assertions.assertEquals("zacfpztgazw", model.tags().get("qejg"));
+        Assertions.assertEquals("zwzlp", model.hostname());
+        Assertions.assertEquals("tzuykykipfsdye", model.serialNumber());
+        Assertions.assertEquals("noc", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDevicePatchParameters model
-            = new NetworkDevicePatchParameters().withTags(mapOf("gxsur", "dedecfiwh", "bgullc", "jqrshz"))
-                .withHostname("awkikcdgfh")
-                .withSerialNumber("sd")
-                .withAnnotation("ey");
+        NetworkDevicePatchParameters model = new NetworkDevicePatchParameters()
+            .withTags(mapOf("qejg", "zacfpztgazw", "gkqzkcyzmffngdyf", "aokctgkp", "qvhoej", "ixrhl"))
+            .withHostname("zwzlp")
+            .withSerialNumber("tzuykykipfsdye")
+            .withAnnotation("noc");
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchParameters.class);
-        Assertions.assertEquals("dedecfiwh", model.tags().get("gxsur"));
-        Assertions.assertEquals("awkikcdgfh", model.hostname());
-        Assertions.assertEquals("sd", model.serialNumber());
-        Assertions.assertEquals("ey", model.annotation());
+        Assertions.assertEquals("zacfpztgazw", model.tags().get("qejg"));
+        Assertions.assertEquals("zwzlp", model.hostname());
+        Assertions.assertEquals("tzuykykipfsdye", model.serialNumber());
+        Assertions.assertEquals("noc", model.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

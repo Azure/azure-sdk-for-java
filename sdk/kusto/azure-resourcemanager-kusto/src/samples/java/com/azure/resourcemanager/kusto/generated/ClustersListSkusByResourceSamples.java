@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for Clusters ListSkusByResource. */
+/**
+ * Samples for Clusters ListSkusByResource.
+ */
 public final class ClustersListSkusByResourceSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListResourceSkus.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * KustoClustersListResourceSkus.json
      */
     /**
      * Sample code: KustoClustersListResourceSkus.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersListResourceSkus(com.azure.resourcemanager.kusto.KustoManager manager) {

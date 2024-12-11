@@ -4,10 +4,10 @@
 package io.clientcore.core.implementation;
 
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;

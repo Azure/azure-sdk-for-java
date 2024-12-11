@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -29,23 +30,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowTasksOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowTasksOperations.
+ */
 public final class WorkflowTasksOperationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowTasksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of WorkflowTasksOperationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowTasksOperationsImpl(PurviewWorkflowClientImpl client) {
         this.service
             = RestProxy.create(WorkflowTasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -96,11 +112,12 @@ public final class WorkflowTasksOperationsImpl {
 
     /**
      * Get a workflow task.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -130,8 +147,9 @@ public final class WorkflowTasksOperationsImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -149,11 +167,12 @@ public final class WorkflowTasksOperationsImpl {
 
     /**
      * Get a workflow task.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -183,8 +202,9 @@ public final class WorkflowTasksOperationsImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -201,10 +221,10 @@ public final class WorkflowTasksOperationsImpl {
 
     /**
      * Reassign a workflow task.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     reassignments (Optional): [
      *          (Optional){
@@ -213,8 +233,9 @@ public final class WorkflowTasksOperationsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param reassignCommand The request body of reassigning a workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -234,10 +255,10 @@ public final class WorkflowTasksOperationsImpl {
 
     /**
      * Reassign a workflow task.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     reassignments (Optional): [
      *          (Optional){
@@ -246,8 +267,9 @@ public final class WorkflowTasksOperationsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param reassignCommand The request body of reassigning a workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

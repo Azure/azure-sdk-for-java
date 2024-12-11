@@ -5,13 +5,13 @@ package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.IterableOfByteBuffersInputStream;
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonToken;
-import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.models.MockFile;
 import io.clientcore.core.models.MockPath;
 import io.clientcore.core.models.Person;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Range of route errors. */
+/**
+ * Range of route errors.
+ */
 @Fluent
-public final class RouteErrorRange {
+public final class RouteErrorRange implements JsonSerializable<RouteErrorRange> {
     /*
      * Start where the route error happened
      */
-    @JsonProperty(value = "start")
     private RouteErrorPosition start;
 
     /*
      * End where the route error happened
      */
-    @JsonProperty(value = "end")
     private RouteErrorPosition end;
 
-    /** Creates an instance of RouteErrorRange class. */
+    /**
+     * Creates an instance of RouteErrorRange class.
+     */
     public RouteErrorRange() {
     }
 
     /**
      * Get the start property: Start where the route error happened.
-     *
+     * 
      * @return the start value.
      */
     public RouteErrorPosition start() {
@@ -37,7 +43,7 @@ public final class RouteErrorRange {
 
     /**
      * Set the start property: Start where the route error happened.
-     *
+     * 
      * @param start the start value to set.
      * @return the RouteErrorRange object itself.
      */
@@ -48,7 +54,7 @@ public final class RouteErrorRange {
 
     /**
      * Get the end property: End where the route error happened.
-     *
+     * 
      * @return the end value.
      */
     public RouteErrorPosition end() {
@@ -57,7 +63,7 @@ public final class RouteErrorRange {
 
     /**
      * Set the end property: End where the route error happened.
-     *
+     * 
      * @param end the end value to set.
      * @return the RouteErrorRange object itself.
      */
@@ -68,7 +74,7 @@ public final class RouteErrorRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class RouteErrorRange {
         if (end() != null) {
             end().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("start", this.start);
+        jsonWriter.writeJsonField("end", this.end);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteErrorRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteErrorRange if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteErrorRange.
+     */
+    public static RouteErrorRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteErrorRange deserializedRouteErrorRange = new RouteErrorRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("start".equals(fieldName)) {
+                    deserializedRouteErrorRange.start = RouteErrorPosition.fromJson(reader);
+                } else if ("end".equals(fieldName)) {
+                    deserializedRouteErrorRange.end = RouteErrorPosition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteErrorRange;
+        });
     }
 }
