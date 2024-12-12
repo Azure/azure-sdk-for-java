@@ -3,13 +3,11 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
-import okio.BufferedSource;
-import okio.Okio;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -21,10 +19,8 @@ public class AzureMetadataServiceTest {
     public void testParseJsonResponseLinux() throws IOException {
         Path path
             = new File(getClass().getClassLoader().getResource("metadata_instance_linux.json").getPath()).toPath();
-        InputStream in = Files.newInputStream(path);
-        BufferedSource source = Okio.buffer(Okio.source(in));
-        String result = source.readUtf8();
-        source.close();
+        byte[] fileContent = Files.readAllBytes(path);
+        String result = new String(fileContent, StandardCharsets.UTF_8);
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
         AzureMetadataService azureMetadataService
@@ -43,10 +39,8 @@ public class AzureMetadataServiceTest {
     public void testParseJsonResponseWindows() throws IOException {
         Path path
             = new File(getClass().getClassLoader().getResource("metadata_instance_windows.json").getPath()).toPath();
-        InputStream in = Files.newInputStream(path);
-        BufferedSource source = Okio.buffer(Okio.source(in));
-        String result = source.readUtf8();
-        source.close();
+        byte[] fileContent = Files.readAllBytes(path);
+        String result = new String(fileContent, StandardCharsets.UTF_8);;
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
         AzureMetadataService azureMetadataService
