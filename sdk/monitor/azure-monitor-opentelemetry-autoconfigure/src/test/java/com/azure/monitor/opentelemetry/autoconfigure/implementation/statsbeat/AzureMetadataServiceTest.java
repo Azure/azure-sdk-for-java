@@ -40,7 +40,7 @@ public class AzureMetadataServiceTest {
         Path path
             = new File(getClass().getClassLoader().getResource("metadata_instance_windows.json").getPath()).toPath();
         byte[] fileContent = Files.readAllBytes(path);
-        String result = new String(fileContent, StandardCharsets.UTF_8);;
+        String result = new String(fileContent, StandardCharsets.UTF_8);
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
         AzureMetadataService azureMetadataService
