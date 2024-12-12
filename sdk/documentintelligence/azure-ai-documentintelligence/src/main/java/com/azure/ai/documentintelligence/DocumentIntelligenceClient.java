@@ -56,7 +56,7 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -82,7 +82,7 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -128,7 +128,7 @@ public final class DocumentIntelligenceClient {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -203,7 +203,7 @@ public final class DocumentIntelligenceClient {
     /**
      * Gets the result of batch document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -272,7 +272,7 @@ public final class DocumentIntelligenceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -509,7 +509,7 @@ public final class DocumentIntelligenceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -558,7 +558,7 @@ public final class DocumentIntelligenceClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
