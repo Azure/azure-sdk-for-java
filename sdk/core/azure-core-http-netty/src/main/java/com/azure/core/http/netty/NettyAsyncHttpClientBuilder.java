@@ -15,9 +15,14 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -171,6 +176,7 @@ public class NettyAsyncHttpClientBuilder {
      * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
+    @SuppressWarnings("deprecation")
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
 
@@ -234,6 +240,28 @@ public class NettyAsyncHttpClientBuilder {
         if (eventLoopGroup != null) {
             nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
         }
+
+        // Beginning some point between Reactor Netty 1.0.48 and 1.2.1, Reactor Netty began to add 'Content-Length: 0'
+        // on GET and HEAD requests with empty bodies. We don't want that, so add a modifier to the Reactor Netty
+        // HttpClient to remove the header if the HTTP method is GET or HEAD and the body is empty.
+        // Logic copied from comment provided by one of the Reactor Netty maintainers:
+        // https://github.com/reactor/reactor-netty/issues/2900#issuecomment-1722136659
+        nettyHttpClient = nettyHttpClient.doOnChannelInit((obs, ch, add) -> ch.pipeline()
+            .addAfter(NettyPipeline.HttpCodec, "remove-content-length-header", new ChannelOutboundHandlerAdapter() {
+                @Override
+                public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+                    if (msg instanceof io.netty.handler.codec.http.HttpRequest) {
+                        io.netty.handler.codec.http.HttpRequest nettyRequest
+                            = (io.netty.handler.codec.http.HttpRequest) msg;
+                        if ((nettyRequest.method() == HttpMethod.GET || nettyRequest.method() == HttpMethod.HEAD)
+                            && "0".equals(nettyRequest.headers().get(HttpHeaderNames.CONTENT_LENGTH))) {
+                            // Remove the content-length header if it is 0 and the method is GET or HEAD.
+                            nettyRequest.headers().remove(HttpHeaderNames.CONTENT_LENGTH);
+                        }
+                    }
+                    ctx.write(msg, promise);
+                }
+            }));
 
         // Proxy configurations are present, set up a proxy in Netty.
         if (buildProxyOptions != null) {
