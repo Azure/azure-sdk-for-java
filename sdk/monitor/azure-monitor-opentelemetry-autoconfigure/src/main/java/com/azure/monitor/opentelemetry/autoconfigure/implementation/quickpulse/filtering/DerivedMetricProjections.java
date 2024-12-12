@@ -61,7 +61,8 @@ public class DerivedMetricProjections {
         } else if (KnownRequestColumns.DURATION.equals(derivedMetricInfo.getProjection())) {
             long duration = columns.getFieldValue(KnownRequestColumns.DURATION, Long.class);
             // in case duration from telemetrycolumns doesn't parse correctly.
-            incrementBy = duration != -1 ? (double) duration : Double.NaN;
+            // also quickpulse expects duration derived metrics to be reported in ms.
+            incrementBy = duration != -1 ? (double) duration / 1000.0 : Double.NaN;
         } else if (derivedMetricInfo.getProjection().startsWith(Filter.CUSTOM_DIM_FIELDNAME_PREFIX)) {
             String customDimKey
                 = derivedMetricInfo.getProjection().substring(Filter.CUSTOM_DIM_FIELDNAME_PREFIX.length());
