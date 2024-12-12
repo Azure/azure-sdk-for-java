@@ -33,13 +33,13 @@ public class CosmosExceptionUtils {
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable,
                                                ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
+        CosmosAccessException cosmosAccessException;
         if (ObjectUtils.isEmpty(message)) {
             message = "Failed to access cosmos db database";
         }
         //  Unwrap the exception in case if it is a reactive exception
         final Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
         if (unwrappedThrowable instanceof CosmosException cosmosException) {
-            CosmosAccessException cosmosAccessException;
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
 
             switch (cosmosException.getStatusCode()) {
@@ -73,10 +73,11 @@ public class CosmosExceptionUtils {
                 case Constants.CosmosExceptionStatusCodes.UNAUTHORIZED -> cosmosAccessException = new CosmosUnauthorizedException(message, cosmosException);
                 default -> cosmosAccessException = new CosmosAccessException(message, cosmosException);
             }
-
-            throw cosmosAccessException;
+        } else {
+            cosmosAccessException = new CosmosAccessException(message, unwrappedThrowable);
         }
-        throw new CosmosAccessException(message, unwrappedThrowable);
+
+        throw cosmosAccessException;
     }
 
     /**
