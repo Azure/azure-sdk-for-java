@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ResponseConstructorsCache {
     private static final String THREE_PARAM_ERROR = "Failed to deserialize 3-parameter response.";
     private static final String FOUR_PARAM_ERROR = "Failed to deserialize 4-parameter response.";
+    private static final String FIVE_PARAM_ERROR = "Failed to deserialize 5-parameter response.";
     private static final String INVALID_PARAM_COUNT = "Response constructor with expected parameters not found.";
 
     private static final Map<Class<?>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
@@ -114,6 +115,10 @@ public final class ResponseConstructorsCache {
             case 4:
                 return constructResponse(reflectiveInvoker, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject);
+
+            case 5:
+                return constructResponse(reflectiveInvoker, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
+                    responseHeaders, bodyAsObject, response.getHeaders());
 
             default:
                 throw LOGGER.logThrowableAsError(new IllegalStateException(INVALID_PARAM_COUNT));

@@ -3,7 +3,7 @@
 
 package com.azure.core.v2.http.policy;
 
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.http.models.DateTimeRfc1123;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;

@@ -5,7 +5,7 @@ package com.azure.core.v2.annotation;
 
 import com.azure.core.v2.http.rest.Page;
 import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.http.models.DateTimeRfc1123;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

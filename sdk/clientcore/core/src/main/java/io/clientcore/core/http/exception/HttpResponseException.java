@@ -25,6 +25,20 @@ public class HttpResponseException extends RuntimeException {
      */
     private final HttpExceptionType type;
 
+    public HttpResponseException(final String message, final Response<?> response) {
+        super(message);
+        this.response = response;
+        this.type = null;
+        this.value = null;
+    }
+
+    public HttpResponseException(final String message, final Response<?> response, final Object value) {
+        super(message);
+        this.response = response;
+        this.type = null;
+        this.value = value;
+    }
+
     /**
      * Initializes a new instance of the HttpResponseException class.
      *
