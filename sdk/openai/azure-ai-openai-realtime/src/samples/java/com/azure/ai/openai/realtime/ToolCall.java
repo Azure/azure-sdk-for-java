@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.models.RealtimeResponseMessageItem;
@@ -71,7 +73,7 @@ public class ToolCall {
         // We send our prompt
         FileUtils.sendAudioFileAsync(client,
             new AudioFile(FileUtils.openResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")))
-        .block();
+            .block();
 
         disposables.add(
             // We add a subscriber to the tool call request
@@ -153,7 +155,7 @@ public class ToolCall {
                         fakeWeatherToolCallMethod(arguments.location, arguments.unit))).block();
         client.sendMessage(
             new ResponseCreateEvent(new RealtimeClientEventResponseCreateResponse()))
-        .block();
+            .block();
     }
 
     /**
@@ -235,16 +237,16 @@ public class ToolCall {
     /**
      * Represents the string field type.
      */
-    private static final class StringField implements  JsonSerializable<StringField>{
+    private static final class StringField implements JsonSerializable<StringField> {
         String type = "string";
         String description;
         List<String> possibleValues;
 
-        public StringField(String description) {
+        StringField(String description) {
             this.description = description;
         }
 
-        public StringField(List<String> possibleValues) {
+        StringField(List<String> possibleValues) {
             this.possibleValues = possibleValues;
         }
 
