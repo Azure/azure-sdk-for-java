@@ -11,7 +11,7 @@ import com.azure.storage.file.share.implementation.accesshelpers.FilePosixProper
  * NFS properties.
  * Note that these properties only apply to files or directories in premium NFS file accounts.
  */
-public class FilePosixProperties {
+public final class FilePosixProperties {
 
     private String fileMode;
     private String owner;
