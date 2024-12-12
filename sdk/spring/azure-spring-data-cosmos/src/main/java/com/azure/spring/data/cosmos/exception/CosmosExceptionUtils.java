@@ -61,8 +61,9 @@ public class CosmosExceptionUtils {
                 case Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT -> {
                     if (((CosmosException) unwrappedThrowable).getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
                         cosmosAccessException = new CosmosOperationCancelledException(message, cosmosException);
+                    } else {
+                        cosmosAccessException = new CosmosRequestTimeoutException(message, cosmosException);
                     }
-                    cosmosAccessException = new CosmosRequestTimeoutException(message, cosmosException);
                 }
                 case Constants.CosmosExceptionStatusCodes.PRECONDITION_FAILED -> cosmosAccessException = new CosmosPreconditionFailedException(message, cosmosException);
                 case Constants.CosmosExceptionStatusCodes.REQUEST_ENTITY_TOO_LARGE -> cosmosAccessException = new CosmosRequestEntityTooLargeException(message, cosmosException);
