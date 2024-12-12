@@ -24,9 +24,21 @@ public final class SecretAttributes extends Attributes {
     private Integer recoverableDays;
 
     /*
-     * Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the secret, at the end of the retention interval.
+     * Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains
+     * 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the
+     * secret, at the end of the retention interval.
      */
     private DeletionRecoveryLevel recoveryLevel;
+
+    /*
+     * Last updated time in UTC.
+     */
+    private Long updated;
+
+    /*
+     * Creation time in UTC.
+     */
+    private Long created;
 
     /**
      * Creates an instance of SecretAttributes class.
@@ -53,6 +65,32 @@ public final class SecretAttributes extends Attributes {
      */
     public DeletionRecoveryLevel getRecoveryLevel() {
         return this.recoveryLevel;
+    }
+
+    /**
+     * Get the updated property: Last updated time in UTC.
+     * 
+     * @return the updated value.
+     */
+    @Override
+    public OffsetDateTime getUpdated() {
+        if (this.updated == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.updated), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the created property: Creation time in UTC.
+     * 
+     * @return the created value.
+     */
+    @Override
+    public OffsetDateTime getCreated() {
+        if (this.created == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.created), ZoneOffset.UTC);
     }
 
     /**
@@ -128,9 +166,9 @@ public final class SecretAttributes extends Attributes {
                             .setExpires(OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresHolder), ZoneOffset.UTC));
                     }
                 } else if ("created".equals(fieldName)) {
-                    deserializedSecretAttributes.setCreated(reader.getNullable(JsonReader::getLong));
+                    deserializedSecretAttributes.created = reader.getNullable(JsonReader::getLong);
                 } else if ("updated".equals(fieldName)) {
-                    deserializedSecretAttributes.setUpdated(reader.getNullable(JsonReader::getLong));
+                    deserializedSecretAttributes.updated = reader.getNullable(JsonReader::getLong);
                 } else if ("recoverableDays".equals(fieldName)) {
                     deserializedSecretAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
                 } else if ("recoveryLevel".equals(fieldName)) {

@@ -6,68 +6,49 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.DestinationType;
 import com.azure.resourcemanager.managednetworkfabric.models.Encapsulation;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTap;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkTapsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"networkPacketBrokerId\":\"zgwywyxbwuam\",\"sourceTapRuleId\":\"opqqiyjrehe\",\"destinations\":[{\"name\":\"engmxpjkuqbngrom\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"dzyyal\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"qfwuplfjkbaxv\",\"seimuipggt\"]},\"destinationTapRuleId\":\"xbfhb\"},{\"name\":\"ldziph\",\"destinationType\":\"Direct\",\"destinationId\":\"fz\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"amvritjjhqv\",\"pqgncgw\"]},\"destinationTapRuleId\":\"btkafcnfit\"},{\"name\":\"ck\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"yjdvyxxbawjgyn\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"ridqlynxbdisje\",\"vgcfhchgjo\"]},\"destinationTapRuleId\":\"hdibzvpdjy\"}],\"pollingType\":\"Push\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"nqonjbbhwsf\"},\"location\":\"zykz\",\"tags\":{\"pjjnblbkakni\":\"dslpbyejsg\",\"irttqils\":\"wbddnddctkjcqhx\",\"leiyemjips\":\"abqtjchxsfwe\",\"m\":\"ekdqqwcspfhrndq\"},\"id\":\"oslqgsdqnqqzq\",\"name\":\"vgno\",\"type\":\"tkgoyn\"}";
+            = "{\"properties\":{\"networkPacketBrokerId\":\"elsrymzvtzyf\",\"sourceTapRuleId\":\"bayhas\",\"destinations\":[{\"name\":\"lk\",\"destinationType\":\"Direct\",\"destinationId\":\"kqyezyzxkr\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"fuxystltkq\",\"ikoiiqajfwzubf\",\"oq\"]},\"destinationTapRuleId\":\"bueiydoqbruxl\"},{\"name\":\"txhednkzjt\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"pzrtseixpk\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"cmkwcyeljni\",\"dgzxbwn\",\"yihct\"]},\"destinationTapRuleId\":\"kmzozbk\"}],\"pollingType\":\"Push\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Enabled\",\"annotation\":\"lm\"},\"location\":\"fyfyftkvzbdljyk\",\"tags\":{\"majjzplgtwfkflcv\":\"agfyi\",\"fqynmldhgzzohtag\":\"zkbebuafbddm\",\"fxzobovsvhbtdgxg\":\"yuhdqhqgrksypoo\"},\"id\":\"lmdeoub\",\"name\":\"fxiswemncjhmvvze\",\"type\":\"icmvbsjt\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkTap response = manager.networkTaps()
-            .getByResourceGroupWithResponse("tvnlbkizebbrwlp", "qmisoiqge", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dvbxqxo", "ix", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zykz", response.location());
-        Assertions.assertEquals("dslpbyejsg", response.tags().get("pjjnblbkakni"));
-        Assertions.assertEquals("zgwywyxbwuam", response.networkPacketBrokerId());
-        Assertions.assertEquals("engmxpjkuqbngrom", response.destinations().get(0).name());
-        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, response.destinations().get(0).destinationType());
-        Assertions.assertEquals("dzyyal", response.destinations().get(0).destinationId());
-        Assertions.assertEquals(Encapsulation.NONE,
+        Assertions.assertEquals("fyfyftkvzbdljyk", response.location());
+        Assertions.assertEquals("agfyi", response.tags().get("majjzplgtwfkflcv"));
+        Assertions.assertEquals("elsrymzvtzyf", response.networkPacketBrokerId());
+        Assertions.assertEquals("lk", response.destinations().get(0).name());
+        Assertions.assertEquals(DestinationType.DIRECT, response.destinations().get(0).destinationType());
+        Assertions.assertEquals("kqyezyzxkr", response.destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.GRE,
             response.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("qfwuplfjkbaxv",
+        Assertions.assertEquals("fuxystltkq",
             response.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("xbfhb", response.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("bueiydoqbruxl", response.destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals(PollingType.PUSH, response.pollingType());
-        Assertions.assertEquals("nqonjbbhwsf", response.annotation());
+        Assertions.assertEquals("lm", response.annotation());
     }
 }

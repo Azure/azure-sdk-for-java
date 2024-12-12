@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * Tenant workloads which are required to access internet or any other MSFT/Public endpoints.
  */
 public final class IsWorkloadManagementNetworkEnabled extends ExpandableStringEnum<IsWorkloadManagementNetworkEnabled> {
-    /** Static value True for IsWorkloadManagementNetworkEnabled. */
+    /**
+     * Static value True for IsWorkloadManagementNetworkEnabled.
+     */
     public static final IsWorkloadManagementNetworkEnabled TRUE = fromString("True");
 
-    /** Static value False for IsWorkloadManagementNetworkEnabled. */
+    /**
+     * Static value False for IsWorkloadManagementNetworkEnabled.
+     */
     public static final IsWorkloadManagementNetworkEnabled FALSE = fromString("False");
 
     /**
      * Creates a new instance of IsWorkloadManagementNetworkEnabled value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class IsWorkloadManagementNetworkEnabled extends ExpandableStringEn
 
     /**
      * Creates or finds a IsWorkloadManagementNetworkEnabled from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IsWorkloadManagementNetworkEnabled.
      */
-    @JsonCreator
     public static IsWorkloadManagementNetworkEnabled fromString(String name) {
         return fromString(name, IsWorkloadManagementNetworkEnabled.class);
     }
 
     /**
      * Gets known IsWorkloadManagementNetworkEnabled values.
-     *
+     * 
      * @return known IsWorkloadManagementNetworkEnabled values.
      */
     public static Collection<IsWorkloadManagementNetworkEnabled> values() {
