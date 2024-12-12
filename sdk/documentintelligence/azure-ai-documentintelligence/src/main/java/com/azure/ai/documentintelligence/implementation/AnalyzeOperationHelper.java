@@ -8,7 +8,7 @@ import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 /**
  * The helper class to set the non-public properties of an {@link AnalyzeOperation} instance.
  */
-public class AnalyzeOperationHelper {
+public final class AnalyzeOperationHelper {
 
     private static AnalyzeOperationAccessor accessor;
 

@@ -187,20 +187,20 @@ public final class AnalyzeOperation implements JsonSerializable<AnalyzeOperation
     private String operationId;
 
     /**
-     * Gets the operationId property: Operation ID.
-     *
-     * @return the operationId value.
-     */
-    public String getOperationId() {
-        return operationId;
-    }
-
-    /**
      * Sets the operationId property: Operation ID.
      *
      * @param operationId the operationId value to set.
      */
     private void setOperationId(String operationId) {
         this.operationId = operationId;
+    }
+
+    /**
+     * Gets the operationId property: Operation ID.
+     *
+     * @return the operationId value.
+     */
+    public String getResultId() {
+        return operationId;
     }
 }

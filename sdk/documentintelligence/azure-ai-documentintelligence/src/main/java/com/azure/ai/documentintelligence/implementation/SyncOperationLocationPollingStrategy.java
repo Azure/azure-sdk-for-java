@@ -5,7 +5,6 @@ package com.azure.ai.documentintelligence.implementation;
 
 import static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId;
 
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
@@ -143,10 +142,6 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
         if (pollResponse.getValue() instanceof AnalyzeOperation) {
             AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();
             AnalyzeOperationHelper.setOperationId(operation, operationId);
-        }
-        if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {
-            AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();
-            AnalyzeBatchOperationHelper.setOperationId(operation, operationId);
         }
         return pollResponse;
     }

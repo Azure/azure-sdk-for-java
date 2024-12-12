@@ -338,7 +338,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
 
             StepVerifier
                 .create(resultPollerFlux.last()
-                    .flatMap(response -> client.getAnalyzeResultPdf(modelID, response.getValue().getOperationId())))
+                    .flatMap(response -> client.getAnalyzeResultPdf(modelID, response.getValue().getResultId())))
                 .assertNext(pdf -> {
                     byte[] pdfBytes = pdf.toBytes();
                     byte[] pdfHeader = { pdfBytes[0], pdfBytes[1], pdfBytes[2], pdfBytes[3], pdfBytes[4] };
@@ -364,7 +364,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                 .setPollInterval(durationTestMode);
 
             StepVerifier.create(resultPollerFlux.last()
-                .flatMap(response -> client.getAnalyzeResultFigure(modelID, response.getValue().getOperationId(),
+                .flatMap(response -> client.getAnalyzeResultFigure(modelID, response.getValue().getResultId(),
                     response.getValue().getAnalyzeResult().getFigures().get(0).getId())))
                 .assertNext(figures -> {
                     byte[] figuresBytes = figures.toBytes();

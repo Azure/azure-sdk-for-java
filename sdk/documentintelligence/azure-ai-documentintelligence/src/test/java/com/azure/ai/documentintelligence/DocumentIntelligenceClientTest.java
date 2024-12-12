@@ -428,7 +428,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 .beginAnalyzeDocument(modelID,
                     new AnalyzeDocumentOptions(data).setOutput(Collections.singletonList(PDF)))
                 .setPollInterval(durationTestMode);
-            String resultId = syncPoller.poll().getValue().getOperationId();
+            String resultId = syncPoller.poll().getValue().getResultId();
             syncPoller.waitForCompletion();
 
             BinaryData pdf = client.getAnalyzeResultPdf(modelID, resultId);
@@ -453,7 +453,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                         new AnalyzeDocumentOptions(data)
                             .setOutput(Collections.singletonList(AnalyzeOutputFormat.FIGURES)))
                     .setPollInterval(durationTestMode);
-            String resultId = syncPoller.poll().getValue().getOperationId();
+            String resultId = syncPoller.poll().getValue().getResultId();
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
