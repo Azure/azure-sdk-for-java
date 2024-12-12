@@ -1,6 +1,6 @@
 # Azure Key Vault Secret client library for Java
 
-**Links:** [Source][source_code] | [Maven][maven_package] | [Ref Docs][api_documentation] | [Product Docs][product_docs] | [Samples][samples] | [Troubleshooting](TROUBLESHOOTING.md) | [Changelog][changelog]
+**Links:** [Source][source_code] | [Maven][maven_package] | [Ref Docs][api_documentation] | [Product Docs][product_docs] | [Samples][samples] | [Troubleshooting][kv_troubleshooting-guide] | [Changelog][changelog]
 
 [Azure Key Vault][product_docs] is a cloud service that provides secure storage for secrets, such as passwords and database connection strings.
 
@@ -32,8 +32,6 @@ The Azure SDK for Java offers a comprehensive collection of libraries, all of wh
     </dependency>
 </dependencies>
 ```
-
-> **TODO** I want to auto-refresh the *{bom_version_to_target}* text with the latest BOM version, rather than have it be a placeholder and an exercise left to the reader.
 
 Additionally, for projects using Maven as their build tool, Microsoft Azure SDK best practice is to use the [Maven Build Tool plugin][maven_build_tool], as this will ensure all Azure SDK best practices are being followed.
 ## Authentication
@@ -75,7 +73,7 @@ There are comprehensive code samples available from the following links:
 - [List secrets][sample_list_secrets]
 
 ## Troubleshooting
-See our [Key Vault Secrets troubleshooting guide](TROUBLESHOOTING.md) f for details on how to diagnose various failure scenarios related specifically to this library. Additionally, refer to the [Azure SDK for Java troubleshooting][troubleshooting-guide] page to learn more about how to get started with troubleshooting issues when using the Azure SDK for Java client libraries.
+See our [Key Vault Secrets troubleshooting guide][kv_troubleshooting-guide] for details on how to diagnose various failure scenarios related specifically to this library. Additionally, refer to the [Azure SDK for Java troubleshooting][troubleshooting-guide] page to learn more about how to get started with troubleshooting issues when using the Azure SDK for Java client libraries.
 
 
 ## Next steps
@@ -94,7 +92,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 
 
 <!-- LINKS -->
-[api_documentation]: https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets
+[api_documentation]: https://learn.microsoft.com/java/api/com.azure.security.keyvault.secrets
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_identity_concepts]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [azure_identity_DAC]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential
@@ -108,7 +106,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [product_docs]: https://docs.microsoft.com/azure/key-vault/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src
 [spring_quickstart]: https://learn.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
-[troubleshooting-guide]: ../other/TROUBLESHOOTING.md
+[troubleshooting-guide]: https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-overview
+[kv_troubleshooting-guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/TROUBLESHOOTING.md
 
 [samples]: #examples
 [sample_create_secret]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ReadmeSamples.java#L36
