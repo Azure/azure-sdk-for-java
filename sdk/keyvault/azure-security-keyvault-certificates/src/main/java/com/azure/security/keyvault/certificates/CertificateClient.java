@@ -23,9 +23,8 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
-import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
-import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
+import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
+import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
 import com.azure.security.keyvault.certificates.implementation.models.BackupCertificateResult;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
@@ -33,12 +32,14 @@ import com.azure.security.keyvault.certificates.implementation.models.Certificat
 import com.azure.security.keyvault.certificates.implementation.models.CertificateImportParameters;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerSetParameters;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerUpdateParameters;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateMergeParameters;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateOperationUpdateParameter;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateRestoreParameters;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateUpdateParameters;
 import com.azure.security.keyvault.certificates.implementation.models.Contacts;
 import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -1047,8 +1048,10 @@ public final class CertificateClient {
             .setContext(context)
             .addQueryParam("includePending", String.valueOf(includePending), false);
 
-        return implClient.getCertificates(requestOptions).mapPage(binaryData ->
-            binaryData.toObject(CertificateProperties.class));
+        return implClient.getCertificates(requestOptions)
+            .mapPage(binaryData ->
+                CertificatePropertiesHelper.createCertificateProperties(
+                    binaryData.toObject(CertificateItem.class)));
     }
 
     /**
@@ -1106,8 +1109,9 @@ public final class CertificateClient {
             .addQueryParam("includePending", String.valueOf(includePending), false);
 
         return implClient.getDeletedCertificates(requestOptions)
-            .mapPage(deletedCertificate ->
-                deletedCertificate.toObject(DeletedCertificate.class));
+            .mapPage(binaryData ->
+                DeletedCertificateHelper.createDeletedCertificate(
+                    binaryData.toObject(DeletedCertificateItem.class)));
     }
 
     /**
@@ -1183,7 +1187,8 @@ public final class CertificateClient {
         Context context) {
 
         return implClient.getCertificateVersions(certificateName, new RequestOptions().setContext(context))
-            .mapPage(binaryData -> binaryData.toObject(CertificateProperties.class));
+            .mapPage(binaryData ->
+                CertificatePropertiesHelper.createCertificateProperties(binaryData.toObject(CertificateItem.class)));
     }
 
     /**

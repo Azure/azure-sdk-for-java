@@ -37,11 +37,6 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
             CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy()));
     }
 
-    KeyVaultCertificateWithPolicy(DeletedCertificateBundle bundle) {
-        this(bundle.getCer(), bundle.getKid(), bundle.getSid(), new CertificateProperties(bundle),
-            CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy()));
-    }
-
     KeyVaultCertificateWithPolicy(byte[] cer, String kid, String sid, CertificateProperties properties) {
         this(cer, kid, sid, properties, null);
     }

@@ -40,7 +40,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
             @Override
             public CertificateProperties createCertificateProperties(DeletedCertificateItem item) {
-                return null;
+                return new CertificateProperties(item);
             }
         });
     }
@@ -127,6 +127,11 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
             bundle.getAttributes().getRecoverableDays());
     }
 
+    CertificateProperties(DeletedCertificateItem item) {
+        this(item.getId(), item.getAttributes(), item.getTags(), item.getX509Thumbprint(),
+            item.getAttributes().getRecoverableDays());
+    }
+
     CertificateProperties(DeletedCertificateBundle bundle) {
         this(bundle.getId(), bundle.getAttributes(), bundle.getTags(), bundle.getX509Thumbprint(),
             bundle.getAttributes().getRecoverableDays());
@@ -134,6 +139,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags, byte[] wireThumbprint,
         Integer recoverableDays) {
+
         IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
         this.id = idMetadata.getId();
         this.vaultUrl = idMetadata.getVaultUrl();
@@ -157,8 +163,9 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         }
 
         this.tags = tags;
-        this.x509Thumbprint
-            = (wireThumbprint == null || wireThumbprint.length == 0) ? null : Base64Url.encode(wireThumbprint);
+        this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
+            ? null
+            : Base64Url.encode(wireThumbprint);
         this.recoverableDays = recoverableDays;
     }
 

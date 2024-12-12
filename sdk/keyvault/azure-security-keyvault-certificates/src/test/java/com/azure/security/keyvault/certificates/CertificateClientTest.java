@@ -964,7 +964,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         assertResponseException(
             () -> certificateClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
-            HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
