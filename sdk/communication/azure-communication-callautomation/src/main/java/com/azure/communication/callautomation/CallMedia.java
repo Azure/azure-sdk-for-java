@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.HoldOptions;
+import com.azure.communication.callautomation.models.InterruptAudioAndAnnounceOptions;
 import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
@@ -385,5 +386,37 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopMediaStreamingWithResponse(StopMediaStreamingOptions options, Context context) {
         return callMediaAsync.stopMediaStreamingWithResponseInternal(options, context).block();
+    }
+
+    /**
+    * Interrupt audio and play announment to the participant in call.
+    * @param playSources A {@link PlaySource} representing the list of source to play.
+    * @param playTo the target.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void interruptAudioAndAnnounce(List<PlaySource> playSources, CommunicationIdentifier playTo) {
+        callMediaAsync.interruptAudioAndAnnounce(playSources, playTo).block();
+    }
+
+    /**
+     * Interrupt audio and play announment to the participant in call.
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo the target.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void interruptAudioAndAnnounce(PlaySource playSource, CommunicationIdentifier playTo) {
+        callMediaAsync.interruptAudioAndAnnounce(playSource, playTo).block();
+    }
+
+    /**
+     * Interrupt audio and play announment to the participant in call.
+     * @param options - Different options to pass to the request.
+     * @param context Context
+     * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> interruptAudioAndAnnounceWithResponse(InterruptAudioAndAnnounceOptions options,
+        Context context) {
+        return callMediaAsync.interruptAudioAndAnnounceWithResponseInternal(options, context).block();
     }
 }

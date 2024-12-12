@@ -32,7 +32,7 @@ autorest README.md --java --v4
 tag: package-2024-09-01-preview
 use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/7347874bc2794b2770c3e7618bd1a5ccab53cb54/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/b9e2d84df17975c0269246afb701eeba545958d0/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -271,6 +271,12 @@ directive:
 - remove-model: CreateCallFailed
 - remove-model: AnswerFailed
 - remove-model: HoldFailed
+- remove-model: HoldAudioStarted
+- remove-model: HoldAudioComplteted
+- remove-model: HoldAudioResumed
+- remove-model: HoldAudioPaused
+- remove-model: PlayPaused
+- remove-model: PlayResumed
 
 ```
 
