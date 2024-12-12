@@ -46,8 +46,6 @@ import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
-import com.azure.storage.file.share.implementation.models.ModeCopyMode;
-import com.azure.storage.file.share.implementation.models.OwnerCopyMode;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -764,19 +762,6 @@ public class ShareFileClient {
 
         FilePosixProperties fileposixProperties
             = options.getPosixProperties() == null ? new FilePosixProperties() : options.getPosixProperties();
-        ModeCopyMode modeCopyMode;
-        if (fileposixProperties.getFileMode() != null) {
-            modeCopyMode = ModeCopyMode.OVERRIDE;
-        } else {
-            modeCopyMode = null;
-        }
-
-        OwnerCopyMode ownerCopyMode;
-        if (fileposixProperties.getOwner() != null || fileposixProperties.getGroup() != null) {
-            ownerCopyMode = OwnerCopyMode.OVERRIDE;
-        } else {
-            ownerCopyMode = null;
-        }
 
         Function<PollingContext<ShareFileCopyInfo>, PollResponse<ShareFileCopyInfo>> syncActivationOperation
             = (pollingContext) -> {
@@ -785,7 +770,8 @@ public class ShareFileClient {
                         options.getFilePermission(), options.getFilePermissionFormat(),
                         tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(),
                         fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                        fileposixProperties.getFileMode(), modeCopyMode, ownerCopyMode, copyFileSmbInfo, null);
+                        fileposixProperties.getFileMode(), options.getModeCopyMode(), options.getOwnerCopyMode(),
+                        copyFileSmbInfo, null);
 
                 FilesStartCopyHeaders headers = response.getDeserializedHeaders();
                 copyId.set(headers.getXMsCopyId());

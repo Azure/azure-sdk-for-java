@@ -13,6 +13,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ClearRange;
@@ -22,6 +23,7 @@ import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -1875,10 +1877,15 @@ public class FileAsyncApiTests extends FileShareTestBase {
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
+    private static Stream<Arguments> beginCopyNFSSupplier() {
+        return Stream.of(Arguments.of(ModeCopyMode.SOURCE), Arguments.of(ModeCopyMode.OVERRIDE),
+            Arguments.of((ModeCopyMode) null));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void beginCopyNFS(boolean overwriteOwnerAndMode) {
+    @MethodSource("beginCopyNFSSupplier")
+    public void beginCopyNFS(ModeCopyMode modeAndOwnerCopyMode) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
         String shareName = generateShareName();
         Mono<ShareAsyncClient> premiumShareClientMono = premiumFileServiceAsyncClient
@@ -1895,6 +1902,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
                 return premiumFileClientSource.create(1024)
                     .then(premiumFileClientSource.uploadRange(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong()))
+                    .then(premiumFileClientSource
+                        .setPropertiesWithResponse(new ShareFileSetPropertiesOptions(1024).setPosixProperties(
+                            new FilePosixProperties().setOwner("999").setGroup("888").setFileMode("0111"))))
                     .then(premiumFileClientDest.create(1024))
                     .then(premiumFileClientSource.getProperties())
                     .flatMap(sourceProperties -> {
@@ -1905,17 +1915,25 @@ public class FileAsyncApiTests extends FileShareTestBase {
                         ShareFileCopyOptions options
                             = new ShareFileCopyOptions().setPosixProperties(new FilePosixProperties());
 
-                        if (overwriteOwnerAndMode) {
+                        if (modeAndOwnerCopyMode == ModeCopyMode.OVERRIDE) {
                             owner = "54321";
                             group = "12345";
                             mode = "7777";
+                            options.setModeCopyMode(ModeCopyMode.OVERRIDE);
+                            options.setOwnerCopyMode(OwnerCopyMode.OVERRIDE);
                             options.getPosixProperties().setOwner(owner);
                             options.getPosixProperties().setGroup(group);
                             options.getPosixProperties().setFileMode(mode);
-                        } else {
+                        } else if (modeAndOwnerCopyMode == ModeCopyMode.SOURCE) {
+                            options.setModeCopyMode(ModeCopyMode.SOURCE);
+                            options.setOwnerCopyMode(OwnerCopyMode.SOURCE);
                             owner = sourceProperties.getPosixProperties().getOwner();
                             group = sourceProperties.getPosixProperties().getGroup();
                             mode = sourceProperties.getPosixProperties().getFileMode();
+                        } else {
+                            owner = "0";
+                            group = "0";
+                            mode = "0664";
                         }
 
                         return setPlaybackPollerFluxPollInterval(

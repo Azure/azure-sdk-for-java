@@ -22,9 +22,9 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
     public static final NfsFileType DIRECTORY = fromString("Directory");
 
     /**
-     * Static value Symlink for NfsFileType.
+     * Static value SymLink for NfsFileType.
      */
-    public static final NfsFileType SYMLINK = fromString("Symlink");
+    public static final NfsFileType SYM_LINK = fromString("SymLink");
 
     /**
      * Creates a new instance of NfsFileType value.

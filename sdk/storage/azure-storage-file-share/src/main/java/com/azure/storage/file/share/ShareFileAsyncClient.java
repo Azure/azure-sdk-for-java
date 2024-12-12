@@ -39,8 +39,6 @@ import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
-import com.azure.storage.file.share.implementation.models.ModeCopyMode;
-import com.azure.storage.file.share.implementation.models.OwnerCopyMode;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -725,19 +723,6 @@ public class ShareFileAsyncClient {
 
         FilePosixProperties fileposixProperties
             = options.getPosixProperties() == null ? new FilePosixProperties() : options.getPosixProperties();
-        ModeCopyMode modeCopyMode;
-        if (fileposixProperties.getFileMode() != null) {
-            modeCopyMode = ModeCopyMode.OVERRIDE;
-        } else {
-            modeCopyMode = null;
-        }
-
-        OwnerCopyMode ownerCopyMode;
-        if (fileposixProperties.getOwner() != null || fileposixProperties.getGroup() != null) {
-            ownerCopyMode = OwnerCopyMode.OVERRIDE;
-        } else {
-            ownerCopyMode = null;
-        }
 
         return new PollerFlux<>(interval, (pollingContext) -> {
             try {
@@ -746,15 +731,15 @@ public class ShareFileAsyncClient {
                         options.getFilePermission(), options.getFilePermissionFormat(),
                         tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(),
                         fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                        fileposixProperties.getFileMode(), modeCopyMode, ownerCopyMode, copyFileSmbInfo, context))
-                            .map(response -> {
-                                final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
-                                copyId.set(headers.getXMsCopyId());
+                        fileposixProperties.getFileMode(), options.getModeCopyMode(), options.getOwnerCopyMode(),
+                        copyFileSmbInfo, context)).map(response -> {
+                            final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
+                            copyId.set(headers.getXMsCopyId());
 
-                                return new ShareFileCopyInfo(sourceUrl, headers.getXMsCopyId(),
-                                    headers.getXMsCopyStatus(), headers.getETag(), headers.getLastModified(),
-                                    response.getHeaders().getValue("x-ms-error-code"));
-                            });
+                            return new ShareFileCopyInfo(sourceUrl, headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                                headers.getETag(), headers.getLastModified(),
+                                response.getHeaders().getValue("x-ms-error-code"));
+                        });
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }

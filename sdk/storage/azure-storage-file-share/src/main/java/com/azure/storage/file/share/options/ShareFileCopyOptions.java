@@ -5,6 +5,8 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.ModeCopyMode;
+import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
@@ -28,6 +30,8 @@ public final class ShareFileCopyOptions {
     private ShareRequestConditions destinationRequestConditions;
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
     private FilePosixProperties posixProperties;
+    private ModeCopyMode modeCopyMode;
+    private OwnerCopyMode ownerCopyMode;
 
     /**
      * Creates a new instance of {@link ShareFileCopyOptions}.
@@ -251,6 +255,54 @@ public final class ShareFileCopyOptions {
      */
     public ShareFileCopyOptions setPosixProperties(FilePosixProperties posixProperties) {
         this.posixProperties = posixProperties;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated, the destination file will have the default File Mode.
+     *
+     * @return The destination file's FileMode.
+     */
+    public ModeCopyMode getModeCopyMode() {
+        return modeCopyMode;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated, the destination file will have the default File Mode.
+     *
+     * @param modeCopyMode The destination file's FileMode.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setModeCopyMode(ModeCopyMode modeCopyMode) {
+        this.modeCopyMode = modeCopyMode;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated,the destination file will have the default Owner and Group.
+     *
+     * @return The destination file's Owner and Group.
+     */
+    public OwnerCopyMode getOwnerCopyMode() {
+        return ownerCopyMode;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated,the destination file will have the default Owner and Group.
+     *
+     * @param ownerCopyMode The destination file's Owner and Group.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setOwnerCopyMode(OwnerCopyMode ownerCopyMode) {
+        this.ownerCopyMode = ownerCopyMode;
         return this;
     }
 }
