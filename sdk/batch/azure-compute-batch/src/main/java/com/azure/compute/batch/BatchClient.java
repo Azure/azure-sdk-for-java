@@ -27576,7 +27576,7 @@ public final class BatchClient {
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     * @param startTime The earliest time from which to include metrics. This must be at least two and
+     * @param starttime The earliest time from which to include metrics. This must be at least two and
      * a half hours before the current time. If not specified this defaults to the
      * start time of the last aggregation interval currently available.
      * @param endtime The latest time from which to include metrics. This must be at least two hours
@@ -27596,14 +27596,14 @@ public final class BatchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetricsInternal(Integer timeOutInSeconds,
-        OffsetDateTime startTime, OffsetDateTime endtime, String filter) {
+        OffsetDateTime starttime, OffsetDateTime endtime, String filter) {
         // Generated convenience method for listPoolUsageMetricsInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
-        if (startTime != null) {
-            requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
+        if (starttime != null) {
+            requestOptions.addQueryParam("startTime", String.valueOf(starttime), false);
         }
         if (endtime != null) {
             requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
