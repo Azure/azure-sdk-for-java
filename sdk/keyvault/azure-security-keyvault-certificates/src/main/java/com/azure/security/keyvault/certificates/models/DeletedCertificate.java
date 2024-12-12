@@ -56,8 +56,8 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
     }
 
     private DeletedCertificate(DeletedCertificateItem item) {
-        this(null, null, null, new CertificateProperties(item), null, item.getRecoveryId(),
-            item.getDeletedDate(), item.getScheduledPurgeDate());
+        this(null, null, null, new CertificateProperties(item), null, item.getRecoveryId(), item.getDeletedDate(),
+            item.getScheduledPurgeDate());
     }
 
     private DeletedCertificate(DeletedCertificateBundle bundle) {

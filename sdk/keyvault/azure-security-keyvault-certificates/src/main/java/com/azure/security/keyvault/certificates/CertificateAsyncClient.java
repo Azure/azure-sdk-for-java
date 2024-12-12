@@ -280,8 +280,8 @@ public final class CertificateAsyncClient {
 
         try {
             if (policy == null) {
-                return PollerFlux.error(
-                    LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null.")));
+                return PollerFlux
+                    .error(LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null.")));
             }
 
             return new PollerFlux<>(Duration.ofSeconds(1),
@@ -303,8 +303,9 @@ public final class CertificateAsyncClient {
             .setTags(tags);
 
         try {
-            return implClient.createCertificateWithResponseAsync(certificateName,
-                    BinaryData.fromObject(certificateCreateParameters), EMPTY_OPTIONS)
+            return implClient
+                .createCertificateWithResponseAsync(certificateName, BinaryData.fromObject(certificateCreateParameters),
+                    EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapCreateCertificateException)
                 .flatMap(FluxUtil::toMono)
                 .map(binaryData -> CertificateOperationHelper.createCertificateOperation(binaryData.toObject(
@@ -330,9 +331,8 @@ public final class CertificateAsyncClient {
         return implClient.getCertificateOperationWithResponseAsync(certificateName, EMPTY_OPTIONS)
             .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapGetCertificateOperationException)
             .flatMap(FluxUtil::toMono)
-            .map(binaryData -> CertificateAsyncClient.processCertificateOperationResponse(
-                binaryData.toObject(
-                    com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class)));
+            .map(binaryData -> CertificateAsyncClient.processCertificateOperationResponse(binaryData
+                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class)));
     }
 
     /**
@@ -371,17 +371,16 @@ public final class CertificateAsyncClient {
     }
 
     private Mono<CertificateOperation> certificateCancellationOperation(String certificateName) {
-        CertificateOperationUpdateParameter certificateOperationUpdateParameter =
-            new CertificateOperationUpdateParameter(true);
+        CertificateOperationUpdateParameter certificateOperationUpdateParameter
+            = new CertificateOperationUpdateParameter(true);
 
-        return implClient.updateCertificateOperationWithResponseAsync(certificateName,
+        return implClient
+            .updateCertificateOperationWithResponseAsync(certificateName,
                 BinaryData.fromObject(certificateOperationUpdateParameter), EMPTY_OPTIONS)
             .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapUpdateCertificateOperationException)
             .flatMap(FluxUtil::toMono)
-            .map(binaryData ->
-                CertificateOperationHelper.createCertificateOperation(
-                    binaryData.toObject(
-                        com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class)));
+            .map(binaryData -> CertificateOperationHelper.createCertificateOperation(binaryData
+                .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class)));
     }
 
     static HttpResponseException mapUpdateCertificateOperationException(HttpResponseException e) {
@@ -394,9 +393,8 @@ public final class CertificateAsyncClient {
         return implClient.getCertificateWithResponseAsync(certificateName, null, EMPTY_OPTIONS)
             .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapGetCertificateException)
             .flatMap(FluxUtil::toMono)
-            .map(binaryData ->
-                KeyVaultCertificateWithPolicyHelper.createCertificateWithPolicy(
-                    binaryData.toObject(CertificateBundle.class)));
+            .map(binaryData -> KeyVaultCertificateWithPolicyHelper
+                .createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class)));
     }
 
     static HttpResponseException mapGetCertificateException(HttpResponseException e) {
@@ -471,8 +469,7 @@ public final class CertificateAsyncClient {
         getCertificateOperation(String certificateName) {
 
         try {
-            return new PollerFlux<>(Duration.ofSeconds(1),
-                pollingContext -> Mono.empty(),
+            return new PollerFlux<>(Duration.ofSeconds(1), pollingContext -> Mono.empty(),
                 ignored -> certificatePollOperation(certificateName),
                 (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
                 ignored -> fetchCertificateOperation(certificateName));
@@ -539,9 +536,8 @@ public final class CertificateAsyncClient {
         try {
             return implClient.getCertificateWithResponseAsync(certificateName, null, EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapGetCertificateException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -582,9 +578,8 @@ public final class CertificateAsyncClient {
         try {
             return implClient.getCertificateWithResponseAsync(certificateName, version, EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapGetCertificateException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -701,21 +696,19 @@ public final class CertificateAsyncClient {
         }
 
         try {
-            CertificateAttributes certificateAttributes = new CertificateAttributes()
-                .setEnabled(properties.isEnabled())
+            CertificateAttributes certificateAttributes = new CertificateAttributes().setEnabled(properties.isEnabled())
                 .setExpires(properties.getExpiresOn())
                 .setNotBefore(properties.getNotBefore());
 
-            CertificateUpdateParameters certificateUpdateParameters = new CertificateUpdateParameters()
-                .setCertificateAttributes(certificateAttributes)
-                .setTags(properties.getTags());
+            CertificateUpdateParameters certificateUpdateParameters
+                = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
+                    .setTags(properties.getTags());
 
             return implClient
                 .updateCertificateWithResponseAsync(properties.getName(), properties.getVersion(),
                     BinaryData.fromObject(certificateUpdateParameters), EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -751,11 +744,9 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
         try {
-            return new PollerFlux<>(Duration.ofSeconds(1),
-                ignored -> deleteCertificateActivation(certificateName),
+            return new PollerFlux<>(Duration.ofSeconds(1), ignored -> deleteCertificateActivation(certificateName),
                 pollingContext -> deleteCertificatePollOperation(certificateName, pollingContext),
-                (pollingContext, firstResponse) -> Mono.empty(),
-                pollingContext -> Mono.empty());
+                (pollingContext, firstResponse) -> Mono.empty(), pollingContext -> Mono.empty());
         } catch (RuntimeException e) {
             return PollerFlux.error(e);
         }
@@ -764,9 +755,8 @@ public final class CertificateAsyncClient {
     private Mono<DeletedCertificate> deleteCertificateActivation(String certificateName) {
         return implClient.deleteCertificateWithResponseAsync(certificateName, EMPTY_OPTIONS)
             .flatMap(FluxUtil::toMono)
-            .map(binaryData ->
-                DeletedCertificateHelper.createDeletedCertificate(
-                    binaryData.toObject(DeletedCertificateBundle.class)));
+            .map(binaryData -> DeletedCertificateHelper
+                .createDeletedCertificate(binaryData.toObject(DeletedCertificateBundle.class)));
     }
 
     static HttpResponseException mapDeleteCertificateException(HttpResponseException e) {
@@ -779,9 +769,8 @@ public final class CertificateAsyncClient {
         PollingContext<DeletedCertificate> pollingContext) {
         return implClient.getDeletedCertificateWithResponseAsync(certificateName, EMPTY_OPTIONS)
             .flatMap(FluxUtil::toMono)
-            .map(binaryData ->
-                new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createDeletedCertificate(binaryData.toObject(DeletedCertificateBundle.class))))
+            .map(binaryData -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createDeletedCertificate(binaryData.toObject(DeletedCertificateBundle.class))))
             .onErrorResume(HttpResponseException.class, e -> {
                 if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -860,9 +849,8 @@ public final class CertificateAsyncClient {
     public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName) {
         try {
             return implClient.getDeletedCertificateWithResponseAsync(certificateName, EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createDeletedCertificate(response.getValue().toObject(DeletedCertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createDeletedCertificate(response.getValue().toObject(DeletedCertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -957,19 +945,17 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
-            ignored -> recoverDeletedCertificateActivation(certificateName),
+        return new PollerFlux<>(Duration.ofSeconds(1), ignored -> recoverDeletedCertificateActivation(certificateName),
             pollingContext -> recoverDeletedCertificatePollOperation(certificateName, pollingContext),
-            (pollingContext, firstResponse) -> Mono.empty(),
-            pollingContext -> Mono.empty());
+            (pollingContext, firstResponse) -> Mono.empty(), pollingContext -> Mono.empty());
     }
 
     private Mono<KeyVaultCertificateWithPolicy> recoverDeletedCertificateActivation(String certificateName) {
         try {
             return implClient.recoverDeletedCertificateWithResponseAsync(certificateName, EMPTY_OPTIONS)
                 .flatMap(FluxUtil::toMono)
-                .map(binaryData -> KeyVaultCertificateWithPolicyHelper.createCertificateWithPolicy(
-                    binaryData.toObject(CertificateBundle.class)));
+                .map(binaryData -> KeyVaultCertificateWithPolicyHelper
+                    .createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -979,9 +965,8 @@ public final class CertificateAsyncClient {
         String certificateName, PollingContext<KeyVaultCertificateWithPolicy> pollingContext) {
         return implClient.getCertificateWithResponseAsync(certificateName, null, EMPTY_OPTIONS)
             .flatMap(FluxUtil::toMono)
-            .map(binaryData ->
-                new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class))))
+            .map(binaryData -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class))))
             .onErrorResume(HttpResponseException.class, e -> {
                 if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -1056,9 +1041,8 @@ public final class CertificateAsyncClient {
     public Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName) {
         try {
             return implClient.backupCertificateWithResponseAsync(certificateName, EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        response.getValue().toObject(BackupCertificateResult.class).getValue()));
+                .map(response -> new SimpleResponse<>(response,
+                    response.getValue().toObject(BackupCertificateResult.class).getValue()));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1119,12 +1103,11 @@ public final class CertificateAsyncClient {
         try {
             CertificateRestoreParameters certificateRestoreParameters = new CertificateRestoreParameters(backup);
 
-            return implClient.restoreCertificateWithResponseAsync(BinaryData.fromObject(certificateRestoreParameters),
-                    EMPTY_OPTIONS)
+            return implClient
+                .restoreCertificateWithResponseAsync(BinaryData.fromObject(certificateRestoreParameters), EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapRestoreCertificateException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1165,8 +1148,8 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
         try {
-            RequestOptions requestOptions = new RequestOptions()
-                .addQueryParam("includePending", String.valueOf(includePending), false);
+            RequestOptions requestOptions
+                = new RequestOptions().addQueryParam("includePending", String.valueOf(includePending), false);
 
             PagedFlux<BinaryData> pagedFluxResponse = implClient.getCertificatesAsync(requestOptions);
 
@@ -1175,10 +1158,9 @@ public final class CertificateAsyncClient {
                     ? pagedFluxResponse.byPage().take(1)
                     : pagedFluxResponse.byPage(continuationTokenParam).take(1);
 
-                return pagedResponseFlux.map(pagedResponse ->
-                    mapPagedResponse(pagedResponse, binaryData ->
-                        CertificatePropertiesHelper.createCertificateProperties(
-                            binaryData.toObject(CertificateItem.class))));
+                return pagedResponseFlux
+                    .map(pagedResponse -> mapPagedResponse(pagedResponse, binaryData -> CertificatePropertiesHelper
+                        .createCertificateProperties(binaryData.toObject(CertificateItem.class))));
             });
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
@@ -1264,22 +1246,20 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
         try {
-            RequestOptions requestOptions = new RequestOptions()
-                .addQueryParam("includePending", String.valueOf(includePending), false);
+            RequestOptions requestOptions
+                = new RequestOptions().addQueryParam("includePending", String.valueOf(includePending), false);
 
             PagedFlux<BinaryData> pagedFluxResponse = implClient.getDeletedCertificatesAsync(requestOptions);
 
-            return PagedFlux.create(() ->
-                (continuationTokenParam, pageSizeParam) -> {
-                    Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+                Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
 
-                    return pagedResponseFlux.map(pagedResponse ->
-                        mapPagedResponse(pagedResponse, binaryData ->
-                            DeletedCertificateHelper.createDeletedCertificate(
-                                binaryData.toObject(DeletedCertificateItem.class))));
-                });
+                return pagedResponseFlux
+                    .map(pagedResponse -> mapPagedResponse(pagedResponse, binaryData -> DeletedCertificateHelper
+                        .createDeletedCertificate(binaryData.toObject(DeletedCertificateItem.class))));
+            });
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -1316,20 +1296,18 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
         try {
-            PagedFlux<BinaryData> pagedFluxResponse =
-                implClient.getCertificateVersionsAsync(certificateName, EMPTY_OPTIONS);
+            PagedFlux<BinaryData> pagedFluxResponse
+                = implClient.getCertificateVersionsAsync(certificateName, EMPTY_OPTIONS);
 
-            return PagedFlux.create(() ->
-                (continuationTokenParam, pageSizeParam) -> {
-                    Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+                Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
 
-                    return pagedResponseFlux.map(
-                        pagedResponse -> mapPagedResponse(pagedResponse,
-                            binaryData -> CertificatePropertiesHelper.createCertificateProperties(
-                                binaryData.toObject(CertificateItem.class))));
-                });
+                return pagedResponseFlux
+                    .map(pagedResponse -> mapPagedResponse(pagedResponse, binaryData -> CertificatePropertiesHelper
+                        .createCertificateProperties(binaryData.toObject(CertificateItem.class))));
+            });
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -1409,17 +1387,17 @@ public final class CertificateAsyncClient {
         }
 
         try {
-            CertificateMergeParameters certificateMergeParameters =
-                new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
-                    .setCertificateAttributes(new CertificateAttributes()
-                        .setEnabled(mergeCertificateOptions.isEnabled()))
+            CertificateMergeParameters certificateMergeParameters
+                = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
+                    .setCertificateAttributes(
+                        new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()))
                     .setTags(mergeCertificateOptions.getTags());
 
-            return implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions.getName(),
+            return implClient
+                .mergeCertificateWithResponseAsync(mergeCertificateOptions.getName(),
                     BinaryData.fromObject(certificateMergeParameters), EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1482,9 +1460,9 @@ public final class CertificateAsyncClient {
         try {
             return implClient.getCertificatePolicyWithResponseAsync(certificateName, EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapGetCertificatePolicyException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificatePolicy(response.getValue().toObject(
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificatePolicy(response.getValue()
+                        .toObject(
                             com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -1577,14 +1555,15 @@ public final class CertificateAsyncClient {
         }
 
         try {
-            CertificateUpdateParameters certificateUpdateParameters = new CertificateUpdateParameters()
-                .setCertificatePolicy(getImplCertificatePolicy(policy));
+            CertificateUpdateParameters certificateUpdateParameters
+                = new CertificateUpdateParameters().setCertificatePolicy(getImplCertificatePolicy(policy));
 
-            return implClient.updateCertificatePolicyWithResponseAsync(certificateName,
+            return implClient
+                .updateCertificatePolicyWithResponseAsync(certificateName,
                     BinaryData.fromObject(certificateUpdateParameters), EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificatePolicy(response.getValue().toObject(
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificatePolicy(response.getValue()
+                        .toObject(
                             com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -1665,17 +1644,16 @@ public final class CertificateAsyncClient {
 
         try {
             IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerSetParameters certificateIssuerSetParameters =
-                new CertificateIssuerSetParameters(issuer.getProvider())
-                    .setAttributes(issuerBundle.getAttributes())
+            CertificateIssuerSetParameters certificateIssuerSetParameters
+                = new CertificateIssuerSetParameters(issuer.getProvider()).setAttributes(issuerBundle.getAttributes())
                     .setCredentials(issuerBundle.getCredentials())
                     .setOrganizationDetails(issuerBundle.getOrganizationDetails());
 
-            return implClient.setCertificateIssuerWithResponseAsync(issuer.getName(),
+            return implClient
+                .setCertificateIssuerWithResponseAsync(issuer.getName(),
                     BinaryData.fromObject(certificateIssuerSetParameters), EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1711,9 +1689,8 @@ public final class CertificateAsyncClient {
     public Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName) {
         try {
             return implClient.getCertificateIssuerWithResponseAsync(issuerName, EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1778,9 +1755,8 @@ public final class CertificateAsyncClient {
     public Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName) {
         try {
             return implClient.deleteCertificateIssuerWithResponseAsync(issuerName, EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1841,17 +1817,15 @@ public final class CertificateAsyncClient {
         try {
             PagedFlux<BinaryData> pagedFluxResponse = implClient.getCertificateIssuersAsync(EMPTY_OPTIONS);
 
-            return PagedFlux.create(() ->
-                (continuationTokenParam, pageSizeParam) -> {
-                    Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+                Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
 
-                    return pagedResponseFlux.map(
-                        pagedResponse -> mapPagedResponse(pagedResponse,
-                            binaryData -> IssuerPropertiesHelper.createIssuerProperties(
-                                binaryData.toObject(CertificateIssuerItem.class))));
-                });
+                return pagedResponseFlux
+                    .map(pagedResponse -> mapPagedResponse(pagedResponse, binaryData -> IssuerPropertiesHelper
+                        .createIssuerProperties(binaryData.toObject(CertificateIssuerItem.class))));
+            });
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -1934,9 +1908,8 @@ public final class CertificateAsyncClient {
 
         try {
             IssuerBundle issuerBundle = CertificateIssuerHelper.getIssuerBundle(issuer);
-            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters =
-                new CertificateIssuerUpdateParameters()
-                    .setProvider(issuer.getProvider())
+            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
+                = new CertificateIssuerUpdateParameters().setProvider(issuer.getProvider())
                     .setAttributes(issuerBundle.getAttributes())
                     .setCredentials(issuerBundle.getCredentials())
                     .setOrganizationDetails(issuerBundle.getOrganizationDetails());
@@ -1944,9 +1917,8 @@ public final class CertificateAsyncClient {
             return implClient
                 .updateCertificateIssuerWithResponseAsync(issuer.getName(),
                     BinaryData.fromObject(certificateIssuerUpdateParameters), EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateIssuer(response.getValue().toObject(IssuerBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1977,9 +1949,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
-        return new PagedFlux<>(() -> implClient.setCertificateContactsWithResponseAsync(
-            BinaryData.fromObject(new Contacts().setContactList(contacts)), EMPTY_OPTIONS)
-            .map(CertificateAsyncClient::mapContactsToPagedResponse));
+        return new PagedFlux<>(
+            () -> implClient
+                .setCertificateContactsWithResponseAsync(BinaryData.fromObject(new Contacts().setContactList(contacts)),
+                    EMPTY_OPTIONS)
+                .map(CertificateAsyncClient::mapContactsToPagedResponse));
     }
 
     /**
@@ -2088,8 +2062,8 @@ public final class CertificateAsyncClient {
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponse(String certificateName) {
         try {
             return implClient.deleteCertificateOperationWithResponseAsync(certificateName, EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response, createCertificateOperation(response.getValue().toObject(
+                .map(response -> new SimpleResponse<>(response, createCertificateOperation(response.getValue()
+                    .toObject(
                         com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -2156,14 +2130,15 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName) {
         try {
-            CertificateOperationUpdateParameter certificateOperationUpdateParameter =
-                new CertificateOperationUpdateParameter(true);
+            CertificateOperationUpdateParameter certificateOperationUpdateParameter
+                = new CertificateOperationUpdateParameter(true);
 
-            return implClient.updateCertificateOperationWithResponseAsync(certificateName,
+            return implClient
+                .updateCertificateOperationWithResponseAsync(certificateName,
                     BinaryData.fromObject(certificateOperationUpdateParameter), EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, CertificateAsyncClient::mapUpdateCertificateOperationException)
-                .map(response ->
-                    new SimpleResponse<>(response, createCertificateOperation(response.getValue().toObject(
+                .map(response -> new SimpleResponse<>(response, createCertificateOperation(response.getValue()
+                    .toObject(
                         com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -2235,19 +2210,19 @@ public final class CertificateAsyncClient {
         }
 
         try {
-            CertificateImportParameters certificateImportParameters =
-                new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
+            CertificateImportParameters certificateImportParameters
+                = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
                     .setCertificatePolicy(getImplCertificatePolicy(importCertificateOptions.getPolicy()))
                     .setPassword(importCertificateOptions.getPassword())
                     .setTags(importCertificateOptions.getTags())
-                    .setCertificateAttributes(new CertificateAttributes()
-                        .setEnabled(importCertificateOptions.isEnabled()));
+                    .setCertificateAttributes(
+                        new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
 
-            return implClient.importCertificateWithResponseAsync(importCertificateOptions.getName(),
+            return implClient
+                .importCertificateWithResponseAsync(importCertificateOptions.getName(),
                     BinaryData.fromObject(certificateImportParameters), EMPTY_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createCertificateWithPolicy(response.getValue().toObject(CertificateBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }

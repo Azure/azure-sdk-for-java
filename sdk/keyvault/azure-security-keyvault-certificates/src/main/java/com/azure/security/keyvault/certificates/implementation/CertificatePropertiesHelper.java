@@ -12,6 +12,7 @@ public final class CertificatePropertiesHelper {
 
     public interface CertificatePropertiesAccessor {
         CertificateProperties createCertificateProperties(CertificateItem item);
+
         CertificateProperties createCertificateProperties(DeletedCertificateItem item);
     }
 

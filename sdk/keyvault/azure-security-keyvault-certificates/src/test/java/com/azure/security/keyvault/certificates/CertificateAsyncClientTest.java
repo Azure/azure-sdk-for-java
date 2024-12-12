@@ -885,10 +885,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
             PagedFlux<DeletedCertificate> pagedFlux = certificateAsyncClient.listDeletedCertificates();
 
-            StepVerifier.create(pagedFlux
-                    .doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
-                    .last())
-                .assertNext(ignored -> assertEquals(0, certificatesToDelete.size())).verifyComplete();
+            StepVerifier
+                .create(
+                    pagedFlux.doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
+                        .last())
+                .assertNext(ignored -> assertEquals(0, certificatesToDelete.size()))
+                .verifyComplete();
         });
     }
 

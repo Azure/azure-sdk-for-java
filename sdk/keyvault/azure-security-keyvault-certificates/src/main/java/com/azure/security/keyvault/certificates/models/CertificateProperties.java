@@ -163,9 +163,8 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         }
 
         this.tags = tags;
-        this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
-            ? null
-            : Base64Url.encode(wireThumbprint);
+        this.x509Thumbprint
+            = (wireThumbprint == null || wireThumbprint.length == 0) ? null : Base64Url.encode(wireThumbprint);
         this.recoverableDays = recoverableDays;
     }
 
@@ -278,7 +277,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     /**
      * Get the recovery level of the certificate.
-
+    
      * @return The recovery level of the certificate.
      */
     public String getRecoveryLevel() {

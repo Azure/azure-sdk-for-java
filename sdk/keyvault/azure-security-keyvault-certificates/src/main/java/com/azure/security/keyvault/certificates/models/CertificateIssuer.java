@@ -167,7 +167,9 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the administrators
      */
     public List<AdministratorContact> getAdministratorContacts() {
-        return issuerBundle.getOrganizationDetails() == null ? null : issuerBundle.getOrganizationDetails().getAdminDetails();
+        return issuerBundle.getOrganizationDetails() == null
+            ? null
+            : issuerBundle.getOrganizationDetails().getAdminDetails();
     }
 
     /**
