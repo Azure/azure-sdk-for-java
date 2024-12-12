@@ -254,6 +254,13 @@ public final class ResourceManagerUtils {
         private static Scheduler reactorScheduler = Schedulers.parallel();
 
         /**
+        * Creates a new instance of InternalRuntimeContext.
+        */
+        @Deprecated
+        public InternalRuntimeContext() {
+        }
+
+        /**
          * Sets the resource namer
          *
          * @param identifierFunction the function.
