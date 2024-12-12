@@ -4,14 +4,8 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.javadoc.Javadoc;
-import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
@@ -37,6 +31,26 @@ public class DocumentIntelligenceCustomizations extends Customization {
         customizeAnalyzeBatchDocumentOptions(customization, logger);
         customizeClassifyDocumentOptions(customization, logger);
         customizeSamplesForOverload(customization, logger);
+        addStaticAccessorForOperationId(customization, logger);
+    }
+
+    private void addStaticAccessorForOperationId(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing to add static operationnId accessor setter methods");
+        ClassCustomization classCustomization = customization.getPackage(MODELS_PACKAGE).getClass("AnalyzeOperation");
+        classCustomization.addStaticBlock("AnalyzeOperationHelper.setAccessor(new AnalyzeOperationHelper.AnalyzeOperationAccessor() {\n" +
+            "            @Override\n" +
+            "            public void setOperationId(AnalyzeOperation analyzeOperation, String operationId) {\n" +
+            "                analyzeOperation.setOperationId(operationId);\n" +
+            "            }\n" +
+            "        });");
+
+        ClassCustomization batchClassCustomization = customization.getPackage(MODELS_PACKAGE).getClass("AnalyzeBatchOperation");
+        batchClassCustomization.addStaticBlock("AnalyzeBatchOperationHelper.setAccessor(new AnalyzeBatchOperationHelper.AnalyzeBatchOperationAccessor() {\n" +
+            "            @Override\n" +
+            "            public void setOperationId(AnalyzeBatchOperation analyzeBatchOperation, String operationId) {\n" +
+            "                analyzeBatchOperation.setOperationId(operationId);\n" +
+            "            }\n" +
+            "        });");
     }
 
     private void customizeSamplesForOverload(LibraryCustomization customization, Logger logger) {
@@ -151,7 +165,6 @@ public class DocumentIntelligenceCustomizations extends Customization {
 
         classCustomization.getMethod("setAzureBlobSource").setModifier(0);
         classCustomization.getMethod("setAzureBlobFileListSource").setModifier(0);
-        //addConstructors(classCustomization);
     }
 
     private void customizeClassifyDocumentOptions(LibraryCustomization customization, Logger logger) {
@@ -162,7 +175,6 @@ public class DocumentIntelligenceCustomizations extends Customization {
 
         classCustomization.getMethod("setUrlSource").setModifier(0);
         classCustomization.getMethod("setBytesSource").setModifier(0);
-        //addConstructors(classCustomization);
     }
 
     private void customizeModifierForOverloadMethods(LibraryCustomization customization, Logger logger) {
@@ -239,7 +251,7 @@ public class DocumentIntelligenceCustomizations extends Customization {
     }
 
     private void addOperationIdSetter(ClassOrInterfaceDeclaration clazz) {
-        clazz.addMethod("setOperationId", Modifier.Keyword.PUBLIC)
+        clazz.addMethod("setOperationId", Modifier.Keyword.PRIVATE)
             .setType("void")
             .addParameter("String", "operationId")
             .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Sets the operationId property: Operation ID."))))
@@ -336,11 +348,11 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "        }",
                 "        if (pollResponse.getValue() instanceof AnalyzeOperation) {",
                 "            AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();",
-                "            operation.setOperationId(operationId);",
+                "            AnalyzeOperationHelper.setOperationId(operation, operationId);",
                 "        }",
                 "        if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {",
                 "            AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();",
-                "            operation.setOperationId(operationId);",
+                "            AnalyzeBatchOperationHelper.setOperationId(operation, operationId);",
                 "        }",
                 "        return pollResponse;",
                 "    });",
@@ -363,11 +375,11 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "}",
                 "if (pollResponse.getValue() instanceof AnalyzeOperation) {",
                 "    AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();",
-                "    operation.setOperationId(operationId);",
+                "    AnalyzeOperationHelper.setOperationId(operation, operationId);",
                 "}",
                 "if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {",
                 "    AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();",
-                "    operation.setOperationId(operationId);",
+                "    AnalyzeBatchOperationHelper.setOperationId(operation, operationId);",
                 "}",
                 "return pollResponse;",
                 "}")));

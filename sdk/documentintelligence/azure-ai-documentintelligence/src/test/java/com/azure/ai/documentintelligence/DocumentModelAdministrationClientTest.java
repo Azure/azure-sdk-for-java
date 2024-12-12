@@ -9,6 +9,7 @@ import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
+import com.azure.ai.documentintelligence.models.ComposeDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
@@ -303,7 +304,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             DocumentModelDetails composedModel
                 = client
                     .beginComposeModel(
-                        new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap)
+                        new ComposeDocumentModelOptions(composedModelId, classifierId, documentTypeDetailsMap)
                             .setDescription("test desc"))
                     .setPollInterval(durationTestMode)
                     .getFinalResult();

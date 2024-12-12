@@ -142,11 +142,11 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
         }
         if (pollResponse.getValue() instanceof AnalyzeOperation) {
             AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();
-            operation.setOperationId(operationId);
+            AnalyzeOperationHelper.setOperationId(operation, operationId);
         }
         if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {
             AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();
-            operation.setOperationId(operationId);
+            AnalyzeBatchOperationHelper.setOperationId(operation, operationId);
         }
         return pollResponse;
     }
