@@ -264,9 +264,6 @@ public final class CertificateClient {
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
 
-        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
-            = getImplCertificatePolicy(policy);
-
         CertificateCreateParameters certificateCreateParameters
             = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(policy))
                 .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
