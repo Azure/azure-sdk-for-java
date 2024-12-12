@@ -1,10 +1,17 @@
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
@@ -16,21 +23,215 @@ import java.util.List;
  * This class contains the customization code to customize the AutoRest generated code for OpenAI.
  */
 public class DocumentIntelligenceCustomizations extends Customization {
+    private static final String MODELS_PACKAGE = "com.azure.ai.documentintelligence.models";
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeAnalzyeResultOperation(customization, logger);
+        customizeAnalyzeOperation(customization, logger);
+        customizeAnalyzeBatchOperation(customization, logger);
         customizePollingStrategy(customization, logger);
         customizePollingUtils(customization, logger);
+        customizeModifierForOverloadMethods(customization, logger);
+        customizeMethodImplForOverload(customization, logger);
+        customizeAnalyzeDocumentOptions(customization, logger);
+        customizeAnalyzeBatchDocumentOptions(customization, logger);
+        customizeClassifyDocumentOptions(customization, logger);
+        customizeSamplesForOverload(customization, logger);
     }
 
-    private void customizeAnalzyeResultOperation(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing the AnalyzeResultOperation class");
+    private void customizeSamplesForOverload(LibraryCustomization customization, Logger logger) {
+        logger.info("Removing samples using old overloads");
+        customization.getRawEditor().removeFile("src/samples/java/com/azure/ai/documentintelligence/generated/AnalyzeBatchDocuments.java");
+        customization.getRawEditor().removeFile("src/samples/java/com/azure/ai/documentintelligence/generated/AnalyzeDocumentFromBase64.java");
+        customization.getRawEditor().removeFile("src/samples/java/com/azure/ai/documentintelligence/generated/AnalyzeDocumentFromUrl.java");
+        customization.getRawEditor().removeFile("src/samples/java/com/azure/ai/documentintelligence/generated/ClassifyDocumentFromUrl.java");
+    }
+
+    private void customizeMethodImplForOverload(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing to call internal method implementation");
+        PackageCustomization models = customization.getPackage("com.azure.ai.documentintelligence");
+        ClassCustomization classCustomization = models.getClass("DocumentIntelligenceClient");
+        customizeImpl(classCustomization, "DocumentIntelligenceClient");
+        ClassCustomization asynClassCustomization = models.getClass("DocumentIntelligenceAsyncClient");
+        customizeImpl(asynClassCustomization, "DocumentIntelligenceAsyncClient");
+    }
+
+    private static void customizeImpl(ClassCustomization classCustomization, String className) {
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration documentIntelligenceClient = compilationUnit.getClassByName(className).get();
+            documentIntelligenceClient.getMethodsByName("beginAnalyzeDocument").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameters().size() == 2) {
+                    methodDeclaration.getParameterByName("analyzeRequest").get().setName("analyzeDocumentOptions");
+                    methodDeclaration.setBody(StaticJavaParser.parseBlock(String.join("\n",
+                        "{", "Objects.requireNonNull(analyzeDocumentOptions, \"'analyzeDocumentOptions' cannot be null.\");\n" +
+                            "        return this.beginAnalyzeDocument(modelId, analyzeDocumentOptions, analyzeDocumentOptions.getPages() != null ? CoreUtils.stringJoin(\",\", analyzeDocumentOptions.getPages()) : null, analyzeDocumentOptions.getLocale(), analyzeDocumentOptions.getStringIndexType(), analyzeDocumentOptions.getDocumentAnalysisFeatures(), analyzeDocumentOptions.getQueryFields(), analyzeDocumentOptions.getOutputContentFormat(), analyzeDocumentOptions.getOutput());\n" +
+                            "}")));
+                    methodDeclaration.setJavadocComment("/**\n" +
+                        "     * Analyzes document with document model.\n" +
+                        "     *\n" +
+                        "     * @param modelId Unique document model name.\n" +
+                        "     * @param analyzeDocumentOptions Analyze request parameters.\n" +
+                        "     * @throws IllegalArgumentException thrown if parameters fail the validation.\n" +
+                        "     * @throws HttpResponseException thrown if the request is rejected by server.\n" +
+                        "     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n" +
+                        "     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n" +
+                        "     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n" +
+                        "     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n" +
+                        "     * @return the {@link SyncPoller} for polling of long-running operation.\n" +
+                        "     */");
+
+                }
+            });
+
+            documentIntelligenceClient.getMethodsByName("beginAnalyzeBatchDocuments").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameters().size() == 2) {
+                    methodDeclaration.getParameterByName("analyzeBatchRequest").get().setName("analyzeBatchDocumentOptions");
+                    methodDeclaration.setBody(StaticJavaParser.parseBlock(String.join("\n",
+                        "{", "Objects.requireNonNull(analyzeBatchDocumentOptions, \"'analyzeBatchDocumentOptions' cannot be null.\");\n" +
+                            "        return this.beginAnalyzeBatchDocuments(modelId, analyzeBatchDocumentOptions, analyzeBatchDocumentOptions.getPages() != null ? CoreUtils.stringJoin(\",\", analyzeBatchDocumentOptions.getPages()) : null, analyzeBatchDocumentOptions.getLocale(), analyzeBatchDocumentOptions.getStringIndexType(), analyzeBatchDocumentOptions.getDocumentAnalysisFeatures(), analyzeBatchDocumentOptions.getQueryFields(), analyzeBatchDocumentOptions.getOutputContentFormat(), analyzeBatchDocumentOptions.getOutput());\n" +
+                            "}")));
+                    methodDeclaration.setJavadocComment("/**\n" +
+                        "     * Analyzes batch documents with document model.\n" +
+                        "     *\n" +
+                        "     * @param modelId Unique document model name.\n" +
+                        "     * @param analyzeBatchDocumentOptions Analyze batch request parameters.\n" +
+                        "     * @throws IllegalArgumentException thrown if parameters fail the validation.\n" +
+                        "     * @throws HttpResponseException thrown if the request is rejected by server.\n" +
+                        "     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n" +
+                        "     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n" +
+                        "     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n" +
+                        "     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n" +
+                        "     * @return the {@link SyncPoller} for polling of long-running operation.\n" +
+                        "     */");
+
+                }
+            });
+
+            documentIntelligenceClient.getMethodsByName("beginClassifyDocument").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameters().size() == 2) {
+                    methodDeclaration.getParameterByName("classifyRequest").get().setName("classifyDocumentOptions");
+                    methodDeclaration.setBody(StaticJavaParser.parseBlock(String.join("\n",
+                        "{", "Objects.requireNonNull(classifyDocumentOptions, \"'classifyDocumentOptions' cannot be null.\");\n" +
+                            "        return this.beginClassifyDocument(classifierId, classifyDocumentOptions, classifyDocumentOptions.getStringIndexType(), classifyDocumentOptions.getSplit(), classifyDocumentOptions.getPages() != null ? CoreUtils.stringJoin(\",\", classifyDocumentOptions.getPages()) : null);\n" +
+                            "}")));
+                    methodDeclaration.setJavadocComment("/**\n" +
+                        "     * Classifies document with document classifier.\n" +
+                        "     *\n" +
+                        "     * @param classifierId Unique document classifier name.\n" +
+                        "     * @param classifyDocumentOptions Classify request parameters.\n" +
+                        "     * @throws IllegalArgumentException thrown if parameters fail the validation.\n" +
+                        "     * @throws HttpResponseException thrown if the request is rejected by server.\n" +
+                        "     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.\n" +
+                        "     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.\n" +
+                        "     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.\n" +
+                        "     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.\n" +
+                        "     * @return the {@link SyncPoller} for polling of long-running operation.\n" +
+                        "     */");
+                }
+            });
+        });
+    }
+
+    private void customizeAnalyzeDocumentOptions(LibraryCustomization customization, Logger logger) {
+        ClassCustomization classCustomization = customization.getPackage(MODELS_PACKAGE)
+            .getClass("AnalyzeDocumentOptions");
+        classCustomization.getConstructor("AnalyzeDocumentOptions()")
+            .setModifier(0);
+
+        classCustomization.getMethod("setUrlSource").setModifier(0);
+        classCustomization.getMethod("setBytesSource").setModifier(0);
+        //addConstructors(classCustomization);
+    }
+
+    private void customizeAnalyzeBatchDocumentOptions(LibraryCustomization customization, Logger logger) {
+        ClassCustomization classCustomization = customization.getPackage(MODELS_PACKAGE)
+            .getClass("AnalyzeBatchDocumentsOptions");
+        classCustomization.getConstructor("AnalyzeBatchDocumentsOptions(String resultContainerUrl)")
+            .setModifier(0);
+
+        classCustomization.getMethod("setAzureBlobSource").setModifier(0);
+        classCustomization.getMethod("setAzureBlobFileListSource").setModifier(0);
+        //addConstructors(classCustomization);
+    }
+
+    private void customizeClassifyDocumentOptions(LibraryCustomization customization, Logger logger) {
+        ClassCustomization classCustomization = customization.getPackage(MODELS_PACKAGE)
+            .getClass("ClassifyDocumentOptions");
+        classCustomization.getConstructor("ClassifyDocumentOptions()")
+            .setModifier(0);
+
+        classCustomization.getMethod("setUrlSource").setModifier(0);
+        classCustomization.getMethod("setBytesSource").setModifier(0);
+        //addConstructors(classCustomization);
+    }
+
+    private void customizeModifierForOverloadMethods(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing to make overload methods package private");
+        PackageCustomization models = customization.getPackage("com.azure.ai.documentintelligence");
+        ClassCustomization classCustomization = models.getClass("DocumentIntelligenceClient");
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration documentIntelligenceClient = compilationUnit.getClassByName("DocumentIntelligenceClient").get();
+            documentIntelligenceClient.getMethodsByName("beginAnalyzeDocument").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameterByName("outputContentFormat").isPresent()) {
+                    methodDeclaration.removeModifier(Modifier.Keyword.PUBLIC);
+                }
+            });
+
+            documentIntelligenceClient.getMethodsByName("beginAnalyzeBatchDocuments").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameterByName("outputContentFormat").isPresent()) {
+                    methodDeclaration.removeModifier(Modifier.Keyword.PUBLIC);
+                }
+            });
+
+            documentIntelligenceClient.getMethodsByName("beginClassifyDocument").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameterByName("split").isPresent()) {
+                    methodDeclaration.removeModifier(Modifier.Keyword.PUBLIC);
+                }
+            });
+        });
+        ClassCustomization asyncClassCustomization = models.getClass("DocumentIntelligenceAsyncClient");
+        asyncClassCustomization.customizeAst(compilationUnit1 -> {
+            ClassOrInterfaceDeclaration documentIntelligenceAsyncClient = compilationUnit1.getClassByName("DocumentIntelligenceAsyncClient").get();
+            documentIntelligenceAsyncClient.getMethodsByName("beginAnalyzeDocument").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameterByName("outputContentFormat").isPresent()) {
+                    methodDeclaration.removeModifier(Modifier.Keyword.PUBLIC);
+                }
+            });
+
+            documentIntelligenceAsyncClient.getMethodsByName("beginAnalyzeBatchDocuments").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameterByName("outputContentFormat").isPresent()) {
+                    methodDeclaration.removeModifier(Modifier.Keyword.PUBLIC);
+                }
+            });
+
+            documentIntelligenceAsyncClient.getMethodsByName("beginClassifyDocument").forEach(methodDeclaration -> {
+                if (methodDeclaration.getParameterByName("split").isPresent()) {
+                    methodDeclaration.removeModifier(Modifier.Keyword.PUBLIC);
+                }
+            });
+        });
+    }
+
+    private void customizeAnalyzeOperation(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the AnalyzeOperation class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
-        packageCustomization.getClass("AnalyzeResultOperation")
+        packageCustomization.getClass("AnalyzeOperation")
             .removeAnnotation("Immutable")
             .customizeAst(ast ->
-                ast.getClassByName("AnalyzeResultOperation").ifPresent(clazz -> {
+                ast.getClassByName("AnalyzeOperation").ifPresent(clazz -> {
+                    addOperationIdField(clazz);
+                    addOperationIdGetter(clazz);
+                    addOperationIdSetter(clazz);
+                }));
+    }
+
+    private void customizeAnalyzeBatchOperation(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the AnalyzeBatchOperation class");
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
+        packageCustomization.getClass("AnalyzeBatchOperation")
+            .removeAnnotation("Immutable")
+            .customizeAst(ast ->
+                ast.getClassByName("AnalyzeBatchOperation").ifPresent(clazz -> {
                     addOperationIdField(clazz);
                     addOperationIdGetter(clazz);
                     addOperationIdSetter(clazz);
@@ -101,7 +302,8 @@ public class DocumentIntelligenceCustomizations extends Customization {
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.implementation");
         packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast ->
             ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
-                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeResultOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchOperation");
                 ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
                 addSyncPollOverrideMethod(clazz);
             }));
@@ -109,7 +311,8 @@ public class DocumentIntelligenceCustomizations extends Customization {
         logger.info("Customizing the OperationLocationPollingStrategy class");
         packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast ->
             ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
-                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeResultOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeOperation");
+                ast.addImport("com.azure.ai.documentintelligence.models.AnalyzeBatchOperation");
                 ast.addImport("static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId");
                 addAsyncPollOverrideMethod(clazz);
             }));
@@ -131,8 +334,12 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "        if (operationLocationHeader != null) {",
                 "            operationId = parseOperationId(operationLocationHeader);",
                 "        }",
-                "        if (pollResponse.getValue() instanceof AnalyzeResultOperation) {",
-                "            AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();",
+                "        if (pollResponse.getValue() instanceof AnalyzeOperation) {",
+                "            AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();",
+                "            operation.setOperationId(operationId);",
+                "        }",
+                "        if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {",
+                "            AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();",
                 "            operation.setOperationId(operationId);",
                 "        }",
                 "        return pollResponse;",
@@ -141,9 +348,6 @@ public class DocumentIntelligenceCustomizations extends Customization {
     }
 
     private void addSyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
-        clazz.findCompilationUnit().ifPresent(ast ->
-            ast.addImport("com.azure.communication.common.implementation.HmacAuthenticationPolicy"));
-
         clazz.addMethod("poll", Modifier.Keyword.PUBLIC)
             .setType("PollResponse<T>")
             .addParameter("PollingContext<T>", "pollingContext")
@@ -157,11 +361,17 @@ public class DocumentIntelligenceCustomizations extends Customization {
                 "if (operationLocationHeader != null) {",
                 "    operationId = parseOperationId(operationLocationHeader);",
                 "}",
-                "if (pollResponse.getValue() instanceof AnalyzeResultOperation) {",
-                "    AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();",
+                "if (pollResponse.getValue() instanceof AnalyzeOperation) {",
+                "    AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();",
+                "    operation.setOperationId(operationId);",
+                "}",
+                "if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {",
+                "    AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();",
                 "    operation.setOperationId(operationId);",
                 "}",
                 "return pollResponse;",
                 "}")));
     }
+
+
 }
