@@ -4,7 +4,11 @@
 
 ### Features Added
 
-- Initial release
+- Support Search API 2023-06-01
+
+### Breaking Changes
+
+- Remove Search API 1.0
 
 ## 1.0.0-beta.1 (2022-09-06)
 
