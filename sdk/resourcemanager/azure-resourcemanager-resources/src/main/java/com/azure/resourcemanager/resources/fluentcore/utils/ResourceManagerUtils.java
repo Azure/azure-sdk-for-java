@@ -26,7 +26,11 @@ import java.util.function.Function;
  * Defines a few utilities.
  */
 public final class ResourceManagerUtils {
-    private ResourceManagerUtils() {
+    /**
+     * Creates a new instance of ResourceManagerUtils.
+     */
+    @Deprecated
+    public ResourceManagerUtils() {
     }
 
     /**

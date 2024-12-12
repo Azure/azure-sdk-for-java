@@ -13,6 +13,17 @@ public class ETagState {
     private String eTagOnDelete;
 
     /**
+     * Creates a new instance of ETagState.
+     * 
+     * @deprecated Use the {@link #withImplicitETagCheckOnCreateOrUpdate(boolean)} 
+     * or {@link #withExplicitETagCheckOnUpdate(String)} 
+     * or {@link #withExplicitETagCheckOnDelete(String)} factory method.
+     */
+    @Deprecated
+    public CountryPhoneCode() {
+    }
+
+    /**
      * Specifies if it is in create or update with implicit ETag check.
      * @param isInCreateMode The boolean flag to indicate if it is in create mode.
      * @return the ETag state.

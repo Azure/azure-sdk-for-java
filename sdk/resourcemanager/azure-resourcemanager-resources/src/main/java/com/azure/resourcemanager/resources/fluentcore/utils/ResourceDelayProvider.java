@@ -10,6 +10,14 @@ import java.time.Duration;
  * The ResourceDelayProvider to help thread sleep.
  */
 public class ResourceDelayProvider implements DelayProvider {
+
+    /**
+     * Creates a new instance of ResourceDelayProvider.
+     */
+    @Deprecated
+    public ResourceDelayProvider() {
+    }
+
     @Override
     public Duration getDelayDuration(Duration delay) {
         return delay;
