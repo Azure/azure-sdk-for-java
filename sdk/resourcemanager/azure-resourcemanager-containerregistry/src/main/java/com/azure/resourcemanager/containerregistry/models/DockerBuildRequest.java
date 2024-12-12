@@ -356,7 +356,6 @@ public final class DockerBuildRequest extends RunRequest {
      */
     @Override
     public void validate() {
-        super.validate();
         if (dockerFilePath() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

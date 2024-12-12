@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class RegistriesListUsagesSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2024-11-01-preview/examples/
      * RegistryListUsages.json
      */
     /**
