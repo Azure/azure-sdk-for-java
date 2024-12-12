@@ -63,8 +63,6 @@ public final class TestUtils {
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL");
     public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
     public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
@@ -75,6 +73,8 @@ public final class TestUtils {
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final String DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
@@ -113,20 +113,10 @@ public final class TestUtils {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
 
-    public static void getBatchTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode));
-    }
-
-    /**
-     * Get the testing data set SAS Url value based on the test running mode.
-     *
-     * @return the testing data set Url
-     * @param isPlaybackMode boolean to indicate if the test running in playback mode
-     */
-    private static String getTestingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+    public static void getBatchTrainingDataContainerHelper(BiConsumer<String, String> testRunner,
+        boolean isPlaybackMode) {
+        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode),
+            getBatchTrainingFilesResultContainerUrl(isPlaybackMode));
     }
 
     /**
@@ -171,6 +161,17 @@ public final class TestUtils {
         return isPlaybackMode
             ? "https://isPlaybackmode"
             : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode
+            ? "https://isPlaybackmode"
+            : DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -241,6 +242,8 @@ public final class TestUtils {
             new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..source", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..resourceLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+            new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..resultUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
     }
 }

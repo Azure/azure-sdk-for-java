@@ -27,7 +27,8 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
     private SecretBase pfx;
 
     /*
-     * Web activity authentication user name for basic authentication. Type: string (or Expression with resultType string).
+     * Web activity authentication user name for basic authentication. Type: string (or Expression with resultType
+     * string).
      */
     private Object username;
 
@@ -37,12 +38,14 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
     private SecretBase password;
 
     /*
-     * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression with resultType string).
+     * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression
+     * with resultType string).
      */
     private Object resource;
 
     /*
-     * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string (or Expression with resultType string).
+     * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string
+     * (or Expression with resultType string).
      */
     private Object userTenant;
 

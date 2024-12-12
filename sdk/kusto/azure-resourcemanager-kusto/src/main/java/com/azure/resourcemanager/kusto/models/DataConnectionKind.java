@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Kind of the endpoint for the data connection. */
+/**
+ * Kind of the endpoint for the data connection.
+ */
 public final class DataConnectionKind extends ExpandableStringEnum<DataConnectionKind> {
-    /** Static value EventHub for DataConnectionKind. */
+    /**
+     * Static value EventHub for DataConnectionKind.
+     */
     public static final DataConnectionKind EVENT_HUB = fromString("EventHub");
 
-    /** Static value EventGrid for DataConnectionKind. */
+    /**
+     * Static value EventGrid for DataConnectionKind.
+     */
     public static final DataConnectionKind EVENT_GRID = fromString("EventGrid");
 
-    /** Static value IotHub for DataConnectionKind. */
+    /**
+     * Static value IotHub for DataConnectionKind.
+     */
     public static final DataConnectionKind IOT_HUB = fromString("IotHub");
 
-    /** Static value CosmosDb for DataConnectionKind. */
+    /**
+     * Static value CosmosDb for DataConnectionKind.
+     */
     public static final DataConnectionKind COSMOS_DB = fromString("CosmosDb");
 
     /**
      * Creates a new instance of DataConnectionKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class DataConnectionKind extends ExpandableStringEnum<DataConnectio
 
     /**
      * Creates or finds a DataConnectionKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataConnectionKind.
      */
-    @JsonCreator
     public static DataConnectionKind fromString(String name) {
         return fromString(name, DataConnectionKind.class);
     }
 
     /**
      * Gets known DataConnectionKind values.
-     *
+     * 
      * @return known DataConnectionKind values.
      */
     public static Collection<DataConnectionKind> values() {

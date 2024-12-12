@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for BareMetalMachines List. */
+/**
+ * Samples for BareMetalMachines List.
+ */
 public final class BareMetalMachinesListSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachines_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BareMetalMachines_ListBySubscription.json
      */
     /**
      * Sample code: List bare metal machines for subscription.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void listBareMetalMachinesForSubscription(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+    public static void
+        listBareMetalMachinesForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.bareMetalMachines().list(com.azure.core.util.Context.NONE);
     }
 }

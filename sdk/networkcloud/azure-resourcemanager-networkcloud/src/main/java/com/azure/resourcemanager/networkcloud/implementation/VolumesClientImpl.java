@@ -33,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.VolumesClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.VolumeInner;
 import com.azure.resourcemanager.networkcloud.models.VolumeList;
 import com.azure.resourcemanager.networkcloud.models.VolumePatchParameters;
@@ -40,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VolumesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumesClient.
+ */
 public final class VolumesClientImpl implements VolumesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VolumesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of VolumesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VolumesClientImpl(NetworkCloudImpl client) {
@@ -139,13 +146,13 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listSinglePageAsync() {
@@ -168,15 +175,15 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listSinglePageAsync(Context context) {
@@ -199,9 +206,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided subscription as paginated response with {@link PagedFlux}.
@@ -214,9 +221,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -231,9 +238,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided subscription as paginated response with {@link PagedIterable}.
@@ -245,9 +252,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the subscription.
-     *
-     * <p>Get a list of volumes in the provided subscription.
-     *
+     * 
+     * Get a list of volumes in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -261,15 +268,15 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -296,16 +303,16 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of volumes in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -333,9 +340,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -350,9 +357,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,9 +375,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,9 +391,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List volumes in the resource group.
-     *
-     * <p>Get a list of volumes in the provided resource group.
-     *
+     * 
+     * Get a list of volumes in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,9 +408,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,9 +445,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
@@ -475,9 +482,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,9 +500,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
@@ -512,9 +519,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Retrieve the volume.
-     *
-     * <p>Get properties of the provided volume.
-     *
+     * 
+     * Get properties of the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,17 +536,17 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume represents storage made available for use by resources running on the cluster along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return volume represents storage made available for use by resources running on the cluster along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -574,9 +581,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -584,8 +591,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume represents storage made available for use by resources running on the cluster along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return volume represents storage made available for use by resources running on the cluster along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -619,9 +626,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -629,7 +636,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of volume represents storage made available for use by resources
-     *     running on the cluster.
+     * running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -642,9 +649,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -653,7 +660,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of volume represents storage made available for use by resources
-     *     running on the cluster.
+     * running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -667,9 +674,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -677,7 +684,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of volume represents storage made available for use by resources
-     *     running on the cluster.
+     * running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName,
@@ -687,9 +694,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -698,7 +705,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of volume represents storage made available for use by resources
-     *     running on the cluster.
+     * running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName,
@@ -708,9 +715,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -718,7 +725,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume represents storage made available for use by resources running on the cluster on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> createOrUpdateAsync(String resourceGroupName, String volumeName,
@@ -729,9 +736,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -740,7 +747,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume represents storage made available for use by resources running on the cluster on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> createOrUpdateAsync(String resourceGroupName, String volumeName,
@@ -751,9 +758,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -769,9 +776,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create or update the volume.
-     *
-     * <p>Create a new volume or update the properties of the existing one.
-     *
+     * 
+     * Create a new volume or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeParameters The request body.
@@ -789,15 +796,16 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String volumeName) {
@@ -825,16 +833,17 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String volumeName,
@@ -862,163 +871,168 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String volumeName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String volumeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, volumeName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String volumeName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String volumeName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String volumeName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String volumeName) {
         return this.beginDeleteAsync(resourceGroupName, volumeName).getSyncPoller();
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String volumeName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String volumeName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, volumeName, context).getSyncPoller();
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String volumeName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String volumeName) {
         return beginDeleteAsync(resourceGroupName, volumeName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String volumeName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String volumeName, Context context) {
         return beginDeleteAsync(resourceGroupName, volumeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String volumeName) {
-        deleteAsync(resourceGroupName, volumeName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String volumeName) {
+        return deleteAsync(resourceGroupName, volumeName).block();
     }
 
     /**
      * Delete the volume.
-     *
-     * <p>Delete the provided volume.
-     *
+     * 
+     * Delete the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String volumeName, Context context) {
-        deleteAsync(resourceGroupName, volumeName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String volumeName, Context context) {
+        return deleteAsync(resourceGroupName, volumeName, context).block();
     }
 
     /**
      * Patch the volume.
-     *
-     * <p>Update tags associated with the provided volume.
-     *
+     * 
+     * Update tags associated with the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume represents storage made available for use by resources running on the cluster along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return volume represents storage made available for use by resources running on the cluster along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VolumeInner>> updateWithResponseAsync(String resourceGroupName, String volumeName,
@@ -1049,9 +1063,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Patch the volume.
-     *
-     * <p>Update tags associated with the provided volume.
-     *
+     * 
+     * Update tags associated with the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeUpdateParameters The request body.
@@ -1059,8 +1073,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume represents storage made available for use by resources running on the cluster along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return volume represents storage made available for use by resources running on the cluster along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VolumeInner>> updateWithResponseAsync(String resourceGroupName, String volumeName,
@@ -1091,16 +1105,16 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Patch the volume.
-     *
-     * <p>Update tags associated with the provided volume.
-     *
+     * 
+     * Update tags associated with the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volume represents storage made available for use by resources running on the cluster on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> updateAsync(String resourceGroupName, String volumeName) {
@@ -1111,9 +1125,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Patch the volume.
-     *
-     * <p>Update tags associated with the provided volume.
-     *
+     * 
+     * Update tags associated with the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @param volumeUpdateParameters The request body.
@@ -1121,8 +1135,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume represents storage made available for use by resources running on the cluster along with {@link
-     *     Response}.
+     * @return volume represents storage made available for use by resources running on the cluster along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeInner> updateWithResponse(String resourceGroupName, String volumeName,
@@ -1132,9 +1146,9 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Patch the volume.
-     *
-     * <p>Update tags associated with the provided volume.
-     *
+     * 
+     * Update tags associated with the provided volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1150,14 +1164,13 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volumeList represents a list of volumes along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1179,15 +1192,14 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volumeList represents a list of volumes along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1207,14 +1219,13 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volumeList represents a list of volumes along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1236,15 +1247,14 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volumeList represents a list of volumes along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VolumeInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {

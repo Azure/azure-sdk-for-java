@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -31,6 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     private static final Map<String, String> TEST_METADATA = Collections.singletonMap("testmetadata", "value");
     private static final String REALLY_LONG_STRING
         = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
-    private static final List<ShareCorsRule> TOO_MANY_RULES = new ArrayList<ShareCorsRule>();
+    private static final List<ShareCorsRule> TOO_MANY_RULES = new ArrayList<>();
     private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER
         = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(REALLY_LONG_STRING));
     private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER
@@ -118,8 +120,9 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void deleteShare() {
-        primaryFileServiceAsyncClient.createShare(shareName).block();
-        StepVerifier.create(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null))
+        StepVerifier
+            .create(primaryFileServiceAsyncClient.createShare(shareName)
+                .then(primaryFileServiceAsyncClient.deleteShareWithResponse(shareName, null)))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202))
             .verifyComplete();
     }
@@ -143,12 +146,14 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 share.setMetadata(TEST_METADATA);
             }
             testShares.add(share);
-            primaryFileServiceAsyncClient
-                .createShareWithResponse(share.getName(), share.getMetadata(), share.getProperties().getQuota())
-                .block();
         }
 
-        StepVerifier.create(primaryFileServiceAsyncClient.listShares(options.setPrefix(prefix)))
+        Flux<ShareItem> createShares = Flux.fromIterable(testShares)
+            .flatMap(share -> primaryFileServiceAsyncClient.createShareWithResponse(share.getName(),
+                share.getMetadata(), share.getProperties().getQuota()))
+            .thenMany(primaryFileServiceAsyncClient.listShares(options.setPrefix(prefix)));
+
+        StepVerifier.create(createShares)
             .thenConsumeWhile(
                 it -> FileShareTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot))
             .verifyComplete();
@@ -171,30 +176,34 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     public void listSharesWithArgs(ListSharesOptions options, int limits, boolean includeMetadata,
         boolean includeSnapshot) {
         LinkedList<ShareItem> testShares = new LinkedList<>();
-        for (int i = 0; i < 3; i++) {
+        Flux<ShareItem> createSharesFlux = Flux.range(0, 3).flatMap(i -> {
             ShareItem share = new ShareItem().setName(shareName + i)
                 .setProperties(new ShareProperties().setQuota(2))
                 .setMetadata(TEST_METADATA);
             ShareAsyncClient shareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(share.getName());
-            shareAsyncClient.createWithResponse(share.getMetadata(), share.getProperties().getQuota()).block();
+            Mono<ShareItem> createShareMono
+                = shareAsyncClient.createWithResponse(share.getMetadata(), share.getProperties().getQuota())
+                    .then(Mono.just(share));
             if (i == 2) {
-                StepVerifier.create(shareAsyncClient.createSnapshotWithResponse(null)).assertNext(it -> {
-                    testShares.add(new ShareItem().setName(share.getName())
-                        .setMetadata(share.getMetadata())
-                        .setProperties(share.getProperties())
-                        .setSnapshot(it.getValue().getSnapshot()));
-                    FileShareTestHelper.assertResponseStatusCode(it, 201);
-                }).verifyComplete();
+                createShareMono
+                    = createShareMono.then(shareAsyncClient.createSnapshotWithResponse(null).map(snapshotResponse -> {
+                        ShareItem snapshotShare = new ShareItem().setName(share.getName())
+                            .setMetadata(share.getMetadata())
+                            .setProperties(share.getProperties())
+                            .setSnapshot(snapshotResponse.getValue().getSnapshot());
+                        FileShareTestHelper.assertResponseStatusCode(snapshotResponse, 201);
+                        return snapshotShare;
+                    }));
             }
-            testShares.add(share);
-        }
+            return createShareMono.doOnNext(testShares::add);
+        });
 
-        StepVerifier.create(primaryFileServiceAsyncClient.listShares(options.setPrefix(prefix)))
+        StepVerifier
+            .create(createSharesFlux.thenMany(primaryFileServiceAsyncClient.listShares(options.setPrefix(prefix))))
             .assertNext(
                 it -> FileShareTestHelper.assertSharesAreEqual(testShares.pop(), it, includeMetadata, includeSnapshot))
             .expectNextCount(limits - 1)
             .verifyComplete();
-
     }
 
     private static Stream<Arguments> listSharesWithArgsSupplier() {
@@ -207,14 +216,19 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     @Test
     public void listSharesWithPremiumShare() {
         String premiumShareName = generateShareName();
-        premiumFileServiceAsyncClient.createShare(premiumShareName).block();
+        Mono<ShareAsyncClient> createShareMono = premiumFileServiceAsyncClient.createShare(premiumShareName);
 
-        Flux<ShareItem> shares = premiumFileServiceAsyncClient.listShares()
-            .filter(item -> Objects.equals(item.getName(), premiumShareName));
-        ShareProperties shareProperty = Objects.requireNonNull(shares.blockFirst()).getProperties();
-        assertNotNull(shareProperty.getETag());
-        assertNotNull(shareProperty.getLastModified());
+        Flux<ShareItem> shares = createShareMono.thenMany(premiumFileServiceAsyncClient.listShares()
+            .filter(item -> Objects.equals(item.getName(), premiumShareName))
+            .next()
+            .flatMap(shareItem -> {
+                ShareProperties shareProperty = shareItem.getProperties();
+                assertNotNull(shareProperty.getETag());
+                assertNotNull(shareProperty.getLastModified());
+                return Mono.empty();
+            }));
 
+        StepVerifier.create(shares).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -251,7 +265,9 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetProperties() {
-        ShareServiceProperties originalProperties = primaryFileServiceAsyncClient.getProperties().block();
+        Mono<Tuple2<ShareServiceProperties, Response<ShareServiceProperties>>> originalProperties = Mono.zip(
+            primaryFileServiceAsyncClient.getProperties(), primaryFileServiceAsyncClient.getPropertiesWithResponse());
+
         ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
         ShareMetrics metrics = new ShareMetrics().setEnabled(true)
             .setIncludeApis(false)
@@ -260,18 +276,19 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         ShareServiceProperties updatedProperties
             = new ShareServiceProperties().setHourMetrics(metrics).setMinuteMetrics(metrics).setCors(new ArrayList<>());
 
-        StepVerifier.create(primaryFileServiceAsyncClient.getPropertiesWithResponse()).assertNext(it -> {
-            FileShareTestHelper.assertResponseStatusCode(it, 200);
-            assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue()));
+        StepVerifier.create(originalProperties).assertNext(tuple -> {
+            FileShareTestHelper.assertResponseStatusCode(tuple.getT2(), 200);
+            assertTrue(
+                FileShareTestHelper.assertFileServicePropertiesAreEqual(tuple.getT1(), tuple.getT2().getValue()));
         }).verifyComplete();
 
         StepVerifier.create(primaryFileServiceAsyncClient.setPropertiesWithResponse(updatedProperties))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202))
+            .assertNext(response -> FileShareTestHelper.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
-        StepVerifier.create(primaryFileServiceAsyncClient.getPropertiesWithResponse()).assertNext(it -> {
-            FileShareTestHelper.assertResponseStatusCode(it, 200);
-            assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, it.getValue()));
+        StepVerifier.create(primaryFileServiceAsyncClient.getPropertiesWithResponse()).assertNext(response -> {
+            FileShareTestHelper.assertResponseStatusCode(response, 200);
+            assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, response.getValue()));
         }).verifyComplete();
     }
 
@@ -307,7 +324,9 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         ShareServiceAsyncClient oAuthServiceClient
             = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
 
-        ShareServiceProperties originalProperties = oAuthServiceClient.getProperties().block();
+        Mono<Tuple2<ShareServiceProperties, Response<ShareServiceProperties>>> originalProperties
+            = Mono.zip(oAuthServiceClient.getProperties(), oAuthServiceClient.getPropertiesWithResponse());
+
         ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
         ShareMetrics metrics = new ShareMetrics().setEnabled(true)
             .setIncludeApis(false)
@@ -316,9 +335,10 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         ShareServiceProperties updatedProperties
             = new ShareServiceProperties().setHourMetrics(metrics).setMinuteMetrics(metrics).setCors(new ArrayList<>());
 
-        StepVerifier.create(oAuthServiceClient.getPropertiesWithResponse()).assertNext(it -> {
-            FileShareTestHelper.assertResponseStatusCode(it, 200);
-            assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties, it.getValue()));
+        StepVerifier.create(originalProperties).assertNext(tuple -> {
+            FileShareTestHelper.assertResponseStatusCode(tuple.getT2(), 200);
+            assertTrue(
+                FileShareTestHelper.assertFileServicePropertiesAreEqual(tuple.getT1(), tuple.getT2().getValue()));
         }).verifyComplete();
 
         StepVerifier.create(oAuthServiceClient.setPropertiesWithResponse(updatedProperties))
@@ -329,7 +349,6 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             FileShareTestHelper.assertResponseStatusCode(it, 200);
             assertTrue(FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, it.getValue()));
         }).verifyComplete();
-
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
@@ -337,20 +356,20 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     public void restoreShareMin() {
         ShareAsyncClient shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         String fileName = generatePathName();
-        ShareItem shareItem = shareClient.create()
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
+        Mono<ShareItem> shareItemMono = shareClient.create()
             .then(shareClient.getFileClient(fileName).create(2))
             .then(shareClient.delete())
+            .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryFileServiceAsyncClient
                 .listShares(new ListSharesOptions().setPrefix(shareClient.getShareName()).setIncludeDeleted(true))
-                .next())
-            .block();
-        sleepIfRunningAgainstService(30000);
-        assertNotNull(shareItem);
-        Mono<ShareAsyncClient> restoredShareClientMono
-            = primaryFileServiceAsyncClient.undeleteShare(shareItem.getName(), shareItem.getVersion());
-        StepVerifier.create(restoredShareClientMono.flatMap(it -> it.getFileClient(fileName).exists()))
-            .assertNext(Assertions::assertTrue)
-            .verifyComplete();
+                .next());
+
+        StepVerifier.create(shareItemMono.flatMap(shareItem -> {
+            assertNotNull(shareItem);
+            return primaryFileServiceAsyncClient.undeleteShare(shareItem.getName(), shareItem.getVersion())
+                .flatMap(restoredShareClient -> restoredShareClient.getFileClient(fileName).exists());
+        })).assertNext(Assertions::assertTrue).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -383,23 +402,21 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     public void restoreShareMax() {
         ShareAsyncClient shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         String fileName = generatePathName();
-        ShareItem shareItem = shareClient.create()
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
+        Mono<ShareItem> shareItemMono = shareClient.create()
             .then(shareClient.getFileClient(fileName).create(2))
             .then(shareClient.delete())
+            .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryFileServiceAsyncClient
                 .listShares(new ListSharesOptions().setPrefix(shareClient.getShareName()).setIncludeDeleted(true))
-                .next())
-            .block();
-        sleepIfRunningAgainstService(30000);
+                .next());
 
-        assertNotNull(shareItem);
-        Mono<ShareAsyncClient> restoredShareClientMono
-            = primaryFileServiceAsyncClient.undeleteShareWithResponse(shareItem.getName(), shareItem.getVersion())
-                .map(Response::getValue);
-
-        StepVerifier.create(restoredShareClientMono.flatMap(it -> it.getFileClient(fileName).exists()))
-            .assertNext(Assertions::assertTrue)
-            .verifyComplete();
+        StepVerifier.create(shareItemMono.flatMap(shareItem -> {
+            assertNotNull(shareItem);
+            return primaryFileServiceAsyncClient.undeleteShareWithResponse(shareItem.getName(), shareItem.getVersion())
+                .map(Response::getValue)
+                .flatMap(restoredShareClient -> restoredShareClient.getFileClient(fileName).exists());
+        })).assertNext(Assertions::assertTrue).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")

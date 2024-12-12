@@ -40,14 +40,14 @@ public final class TagsImpl implements Tags {
         String operationId) {
         PagedIterable<TagContractInner> inner
             = this.serviceClient().listByOperation(resourceGroupName, serviceName, apiId, operationId);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TagContract> listByOperation(String resourceGroupName, String serviceName, String apiId,
         String operationId, String filter, Integer top, Integer skip, Context context) {
         PagedIterable<TagContractInner> inner = this.serviceClient()
             .listByOperation(resourceGroupName, serviceName, apiId, operationId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(String resourceGroupName,
@@ -120,14 +120,14 @@ public final class TagsImpl implements Tags {
 
     public PagedIterable<TagContract> listByApi(String resourceGroupName, String serviceName, String apiId) {
         PagedIterable<TagContractInner> inner = this.serviceClient().listByApi(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TagContract> listByApi(String resourceGroupName, String serviceName, String apiId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<TagContractInner> inner
             = this.serviceClient().listByApi(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(String resourceGroupName, String serviceName,
@@ -194,14 +194,14 @@ public final class TagsImpl implements Tags {
     public PagedIterable<TagContract> listByProduct(String resourceGroupName, String serviceName, String productId) {
         PagedIterable<TagContractInner> inner
             = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TagContract> listByProduct(String resourceGroupName, String serviceName, String productId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<TagContractInner> inner
             = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(String resourceGroupName,
@@ -268,14 +268,14 @@ public final class TagsImpl implements Tags {
 
     public PagedIterable<TagContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<TagContractInner> inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TagContract> listByService(String resourceGroupName, String serviceName, String filter,
         Integer top, Integer skip, String scope, Context context) {
         PagedIterable<TagContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, scope, context);
-        return Utils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagContractImpl(inner1, this.manager()));
     }
 
     public TagsGetEntityStateResponse getEntityStateWithResponse(String resourceGroupName, String serviceName,
@@ -317,17 +317,17 @@ public final class TagsImpl implements Tags {
     }
 
     public TagContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String tagId = Utils.getValueFromIdByName(id, "tags");
+        String tagId = ResourceManagerUtils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
@@ -336,17 +336,17 @@ public final class TagsImpl implements Tags {
     }
 
     public Response<TagContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String tagId = Utils.getValueFromIdByName(id, "tags");
+        String tagId = ResourceManagerUtils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
@@ -355,17 +355,17 @@ public final class TagsImpl implements Tags {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String tagId = Utils.getValueFromIdByName(id, "tags");
+        String tagId = ResourceManagerUtils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));
@@ -375,17 +375,17 @@ public final class TagsImpl implements Tags {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String tagId = Utils.getValueFromIdByName(id, "tags");
+        String tagId = ResourceManagerUtils.getValueFromIdByName(id, "tags");
         if (tagId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tags'.", id)));

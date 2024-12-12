@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ClientGroupProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of client group.
  */
 @Fluent
-public final class ClientGroupProperties {
+public final class ClientGroupProperties implements JsonSerializable<ClientGroupProperties> {
     /*
      * Description for the Client Group resource.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The grouping query for the clients.
      * Example : attributes.keyName IN ['a', 'b', 'c'].
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * Provisioning state of the ClientGroup resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ClientGroupProvisioningState provisioningState;
 
     /**
@@ -95,5 +96,47 @@ public final class ClientGroupProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("query", this.query);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientGroupProperties.
+     */
+    public static ClientGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientGroupProperties deserializedClientGroupProperties = new ClientGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedClientGroupProperties.description = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedClientGroupProperties.query = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClientGroupProperties.provisioningState
+                        = ClientGroupProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientGroupProperties;
+        });
     }
 }

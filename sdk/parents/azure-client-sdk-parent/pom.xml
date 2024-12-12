@@ -262,6 +262,8 @@
     <animal.sniffer.skip>true</animal.sniffer.skip>
 
     <animal.sniffer.ignores></animal.sniffer.ignores>
+    <maven.test.skip>false</maven.test.skip>
+    <maven.javadoc.skip>false</maven.javadoc.skip>
   </properties>
 
   <dependencies>
@@ -768,10 +770,11 @@
           <configuration>
             <skip>${spotbugs.skip}</skip>
             <effort>max</effort>
-            <threshold>Low</threshold>
+            <threshold>low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
+            <includeFilterFile>spotbugs/spotbugs-include.xml</includeFilterFile>
             <fork>true</fork>
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
@@ -797,6 +800,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
+            <skip>${maven.javadoc.skip}</skip>
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
@@ -907,6 +911,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
+            <skip>${maven.test.skip}</skip>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
@@ -956,6 +961,7 @@
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <configuration>
+            <skip>${maven.test.skip}</skip>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">

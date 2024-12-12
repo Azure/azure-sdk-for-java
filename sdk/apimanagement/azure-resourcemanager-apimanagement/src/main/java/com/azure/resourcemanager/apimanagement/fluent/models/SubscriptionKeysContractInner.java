@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Subscription keys. */
+/**
+ * Subscription keys.
+ */
 @Fluent
-public final class SubscriptionKeysContractInner {
+public final class SubscriptionKeysContractInner implements JsonSerializable<SubscriptionKeysContractInner> {
     /*
      * Subscription primary key.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Subscription secondary key.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
-    /** Creates an instance of SubscriptionKeysContractInner class. */
+    /**
+     * Creates an instance of SubscriptionKeysContractInner class.
+     */
     public SubscriptionKeysContractInner() {
     }
 
     /**
      * Get the primaryKey property: Subscription primary key.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -37,7 +43,7 @@ public final class SubscriptionKeysContractInner {
 
     /**
      * Set the primaryKey property: Subscription primary key.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the SubscriptionKeysContractInner object itself.
      */
@@ -48,7 +54,7 @@ public final class SubscriptionKeysContractInner {
 
     /**
      * Get the secondaryKey property: Subscription secondary key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -57,7 +63,7 @@ public final class SubscriptionKeysContractInner {
 
     /**
      * Set the secondaryKey property: Subscription secondary key.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the SubscriptionKeysContractInner object itself.
      */
@@ -68,9 +74,49 @@ public final class SubscriptionKeysContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionKeysContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionKeysContractInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionKeysContractInner.
+     */
+    public static SubscriptionKeysContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionKeysContractInner deserializedSubscriptionKeysContractInner
+                = new SubscriptionKeysContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKey".equals(fieldName)) {
+                    deserializedSubscriptionKeysContractInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedSubscriptionKeysContractInner.secondaryKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionKeysContractInner;
+        });
     }
 }

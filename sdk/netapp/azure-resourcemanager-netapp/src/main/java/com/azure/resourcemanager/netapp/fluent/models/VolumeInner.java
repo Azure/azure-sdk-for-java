@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -228,7 +230,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -240,7 +242,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
@@ -479,7 +481,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
      * 
      * @return the volumeType value.
      */
@@ -489,7 +491,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
      * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeInner object itself.
@@ -524,6 +526,40 @@ public final class VolumeInner extends Resource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withDataProtection(dataProtection);
+        return this;
+    }
+
+    /**
+     * Get the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
+     */
+    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().acceptGrowCapacityPoolForShortTermCloneSplit();
+    }
+
+    /**
+     * Set the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @param acceptGrowCapacityPoolForShortTermCloneSplit the acceptGrowCapacityPoolForShortTermCloneSplit value to
+     * set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withAcceptGrowCapacityPoolForShortTermCloneSplit(
+        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties()
+            .withAcceptGrowCapacityPoolForShortTermCloneSplit(acceptGrowCapacityPoolForShortTermCloneSplit);
         return this;
     }
 
@@ -923,7 +959,10 @@ public final class VolumeInner extends Resource {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users.
+     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
+     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
+     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
+     * as its last saved value only.
      * 
      * @return the unixPermissions value.
      */
@@ -936,7 +975,10 @@ public final class VolumeInner extends Resource {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users.
+     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
+     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
+     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
+     * as its last saved value only.
      * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumeInner object itself.
@@ -1272,6 +1314,38 @@ public final class VolumeInner extends Resource {
      */
     public String originatingResourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().originatingResourceId();
+    }
+
+    /**
+     * Get the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    public Long inheritedSizeInBytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
+    }
+
+    /**
+     * Get the language property: Language supported for volume.
+     * 
+     * @return the language value.
+     */
+    public VolumeLanguage language() {
+        return this.innerProperties() == null ? null : this.innerProperties().language();
+    }
+
+    /**
+     * Set the language property: Language supported for volume.
+     * 
+     * @param language the language value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withLanguage(VolumeLanguage language) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withLanguage(language);
+        return this;
     }
 
     /**

@@ -6,9 +6,13 @@ package com.azure.ai.openai.implementation;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -83,13 +87,24 @@ public final class OpenAIServerSentEvents<T> {
             dataValue = split[1].substring(1);
         }
 
-        T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8),
-            TypeReference.createInstance(type));
-        if (value == null) {
-            throw new IllegalStateException("Failed to deserialize the data value " + dataValue);
+        if (!isValidJson(dataValue)) {
+            throw new IllegalStateException("Invalid Json format " + dataValue);
+        } else {
+            T value = SERIALIZER.deserializeFromBytes(dataValue.getBytes(StandardCharsets.UTF_8),
+                TypeReference.createInstance(type));
+            if (value == null) {
+                throw new IllegalStateException("Failed to deserialize the data value " + dataValue);
+            }
+            values.add(value);
         }
+    }
 
-        values.add(value);
-
+    private static boolean isValidJson(String jsonString) {
+        try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
+            jsonReader.readUntyped();
+            return true;
+        } catch (IOException ignored) {
+            return false;
+        }
     }
 }

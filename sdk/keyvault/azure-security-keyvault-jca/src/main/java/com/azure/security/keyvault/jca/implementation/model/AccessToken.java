@@ -108,7 +108,7 @@ public class AccessToken implements JsonSerializable<AccessToken> {
                 if ("access_token".equals(fieldName)) {
                     deserializedAccessToken.accessToken = reader.getString();
                 } else if ("expires_in".equals(fieldName)) {
-                    deserializedAccessToken.expiresIn = reader.getLong();
+                    deserializedAccessToken.expiresIn = Long.parseLong(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

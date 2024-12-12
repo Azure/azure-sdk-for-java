@@ -6,29 +6,30 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub FcmV1Credential.
  */
 @Fluent
-public final class FcmV1CredentialProperties {
+public final class FcmV1CredentialProperties implements JsonSerializable<FcmV1CredentialProperties> {
     /*
      * Gets or sets client email.
      */
-    @JsonProperty(value = "clientEmail")
     private String clientEmail;
 
     /*
      * Gets or sets private key.
      */
-    @JsonProperty(value = "privateKey")
     private String privateKey;
 
     /*
      * Gets or sets project id.
      */
-    @JsonProperty(value = "projectId")
     private String projectId;
 
     /**
@@ -104,18 +105,64 @@ public final class FcmV1CredentialProperties {
      */
     public void validate() {
         if (clientEmail() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientEmail in model FcmV1CredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientEmail in model FcmV1CredentialProperties"));
         }
         if (privateKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property privateKey in model FcmV1CredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateKey in model FcmV1CredentialProperties"));
         }
         if (projectId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property projectId in model FcmV1CredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property projectId in model FcmV1CredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FcmV1CredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientEmail", this.clientEmail);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        jsonWriter.writeStringField("projectId", this.projectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FcmV1CredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FcmV1CredentialProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FcmV1CredentialProperties.
+     */
+    public static FcmV1CredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FcmV1CredentialProperties deserializedFcmV1CredentialProperties = new FcmV1CredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientEmail".equals(fieldName)) {
+                    deserializedFcmV1CredentialProperties.clientEmail = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedFcmV1CredentialProperties.privateKey = reader.getString();
+                } else if ("projectId".equals(fieldName)) {
+                    deserializedFcmV1CredentialProperties.projectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFcmV1CredentialProperties;
+        });
+    }
 }

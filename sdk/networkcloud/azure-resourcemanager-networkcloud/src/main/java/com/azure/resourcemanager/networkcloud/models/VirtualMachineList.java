@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** VirtualMachineList represents a list of virtual machines. */
+/**
+ * VirtualMachineList represents a list of virtual machines.
+ */
 @Fluent
-public final class VirtualMachineList {
+public final class VirtualMachineList implements JsonSerializable<VirtualMachineList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of virtual machines.
      */
-    @JsonProperty(value = "value")
     private List<VirtualMachineInner> value;
 
-    /** Creates an instance of VirtualMachineList class. */
+    /**
+     * Creates an instance of VirtualMachineList class.
+     */
     public VirtualMachineList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class VirtualMachineList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineList object itself.
      */
@@ -50,7 +56,7 @@ public final class VirtualMachineList {
 
     /**
      * Get the value property: The list of virtual machines.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineInner> value() {
@@ -59,7 +65,7 @@ public final class VirtualMachineList {
 
     /**
      * Set the value property: The list of virtual machines.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineList object itself.
      */
@@ -70,12 +76,53 @@ public final class VirtualMachineList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineList.
+     */
+    public static VirtualMachineList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineList deserializedVirtualMachineList = new VirtualMachineList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<VirtualMachineInner> value
+                        = reader.readArray(reader1 -> VirtualMachineInner.fromJson(reader1));
+                    deserializedVirtualMachineList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineList;
+        });
     }
 }

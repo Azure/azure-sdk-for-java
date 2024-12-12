@@ -29,6 +29,12 @@ public final class KeyVaultTrustManagerFactory extends TrustManagerFactorySpi {
     private final List<TrustManager> trustManagers = new ArrayList<>();
 
     /**
+     * Creates a new instance of {@link KeyVaultTrustManagerFactory}.
+     */
+    public KeyVaultTrustManagerFactory() {
+    }
+
+    /**
      * Engine init.
      *
      * @param keystore the keystore

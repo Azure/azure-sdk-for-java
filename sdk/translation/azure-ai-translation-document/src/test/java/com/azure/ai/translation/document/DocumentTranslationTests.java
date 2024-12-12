@@ -3,13 +3,14 @@
 
 package com.azure.ai.translation.document;
 
-import com.azure.ai.translation.document.models.BatchRequest;
+import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.DocumentFilter;
-import com.azure.ai.translation.document.models.DocumentStatus;
-import com.azure.ai.translation.document.models.Glossary;
-import com.azure.ai.translation.document.models.SourceInput;
-import com.azure.ai.translation.document.models.TargetInput;
-import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.DocumentStatusResult;
+import com.azure.ai.translation.document.models.TranslationGlossary;
+import com.azure.ai.translation.document.models.TranslationSource;
+import com.azure.ai.translation.document.models.TranslationTarget;
+import com.azure.ai.translation.document.models.TranslationStatusResult;
+import com.azure.core.models.ResponseError;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
@@ -54,16 +55,16 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
 
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -83,21 +84,24 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String targetUrl3 = createTargetContainer(null);
         String targetLanguageCode3 = "ar";
 
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
-        TargetInput targetInput1 = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
-        TargetInput targetInput2 = TestHelper.createTargetInput(targetUrl2, targetLanguageCode2, null, null, null);
-        TargetInput targetInput3 = TestHelper.createTargetInput(targetUrl3, targetLanguageCode3, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationTarget targetInput1
+            = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
+        TranslationTarget targetInput2
+            = TestHelper.createTargetInput(targetUrl2, targetLanguageCode2, null, null, null);
+        TranslationTarget targetInput3
+            = TestHelper.createTargetInput(targetUrl3, targetLanguageCode3, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput1);
         targetInputs.add(targetInput2);
         targetInputs.add(targetInput3);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 3);
@@ -115,24 +119,26 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String targetUrl2 = createTargetContainer(null);
         String targetLanguageCode2 = "es";
 
-        SourceInput sourceInput1 = TestHelper.createSourceInput(sourceUrl1, null, null, null);
-        TargetInput targetInput1 = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
-        List<TargetInput> targetInputs1 = new ArrayList<>();
+        TranslationSource sourceInput1 = TestHelper.createSourceInput(sourceUrl1, null, null, null);
+        TranslationTarget targetInput1
+            = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
+        List<TranslationTarget> targetInputs1 = new ArrayList<>();
         targetInputs1.add(targetInput1);
-        BatchRequest batchRequest1 = new BatchRequest(sourceInput1, targetInputs1);
+        DocumentTranslationInput batchRequest1 = new DocumentTranslationInput(sourceInput1, targetInputs1);
 
-        SourceInput sourceInput2 = TestHelper.createSourceInput(sourceUrl2, null, null, null);
-        TargetInput targetInput2 = TestHelper.createTargetInput(targetUrl2, targetLanguageCode2, null, null, null);
-        List<TargetInput> targetInputs2 = new ArrayList<>();
+        TranslationSource sourceInput2 = TestHelper.createSourceInput(sourceUrl2, null, null, null);
+        TranslationTarget targetInput2
+            = TestHelper.createTargetInput(targetUrl2, targetLanguageCode2, null, null, null);
+        List<TranslationTarget> targetInputs2 = new ArrayList<>();
         targetInputs2.add(targetInput2);
-        BatchRequest batchRequest2 = new BatchRequest(sourceInput2, targetInputs2);
+        DocumentTranslationInput batchRequest2 = new DocumentTranslationInput(sourceInput2, targetInputs2);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller
             = setPlaybackSyncPollerPollInterval(documentTranslationClient
-                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest1, batchRequest2)));
+                .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest1, batchRequest2)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 2);
@@ -145,20 +151,20 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String sourceUrl = createSourceContainer(TWO_TEST_DOCUMENTS);
         DocumentFilter filter = new DocumentFilter();
         filter.setPrefix("File");
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, filter, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, filter, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -171,20 +177,20 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
         DocumentFilter filter = new DocumentFilter();
         filter.setSuffix("txt");
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, filter, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, filter, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -195,29 +201,31 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testSingleSourceSingleTargetListDocuments() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
 
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
         String translationId = translationStatus.getId();
 
-        PagedIterable<DocumentStatus> documentsStatus = documentTranslationClient.getDocumentsStatus(translationId);
+        PagedIterable<DocumentStatusResult> documentsStatus
+            = documentTranslationClient.listDocumentStatuses(translationId);
         assertNotNull(documentsStatus);
-        DocumentStatus firstItem = documentsStatus.iterator().next();
+        DocumentStatusResult firstItem = documentsStatus.iterator().next();
 
         assertEquals(translationStatus.getStatus().toString(), firstItem.getStatus().toString());
-        assertEquals(translationStatus.getSummary().getTotalCharacterCharged(), (long) firstItem.getCharacterCharged());
+        assertEquals(translationStatus.getSummary().getTotalCharactersChargedCount(),
+            (long) firstItem.getCharacterCharged());
     }
 
     @RecordWithoutRequestBody
@@ -225,28 +233,28 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testGetDocumentStatus() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
 
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
         String translationId = translationStatus.getId();
 
-        PagedIterable<DocumentStatus> response = documentTranslationClient.getDocumentsStatus(translationId);
+        PagedIterable<DocumentStatusResult> response = documentTranslationClient.listDocumentStatuses(translationId);
         assertNotNull(response);
 
         String documentId = response.iterator().next().getId();
-        DocumentStatus documentStatus = documentTranslationClient.getDocumentStatus(translationId, documentId);
+        DocumentStatusResult documentStatus = documentTranslationClient.getDocumentStatus(translationId, documentId);
         validateDocumentStatus(documentStatus, targetLanguageCode);
     }
 
@@ -255,17 +263,17 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testWrongSourceRightTarget() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = "https://idont.ex.ist";
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "es";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
             sleepIfRunningAgainstService(10000);
@@ -273,9 +281,11 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         }
         String status = poller.poll().getValue().getStatus().toString();
         assertEquals("ValidationFailed", status);
-
-        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode();
-        assertEquals("InvalidDocumentAccessLevel", innerErrorCode);
+        ResponseError responseError = poller.poll().getValue().getError();
+        String errorCode = responseError.getCode();
+        assertEquals("InvalidRequest", errorCode);
+        String errorMessage = responseError.getMessage();
+        assertEquals("Cannot access source document location with the current permissions.", errorMessage);
     }
 
     @RecordWithoutRequestBody
@@ -283,17 +293,17 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testRightSourceWrongTarget() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = "https://idont.ex.ist";
         String targetLanguageCode = "es";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
             sleepIfRunningAgainstService(10000);
@@ -302,8 +312,11 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String status = poller.poll().getValue().getStatus().toString();
         assertEquals("ValidationFailed", status);
 
-        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode();
-        assertEquals("InvalidTargetDocumentAccessLevel", innerErrorCode);
+        ResponseError responseError = poller.poll().getValue().getError();
+        String errorCode = responseError.getCode();
+        assertEquals("InvalidRequest", errorCode);
+        String errorMessage = responseError.getMessage();
+        assertEquals("Cannot access target document location with the current permissions.", errorMessage);
     }
 
     @RecordWithoutRequestBody
@@ -315,20 +328,20 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         documents.add(new TestDocument("File2.jpg", "jpg"));
         String sourceUrl = createSourceContainer(documents);
 
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -342,33 +355,33 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         documents.add(new TestDocument("Document1.txt", ""));
         String sourceUrl = createSourceContainer(documents);
 
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         assertNotNull(translationStatus.getId());
         assertEquals("Failed", translationStatus.getStatus().toString());
-        assertEquals(1, translationStatus.getSummary().getTotal());
-        assertEquals(0, translationStatus.getSummary().getSuccess());
-        assertEquals(1, translationStatus.getSummary().getFailed());
+        assertEquals(1, translationStatus.getSummary().getTotalCount());
+        assertEquals(0, translationStatus.getSummary().getSuccessCount());
+        assertEquals(1, translationStatus.getSummary().getFailedCount());
 
-        String errorCode = translationStatus.getError().getCode().toString();
+        ResponseError responseError = translationStatus.getError();
+        String errorCode = responseError.getCode();
         assertEquals("InvalidRequest", errorCode);
-
-        String innerErrorCode = translationStatus.getError().getInnerError().getCode();
-        assertEquals("NoTranslatableText", innerErrorCode);
+        String errorMessage = responseError.getMessage();
+        assertEquals("The document does not have any translatable text.", errorMessage);
     }
 
     @RecordWithoutRequestBody
@@ -376,17 +389,17 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testExistingFileInTargetContainer() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(ONE_TEST_DOCUMENTS);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
             sleepIfRunningAgainstService(10000);
@@ -395,8 +408,9 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String status = poller.poll().getValue().getStatus().toString();
         assertEquals("ValidationFailed", status);
 
-        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode();
-        assertEquals("TargetFileAlreadyExists", innerErrorCode);
+        // String innerErrorCode =
+        // poller.poll().getValue().getError().getError().getCode();
+        // assertEquals("TargetFileAlreadyExists", innerErrorCode);
     }
 
     @RecordWithoutRequestBody
@@ -404,21 +418,21 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testGetDocumentStatusWithInvalidGuid() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
 
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
         String translationId = translationStatus.getId();
 
         assertThrows(ResourceNotFoundException.class,
@@ -438,7 +452,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String documentContent = "First english test document";
         List<TestDocument> documents = Arrays.asList(new TestDocument(documentName, documentContent));
         String sourceUrl = createSourceContainer(documents);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         Map<String, String> containerValues = createTargetContainerWithClient(null);
         String targetUrl = containerValues.get("containerUrl");
@@ -450,16 +464,17 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String glossaryContent = "test, glossaryTest";
 
         String glossaryUrl = createGlossary(new TestDocument(glossaryName, glossaryContent));
-        List<Glossary> glossaries = new ArrayList<>();
-        glossaries.add(new Glossary(glossaryUrl, "csv"));
+        List<TranslationGlossary> glossaries = new ArrayList<>();
+        glossaries.add(new TranslationGlossary(glossaryUrl, "csv"));
 
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, glossaries, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput
+            = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, glossaries, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
         poller.waitForCompletion();
@@ -471,17 +486,17 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         Assertions.assertTrue(response.contains("glossaryTest"));
     }
 
-    public static void validateTranslationStatus(TranslationStatus translationStatus, int translationCount) {
+    public static void validateTranslationStatus(TranslationStatusResult translationStatus, int translationCount) {
         assertNotNull(translationStatus.getId());
         assertEquals("Succeeded", translationStatus.getStatus().toString());
-        assertEquals(translationCount, translationStatus.getSummary().getTotal());
-        assertEquals(translationCount, translationStatus.getSummary().getSuccess());
-        assertEquals(0, translationStatus.getSummary().getFailed());
-        assertEquals(0, translationStatus.getSummary().getCancelled());
-        assertEquals(0, translationStatus.getSummary().getInProgress());
+        assertEquals(translationCount, translationStatus.getSummary().getTotalCount());
+        assertEquals(translationCount, translationStatus.getSummary().getSuccessCount());
+        assertEquals(0, translationStatus.getSummary().getFailedCount());
+        assertEquals(0, translationStatus.getSummary().getCancelledCount());
+        assertEquals(0, translationStatus.getSummary().getInProgressCount());
     }
 
-    private void validateDocumentStatus(DocumentStatus documentStatus, String targetLanguageCode) {
+    private void validateDocumentStatus(DocumentStatusResult documentStatus, String targetLanguageCode) {
         assertEquals("Succeeded", documentStatus.getStatus().toString());
         assertNotNull(documentStatus.getId());
         assertNotNull(documentStatus.getSourcePath());

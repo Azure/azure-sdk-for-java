@@ -40,8 +40,6 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
-import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
-import com.azure.communication.callautomation.models.events.TeamsRecordingStateChanged;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -118,50 +116,6 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         RecordingStateChanged recordingEvent = (RecordingStateChanged) event;
-        assertNotNull(recordingEvent);
-        assertEquals("serverCallId", recordingEvent.getServerCallId());
-        assertEquals("recordingId", recordingEvent.getRecordingId());
-        assertEquals(RecordingState.ACTIVE, recordingEvent.getRecordingState());
-    }
-
-    @Test
-    public void parseTeamsComplianceRecordingStateChangedEvent() {
-        String receivedEvent = "[\n" + "    {\n" + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
-            + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsComplianceRecordingStateChanged\",\n"
-            + "        \"type\": \"Microsoft.Communication.TeamsComplianceRecordingStateChanged\",\n"
-            + "        \"data\": {\n" + "            \"type\": \"teamsComplianceRecordingStateChanged\",\n"
-            + "            \"recordingId\": \"recordingId\",\n" + "            \"state\": \"active\",\n"
-            + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
-            + "            \"callConnectionId\": \"callConnectionId\",\n"
-            + "            \"serverCallId\": \"serverCallId\",\n" + "            \"correlationId\": \"correlationId\"\n"
-            + "        },\n" + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
-            + "        \"specversion\": \"1.0\",\n" + "        \"datacontenttype\": \"application/json\",\n"
-            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n" + "    }\n" + "]";
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-        assertNotNull(event);
-        TeamsComplianceRecordingStateChanged recordingEvent = (TeamsComplianceRecordingStateChanged) event;
-        assertNotNull(recordingEvent);
-        assertEquals("serverCallId", recordingEvent.getServerCallId());
-        assertEquals("recordingId", recordingEvent.getRecordingId());
-        assertEquals(RecordingState.ACTIVE, recordingEvent.getRecordingState());
-    }
-
-    @Test
-    public void parseTeamsRecordingStateChangedEvent() {
-        String receivedEvent = "[\n" + "    {\n" + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
-            + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsRecordingStateChanged\",\n"
-            + "        \"type\": \"Microsoft.Communication.TeamsRecordingStateChanged\",\n" + "        \"data\": {\n"
-            + "            \"type\": \"teamsRecordingStateChanged\",\n"
-            + "            \"recordingId\": \"recordingId\",\n" + "            \"state\": \"active\",\n"
-            + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
-            + "            \"callConnectionId\": \"callConnectionId\",\n"
-            + "            \"serverCallId\": \"serverCallId\",\n" + "            \"correlationId\": \"correlationId\"\n"
-            + "        },\n" + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
-            + "        \"specversion\": \"1.0\",\n" + "        \"datacontenttype\": \"application/json\",\n"
-            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n" + "    }\n" + "]";
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-        assertNotNull(event);
-        TeamsRecordingStateChanged recordingEvent = (TeamsRecordingStateChanged) event;
         assertNotNull(recordingEvent);
         assertEquals("serverCallId", recordingEvent.getServerCallId());
         assertEquals("recordingId", recordingEvent.getRecordingId());

@@ -6,24 +6,26 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A network authorization rule that filters traffic based on IP address.
  */
 @Fluent
-public final class IpRule {
+public final class IpRule implements JsonSerializable<IpRule> {
     /*
      * IP mask.
      */
-    @JsonProperty(value = "ipMask", required = true)
     private String ipMask;
 
     /*
      * List of access rights.
      */
-    @JsonProperty(value = "rights", required = true)
     private List<AccessRights> rights;
 
     /**
@@ -79,14 +81,57 @@ public final class IpRule {
      */
     public void validate() {
         if (ipMask() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property ipMask in model IpRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipMask in model IpRule"));
         }
         if (rights() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property rights in model IpRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property rights in model IpRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipMask", this.ipMask);
+        jsonWriter.writeArrayField("rights", this.rights,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpRule if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpRule.
+     */
+    public static IpRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpRule deserializedIpRule = new IpRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipMask".equals(fieldName)) {
+                    deserializedIpRule.ipMask = reader.getString();
+                } else if ("rights".equals(fieldName)) {
+                    List<AccessRights> rights
+                        = reader.readArray(reader1 -> AccessRights.fromString(reader1.getString()));
+                    deserializedIpRule.rights = rights;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpRule;
+        });
+    }
 }

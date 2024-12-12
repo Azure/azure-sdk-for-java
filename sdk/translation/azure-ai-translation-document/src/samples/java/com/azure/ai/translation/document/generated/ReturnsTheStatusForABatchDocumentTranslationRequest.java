@@ -6,7 +6,7 @@ package com.azure.ai.translation.document.generated;
 
 import com.azure.ai.translation.document.DocumentTranslationClient;
 import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
-import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReturnsTheStatusForABatchDocumentTranslationRequest {
@@ -16,7 +16,7 @@ public class ReturnsTheStatusForABatchDocumentTranslationRequest {
                 .endpoint("{endpoint}")
                 .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.gettranslationstatus.returnsthestatusforabatchdocumenttranslationrequest
-        TranslationStatus response
+        TranslationStatusResult response
             = documentTranslationClient.getTranslationStatus("727BF148-F327-47A0-9481-ABAE6362F11E");
         // END:com.azure.ai.translation.document.generated.gettranslationstatus.returnsthestatusforabatchdocumenttranslationrequest
     }

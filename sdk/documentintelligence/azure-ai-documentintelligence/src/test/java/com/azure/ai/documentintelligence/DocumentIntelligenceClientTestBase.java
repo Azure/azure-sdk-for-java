@@ -114,7 +114,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    void buildBatchModelRunner(Consumer<String> testRunner) {
+    void buildBatchModelRunner(BiConsumer<String, String> testRunner) {
         TestUtils.getBatchTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
@@ -137,7 +137,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         // documents
         Assertions.assertEquals(1, actualAnalyzeResult.getDocuments().size());
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals("receipt.retailMeal", actualDocument.getDocType());
+            Assertions.assertEquals("receipt.retailMeal", actualDocument.getDocumentType());
             // document fields
             validateJpegReceiptFields(actualDocument.getFields());
         });
@@ -224,7 +224,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertEquals(1, licensePage1.getPageNumber());
 
         assertNotNull(analyzeResult.getDocuments());
-        assertEquals("idDocument.driverLicense", analyzeResult.getDocuments().get(0).getDocType());
+        assertEquals("idDocument.driverLicense", analyzeResult.getDocuments().get(0).getDocumentType());
         Map<String, DocumentField> licensePageFields = analyzeResult.getDocuments().get(0).getFields();
         assertEquals("Main Street", licensePageFields.get("Address").getValueAddress().getStreetAddress());
         assertNotNull(licensePageFields.get("Address").getConfidence());
@@ -333,7 +333,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         }
 
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            // Assertions.assertEquals(modelId, actualDocument.getDocType());
+            // Assertions.assertEquals(modelId, actualDocument.getDocumentType());
             actualDocument.getFields().forEach((key, documentField) -> {
                 // document fields
                 assertNotNull(documentField.getConfidence());
@@ -397,7 +397,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertEquals(1, licensePage1.getPageNumber());
 
         assertNotNull(analyzeResult.getDocuments());
-        assertEquals("tax.us.w2", analyzeResult.getDocuments().get(0).getDocType());
+        assertEquals("tax.us.w2", analyzeResult.getDocuments().get(0).getDocumentType());
         Map<String, DocumentField> w2Fields = analyzeResult.getDocuments().get(0).getFields();
 
         Map<String, DocumentField> employeeFields = w2Fields.get("Employee").getValueObject();
@@ -494,9 +494,8 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 Assertions.assertEquals("+19876543210", documentField.getValuePhoneNumber());
                 assertNotNull(documentField.getConfidence());
             } else if ("ReceiptType".equals(key)) {
-                Assertions.assertEquals("Itemized", documentField.getValueString());
-                // TODO: (service bug) confidence is returned as null
-                // assertNotNull(documentField.getConfidence());
+                Assertions.assertEquals("Meal", documentField.getValueString());
+                assertNotNull(documentField.getConfidence());
             } else if ("Subtotal".equals(key)) {
                 Assertions.assertEquals("$ 11.70", documentField.getContent());
                 assertNotNull(documentField.getConfidence());

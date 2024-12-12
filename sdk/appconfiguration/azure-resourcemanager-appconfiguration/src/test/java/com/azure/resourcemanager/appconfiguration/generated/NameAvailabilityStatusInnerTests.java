@@ -11,7 +11,7 @@ public final class NameAvailabilityStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NameAvailabilityStatusInner model
-            = BinaryData.fromString("{\"nameAvailable\":false,\"message\":\"wu\",\"reason\":\"gazxuf\"}")
+            = BinaryData.fromString("{\"nameAvailable\":true,\"message\":\"lahbcryff\",\"reason\":\"dosyg\"}")
                 .toObject(NameAvailabilityStatusInner.class);
     }
 

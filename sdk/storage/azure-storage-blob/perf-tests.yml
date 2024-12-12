@@ -32,8 +32,7 @@ Tests:
   Arguments: &sizes
   - --size 10240 --parallel 64
   - --size 10485760 --parallel 32
-  - --size 1073741824 --parallel 1 --warmup 60 --duration 60
-  - --size 1073741824 --parallel 8 --warmup 60 --duration 60
+  - --size 1073741824 --parallel 8 --warmup 30 --duration 30
 
 - Test: download-file
   Class: downloadblobtofile
@@ -54,9 +53,9 @@ Tests:
   Arguments:
   - --count 5 --parallel 64
   - --count 500 --parallel 32
-  - --count 50000 --parallel 32 --warmup 60 --duration 60
+  - --count 50000 --parallel 32 --warmup 30 --duration 30
 
 - Test: get-properties
   Class: getproperties
   Arguments:
-  - --parallel 64 --get-properties --duration 30
+  - --parallel 64 --get-properties

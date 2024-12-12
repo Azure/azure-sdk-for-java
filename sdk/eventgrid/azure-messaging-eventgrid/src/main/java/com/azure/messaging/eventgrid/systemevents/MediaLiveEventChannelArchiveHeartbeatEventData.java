@@ -65,6 +65,9 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
         return this.latencyResultCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -23,11 +23,14 @@ public final class NotificationHubsUpdateSamples {
      */
     public static void
         notificationHubsUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        NotificationHubResource resource = manager.notificationHubs().getWithResponse("sdkresourceGroup", "nh-sdk-ns",
-            "sdk-notificationHubs-8708", com.azure.core.util.Context.NONE).getValue();
-        resource
-            .update().withRegistrationTtl("10675199.02:48:05.4775807").withGcmCredential(new GcmCredential()
-                .withGcmEndpoint("https://fcm.googleapis.com/fcm/send").withGoogleApiKey("fakeTokenPlaceholder"))
+        NotificationHubResource resource = manager.notificationHubs()
+            .getWithResponse("sdkresourceGroup", "nh-sdk-ns", "sdk-notificationHubs-8708",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withRegistrationTtl("10675199.02:48:05.4775807")
+            .withGcmCredential(new GcmCredential().withGcmEndpoint("https://fcm.googleapis.com/fcm/send")
+                .withGoogleApiKey("fakeTokenPlaceholder"))
             .apply();
     }
 }

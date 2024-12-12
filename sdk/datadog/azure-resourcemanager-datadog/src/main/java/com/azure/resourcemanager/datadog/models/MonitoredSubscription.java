@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The list of subscriptions and it's monitoring status by current Datadog monitor. */
+/**
+ * The list of subscriptions and it's monitoring status by current Datadog monitor.
+ */
 @Fluent
-public final class MonitoredSubscription {
+public final class MonitoredSubscription implements JsonSerializable<MonitoredSubscription> {
     /*
      * The subscriptionId to be monitored.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The state of monitoring.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * The reason of not monitoring the subscription.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * Definition of the properties for a TagRules resource.
      */
-    @JsonProperty(value = "tagRules")
     private MonitoringTagRulesProperties tagRules;
 
-    /** Creates an instance of MonitoredSubscription class. */
+    /**
+     * Creates an instance of MonitoredSubscription class.
+     */
     public MonitoredSubscription() {
     }
 
     /**
      * Get the subscriptionId property: The subscriptionId to be monitored.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -49,7 +53,7 @@ public final class MonitoredSubscription {
 
     /**
      * Set the subscriptionId property: The subscriptionId to be monitored.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the MonitoredSubscription object itself.
      */
@@ -60,7 +64,7 @@ public final class MonitoredSubscription {
 
     /**
      * Get the status property: The state of monitoring.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -69,7 +73,7 @@ public final class MonitoredSubscription {
 
     /**
      * Set the status property: The state of monitoring.
-     *
+     * 
      * @param status the status value to set.
      * @return the MonitoredSubscription object itself.
      */
@@ -80,7 +84,7 @@ public final class MonitoredSubscription {
 
     /**
      * Get the error property: The reason of not monitoring the subscription.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -89,7 +93,7 @@ public final class MonitoredSubscription {
 
     /**
      * Set the error property: The reason of not monitoring the subscription.
-     *
+     * 
      * @param error the error value to set.
      * @return the MonitoredSubscription object itself.
      */
@@ -100,7 +104,7 @@ public final class MonitoredSubscription {
 
     /**
      * Get the tagRules property: Definition of the properties for a TagRules resource.
-     *
+     * 
      * @return the tagRules value.
      */
     public MonitoringTagRulesProperties tagRules() {
@@ -109,7 +113,7 @@ public final class MonitoredSubscription {
 
     /**
      * Set the tagRules property: Definition of the properties for a TagRules resource.
-     *
+     * 
      * @param tagRules the tagRules value to set.
      * @return the MonitoredSubscription object itself.
      */
@@ -120,12 +124,57 @@ public final class MonitoredSubscription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tagRules() != null) {
             tagRules().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeJsonField("tagRules", this.tagRules);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoredSubscription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoredSubscription if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoredSubscription.
+     */
+    public static MonitoredSubscription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoredSubscription deserializedMonitoredSubscription = new MonitoredSubscription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedMonitoredSubscription.subscriptionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMonitoredSubscription.status = Status.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedMonitoredSubscription.error = reader.getString();
+                } else if ("tagRules".equals(fieldName)) {
+                    deserializedMonitoredSubscription.tagRules = MonitoringTagRulesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoredSubscription;
+        });
     }
 }

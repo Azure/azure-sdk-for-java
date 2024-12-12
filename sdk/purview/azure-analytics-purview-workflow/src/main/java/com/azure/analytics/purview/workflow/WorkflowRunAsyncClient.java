@@ -18,7 +18,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = WorkflowRunClientBuilder.class, isAsync = true)
 public final class WorkflowRunAsyncClient {
     @Generated
@@ -26,7 +28,7 @@ public final class WorkflowRunAsyncClient {
 
     /**
      * Initializes an instance of WorkflowRunAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,10 +38,10 @@ public final class WorkflowRunAsyncClient {
 
     /**
      * Get a workflow run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     workflowId: String (Optional)
@@ -61,8 +63,9 @@ public final class WorkflowRunAsyncClient {
      *         actions: Object (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -79,15 +82,16 @@ public final class WorkflowRunAsyncClient {
 
     /**
      * Cancel a workflow run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param runCancelReply Reply of canceling a workflow run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

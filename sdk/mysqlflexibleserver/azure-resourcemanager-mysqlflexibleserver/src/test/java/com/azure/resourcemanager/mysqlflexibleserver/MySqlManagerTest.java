@@ -25,7 +25,7 @@ import java.util.UUID;
 
 public class MySqlManagerTest extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST;
+    private static final Region REGION = Region.US_EAST2;
     private String resourceGroupName = "rg" + randomPadding();
     private MySqlManager mysqlManager;
     private ResourceManager resourceManager;

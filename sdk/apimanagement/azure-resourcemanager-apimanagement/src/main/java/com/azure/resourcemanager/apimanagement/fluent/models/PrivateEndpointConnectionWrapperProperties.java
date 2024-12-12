@@ -6,45 +6,50 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ArmIdWrapper;
 import com.azure.resourcemanager.apimanagement.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the PrivateEndpointConnectProperties. */
+/**
+ * Properties of the PrivateEndpointConnectProperties.
+ */
 @Fluent
-public final class PrivateEndpointConnectionWrapperProperties {
+public final class PrivateEndpointConnectionWrapperProperties
+    implements JsonSerializable<PrivateEndpointConnectionWrapperProperties> {
     /*
      * The resource of private end point.
      */
-    @JsonProperty(value = "privateEndpoint")
     private ArmIdWrapper privateEndpoint;
 
     /*
      * A collection of information about the state of the connection between service consumer and provider.
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * The provisioning state of the private endpoint connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * All the Group ids.
      */
-    @JsonProperty(value = "groupIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> groupIds;
 
-    /** Creates an instance of PrivateEndpointConnectionWrapperProperties class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionWrapperProperties class.
+     */
     public PrivateEndpointConnectionWrapperProperties() {
     }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
@@ -53,7 +58,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
 
     /**
      * Set the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionWrapperProperties object itself.
      */
@@ -65,7 +70,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
     /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -75,7 +80,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
     /**
      * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionWrapperProperties object itself.
      */
@@ -87,7 +92,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -96,7 +101,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
 
     /**
      * Get the groupIds property: All the Group ids.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -105,7 +110,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -113,13 +118,61 @@ public final class PrivateEndpointConnectionWrapperProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property privateLinkServiceConnectionState in model"
-                    + " PrivateEndpointConnectionWrapperProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateLinkServiceConnectionState in model PrivateEndpointConnectionWrapperProperties"));
         } else {
             privateLinkServiceConnectionState().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionWrapperProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        jsonWriter.writeJsonField("privateEndpoint", this.privateEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionWrapperProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionWrapperProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionWrapperProperties.
+     */
+    public static PrivateEndpointConnectionWrapperProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionWrapperProperties deserializedPrivateEndpointConnectionWrapperProperties
+                = new PrivateEndpointConnectionWrapperProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionWrapperProperties.privateLinkServiceConnectionState
+                        = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionWrapperProperties.privateEndpoint
+                        = ArmIdWrapper.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionWrapperProperties.provisioningState = reader.getString();
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateEndpointConnectionWrapperProperties.groupIds = groupIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionWrapperProperties;
+        });
+    }
 }

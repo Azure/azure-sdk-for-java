@@ -59,32 +59,32 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
 
     public PagedIterable<InternetGatewayRule> listByResourceGroup(String resourceGroupName) {
         PagedIterable<InternetGatewayRuleInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternetGatewayRule> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<InternetGatewayRuleInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternetGatewayRule> list() {
         PagedIterable<InternetGatewayRuleInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InternetGatewayRule> list(Context context) {
         PagedIterable<InternetGatewayRuleInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InternetGatewayRuleImpl(inner1, this.manager()));
     }
 
     public InternetGatewayRule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayRuleName = Utils.getValueFromIdByName(id, "internetGatewayRules");
+        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
         if (internetGatewayRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
@@ -93,12 +93,12 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public Response<InternetGatewayRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayRuleName = Utils.getValueFromIdByName(id, "internetGatewayRules");
+        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
         if (internetGatewayRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
@@ -107,12 +107,12 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayRuleName = Utils.getValueFromIdByName(id, "internetGatewayRules");
+        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
         if (internetGatewayRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));
@@ -121,12 +121,12 @@ public final class InternetGatewayRulesImpl implements InternetGatewayRules {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String internetGatewayRuleName = Utils.getValueFromIdByName(id, "internetGatewayRules");
+        String internetGatewayRuleName = ResourceManagerUtils.getValueFromIdByName(id, "internetGatewayRules");
         if (internetGatewayRuleName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'internetGatewayRules'.", id)));

@@ -6,32 +6,36 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * AdministrativeCredentials represents the admin credentials for the device requiring password-based authentication.
  */
 @Fluent
-public final class AdministrativeCredentials {
+public final class AdministrativeCredentials implements JsonSerializable<AdministrativeCredentials> {
     /*
      * The password of the administrator of the device used during initialization.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The username of the administrator of the device used during initialization.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
-    /** Creates an instance of AdministrativeCredentials class. */
+    /**
+     * Creates an instance of AdministrativeCredentials class.
+     */
     public AdministrativeCredentials() {
     }
 
     /**
      * Get the password property: The password of the administrator of the device used during initialization.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -40,7 +44,7 @@ public final class AdministrativeCredentials {
 
     /**
      * Set the password property: The password of the administrator of the device used during initialization.
-     *
+     * 
      * @param password the password value to set.
      * @return the AdministrativeCredentials object itself.
      */
@@ -51,7 +55,7 @@ public final class AdministrativeCredentials {
 
     /**
      * Get the username property: The username of the administrator of the device used during initialization.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -60,7 +64,7 @@ public final class AdministrativeCredentials {
 
     /**
      * Set the username property: The username of the administrator of the device used during initialization.
-     *
+     * 
      * @param username the username value to set.
      * @return the AdministrativeCredentials object itself.
      */
@@ -71,19 +75,61 @@ public final class AdministrativeCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model AdministrativeCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model AdministrativeCredentials"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model AdministrativeCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model AdministrativeCredentials"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdministrativeCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("username", this.username);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministrativeCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministrativeCredentials if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdministrativeCredentials.
+     */
+    public static AdministrativeCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministrativeCredentials deserializedAdministrativeCredentials = new AdministrativeCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("password".equals(fieldName)) {
+                    deserializedAdministrativeCredentials.password = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedAdministrativeCredentials.username = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministrativeCredentials;
+        });
+    }
 }

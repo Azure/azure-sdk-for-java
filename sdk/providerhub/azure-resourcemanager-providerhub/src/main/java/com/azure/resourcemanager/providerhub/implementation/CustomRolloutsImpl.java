@@ -49,22 +49,22 @@ public final class CustomRolloutsImpl implements CustomRollouts {
 
     public PagedIterable<CustomRollout> listByProviderRegistration(String providerNamespace) {
         PagedIterable<CustomRolloutInner> inner = this.serviceClient().listByProviderRegistration(providerNamespace);
-        return Utils.mapPage(inner, inner1 -> new CustomRolloutImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomRolloutImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomRollout> listByProviderRegistration(String providerNamespace, Context context) {
         PagedIterable<CustomRolloutInner> inner
             = this.serviceClient().listByProviderRegistration(providerNamespace, context);
-        return Utils.mapPage(inner, inner1 -> new CustomRolloutImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomRolloutImpl(inner1, this.manager()));
     }
 
     public CustomRollout getById(String id) {
-        String providerNamespace = Utils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String rolloutName = Utils.getValueFromIdByName(id, "customRollouts");
+        String rolloutName = ResourceManagerUtils.getValueFromIdByName(id, "customRollouts");
         if (rolloutName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'customRollouts'.", id)));
@@ -73,12 +73,12 @@ public final class CustomRolloutsImpl implements CustomRollouts {
     }
 
     public Response<CustomRollout> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = Utils.getValueFromIdByName(id, "providerRegistrations");
+        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
         if (providerNamespace == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
         }
-        String rolloutName = Utils.getValueFromIdByName(id, "customRollouts");
+        String rolloutName = ResourceManagerUtils.getValueFromIdByName(id, "customRollouts");
         if (rolloutName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'customRollouts'.", id)));

@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.AccessControllerUtils;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
@@ -60,7 +60,7 @@ final class HeaderCollectionHandler {
         final boolean declaredFieldAccessibleBackup = declaringField.isAccessible();
         try {
             if (!declaredFieldAccessibleBackup) {
-                ImplUtils.doPrivileged(() -> {
+                AccessControllerUtils.doPrivileged(() -> {
                     declaringField.setAccessible(true);
                     return null;
                 });
@@ -71,7 +71,7 @@ final class HeaderCollectionHandler {
             logger.warning("Failed to inject header collection values into deserialized headers.", ex);
         } finally {
             if (!declaredFieldAccessibleBackup) {
-                ImplUtils.doPrivileged(() -> {
+                AccessControllerUtils.doPrivileged(() -> {
                     declaringField.setAccessible(false);
                     return null;
                 });

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -81,7 +82,7 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     /*
      * A set of key-value pairs that contain custom attributes set by the customer.
      */
-    private Map<String, Object> attributes;
+    private Map<String, BinaryData> attributes;
 
     /*
      * Protocol-specific default configuration for all data points. Each data point can have its own configuration that
@@ -358,7 +359,7 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
      * 
      * @return the attributes value.
      */
-    public Map<String, Object> attributes() {
+    public Map<String, BinaryData> attributes() {
         return this.attributes;
     }
 
@@ -368,7 +369,7 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
      * @param attributes the attributes value to set.
      * @return the AssetUpdateProperties object itself.
      */
-    public AssetUpdateProperties withAttributes(Map<String, Object> attributes) {
+    public AssetUpdateProperties withAttributes(Map<String, BinaryData> attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -501,7 +502,8 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
         jsonWriter.writeStringField("softwareRevision", this.softwareRevision);
         jsonWriter.writeStringField("documentationUri", this.documentationUri);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
-        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("attributes", this.attributes,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("defaultDataPointsConfiguration", this.defaultDataPointsConfiguration);
         jsonWriter.writeStringField("defaultEventsConfiguration", this.defaultEventsConfiguration);
         jsonWriter.writeArrayField("dataPoints", this.dataPoints, (writer, element) -> writer.writeJson(element));
@@ -549,7 +551,8 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedAssetUpdateProperties.serialNumber = reader.getString();
                 } else if ("attributes".equals(fieldName)) {
-                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAssetUpdateProperties.attributes = attributes;
                 } else if ("defaultDataPointsConfiguration".equals(fieldName)) {
                     deserializedAssetUpdateProperties.defaultDataPointsConfiguration = reader.getString();

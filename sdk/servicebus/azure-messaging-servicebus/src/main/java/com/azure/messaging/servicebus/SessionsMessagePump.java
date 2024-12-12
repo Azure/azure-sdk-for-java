@@ -452,7 +452,7 @@ final class SessionsMessagePump {
         private ServiceBusSessionReactorReceiver nextSessionReceiver(ServiceBusSessionAcquirer.Session nextSession) {
             final State<ServiceBusSessionReactorReceiver> lastState = super.get();
             if (lastState == TERMINATED) {
-                nextSession.getLink().closeAsync().subscribe();
+                MessageUtils.subscribe(nextSession.getLink().closeAsync());
                 throw new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath,
                     "session#next-receiver roller_" + rollerId);
             }
@@ -468,7 +468,7 @@ final class SessionsMessagePump {
                 //      each creating ServiceBusSessionReactorReceiver and 'compareAndSet' of T1 winning the race with T’s
                 //      'compareAndSet' resulting in T1 not closing its ServiceBusSessionReactorReceiver.
                 //
-                nextSessionReceiver.closeAsync().subscribe();
+                MessageUtils.subscribe(nextSessionReceiver.closeAsync());
                 throw new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath,
                     "session#next-receiver roller_" + rollerId);
             }
@@ -572,7 +572,7 @@ final class SessionsMessagePump {
                 }).map(session -> {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
-                        session.getLink().closeAsync().subscribe();
+                        MessageUtils.subscribe(session.getLink().closeAsync());
                         throw new MessagePumpTerminatedException(this.pumpId, this.fullyQualifiedNamespace,
                             this.entityPath, "session#next-link roller_" + this.rollerId);
                     }

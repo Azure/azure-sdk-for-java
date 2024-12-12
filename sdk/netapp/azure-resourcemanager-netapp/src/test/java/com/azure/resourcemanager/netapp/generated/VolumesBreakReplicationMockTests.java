@@ -29,7 +29,7 @@ public final class VolumesBreakReplicationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.volumes()
-            .breakReplication("zdix", "mqpnoda", "opqhewjptmc", "sbostzel",
+            .breakReplication("etnluankrrfx", "eebtijvacvb", "qzbqqxlajrnwxa", "evehjkuyxoaf",
                 new BreakReplicationRequest().withForceBreakReplication(false), com.azure.core.util.Context.NONE);
 
     }

@@ -33,6 +33,15 @@ public class AccessControlType extends ExpandableStringEnum<AccessControlType> {
     public static final AccessControlType OTHER = fromString("other");
 
     /**
+     * Creates a new instance of {@link AccessControlType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of AccessControlType.
+     */
+    @Deprecated
+    public AccessControlType() {
+    }
+
+    /**
      * Creates or finds a ArchiveStatus from its string representation.
      *
      * @param name a name to look for.
@@ -43,6 +52,8 @@ public class AccessControlType extends ExpandableStringEnum<AccessControlType> {
     }
 
     /**
+     * Gets known ArchiveStatus values.
+     *
      * @return known ArchiveStatus values.
      */
     public static Collection<AccessControlType> values() {

@@ -11,7 +11,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "eastus",
+      "defaultValue": "eu2euap",
       "metadata": {
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
@@ -34,6 +34,10 @@
       "type": "string",
       "defaultValue": "trainingdata-batch"
     },
+    "batchTrainingDataResultContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata-batch-result"
+    },
     "selectionMarkTrainingDataContainer": {
       "type": "string",
       "defaultValue": "selectionmark-v3"
@@ -55,6 +59,15 @@
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('batchTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rwl",
+        "signedResource": "c"
+      }
+    },
+    "batchTrainingResultSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('batchTrainingDataResultContainer'))]",
         "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
         "signedPermission": "rwl",
         "signedResource": "c"
@@ -138,6 +151,10 @@
     "DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataResultContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingResultSasProperties')).serviceSasToken)]"
     },
     "DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",

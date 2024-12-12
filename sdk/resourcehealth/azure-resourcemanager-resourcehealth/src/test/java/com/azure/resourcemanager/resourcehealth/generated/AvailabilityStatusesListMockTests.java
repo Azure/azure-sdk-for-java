@@ -6,47 +6,28 @@ package com.azure.resourcemanager.resourcehealth.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resourcehealth.ResourceHealthManager;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import com.azure.resourcemanager.resourcehealth.models.ReasonChronicityTypes;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AvailabilityStatusesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"id\":\"jlkatnwxy\",\"name\":\"pidkqqfkuvscxkdm\",\"type\":\"govibrxkpmloazu\",\"location\":\"ocbgoorbteoyb\",\"properties\":{\"availabilityState\":\"Degraded\",\"title\":\"kvvjgslordilmyww\",\"summary\":\"gkxnyedabg\",\"detailedStatus\":\"udtjuewbc\",\"reasonType\":\"xuuwhcj\",\"context\":\"ccybvp\",\"category\":\"akkud\",\"articleId\":\"xgwjplmagstcyoh\",\"rootCauseAttributionTime\":\"2021-07-05T16:33:29Z\",\"healthEventType\":\"rkdbdgiogsjkmnwq\",\"healthEventCause\":\"obaiyhddviaceg\",\"healthEventCategory\":\"m\",\"healthEventId\":\"fpmvmemfnczd\",\"resolutionETA\":\"2021-06-14T22:03:09Z\",\"occuredTime\":\"2021-05-11T22:31:41Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-10-05T15:52:55Z\",\"recentlyResolved\":{\"unavailableOccuredTime\":\"2021-06-23T09:29:02Z\",\"resolvedTime\":\"2021-11-09T04:24:31Z\",\"unavailableSummary\":\"bzevwrd\"},\"recommendedActions\":[{\"action\":\"kuvsjcswsm\",\"actionUrl\":\"tuluq\",\"_ActionUrl.Comment\":\"fcvlerch\",\"actionUrlText\":\"bm\"},{\"action\":\"jbabwidf\",\"actionUrl\":\"sspuunnoxyhkx\",\"_ActionUrl.Comment\":\"ddrihpf\",\"actionUrlText\":\"qcaaewdaomdjvl\"},{\"action\":\"x\",\"actionUrl\":\"zb\",\"_ActionUrl.Comment\":\"sgeivsiy\",\"actionUrlText\":\"kdncj\"},{\"action\":\"onbzoggculapzwy\",\"actionUrl\":\"gogtqxepnylbf\",\"_ActionUrl.Comment\":\"jlyjtlvofq\",\"actionUrlText\":\"vfcibyfmowux\"}],\"serviceImpactingEvents\":[{\"eventStartTime\":\"2021-08-28T09:36:55Z\",\"eventStatusLastModifiedTime\":\"2021-02-25T18:54:33Z\",\"correlationId\":\"fzwiivwzjbhyz\",\"status\":{\"value\":\"rkambt\"},\"incidentProperties\":{\"title\":\"gvmnvuqeq\",\"service\":\"dspastjbkkdmfl\",\"region\":\"stmjlxrri\",\"incidentType\":\"zapeewchpx\"}}]}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ResourceHealthManager manager = ResourceHealthManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

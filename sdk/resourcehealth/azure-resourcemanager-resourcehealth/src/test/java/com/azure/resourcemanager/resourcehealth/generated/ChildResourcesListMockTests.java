@@ -6,47 +6,28 @@ package com.azure.resourcemanager.resourcehealth.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resourcehealth.ResourceHealthManager;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
 import com.azure.resourcemanager.resourcehealth.models.ReasonChronicityTypes;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ChildResourcesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"id\":\"nidibgqjxg\",\"name\":\"r\",\"type\":\"ov\",\"location\":\"pikqmh\",\"properties\":{\"availabilityState\":\"Unknown\",\"title\":\"rmzvupo\",\"summary\":\"zdfuydzvkfvxcnqm\",\"detailedStatus\":\"psw\",\"reasonType\":\"mvkhlggd\",\"context\":\"em\",\"category\":\"kzsz\",\"articleId\":\"iwtglxxhljfpg\",\"rootCauseAttributionTime\":\"2021-04-02T00:38:08Z\",\"healthEventType\":\"mnzhrgmqg\",\"healthEventCause\":\"x\",\"healthEventCategory\":\"qcbfrmbodths\",\"healthEventId\":\"gvriibakclac\",\"resolutionETA\":\"2021-05-02T09:19:09Z\",\"occuredTime\":\"2021-07-14T07:01:39Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-07-14T22:56:45Z\",\"recentlyResolved\":{\"unavailableOccuredTime\":\"2021-07-27T05:54:41Z\",\"resolvedTime\":\"2021-03-08T03:09:28Z\",\"unavailableSummary\":\"gmwohqfzizvu\"},\"recommendedActions\":[{\"action\":\"jsvthnwpzteko\",\"actionUrl\":\"ribi\",\"_ActionUrl.Comment\":\"tgplucfota\",\"actionUrlText\":\"c\"}],\"serviceImpactingEvents\":[{\"eventStartTime\":\"2021-05-10T19:12:24Z\",\"eventStatusLastModifiedTime\":\"2021-05-21T03:40:41Z\",\"correlationId\":\"gswvxwlmzqwm\",\"status\":{\"value\":\"njmxmcuqudtcvcl\"},\"incidentProperties\":{\"title\":\"pdkvg\",\"service\":\"buiyji\",\"region\":\"zphdugneiknp\",\"incidentType\":\"xgjiuqh\"}},{\"eventStartTime\":\"2021-03-20T03:04:21Z\",\"eventStatusLastModifiedTime\":\"2021-09-20T08:31:06Z\",\"correlationId\":\"pqwjedm\",\"status\":{\"value\":\"xxgewpk\"},\"incidentProperties\":{\"title\":\"ylkmqp\",\"service\":\"yhlfb\",\"region\":\"wgcloxoebqinji\",\"incidentType\":\"wjfuj\"}},{\"eventStartTime\":\"2021-02-05T10:32:17Z\",\"eventStatusLastModifiedTime\":\"2021-05-17T03:09:39Z\",\"correlationId\":\"ahhpzpofoiyjwpf\",\"status\":{\"value\":\"mkkho\"},\"incidentProperties\":{\"title\":\"ndviauogphuartvt\",\"service\":\"kyefchnmnahmnxhk\",\"region\":\"qirwrweoox\",\"incidentType\":\"i\"}},{\"eventStartTime\":\"2021-05-19T03:14:53Z\",\"eventStatusLastModifiedTime\":\"2021-06-11T14:56:28Z\",\"correlationId\":\"newmozqvb\",\"status\":{\"value\":\"ma\"},\"incidentProperties\":{\"title\":\"ycxhxzgaztta\",\"service\":\"idvmfqhppubo\",\"region\":\"epdfgkmtdherng\",\"incidentType\":\"c\"}}]}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ResourceHealthManager manager = ResourceHealthManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

@@ -37,7 +37,10 @@ public final class MeterPeriod extends ExpandableStringEnum<MeterPeriod> {
         return fromString(name, MeterPeriod.class);
     }
 
-    /** @return known MeterPeriod values. */
+    /**
+     * Gets the known values for MeterPeriod.
+     * @return known MeterPeriod values.
+     */
     public static Collection<MeterPeriod> values() {
         return values(MeterPeriod.class);
     }

@@ -8,16 +8,19 @@ import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
-/** Manifest attributes details. */
+/**
+ * Manifest attributes details.
+ */
 @Fluent
 public class ArtifactManifestPropertiesInternal implements JsonSerializable<ArtifactManifestPropertiesInternal> {
     /*
@@ -91,14 +94,16 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
      */
     private Boolean readEnabled;
 
-    /** Creates an instance of ArtifactManifestPropertiesInternal class. */
+    /**
+     * Creates an instance of ArtifactManifestPropertiesInternal class.
+     */
     public ArtifactManifestPropertiesInternal() {
     }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     *
+     * 
      * @return the registryLoginServer value.
      */
     public String getRegistryLoginServer() {
@@ -108,7 +113,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
     /**
      * Set the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     *
+     * 
      * @param registryLoginServer the registryLoginServer value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -119,7 +124,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the repositoryName property: Repository name.
-     *
+     * 
      * @return the repositoryName value.
      */
     public String getRepositoryName() {
@@ -128,7 +133,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the repositoryName property: Repository name.
-     *
+     * 
      * @param repositoryName the repositoryName value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -139,7 +144,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the digest property: Manifest.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -148,7 +153,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the digest property: Manifest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -159,7 +164,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the sizeInBytes property: Image size.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long getSizeInBytes() {
@@ -168,7 +173,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the sizeInBytes property: Image size.
-     *
+     * 
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -179,7 +184,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the createdOn property: Created time.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -188,7 +193,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the createdOn property: Created time.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -199,7 +204,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the lastUpdatedOn property: Last update time.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime getLastUpdatedOn() {
@@ -208,7 +213,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the lastUpdatedOn property: Last update time.
-     *
+     * 
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -219,7 +224,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the architecture property: CPU architecture.
-     *
+     * 
      * @return the architecture value.
      */
     public ArtifactArchitecture getArchitecture() {
@@ -228,7 +233,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the architecture property: CPU architecture.
-     *
+     * 
      * @param architecture the architecture value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -239,7 +244,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the operatingSystem property: Operating system.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public ArtifactOperatingSystem getOperatingSystem() {
@@ -248,7 +253,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the operatingSystem property: Operating system.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -260,7 +265,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
     /**
      * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
      * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
-     *
+     * 
      * @return the relatedArtifacts value.
      */
     public List<ArtifactManifestPlatform> getRelatedArtifacts() {
@@ -270,7 +275,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
     /**
      * Set the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
      * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
-     *
+     * 
      * @param relatedArtifacts the relatedArtifacts value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -281,7 +286,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the tags property: List of tags.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> getTags() {
@@ -290,7 +295,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the tags property: List of tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -301,7 +306,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the deleteEnabled property: Delete enabled.
-     *
+     * 
      * @return the deleteEnabled value.
      */
     public Boolean isDeleteEnabled() {
@@ -310,7 +315,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the deleteEnabled property: Delete enabled.
-     *
+     * 
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -321,7 +326,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the writeEnabled property: Write enabled.
-     *
+     * 
      * @return the writeEnabled value.
      */
     public Boolean isWriteEnabled() {
@@ -330,7 +335,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the writeEnabled property: Write enabled.
-     *
+     * 
      * @param writeEnabled the writeEnabled value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -341,7 +346,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the listEnabled property: List enabled.
-     *
+     * 
      * @return the listEnabled value.
      */
     public Boolean isListEnabled() {
@@ -350,7 +355,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the listEnabled property: List enabled.
-     *
+     * 
      * @param listEnabled the listEnabled value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -361,7 +366,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Get the readEnabled property: Read enabled.
-     *
+     * 
      * @return the readEnabled value.
      */
     public Boolean isReadEnabled() {
@@ -370,7 +375,7 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Set the readEnabled property: Read enabled.
-     *
+     * 
      * @param readEnabled the readEnabled value to set.
      * @return the ArtifactManifestPropertiesInternal object itself.
      */
@@ -379,6 +384,9 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -399,10 +407,13 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
             jsonWriter.writeStartObject("manifest");
             jsonWriter.writeStringField("digest", this.digest);
             jsonWriter.writeNumberField("imageSize", this.sizeInBytes);
-            jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
-            jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
-            jsonWriter.writeStringField("architecture", Objects.toString(this.architecture, null));
-            jsonWriter.writeStringField("os", Objects.toString(this.operatingSystem, null));
+            jsonWriter.writeStringField("createdTime",
+                this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+            jsonWriter.writeStringField("lastUpdateTime",
+                this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
+            jsonWriter.writeStringField("architecture",
+                this.architecture == null ? null : this.architecture.toString());
+            jsonWriter.writeStringField("os", this.operatingSystem == null ? null : this.operatingSystem.toString());
             jsonWriter.writeArrayField("references", this.relatedArtifacts,
                 (writer, element) -> writer.writeJson(element));
             jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
@@ -421,10 +432,10 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
 
     /**
      * Reads an instance of ArtifactManifestPropertiesInternal from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ArtifactManifestPropertiesInternal if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ArtifactManifestPropertiesInternal.
      */
@@ -451,11 +462,11 @@ public class ArtifactManifestPropertiesInternal implements JsonSerializable<Arti
                             deserializedArtifactManifestPropertiesInternal.sizeInBytes
                                 = reader.getNullable(JsonReader::getLong);
                         } else if ("createdTime".equals(fieldName)) {
-                            deserializedArtifactManifestPropertiesInternal.createdOn
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedArtifactManifestPropertiesInternal.createdOn = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("lastUpdateTime".equals(fieldName)) {
-                            deserializedArtifactManifestPropertiesInternal.lastUpdatedOn
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedArtifactManifestPropertiesInternal.lastUpdatedOn = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else if ("architecture".equals(fieldName)) {
                             deserializedArtifactManifestPropertiesInternal.architecture
                                 = ArtifactArchitecture.fromString(reader.getString());

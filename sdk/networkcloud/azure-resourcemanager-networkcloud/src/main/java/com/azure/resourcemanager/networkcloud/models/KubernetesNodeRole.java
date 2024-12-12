@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The role of this node in the cluster. */
+/**
+ * The role of this node in the cluster.
+ */
 public final class KubernetesNodeRole extends ExpandableStringEnum<KubernetesNodeRole> {
-    /** Static value ControlPlane for KubernetesNodeRole. */
+    /**
+     * Static value ControlPlane for KubernetesNodeRole.
+     */
     public static final KubernetesNodeRole CONTROL_PLANE = fromString("ControlPlane");
 
-    /** Static value Worker for KubernetesNodeRole. */
+    /**
+     * Static value Worker for KubernetesNodeRole.
+     */
     public static final KubernetesNodeRole WORKER = fromString("Worker");
 
     /**
      * Creates a new instance of KubernetesNodeRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class KubernetesNodeRole extends ExpandableStringEnum<KubernetesNod
 
     /**
      * Creates or finds a KubernetesNodeRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesNodeRole.
      */
-    @JsonCreator
     public static KubernetesNodeRole fromString(String name) {
         return fromString(name, KubernetesNodeRole.class);
     }
 
     /**
      * Gets known KubernetesNodeRole values.
-     *
+     * 
      * @return known KubernetesNodeRole values.
      */
     public static Collection<KubernetesNodeRole> values() {

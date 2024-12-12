@@ -6,25 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** API Version Set Contract details. */
+/**
+ * API Version Set Contract details.
+ */
 @Fluent
 public final class ApiVersionSetContractInner extends ProxyResource {
     /*
      * API VersionSet contract properties.
      */
-    @JsonProperty(value = "properties")
     private ApiVersionSetContractProperties innerProperties;
 
-    /** Creates an instance of ApiVersionSetContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApiVersionSetContractInner class.
+     */
     public ApiVersionSetContractInner() {
     }
 
     /**
      * Get the innerProperties property: API VersionSet contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApiVersionSetContractProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Name of API Version Set.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -42,7 +93,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: Name of API Version Set.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApiVersionSetContractInner object itself.
      */
@@ -57,7 +108,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     /**
      * Get the versioningScheme property: An value that determines where the API Version identifier will be located in a
      * HTTP request.
-     *
+     * 
      * @return the versioningScheme value.
      */
     public VersioningScheme versioningScheme() {
@@ -67,7 +118,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     /**
      * Set the versioningScheme property: An value that determines where the API Version identifier will be located in a
      * HTTP request.
-     *
+     * 
      * @param versioningScheme the versioningScheme value to set.
      * @return the ApiVersionSetContractInner object itself.
      */
@@ -81,7 +132,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
 
     /**
      * Get the description property: Description of API Version Set.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +141,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
 
     /**
      * Set the description property: Description of API Version Set.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiVersionSetContractInner object itself.
      */
@@ -105,7 +156,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     /**
      * Get the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
      * set to `query`.
-     *
+     * 
      * @return the versionQueryName value.
      */
     public String versionQueryName() {
@@ -115,7 +166,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     /**
      * Set the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
      * set to `query`.
-     *
+     * 
      * @param versionQueryName the versionQueryName value to set.
      * @return the ApiVersionSetContractInner object itself.
      */
@@ -130,7 +181,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     /**
      * Get the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
      * versioningScheme is set to `header`.
-     *
+     * 
      * @return the versionHeaderName value.
      */
     public String versionHeaderName() {
@@ -140,7 +191,7 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     /**
      * Set the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
      * versioningScheme is set to `header`.
-     *
+     * 
      * @param versionHeaderName the versionHeaderName value to set.
      * @return the ApiVersionSetContractInner object itself.
      */
@@ -154,12 +205,56 @@ public final class ApiVersionSetContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiVersionSetContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiVersionSetContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiVersionSetContractInner.
+     */
+    public static ApiVersionSetContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiVersionSetContractInner deserializedApiVersionSetContractInner = new ApiVersionSetContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiVersionSetContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiVersionSetContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiVersionSetContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApiVersionSetContractInner.innerProperties
+                        = ApiVersionSetContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiVersionSetContractInner;
+        });
     }
 }

@@ -4,10 +4,10 @@
 package io.clientcore.core.implementation.http.serializer;
 
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.JsonSerializer;
 

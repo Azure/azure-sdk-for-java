@@ -63,7 +63,7 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
             assertThat(feedRanges.size()).isEqualTo(3);
 
             // create few items into the container
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 50; i++) {
                 testContainer.createItem(TestItem.createNewItem(UUID.randomUUID().toString())).block();
             }
 

@@ -27,7 +27,7 @@ public final class DeploymentsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.deployments().delete("vkzqk", "jeokbzefezrxccz", "rtle", com.azure.core.util.Context.NONE);
+        manager.deployments().delete("ids", "yskbruff", "l", com.azure.core.util.Context.NONE);
 
     }
 }

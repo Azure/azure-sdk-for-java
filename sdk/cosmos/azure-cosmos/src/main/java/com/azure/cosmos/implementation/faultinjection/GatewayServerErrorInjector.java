@@ -151,7 +151,7 @@ public class GatewayServerErrorInjector {
                 }
 
                 if (this.injectGatewayServerConnectionDelay(faultInjectionRequestArgs, delayToBeInjected)) {
-                    Duration connectionAcquireTimeout = this.configs.getConnectionAcquireTimeout();
+                    Duration connectionAcquireTimeout = Configs.getConnectionAcquireTimeout();
                     if (delayToBeInjected.v.toMillis() >= connectionAcquireTimeout.toMillis()) {
                         return Mono.delay(connectionAcquireTimeout)
                             .then(Mono.error(new ConnectTimeoutException()));

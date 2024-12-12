@@ -34,6 +34,12 @@ public final class ProviderStatus implements JsonSerializable<ProviderStatus> {
     private List<TargetStatus> targets;
 
     /**
+     * Creates an instance of {@link ProviderStatus}.
+     */
+    public ProviderStatus() {
+    }
+
+    /**
      * Get the id property: Provider id.
      *
      * @return the id value.

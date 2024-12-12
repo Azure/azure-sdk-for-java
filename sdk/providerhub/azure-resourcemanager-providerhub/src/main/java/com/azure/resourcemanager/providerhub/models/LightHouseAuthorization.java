@@ -6,30 +6,36 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LightHouseAuthorization model. */
+/**
+ * The LightHouseAuthorization model.
+ */
 @Fluent
-public final class LightHouseAuthorization {
+public final class LightHouseAuthorization implements JsonSerializable<LightHouseAuthorization> {
     /*
      * The principalId property.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * The roleDefinitionId property.
      */
-    @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
 
-    /** Creates an instance of LightHouseAuthorization class. */
+    /**
+     * Creates an instance of LightHouseAuthorization class.
+     */
     public LightHouseAuthorization() {
     }
 
     /**
      * Get the principalId property: The principalId property.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -38,7 +44,7 @@ public final class LightHouseAuthorization {
 
     /**
      * Set the principalId property: The principalId property.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the LightHouseAuthorization object itself.
      */
@@ -49,7 +55,7 @@ public final class LightHouseAuthorization {
 
     /**
      * Get the roleDefinitionId property: The roleDefinitionId property.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -58,7 +64,7 @@ public final class LightHouseAuthorization {
 
     /**
      * Set the roleDefinitionId property: The roleDefinitionId property.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the LightHouseAuthorization object itself.
      */
@@ -69,19 +75,61 @@ public final class LightHouseAuthorization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property principalId in model LightHouseAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model LightHouseAuthorization"));
         }
         if (roleDefinitionId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property roleDefinitionId in model LightHouseAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleDefinitionId in model LightHouseAuthorization"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LightHouseAuthorization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LightHouseAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LightHouseAuthorization if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LightHouseAuthorization.
+     */
+    public static LightHouseAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LightHouseAuthorization deserializedLightHouseAuthorization = new LightHouseAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedLightHouseAuthorization.principalId = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedLightHouseAuthorization.roleDefinitionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLightHouseAuthorization;
+        });
+    }
 }

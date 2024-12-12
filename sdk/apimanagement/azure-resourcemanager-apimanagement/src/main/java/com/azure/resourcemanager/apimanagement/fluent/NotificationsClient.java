@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.NotificationContractInner;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
-/** An instance of this class provides access to all the operations defined in NotificationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationsClient.
+ */
 public interface NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface NotificationsClient {
 
     /**
      * Lists a collection of properties defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -46,7 +48,7 @@ public interface NotificationsClient {
 
     /**
      * Gets the details of the Notification specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -62,7 +64,7 @@ public interface NotificationsClient {
 
     /**
      * Gets the details of the Notification specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -76,7 +78,7 @@ public interface NotificationsClient {
 
     /**
      * Create or Update API Management publisher notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -93,7 +95,7 @@ public interface NotificationsClient {
 
     /**
      * Create or Update API Management publisher notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.

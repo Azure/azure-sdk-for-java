@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
 import com.azure.resourcemanager.maps.models.CreatorUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in CreatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreatorsClient.
+ */
 public interface CreatorsClient {
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface CreatorsClient {
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -54,7 +56,7 @@ public interface CreatorsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response}.
+     * data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreatorInner> createOrUpdateWithResponse(String resourceGroupName, String accountName, String creatorName,
@@ -63,7 +65,7 @@ public interface CreatorsClient {
     /**
      * Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate a
      * custom set of mapping data. It requires an account to exist before it can be created.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -72,7 +74,7 @@ public interface CreatorsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     * data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CreatorInner createOrUpdate(String resourceGroupName, String accountName, String creatorName,
@@ -80,7 +82,7 @@ public interface CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -90,7 +92,7 @@ public interface CreatorsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data along with {@link Response}.
+     * data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreatorInner> updateWithResponse(String resourceGroupName, String accountName, String creatorName,
@@ -98,7 +100,7 @@ public interface CreatorsClient {
 
     /**
      * Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -107,7 +109,7 @@ public interface CreatorsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure resource which represents Maps Creator product and provides ability to manage private location
-     *     data.
+     * data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CreatorInner update(String resourceGroupName, String accountName, String creatorName,
@@ -115,7 +117,7 @@ public interface CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -131,7 +133,7 @@ public interface CreatorsClient {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -144,7 +146,7 @@ public interface CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -160,7 +162,7 @@ public interface CreatorsClient {
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.

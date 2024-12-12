@@ -6,32 +6,38 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityStatusContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Status details. */
+/**
+ * Network Status details.
+ */
 @Fluent
-public final class NetworkStatusContractInner {
+public final class NetworkStatusContractInner implements JsonSerializable<NetworkStatusContractInner> {
     /*
      * Gets the list of DNS servers IPV4 addresses.
      */
-    @JsonProperty(value = "dnsServers", required = true)
     private List<String> dnsServers;
 
     /*
      * Gets the list of Connectivity Status to the Resources on which the service depends upon.
      */
-    @JsonProperty(value = "connectivityStatus", required = true)
     private List<ConnectivityStatusContract> connectivityStatus;
 
-    /** Creates an instance of NetworkStatusContractInner class. */
+    /**
+     * Creates an instance of NetworkStatusContractInner class.
+     */
     public NetworkStatusContractInner() {
     }
 
     /**
      * Get the dnsServers property: Gets the list of DNS servers IPV4 addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -40,7 +46,7 @@ public final class NetworkStatusContractInner {
 
     /**
      * Set the dnsServers property: Gets the list of DNS servers IPV4 addresses.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the NetworkStatusContractInner object itself.
      */
@@ -52,7 +58,7 @@ public final class NetworkStatusContractInner {
     /**
      * Get the connectivityStatus property: Gets the list of Connectivity Status to the Resources on which the service
      * depends upon.
-     *
+     * 
      * @return the connectivityStatus value.
      */
     public List<ConnectivityStatusContract> connectivityStatus() {
@@ -62,7 +68,7 @@ public final class NetworkStatusContractInner {
     /**
      * Set the connectivityStatus property: Gets the list of Connectivity Status to the Resources on which the service
      * depends upon.
-     *
+     * 
      * @param connectivityStatus the connectivityStatus value to set.
      * @return the NetworkStatusContractInner object itself.
      */
@@ -73,21 +79,67 @@ public final class NetworkStatusContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dnsServers() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dnsServers in model NetworkStatusContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dnsServers in model NetworkStatusContractInner"));
         }
         if (connectivityStatus() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectivityStatus in model NetworkStatusContractInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectivityStatus in model NetworkStatusContractInner"));
         } else {
             connectivityStatus().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkStatusContractInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("connectivityStatus", this.connectivityStatus,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkStatusContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkStatusContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkStatusContractInner.
+     */
+    public static NetworkStatusContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkStatusContractInner deserializedNetworkStatusContractInner = new NetworkStatusContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkStatusContractInner.dnsServers = dnsServers;
+                } else if ("connectivityStatus".equals(fieldName)) {
+                    List<ConnectivityStatusContract> connectivityStatus
+                        = reader.readArray(reader1 -> ConnectivityStatusContract.fromJson(reader1));
+                    deserializedNetworkStatusContractInner.connectivityStatus = connectivityStatus;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkStatusContractInner;
+        });
+    }
 }

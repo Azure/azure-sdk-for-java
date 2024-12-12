@@ -147,11 +147,14 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
 
                 boolean interrupted = false;
-                try {
-                    Thread.sleep(calculateRetryDelay(tryCount).toMillis());
-                } catch (InterruptedException ie) {
-                    interrupted = true;
-                    err.addSuppressed(ie);
+                long millis = calculateRetryDelay(tryCount).toMillis();
+                if (millis > 0) {
+                    try {
+                        Thread.sleep(millis);
+                    } catch (InterruptedException ie) {
+                        interrupted = true;
+                        err.addSuppressed(ie);
+                    }
                 }
 
                 if (interrupted) {
@@ -185,10 +188,13 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
 
-            try {
-                Thread.sleep(calculateRetryDelay(tryCount).toMillis());
-            } catch (InterruptedException ie) {
-                throw LOGGER.logThrowableAsError(new RuntimeException(ie));
+            long millis = calculateRetryDelay(tryCount).toMillis();
+            if (millis > 0) {
+                try {
+                    Thread.sleep(millis);
+                } catch (InterruptedException ie) {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(ie));
+                }
             }
 
             return attempt(httpRequest, next, tryCount + 1, suppressed);

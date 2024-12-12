@@ -9,9 +9,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * This <b>synchronous</b> session receiver client is used to acquire session locks from a queue or topic and create
@@ -133,6 +136,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {
+    private static final String TIMEOUT_MESSAGE_PREFIX = "Timeout on blocking read for ";
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
     private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
@@ -159,7 +163,13 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
-            .block(operationTimeout);
+            .timeout(operationTimeout, Mono.error(() -> {
+                final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS
+                    + " (client-timeout)";
+                return new TimeoutException(message);
+            }))
+            .onErrorMap(TimeoutException.class, e -> new IllegalStateException(e.getMessage(), e))
+            .block();
     }
 
     /**
@@ -182,7 +192,13 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     public ServiceBusReceiverClient acceptSession(String sessionId) {
         return sessionAsyncClient.acceptSession(sessionId)
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
-            .block(operationTimeout);
+            .timeout(operationTimeout, Mono.error(() -> {
+                final String message = TIMEOUT_MESSAGE_PREFIX + operationTimeout.toNanos() + " " + TimeUnit.NANOSECONDS
+                    + " (client-timeout)";
+                return new TimeoutException(message);
+            }))
+            .onErrorMap(TimeoutException.class, e -> new IllegalStateException(e.getMessage(), e))
+            .block();
     }
 
     @Override

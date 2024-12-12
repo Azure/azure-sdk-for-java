@@ -16,6 +16,8 @@ import com.azure.analytics.purview.datamap.models.AtlasTypesDef;
 import com.azure.analytics.purview.datamap.models.CardinalityValue;
 import com.azure.analytics.purview.datamap.models.RelationshipCategory;
 import com.azure.analytics.purview.datamap.models.TypeCategory;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,76 +32,89 @@ public final class TypeBulkUpdateTests extends DataMapClientTestBase {
     @Disabled
     public void testTypeBulkUpdateTests() {
         // method invocation
-        AtlasTypesDef response = typeDefinitionClient.batchUpdate(new AtlasTypesDef()
-            .setClassificationDefs(Arrays.asList())
-            .setEntityDefs(Arrays.asList(
-                new AtlasEntityDef().setName("azure_sql_server")
-                    .setTypeVersion("1.0")
-                    .setAttributeDefs(Arrays.asList(new AtlasAttributeDef().setCardinality(CardinalityValue.SET)
-                        .setIsIndexable(false)
-                        .setIsOptional(true)
-                        .setIsUnique(false)
-                        .setName("databases")
-                        .setTypeName("array<azure_sql_db>")))
-                    .setSuperTypes(Arrays.asList("azure_resource")),
-                new AtlasEntityDef().setName("azure_sql_db")
-                    .setTypeVersion("1.0")
-                    .setAttributeDefs(Arrays.asList(new AtlasAttributeDef().setCardinality(CardinalityValue.SINGLE)
-                        .setConstraints(Arrays.asList(
-                            new AtlasConstraintDef().setParams(mapOf("attribute", "databases")).setType("inverseRef")))
-                        .setIsIndexable(false)
-                        .setIsOptional(false)
-                        .setIsUnique(false)
-                        .setName("server")
-                        .setTypeName("azure_sql_server"),
-                        new AtlasAttributeDef().setCardinality(CardinalityValue.SET)
-                            .setIsIndexable(false)
-                            .setIsOptional(true)
-                            .setIsUnique(false)
-                            .setName("schemas")
-                            .setTypeName("array<azure_sql_schema>"),
-                        new AtlasAttributeDef().setCardinality(CardinalityValue.SINGLE)
-                            .setIsIndexable(false)
-                            .setIsOptional(true)
-                            .setIsUnique(false)
-                            .setName("collation")
-                            .setTypeName("string"),
-                        new AtlasAttributeDef().setCardinality(CardinalityValue.SINGLE)
-                            .setIsIndexable(false)
-                            .setIsOptional(true)
-                            .setIsUnique(false)
-                            .setName("compatibilityLevel")
-                            .setTypeName("int")))
-                    .setSuperTypes(Arrays.asList("azure_resource"))))
-            .setEnumDefs(Arrays.asList())
-            .setRelationshipDefs(Arrays.asList(
-                new AtlasRelationshipDef().setName("azure_sql_server_databases")
-                    .setTypeVersion("1.0")
-                    .setEndDef1(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SET)
-                        .setIsContainer(true)
-                        .setIsLegacyAttribute(true)
-                        .setName("databases")
-                        .setType("azure_sql_server"))
-                    .setEndDef2(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SINGLE)
-                        .setIsContainer(false)
-                        .setIsLegacyAttribute(true)
-                        .setName("server")
-                        .setType("azure_sql_db"))
-                    .setRelationshipCategory(RelationshipCategory.COMPOSITION),
-                new AtlasRelationshipDef().setName("azure_sql_db_schemas")
-                    .setTypeVersion("1.0")
-                    .setEndDef1(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SET)
-                        .setIsContainer(true)
-                        .setIsLegacyAttribute(true)
-                        .setName("schemas")
-                        .setType("azure_sql_db"))
-                    .setEndDef2(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SINGLE)
-                        .setIsContainer(false)
-                        .setIsLegacyAttribute(true)
-                        .setName("db")
-                        .setType("azure_sql_schema"))
-                    .setRelationshipCategory(RelationshipCategory.COMPOSITION)))
-            .setStructDefs(Arrays.asList()));
+        AtlasTypesDef response
+            = typeDefinitionClient
+                .batchUpdate(
+                    new AtlasTypesDef().setClassificationDefs(Arrays.asList())
+                        .setEntityDefs(
+                            Arrays
+                                .asList(
+                                    new AtlasEntityDef().setName("azure_sql_server")
+                                        .setTypeVersion("1.0")
+                                        .setAttributeDefs(
+                                            Arrays.asList(new AtlasAttributeDef().setCardinality(CardinalityValue.SET)
+                                                .setIsIndexable(false)
+                                                .setIsOptional(true)
+                                                .setIsUnique(false)
+                                                .setName("databases")
+                                                .setTypeName("array<azure_sql_db>")))
+                                        .setSuperTypes(Arrays.asList("azure_resource")),
+                                    new AtlasEntityDef().setName("azure_sql_db")
+                                        .setTypeVersion("1.0")
+                                        .setAttributeDefs(
+                                            Arrays
+                                                .asList(
+                                                    new AtlasAttributeDef().setCardinality(CardinalityValue.SINGLE)
+                                                        .setConstraints(
+                                                            Arrays
+                                                                .asList(new AtlasConstraintDef()
+                                                                    .setParams(mapOf("attribute",
+                                                                        BinaryData.fromBytes("databases"
+                                                                            .getBytes(StandardCharsets.UTF_8))))
+                                                                    .setType("inverseRef")))
+                                                        .setIsIndexable(false)
+                                                        .setIsOptional(false)
+                                                        .setIsUnique(false)
+                                                        .setName("server")
+                                                        .setTypeName("azure_sql_server"),
+                                                    new AtlasAttributeDef().setCardinality(CardinalityValue.SET)
+                                                        .setIsIndexable(false)
+                                                        .setIsOptional(true)
+                                                        .setIsUnique(false)
+                                                        .setName("schemas")
+                                                        .setTypeName("array<azure_sql_schema>"),
+                                                    new AtlasAttributeDef().setCardinality(CardinalityValue.SINGLE)
+                                                        .setIsIndexable(false)
+                                                        .setIsOptional(true)
+                                                        .setIsUnique(false)
+                                                        .setName("collation")
+                                                        .setTypeName("string"),
+                                                    new AtlasAttributeDef().setCardinality(CardinalityValue.SINGLE)
+                                                        .setIsIndexable(false)
+                                                        .setIsOptional(true)
+                                                        .setIsUnique(false)
+                                                        .setName("compatibilityLevel")
+                                                        .setTypeName("int")))
+                                        .setSuperTypes(Arrays.asList("azure_resource"))))
+                        .setEnumDefs(Arrays.asList())
+                        .setRelationshipDefs(Arrays.asList(
+                            new AtlasRelationshipDef().setName("azure_sql_server_databases")
+                                .setTypeVersion("1.0")
+                                .setEndDef1(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SET)
+                                    .setIsContainer(true)
+                                    .setIsLegacyAttribute(true)
+                                    .setName("databases")
+                                    .setType("azure_sql_server"))
+                                .setEndDef2(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SINGLE)
+                                    .setIsContainer(false)
+                                    .setIsLegacyAttribute(true)
+                                    .setName("server")
+                                    .setType("azure_sql_db"))
+                                .setRelationshipCategory(RelationshipCategory.COMPOSITION),
+                            new AtlasRelationshipDef().setName("azure_sql_db_schemas")
+                                .setTypeVersion("1.0")
+                                .setEndDef1(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SET)
+                                    .setIsContainer(true)
+                                    .setIsLegacyAttribute(true)
+                                    .setName("schemas")
+                                    .setType("azure_sql_db"))
+                                .setEndDef2(new AtlasRelationshipEndDef().setCardinality(CardinalityValue.SINGLE)
+                                    .setIsContainer(false)
+                                    .setIsLegacyAttribute(true)
+                                    .setName("db")
+                                    .setType("azure_sql_schema"))
+                                .setRelationshipCategory(RelationshipCategory.COMPOSITION)))
+                        .setStructDefs(Arrays.asList()));
 
         // response assertion
         Assertions.assertNotNull(response);

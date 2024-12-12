@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcegraph.models.FacetRequestOptions;
 import com.azure.resourcemanager.resourcegraph.models.FacetSortOrder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FacetRequestOptionsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FacetRequestOptions model = BinaryData
             .fromString("{\"sortBy\":\"ufo\",\"sortOrder\":\"asc\",\"filter\":\"wifsq\",\"$top\":1701108276}")
             .toObject(FacetRequestOptions.class);
@@ -22,8 +21,8 @@ public final class FacetRequestOptionsTests {
         Assertions.assertEquals(1701108276, model.top());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FacetRequestOptions model = new FacetRequestOptions().withSortBy("ufo")
             .withSortOrder(FacetSortOrder.ASC)
             .withFilter("wifsq")

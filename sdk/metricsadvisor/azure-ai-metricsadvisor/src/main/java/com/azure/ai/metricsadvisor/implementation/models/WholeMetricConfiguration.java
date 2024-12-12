@@ -128,6 +128,9 @@ public final class WholeMetricConfiguration implements JsonSerializable<WholeMet
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

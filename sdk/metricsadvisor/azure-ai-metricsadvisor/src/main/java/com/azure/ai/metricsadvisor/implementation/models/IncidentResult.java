@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -204,6 +205,9 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -236,11 +240,11 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
                 if ("incidentId".equals(fieldName)) {
                     deserializedIncidentResult.incidentId = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedIncidentResult.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedIncidentResult.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastTime".equals(fieldName)) {
-                    deserializedIncidentResult.lastTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedIncidentResult.lastTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("rootNode".equals(fieldName)) {
                     deserializedIncidentResult.rootNode = SeriesIdentity.fromJson(reader);
                 } else if ("property".equals(fieldName)) {

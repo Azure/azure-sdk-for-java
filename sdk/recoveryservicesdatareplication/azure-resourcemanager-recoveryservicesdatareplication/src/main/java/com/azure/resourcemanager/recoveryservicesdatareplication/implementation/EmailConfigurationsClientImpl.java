@@ -32,17 +32,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.E
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailConfigurationModelCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EmailConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EmailConfigurationsClient.
+ */
 public final class EmailConfigurationsClientImpl implements EmailConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EmailConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of EmailConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EmailConfigurationsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -100,9 +106,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Gets the email configuration setting.
-     *
-     * <p>Gets the details of the alert configuration setting.
-     *
+     * 
+     * Gets the details of the alert configuration setting.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -110,7 +116,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the alert configuration setting along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EmailConfigurationModelInner>> getWithResponseAsync(String resourceGroupName,
@@ -143,9 +149,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Gets the email configuration setting.
-     *
-     * <p>Gets the details of the alert configuration setting.
-     *
+     * 
+     * Gets the details of the alert configuration setting.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -154,7 +160,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the alert configuration setting along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EmailConfigurationModelInner>> getWithResponseAsync(String resourceGroupName,
@@ -186,9 +192,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Gets the email configuration setting.
-     *
-     * <p>Gets the details of the alert configuration setting.
-     *
+     * 
+     * Gets the details of the alert configuration setting.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -206,9 +212,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Gets the email configuration setting.
-     *
-     * <p>Gets the details of the alert configuration setting.
-     *
+     * 
+     * Gets the details of the alert configuration setting.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -226,9 +232,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Gets the email configuration setting.
-     *
-     * <p>Gets the details of the alert configuration setting.
-     *
+     * 
+     * Gets the details of the alert configuration setting.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -244,9 +250,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Creates email configuration settings.
-     *
-     * <p>Creates an alert configuration setting for the given vault.
-     *
+     * 
+     * Creates an alert configuration setting for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -291,9 +297,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Creates email configuration settings.
-     *
-     * <p>Creates an alert configuration setting for the given vault.
-     *
+     * 
+     * Creates an alert configuration setting for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -337,9 +343,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Creates email configuration settings.
-     *
-     * <p>Creates an alert configuration setting for the given vault.
-     *
+     * 
+     * Creates an alert configuration setting for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -358,9 +364,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Creates email configuration settings.
-     *
-     * <p>Creates an alert configuration setting for the given vault.
-     *
+     * 
+     * Creates an alert configuration setting for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -379,9 +385,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Creates email configuration settings.
-     *
-     * <p>Creates an alert configuration setting for the given vault.
-     *
+     * 
+     * Creates an alert configuration setting for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param emailConfigurationName The email configuration name.
@@ -399,16 +405,16 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Lists the email configuration settings.
-     *
-     * <p>Gets the list of alert configuration settings for the given vault.
-     *
+     * 
+     * Gets the list of alert configuration settings for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of alert configuration settings for the given vault along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailConfigurationModelInner>> listSinglePageAsync(String resourceGroupName,
@@ -439,9 +445,9 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Lists the email configuration settings.
-     *
-     * <p>Gets the list of alert configuration settings for the given vault.
-     *
+     * 
+     * Gets the list of alert configuration settings for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -449,7 +455,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of alert configuration settings for the given vault along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailConfigurationModelInner>> listSinglePageAsync(String resourceGroupName,
@@ -480,16 +486,16 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Lists the email configuration settings.
-     *
-     * <p>Gets the list of alert configuration settings for the given vault.
-     *
+     * 
+     * Gets the list of alert configuration settings for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of alert configuration settings for the given vault as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of alert configuration settings for the given vault as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EmailConfigurationModelInner> listAsync(String resourceGroupName, String vaultName) {
@@ -499,17 +505,17 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Lists the email configuration settings.
-     *
-     * <p>Gets the list of alert configuration settings for the given vault.
-     *
+     * 
+     * Gets the list of alert configuration settings for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of alert configuration settings for the given vault as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of alert configuration settings for the given vault as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EmailConfigurationModelInner> listAsync(String resourceGroupName, String vaultName,
@@ -520,16 +526,16 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Lists the email configuration settings.
-     *
-     * <p>Gets the list of alert configuration settings for the given vault.
-     *
+     * 
+     * Gets the list of alert configuration settings for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of alert configuration settings for the given vault as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of alert configuration settings for the given vault as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmailConfigurationModelInner> list(String resourceGroupName, String vaultName) {
@@ -538,17 +544,17 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Lists the email configuration settings.
-     *
-     * <p>Gets the list of alert configuration settings for the given vault.
-     *
+     * 
+     * Gets the list of alert configuration settings for the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of alert configuration settings for the given vault as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of alert configuration settings for the given vault as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmailConfigurationModelInner> list(String resourceGroupName, String vaultName,
@@ -558,14 +564,13 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email configuration model collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return email configuration model collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailConfigurationModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -585,15 +590,14 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email configuration model collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return email configuration model collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EmailConfigurationModelInner>> listNextSinglePageAsync(String nextLink,

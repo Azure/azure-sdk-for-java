@@ -30,6 +30,10 @@ import static com.azure.core.amqp.implementation.MessageFlux.NULL_RETRY_POLICY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
+/**
+ * A type that wraps a {@link ServiceBusSessionReactorReceiver} associated with a specific session, such a receiver
+ * is obtained when application accepts a specific session via {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)}.
+ */
 final class ServiceBusSingleSessionManager implements IServiceBusSessionManager {
     private final ClientLogger logger;
     private final String identifier;

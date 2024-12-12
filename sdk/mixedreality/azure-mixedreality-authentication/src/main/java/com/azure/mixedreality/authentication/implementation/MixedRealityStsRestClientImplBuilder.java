@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -37,7 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the MixedRealityStsRestClient type. */
+/**
+ * A builder for creating a new instance of the MixedRealityStsRestClient type.
+ */
 @ServiceClientBuilder(serviceClients = { MixedRealityStsRestClientImpl.class })
 public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<MixedRealityStsRestClientImplBuilder>,
     ConfigurationTrait<MixedRealityStsRestClientImplBuilder> {
@@ -53,7 +54,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the MixedRealityStsRestClientImplBuilder. */
+    /**
+     * Create an instance of the MixedRealityStsRestClientImplBuilder.
+     */
     @Generated
     public MixedRealityStsRestClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -65,7 +68,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder pipeline(HttpPipeline pipeline) {
@@ -79,7 +84,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder httpClient(HttpClient httpClient) {
@@ -93,7 +100,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -107,7 +116,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -121,7 +132,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -129,7 +142,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -144,7 +159,9 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public MixedRealityStsRestClientImplBuilder configuration(Configuration configuration) {
@@ -160,7 +177,7 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param host the host value.
      * @return the MixedRealityStsRestClientImplBuilder.
      */
@@ -178,7 +195,7 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
 
     /**
      * Sets Api Version.
-     *
+     * 
      * @param apiVersion the apiVersion value.
      * @return the MixedRealityStsRestClientImplBuilder.
      */
@@ -196,7 +213,7 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the MixedRealityStsRestClientImplBuilder.
      */
@@ -214,7 +231,7 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the MixedRealityStsRestClientImplBuilder.
      */
@@ -226,11 +243,12 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
 
     /**
      * Builds an instance of MixedRealityStsRestClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of MixedRealityStsRestClientImpl.
      */
     @Generated
     public MixedRealityStsRestClientImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://sts.mixedreality.azure.com";
         String localApiVersion = (apiVersion != null) ? apiVersion : "2019-02-28-preview";
@@ -239,6 +257,12 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
         MixedRealityStsRestClientImpl client
             = new MixedRealityStsRestClientImpl(localPipeline, localSerializerAdapter, localHost, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 
     @Generated
@@ -254,10 +278,8 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -270,7 +292,7 @@ public final class MixedRealityStsRestClientImplBuilder implements HttpTrait<Mix
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)

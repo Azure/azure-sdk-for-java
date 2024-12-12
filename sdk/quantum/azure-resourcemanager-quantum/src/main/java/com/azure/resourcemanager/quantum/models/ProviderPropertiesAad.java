@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Active Directory info.
  */
 @Immutable
-public final class ProviderPropertiesAad {
+public final class ProviderPropertiesAad implements JsonSerializable<ProviderPropertiesAad> {
     /*
      * Provider's application id.
      */
-    @JsonProperty(value = "applicationId", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationId;
 
     /*
      * Provider's tenant id.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**
@@ -54,5 +56,42 @@ public final class ProviderPropertiesAad {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderPropertiesAad from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderPropertiesAad if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderPropertiesAad.
+     */
+    public static ProviderPropertiesAad fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderPropertiesAad deserializedProviderPropertiesAad = new ProviderPropertiesAad();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationId".equals(fieldName)) {
+                    deserializedProviderPropertiesAad.applicationId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedProviderPropertiesAad.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderPropertiesAad;
+        });
     }
 }

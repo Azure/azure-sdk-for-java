@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration.implementation;
 
+import com.azure.analytics.purview.administration.PurviewAccountServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -37,23 +38,38 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceSetRules. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceSetRules.
+ */
 public final class ResourceSetRulesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceSetRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewAccountClientImpl client;
 
     /**
      * Initializes an instance of ResourceSetRulesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceSetRulesImpl(PurviewAccountClientImpl client) {
         this.service
             = RestProxy.create(ResourceSetRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewAccountServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -168,10 +184,10 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -268,8 +284,9 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -286,10 +303,10 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -386,8 +403,9 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -404,10 +422,10 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Creates or updates an resource set config.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -504,11 +522,13 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -605,16 +625,17 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
+     * }
+     * </pre>
+     * 
+     * @param resourceSetRuleConfig The resourceSetRuleConfig parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(BinaryData resourceSetRuleConfig,
@@ -626,10 +647,10 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Creates or updates an resource set config.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -726,11 +747,13 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -827,9 +850,10 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
+     * }
+     * </pre>
+     * 
+     * @param resourceSetRuleConfig The resourceSetRuleConfig parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -847,7 +871,7 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Deletes a ResourceSetRuleConfig resource.
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -864,7 +888,7 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Deletes a ResourceSetRuleConfig resource.
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -881,20 +905,17 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -991,15 +1012,16 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a resource set config service model along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a resource set config service model along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listResourceSetRulesSinglePageAsync(RequestOptions requestOptions) {
@@ -1013,20 +1035,17 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -1123,8 +1142,9 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1143,20 +1163,17 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -1253,8 +1270,9 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1273,20 +1291,17 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -1383,8 +1398,9 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1403,10 +1419,10 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -1503,17 +1519,17 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(String nextLink,
@@ -1528,10 +1544,10 @@ public final class ResourceSetRulesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     advancedResourceSet (Optional): {
      *         modifiedAt: OffsetDateTime (Optional)
@@ -1628,10 +1644,10 @@ public final class ResourceSetRulesImpl {
      *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

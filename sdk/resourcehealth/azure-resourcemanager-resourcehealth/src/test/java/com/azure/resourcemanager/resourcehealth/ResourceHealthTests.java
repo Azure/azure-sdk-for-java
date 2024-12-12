@@ -29,7 +29,7 @@ import java.util.Random;
 public class ResourceHealthTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
-    private static final Region REGION = Region.US_WEST3;
+    private static final Region REGION = Region.US_EAST2;
     private static final String VM_NAME = "vm" + randomPadding();
 
     private String resourceGroup = "rg" + randomPadding();

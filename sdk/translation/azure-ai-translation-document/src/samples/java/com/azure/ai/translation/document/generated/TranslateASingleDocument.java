@@ -16,8 +16,8 @@ public class TranslateASingleDocument {
             = new SingleDocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.documenttranslate.translateasingledocument
-        BinaryData response = singleDocumentTranslationClient.documentTranslate("es", null, "en", null, null);
-        // END:com.azure.ai.translation.document.generated.documenttranslate.translateasingledocument
+        // BEGIN:com.azure.ai.translation.document.generated.translate.translateasingledocument
+        BinaryData response = singleDocumentTranslationClient.translate("es", null, "en", null, null);
+        // END:com.azure.ai.translation.document.generated.translate.translateasingledocument
     }
 }

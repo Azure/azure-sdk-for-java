@@ -3,18 +3,18 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
-import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
+import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -26,17 +26,16 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.ai.documentintelligence.TestUtils.BATCH_SAMPLE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -47,7 +46,9 @@ import static com.azure.ai.documentintelligence.TestUtils.LICENSE_PNG;
 import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
-import static com.azure.ai.documentintelligence.models.AnalyzeOutputOption.PDF;
+import static com.azure.ai.documentintelligence.models.AnalyzeOutputFormat.PDF;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTestBase {
     private DocumentIntelligenceClient client;
@@ -85,10 +86,8 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeReceiptData(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-receipt", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-receipt", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateJpegReceiptData(syncPoller.getFinalResult());
@@ -106,11 +105,9 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeReceiptSourceUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        urlRunner((sourceUrl) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-receipt", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setUrlSource(sourceUrl))
+        urlRunner((urlSource) -> {
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-receipt", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateJpegReceiptData(syncPoller.getFinalResult());
@@ -129,10 +126,8 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeLayout(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-layout", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-layout", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
@@ -144,14 +139,14 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeLayoutWithPages(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
-                    .beginAnalyzeDocument("prebuilt-layout", "1, 2", null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+                    .beginAnalyzeDocument("prebuilt-layout",
+                        new AnalyzeDocumentOptions(data).setPages(Arrays.asList("1, 2")))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertEquals(2, analyzeResult.getPages().size());
+            assertEquals(2, analyzeResult.getPages().size());
         }, MULTIPAGE_INVOICE_PDF);
     }
 
@@ -161,11 +156,9 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeLayoutFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        urlRunner(sourceUrl -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-layout", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setUrlSource(sourceUrl))
+        urlRunner(urlSource -> {
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-layout", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
@@ -177,41 +170,36 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeGermanContentFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-layout", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-layout", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateGermanContentData(syncPoller.getFinalResult());
         }, CONTENT_GERMAN_PDF);
     }
 
-    // Custom Document recognition
+    // Custom AnalyzedDocument recognition
 
     /**
      * Verifies custom form data for a document using source as input stream data and valid model Id.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void analyzeCustomDocument(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
                 .beginBuildDocumentModel(
-                    new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
+                    new BuildDocumentModelOptions("modelID" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
             String modelId = buildModelPoller.getFinalResult().getModelId();
 
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument(modelId, null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument(modelId, new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
 
@@ -220,7 +208,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         }), CONTENT_FORM_JPG);
     }
 
-    // Custom Document - URL
+    // Custom AnalyzedDocument - URL
 
     /**
      * Verifies custom form data for an URL document data without labeled data
@@ -231,17 +219,15 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String modelId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        urlRunner((sourceUrl) -> buildModelRunner((trainingFilesUrl) -> {
+        urlRunner((urlSource) -> buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId1, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument(modelId, null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setUrlSource(sourceUrl))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument(modelId, new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             adminClient.deleteModel(modelId);
@@ -262,10 +248,8 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeInvoiceData(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-invoice", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateInvoiceData(syncPoller.getFinalResult());
@@ -281,11 +265,9 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeInvoiceSourceUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        urlRunner((sourceUrl) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-invoice", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setUrlSource(sourceUrl))
+        urlRunner((urlSource) -> {
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateInvoiceData(syncPoller.getFinalResult());
@@ -300,16 +282,14 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void invoiceValidLocale(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-invoice", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             validateInvoiceData(syncPoller.getFinalResult());
         }, INVOICE_PDF);
     }
 
-    // Identity Document Recognition
+    // Identity AnalyzedDocument Recognition
 
     /**
      * Verifies license card data from a document using file data as source.
@@ -319,17 +299,15 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     public void analyzeLicenseCardData(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-idDocument", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-idDocument", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
         }, LICENSE_PNG);
     }
 
-    // Identity Document - URL
+    // Identity AnalyzedDocument - URL
 
     /**
      * Verifies business card data for a document using source as file url.
@@ -338,11 +316,9 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void analyzeLicenseSourceUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        urlRunner(sourceUrl -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument("prebuilt-idDocument", null, null, null, null, null, null, null,
-                        new AnalyzeDocumentRequest().setUrlSource(sourceUrl))
+        urlRunner(urlSource -> {
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-idDocument", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
@@ -352,7 +328,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
@@ -372,7 +347,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
             SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
                 = adminClient
-                    .beginBuildClassifier(new BuildDocumentClassifierRequest(classifierId1, documentTypeDetailsMap))
+                    .beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId1, documentTypeDetailsMap))
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             documentClassifierDetails.set(buildModelPoller.getFinalResult());
@@ -382,16 +357,16 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         if (documentClassifierDetails.get() != null) {
             String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
-                SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
+                SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                     = client
                         .beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
-                            new ClassifyDocumentRequest().setBase64Source(data))
+                            new ClassifyDocumentOptions(data))
                         .setPollInterval(durationTestMode);
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
-                // TODO: (service bug) Document count should be 3
-                Assertions.assertEquals(1, analyzeResult.getDocuments().size());
-                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+                // TODO: (service bug) AnalyzedDocument count should be 3
+                assertEquals(1, analyzeResult.getDocuments().size());
+                assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
@@ -399,7 +374,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyze(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
@@ -419,7 +393,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
                 = adminClient
                     .beginBuildClassifier(
-                        new BuildDocumentClassifierRequest("classifierId" + UUID.randomUUID(), documentTypeDetailsMap))
+                        new BuildDocumentClassifierOptions("classifierId" + UUID.randomUUID(), documentTypeDetailsMap))
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             documentClassifierDetails.set(buildModelPoller.getFinalResult());
@@ -429,16 +403,16 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         if (documentClassifierDetails.get() != null) {
             String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
-                SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
+                SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                     = client
                         .beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
-                            new ClassifyDocumentRequest().setBase64Source(data))
+                            new ClassifyDocumentOptions(data))
                         .setPollInterval(durationTestMode);
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
-                // TODO: (service bug) Document count should be 3
-                Assertions.assertEquals(1, analyzeResult.getDocuments().size());
-                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+                // TODO: (service bug) AnalyzedDocument count should be 3
+                assertEquals(1, analyzeResult.getDocuments().size());
+                assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
@@ -450,11 +424,10 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String modelID = "prebuilt-read";
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
-                = client
-                    .beginAnalyzeDocument(modelID, null, null, null, null, null, null, Collections.singletonList(PDF),
-                        new AnalyzeDocumentRequest().setBase64Source(data))
-                    .setPollInterval(durationTestMode);
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller = client
+                .beginAnalyzeDocument(modelID,
+                    new AnalyzeDocumentOptions(data).setOutput(Collections.singletonList(PDF)))
+                .setPollInterval(durationTestMode);
             String resultId = syncPoller.poll().getValue().getOperationId();
             syncPoller.waitForCompletion();
 
@@ -474,11 +447,11 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String modelID = "prebuilt-layout";
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeResultOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
                 = client
-                    .beginAnalyzeDocument(modelID, null, null, null, null, null, null,
-                        Collections.singletonList(AnalyzeOutputOption.FIGURES),
-                        new AnalyzeDocumentRequest().setBase64Source(data))
+                    .beginAnalyzeDocument(modelID,
+                        new AnalyzeDocumentOptions(data)
+                            .setOutput(Collections.singletonList(AnalyzeOutputFormat.FIGURES)))
                     .setPollInterval(durationTestMode);
             String resultId = syncPoller.poll().getValue().getOperationId();
             syncPoller.waitForCompletion();
@@ -500,29 +473,18 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("Disabled until file available on main")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        buildBatchModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
-                .beginBuildDocumentModel(
-                    new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.GENERATIVE)
-                        .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
+        buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
+
+            SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> syncPoller = client
+                .beginAnalyzeBatchDocuments("prebuilt-layout",
+                    new AnalyzeBatchDocumentsOptions(new AzureBlobContentSource(trainingFilesUrl),
+                        trainingFilesResultUrl).setResultPrefix("result/").setOverwriteExisting(true))
                 .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
 
-            String modelId = buildModelPoller.getFinalResult().getModelId();
-
-            urlRunner((sourceUrl) -> {
-                SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult> syncPoller = client
-                    .beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null,
-                        Collections.singletonList(PDF),
-                        new AnalyzeBatchDocumentsRequest(trainingFilesUrl).setResultPrefix("trainingDocsResult/")
-                            .setAzureBlobSource(new AzureBlobContentSource(sourceUrl)))
-                    .setPollInterval(durationTestMode);
-                syncPoller.waitForCompletion();
-            }, BATCH_SAMPLE_PDF);
+            AnalyzeBatchResult analyzeBatchResult = syncPoller.getFinalResult();
+            assertNotNull(analyzeBatchResult.getDetails().get(0).getResultUrl());
         });
     }
 }

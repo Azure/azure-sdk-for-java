@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
@@ -14,65 +18,56 @@ import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Collection of Notification Hub or Notification Hub Namespace PNS credentials.
  */
 @Fluent
-public final class PnsCredentials {
+public final class PnsCredentials implements JsonSerializable<PnsCredentials> {
     /*
      * Description of a NotificationHub AdmCredential.
      */
-    @JsonProperty(value = "admCredential")
     private AdmCredential admCredential;
 
     /*
      * Description of a NotificationHub ApnsCredential.
      */
-    @JsonProperty(value = "apnsCredential")
     private ApnsCredential apnsCredential;
 
     /*
      * Description of a NotificationHub BaiduCredential.
      */
-    @JsonProperty(value = "baiduCredential")
     private BaiduCredential baiduCredential;
 
     /*
      * Description of a NotificationHub BrowserCredential.
      */
-    @JsonProperty(value = "browserCredential")
     private BrowserCredential browserCredential;
 
     /*
      * Description of a NotificationHub GcmCredential.
      */
-    @JsonProperty(value = "gcmCredential")
     private GcmCredential gcmCredential;
 
     /*
      * Description of a NotificationHub MpnsCredential.
      */
-    @JsonProperty(value = "mpnsCredential")
     private MpnsCredential mpnsCredential;
 
     /*
      * Description of a NotificationHub WnsCredential.
      */
-    @JsonProperty(value = "wnsCredential")
     private WnsCredential wnsCredential;
 
     /*
      * Description of a NotificationHub XiaomiCredential.
      */
-    @JsonProperty(value = "xiaomiCredential")
     private XiaomiCredential xiaomiCredential;
 
     /*
      * Description of a NotificationHub FcmV1Credential.
      */
-    @JsonProperty(value = "fcmV1Credential")
     private FcmV1Credential fcmV1Credential;
 
     /**
@@ -294,5 +289,65 @@ public final class PnsCredentials {
         if (fcmV1Credential() != null) {
             fcmV1Credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("admCredential", this.admCredential);
+        jsonWriter.writeJsonField("apnsCredential", this.apnsCredential);
+        jsonWriter.writeJsonField("baiduCredential", this.baiduCredential);
+        jsonWriter.writeJsonField("browserCredential", this.browserCredential);
+        jsonWriter.writeJsonField("gcmCredential", this.gcmCredential);
+        jsonWriter.writeJsonField("mpnsCredential", this.mpnsCredential);
+        jsonWriter.writeJsonField("wnsCredential", this.wnsCredential);
+        jsonWriter.writeJsonField("xiaomiCredential", this.xiaomiCredential);
+        jsonWriter.writeJsonField("fcmV1Credential", this.fcmV1Credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PnsCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PnsCredentials if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PnsCredentials.
+     */
+    public static PnsCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PnsCredentials deserializedPnsCredentials = new PnsCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("admCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.admCredential = AdmCredential.fromJson(reader);
+                } else if ("apnsCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.apnsCredential = ApnsCredential.fromJson(reader);
+                } else if ("baiduCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.baiduCredential = BaiduCredential.fromJson(reader);
+                } else if ("browserCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.browserCredential = BrowserCredential.fromJson(reader);
+                } else if ("gcmCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.gcmCredential = GcmCredential.fromJson(reader);
+                } else if ("mpnsCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.mpnsCredential = MpnsCredential.fromJson(reader);
+                } else if ("wnsCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.wnsCredential = WnsCredential.fromJson(reader);
+                } else if ("xiaomiCredential".equals(fieldName)) {
+                    deserializedPnsCredentials.xiaomiCredential = XiaomiCredential.fromJson(reader);
+                } else if ("fcmV1Credential".equals(fieldName)) {
+                    deserializedPnsCredentials.fcmV1Credential = FcmV1Credential.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPnsCredentials;
+        });
     }
 }

@@ -20,7 +20,10 @@ public final class NotificationHubsCreateOrUpdateSamples {
      */
     public static void
         notificationHubsCreateOrUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().define("nh-sdk-hub").withRegion("eastus")
-            .withExistingNamespace("5ktrial", "nh-sdk-ns").create();
+        manager.notificationHubs()
+            .define("nh-sdk-hub")
+            .withRegion("eastus")
+            .withExistingNamespace("5ktrial", "nh-sdk-ns")
+            .create();
     }
 }

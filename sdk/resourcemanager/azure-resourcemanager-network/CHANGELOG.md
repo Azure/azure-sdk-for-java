@@ -1,6 +1,6 @@
 # Release History
 
-## 2.45.0-beta.1 (Unreleased)
+## 2.46.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.45.0 (2024-11-28)
+
+### Bugs Fixed
+
+- Fixed bug that "Microsoft.Network/bastionHosts" resource causes exception on `listNetworkInterfaceIPConfigurations` method in `Subnet` class.
 
 ## 2.44.0 (2024-10-25)
 

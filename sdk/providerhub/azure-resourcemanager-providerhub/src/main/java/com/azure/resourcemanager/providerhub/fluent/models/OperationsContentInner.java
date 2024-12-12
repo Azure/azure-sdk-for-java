@@ -6,27 +6,48 @@ package com.azure.resourcemanager.providerhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.models.OperationActionType;
 import com.azure.resourcemanager.providerhub.models.OperationOrigins;
 import com.azure.resourcemanager.providerhub.models.OperationsDefinitionDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The OperationsContent model. */
+/**
+ * The OperationsContent model.
+ */
 @Fluent
 public final class OperationsContentInner extends ProxyResource {
     /*
      * Operations content.
      */
-    @JsonProperty(value = "properties")
     private OperationsDefinitionInner innerProperties;
 
-    /** Creates an instance of OperationsContentInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OperationsContentInner class.
+     */
     public OperationsContentInner() {
     }
 
     /**
      * Get the innerProperties property: Operations content.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationsDefinitionInner innerProperties() {
@@ -34,8 +55,38 @@ public final class OperationsContentInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -44,7 +95,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationsContentInner object itself.
      */
@@ -58,7 +109,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Get the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -67,7 +118,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Set the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationsContentInner object itself.
      */
@@ -81,7 +132,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Get the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigins origin() {
@@ -90,7 +141,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Set the origin property: The origin property.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationsContentInner object itself.
      */
@@ -104,7 +155,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Get the display property: Display information of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationsDefinitionDisplay display() {
@@ -113,7 +164,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Set the display property: Display information of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationsContentInner object itself.
      */
@@ -127,7 +178,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Get the actionType property: The actionType property.
-     *
+     * 
      * @return the actionType value.
      */
     public OperationActionType actionType() {
@@ -136,7 +187,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Set the actionType property: The actionType property.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the OperationsContentInner object itself.
      */
@@ -150,7 +201,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Get the properties property: Anything.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -159,7 +210,7 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Set the properties property: Anything.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationsContentInner object itself.
      */
@@ -173,12 +224,55 @@ public final class OperationsContentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsContentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsContentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationsContentInner.
+     */
+    public static OperationsContentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsContentInner deserializedOperationsContentInner = new OperationsContentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationsContentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationsContentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOperationsContentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationsContentInner.innerProperties = OperationsDefinitionInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsContentInner;
+        });
     }
 }

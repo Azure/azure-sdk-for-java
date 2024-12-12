@@ -10,6 +10,6 @@ module com.azure.resourcemanager.playwrighttesting {
     exports com.azure.resourcemanager.playwrighttesting.fluent.models;
     exports com.azure.resourcemanager.playwrighttesting.models;
 
-    opens com.azure.resourcemanager.playwrighttesting.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.playwrighttesting.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.playwrighttesting.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.playwrighttesting.models to com.azure.core;
 }

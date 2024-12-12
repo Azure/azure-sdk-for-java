@@ -6,62 +6,58 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub ApnsCredential.
  */
 @Fluent
-public final class ApnsCredentialProperties {
+public final class ApnsCredentialProperties implements JsonSerializable<ApnsCredentialProperties> {
     /*
      * Gets or sets the APNS certificate.
      */
-    @JsonProperty(value = "apnsCertificate")
     private String apnsCertificate;
 
     /*
      * Gets or sets the certificate key.
      */
-    @JsonProperty(value = "certificateKey")
     private String certificateKey;
 
     /*
      * Gets or sets the endpoint of this credential.
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
      * Gets or sets the APNS certificate Thumbprint
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * Gets or sets a 10-character key identifier (kid) key, obtained from
      * your developer account
      */
-    @JsonProperty(value = "keyId")
     private String keyId;
 
     /*
      * Gets or sets the name of the application
      */
-    @JsonProperty(value = "appName")
     private String appName;
 
     /*
      * Gets or sets the issuer (iss) registered claim key, whose value is
      * your 10-character Team ID, obtained from your developer account
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
     /*
      * Gets or sets provider Authentication Token, obtained through your
      * developer account
      */
-    @JsonProperty(value = "token")
     private String token;
 
     /**
@@ -243,10 +239,69 @@ public final class ApnsCredentialProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property endpoint in model ApnsCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model ApnsCredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApnsCredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("apnsCertificate", this.apnsCertificate);
+        jsonWriter.writeStringField("certificateKey", this.certificateKey);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("keyId", this.keyId);
+        jsonWriter.writeStringField("appName", this.appName);
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeStringField("token", this.token);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApnsCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApnsCredentialProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApnsCredentialProperties.
+     */
+    public static ApnsCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApnsCredentialProperties deserializedApnsCredentialProperties = new ApnsCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.endpoint = reader.getString();
+                } else if ("apnsCertificate".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.apnsCertificate = reader.getString();
+                } else if ("certificateKey".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.certificateKey = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.thumbprint = reader.getString();
+                } else if ("keyId".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.keyId = reader.getString();
+                } else if ("appName".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.appName = reader.getString();
+                } else if ("appId".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.appId = reader.getString();
+                } else if ("token".equals(fieldName)) {
+                    deserializedApnsCredentialProperties.token = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApnsCredentialProperties;
+        });
+    }
 }

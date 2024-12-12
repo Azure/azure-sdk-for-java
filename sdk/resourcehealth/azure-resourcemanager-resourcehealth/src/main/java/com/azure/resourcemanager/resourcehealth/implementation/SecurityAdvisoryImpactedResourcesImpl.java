@@ -28,27 +28,27 @@ public final class SecurityAdvisoryImpactedResourcesImpl implements SecurityAdvi
     public PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(String eventTrackingId) {
         PagedIterable<EventImpactedResourceInner> inner
             = this.serviceClient().listBySubscriptionIdAndEventId(eventTrackingId);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(String eventTrackingId, String filter,
         Context context) {
         PagedIterable<EventImpactedResourceInner> inner
             = this.serviceClient().listBySubscriptionIdAndEventId(eventTrackingId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventImpactedResource> listByTenantIdAndEventId(String eventTrackingId) {
         PagedIterable<EventImpactedResourceInner> inner
             = this.serviceClient().listByTenantIdAndEventId(eventTrackingId);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventImpactedResource> listByTenantIdAndEventId(String eventTrackingId, String filter,
         Context context) {
         PagedIterable<EventImpactedResourceInner> inner
             = this.serviceClient().listByTenantIdAndEventId(eventTrackingId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpactedResourceImpl(inner1, this.manager()));
     }
 
     private SecurityAdvisoryImpactedResourcesClient serviceClient() {

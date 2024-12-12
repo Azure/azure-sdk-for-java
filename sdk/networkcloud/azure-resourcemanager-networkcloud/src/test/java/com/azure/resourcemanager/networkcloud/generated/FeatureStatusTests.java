@@ -11,7 +11,7 @@ public final class FeatureStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureStatus model = BinaryData.fromString(
-            "{\"detailedStatus\":\"Unknown\",\"detailedStatusMessage\":\"ibycno\",\"name\":\"knme\",\"version\":\"sgzvahapjyzhpv\"}")
+            "{\"detailedStatus\":\"Running\",\"detailedStatusMessage\":\"xgwim\",\"name\":\"jhfjxwm\",\"version\":\"kkfoqr\"}")
             .toObject(FeatureStatus.class);
     }
 

@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for uploading Azure Batch service log files from a Compute Node to Azure Blob Storage.
  */
 public class UploadBatchNodeLogsOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link UploadBatchNodeLogsOptions}.
+     */
+    public UploadBatchNodeLogsOptions() {
+    }
 }

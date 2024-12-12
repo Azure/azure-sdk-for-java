@@ -135,10 +135,11 @@ public final class DatabasePrincipalAssignmentImpl
         com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
-        this.principalAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "principalAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.principalAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "principalAssignments");
     }
 
     public DatabasePrincipalAssignment refresh() {

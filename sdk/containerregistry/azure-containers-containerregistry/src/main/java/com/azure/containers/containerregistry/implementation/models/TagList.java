@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** List of tag details. */
+/**
+ * List of tag details.
+ */
 @Fluent
 public final class TagList implements JsonSerializable<TagList> {
     /*
@@ -35,14 +37,16 @@ public final class TagList implements JsonSerializable<TagList> {
      */
     private String link;
 
-    /** Creates an instance of TagList class. */
+    /**
+     * Creates an instance of TagList class.
+     */
     public TagList() {
     }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     *
+     * 
      * @return the registryLoginServer value.
      */
     public String getRegistryLoginServer() {
@@ -52,7 +56,7 @@ public final class TagList implements JsonSerializable<TagList> {
     /**
      * Set the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     *
+     * 
      * @param registryLoginServer the registryLoginServer value to set.
      * @return the TagList object itself.
      */
@@ -63,7 +67,7 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Get the repository property: Image name.
-     *
+     * 
      * @return the repository value.
      */
     public String getRepository() {
@@ -72,7 +76,7 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Set the repository property: Image name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the TagList object itself.
      */
@@ -83,7 +87,7 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Get the tagAttributeBases property: List of tag attribute details.
-     *
+     * 
      * @return the tagAttributeBases value.
      */
     public List<TagAttributesBase> getTagAttributeBases() {
@@ -92,7 +96,7 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Set the tagAttributeBases property: List of tag attribute details.
-     *
+     * 
      * @param tagAttributeBases the tagAttributeBases value to set.
      * @return the TagList object itself.
      */
@@ -103,7 +107,7 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Get the link property: The link property.
-     *
+     * 
      * @return the link value.
      */
     public String getLink() {
@@ -112,7 +116,7 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Set the link property: The link property.
-     *
+     * 
      * @param link the link value to set.
      * @return the TagList object itself.
      */
@@ -121,6 +125,9 @@ public final class TagList implements JsonSerializable<TagList> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,10 +140,10 @@ public final class TagList implements JsonSerializable<TagList> {
 
     /**
      * Reads an instance of TagList from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TagList if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TagList.
      */

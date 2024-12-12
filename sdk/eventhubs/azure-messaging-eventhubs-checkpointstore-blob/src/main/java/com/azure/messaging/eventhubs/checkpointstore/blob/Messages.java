@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.util.CoreUtils;
+
 import java.util.Map;
 
 /**

@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-geolocation</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -72,7 +72,7 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 Get Polygons
 ```java com.azure.maps.geolocation.sync.get_ip_to_location
-client.getLocation("131.107.0.89");
+client.getLocation(InetAddress.getByName("131.107.0.89"));
 ```
 
 ## Troubleshooting

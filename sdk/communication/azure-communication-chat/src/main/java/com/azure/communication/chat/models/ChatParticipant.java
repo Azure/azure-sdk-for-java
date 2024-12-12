@@ -40,6 +40,12 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     private OffsetDateTime shareHistoryTime;
 
     /**
+     * Creates a new instance of {@link ChatParticipant}.
+     */
+    public ChatParticipant() {
+    }
+
+    /**
      * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.

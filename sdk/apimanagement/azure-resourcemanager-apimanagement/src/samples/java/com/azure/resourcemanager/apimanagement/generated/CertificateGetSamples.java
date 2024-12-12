@@ -4,35 +4,39 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Certificate Get. */
+/**
+ * Samples for Certificate Get.
+ */
 public final class CertificateGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetCertificateWithKeyVault.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetCertificateWithKeyVault.json
      */
     /**
      * Sample code: ApiManagementGetCertificateWithKeyVault.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetCertificateWithKeyVault(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .certificates()
+    public static void
+        apiManagementGetCertificateWithKeyVault(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.certificates()
             .getWithResponse("rg1", "apimService1", "templateCertkv", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetCertificate.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetCertificate.json
      */
     /**
      * Sample code: ApiManagementGetCertificate.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetCertificate(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .certificates()
+    public static void
+        apiManagementGetCertificate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.certificates()
             .getWithResponse("rg1", "apimService1", "templateCert1", com.azure.core.util.Context.NONE);
     }
 }

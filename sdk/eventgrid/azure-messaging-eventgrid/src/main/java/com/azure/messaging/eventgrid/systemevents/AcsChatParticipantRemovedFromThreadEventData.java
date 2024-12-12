@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -64,8 +65,7 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     }
 
     /**
-     * Get the removedByCommunicationIdentifier property: The communication identifier of the user who removed the
-     * user.
+     * Get the removedByCommunicationIdentifier property: The communication identifier of the user who removed the user.
      * 
      * @return the removedByCommunicationIdentifier value.
      */
@@ -74,8 +74,7 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     }
 
     /**
-     * Set the removedByCommunicationIdentifier property: The communication identifier of the user who removed the
-     * user.
+     * Set the removedByCommunicationIdentifier property: The communication identifier of the user who removed the user.
      * 
      * @param removedByCommunicationIdentifier the removedByCommunicationIdentifier value to set.
      * @return the AcsChatParticipantRemovedFromThreadEventData object itself.
@@ -145,6 +144,9 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -179,8 +181,8 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
                 } else if ("threadId".equals(fieldName)) {
                     deserializedAcsChatParticipantRemovedFromThreadEventData.setThreadId(reader.getString());
                 } else if ("time".equals(fieldName)) {
-                    deserializedAcsChatParticipantRemovedFromThreadEventData.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatParticipantRemovedFromThreadEventData.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("removedByCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatParticipantRemovedFromThreadEventData.removedByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);

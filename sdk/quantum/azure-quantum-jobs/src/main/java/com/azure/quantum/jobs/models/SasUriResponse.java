@@ -24,6 +24,12 @@ public final class SasUriResponse implements JsonSerializable<SasUriResponse> {
     private String sasUri;
 
     /**
+     * Creates an instance of {@link SasUriResponse}.
+     */
+    public SasUriResponse() {
+    }
+
+    /**
      * Get the sasUri property: A URL with a SAS token to upload a blob for execution in the given workspace.
      *
      * @return the sasUri value.

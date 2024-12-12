@@ -209,8 +209,8 @@ public final class L3NetworkImpl implements L3Network, L3Network.Definition, L3N
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l3NetworkName = Utils.getValueFromIdByName(innerObject.id(), "l3Networks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.l3NetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l3Networks");
     }
 
     public L3Network refresh() {

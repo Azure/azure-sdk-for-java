@@ -13,7 +13,7 @@ public final class AdvancedThreatProtectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvancedThreatProtectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"creationTime\":\"2021-01-11T01:27:45Z\",\"state\":\"Disabled\",\"provisioningState\":\"Updating\"},\"id\":\"uugidyjrrfby\",\"name\":\"osvexcsonpclhoc\",\"type\":\"hslkevleggzf\"}")
+            "{\"properties\":{\"creationTime\":\"2021-02-22T17:02:03Z\",\"state\":\"Disabled\",\"provisioningState\":\"Updating\"},\"id\":\"gz\",\"name\":\"buhfmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"}")
             .toObject(AdvancedThreatProtectionInner.class);
         Assertions.assertEquals(AdvancedThreatProtectionState.DISABLED, model.state());
     }

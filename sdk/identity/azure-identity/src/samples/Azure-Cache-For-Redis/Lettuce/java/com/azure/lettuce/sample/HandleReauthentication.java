@@ -23,8 +23,16 @@ import io.lettuce.core.protocol.ProtocolVersion;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/**
+ * A sample where reauthentication is handled.
+ */
 public class HandleReauthentication {
 
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();

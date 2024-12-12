@@ -9,9 +9,8 @@ import com.azure.analytics.purview.datamap.models.AtlasEntity;
 import com.azure.analytics.purview.datamap.models.ContactInfo;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.analytics.purview.datamap.models.EntityStatus;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,50 +22,48 @@ import org.junit.jupiter.api.Test;
 public final class EntityBulkCreateOrUpdateTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testEntityBulkCreateOrUpdateTests() throws IOException {
+    public void testEntityBulkCreateOrUpdateTests() {
         // method invocation
-        EntityMutationResult response
-            = entityClient
-                .batchCreateOrUpdate(
-                    new AtlasEntitiesWithExtInfo().setReferredEntities(mapOf())
-                        .setEntities(Arrays.asList(
-                            new AtlasEntity()
-                                .setAttributes(mapOf("owner", "ExampleOwner", "modifiedTime", 0, "createTime", 0,
-                                    "qualifiedName", "exampleaccount1", "name", "ExampleStorageAccount1", "description",
-                                    JacksonAdapter.createDefaultSerializerAdapter()
-                                        .deserialize("null", Object.class, SerializerEncoding.JSON),
-                                    "publicAccessLevel",
-                                    JacksonAdapter.createDefaultSerializerAdapter()
-                                        .deserialize("null", Object.class, SerializerEncoding.JSON)))
-                                .setTypeName("azure_storage_account")
-                                .setCreatedBy("ExampleCreator")
-                                .setStatus(EntityStatus.ACTIVE)
-                                .setUpdatedBy("ExampleUpdator")
-                                .setVersion(0L)
-                                .setContacts(mapOf("Expert",
-                                    Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                                        .setInfo("Example Expert Info")),
-                                    "Owner",
-                                    Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                                        .setInfo("Example Owner Info")))),
-                            new AtlasEntity()
-                                .setAttributes(mapOf("owner", "ExampleOwner", "modifiedTime", 0, "createTime", 0,
-                                    "qualifiedName", "exampleaccount2", "name", "ExampleStorageAccount2", "description",
-                                    "Example Description", "publicAccessLevel",
-                                    JacksonAdapter.createDefaultSerializerAdapter()
-                                        .deserialize("null", Object.class, SerializerEncoding.JSON)))
-                                .setTypeName("azure_storage_account")
-                                .setCreatedBy("ExampleCreator")
-                                .setStatus(EntityStatus.ACTIVE)
-                                .setUpdatedBy("ExampleUpdator")
-                                .setVersion(0L)
-                                .setContacts(mapOf("Expert",
-                                    Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                                        .setInfo("Example Expert Info")),
-                                    "Owner",
-                                    Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                                        .setInfo("Example Owner Info")))))),
-                    null, null);
+        EntityMutationResult response = entityClient.batchCreateOrUpdate(new AtlasEntitiesWithExtInfo()
+            .setReferredEntities(mapOf())
+            .setEntities(Arrays.asList(
+                new AtlasEntity()
+                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
+                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
+                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
+                        BinaryData.fromBytes("exampleaccount1".getBytes(StandardCharsets.UTF_8)), "name",
+                        BinaryData.fromBytes("ExampleStorageAccount1".getBytes(StandardCharsets.UTF_8)), "description",
+                        null, "publicAccessLevel", null))
+                    .setTypeName("azure_storage_account")
+                    .setCreatedBy("ExampleCreator")
+                    .setStatus(EntityStatus.ACTIVE)
+                    .setUpdatedBy("ExampleUpdator")
+                    .setVersion(0L)
+                    .setContacts(mapOf("Expert", Arrays.asList(
+                        new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df").setInfo("Example Expert Info")),
+                        "Owner",
+                        Arrays
+                            .asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                .setInfo("Example Owner Info")))),
+                new AtlasEntity()
+                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
+                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
+                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
+                        BinaryData.fromBytes("exampleaccount2".getBytes(StandardCharsets.UTF_8)), "name",
+                        BinaryData.fromBytes("ExampleStorageAccount2".getBytes(StandardCharsets.UTF_8)), "description",
+                        BinaryData.fromBytes("Example Description".getBytes(StandardCharsets.UTF_8)),
+                        "publicAccessLevel", null))
+                    .setTypeName("azure_storage_account")
+                    .setCreatedBy("ExampleCreator")
+                    .setStatus(EntityStatus.ACTIVE)
+                    .setUpdatedBy("ExampleUpdator")
+                    .setVersion(0L)
+                    .setContacts(mapOf("Expert",
+                        Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                            .setInfo("Example Expert Info")),
+                        "Owner", Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                            .setInfo("Example Owner Info")))))),
+            null, null);
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -9,9 +9,8 @@ import com.azure.analytics.purview.datamap.models.QueryOptions;
 import com.azure.analytics.purview.datamap.models.QueryResult;
 import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,13 +20,12 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryAssetTypeTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryAssetTypeTests() throws IOException {
+    public void testDiscoveryQueryAssetTypeTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"or\":[{\"assetType\":\"SQL Server\"},{\"assetType\":\"Azure SQL Server\"},{\"assetType\":\"Azure SQL Database\"},{\"assetType\":\"Azure SQL Data Warehouse\"},{\"assetType\":\"Azure SQL Managed Instance\"},{\"assetType\":\"Azure Storage Account\"},{\"assetType\":\"Azure Blob Storage\"},{\"assetType\":\"Azure Files\"},{\"assetType\":\"Azure Table Storage\"},{\"assetType\":\"Azure Data Lake Storage Gen1\"},{\"assetType\":\"Azure Data Lake Storage Gen2\"},{\"assetType\":\"Azure Cosmos DB\"},{\"assetType\":\"Azure Data Factory\"},{\"assetType\":\"Azure Cognitive Search\"},{\"assetType\":\"Power BI\"},{\"assetType\":\"Azure Data Explorer\"},{\"assetType\":\"Amazon S3\"},{\"assetType\":\"Azure Data Share\"},{\"assetType\":\"Teradata\"},{\"assetType\":\"SAP S4HANA\"},{\"assetType\":\"SAP ECC\"},{\"assetType\":\"SQL Server Integration Services\"},{\"assetType\":\"hive\"},{\"assetType\":\"Azure Database for MySQL\"},{\"assetType\":\"Azure Database for MariaDB\"},{\"assetType\":\"Azure Database for PostgreSQL\"},{\"assetType\":\"Azure Synapse Analytics\"}]}",
-                    Object.class, SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes(
+                "{or=[{assetType=SQL Server}, {assetType=Azure SQL Server}, {assetType=Azure SQL Database}, {assetType=Azure SQL Data Warehouse}, {assetType=Azure SQL Managed Instance}, {assetType=Azure Storage Account}, {assetType=Azure Blob Storage}, {assetType=Azure Files}, {assetType=Azure Table Storage}, {assetType=Azure Data Lake Storage Gen1}, {assetType=Azure Data Lake Storage Gen2}, {assetType=Azure Cosmos DB}, {assetType=Azure Data Factory}, {assetType=Azure Cognitive Search}, {assetType=Power BI}, {assetType=Azure Data Explorer}, {assetType=Amazon S3}, {assetType=Azure Data Share}, {assetType=Teradata}, {assetType=SAP S4HANA}, {assetType=SAP ECC}, {assetType=SQL Server Integration Services}, {assetType=hive}, {assetType=Azure Database for MySQL}, {assetType=Azure Database for MariaDB}, {assetType=Azure Database for PostgreSQL}, {assetType=Azure Synapse Analytics}]}"
+                    .getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

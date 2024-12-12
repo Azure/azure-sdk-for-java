@@ -7,10 +7,10 @@ import io.clientcore.core.http.exception.HttpExceptionType;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonToken;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.models.SimpleClass;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -262,12 +262,12 @@ public class DefaultJsonSerializerTests {
 
     private static Stream<Arguments> unsupportedDeserializationSupplier() {
         return Stream.of(Arguments.of(InputStream.class, IOException.class),
-            // Thrown when the String cannot be parsed by core-json
+            // Thrown when the String cannot be parsed by core
             Arguments.of(SimpleClass.class, InvocationTargetException.class),
             // Thrown when the class doesn't have a fromJson method
             Arguments.of(URL.class, IOException.class),
-            // Thrown when the String cannot be parsed by core-json
-            Arguments.of(URI.class, IOException.class) // Thrown when the String cannot be parsed by core-json
+            // Thrown when the String cannot be parsed by core
+            Arguments.of(URI.class, IOException.class) // Thrown when the String cannot be parsed by core
         );
     }
 }

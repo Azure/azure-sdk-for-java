@@ -7,6 +7,7 @@ import com.azure.ai.inference.models.EmbeddingEncodingFormat;
 import com.azure.ai.inference.models.EmbeddingInputType;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -61,7 +62,7 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
      * Additional properties
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of EmbedRequest class.
@@ -185,7 +186,7 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -196,7 +197,7 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
      * @return the EmbedRequest object itself.
      */
     @Generated
-    public EmbedRequest setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public EmbedRequest setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -215,8 +216,13 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
         jsonWriter.writeStringField("input_type", this.inputType == null ? null : this.inputType.toString());
         jsonWriter.writeStringField("model", this.model);
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -239,7 +245,7 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
             EmbeddingEncodingFormat encodingFormat = null;
             EmbeddingInputType inputType = null;
             String model = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -257,7 +263,8 @@ public final class EmbedRequest implements JsonSerializable<EmbedRequest> {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             EmbedRequest deserializedEmbedRequest = new EmbedRequest(input);

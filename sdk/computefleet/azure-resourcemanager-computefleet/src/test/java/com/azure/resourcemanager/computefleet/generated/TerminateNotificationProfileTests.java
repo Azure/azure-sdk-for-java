@@ -12,18 +12,18 @@ public final class TerminateNotificationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TerminateNotificationProfile model
-            = BinaryData.fromString("{\"notBeforeTimeout\":\"nalaulppg\",\"enable\":true}")
+            = BinaryData.fromString("{\"notBeforeTimeout\":\"dnhjdauwhvylw\",\"enable\":true}")
                 .toObject(TerminateNotificationProfile.class);
-        Assertions.assertEquals("nalaulppg", model.notBeforeTimeout());
+        Assertions.assertEquals("dnhjdauwhvylw", model.notBeforeTimeout());
         Assertions.assertEquals(true, model.enable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TerminateNotificationProfile model
-            = new TerminateNotificationProfile().withNotBeforeTimeout("nalaulppg").withEnable(true);
+            = new TerminateNotificationProfile().withNotBeforeTimeout("dnhjdauwhvylw").withEnable(true);
         model = BinaryData.fromObject(model).toObject(TerminateNotificationProfile.class);
-        Assertions.assertEquals("nalaulppg", model.notBeforeTimeout());
+        Assertions.assertEquals("dnhjdauwhvylw", model.notBeforeTimeout());
         Assertions.assertEquals(true, model.enable());
     }
 }

@@ -6,6 +6,8 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasRelatedObjectId;
 import com.azure.analytics.purview.datamap.models.AtlasStruct;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +22,11 @@ public final class GlossaryAssignTermToEntitiesTests extends DataMapClientTestBa
         // method invocation
         glossaryClient.assignTermToEntities("8a7f65ec-6429-0b9b-3734-ec57bf1e34c2",
             Arrays.asList(new AtlasRelatedObjectId().setGuid("ab9f1920-0b94-436d-aeb4-11a32c270fc0")
-                .setRelationshipAttributes(new AtlasStruct().setAttributes(mapOf("expression", "Example Expression",
-                    "confidence", 100, "description", "Example Description", "source", "ExampleSource")))));
+                .setRelationshipAttributes(new AtlasStruct().setAttributes(
+                    mapOf("expression", BinaryData.fromBytes("Example Expression".getBytes(StandardCharsets.UTF_8)),
+                        "confidence", BinaryData.fromBytes("100".getBytes(StandardCharsets.UTF_8)), "description",
+                        BinaryData.fromBytes("Example Description".getBytes(StandardCharsets.UTF_8)), "source",
+                        BinaryData.fromBytes("ExampleSource".getBytes(StandardCharsets.UTF_8)))))));
     }
 
     // Use "Map.of" if available

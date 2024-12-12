@@ -4,11 +4,14 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.DocumentTranslationClientImpl;
-import com.azure.ai.translation.document.models.DocumentStatus;
+import com.azure.ai.translation.document.implementation.models.SupportedFileFormats;
+import com.azure.ai.translation.document.models.DocumentStatusResult;
+import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
-import com.azure.ai.translation.document.models.StartTranslationDetails;
-import com.azure.ai.translation.document.models.SupportedFileFormats;
-import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
+import com.azure.ai.translation.document.models.ListTranslationStatusesOptions;
+import com.azure.ai.translation.document.models.TranslationBatch;
+import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,7 +25,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -107,7 +109,7 @@ public final class DocumentTranslationClient {
      * }
      * </pre>
      *
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -117,9 +119,8 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginStartTranslation(BinaryData startTranslationDetails,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginStartTranslation(startTranslationDetails, requestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginTranslation(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.beginTranslation(body, requestOptions);
     }
 
     /**
@@ -268,8 +269,8 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getTranslationsStatus(RequestOptions requestOptions) {
-        return this.serviceClient.getTranslationsStatus(requestOptions);
+    public PagedIterable<BinaryData> listTranslationStatuses(RequestOptions requestOptions) {
+        return this.serviceClient.listTranslationStatuses(requestOptions);
     }
 
     /**
@@ -306,7 +307,7 @@ public final class DocumentTranslationClient {
      * }
      * </pre>
      *
-     * @param id Format - uuid. The batch id.
+     * @param translationId Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -317,9 +318,9 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDocumentStatusWithResponse(String id, String documentId,
+    public Response<BinaryData> getDocumentStatusWithResponse(String translationId, String documentId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentStatusWithResponse(id, documentId, requestOptions);
+        return this.serviceClient.getDocumentStatusWithResponse(translationId, documentId, requestOptions);
     }
 
     /**
@@ -362,7 +363,7 @@ public final class DocumentTranslationClient {
      * }
      * </pre>
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -372,8 +373,8 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTranslationStatusWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getTranslationStatusWithResponse(id, requestOptions);
+    public Response<BinaryData> getTranslationStatusWithResponse(String translationId, RequestOptions requestOptions) {
+        return this.serviceClient.getTranslationStatusWithResponse(translationId, requestOptions);
     }
 
     /**
@@ -420,7 +421,7 @@ public final class DocumentTranslationClient {
      * }
      * </pre>
      *
-     * @param id Format - uuid. The operation-id.
+     * @param translationId Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -430,8 +431,8 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelTranslationWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.cancelTranslationWithResponse(id, requestOptions);
+    public Response<BinaryData> cancelTranslationWithResponse(String translationId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelTranslationWithResponse(translationId, requestOptions);
     }
 
     /**
@@ -561,7 +562,7 @@ public final class DocumentTranslationClient {
      * }
      * </pre>
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -571,8 +572,8 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getDocumentsStatus(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentsStatus(id, requestOptions);
+    public PagedIterable<BinaryData> listDocumentStatuses(String translationId, RequestOptions requestOptions) {
+        return this.serviceClient.listDocumentStatuses(translationId, requestOptions);
     }
 
     /**
@@ -608,7 +609,7 @@ public final class DocumentTranslationClient {
      *             versions (Optional): [
      *                 String (Optional)
      *             ]
-     *             type: String (Optional)
+     *             type: String(document/glossary) (Optional)
      *         }
      *     ]
      * }
@@ -651,7 +652,7 @@ public final class DocumentTranslationClient {
      * destination, it will be overwritten. The targetUrl for each target language
      * must be unique.
      *
-     * @param startTranslationDetails Translation job submission batch request.
+     * @param body Translation job submission batch request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -662,12 +663,10 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TranslationStatus, TranslationStatus>
-        beginStartTranslation(StartTranslationDetails startTranslationDetails) {
-        // Generated convenience method for beginStartTranslationWithModel
+    public SyncPoller<TranslationStatusResult, TranslationStatusResult> beginTranslation(TranslationBatch body) {
+        // Generated convenience method for beginTranslationWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginStartTranslationWithModel(BinaryData.fromObject(startTranslationDetails),
-            requestOptions);
+        return serviceClient.beginTranslationWithModel(BinaryData.fromObject(body), requestOptions);
     }
 
     /**
@@ -684,126 +683,56 @@ public final class DocumentTranslationClient {
      * The absence of a continuation
      * token means that no additional pages are available.
      *
-     * top, skip
-     * and maxpagesize query parameters can be used to specify a number of results to
-     * return and an offset for the collection.
+     * @param listTranslationStatusesOptions The configurable options to pass for filtering the output result.
      *
-     * top indicates the total
-     * number of records the user wants to be returned across all pages.
-     * skip
-     * indicates the number of records to skip from the list of batches based on the
-     * sorting method specified. By default, we sort by descending start
-     * time.
-     * maxpagesize is the maximum items returned in a page. If more items are
-     * requested via top (or top is not specified and there are more items to be
-     * returned), &#064;nextLink will contain the link to the next page.
-     *
-     * orderby query parameter can be used to sort the returned list (ex
-     * "orderby=createdDateTimeUtc asc" or "orderby=createdDateTimeUtc
-     * desc").
-     * The default sorting is descending by createdDateTimeUtc.
-     * Some query
-     * parameters can be used to filter the returned list (ex:
-     * "status=Succeeded,Cancelled") will only return succeeded and cancelled
-     * operations.
-     * createdDateTimeUtcStart and createdDateTimeUtcEnd can be used
-     * combined or separately to specify a range of datetime to filter the returned
-     * list by.
-     * The supported filtering query parameters are (status, ids,
-     * createdDateTimeUtcStart, createdDateTimeUtcEnd).
-     *
-     * The server honors
-     * the values specified by the client. However, clients must be prepared to handle
-     * responses that contain a different page size or contain a continuation token.
-     *
-     * When both top and skip are included, the server should first apply
-     * skip and then top on the collection.
-     * Note: If the server can't honor top
-     * and/or skip, the server must return an error to the client informing about it
-     * instead of just ignoring the query options.
-     * This reduces the risk of the client
-     * making assumptions about the data returned.
-     *
-     * @param top top indicates the total number of records the user wants to be returned across
-     * all pages.
-     *
-     * Clients MAY use top and skip query parameters to
-     * specify a number of results to return and an offset into the collection.
-     * When
-     * both top and skip are given by a client, the server SHOULD first apply skip
-     * and then top on the collection.
-     *
-     * Note: If the server can't honor
-     * top and/or skip, the server MUST return an error to the client informing
-     * about it instead of just ignoring the query options.
-     * @param skip skip indicates the number of records to skip from the list of records held by
-     * the server based on the sorting method specified. By default, we sort by
-     * descending start time.
-     *
-     * Clients MAY use top and skip query
-     * parameters to specify a number of results to return and an offset into the
-     * collection.
-     * When both top and skip are given by a client, the server SHOULD
-     * first apply skip and then top on the collection.
-     *
-     * Note: If the
-     * server can't honor top and/or skip, the server MUST return an error to the
-     * client informing about it instead of just ignoring the query options.
-     * @param ids Ids to use in filtering.
-     * @param statuses Statuses to use in filtering.
-     * @param createdDateTimeUtcStart the start datetime to get items after.
-     * @param createdDateTimeUtcEnd the end datetime to get items before.
-     * @param orderBy the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc desc').
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return translation job Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TranslationStatus> getTranslationsStatus(Integer top, Integer skip, List<String> ids,
-        List<String> statuses, OffsetDateTime createdDateTimeUtcStart, OffsetDateTime createdDateTimeUtcEnd,
-        List<String> orderBy) {
-        // Generated convenience method for getTranslationsStatus
+    public PagedIterable<TranslationStatusResult>
+        listTranslationStatuses(ListTranslationStatusesOptions listTranslationStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
+        if (listTranslationStatusesOptions != null) {
+            if (listTranslationStatusesOptions.getTop() != null) {
+                requestOptions.addQueryParam("top", String.valueOf(listTranslationStatusesOptions.getTop()), false);
+            }
+            if (listTranslationStatusesOptions.getSkip() != null) {
+                requestOptions.addQueryParam("skip", String.valueOf(listTranslationStatusesOptions.getSkip()), false);
+            }
+            if (listTranslationStatusesOptions.getTranslationIds() != null) {
+                requestOptions.addQueryParam("ids",
+                    listTranslationStatusesOptions.getTranslationIds()
+                        .stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(",")),
+                    false);
+            }
+            if (listTranslationStatusesOptions.getStatuses() != null) {
+                requestOptions.addQueryParam("statuses",
+                    listTranslationStatusesOptions.getStatuses()
+                        .stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(",")),
+                    false);
+            }
+            if (listTranslationStatusesOptions.getCreatedAfter() != null) {
+                requestOptions.addQueryParam("createdDateTimeUtcStart",
+                    String.valueOf(listTranslationStatusesOptions.getCreatedAfter()), false);
+            }
+            if (listTranslationStatusesOptions.getCreatedBefore() != null) {
+                requestOptions.addQueryParam("createdDateTimeUtcEnd",
+                    String.valueOf(listTranslationStatusesOptions.getCreatedBefore()), false);
+            }
+            if (listTranslationStatusesOptions.getOrderBy() != null) {
+                requestOptions.addQueryParam("orderby",
+                    listTranslationStatusesOptions.getOrderBy()
+                        .stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(",")),
+                    false);
+            }
         }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (ids != null) {
-            requestOptions.addQueryParam("ids",
-                ids.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (statuses != null) {
-            requestOptions.addQueryParam("statuses",
-                statuses.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (createdDateTimeUtcStart != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(createdDateTimeUtcStart), false);
-        }
-        if (createdDateTimeUtcEnd != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcEnd", String.valueOf(createdDateTimeUtcEnd), false);
-        }
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby",
-                orderBy.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.getTranslationsStatus(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TranslationStatus.class));
+        return serviceClient.listTranslationStatuses(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TranslationStatusResult.class));
     }
 
     /**
@@ -867,13 +796,12 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return translation job Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TranslationStatus> getTranslationsStatus() {
-        // Generated convenience method for getTranslationsStatus
+    public PagedIterable<TranslationStatusResult> listTranslationStatuses() {
+        // Generated convenience method for listTranslationStatuses
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.getTranslationsStatus(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(TranslationStatus.class));
+        return serviceClient.listTranslationStatuses(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(TranslationStatusResult.class));
     }
 
     /**
@@ -882,7 +810,7 @@ public final class DocumentTranslationClient {
      * Returns the translation status for a specific document based on the request Id
      * and document Id.
      *
-     * @param id Format - uuid. The batch id.
+     * @param translationId Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -894,10 +822,11 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentStatus getDocumentStatus(String id, String documentId) {
+    public DocumentStatusResult getDocumentStatus(String translationId, String documentId) {
         // Generated convenience method for getDocumentStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentStatusWithResponse(id, documentId, requestOptions).getValue().toObject(DocumentStatus.class);
+        return getDocumentStatusWithResponse(translationId, documentId, requestOptions).getValue()
+            .toObject(DocumentStatusResult.class);
     }
 
     /**
@@ -908,7 +837,7 @@ public final class DocumentTranslationClient {
      * overall request status, as well as the status for documents that are being
      * translated as part of that request.
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -919,10 +848,11 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranslationStatus getTranslationStatus(String id) {
+    public TranslationStatusResult getTranslationStatus(String translationId) {
         // Generated convenience method for getTranslationStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTranslationStatusWithResponse(id, requestOptions).getValue().toObject(TranslationStatus.class);
+        return getTranslationStatusWithResponse(translationId, requestOptions).getValue()
+            .toObject(TranslationStatusResult.class);
     }
 
     /**
@@ -937,7 +867,7 @@ public final class DocumentTranslationClient {
      * All pending documents will be cancelled if
      * possible.
      *
-     * @param id Format - uuid. The operation-id.
+     * @param translationId Format - uuid. The operation-id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -948,10 +878,11 @@ public final class DocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranslationStatus cancelTranslation(String id) {
+    public TranslationStatusResult cancelTranslation(String translationId) {
         // Generated convenience method for cancelTranslationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelTranslationWithResponse(id, requestOptions).getValue().toObject(TranslationStatus.class);
+        return cancelTranslationWithResponse(translationId, requestOptions).getValue()
+            .toObject(TranslationStatusResult.class);
     }
 
     /**
@@ -965,124 +896,54 @@ public final class DocumentTranslationClient {
      * include a continuation token in the response. The absence of a continuation
      * token means that no additional pages are available.
      *
-     * top, skip
-     * and maxpagesize query parameters can be used to specify a number of results to
-     * return and an offset for the collection.
+     * @param listDocumentStatusesOptions The configurable options to pass for filtering the output result.
      *
-     * top indicates the total
-     * number of records the user wants to be returned across all pages.
-     * skip
-     * indicates the number of records to skip from the list of document status held
-     * by the server based on the sorting method specified. By default, we sort by
-     * descending start time.
-     * maxpagesize is the maximum items returned in a page.
-     * If more items are requested via top (or top is not specified and there are
-     * more items to be returned), &#064;nextLink will contain the link to the next page.
-     *
-     * orderby query parameter can be used to sort the returned list (ex
-     * "orderby=createdDateTimeUtc asc" or "orderby=createdDateTimeUtc
-     * desc").
-     * The default sorting is descending by createdDateTimeUtc.
-     * Some query
-     * parameters can be used to filter the returned list (ex:
-     * "status=Succeeded,Cancelled") will only return succeeded and cancelled
-     * documents.
-     * createdDateTimeUtcStart and createdDateTimeUtcEnd can be used
-     * combined or separately to specify a range of datetime to filter the returned
-     * list by.
-     * The supported filtering query parameters are (status, ids,
-     * createdDateTimeUtcStart, createdDateTimeUtcEnd).
-     *
-     * When both top
-     * and skip are included, the server should first apply skip and then top on
-     * the collection.
-     * Note: If the server can't honor top and/or skip, the server
-     * must return an error to the client informing about it instead of just ignoring
-     * the query options.
-     * This reduces the risk of the client making assumptions about
-     * the data returned.
-     *
-     * @param id Format - uuid. The operation id.
-     * @param top top indicates the total number of records the user wants to be returned across
-     * all pages.
-     *
-     * Clients MAY use top and skip query parameters to
-     * specify a number of results to return and an offset into the collection.
-     * When
-     * both top and skip are given by a client, the server SHOULD first apply skip
-     * and then top on the collection.
-     *
-     * Note: If the server can't honor
-     * top and/or skip, the server MUST return an error to the client informing
-     * about it instead of just ignoring the query options.
-     * @param skip skip indicates the number of records to skip from the list of records held by
-     * the server based on the sorting method specified. By default, we sort by
-     * descending start time.
-     *
-     * Clients MAY use top and skip query
-     * parameters to specify a number of results to return and an offset into the
-     * collection.
-     * When both top and skip are given by a client, the server SHOULD
-     * first apply skip and then top on the collection.
-     *
-     * Note: If the
-     * server can't honor top and/or skip, the server MUST return an error to the
-     * client informing about it instead of just ignoring the query options.
-     * @param ids Ids to use in filtering.
-     * @param statuses Statuses to use in filtering.
-     * @param createdDateTimeUtcStart the start datetime to get items after.
-     * @param createdDateTimeUtcEnd the end datetime to get items before.
-     * @param orderBy the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc desc').
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentStatus> getDocumentsStatus(String id, Integer top, Integer skip, List<String> ids,
-        List<String> statuses, OffsetDateTime createdDateTimeUtcStart, OffsetDateTime createdDateTimeUtcEnd,
-        List<String> orderBy) {
-        // Generated convenience method for getDocumentsStatus
+    public PagedIterable<DocumentStatusResult>
+        listDocumentStatuses(ListDocumentStatusesOptions listDocumentStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (ids != null) {
-            requestOptions.addQueryParam("ids",
-                ids.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (statuses != null) {
-            requestOptions.addQueryParam("statuses",
-                statuses.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (createdDateTimeUtcStart != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(createdDateTimeUtcStart), false);
-        }
-        if (createdDateTimeUtcEnd != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcEnd", String.valueOf(createdDateTimeUtcEnd), false);
-        }
-        if (orderBy != null) {
+        if (listDocumentStatusesOptions.getOrderBy() != null) {
             requestOptions.addQueryParam("orderby",
-                orderBy.stream()
+                listDocumentStatusesOptions.getOrderBy()
+                    .stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return serviceClient.getDocumentsStatus(id, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentStatus.class));
+        if (listDocumentStatusesOptions.getSkip() != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(listDocumentStatusesOptions.getSkip()), false);
+        }
+        if (listDocumentStatusesOptions.getTop() != null) {
+            requestOptions.addQueryParam("top", String.valueOf(listDocumentStatusesOptions.getTop()), false);
+        }
+        if (listDocumentStatusesOptions.getCreatedAfter() != null) {
+            requestOptions.addQueryParam("createdDateTimeUtcStart",
+                String.valueOf(listDocumentStatusesOptions.getCreatedAfter()), false);
+        }
+        if (listDocumentStatusesOptions.getCreatedBefore() != null) {
+            requestOptions.addQueryParam("createdDateTimeUtcEnd",
+                String.valueOf(listDocumentStatusesOptions.getCreatedBefore()), false);
+        }
+        if (listDocumentStatusesOptions.getDocumentIds() != null) {
+            requestOptions.addQueryParam("ids",
+                listDocumentStatusesOptions.getDocumentIds()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (listDocumentStatusesOptions.getStatuses() != null) {
+            requestOptions.addQueryParam("statuses",
+                listDocumentStatusesOptions.getStatuses()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listDocumentStatuses(listDocumentStatusesOptions.getTranslationId(), requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentStatusResult.class));
     }
 
     /**
@@ -1133,7 +994,7 @@ public final class DocumentTranslationClient {
      * This reduces the risk of the client making assumptions about
      * the data returned.
      *
-     * @param id Format - uuid. The operation id.
+     * @param translationId Format - uuid. The operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1142,13 +1003,12 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentStatus> getDocumentsStatus(String id) {
-        // Generated convenience method for getDocumentsStatus
+    public PagedIterable<DocumentStatusResult> listDocumentStatuses(String translationId) {
+        // Generated convenience method for listDocumentStatuses
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.getDocumentsStatus(id, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentStatus.class));
+        return serviceClient.listDocumentStatuses(translationId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentStatusResult.class));
     }
 
     /**
@@ -1168,15 +1028,16 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of supported file formats.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportedFileFormats getSupportedFormats(FileFormatType type) {
-        // Generated convenience method for getSupportedFormatsWithResponse
+    public List<FileFormat> getSupportedFormats(FileFormatType type) {
+        // Custom convenience method for getSupportedFormatsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
         }
-        return getSupportedFormatsWithResponse(requestOptions).getValue().toObject(SupportedFileFormats.class);
+        return getSupportedFormatsWithResponse(requestOptions).getValue()
+            .toObject(SupportedFileFormats.class)
+            .getValue();
     }
 
     /**
@@ -1194,11 +1055,12 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of supported file formats.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportedFileFormats getSupportedFormats() {
-        // Generated convenience method for getSupportedFormatsWithResponse
+    public List<FileFormat> getSupportedFormats() {
+        // Custom convenience method for getSupportedFormatsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSupportedFormatsWithResponse(requestOptions).getValue().toObject(SupportedFileFormats.class);
+        return getSupportedFormatsWithResponse(requestOptions).getValue()
+            .toObject(SupportedFileFormats.class)
+            .getValue();
     }
 }

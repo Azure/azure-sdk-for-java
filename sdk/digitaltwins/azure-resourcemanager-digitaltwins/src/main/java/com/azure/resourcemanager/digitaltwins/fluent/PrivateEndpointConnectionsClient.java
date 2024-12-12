@@ -13,11 +13,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionsResponseInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * List private endpoint connection properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -32,7 +34,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * List private endpoint connection properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -61,7 +63,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -76,7 +78,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -91,7 +93,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -107,7 +109,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -120,7 +122,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -134,7 +136,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update the status of a private endpoint connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -151,7 +153,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update the status of a private endpoint connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -169,7 +171,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update the status of a private endpoint connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -185,7 +187,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update the status of a private endpoint connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.

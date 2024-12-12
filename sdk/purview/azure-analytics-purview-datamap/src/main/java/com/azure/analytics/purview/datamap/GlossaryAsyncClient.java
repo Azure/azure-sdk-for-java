@@ -72,7 +72,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -148,7 +148,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -208,7 +208,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -285,7 +285,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -351,7 +351,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -432,7 +432,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -496,7 +496,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -576,7 +576,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -657,7 +657,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -721,7 +721,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -831,7 +831,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1011,7 +1011,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1038,7 +1038,7 @@ public final class GlossaryAsyncClient {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -1063,14 +1063,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -1090,7 +1090,7 @@ public final class GlossaryAsyncClient {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1098,14 +1098,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1176,7 +1176,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1203,7 +1203,7 @@ public final class GlossaryAsyncClient {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -1228,14 +1228,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -1255,7 +1255,7 @@ public final class GlossaryAsyncClient {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1263,14 +1263,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1357,7 +1357,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1384,7 +1384,7 @@ public final class GlossaryAsyncClient {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -1409,14 +1409,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -1436,7 +1436,7 @@ public final class GlossaryAsyncClient {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1444,14 +1444,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1546,7 +1546,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1573,7 +1573,7 @@ public final class GlossaryAsyncClient {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -1598,14 +1598,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -1625,7 +1625,7 @@ public final class GlossaryAsyncClient {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1633,14 +1633,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1711,7 +1711,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1738,7 +1738,7 @@ public final class GlossaryAsyncClient {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -1763,14 +1763,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -1790,7 +1790,7 @@ public final class GlossaryAsyncClient {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1798,14 +1798,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1929,7 +1929,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1956,7 +1956,7 @@ public final class GlossaryAsyncClient {
      *     updatedBy: String (Optional)
      *     abbreviation: String (Optional)
      *     templateName (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     anchor (Optional): {
      *         displayText: String (Optional)
@@ -1981,14 +1981,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -2008,7 +2008,7 @@ public final class GlossaryAsyncClient {
      *     }
      *     attributes (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2016,14 +2016,14 @@ public final class GlossaryAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2121,7 +2121,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2148,7 +2148,7 @@ public final class GlossaryAsyncClient {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -2173,14 +2173,14 @@ public final class GlossaryAsyncClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -2200,7 +2200,7 @@ public final class GlossaryAsyncClient {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -2208,14 +2208,14 @@ public final class GlossaryAsyncClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2288,7 +2288,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2315,7 +2315,7 @@ public final class GlossaryAsyncClient {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -2340,14 +2340,14 @@ public final class GlossaryAsyncClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -2367,7 +2367,7 @@ public final class GlossaryAsyncClient {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -2375,14 +2375,14 @@ public final class GlossaryAsyncClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2480,14 +2480,14 @@ public final class GlossaryAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2530,14 +2530,14 @@ public final class GlossaryAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2576,14 +2576,14 @@ public final class GlossaryAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2669,7 +2669,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2752,7 +2752,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2812,7 +2812,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2919,7 +2919,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3052,7 +3052,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3145,7 +3145,7 @@ public final class GlossaryAsyncClient {
      *             updatedBy: String (Optional)
      *             abbreviation: String (Optional)
      *             templateName (Optional): [
-     *                 Object (Optional)
+     *                 BinaryData (Optional)
      *             ]
      *             anchor (Optional): (recursive schema, see anchor above)
      *             antonyms (Optional): [
@@ -3158,14 +3158,14 @@ public final class GlossaryAsyncClient {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     name: String (Optional)
      *                     displayText: String (Optional)
      *                     itemPath: String (Optional)
      *                     resourceId: String (Optional)
      *                     properties (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             ]
@@ -3185,7 +3185,7 @@ public final class GlossaryAsyncClient {
      *             }
      *             attributes (Optional): {
      *                 String (Required): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assignedEntities (Optional): [
@@ -3193,14 +3193,14 @@ public final class GlossaryAsyncClient {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     displayText: String (Optional)
      *                     entityStatus: String(ACTIVE/DELETED) (Optional)
      *                     relationshipType: String (Optional)
      *                     relationshipAttributes (Optional): {
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3314,7 +3314,7 @@ public final class GlossaryAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3404,7 +3404,7 @@ public final class GlossaryAsyncClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3431,7 +3431,7 @@ public final class GlossaryAsyncClient {
      *         updatedBy: String (Optional)
      *         abbreviation: String (Optional)
      *         templateName (Optional): [
-     *             Object (Optional)
+     *             BinaryData (Optional)
      *         ]
      *         anchor (Optional): {
      *             displayText: String (Optional)
@@ -3456,14 +3456,14 @@ public final class GlossaryAsyncClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *         ]
@@ -3483,7 +3483,7 @@ public final class GlossaryAsyncClient {
      *         }
      *         attributes (Optional): {
      *             String (Required): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -3491,14 +3491,14 @@ public final class GlossaryAsyncClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)

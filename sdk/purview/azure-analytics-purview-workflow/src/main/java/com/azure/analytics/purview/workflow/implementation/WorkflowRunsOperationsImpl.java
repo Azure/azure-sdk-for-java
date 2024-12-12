@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -29,23 +30,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowRunsOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowRunsOperations.
+ */
 public final class WorkflowRunsOperationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowRunsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of WorkflowRunsOperationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowRunsOperationsImpl(PurviewWorkflowClientImpl client) {
         this.service
             = RestProxy.create(WorkflowRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -99,10 +115,10 @@ public final class WorkflowRunsOperationsImpl {
 
     /**
      * Get a workflow run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     workflowId: String (Optional)
@@ -124,8 +140,9 @@ public final class WorkflowRunsOperationsImpl {
      *         actions: Object (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -143,10 +160,10 @@ public final class WorkflowRunsOperationsImpl {
 
     /**
      * Get a workflow run.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     workflowId: String (Optional)
@@ -168,8 +185,9 @@ public final class WorkflowRunsOperationsImpl {
      *         actions: Object (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -187,15 +205,16 @@ public final class WorkflowRunsOperationsImpl {
 
     /**
      * Cancel a workflow run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param runCancelReply Reply of canceling a workflow run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -216,15 +235,16 @@ public final class WorkflowRunsOperationsImpl {
 
     /**
      * Cancel a workflow run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowRunId The workflow run id.
      * @param runCancelReply Reply of canceling a workflow run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

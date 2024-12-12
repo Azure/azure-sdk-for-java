@@ -38,14 +38,14 @@ public final class GatewaysImpl implements Gateways {
 
     public PagedIterable<GatewayContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<GatewayContractInner> inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GatewayContract> listByService(String resourceGroupName, String serviceName, String filter,
         Integer top, Integer skip, Context context) {
         PagedIterable<GatewayContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GatewayContractImpl(inner1, this.manager()));
     }
 
     public GatewaysGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
@@ -143,17 +143,17 @@ public final class GatewaysImpl implements Gateways {
     }
 
     public GatewayContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
@@ -162,17 +162,17 @@ public final class GatewaysImpl implements Gateways {
     }
 
     public Response<GatewayContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
@@ -181,17 +181,17 @@ public final class GatewaysImpl implements Gateways {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
@@ -201,17 +201,17 @@ public final class GatewaysImpl implements Gateways {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String gatewayId = Utils.getValueFromIdByName(id, "gateways");
+        String gatewayId = ResourceManagerUtils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));

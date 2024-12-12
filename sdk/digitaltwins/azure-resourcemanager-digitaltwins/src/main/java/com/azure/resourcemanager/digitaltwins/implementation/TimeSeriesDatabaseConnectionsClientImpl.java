@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TimeSeriesDatabaseConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TimeSeriesDatabaseConnectionsClient.
+ */
 public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeriesDatabaseConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TimeSeriesDatabaseConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDigitalTwinsManagementClientImpl client;
 
     /**
      * Initializes an instance of TimeSeriesDatabaseConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TimeSeriesDatabaseConnectionsClientImpl(AzureDigitalTwinsManagementClientImpl client) {
@@ -117,14 +123,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all existing time series database connections for this DigitalTwins instance along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all existing time series database connections for this DigitalTwins instance along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listSinglePageAsync(String resourceGroupName,
@@ -155,15 +161,15 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all existing time series database connections for this DigitalTwins instance along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all existing time series database connections for this DigitalTwins instance along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listSinglePageAsync(String resourceGroupName,
@@ -194,14 +200,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all existing time series database connections for this DigitalTwins instance as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TimeSeriesDatabaseConnectionInner> listAsync(String resourceGroupName, String resourceName) {
@@ -211,7 +217,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -219,7 +225,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all existing time series database connections for this DigitalTwins instance as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TimeSeriesDatabaseConnectionInner> listAsync(String resourceGroupName, String resourceName,
@@ -230,14 +236,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all existing time series database connections for this DigitalTwins instance as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TimeSeriesDatabaseConnectionInner> list(String resourceGroupName, String resourceName) {
@@ -246,7 +252,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -254,7 +260,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all existing time series database connections for this DigitalTwins instance as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TimeSeriesDatabaseConnectionInner> list(String resourceGroupName, String resourceName,
@@ -264,7 +270,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -272,7 +278,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of an existing time series database connection along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TimeSeriesDatabaseConnectionInner>> getWithResponseAsync(String resourceGroupName,
@@ -306,7 +312,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -315,7 +321,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of an existing time series database connection along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TimeSeriesDatabaseConnectionInner>> getWithResponseAsync(String resourceGroupName,
@@ -347,7 +353,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -365,7 +371,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -383,7 +389,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -401,7 +407,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -410,7 +416,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -451,7 +457,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -461,7 +467,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -501,7 +507,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -524,7 +530,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -549,7 +555,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -571,7 +577,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -594,7 +600,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -614,7 +620,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -635,7 +641,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -655,7 +661,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -676,18 +682,18 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -721,19 +727,19 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -767,13 +773,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -792,7 +798,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -814,13 +820,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -841,7 +847,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -862,13 +868,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -887,13 +893,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -908,7 +914,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -927,13 +933,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -950,7 +956,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -969,13 +975,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -992,14 +998,13 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of time series database connection resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1019,15 +1024,14 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of time series database connection resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TimeSeriesDatabaseConnectionInner>> listNextSinglePageAsync(String nextLink,

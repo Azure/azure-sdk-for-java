@@ -18,7 +18,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = TaskStatusClientBuilder.class, isAsync = true)
 public final class TaskStatusAsyncClient {
     @Generated
@@ -26,7 +28,7 @@ public final class TaskStatusAsyncClient {
 
     /**
      * Initializes an instance of TaskStatusAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,16 +38,17 @@ public final class TaskStatusAsyncClient {
 
     /**
      * Update the status of a workflow task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     newStatus: String(NotStarted/InProgress/Completed/Canceled) (Required)
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param taskUpdateCommand Request body of updating workflow task request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

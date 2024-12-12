@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.15.7 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+- Upgraded Netty dependencies from `4.1.112.Final` to `4.1.115.Final` to resolve a CVE.
+
 ## 1.15.6 (2024-11-01)
 
 ### Other Changes

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
 public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2023-12-10-
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-
      * preview/examples/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
      */
     /**
@@ -20,7 +20,7 @@ public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterSampl
      */
     public static void cloudHsmClusterPrivateLinkResourcesListByResourceMaximumSetGen(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.cloudHsmClusterPrivateLinkResources().listByCloudHsmClusterWithResponse("rgcloudhsm", "chsm1",
-            com.azure.core.util.Context.NONE);
+        manager.cloudHsmClusterPrivateLinkResources()
+            .listByCloudHsmCluster("rgcloudhsm", "chsm1", com.azure.core.util.Context.NONE);
     }
 }

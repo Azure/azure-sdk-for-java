@@ -268,6 +268,15 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the maximum item size to fetch during hybrid search queries.
+     *
+     * @return the max number of items for full text search.
+     */
+    Integer getMaxItemCountForHybridSearch() {
+        return this.actualRequestOptions.getMaxItemCountForHybridSearch();
+    }
+
+    /**
      * Gets the request continuation token.
      *
      * @return the request continuation.
@@ -638,6 +647,11 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
                     return options.getMaxItemCountForVectorSearch();
+                }
+
+                @Override
+                public Integer getMaxItemCountForHybridSearch(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCountForHybridSearch();
                 }
 
                 @Override

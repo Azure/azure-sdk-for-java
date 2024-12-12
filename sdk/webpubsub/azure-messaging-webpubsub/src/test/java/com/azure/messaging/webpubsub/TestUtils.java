@@ -29,6 +29,11 @@ import java.time.Duration;
 final class TestUtils {
     static final String HUB_NAME = "Hub";
 
+    static String getSocketIOEndpoint() {
+        return Configuration.getGlobalConfiguration()
+            .get("WEB_PUB_SUB_SOCKETIO_ENDPOINT", "http://testsocketioendpoint.webpubsubdev.azure.com");
+    }
+
     static String getEndpoint() {
         return Configuration.getGlobalConfiguration()
             .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");

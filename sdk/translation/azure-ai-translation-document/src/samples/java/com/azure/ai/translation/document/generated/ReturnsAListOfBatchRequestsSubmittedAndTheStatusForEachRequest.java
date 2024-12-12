@@ -6,11 +6,10 @@ package com.azure.ai.translation.document.generated;
 
 import com.azure.ai.translation.document.DocumentTranslationClient;
 import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
-import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
 
 public class ReturnsAListOfBatchRequestsSubmittedAndTheStatusForEachRequest {
     public static void main(String[] args) {
@@ -18,11 +17,16 @@ public class ReturnsAListOfBatchRequestsSubmittedAndTheStatusForEachRequest {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.gettranslationsstatus.returnsalistofbatchrequestssubmittedandthestatusforeachrequest
-        PagedIterable<TranslationStatus> response = documentTranslationClient.getTranslationsStatus(1, 0,
-            Arrays.asList("273622bd-835c-4946-9798-fd8f19f6bbf2"), Arrays.asList("Succeeded"),
-            OffsetDateTime.parse("2021-03-23T07:03:38.0136316Z"), OffsetDateTime.parse("2021-03-25T07:03:38.0136316Z"),
-            Arrays.asList("CreatedDateTime asc"));
-        // END:com.azure.ai.translation.document.generated.gettranslationsstatus.returnsalistofbatchrequestssubmittedandthestatusforeachrequest
+        // BEGIN:com.azure.ai.translation.document.generated.listtranslationstatuses.returnsalistofbatchrequestssubmittedandthestatusforeachrequest
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("top", "1")
+            .addQueryParam("skip", "0")
+            .addQueryParam("maxpagesize", "10")
+            .addQueryParam("orderBy", "CreatedDateTime asc")
+            .addQueryParam("createdDateTimeUtcStart", "2021-03-23T07:03:38.0136316Z")
+            .addQueryParam("createdDateTimeUtcEnd", "2021-03-25T07:03:38.0136316Z")
+            .addQueryParam("statuses", "Succeeded")
+            .addQueryParam("ids", "273622bd-835c-4946-9798-fd8f19f6bbf2");
+        PagedIterable<BinaryData> response = documentTranslationClient.listTranslationStatuses(requestOptions);
+        // END:com.azure.ai.translation.document.generated.listtranslationstatuses.returnsalistofbatchrequestssubmittedandthestatusforeachrequest
     }
 }

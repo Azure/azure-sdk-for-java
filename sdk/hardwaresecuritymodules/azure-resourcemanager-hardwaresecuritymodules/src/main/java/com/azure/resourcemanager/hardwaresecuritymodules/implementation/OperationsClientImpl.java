@@ -21,12 +21,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.OperationsClient;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmOperationInner;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmOperationListResult;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OperationInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
 /**
@@ -55,8 +55,8 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * The interface defining all the services for AzureHsmResourceProviderOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureHsmResourceProviderOperations to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureHsmResourceProv")
@@ -64,106 +64,106 @@ public final class OperationsClientImpl implements OperationsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.HardwareSecurityModules/operations")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<DedicatedHsmOperationListResult>> list(@HostParam("$host") String endpoint,
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OperationListResult>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Get a list of Dedicated HSM operations.
+     * Get a list of Hardware Security Modules operations.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Dedicated HSM operations along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of Hardware Security Modules operations along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHsmOperationInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
-            .<PagedResponse<DedicatedHsmOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a list of Dedicated HSM operations.
+     * Get a list of Hardware Security Modules operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Dedicated HSM operations along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of Hardware Security Modules operations along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHsmOperationInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, accept, context)
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), null, null));
     }
 
     /**
-     * Get a list of Dedicated HSM operations.
+     * Get a list of Hardware Security Modules operations.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Dedicated HSM operations as paginated response with {@link PagedFlux}.
+     * @return a list of Hardware Security Modules operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DedicatedHsmOperationInner> listAsync() {
+    private PagedFlux<OperationInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync());
     }
 
     /**
-     * Get a list of Dedicated HSM operations.
+     * Get a list of Hardware Security Modules operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Dedicated HSM operations as paginated response with {@link PagedFlux}.
+     * @return a list of Hardware Security Modules operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DedicatedHsmOperationInner> listAsync(Context context) {
+    private PagedFlux<OperationInner> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context));
     }
 
     /**
-     * Get a list of Dedicated HSM operations.
+     * Get a list of Hardware Security Modules operations.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Dedicated HSM operations as paginated response with {@link PagedIterable}.
+     * @return a list of Hardware Security Modules operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedHsmOperationInner> list() {
+    public PagedIterable<OperationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
     /**
-     * Get a list of Dedicated HSM operations.
+     * Get a list of Hardware Security Modules operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Dedicated HSM operations as paginated response with {@link PagedIterable}.
+     * @return a list of Hardware Security Modules operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedHsmOperationInner> list(Context context) {
+    public PagedIterable<OperationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 }

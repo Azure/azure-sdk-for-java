@@ -14,24 +14,25 @@ public final class NetworkPacketBrokerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkPacketBrokerInner model = BinaryData.fromString(
-            "{\"properties\":{\"networkFabricId\":\"ugejcvjkjyczcmt\",\"networkDeviceIds\":[\"lajdyoljeqyxq\",\"mzsizzhravrcjk\"],\"sourceInterfaceIds\":[\"gqb\",\"cxhnqxgzxlerm\",\"merghski\"],\"networkTapIds\":[\"pupkcbkfukd\",\"jqnvtsdyd\",\"hkpafyaloowwzizz\"],\"neighborGroupIds\":[\"f\"],\"provisioningState\":\"Accepted\"},\"location\":\"ti\",\"tags\":{\"qiyv\":\"fyjfd\"},\"id\":\"djokgwesym\",\"name\":\"qh\",\"type\":\"qpfzlpejtznxlue\"}")
+            "{\"properties\":{\"networkFabricId\":\"khglaqjsg\",\"networkDeviceIds\":[\"tujrzxrkn\",\"fdrld\",\"yehi\",\"ittugyu\"],\"sourceInterfaceIds\":[\"lda\",\"urf\",\"azcsozjvx\"],\"networkTapIds\":[\"iggbnv\",\"xofwalzy\",\"whoea\"],\"neighborGroupIds\":[\"obdoey\"],\"provisioningState\":\"Canceled\"},\"location\":\"imtwuuhau\",\"tags\":{\"zjy\":\"kwmnfeub\",\"nqd\":\"kwfugiphrrkuu\",\"opueo\":\"rhzz\"},\"id\":\"usvwluj\",\"name\":\"pwnibittozt\",\"type\":\"dqumqvfm\"}")
             .toObject(NetworkPacketBrokerInner.class);
-        Assertions.assertEquals("ti", model.location());
-        Assertions.assertEquals("fyjfd", model.tags().get("qiyv"));
-        Assertions.assertEquals("ugejcvjkjyczcmt", model.networkFabricId());
+        Assertions.assertEquals("imtwuuhau", model.location());
+        Assertions.assertEquals("kwmnfeub", model.tags().get("zjy"));
+        Assertions.assertEquals("khglaqjsg", model.networkFabricId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerInner model = new NetworkPacketBrokerInner().withLocation("ti")
-            .withTags(mapOf("qiyv", "fyjfd"))
-            .withNetworkFabricId("ugejcvjkjyczcmt");
+        NetworkPacketBrokerInner model = new NetworkPacketBrokerInner().withLocation("imtwuuhau")
+            .withTags(mapOf("zjy", "kwmnfeub", "nqd", "kwfugiphrrkuu", "opueo", "rhzz"))
+            .withNetworkFabricId("khglaqjsg");
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerInner.class);
-        Assertions.assertEquals("ti", model.location());
-        Assertions.assertEquals("fyjfd", model.tags().get("qiyv"));
-        Assertions.assertEquals("ugejcvjkjyczcmt", model.networkFabricId());
+        Assertions.assertEquals("imtwuuhau", model.location());
+        Assertions.assertEquals("kwmnfeub", model.tags().get("zjy"));
+        Assertions.assertEquals("khglaqjsg", model.networkFabricId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

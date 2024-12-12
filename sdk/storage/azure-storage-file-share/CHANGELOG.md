@@ -1,14 +1,33 @@
 # Release History
 
-## 12.25.0-beta.2 (Unreleased)
+## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- `ShareFileClient.downloadToFile()` now retries for a maximum of 5 times when the download fails due to a network error.
+Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in 
+incorrect positions in the file when retried more than 5 times.
 
 ### Other Changes
+
+## 12.25.0 (2024-11-13)
+
+### Features Added
+- Added support for the provisioned V2 billing model.
+- Added support for specifying the binary file permission format for ShareFileClient.beginCopy and
+  ShareFileAsyncClient.beginCopy
+- Added ShareAccessTier Premium value.
+- Added support for service version 2025-01-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.6`.
+- Upgraded `azure-storage-common` from `12.27.0` to version `12.28.0`.
 
 ## 12.25.0-beta.1 (2024-10-17)
 

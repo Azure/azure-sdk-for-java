@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.AccessControllerUtils;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.TypeUtil;
@@ -471,7 +472,7 @@ public class JacksonAdapter implements SerializerAdapter {
     private static Object useAccessHelper(IOExceptionCallable serializationCall) throws IOException {
         if (useAccessHelper) {
             try {
-                return ImplUtils.doPrivilegedException(serializationCall::call);
+                return AccessControllerUtils.doPrivilegedException(serializationCall::call);
             } catch (Exception ex) {
                 Throwable cause = ex.getCause();
                 // If the privileged call failed due to an IOException unwrap it.

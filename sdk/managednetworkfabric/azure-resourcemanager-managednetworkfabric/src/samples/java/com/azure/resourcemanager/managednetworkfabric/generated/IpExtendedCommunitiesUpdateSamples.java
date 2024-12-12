@@ -11,37 +11,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IpExtendedCommunities Update. */
+/**
+ * Samples for IpExtendedCommunities Update.
+ */
 public final class IpExtendedCommunitiesUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpExtendedCommunities_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * IpExtendedCommunities_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpExtendedCommunities_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void ipExtendedCommunitiesUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        IpExtendedCommunity resource =
-            manager
-                .ipExtendedCommunities()
-                .getByResourceGroupWithResponse(
-                    "example-rg", "example-ipExtendedCommunity", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        IpExtendedCommunity resource = manager.ipExtendedCommunities()
+            .getByResourceGroupWithResponse("example-rg", "example-ipExtendedCommunity",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withIpExtendedCommunityRules(
-                Arrays
-                    .asList(
-                        new IpExtendedCommunityRule()
-                            .withAction(CommunityActionTypes.PERMIT)
-                            .withSequenceNumber(4155123341L)
-                            .withRouteTargets(Arrays.asList("1234:2345"))))
+                Arrays.asList(new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
+                    .withSequenceNumber(4155123341L)
+                    .withRouteTargets(Arrays.asList("1234:2345"))))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

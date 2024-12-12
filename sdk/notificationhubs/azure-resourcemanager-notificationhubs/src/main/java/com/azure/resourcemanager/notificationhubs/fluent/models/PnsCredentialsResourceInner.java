@@ -7,6 +7,9 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
@@ -16,8 +19,7 @@ import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.XiaomiCredential;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -30,27 +32,37 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
     /*
      * Collection of Notification Hub or Notification Hub Namespace PNS credentials.
      */
-    @JsonProperty(value = "properties")
     private PnsCredentials innerProperties;
 
     /*
      * Deprecated - only for compatibility.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Deprecated - only for compatibility.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of PnsCredentialsResourceInner class.
@@ -114,6 +126,36 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -332,5 +374,57 @@ public final class PnsCredentialsResourceInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PnsCredentialsResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PnsCredentialsResourceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PnsCredentialsResourceInner.
+     */
+    public static PnsCredentialsResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PnsCredentialsResourceInner deserializedPnsCredentialsResourceInner = new PnsCredentialsResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.innerProperties = PnsCredentials.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPnsCredentialsResourceInner.tags = tags;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPnsCredentialsResourceInner;
+        });
     }
 }

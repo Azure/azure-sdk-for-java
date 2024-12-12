@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** Returns the requested Docker V2 Manifest file. */
+/**
+ * Returns the requested Docker V2 Manifest file.
+ */
 @Fluent
 public final class V2Manifest extends Manifest {
     /*
@@ -30,13 +32,15 @@ public final class V2Manifest extends Manifest {
      */
     private List<OciDescriptor> layers;
 
-    /** Creates an instance of V2Manifest class. */
+    /**
+     * Creates an instance of V2Manifest class.
+     */
     public V2Manifest() {
     }
 
     /**
      * Get the mediaType property: Media type for this Manifest.
-     *
+     * 
      * @return the mediaType value.
      */
     public String getMediaType() {
@@ -45,7 +49,7 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Set the mediaType property: Media type for this Manifest.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the V2Manifest object itself.
      */
@@ -56,7 +60,7 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Get the config property: V2 image config descriptor.
-     *
+     * 
      * @return the config value.
      */
     public OciDescriptor getConfig() {
@@ -65,7 +69,7 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Set the config property: V2 image config descriptor.
-     *
+     * 
      * @param config the config value to set.
      * @return the V2Manifest object itself.
      */
@@ -76,7 +80,7 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Get the layers property: List of V2 image layer information.
-     *
+     * 
      * @return the layers value.
      */
     public List<OciDescriptor> getLayers() {
@@ -85,7 +89,7 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Set the layers property: List of V2 image layer information.
-     *
+     * 
      * @param layers the layers value to set.
      * @return the V2Manifest object itself.
      */
@@ -94,13 +98,18 @@ public final class V2Manifest extends Manifest {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V2Manifest setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -113,10 +122,10 @@ public final class V2Manifest extends Manifest {
 
     /**
      * Reads an instance of V2Manifest from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of V2Manifest if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the V2Manifest.
      */
     public static V2Manifest fromJson(JsonReader jsonReader) throws IOException {

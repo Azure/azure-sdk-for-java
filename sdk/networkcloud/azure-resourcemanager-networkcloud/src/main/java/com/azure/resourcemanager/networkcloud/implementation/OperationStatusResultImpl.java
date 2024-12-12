@@ -23,32 +23,20 @@ public final class OperationStatusResultImpl implements OperationStatusResult {
         this.serviceManager = serviceManager;
     }
 
+    public OffsetDateTime endTime() {
+        return this.innerModel().endTime();
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
+    }
+
     public String id() {
         return this.innerModel().id();
     }
 
-    public String resourceId() {
-        return this.innerModel().resourceId();
-    }
-
     public String name() {
         return this.innerModel().name();
-    }
-
-    public String status() {
-        return this.innerModel().status();
-    }
-
-    public Float percentComplete() {
-        return this.innerModel().percentComplete();
-    }
-
-    public OffsetDateTime startTime() {
-        return this.innerModel().startTime();
-    }
-
-    public OffsetDateTime endTime() {
-        return this.innerModel().endTime();
     }
 
     public List<OperationStatusResult> operations() {
@@ -62,8 +50,36 @@ public final class OperationStatusResultImpl implements OperationStatusResult {
         }
     }
 
-    public ManagementError error() {
-        return this.innerModel().error();
+    public Float percentComplete() {
+        return this.innerModel().percentComplete();
+    }
+
+    public String resourceId() {
+        return this.innerModel().resourceId();
+    }
+
+    public OffsetDateTime startTime() {
+        return this.innerModel().startTime();
+    }
+
+    public String status() {
+        return this.innerModel().status();
+    }
+
+    public String exitCode() {
+        return this.innerModel().exitCode();
+    }
+
+    public String outputHead() {
+        return this.innerModel().outputHead();
+    }
+
+    public String resultRef() {
+        return this.innerModel().resultRef();
+    }
+
+    public String resultUrl() {
+        return this.innerModel().resultUrl();
     }
 
     public OperationStatusResultInner innerModel() {

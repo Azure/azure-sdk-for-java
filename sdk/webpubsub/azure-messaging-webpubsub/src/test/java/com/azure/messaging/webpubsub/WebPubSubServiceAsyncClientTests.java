@@ -296,6 +296,90 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @LiveOnly
+    public void testGetSocketIOAuthenticationToken() {
+        GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+        StepVerifier.create(client.getClientAccessToken(options)).assertNext(token -> {
+            Assertions.assertNotNull(token);
+            Assertions.assertNotNull(token.getToken());
+            Assertions.assertNotNull(token.getUrl());
+
+            assertTrue(token.getUrl().startsWith("wss://"));
+            assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/socketio/hubs/"));
+
+            String authToken = token.getToken();
+            JWT jwt;
+            try {
+                jwt = JWTParser.parse(authToken);
+            } catch (ParseException e) {
+                fail("Unable to parse auth token: " + authToken + " exception: ", e);
+                return;
+            }
+
+            JWTClaimsSet claimsSet;
+            try {
+                claimsSet = jwt.getJWTClaimsSet();
+            } catch (ParseException e) {
+                fail("Unable to parse claims: " + authToken + " exception: ", e);
+                return;
+            }
+
+            assertNotNull(claimsSet);
+            assertNotNull(claimsSet.getAudience());
+            assertFalse(claimsSet.getAudience().isEmpty());
+
+            String aud = claimsSet.getAudience().iterator().next();
+            assertTrue(aud.contains(".webpubsub.azure.com/clients/socketio/hubs/"));
+        }).expectComplete().verify(TIMEOUT);
+    }
+
+    @Test
+    @LiveOnly
+    public void testGetSocketIOAuthenticationTokenAAD() {
+        WebPubSubServiceClientBuilder aadClientBuilder
+            = new WebPubSubServiceClientBuilder().endpoint(TestUtils.getSocketIOEndpoint())
+                .httpClient(HttpClient.createDefault())
+                .credential(TestUtils.getIdentityTestCredential(interceptorManager))
+                .hub(TestUtils.HUB_NAME);
+        WebPubSubServiceAsyncClient aadClient = aadClientBuilder.buildAsyncClient();
+        GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+        StepVerifier.create(aadClient.getClientAccessToken(options)).assertNext(token -> {
+            Assertions.assertNotNull(token);
+            Assertions.assertNotNull(token.getToken());
+            Assertions.assertNotNull(token.getUrl());
+
+            assertTrue(token.getUrl().startsWith("wss://"));
+            assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/socketio/hubs/"));
+
+            String authToken = token.getToken();
+            JWT jwt;
+            try {
+                jwt = JWTParser.parse(authToken);
+            } catch (ParseException e) {
+                fail("Unable to parse auth token: " + authToken + " exception: ", e);
+                return;
+            }
+
+            JWTClaimsSet claimsSet;
+            try {
+                claimsSet = jwt.getJWTClaimsSet();
+            } catch (ParseException e) {
+                fail("Unable to parse claims: " + authToken + " exception: ", e);
+                return;
+            }
+
+            assertNotNull(claimsSet);
+            assertNotNull(claimsSet.getAudience());
+            assertFalse(claimsSet.getAudience().isEmpty());
+
+            String aud = claimsSet.getAudience().iterator().next();
+            assertTrue(aud.contains(".webpubsub.azure.com/clients/socketio/hubs/"));
+        }).expectComplete().verify(TIMEOUT);
+    }
+
+    @Test
     public void testRemoveNonExistentUserFromGroup() {
         StepVerifier.create(
             client.removeUserFromGroupWithResponse("java", "testRemoveNonExistentUserFromGroup", new RequestOptions()),

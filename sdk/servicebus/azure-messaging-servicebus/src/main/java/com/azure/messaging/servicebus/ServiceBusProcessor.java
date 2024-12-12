@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
@@ -210,7 +211,7 @@ final class ServiceBusProcessor {
             if (getAndSet(true)) {
                 throw logger.atInfo().log(new IllegalStateException("The streaming cannot begin more than once."));
             }
-            final Disposable d = beginIntern().subscribe();
+            final Disposable d = MessageUtils.subscribe(beginIntern(), "begin", logger.atWarning());
             if (!disposable.add(d)) {
                 throw logger.atInfo().log(new IllegalStateException("Cannot begin streaming after the disposal."));
             }

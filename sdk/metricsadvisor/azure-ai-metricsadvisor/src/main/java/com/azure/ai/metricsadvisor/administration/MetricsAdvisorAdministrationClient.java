@@ -28,11 +28,11 @@ import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.CreateAnomalyAlertingConfigurationResponse;
-import com.azure.ai.metricsadvisor.implementation.models.CreateAnomalyDetectionConfigurationResponse;
-import com.azure.ai.metricsadvisor.implementation.models.CreateCredentialResponse;
-import com.azure.ai.metricsadvisor.implementation.models.CreateDataFeedResponse;
-import com.azure.ai.metricsadvisor.implementation.models.CreateHookResponse;
+import com.azure.ai.metricsadvisor.implementation.models.CreateAnomalyAlertingConfigurationHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateAnomalyDetectionConfigurationHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateCredentialHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateDataFeedHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateHookHeaders;
 import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetail;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredential;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredentialPatch;
@@ -293,46 +293,47 @@ public final class MetricsAdvisorAdministrationClient {
                 ? new DataFeedMissingDataPointFillSettings()
                 : finalDataFeedOptions.getMissingDataPointFillSettings();
 
-        CreateDataFeedResponse createDataFeedResponse = service.createDataFeedWithResponse(DataFeedTransforms
-            .toDataFeedDetailSource(dataFeed.getSource())
-            .setDataFeedName(dataFeed.getName())
-            .setDataFeedDescription(finalDataFeedOptions.getDescription())
-            .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
-                ? null
-                : dataFeedGranularity.getGranularityType().toString()))
-            .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
-            .setDimension(DataFeedTransforms.toInnerDimensionsListForCreate(dataFeedSchema.getDimensions()))
-            .setMetrics(DataFeedTransforms.toInnerMetricsListForCreate(dataFeedSchema.getMetrics()))
-            .setTimestampColumn(dataFeedSchema.getTimestampColumn())
-            .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
-            .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
-                ? null
-                : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
-            .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
-            .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
-                ? null
-                : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
-            .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
-                ? null
-                : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-            .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-            .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
-                ? null
-                : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
-            .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
-                ? null
-                : dataFeedRollupSettings.getRollupType().toString()))
-            .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-            .setFillMissingPointType(
-                FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType() == null
+        ResponseBase<CreateDataFeedHeaders, Void> createDataFeedResponse
+            = service.createDataFeedWithResponse(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
+                .setDataFeedName(dataFeed.getName())
+                .setDataFeedDescription(finalDataFeedOptions.getDescription())
+                .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
                     ? null
-                    : dataFeedMissingDataPointFillSettings.getFillType().toString()))
-            .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
-            .setViewMode(ViewMode.fromString(
-                finalDataFeedOptions.getAccessMode() == null ? null : finalDataFeedOptions.getAccessMode().toString()))
-            .setViewers(finalDataFeedOptions.getViewers())
-            .setAdmins(finalDataFeedOptions.getAdmins())
-            .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), context);
+                    : dataFeedGranularity.getGranularityType().toString()))
+                .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
+                .setDimension(DataFeedTransforms.toInnerDimensionsListForCreate(dataFeedSchema.getDimensions()))
+                .setMetrics(DataFeedTransforms.toInnerMetricsListForCreate(dataFeedSchema.getMetrics()))
+                .setTimestampColumn(dataFeedSchema.getTimestampColumn())
+                .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
+                .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
+                .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
+                    ? null
+                    : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
+                .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
+                    ? null
+                    : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
+                    ? null
+                    : dataFeedRollupSettings.getRollupType().toString()))
+                .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
+                .setFillMissingPointType(
+                    FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType() == null
+                        ? null
+                        : dataFeedMissingDataPointFillSettings.getFillType().toString()))
+                .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
+                .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
+                    ? null
+                    : finalDataFeedOptions.getAccessMode().toString()))
+                .setViewers(finalDataFeedOptions.getViewers())
+                .setAdmins(finalDataFeedOptions.getAdmins())
+                .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), context);
 
         final String dataFeedId = parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
         return getDataFeedWithResponse(dataFeedId, context);
@@ -1034,7 +1035,7 @@ public final class MetricsAdvisorAdministrationClient {
 
         final com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration innerDetectionConfiguration
             = DetectionConfigurationTransforms.toInnerForCreate(logger, metricId, detectionConfiguration);
-        CreateAnomalyDetectionConfigurationResponse response
+        ResponseBase<CreateAnomalyDetectionConfigurationHeaders, Void> response
             = service.createAnomalyDetectionConfigurationWithResponse(innerDetectionConfiguration, context);
         final String configurationId = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
         Response<AnomalyDetectionConfiguration> configurationResponse
@@ -1760,7 +1761,7 @@ public final class MetricsAdvisorAdministrationClient {
 
     Response<NotificationHook> createHookWithResponseSync(NotificationHook notificationHook, Context context) {
         Objects.requireNonNull(notificationHook, "'notificationHook' cannot be null.");
-        CreateHookResponse response
+        ResponseBase<CreateHookHeaders, Void> response
             = service.createHookWithResponse(HookTransforms.toInnerForCreate(logger, notificationHook), context);
         final String hookUri = response.getDeserializedHeaders().getLocation();
         final String hookId = parseOperationId(hookUri);
@@ -2202,7 +2203,7 @@ public final class MetricsAdvisorAdministrationClient {
         final AnomalyAlertingConfiguration innerAlertConfiguration
             = AlertConfigurationTransforms.toInnerForCreate(alertConfiguration);
 
-        CreateAnomalyAlertingConfigurationResponse response
+        ResponseBase<CreateAnomalyAlertingConfigurationHeaders, Void> response
             = service.createAnomalyAlertingConfigurationWithResponse(innerAlertConfiguration, context);
         final String configurationId = parseOperationId(response.getDeserializedHeaders().getLocation());
         Response<AnomalyAlertConfiguration> getResponse = getAlertConfigWithResponse(configurationId, context);
@@ -2653,7 +2654,8 @@ public final class MetricsAdvisorAdministrationClient {
 
         final DataSourceCredential innerDataSourceCredential
             = DataSourceCredentialEntityTransforms.toInnerForCreate(dataSourceCredential);
-        CreateCredentialResponse response = service.createCredentialWithResponse(innerDataSourceCredential, context);
+        ResponseBase<CreateCredentialHeaders, Void> response
+            = service.createCredentialWithResponse(innerDataSourceCredential, context);
 
         final String credentialId = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
         Response<DataSourceCredentialEntity> configurationResponse

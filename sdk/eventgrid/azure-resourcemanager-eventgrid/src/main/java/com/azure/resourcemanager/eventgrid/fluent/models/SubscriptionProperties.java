@@ -5,46 +5,47 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DeliveryConfiguration;
 import com.azure.resourcemanager.eventgrid.models.DeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Properties of the event subscription.
  */
 @Fluent
-public final class SubscriptionProperties {
+public final class SubscriptionProperties implements JsonSerializable<SubscriptionProperties> {
     /*
      * Provisioning state of the event subscription.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionProvisioningState provisioningState;
 
     /*
      * Information about the delivery configuration of the event subscription.
      */
-    @JsonProperty(value = "deliveryConfiguration")
     private DeliveryConfiguration deliveryConfiguration;
 
     /*
      * The event delivery schema for the event subscription.
      */
-    @JsonProperty(value = "eventDeliverySchema")
     private DeliverySchema eventDeliverySchema;
 
     /*
      * Information about the filter for the event subscription.
      */
-    @JsonProperty(value = "filtersConfiguration")
     private FiltersConfiguration filtersConfiguration;
 
     /*
      * Expiration time of the event subscription.
      */
-    @JsonProperty(value = "expirationTimeUtc")
     private OffsetDateTime expirationTimeUtc;
 
     /**
@@ -154,5 +155,59 @@ public final class SubscriptionProperties {
         if (filtersConfiguration() != null) {
             filtersConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deliveryConfiguration", this.deliveryConfiguration);
+        jsonWriter.writeStringField("eventDeliverySchema",
+            this.eventDeliverySchema == null ? null : this.eventDeliverySchema.toString());
+        jsonWriter.writeJsonField("filtersConfiguration", this.filtersConfiguration);
+        jsonWriter.writeStringField("expirationTimeUtc",
+            this.expirationTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionProperties.
+     */
+    public static SubscriptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionProperties deserializedSubscriptionProperties = new SubscriptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSubscriptionProperties.provisioningState
+                        = SubscriptionProvisioningState.fromString(reader.getString());
+                } else if ("deliveryConfiguration".equals(fieldName)) {
+                    deserializedSubscriptionProperties.deliveryConfiguration = DeliveryConfiguration.fromJson(reader);
+                } else if ("eventDeliverySchema".equals(fieldName)) {
+                    deserializedSubscriptionProperties.eventDeliverySchema
+                        = DeliverySchema.fromString(reader.getString());
+                } else if ("filtersConfiguration".equals(fieldName)) {
+                    deserializedSubscriptionProperties.filtersConfiguration = FiltersConfiguration.fromJson(reader);
+                } else if ("expirationTimeUtc".equals(fieldName)) {
+                    deserializedSubscriptionProperties.expirationTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionProperties;
+        });
     }
 }

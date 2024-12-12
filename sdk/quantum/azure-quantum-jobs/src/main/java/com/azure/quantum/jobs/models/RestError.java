@@ -23,6 +23,12 @@ public final class RestError implements JsonSerializable<RestError> {
     private ErrorData error;
 
     /**
+     * Creates an instance of {@link RestError}.
+     */
+    public RestError() {
+    }
+
+    /**
      * Get the error property: An error response from Azure.
      *
      * @return the error value.

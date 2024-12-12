@@ -6,53 +6,51 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Active Directory settings used to join a cache to a domain.
  */
 @Fluent
-public final class CacheActiveDirectorySettings {
+public final class CacheActiveDirectorySettings implements JsonSerializable<CacheActiveDirectorySettings> {
     /*
      * Primary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name.
      */
-    @JsonProperty(value = "primaryDnsIpAddress", required = true)
     private String primaryDnsIpAddress;
 
     /*
      * Secondary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name.
      */
-    @JsonProperty(value = "secondaryDnsIpAddress")
     private String secondaryDnsIpAddress;
 
     /*
      * The fully qualified domain name of the Active Directory domain controller.
      */
-    @JsonProperty(value = "domainName", required = true)
     private String domainName;
 
     /*
      * The Active Directory domain's NetBIOS name.
      */
-    @JsonProperty(value = "domainNetBiosName", required = true)
     private String domainNetBiosName;
 
     /*
-     * The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
+     * The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must
+     * 1-15 characters from the class [-0-9a-zA-Z].
      */
-    @JsonProperty(value = "cacheNetBiosName", required = true)
     private String cacheNetBiosName;
 
     /*
      * True if the HPC Cache is joined to the Active Directory domain.
      */
-    @JsonProperty(value = "domainJoined", access = JsonProperty.Access.WRITE_ONLY)
     private DomainJoinedType domainJoined;
 
     /*
      * Active Directory admin credentials used to join the HPC Cache to a domain.
      */
-    @JsonProperty(value = "credentials")
     private CacheActiveDirectorySettingsCredentials credentials;
 
     /**
@@ -228,4 +226,60 @@ public final class CacheActiveDirectorySettings {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CacheActiveDirectorySettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryDnsIpAddress", this.primaryDnsIpAddress);
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeStringField("domainNetBiosName", this.domainNetBiosName);
+        jsonWriter.writeStringField("cacheNetBiosName", this.cacheNetBiosName);
+        jsonWriter.writeStringField("secondaryDnsIpAddress", this.secondaryDnsIpAddress);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheActiveDirectorySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheActiveDirectorySettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CacheActiveDirectorySettings.
+     */
+    public static CacheActiveDirectorySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheActiveDirectorySettings deserializedCacheActiveDirectorySettings = new CacheActiveDirectorySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryDnsIpAddress".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.primaryDnsIpAddress = reader.getString();
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.domainName = reader.getString();
+                } else if ("domainNetBiosName".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.domainNetBiosName = reader.getString();
+                } else if ("cacheNetBiosName".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.cacheNetBiosName = reader.getString();
+                } else if ("secondaryDnsIpAddress".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.secondaryDnsIpAddress = reader.getString();
+                } else if ("domainJoined".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.domainJoined
+                        = DomainJoinedType.fromString(reader.getString());
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.credentials
+                        = CacheActiveDirectorySettingsCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheActiveDirectorySettings;
+        });
+    }
 }

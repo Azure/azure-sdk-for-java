@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricControllerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of Network Fabric Controllers. */
+/**
+ * List of Network Fabric Controllers.
+ */
 @Fluent
-public final class NetworkFabricControllersListResult {
+public final class NetworkFabricControllersListResult implements JsonSerializable<NetworkFabricControllersListResult> {
     /*
      * List of Network Fabric Controller resources.
      */
-    @JsonProperty(value = "value")
     private List<NetworkFabricControllerInner> value;
 
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkFabricControllersListResult class. */
+    /**
+     * Creates an instance of NetworkFabricControllersListResult class.
+     */
     public NetworkFabricControllersListResult() {
     }
 
     /**
      * Get the value property: List of Network Fabric Controller resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkFabricControllerInner> value() {
@@ -39,7 +45,7 @@ public final class NetworkFabricControllersListResult {
 
     /**
      * Set the value property: List of Network Fabric Controller resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkFabricControllersListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class NetworkFabricControllersListResult {
 
     /**
      * Get the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class NetworkFabricControllersListResult {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkFabricControllersListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class NetworkFabricControllersListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricControllersListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricControllersListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFabricControllersListResult.
+     */
+    public static NetworkFabricControllersListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricControllersListResult deserializedNetworkFabricControllersListResult
+                = new NetworkFabricControllersListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkFabricControllerInner> value
+                        = reader.readArray(reader1 -> NetworkFabricControllerInner.fromJson(reader1));
+                    deserializedNetworkFabricControllersListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkFabricControllersListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricControllersListResult;
+        });
     }
 }

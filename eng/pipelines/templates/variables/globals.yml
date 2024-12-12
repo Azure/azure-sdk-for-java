@@ -10,7 +10,7 @@ variables:
   LatestNonLtsJavaVersion: '1.20'
   LatestNonLtsJdkFeatureVersion: '20'
   # This is the version of Python used by various tools in the Java build/release processes
-  PythonVersion: '3.9'
+  PythonVersion: '3.11'
 
   # java2docfx needs to run against Java 17
   Java2docfxJavaVersion: '17'
@@ -61,3 +61,7 @@ variables:
   Codeql.SkipTaskAutoInjection: true
 
   ComponentDetection.Timeout: 1200
+
+  # Docs publishing variables for repo/owner
+  DocRepoOwner: 'Azure'
+  DocRepoName: 'azure-docs-sdk-java'

@@ -29,14 +29,14 @@ public final class UnresolvedDependenciesImpl implements UnresolvedDependencies 
     public PagedIterable<UnresolvedDependency> get(String resourceGroupName, String moveCollectionName) {
         PagedIterable<UnresolvedDependencyInner> inner
             = this.serviceClient().get(resourceGroupName, moveCollectionName);
-        return Utils.mapPage(inner, inner1 -> new UnresolvedDependencyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UnresolvedDependencyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<UnresolvedDependency> get(String resourceGroupName, String moveCollectionName,
         DependencyLevel dependencyLevel, String orderby, String filter, Context context) {
         PagedIterable<UnresolvedDependencyInner> inner = this.serviceClient()
             .get(resourceGroupName, moveCollectionName, dependencyLevel, orderby, filter, context);
-        return Utils.mapPage(inner, inner1 -> new UnresolvedDependencyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UnresolvedDependencyImpl(inner1, this.manager()));
     }
 
     private UnresolvedDependenciesClient serviceClient() {

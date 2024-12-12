@@ -20,7 +20,7 @@ public final class ImageVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"name\":\"ibg\",\"publishedDate\":\"2021-09-21T08:53:03Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":150891546,\"provisioningState\":\"RolloutInProgress\"},\"id\":\"vfgpikqmhhaowjrm\",\"name\":\"vuporqzdfuydzv\",\"type\":\"fvxcnqmxqpswo\"}";
+            = "{\"properties\":{\"name\":\"ewemxs\",\"publishedDate\":\"2021-04-25T20:12:45Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":466668490,\"provisioningState\":\"Updating\"},\"id\":\"ehkfkimrtixok\",\"name\":\"fqyinljqepqw\",\"type\":\"ixmonstshiyxg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ImageVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ImageVersion response = manager.imageVersions()
-            .getWithResponse("unjdx", "glnkvxlxpagl", "ivbgkcv", "hpzvuqdflvoniyp", "pubcpzgpxtivhjk",
+            .getWithResponse("kjexfdeqvhp", "ylkkshkbffmbm", "zjrgyww", "gjxsnptfu", "gicgaaoepttaq",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

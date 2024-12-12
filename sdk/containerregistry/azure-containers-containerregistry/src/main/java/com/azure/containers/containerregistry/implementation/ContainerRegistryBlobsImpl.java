@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainerRegistryBlobs. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainerRegistryBlobs.
+ */
 public final class ContainerRegistryBlobsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContainerRegistryBlobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureContainerRegistryImpl client;
 
     /**
      * Initializes an instance of ContainerRegistryBlobsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContainerRegistryBlobsImpl(AzureContainerRegistryImpl client) {
@@ -79,9 +85,21 @@ public final class ContainerRegistryBlobsImpl {
         @Get("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 200, 307 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getBlobNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 200, 307 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<ContainerRegistryBlobsGetBlobHeaders, BinaryData> getBlobSync(@HostParam("url") String url,
             @PathParam("name") String name, @PathParam("digest") String digest, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Get("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 200, 307 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getBlobNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, @HeaderParam("Accept") String accept, Context context);
 
         @Head("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 200, 307 })
@@ -93,9 +111,22 @@ public final class ContainerRegistryBlobsImpl {
         @Head("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 200, 307 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> checkBlobExistsNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("name") String name, @PathParam("digest") String digest, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Head("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 200, 307 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsCheckBlobExistsHeaders, Void> checkBlobExistsSync(
             @HostParam("url") String url, @PathParam("name") String name, @PathParam("digest") String digest,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Head("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 200, 307 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> checkBlobExistsNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 202 })
@@ -106,8 +137,20 @@ public final class ContainerRegistryBlobsImpl {
         @Delete("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteBlobNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, Context context);
+
+        @Delete("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void> deleteBlobSync(@HostParam("url") String url,
             @PathParam("name") String name, @PathParam("digest") String digest, Context context);
+
+        @Delete("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteBlobNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, Context context);
 
         @Post("/v2/{name}/blobs/uploads/")
         @ExpectedResponses({ 201 })
@@ -119,9 +162,23 @@ public final class ContainerRegistryBlobsImpl {
         @Post("/v2/{name}/blobs/uploads/")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> mountBlobNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @QueryParam("from") String from, @QueryParam("mount") String mount, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/v2/{name}/blobs/uploads/")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsMountBlobHeaders, Void> mountBlobSync(@HostParam("url") String url,
             @PathParam("name") String name, @QueryParam("from") String from, @QueryParam("mount") String mount,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/v2/{name}/blobs/uploads/")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> mountBlobNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @QueryParam("from") String from, @QueryParam("mount") String mount, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{nextBlobUuidLink}")
         @ExpectedResponses({ 204 })
@@ -133,14 +190,36 @@ public final class ContainerRegistryBlobsImpl {
         @Get("/{nextBlobUuidLink}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> getUploadStatusNoCustomHeaders(@HostParam("url") String url,
+            @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsGetUploadStatusHeaders, Void> getUploadStatusSync(
             @HostParam("url") String url, @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> getUploadStatusNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
             @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/{nextBlobUuidLink}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void>> uploadChunk(@HostParam("url") String url,
+            @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> value,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> uploadChunkNoCustomHeaders(@HostParam("url") String url,
             @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> value,
             @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
@@ -156,7 +235,23 @@ public final class ContainerRegistryBlobsImpl {
         @Patch("/{nextBlobUuidLink}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> uploadChunkNoCustomHeaders(@HostParam("url") String url,
+            @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @BodyParam("application/octet-stream") BinaryData value, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void> uploadChunkSync(@HostParam("url") String url,
+            @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @BodyParam("application/octet-stream") BinaryData value, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> uploadChunkNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
             @BodyParam("application/octet-stream") BinaryData value, @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept, Context context);
@@ -173,6 +268,14 @@ public final class ContainerRegistryBlobsImpl {
         @Put("/{nextBlobUuidLink}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> completeUploadNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("digest") String digest, @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> value,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void>> completeUpload(
             @HostParam("url") String url, @QueryParam("digest") String digest,
             @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
@@ -182,7 +285,23 @@ public final class ContainerRegistryBlobsImpl {
         @Put("/{nextBlobUuidLink}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> completeUploadNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("digest") String digest, @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @BodyParam("application/octet-stream") BinaryData value, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void> completeUploadSync(@HostParam("url") String url,
+            @QueryParam("digest") String digest, @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
+            @BodyParam("application/octet-stream") BinaryData value, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{nextBlobUuidLink}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> completeUploadNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("digest") String digest, @PathParam(value = "nextBlobUuidLink", encoded = true) String nextLink,
             @BodyParam("application/octet-stream") BinaryData value, @HeaderParam("Content-Length") Long contentLength,
             @HeaderParam("Accept") String accept, Context context);
@@ -210,8 +329,20 @@ public final class ContainerRegistryBlobsImpl {
         @Post("/v2/{name}/blobs/uploads/")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> startUploadNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/v2/{name}/blobs/uploads/")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void> startUploadSync(@HostParam("url") String url,
             @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/v2/{name}/blobs/uploads/")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> startUploadNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 206 })
@@ -223,8 +354,22 @@ public final class ContainerRegistryBlobsImpl {
         @Get("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 206 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getChunkNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, @HeaderParam("Range") String range,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 206 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData> getChunkSync(@HostParam("url") String url,
             @PathParam("name") String name, @PathParam("digest") String digest, @HeaderParam("Range") String range,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 206 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getChunkNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, @HeaderParam("Range") String range,
             @HeaderParam("Accept") String accept, Context context);
 
         @Head("/v2/{name}/blobs/{digest}")
@@ -237,14 +382,28 @@ public final class ContainerRegistryBlobsImpl {
         @Head("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> checkChunkExistsNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("name") String name, @PathParam("digest") String digest, @HeaderParam("Range") String range,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Head("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistryBlobsCheckChunkExistsHeaders, Void> checkChunkExistsSync(
             @HostParam("url") String url, @PathParam("name") String name, @PathParam("digest") String digest,
             @HeaderParam("Range") String range, @HeaderParam("Accept") String accept, Context context);
+
+        @Head("/v2/{name}/blobs/{digest}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> checkChunkExistsNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("digest") String digest, @HeaderParam("Range") String range,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieve the blob from the registry identified by digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,13 +414,12 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsGetBlobHeaders, BinaryData>> getBlobWithResponseAsync(String name,
         String digest) {
-        final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getBlob(this.client.getUrl(), name, digest, accept, context));
+        return FluxUtil.withContext(context -> getBlobWithResponseAsync(name, digest, context));
     }
 
     /**
      * Retrieve the blob from the registry identified by digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -279,7 +437,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Retrieve the blob from the registry identified by digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,7 +452,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Retrieve the blob from the registry identified by digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -310,7 +468,40 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Retrieve the blob from the registry identified by digest.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBlobNoCustomHeadersWithResponseAsync(String name, String digest) {
+        return FluxUtil.withContext(context -> getBlobNoCustomHeadersWithResponseAsync(name, digest, context));
+    }
+
+    /**
+     * Retrieve the blob from the registry identified by digest.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBlobNoCustomHeadersWithResponseAsync(String name, String digest,
+        Context context) {
+        final String accept = "application/octet-stream";
+        return service.getBlobNoCustomHeaders(this.client.getUrl(), name, digest, accept, context);
+    }
+
+    /**
+     * Retrieve the blob from the registry identified by digest.
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -328,7 +519,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Retrieve the blob from the registry identified by digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,8 +533,25 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Retrieve the blob from the registry identified by digest.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getBlobNoCustomHeadersWithResponse(String name, String digest, Context context) {
+        final String accept = "application/octet-stream";
+        return service.getBlobNoCustomHeadersSync(this.client.getUrl(), name, digest, accept, context);
+    }
+
+    /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,14 +562,12 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsCheckBlobExistsHeaders, Void>>
         checkBlobExistsWithResponseAsync(String name, String digest) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.checkBlobExists(this.client.getUrl(), name, digest, accept, context));
+        return FluxUtil.withContext(context -> checkBlobExistsWithResponseAsync(name, digest, context));
     }
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -379,7 +585,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,7 +600,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -410,7 +616,40 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> checkBlobExistsNoCustomHeadersWithResponseAsync(String name, String digest) {
+        return FluxUtil.withContext(context -> checkBlobExistsNoCustomHeadersWithResponseAsync(name, digest, context));
+    }
+
+    /**
+     * Same as GET, except only the headers are returned.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> checkBlobExistsNoCustomHeadersWithResponseAsync(String name, String digest,
+        Context context) {
+        final String accept = "application/json";
+        return service.checkBlobExistsNoCustomHeaders(this.client.getUrl(), name, digest, accept, context);
+    }
+
+    /**
+     * Same as GET, except only the headers are returned.
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -428,7 +667,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,8 +680,25 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Same as GET, except only the headers are returned.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> checkBlobExistsNoCustomHeadersWithResponse(String name, String digest, Context context) {
+        final String accept = "application/json";
+        return service.checkBlobExistsNoCustomHeadersSync(this.client.getUrl(), name, digest, accept, context);
+    }
+
+    /**
      * Removes an already uploaded blob.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,12 +709,12 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void>> deleteBlobWithResponseAsync(String name,
         String digest) {
-        return FluxUtil.withContext(context -> service.deleteBlob(this.client.getUrl(), name, digest, context));
+        return FluxUtil.withContext(context -> deleteBlobWithResponseAsync(name, digest, context));
     }
 
     /**
      * Removes an already uploaded blob.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -475,7 +731,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Removes an already uploaded blob.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,7 +746,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Removes an already uploaded blob.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -506,7 +762,39 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Removes an already uploaded blob.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBlobNoCustomHeadersWithResponseAsync(String name, String digest) {
+        return FluxUtil.withContext(context -> deleteBlobNoCustomHeadersWithResponseAsync(name, digest, context));
+    }
+
+    /**
+     * Removes an already uploaded blob.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBlobNoCustomHeadersWithResponseAsync(String name, String digest,
+        Context context) {
+        return service.deleteBlobNoCustomHeaders(this.client.getUrl(), name, digest, context);
+    }
+
+    /**
+     * Removes an already uploaded blob.
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -523,7 +811,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Removes an already uploaded blob.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,8 +824,24 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Removes an already uploaded blob.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteBlobNoCustomHeadersWithResponse(String name, String digest, Context context) {
+        return service.deleteBlobNoCustomHeadersSync(this.client.getUrl(), name, digest, context);
+    }
+
+    /**
      * Mount a blob identified by the `mount` parameter from another repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
@@ -549,14 +853,12 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsMountBlobHeaders, Void>> mountBlobWithResponseAsync(String name,
         String from, String mount) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.mountBlob(this.client.getUrl(), name, from, mount, accept, context));
+        return FluxUtil.withContext(context -> mountBlobWithResponseAsync(name, from, mount, context));
     }
 
     /**
      * Mount a blob identified by the `mount` parameter from another repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
@@ -575,7 +877,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Mount a blob identified by the `mount` parameter from another repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
@@ -591,7 +893,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Mount a blob identified by the `mount` parameter from another repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
@@ -608,7 +910,42 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Mount a blob identified by the `mount` parameter from another repository.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param from Name of the source repository.
+     * @param mount Digest of blob to mount from the source repository.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> mountBlobNoCustomHeadersWithResponseAsync(String name, String from, String mount) {
+        return FluxUtil.withContext(context -> mountBlobNoCustomHeadersWithResponseAsync(name, from, mount, context));
+    }
+
+    /**
+     * Mount a blob identified by the `mount` parameter from another repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param from Name of the source repository.
+     * @param mount Digest of blob to mount from the source repository.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> mountBlobNoCustomHeadersWithResponseAsync(String name, String from, String mount,
+        Context context) {
+        final String accept = "application/json";
+        return service.mountBlobNoCustomHeaders(this.client.getUrl(), name, from, mount, accept, context);
+    }
+
+    /**
+     * Mount a blob identified by the `mount` parameter from another repository.
+     * 
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
@@ -627,7 +964,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Mount a blob identified by the `mount` parameter from another repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param from Name of the source repository.
      * @param mount Digest of blob to mount from the source repository.
@@ -641,11 +978,30 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Mount a blob identified by the `mount` parameter from another repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param from Name of the source repository.
+     * @param mount Digest of blob to mount from the source repository.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> mountBlobNoCustomHeadersWithResponse(String name, String from, String mount,
+        Context context) {
+        final String accept = "application/json";
+        return service.mountBlobNoCustomHeadersSync(this.client.getUrl(), name, from, mount, accept, context);
+    }
+
+    /**
      * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
      * status of a resumable upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -654,17 +1010,15 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsGetUploadStatusHeaders, Void>>
         getUploadStatusWithResponseAsync(String nextLink) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getUploadStatus(this.client.getUrl(), nextLink, accept, context));
+        return FluxUtil.withContext(context -> getUploadStatusWithResponseAsync(nextLink, context));
     }
 
     /**
      * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
      * status of a resumable upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -681,9 +1035,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
      * status of a resumable upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -697,9 +1051,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
      * status of a resumable upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -714,9 +1068,43 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
      * status of a resumable upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getUploadStatusNoCustomHeadersWithResponseAsync(String nextLink) {
+        return FluxUtil.withContext(context -> getUploadStatusNoCustomHeadersWithResponseAsync(nextLink, context));
+    }
+
+    /**
+     * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
+     * status of a resumable upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getUploadStatusNoCustomHeadersWithResponseAsync(String nextLink, Context context) {
+        final String accept = "application/json";
+        return service.getUploadStatusNoCustomHeaders(this.client.getUrl(), nextLink, accept, context);
+    }
+
+    /**
+     * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
+     * status of a resumable upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -733,9 +1121,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
      * status of a resumable upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -746,10 +1134,28 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
-     * Upload a stream of data without completing the upload.
-     *
+     * Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the current
+     * status of a resumable upload.
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getUploadStatusNoCustomHeadersWithResponse(String nextLink, Context context) {
+        final String accept = "application/json";
+        return service.getUploadStatusNoCustomHeadersSync(this.client.getUrl(), nextLink, accept, context);
+    }
+
+    /**
+     * Upload a stream of data without completing the upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -760,16 +1166,14 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void>>
         uploadChunkWithResponseAsync(String nextLink, Flux<ByteBuffer> value, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.uploadChunk(this.client.getUrl(), nextLink, value, contentLength, accept, context));
+        return FluxUtil.withContext(context -> uploadChunkWithResponseAsync(nextLink, value, contentLength, context));
     }
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -787,9 +1191,9 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,9 +1208,9 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -822,9 +1226,49 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
+     * @param value Raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> uploadChunkNoCustomHeadersWithResponseAsync(String nextLink, Flux<ByteBuffer> value,
+        long contentLength) {
+        return FluxUtil.withContext(
+            context -> uploadChunkNoCustomHeadersWithResponseAsync(nextLink, value, contentLength, context));
+    }
+
+    /**
+     * Upload a stream of data without completing the upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param value Raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> uploadChunkNoCustomHeadersWithResponseAsync(String nextLink, Flux<ByteBuffer> value,
+        long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.uploadChunkNoCustomHeaders(this.client.getUrl(), nextLink, value, contentLength, accept,
+            context);
+    }
+
+    /**
+     * Upload a stream of data without completing the upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,16 +1279,14 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsUploadChunkHeaders, Void>>
         uploadChunkWithResponseAsync(String nextLink, BinaryData value, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.uploadChunk(this.client.getUrl(), nextLink, value, contentLength, accept, context));
+        return FluxUtil.withContext(context -> uploadChunkWithResponseAsync(nextLink, value, contentLength, context));
     }
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -862,9 +1304,9 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -879,9 +1321,9 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -897,9 +1339,49 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
+     * @param value Raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> uploadChunkNoCustomHeadersWithResponseAsync(String nextLink, BinaryData value,
+        long contentLength) {
+        return FluxUtil.withContext(
+            context -> uploadChunkNoCustomHeadersWithResponseAsync(nextLink, value, contentLength, context));
+    }
+
+    /**
+     * Upload a stream of data without completing the upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param value Raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> uploadChunkNoCustomHeadersWithResponseAsync(String nextLink, BinaryData value,
+        long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.uploadChunkNoCustomHeaders(this.client.getUrl(), nextLink, value, contentLength, accept,
+            context);
+    }
+
+    /**
+     * Upload a stream of data without completing the upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -917,9 +1399,9 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Upload a stream of data without completing the upload.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -932,12 +1414,33 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Upload a stream of data without completing the upload.
+     * 
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param value Raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> uploadChunkNoCustomHeadersWithResponse(String nextLink, BinaryData value, long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        return service.uploadChunkNoCustomHeadersSync(this.client.getUrl(), nextLink, value, contentLength, accept,
+            context);
+    }
+
+    /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,18 +1451,17 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void>>
         completeUploadWithResponseAsync(String digest, String nextLink, Flux<ByteBuffer> value, Long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.completeUpload(this.client.getUrl(), digest, nextLink, value,
-            contentLength, accept, context));
+        return FluxUtil
+            .withContext(context -> completeUploadWithResponseAsync(digest, nextLink, value, contentLength, context));
     }
 
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -978,10 +1480,10 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -997,10 +1499,10 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1019,10 +1521,54 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
+     * @param value Optional raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> completeUploadNoCustomHeadersWithResponseAsync(String digest, String nextLink,
+        Flux<ByteBuffer> value, Long contentLength) {
+        return FluxUtil.withContext(
+            context -> completeUploadNoCustomHeadersWithResponseAsync(digest, nextLink, value, contentLength, context));
+    }
+
+    /**
+     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+     * complete the upload with previously uploaded content.
+     * 
+     * @param digest Digest of a BLOB.
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param value Optional raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> completeUploadNoCustomHeadersWithResponseAsync(String digest, String nextLink,
+        Flux<ByteBuffer> value, Long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.completeUploadNoCustomHeaders(this.client.getUrl(), digest, nextLink, value, contentLength,
+            accept, context);
+    }
+
+    /**
+     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+     * complete the upload with previously uploaded content.
+     * 
+     * @param digest Digest of a BLOB.
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1033,18 +1579,17 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, Void>>
         completeUploadWithResponseAsync(String digest, String nextLink, BinaryData value, Long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.completeUpload(this.client.getUrl(), digest, nextLink, value,
-            contentLength, accept, context));
+        return FluxUtil
+            .withContext(context -> completeUploadWithResponseAsync(digest, nextLink, value, contentLength, context));
     }
 
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1063,10 +1608,10 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,10 +1627,10 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1104,10 +1649,54 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
+     * @param value Optional raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> completeUploadNoCustomHeadersWithResponseAsync(String digest, String nextLink,
+        BinaryData value, Long contentLength) {
+        return FluxUtil.withContext(
+            context -> completeUploadNoCustomHeadersWithResponseAsync(digest, nextLink, value, contentLength, context));
+    }
+
+    /**
+     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+     * complete the upload with previously uploaded content.
+     * 
+     * @param digest Digest of a BLOB.
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param value Optional raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> completeUploadNoCustomHeadersWithResponseAsync(String digest, String nextLink,
+        BinaryData value, Long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.completeUploadNoCustomHeaders(this.client.getUrl(), digest, nextLink, value, contentLength,
+            accept, context);
+    }
+
+    /**
+     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+     * complete the upload with previously uploaded content.
+     * 
+     * @param digest Digest of a BLOB.
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -1127,10 +1716,10 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
      * complete the upload with previously uploaded content.
-     *
+     * 
      * @param digest Digest of a BLOB.
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param value Optional raw data of blob.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1143,11 +1732,34 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Complete the upload, providing all the data in the body, if necessary. A request without a body will just
+     * complete the upload with previously uploaded content.
+     * 
+     * @param digest Digest of a BLOB.
+     * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
+     * substring(1) ).
+     * @param value Optional raw data of blob.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> completeUploadNoCustomHeadersWithResponse(String digest, String nextLink, BinaryData value,
+        Long contentLength, Context context) {
+        final String accept = "application/json";
+        return service.completeUploadNoCustomHeadersSync(this.client.getUrl(), digest, nextLink, value, contentLength,
+            accept, context);
+    }
+
+    /**
      * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
      * uploads will eventually timeout.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1155,16 +1767,15 @@ public final class ContainerRegistryBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelUploadWithResponseAsync(String nextLink) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelUpload(this.client.getUrl(), nextLink, accept, context));
+        return FluxUtil.withContext(context -> cancelUploadWithResponseAsync(nextLink, context));
     }
 
     /**
      * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
      * uploads will eventually timeout.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1180,9 +1791,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
      * uploads will eventually timeout.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1196,9 +1807,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
      * uploads will eventually timeout.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1213,9 +1824,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
      * uploads will eventually timeout.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1231,9 +1842,9 @@ public final class ContainerRegistryBlobsImpl {
     /**
      * Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
      * uploads will eventually timeout.
-     *
+     * 
      * @param nextLink Link acquired from upload start or previous chunk. Note, do not include initial / (must do
-     *     substring(1) ).
+     * substring(1) ).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1245,7 +1856,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Initiate a resumable blob upload with an empty request body.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1255,13 +1866,12 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsStartUploadHeaders, Void>>
         startUploadWithResponseAsync(String name) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.startUpload(this.client.getUrl(), name, accept, context));
+        return FluxUtil.withContext(context -> startUploadWithResponseAsync(name, context));
     }
 
     /**
      * Initiate a resumable blob upload with an empty request body.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1278,7 +1888,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Initiate a resumable blob upload with an empty request body.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1292,7 +1902,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Initiate a resumable blob upload with an empty request body.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1307,7 +1917,37 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Initiate a resumable blob upload with an empty request body.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startUploadNoCustomHeadersWithResponseAsync(String name) {
+        return FluxUtil.withContext(context -> startUploadNoCustomHeadersWithResponseAsync(name, context));
+    }
+
+    /**
+     * Initiate a resumable blob upload with an empty request body.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startUploadNoCustomHeadersWithResponseAsync(String name, Context context) {
+        final String accept = "application/json";
+        return service.startUploadNoCustomHeaders(this.client.getUrl(), name, accept, context);
+    }
+
+    /**
+     * Initiate a resumable blob upload with an empty request body.
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1324,7 +1964,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Initiate a resumable blob upload with an empty request body.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1336,10 +1976,26 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Initiate a resumable blob upload with an empty request body.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startUploadNoCustomHeadersWithResponse(String name, Context context) {
+        final String accept = "application/json";
+        return service.startUploadNoCustomHeadersSync(this.client.getUrl(), name, accept, context);
+    }
+
+    /**
      * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
      * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
      * returned, range requests can be used to fetch partial content.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1351,16 +2007,14 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>> getChunkWithResponseAsync(String name,
         String digest, String range) {
-        final String accept = "application/octet-stream";
-        return FluxUtil
-            .withContext(context -> service.getChunk(this.client.getUrl(), name, digest, range, accept, context));
+        return FluxUtil.withContext(context -> getChunkWithResponseAsync(name, digest, range, context));
     }
 
     /**
      * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
      * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
      * returned, range requests can be used to fetch partial content.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1381,7 +2035,7 @@ public final class ContainerRegistryBlobsImpl {
      * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
      * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
      * returned, range requests can be used to fetch partial content.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1399,7 +2053,7 @@ public final class ContainerRegistryBlobsImpl {
      * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
      * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
      * returned, range requests can be used to fetch partial content.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1418,7 +2072,47 @@ public final class ContainerRegistryBlobsImpl {
      * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
      * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
      * returned, range requests can be used to fetch partial content.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getChunkNoCustomHeadersWithResponseAsync(String name, String digest,
+        String range) {
+        return FluxUtil.withContext(context -> getChunkNoCustomHeadersWithResponseAsync(name, digest, range, context));
+    }
+
+    /**
+     * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
+     * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
+     * returned, range requests can be used to fetch partial content.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getChunkNoCustomHeadersWithResponseAsync(String name, String digest, String range,
+        Context context) {
+        final String accept = "application/octet-stream";
+        return service.getChunkNoCustomHeaders(this.client.getUrl(), name, digest, range, accept, context);
+    }
+
+    /**
+     * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
+     * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
+     * returned, range requests can be used to fetch partial content.
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1439,7 +2133,7 @@ public final class ContainerRegistryBlobsImpl {
      * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
      * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
      * returned, range requests can be used to fetch partial content.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1454,8 +2148,29 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
+     * Retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233 compliant
+     * range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
+     * returned, range requests can be used to fetch partial content.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getChunkNoCustomHeadersWithResponse(String name, String digest, String range,
+        Context context) {
+        final String accept = "application/octet-stream";
+        return service.getChunkNoCustomHeadersSync(this.client.getUrl(), name, digest, range, accept, context);
+    }
+
+    /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1467,14 +2182,12 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistryBlobsCheckChunkExistsHeaders, Void>>
         checkChunkExistsWithResponseAsync(String name, String digest, String range) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.checkChunkExists(this.client.getUrl(), name, digest, range, accept, context));
+        return FluxUtil.withContext(context -> checkChunkExistsWithResponseAsync(name, digest, range, context));
     }
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1493,7 +2206,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1509,7 +2222,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1526,7 +2239,44 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> checkChunkExistsNoCustomHeadersWithResponseAsync(String name, String digest,
+        String range) {
+        return FluxUtil
+            .withContext(context -> checkChunkExistsNoCustomHeadersWithResponseAsync(name, digest, range, context));
+    }
+
+    /**
+     * Same as GET, except only the headers are returned.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> checkChunkExistsNoCustomHeadersWithResponseAsync(String name, String digest,
+        String range, Context context) {
+        final String accept = "application/json";
+        return service.checkChunkExistsNoCustomHeaders(this.client.getUrl(), name, digest, range, accept, context);
+    }
+
+    /**
+     * Same as GET, except only the headers are returned.
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1545,7 +2295,7 @@ public final class ContainerRegistryBlobsImpl {
 
     /**
      * Same as GET, except only the headers are returned.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
@@ -1556,5 +2306,24 @@ public final class ContainerRegistryBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkChunkExists(String name, String digest, String range) {
         checkChunkExistsWithResponse(name, digest, range, Context.NONE);
+    }
+
+    /**
+     * Same as GET, except only the headers are returned.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param range Format : bytes=&lt;start&gt;-&lt;end&gt;, HTTP Range header specifying blob chunk.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> checkChunkExistsNoCustomHeadersWithResponse(String name, String digest, String range,
+        Context context) {
+        final String accept = "application/json";
+        return service.checkChunkExistsNoCustomHeadersSync(this.client.getUrl(), name, digest, range, accept, context);
     }
 }

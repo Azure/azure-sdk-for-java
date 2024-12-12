@@ -22,7 +22,7 @@ public final class ConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"xmwoteyowcluqo\",\"currentValue\":\"kqvgqouw\",\"description\":\"zmpjwyiv\",\"documentationLink\":\"kfxcvhrfs\",\"defaultValue\":\"uagrttikteusqc\",\"dataType\":\"vyklxuby\",\"allowedValues\":\"ff\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"bgq\",\"name\":\"brta\",\"type\":\"metttwgd\"}";
+            = "{\"properties\":{\"value\":\"ojgcyzt\",\"currentValue\":\"mznbaeqphch\",\"description\":\"rn\",\"documentationLink\":\"x\",\"defaultValue\":\"uwrykqgaifmvikl\",\"dataType\":\"dvk\",\"allowedValues\":\"ejd\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"jivolvtnov\",\"name\":\"fzg\",\"type\":\"mjdftu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class ConfigurationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Configuration response = manager.configurations()
-            .define("wqfbylyrfgiagt")
-            .withExistingFlexibleServer("dggxdbeesmi", "knlrariaawiuagy")
-            .withValue("ocqwogfnzjvus")
-            .withCurrentValue("ld")
+            .define("euzvx")
+            .withExistingFlexibleServer("skasdvlmfwdgzxu", "ucvpamrs")
+            .withValue("sjnhn")
+            .withCurrentValue("xifqjzgxm")
             .withSource(ConfigurationSource.USER_OVERRIDE)
             .create();
 
-        Assertions.assertEquals("xmwoteyowcluqo", response.value());
-        Assertions.assertEquals("kqvgqouw", response.currentValue());
+        Assertions.assertEquals("ojgcyzt", response.value());
+        Assertions.assertEquals("mznbaeqphch", response.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.source());
     }
 }

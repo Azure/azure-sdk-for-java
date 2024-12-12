@@ -14,22 +14,22 @@ public final class LinuxParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinuxParameters model = BinaryData.fromString(
-            "{\"classificationsToInclude\":[\"Critical\"],\"packageNameMasksToInclude\":[\"wndnhj\"],\"packageNameMasksToExclude\":[\"whvylw\",\"btdhxujznbm\",\"ow\",\"wpr\"]}")
+            "{\"classificationsToInclude\":[\"Critical\"],\"packageNameMasksToInclude\":[\"bsrfbj\",\"dtws\",\"otftpvjzbexilz\",\"nfqqnvwp\"],\"packageNameMasksToExclude\":[\"aruoujmkcjhwqyt\",\"r\",\"bnw\"]}")
             .toObject(LinuxParameters.class);
         Assertions.assertEquals(VMGuestPatchClassificationLinux.CRITICAL, model.classificationsToInclude().get(0));
-        Assertions.assertEquals("wndnhj", model.packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("whvylw", model.packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("bsrfbj", model.packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("aruoujmkcjhwqyt", model.packageNameMasksToExclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinuxParameters model = new LinuxParameters()
             .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationLinux.CRITICAL))
-            .withPackageNameMasksToInclude(Arrays.asList("wndnhj"))
-            .withPackageNameMasksToExclude(Arrays.asList("whvylw", "btdhxujznbm", "ow", "wpr"));
+            .withPackageNameMasksToInclude(Arrays.asList("bsrfbj", "dtws", "otftpvjzbexilz", "nfqqnvwp"))
+            .withPackageNameMasksToExclude(Arrays.asList("aruoujmkcjhwqyt", "r", "bnw"));
         model = BinaryData.fromObject(model).toObject(LinuxParameters.class);
         Assertions.assertEquals(VMGuestPatchClassificationLinux.CRITICAL, model.classificationsToInclude().get(0));
-        Assertions.assertEquals("wndnhj", model.packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("whvylw", model.packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("bsrfbj", model.packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("aruoujmkcjhwqyt", model.packageNameMasksToExclude().get(0));
     }
 }
