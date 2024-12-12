@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.util;
 
+import io.clientcore.core.http.models.DateTimeRfc1123;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.util.ClientLogger;

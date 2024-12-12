@@ -3,6 +3,8 @@
 
 package io.clientcore.core.implementation.util;
 
+import io.clientcore.core.util.Base64Util;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 

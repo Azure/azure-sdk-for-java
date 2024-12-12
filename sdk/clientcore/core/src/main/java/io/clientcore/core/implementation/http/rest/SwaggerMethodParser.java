@@ -25,7 +25,7 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.http.models.DateTimeRfc1123;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.ExpandableEnum;
@@ -465,7 +465,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The request options.
      */
     public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
-        return requestOptionsPosition < 0 ? null : (RequestOptions) swaggerMethodArguments[requestOptionsPosition];
+        return requestOptionsPosition < 0
+            ? RequestOptions.none()
+            : (RequestOptions) swaggerMethodArguments[requestOptionsPosition];
     }
 
     /**

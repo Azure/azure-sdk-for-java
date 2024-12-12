@@ -23,7 +23,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.http.models.DateTimeRfc1123;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.util.Context;
