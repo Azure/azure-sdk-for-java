@@ -28,10 +28,7 @@ import java.util.function.Function;
 public final class ResourceManagerUtils {
     /**
      * Creates a new instance of ResourceManagerUtils.
-     *
-     * @deprecated ResourceManagerUtils is a final class.
      */
-    @Deprecated
     public ResourceManagerUtils() {
     }
 
@@ -257,10 +254,7 @@ public final class ResourceManagerUtils {
 
         /**
          * Creates a new instance of InternalRuntimeContext.
-         *
-         * @deprecated InternalRuntimeContext is a static inner class.
          */
-        @Deprecated
         public InternalRuntimeContext() {
         }
 

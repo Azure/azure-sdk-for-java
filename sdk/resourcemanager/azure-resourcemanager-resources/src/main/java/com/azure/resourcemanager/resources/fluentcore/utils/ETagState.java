@@ -14,12 +14,7 @@ public class ETagState {
 
     /**
      * Creates a new instance of ETagState.
-     * 
-     * @deprecated Use the {@link #withImplicitETagCheckOnCreateOrUpdate(boolean)} 
-     * or {@link #withExplicitETagCheckOnUpdate(String)} 
-     * or {@link #withExplicitETagCheckOnDelete(String)} factory method.
      */
-    @Deprecated
     public ETagState() {
     }
 

@@ -84,7 +84,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
-     * Sets child (neighbour) to this node.
+     * Adds child (neighbour) to this node.
      *
      * @param childKey add a child (neighbour) of this node
      */
