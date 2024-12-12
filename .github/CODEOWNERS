@@ -794,7 +794,6 @@
 
 # ServiceLabel:  %Synapse
 # PRLabel: %Synapse
-# ServiceLabel: %Synapse
 /sdk/synapse                                         @wanyang7
 
 # PRLabel: %Tables
