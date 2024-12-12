@@ -14,7 +14,6 @@ public class ResourceDelayProvider implements DelayProvider {
     /**
      * Creates a new instance of ResourceDelayProvider.
      */
-    @Deprecated
     public ResourceDelayProvider() {
     }
 
