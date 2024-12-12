@@ -20,7 +20,7 @@ public class ETagState {
      * or {@link #withExplicitETagCheckOnDelete(String)} factory method.
      */
     @Deprecated
-    public CountryPhoneCode() {
+    public ETagState() {
     }
 
     /**
