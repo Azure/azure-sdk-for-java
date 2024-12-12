@@ -29,7 +29,7 @@ public final class ResourceManagerUtils {
     /**
      * Creates a new instance of ResourceManagerUtils.
      */
-    public ResourceManagerUtils() {
+    private ResourceManagerUtils() {
     }
 
     /**
