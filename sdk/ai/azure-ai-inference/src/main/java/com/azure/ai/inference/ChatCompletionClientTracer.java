@@ -18,8 +18,12 @@ import com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
@@ -38,8 +42,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
@@ -54,11 +56,18 @@ import java.util.stream.Collectors;
  * {@link com.azure.ai.inference.ChatCompletionsAsyncClient}.
  */
 final class ChatCompletionClientTracer {
+    private static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
     private static final String INFERENCE_GEN_AI_SYSTEM_NAME = "az.ai.inference";
-    private static final String OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT
-        = "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT";
     private static final String FINISH_REASON_ERROR = "{\"finish_reason\": \"error\"}";
-    private static final String FINISH_REASON_CANCELED = "{\"finish_reason\": \"canceled\"}";
+    private static final String FINISH_REASON_CANCELLED = "{\"finish_reason\": \"cancelled\"}";
+
+    private static final ConfigurationProperty<Boolean> CAPTURE_MESSAGE_CONTENT
+        = ConfigurationPropertyBuilder.ofBoolean("otel.instrumentation.genai.capture_message_content")
+            .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_DISABLED)
+            .shared(true)
+            .defaultValue(false)
+            .build();
+    private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
 
     private final ClientLogger logger;
     private final String host;
@@ -119,17 +128,18 @@ final class ChatCompletionClientTracer {
      * @param endpoint the service endpoint.
      */
     ChatCompletionClientTracer(String endpoint) {
-        this(endpoint, isContentCapturingEnabled(), null);
+        this(endpoint, null, null);
     }
 
     /**
      * Creates ChatCompletionClientTracer.
      *
      * @param endpoint the service endpoint.
-     * @param captureContent if full content should be captured.
+     * @param configuration the {@link Configuration} instance to check if message content needs to be captured,
+     *     if {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
      * @param clientOptions the client options.
      */
-    ChatCompletionClientTracer(String endpoint, boolean captureContent, ClientOptions clientOptions) {
+    ChatCompletionClientTracer(String endpoint, Configuration configuration, ClientOptions clientOptions) {
         this.logger = new ClientLogger(ChatCompletionClientTracer.class);
         final URL url = parse(endpoint, logger);
         if (url != null) {
@@ -139,7 +149,9 @@ final class ChatCompletionClientTracer {
             this.host = null;
             this.port = -1;
         }
-        this.captureContent = captureContent;
+        this.captureContent = configuration == null
+            ? GLOBAL_CONFIG.get(CAPTURE_MESSAGE_CONTENT)
+            : configuration.get(CAPTURE_MESSAGE_CONTENT);
         this.tracer = createTracer(clientOptions);
     }
 
@@ -158,20 +170,26 @@ final class ChatCompletionClientTracer {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
         }
-        final Context span = tracer.start(rootSpanName(request), new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
-        traceCompletionRequestAttributes(request, span);
-        traceCompletionRequestEvents(request.getMessages(), span);
+        final Context span
+            = tracer.start(spanName(request), new StartSpanOptions(SpanKind.CLIENT), parentSpan(requestOptions));
+        if (tracer.isRecording(span)) {
+            traceCompletionRequestAttributes(request, span);
+            traceCompletionRequestEvents(request.getMessages(), span);
+        }
 
         try (AutoCloseable ignored = tracer.makeSpanCurrent(span)) {
             final ChatCompletions response = operation.invoke(completeRequest, requestOptions.setContext(span));
-            traceCompletionResponseAttributes(response, span);
-            traceCompletionResponseEvents(response, span);
+            if (tracer.isRecording(span)) {
+                traceCompletionResponseAttributes(response, span);
+                traceCompletionResponseEvents(response, span);
+            }
             tracer.end(null, null, span);
             return response;
         } catch (Exception e) {
             tracer.end(null, e, span);
-            throw logger.logExceptionAsError(asRuntimeException(e));
+            sneakyThrows(e);
         }
+        return null;
     }
 
     /**
@@ -191,9 +209,11 @@ final class ChatCompletionClientTracer {
 
         final Mono<Context> resourceSupplier = Mono.fromSupplier(() -> {
             final Context span
-                = tracer.start(rootSpanName(request), new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
-            traceCompletionRequestAttributes(request, span);
-            traceCompletionRequestEvents(request.getMessages(), span);
+                = tracer.start(spanName(request), new StartSpanOptions(SpanKind.CLIENT), parentSpan(requestOptions));
+            if (tracer.isRecording(span)) {
+                traceCompletionRequestAttributes(request, span);
+                traceCompletionRequestEvents(request.getMessages(), span);
+            }
             return span;
         });
 
@@ -201,8 +221,10 @@ final class ChatCompletionClientTracer {
             final RequestOptions rOptions = requestOptions.setContext(span);
 
             return operation.invoke(completeRequest, rOptions).map(response -> {
-                traceCompletionResponseAttributes(response, span);
-                traceCompletionResponseEvents(response, span);
+                if (tracer.isRecording(span)) {
+                    traceCompletionResponseAttributes(response, span);
+                    traceCompletionResponseEvents(response, span);
+                }
                 return response;
             });
         };
@@ -213,15 +235,17 @@ final class ChatCompletionClientTracer {
         };
 
         final BiFunction<Context, Throwable, Mono<Void>> asyncError = (span, throwable) -> {
-            tracer.setAttribute("error.type", throwable.getClass().getName(), span);
-            traceChoiceEvent(FINISH_REASON_ERROR, OffsetDateTime.now(ZoneOffset.UTC), span);
+            if (tracer.isRecording(span)) {
+                traceChoiceEvent(FINISH_REASON_ERROR, span);
+            }
             tracer.end(null, throwable, span);
             return Mono.empty();
         };
 
         final Function<Context, Mono<Void>> asyncCancel = span -> {
-            tracer.setAttribute("error.type", "cancelled", span);
-            traceChoiceEvent(FINISH_REASON_CANCELED, OffsetDateTime.now(ZoneOffset.UTC), span);
+            if (tracer.isRecording(span)) {
+                traceChoiceEvent(FINISH_REASON_CANCELLED, span);
+            }
             tracer.end("cancelled", null, span);
             return Mono.empty();
         };
@@ -250,28 +274,37 @@ final class ChatCompletionClientTracer {
         final Mono<StreamingChatCompletionsState> resourceSupplier = Mono.fromSupplier(() -> {
             final StreamingChatCompletionsState resource = state;
 
-            final Context span
-                = tracer.start(rootSpanName(resource.request), new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
-            traceCompletionRequestAttributes(resource.request, span);
-            traceCompletionRequestEvents(resource.request.getMessages(), span);
+            final Context span = tracer.start(spanName(resource.request), new StartSpanOptions(SpanKind.CLIENT),
+                parentSpan(resource.requestOptions));
+            if (tracer.isRecording(span)) {
+                traceCompletionRequestAttributes(resource.request, span);
+                traceCompletionRequestEvents(resource.request.getMessages(), span);
+            }
             return resource.setSpan(span);
         });
 
         final Function<StreamingChatCompletionsState, Flux<StreamingChatCompletionsUpdate>> resourceClosure
             = resource -> {
-                final RequestOptions rOptions = resource.requestOptions.setContext(resource.span);
+                final Context span = resource.span;
+
+                final RequestOptions rOptions = resource.requestOptions.setContext(span);
                 final Flux<StreamingChatCompletionsUpdate> completionChunks
                     = resource.operation.invoke(resource.completeRequest, rOptions);
-                return completionChunks.doOnNext(resource::onNextChunk);
+                if (tracer.isRecording(span)) {
+                    return completionChunks.doOnNext(resource::onNextChunk);
+                } else {
+                    return completionChunks;
+                }
             };
 
         final Function<StreamingChatCompletionsState, Mono<Void>> asyncComplete = resource -> {
             final Context span = resource.span;
-            final StreamingChatCompletionsUpdate lastChunk = resource.lastChunk;
-            final String finishReasons = resource.getFinishReasons();
-
-            traceCompletionResponseAttributes(lastChunk, finishReasons, span);
-            traceChoiceEvent(resource.toJson(logger), OffsetDateTime.now(ZoneOffset.UTC), span);
+            if (tracer.isRecording(span)) {
+                final StreamingChatCompletionsUpdate lastChunk = resource.lastChunk;
+                final String finishReasons = resource.getFinishReasons();
+                traceCompletionResponseAttributes(lastChunk, finishReasons, span);
+                traceChoiceEvent(resource.toJson(logger), span);
+            }
             tracer.end(null, null, span);
             return Mono.empty();
         };
@@ -279,16 +312,19 @@ final class ChatCompletionClientTracer {
         final BiFunction<StreamingChatCompletionsState, Throwable, Mono<Void>> asyncError = (resource, throwable) -> {
             final Context span = resource.span;
 
-            tracer.setAttribute("error.type", throwable.getClass().getName(), span);
-            traceChoiceEvent(FINISH_REASON_ERROR, OffsetDateTime.now(ZoneOffset.UTC), span);
+            if (tracer.isRecording(span)) {
+                traceChoiceEvent(FINISH_REASON_ERROR, span);
+            }
             tracer.end(null, throwable, span);
             return Mono.empty();
         };
 
         final Function<StreamingChatCompletionsState, Mono<Void>> asyncCancel = resource -> {
             final Context span = resource.span;
-            tracer.setAttribute("error.type", "cancelled", span);
-            traceChoiceEvent(FINISH_REASON_CANCELED, OffsetDateTime.now(ZoneOffset.UTC), span);
+
+            if (tracer.isRecording(span)) {
+                traceChoiceEvent(FINISH_REASON_CANCELLED, span);
+            }
             tracer.end("cancelled", null, span);
             return Mono.empty();
         };
@@ -297,7 +333,7 @@ final class ChatCompletionClientTracer {
     }
 
     //<editor-fold desc="Private util types, methods">
-    private String rootSpanName(ChatCompletionsOptions completeRequest) {
+    private String spanName(ChatCompletionsOptions completeRequest) {
         return CoreUtils.isNullOrEmpty(completeRequest.getModel()) ? "chat" : "chat " + completeRequest.getModel();
     }
 
@@ -306,8 +342,14 @@ final class ChatCompletionClientTracer {
         tracer.setAttribute("gen_ai.operation.name", "chat", span);
         tracer.setAttribute("gen_ai.system", INFERENCE_GEN_AI_SYSTEM_NAME, span);
         tracer.setAttribute("gen_ai.request.model", CoreUtils.isNullOrEmpty(modelId) ? "chat" : modelId, span);
+        if (request.getFrequencyPenalty() != null) {
+            tracer.setAttribute("gen_ai.request.frequency_penalty", request.getFrequencyPenalty(), span);
+        }
         if (request.getMaxTokens() != null) {
             tracer.setAttribute("gen_ai.request.max_tokens", request.getMaxTokens(), span);
+        }
+        if (request.getPresencePenalty() != null) {
+            tracer.setAttribute("gen_ai.request.presence_penalty", request.getPresencePenalty(), span);
         }
         if (request.getTemperature() != null) {
             tracer.setAttribute("gen_ai.request.temperature", request.getTemperature(), span);
@@ -317,26 +359,26 @@ final class ChatCompletionClientTracer {
         }
         if (host != null) {
             tracer.setAttribute("server.address", host, span);
-            tracer.setAttribute("server.port", port, span);
+            if (port != 443) {
+                tracer.setAttribute("server.port", port, span);
+            }
         }
     }
 
     private void traceCompletionRequestEvents(List<ChatRequestMessage> messages, Context span) {
-        if (!captureContent) {
+        if (!captureContent || messages == null) {
             return;
         }
-        if (messages != null) {
-            for (ChatRequestMessage message : messages) {
-                final ChatRole role = message.getRole();
-                if (role != null) {
-                    final String eventName = "gen_ai." + role.getValue() + ".message";
-                    final String eventContent = toJsonString(message);
-                    if (eventContent != null) {
-                        final Map<String, Object> eventAttributes = new HashMap<>(2);
-                        eventAttributes.put("gen_ai.system", INFERENCE_GEN_AI_SYSTEM_NAME);
-                        eventAttributes.put("gen_ai.event.content", eventContent);
-                        tracer.addEvent(eventName, eventAttributes, OffsetDateTime.now(ZoneOffset.UTC), span);
-                    }
+        for (ChatRequestMessage message : messages) {
+            final ChatRole role = message.getRole();
+            if (role != null) {
+                final String eventName = "gen_ai." + role.getValue() + ".message";
+                final String eventContent = toJsonString(message);
+                if (eventContent != null) {
+                    final Map<String, Object> eventAttributes = new HashMap<>(2);
+                    eventAttributes.put("gen_ai.system", INFERENCE_GEN_AI_SYSTEM_NAME);
+                    eventAttributes.put("gen_ai.event.content", eventContent);
+                    tracer.addEvent(eventName, eventAttributes, null, span);
                 }
             }
         }
@@ -371,28 +413,24 @@ final class ChatCompletionClientTracer {
     private void traceCompletionResponseEvents(ChatCompletions response, Context span) {
         final List<ChatChoice> choices = response.getChoices();
         if (choices != null) {
-            final OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
             for (ChatChoice choice : choices) {
-                traceChoiceEvent(toJsonString(choice), now, span);
+                traceChoiceEvent(toJsonString(choice), span);
             }
         }
     }
 
-    private void traceChoiceEvent(String choiceContent, OffsetDateTime timestamp, Context span) {
+    private void traceChoiceEvent(String choiceContent, Context span) {
         final Map<String, Object> eventAttributes = new HashMap<>(2);
         eventAttributes.put("gen_ai.system", INFERENCE_GEN_AI_SYSTEM_NAME);
         eventAttributes.put("gen_ai.event.content", choiceContent);
-        tracer.addEvent("gen_ai.choice", eventAttributes, timestamp, span);
+        tracer.addEvent("gen_ai.choice", eventAttributes, null, span);
     }
 
     private String toJsonString(ChatRequestMessage message) {
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            JsonWriter writer = JsonProviders.createWriter(stream)) {
-            message.toJson(writer);
-            writer.flush();
-            return new String(stream.toByteArray(), StandardCharsets.UTF_8);
+        try {
+            return message.toJsonString();
         } catch (IOException e) {
-            logger.atWarning().log("'ChatRequestMessage' serialization error", e);
+            logger.atVerbose().log("'ChatRequestMessage' serialization error", e);
         }
         return null;
     }
@@ -408,18 +446,16 @@ final class ChatCompletionClientTracer {
             if (choice.getMessage() != null) {
                 final List<ChatCompletionsToolCall> toolCalls = choice.getMessage().getToolCalls();
                 if (toolCalls != null && !toolCalls.isEmpty()) {
-                    writer.writeStartArray("tool_calls");
-                    for (ChatCompletionsToolCall toolCall : toolCalls) {
+                    writer.writeArrayField("tool_calls", toolCalls, (w, toolCall) -> {
                         if (captureContent) {
-                            toolCall.toJson(writer);
+                            toolCall.toJson(w);
                         } else {
-                            writer.writeStartObject();
-                            writer.writeStringField("id", toolCall.getId());
-                            writer.writeStringField("type", toolCall.getType());
-                            writer.writeEndObject();
+                            w.writeStartObject();
+                            w.writeStringField("id", toolCall.getId());
+                            w.writeStringField("type", toolCall.getType());
+                            w.writeEndObject();
                         }
-                    }
-                    writer.writeEndArray();
+                    });
                 }
             }
             writer.writeEndObject();
@@ -432,7 +468,7 @@ final class ChatCompletionClientTracer {
             writer.flush();
             return new String(stream.toByteArray(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.atWarning().log("'ChatChoice' serialization error", e);
+            logger.atVerbose().log("'ChatChoice' serialization error", e);
         }
         return null;
     }
@@ -448,21 +484,16 @@ final class ChatCompletionClientTracer {
         return finishReasons.toString();
     }
 
-    private static boolean isContentCapturingEnabled() {
-        final String envVal = System.getenv(OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT);
-        if ("true".equalsIgnoreCase(envVal)) {
-            return true;
-        }
-        final String propVal = System.getProperty(OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT);
-        return "true".equalsIgnoreCase(propVal);
-    }
-
     private static Tracer createTracer(ClientOptions clientOptions) {
         final Map<String, String> properties = CoreUtils.getProperties("azure-ai-inference.properties");
-        final String clientName = properties.getOrDefault("name", "UnknownName");
-        final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
+        final String libraryName = properties.getOrDefault("name", "UnknownName");
+        final String libraryVersion = properties.getOrDefault("version", "UnknownVersion");
+        final LibraryTelemetryOptions telemetryOptions
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion)
+                .setResourceProviderNamespace("Microsoft.CognitiveServices")
+                .setSchemaUrl(OTEL_SCHEMA_URL);
         final TracingOptions options = clientOptions == null ? null : clientOptions.getTracingOptions();
-        return TracerProvider.getDefaultProvider().createTracer(clientName, clientVersion, "Azure.AI", options);
+        return TracerProvider.getDefaultProvider().createTracer(telemetryOptions, options);
     }
 
     private static URL parse(String endpoint, ClientLogger logger) {
@@ -478,12 +509,13 @@ final class ChatCompletionClientTracer {
         return null;
     }
 
-    private static RuntimeException asRuntimeException(Exception e) {
-        if (e instanceof RuntimeException) {
-            return (RuntimeException) e;
-        } else {
-            return new RuntimeException(e);
-        }
+    @SuppressWarnings("unchecked")
+    private static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
+        throw (E) e;
+    }
+
+    private static Context parentSpan(RequestOptions requestOptions) {
+        return requestOptions.getContext() == null ? Context.NONE : requestOptions.getContext();
     }
 
     private static final class StreamingChatCompletionsState {
@@ -588,7 +620,7 @@ final class ChatCompletionClientTracer {
                 writer.flush();
                 return new String(stream.toByteArray(), StandardCharsets.UTF_8);
             } catch (IOException e) {
-                logger.atWarning().log("'StreamingChatCompletionsState' serialization error", e);
+                logger.atVerbose().log("'StreamingChatCompletionsState' serialization error", e);
             }
             return null;
         }

@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
@@ -53,7 +54,7 @@ public final class ChatCompletionClientTracerTest {
     private static final String INFERENCE_GEN_AI_SYSTEM_NAME = "az.ai.inference";
     private static final String GEN_AI_REQUEST_CHAT_MODEL = "chat";
     private static final String GEN_AI_CHAT_OPERATION_NAME = "chat";
-    private static final String AZ_NAMESPACE_NAME = "Azure.AI";
+    private static final String AZ_NAMESPACE_NAME = "Microsoft.CognitiveServices";
 
     private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
     private static final AttributeKey<String> GEN_AI_SYSTEM = AttributeKey.stringKey("gen_ai.system");
@@ -108,7 +109,7 @@ public final class ChatCompletionClientTracerTest {
     @ValueSource(booleans = { true, false })
     public void shouldTraceSyncChatComplete(boolean captureContent) {
         final ChatCompletionClientTracer tracer
-            = new ChatCompletionClientTracer(MODEL_ENDPOINT, captureContent, clientOptions);
+            = new ChatCompletionClientTracer(MODEL_ENDPOINT, configuration(captureContent), clientOptions);
 
         final List<ChatRequestMessage> messages = new ArrayList<>();
         messages.add(new ChatRequestSystemMessage(SYSTEM_MESSAGE));
@@ -143,7 +144,7 @@ public final class ChatCompletionClientTracerTest {
     @ValueSource(booleans = { true, false })
     public void shouldTraceChatComplete(boolean captureContent) {
         final ChatCompletionClientTracer tracer
-            = new ChatCompletionClientTracer(MODEL_ENDPOINT, captureContent, clientOptions);
+            = new ChatCompletionClientTracer(MODEL_ENDPOINT, configuration(captureContent), clientOptions);
 
         final List<ChatRequestMessage> messages = new ArrayList<>();
         messages.add(new ChatRequestSystemMessage(SYSTEM_MESSAGE));
@@ -350,6 +351,18 @@ public final class ChatCompletionClientTracerTest {
     private static List<ChatCompletionsToolCall> getModelToolCalls() {
         final ChatCompletions toolCallsResponse = getChatCompletionsModelResponse(true);
         return toolCallsResponse.getChoice().getMessage().getToolCalls();
+    }
+
+    private static Configuration configuration(boolean captureContent) {
+        if (captureContent) {
+            return new com.azure.core.util.ConfigurationBuilder()
+                .putProperty("otel.instrumentation.genai.capture_message_content", "true")
+                .build();
+        } else {
+            return new com.azure.core.util.ConfigurationBuilder()
+                .putProperty("otel.instrumentation.genai.capture_message_content", "false")
+                .build();
+        }
     }
 
     private static final class TestSpanProcessor implements SpanProcessor {
