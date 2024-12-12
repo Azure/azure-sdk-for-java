@@ -4,6 +4,9 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Exception for Cosmos Partition Is Migrating Exception.
+ */
 public final class CosmosPartitionIsMigratingException extends CosmosAccessException {
 
     /**

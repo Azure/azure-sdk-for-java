@@ -4,6 +4,9 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Exception for Cosmos Internal Server Error Exception.
+ */
 public final class CosmosInternalServerErrorException extends CosmosAccessException {
 
     /**

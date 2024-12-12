@@ -4,6 +4,9 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Exception for Cosmos Gone Exception.
+ */
 public final class CosmosGoneException extends CosmosAccessException {
 
     /**

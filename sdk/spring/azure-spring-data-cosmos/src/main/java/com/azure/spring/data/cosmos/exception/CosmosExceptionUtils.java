@@ -46,7 +46,7 @@ public class CosmosExceptionUtils {
                 case Constants.CosmosExceptionStatusCodes.CONFLICT -> throw new CosmosConflictException(message, cosmosException);
                 case Constants.CosmosExceptionStatusCodes.FORBIDDEN -> throw new CosmosForbiddenException(message, cosmosException);
                 case Constants.CosmosExceptionStatusCodes.GONE -> {
-                    switch(cosmosException.getSubStatusCode()) {
+                    switch (cosmosException.getSubStatusCode()) {
                         case Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE -> throw new CosmosInvalidPartitionException(message, cosmosException);
                         case Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION -> throw new CosmosPartitionIsMigratingException(message, cosmosException);
                         case Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE -> throw new CosmosPartitionKeyRangeGoneException(message, cosmosException);

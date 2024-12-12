@@ -4,6 +4,9 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Exception for Cosmos Request Rate Too Large Exception.
+ */
 public final class CosmosRequestRateTooLargeException extends CosmosAccessException {
 
     /**

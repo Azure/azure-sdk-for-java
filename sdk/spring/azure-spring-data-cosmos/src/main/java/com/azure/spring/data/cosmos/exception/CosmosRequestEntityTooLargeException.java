@@ -4,6 +4,9 @@ package com.azure.spring.data.cosmos.exception;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Exception for Cosmos Request Entity Too Large Exception.
+ */
 public final class CosmosRequestEntityTooLargeException extends CosmosAccessException {
 
     /**
