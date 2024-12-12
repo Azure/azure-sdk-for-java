@@ -180,12 +180,6 @@
       <version>2.9.3</version> <!-- {x-version-update;io.github.hakky54:logcaptor;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.squareup.okio</groupId>
-      <artifactId>okio</artifactId>
-      <version>3.9.1</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
