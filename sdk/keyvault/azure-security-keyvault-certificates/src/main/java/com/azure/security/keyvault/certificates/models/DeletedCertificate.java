@@ -9,7 +9,6 @@ import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
 import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;

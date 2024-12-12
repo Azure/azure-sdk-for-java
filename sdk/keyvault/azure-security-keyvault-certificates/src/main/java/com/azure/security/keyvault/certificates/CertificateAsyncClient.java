@@ -17,7 +17,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -48,7 +47,6 @@ import com.azure.security.keyvault.certificates.implementation.models.Certificat
 import com.azure.security.keyvault.certificates.implementation.models.Contacts;
 import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
 import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
-import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateListResult;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
@@ -75,7 +73,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
