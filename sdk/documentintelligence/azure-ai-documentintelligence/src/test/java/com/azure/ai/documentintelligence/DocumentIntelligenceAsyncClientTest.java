@@ -363,9 +363,11 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                     new AnalyzeDocumentOptions(data).setOutput(Collections.singletonList(FIGURES)))
                 .setPollInterval(durationTestMode);
 
-            StepVerifier.create(resultPollerFlux.last()
-                .flatMap(response -> client.getAnalyzeResultFigure(modelID, response.getValue().getResultId(),
-                    response.getValue().getAnalyzeResult().getFigures().get(0).getId())))
+            StepVerifier
+                .create(
+                    resultPollerFlux.last()
+                        .flatMap(response -> client.getAnalyzeResultFigure(modelID, response.getValue().getResultId(),
+                            response.getValue().getAnalyzeResult().getFigures().get(0).getId())))
                 .assertNext(figures -> {
                     byte[] figuresBytes = figures.toBytes();
                     byte[] figuresHeader
