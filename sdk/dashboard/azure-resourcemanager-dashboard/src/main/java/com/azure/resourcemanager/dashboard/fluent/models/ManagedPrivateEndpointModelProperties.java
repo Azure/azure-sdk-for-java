@@ -5,63 +5,60 @@
 package com.azure.resourcemanager.dashboard.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dashboard.models.ManagedPrivateEndpointConnectionState;
 import com.azure.resourcemanager.dashboard.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties specific to the managed private endpoint.
  */
 @Fluent
-public final class ManagedPrivateEndpointModelProperties {
+public final class ManagedPrivateEndpointModelProperties
+    implements JsonSerializable<ManagedPrivateEndpointModelProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The ARM resource ID of the resource for which the managed private endpoint is pointing to.
      */
-    @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
      * The region of the resource to which the managed private endpoint is pointing to.
      */
-    @JsonProperty(value = "privateLinkResourceRegion")
     private String privateLinkResourceRegion;
 
     /*
      * The group Ids of the managed private endpoint.
      */
-    @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
     /*
      * User input request message of the managed private endpoint.
      */
-    @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /*
      * The state of managed private endpoint connection.
      */
-    @JsonProperty(value = "connectionState", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedPrivateEndpointConnectionState connectionState;
 
     /*
      * The URL of the data store behind the private link service. It would be the URL in the Grafana data source
      * configuration page without the protocol and port.
      */
-    @JsonProperty(value = "privateLinkServiceUrl")
     private String privateLinkServiceUrl;
 
     /*
      * The private IP of private endpoint after approval. This property is empty before connection is approved.
      */
-    @JsonProperty(value = "privateLinkServicePrivateIP", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkServicePrivateIp;
 
     /**
@@ -195,8 +192,8 @@ public final class ManagedPrivateEndpointModelProperties {
     }
 
     /**
-     * Get the privateLinkServicePrivateIp property: The private IP of private endpoint after approval. This property
-     * is empty before connection is approved.
+     * Get the privateLinkServicePrivateIp property: The private IP of private endpoint after approval. This property is
+     * empty before connection is approved.
      * 
      * @return the privateLinkServicePrivateIp value.
      */
@@ -213,5 +210,63 @@ public final class ManagedPrivateEndpointModelProperties {
         if (connectionState() != null) {
             connectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        jsonWriter.writeStringField("privateLinkResourceRegion", this.privateLinkResourceRegion);
+        jsonWriter.writeArrayField("groupIds", this.groupIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("requestMessage", this.requestMessage);
+        jsonWriter.writeStringField("privateLinkServiceUrl", this.privateLinkServiceUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpointModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpointModelProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpointModelProperties.
+     */
+    public static ManagedPrivateEndpointModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpointModelProperties deserializedManagedPrivateEndpointModelProperties
+                = new ManagedPrivateEndpointModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.privateLinkResourceId = reader.getString();
+                } else if ("privateLinkResourceRegion".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.privateLinkResourceRegion = reader.getString();
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedPrivateEndpointModelProperties.groupIds = groupIds;
+                } else if ("requestMessage".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.requestMessage = reader.getString();
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.connectionState
+                        = ManagedPrivateEndpointConnectionState.fromJson(reader);
+                } else if ("privateLinkServiceUrl".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.privateLinkServiceUrl = reader.getString();
+                } else if ("privateLinkServicePrivateIP".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointModelProperties.privateLinkServicePrivateIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpointModelProperties;
+        });
     }
 }
