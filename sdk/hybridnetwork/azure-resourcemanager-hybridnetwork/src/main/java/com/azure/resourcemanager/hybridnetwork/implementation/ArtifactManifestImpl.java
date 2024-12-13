@@ -144,10 +144,10 @@ public final class ArtifactManifestImpl
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publisherName = Utils.getValueFromIdByName(innerObject.id(), "publishers");
-        this.artifactStoreName = Utils.getValueFromIdByName(innerObject.id(), "artifactStores");
-        this.artifactManifestName = Utils.getValueFromIdByName(innerObject.id(), "artifactManifests");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.publisherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publishers");
+        this.artifactStoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "artifactStores");
+        this.artifactManifestName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "artifactManifests");
     }
 
     public ArtifactManifest refresh() {
