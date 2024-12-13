@@ -45,51 +45,71 @@ public class CosmosExceptionUtils {
             switch (cosmosException.getStatusCode()) {
                 case Constants.CosmosExceptionStatusCodes.BADREQUEST:
                     cosmosAccessException = new CosmosBadRequestException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.CONFLICT:
                     cosmosAccessException = new CosmosConflictException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.FORBIDDEN:
                     cosmosAccessException = new CosmosForbiddenException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.GONE: {
                     switch (cosmosException.getSubStatusCode()) {
                         case Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE:
                             cosmosAccessException = new CosmosInvalidPartitionException(message, cosmosException);
+                            break;
                         case Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cosmosAccessException = new CosmosPartitionIsMigratingException(message, cosmosException);
+                            break;
                         case Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cosmosAccessException = new CosmosPartitionKeyRangeGoneException(message, cosmosException);
+                            break;
                         case Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cosmosAccessException = new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
+                            break;
                         default:
                             cosmosAccessException = new CosmosGoneException(message, cosmosException);
+                            break;
                     }
+                    break;
                 }
                 case Constants.CosmosExceptionStatusCodes.INTERNAL_SERVER_ERROR:
                     cosmosAccessException = new CosmosInternalServerErrorException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.METHOD_NOT_ALLOWED:
                     cosmosAccessException = new CosmosMethodNotAllowedException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.NOTFOUND:
                     cosmosAccessException = new CosmosNotFoundException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT: {
                     if (((CosmosException) unwrappedThrowable).getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
                         cosmosAccessException = new CosmosOperationCancelledException(message, cosmosException);
                     } else {
                         cosmosAccessException = new CosmosRequestTimeoutException(message, cosmosException);
                     }
+                    break;
                 }
                 case Constants.CosmosExceptionStatusCodes.PRECONDITION_FAILED:
                     cosmosAccessException = new CosmosPreconditionFailedException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.REQUEST_ENTITY_TOO_LARGE:
                     cosmosAccessException = new CosmosRequestEntityTooLargeException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.TOO_MANY_REQUESTS:
                     cosmosAccessException = new CosmosRequestRateTooLargeException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.RETRY_WITH:
                     cosmosAccessException = new CosmosRetryWithException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.SERVICE_UNAVAILABLE:
                     cosmosAccessException = new CosmosServiceUnavailableException(message, cosmosException);
+                    break;
                 case Constants.CosmosExceptionStatusCodes.UNAUTHORIZED:
                     cosmosAccessException = new CosmosUnauthorizedException(message, cosmosException);
+                    break;
                 default:
                     cosmosAccessException = new CosmosAccessException(message, cosmosException);
+                    break;
             }
         } else {
             cosmosAccessException = new CosmosAccessException(message, unwrappedThrowable);
