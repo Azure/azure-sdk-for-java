@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 
-final class Utils {
-    private Utils() {
+final class ResourceManagerUtils {
+    private ResourceManagerUtils() {
     }
 
     static String getValueFromIdByName(String id, String name) {

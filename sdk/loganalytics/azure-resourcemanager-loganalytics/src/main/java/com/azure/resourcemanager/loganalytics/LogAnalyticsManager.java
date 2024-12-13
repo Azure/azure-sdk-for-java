@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -76,7 +76,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to LogAnalyticsManager. Operational Insights Client. */
+/**
+ * Entry point to LogAnalyticsManager.
+ * Operational Insights Client.
+ */
 public final class LogAnalyticsManager {
     private QueryPacks queryPacks;
 
@@ -136,7 +139,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Creates an instance of LogAnalytics service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the LogAnalytics service API instance.
@@ -149,7 +152,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Creates an instance of LogAnalytics service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the LogAnalytics service API instance.
@@ -162,14 +165,16 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets a Configurable instance that can be used to create LogAnalyticsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new LogAnalyticsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -241,8 +246,8 @@ public final class LogAnalyticsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -284,7 +289,7 @@ public final class LogAnalyticsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.loganalytics")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -317,7 +322,7 @@ public final class LogAnalyticsManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -332,7 +337,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of QueryPacks. It manages LogAnalyticsQueryPack.
-     *
+     * 
      * @return Resource collection API of QueryPacks.
      */
     public QueryPacks queryPacks() {
@@ -344,7 +349,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Queries. It manages LogAnalyticsQueryPackQuery.
-     *
+     * 
      * @return Resource collection API of Queries.
      */
     public Queries queries() {
@@ -356,7 +361,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of DataExports. It manages DataExport.
-     *
+     * 
      * @return Resource collection API of DataExports.
      */
     public DataExports dataExports() {
@@ -368,7 +373,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of DataSources. It manages DataSource.
-     *
+     * 
      * @return Resource collection API of DataSources.
      */
     public DataSources dataSources() {
@@ -380,7 +385,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of IntelligencePacks.
-     *
+     * 
      * @return Resource collection API of IntelligencePacks.
      */
     public IntelligencePacks intelligencePacks() {
@@ -392,7 +397,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of LinkedServices. It manages LinkedService.
-     *
+     * 
      * @return Resource collection API of LinkedServices.
      */
     public LinkedServices linkedServices() {
@@ -404,7 +409,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of LinkedStorageAccounts. It manages LinkedStorageAccountsResource.
-     *
+     * 
      * @return Resource collection API of LinkedStorageAccounts.
      */
     public LinkedStorageAccounts linkedStorageAccounts() {
@@ -416,7 +421,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of ManagementGroups.
-     *
+     * 
      * @return Resource collection API of ManagementGroups.
      */
     public ManagementGroups managementGroups() {
@@ -428,7 +433,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of OperationStatuses.
-     *
+     * 
      * @return Resource collection API of OperationStatuses.
      */
     public OperationStatuses operationStatuses() {
@@ -440,7 +445,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of SharedKeysOperations.
-     *
+     * 
      * @return Resource collection API of SharedKeysOperations.
      */
     public SharedKeysOperations sharedKeysOperations() {
@@ -452,7 +457,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -464,7 +469,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of StorageInsightConfigs. It manages StorageInsight.
-     *
+     * 
      * @return Resource collection API of StorageInsightConfigs.
      */
     public StorageInsightConfigs storageInsightConfigs() {
@@ -476,7 +481,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of SavedSearches. It manages SavedSearch.
-     *
+     * 
      * @return Resource collection API of SavedSearches.
      */
     public SavedSearches savedSearches() {
@@ -488,7 +493,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of AvailableServiceTiers.
-     *
+     * 
      * @return Resource collection API of AvailableServiceTiers.
      */
     public AvailableServiceTiers availableServiceTiers() {
@@ -500,7 +505,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Gateways.
-     *
+     * 
      * @return Resource collection API of Gateways.
      */
     public Gateways gateways() {
@@ -512,7 +517,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Schemas.
-     *
+     * 
      * @return Resource collection API of Schemas.
      */
     public Schemas schemas() {
@@ -524,7 +529,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of WorkspacePurges.
-     *
+     * 
      * @return Resource collection API of WorkspacePurges.
      */
     public WorkspacePurges workspacePurges() {
@@ -536,7 +541,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Clusters. It manages Cluster.
-     *
+     * 
      * @return Resource collection API of Clusters.
      */
     public Clusters clusters() {
@@ -548,7 +553,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -560,7 +565,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Workspaces. It manages Workspace.
-     *
+     * 
      * @return Resource collection API of Workspaces.
      */
     public Workspaces workspaces() {
@@ -572,7 +577,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of DeletedWorkspaces.
-     *
+     * 
      * @return Resource collection API of DeletedWorkspaces.
      */
     public DeletedWorkspaces deletedWorkspaces() {
@@ -584,7 +589,7 @@ public final class LogAnalyticsManager {
 
     /**
      * Gets the resource collection API of Tables. It manages Table.
-     *
+     * 
      * @return Resource collection API of Tables.
      */
     public Tables tables() {
@@ -597,7 +602,7 @@ public final class LogAnalyticsManager {
     /**
      * Gets wrapped service client OperationalInsightsManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client OperationalInsightsManagementClient.
      */
     public OperationalInsightsManagementClient serviceClient() {

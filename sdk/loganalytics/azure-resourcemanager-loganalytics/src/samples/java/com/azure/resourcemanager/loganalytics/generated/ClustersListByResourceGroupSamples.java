@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for Clusters ListByResourceGroup. */
+/**
+ * Samples for Clusters ListByResourceGroup.
+ */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
