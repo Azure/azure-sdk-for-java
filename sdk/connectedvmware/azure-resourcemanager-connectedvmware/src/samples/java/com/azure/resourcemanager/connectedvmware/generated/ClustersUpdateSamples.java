@@ -8,22 +8,24 @@ import com.azure.resourcemanager.connectedvmware.models.Cluster;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateCluster.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateCluster.json
      */
     /**
      * Sample code: UpdateCluster.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateCluster(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        Cluster resource =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("testrg", "HRCluster", com.azure.core.util.Context.NONE)
-                .getValue();
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("testrg", "HRCluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
