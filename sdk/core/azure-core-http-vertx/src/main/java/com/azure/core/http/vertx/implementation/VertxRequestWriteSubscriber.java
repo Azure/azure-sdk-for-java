@@ -133,8 +133,9 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
             // Also, even though Reactor may have an operator for the dropped error or will be logged by Operators
             // itself, we should log as well as at least this will help associate the error with this class.
-            LOGGER.atError().log(() -> "VertxRequestWriteSubscriber dropped an exception as it already reached a "
-                + "completion state.", throwable);
+            LOGGER.atInfo()
+                .log(() -> "VertxRequestWriteSubscriber dropped an exception as it already reached a "
+                    + "completion state.", throwable);
         }
 
         this.state = State.ERROR;
@@ -162,16 +163,18 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
                 // Also, even though the exception was added as a suppressed exception to the failed Promise, we should
                 // log as well as at least this will help associate the error with this class.
-                LOGGER.atError().log(() -> "VertxRequestWriteSubscriber added an exception as a suppressed exception "
-                    + "as the Promise already failed.", throwable);
+                LOGGER.atInfo()
+                    .log(() -> "VertxRequestWriteSubscriber added an exception as a suppressed exception "
+                        + "as the Promise already failed.", throwable);
             } else {
                 // Turns out the future was completed as successfully externally, drop the error.
                 Operators.onErrorDropped(LOGGER.logThrowableAsError(throwable), Context.of(contextView));
 
                 // Also, even though Reactor may have an operator for the dropped error or will be logged by Operators
                 // itself, we should log as well as at least this will help associate the error with this class.
-                LOGGER.atError().log(() -> "VertxRequestWriteSubscriber dropped an exception as the Promise already "
-                    + "completed successfully.", throwable);
+                LOGGER.atInfo()
+                    .log(() -> "VertxRequestWriteSubscriber dropped an exception as the Promise already "
+                        + "completed successfully.", throwable);
             }
         }
         request.reset(0, throwable);
