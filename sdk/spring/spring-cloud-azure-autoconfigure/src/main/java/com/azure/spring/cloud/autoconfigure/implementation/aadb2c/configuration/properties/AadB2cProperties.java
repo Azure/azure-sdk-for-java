@@ -54,7 +54,7 @@ public class AadB2cProperties implements InitializingBean {
     private final AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
 
     /**
-     * App ID URI which might be used in the "aud" claim of a token. For instance, 'https://{hostname}/{applicationId}'.
+     * App ID URI that might be used in the "aud" claim of a token. For instance, `https://{hostname}/{applicationId}`.
      * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
@@ -81,7 +81,7 @@ public class AadB2cProperties implements InitializingBean {
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * Redirect url after logout.
+     * Redirect URL after logout.
      */
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
@@ -97,7 +97,7 @@ public class AadB2cProperties implements InitializingBean {
     private String userNameAttributeName;
 
     /**
-     * Reply url after get authorization code.
+     * Reply URL after get authorization code.
      */
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
 

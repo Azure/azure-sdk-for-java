@@ -72,7 +72,7 @@ public final class ApplicationInsightsComponentProperties {
     private OffsetDateTime creationDate;
 
     /*
-     * Azure Tenant Id.
+     * Azure Tenant Id. The values allowed for `tenant-id` are: `common`, `organizations`, `consumers`, or the tenant ID.
      */
     @JsonProperty(value = "TenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;

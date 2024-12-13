@@ -30,7 +30,7 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
     /**
      * A custom endpoint address when connecting to the Event Hubs service. This can be useful when your network does
      * not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through an
-     * intermediary. For example: https://my.custom.endpoint.com:55300.
+     * intermediary. For example: `https://my.custom.endpoint.com:55300`.
      */
     private String customEndpointAddress;
 

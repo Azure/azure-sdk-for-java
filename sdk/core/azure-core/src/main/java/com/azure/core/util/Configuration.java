@@ -143,7 +143,7 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLOUD = "AZURE_CLOUD";
 
     /**
-     * The Azure Active Directory endpoint to connect to.
+     * The Microsoft Entra endpoint to connect to.
      */
     public static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
 

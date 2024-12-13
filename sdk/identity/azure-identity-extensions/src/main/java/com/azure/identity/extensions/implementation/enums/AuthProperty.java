@@ -53,7 +53,7 @@ public enum AuthProperty {
     AUTHORITY_HOST("azure.authorityHost", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,
         "The well known authority hosts for the Azure Public Cloud and sovereign clouds.", true),
     /**
-     * Tenant ID for Azure resources.
+     * Tenant ID for Azure resources. The values allowed for `tenant-id` are: `common`, `organizations`, `consumers`, or the tenant ID.
      */
     TENANT_ID("azure.tenantId", "Tenant ID for Azure resources.", true),
     /**

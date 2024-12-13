@@ -10,11 +10,11 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 public class AadProfileEnvironmentProperties {
 
     /**
-     * Azure Active Directory endpoint. For example: https://login.microsoftonline.com/
+     * Microsoft Entra endpoint. For example: `https://login.microsoftonline.com/`
      */
     private String activeDirectoryEndpoint;
     /**
-     * Microsoft Graph endpoint. For example: https://graph.microsoft.com/
+     * Microsoft Graph endpoint. For example: `https://graph.microsoft.com/`
      */
     private String microsoftGraphEndpoint;
 
