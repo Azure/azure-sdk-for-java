@@ -42,8 +42,8 @@ public class AzureJmsConnectionFactoryConfiguration {
 
         private Environment environment;
         private BeanFactory beanFactory;
-        private final static String JMS_CONNECTION_FACTORY_BEAN_NAME = "jmsConnectionFactory";
-        private final static String JMS_POOL_CONNECTION_FACTORY_BEAN_NAME = "jmsPoolConnectionFactory";
+        private static final String JMS_CONNECTION_FACTORY_BEAN_NAME = "jmsConnectionFactory";
+        private static final String JMS_POOL_CONNECTION_FACTORY_BEAN_NAME = "jmsPoolConnectionFactory";
 
         @Override
         public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
