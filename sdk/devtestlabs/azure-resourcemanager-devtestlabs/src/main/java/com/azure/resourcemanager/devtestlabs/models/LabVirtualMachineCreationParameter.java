@@ -5,48 +5,50 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabVirtualMachineCreationParameterProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Properties for creating a virtual machine. */
+/**
+ * Properties for creating a virtual machine.
+ */
 @Fluent
-public final class LabVirtualMachineCreationParameter {
+public final class LabVirtualMachineCreationParameter implements JsonSerializable<LabVirtualMachineCreationParameter> {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private LabVirtualMachineCreationParameterProperties innerProperties;
 
     /*
      * The name of the virtual machine or environment
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The location of the new virtual machine or environment
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The tags of the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of LabVirtualMachineCreationParameter class. */
+    /**
+     * Creates an instance of LabVirtualMachineCreationParameter class.
+     */
     public LabVirtualMachineCreationParameter() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LabVirtualMachineCreationParameterProperties innerProperties() {
@@ -55,7 +57,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the name property: The name of the virtual machine or environment.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +66,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the name property: The name of the virtual machine or environment.
-     *
+     * 
      * @param name the name value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -75,7 +77,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the location property: The location of the new virtual machine or environment.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -84,7 +86,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the location property: The location of the new virtual machine or environment.
-     *
+     * 
      * @param location the location value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -95,7 +97,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the tags property: The tags of the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -104,7 +106,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the tags property: The tags of the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -115,7 +117,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the bulkCreationParameters property: The number of virtual machine instances to create.
-     *
+     * 
      * @return the bulkCreationParameters value.
      */
     public BulkCreationParameters bulkCreationParameters() {
@@ -124,7 +126,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the bulkCreationParameters property: The number of virtual machine instances to create.
-     *
+     * 
      * @param bulkCreationParameters the bulkCreationParameters value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -139,7 +141,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the notes property: The notes of the virtual machine.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -148,7 +150,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the notes property: The notes of the virtual machine.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -162,7 +164,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the ownerObjectId property: The object identifier of the owner of the virtual machine.
-     *
+     * 
      * @return the ownerObjectId value.
      */
     public String ownerObjectId() {
@@ -171,7 +173,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the ownerObjectId property: The object identifier of the owner of the virtual machine.
-     *
+     * 
      * @param ownerObjectId the ownerObjectId value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -185,7 +187,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
-     *
+     * 
      * @return the ownerUserPrincipalName value.
      */
     public String ownerUserPrincipalName() {
@@ -194,7 +196,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
-     *
+     * 
      * @param ownerUserPrincipalName the ownerUserPrincipalName value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -208,7 +210,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the createdDate property: The creation date of the virtual machine.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -217,7 +219,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the createdDate property: The creation date of the virtual machine.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -231,7 +233,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the customImageId property: The custom image identifier of the virtual machine.
-     *
+     * 
      * @return the customImageId value.
      */
     public String customImageId() {
@@ -240,7 +242,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the customImageId property: The custom image identifier of the virtual machine.
-     *
+     * 
      * @param customImageId the customImageId value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -254,7 +256,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the size property: The size of the virtual machine.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -263,7 +265,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the size property: The size of the virtual machine.
-     *
+     * 
      * @param size the size value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -277,7 +279,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the username property: The user name of the virtual machine.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -286,7 +288,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the username property: The user name of the virtual machine.
-     *
+     * 
      * @param username the username value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -300,7 +302,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the password property: The password of the virtual machine administrator.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -309,7 +311,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the password property: The password of the virtual machine administrator.
-     *
+     * 
      * @param password the password value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -323,7 +325,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the sshKey property: The SSH key of the virtual machine administrator.
-     *
+     * 
      * @return the sshKey value.
      */
     public String sshKey() {
@@ -332,7 +334,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the sshKey property: The SSH key of the virtual machine administrator.
-     *
+     * 
      * @param sshKey the sshKey value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -347,7 +349,7 @@ public final class LabVirtualMachineCreationParameter {
     /**
      * Get the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
      * authentication.
-     *
+     * 
      * @return the isAuthenticationWithSshKey value.
      */
     public Boolean isAuthenticationWithSshKey() {
@@ -357,7 +359,7 @@ public final class LabVirtualMachineCreationParameter {
     /**
      * Set the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
      * authentication.
-     *
+     * 
      * @param isAuthenticationWithSshKey the isAuthenticationWithSshKey value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -371,7 +373,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the labSubnetName property: The lab subnet name of the virtual machine.
-     *
+     * 
      * @return the labSubnetName value.
      */
     public String labSubnetName() {
@@ -380,7 +382,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the labSubnetName property: The lab subnet name of the virtual machine.
-     *
+     * 
      * @param labSubnetName the labSubnetName value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -394,7 +396,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
-     *
+     * 
      * @return the labVirtualNetworkId value.
      */
     public String labVirtualNetworkId() {
@@ -403,7 +405,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
-     *
+     * 
      * @param labVirtualNetworkId the labVirtualNetworkId value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -418,7 +420,7 @@ public final class LabVirtualMachineCreationParameter {
     /**
      * Get the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
      * IP address.
-     *
+     * 
      * @return the disallowPublicIpAddress value.
      */
     public Boolean disallowPublicIpAddress() {
@@ -428,7 +430,7 @@ public final class LabVirtualMachineCreationParameter {
     /**
      * Set the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
      * IP address.
-     *
+     * 
      * @param disallowPublicIpAddress the disallowPublicIpAddress value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -442,7 +444,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the artifacts property: The artifacts to be installed on the virtual machine.
-     *
+     * 
      * @return the artifacts value.
      */
     public List<ArtifactInstallProperties> artifacts() {
@@ -451,7 +453,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the artifacts property: The artifacts to be installed on the virtual machine.
-     *
+     * 
      * @param artifacts the artifacts value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -465,7 +467,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
-     *
+     * 
      * @return the galleryImageReference value.
      */
     public GalleryImageReference galleryImageReference() {
@@ -474,7 +476,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
-     *
+     * 
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -488,7 +490,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the planId property: The id of the plan associated with the virtual machine image.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -497,7 +499,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the planId property: The id of the plan associated with the virtual machine image.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -511,7 +513,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the networkInterface property: The network interface properties.
-     *
+     * 
      * @return the networkInterface value.
      */
     public NetworkInterfaceProperties networkInterface() {
@@ -520,7 +522,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the networkInterface property: The network interface properties.
-     *
+     * 
      * @param networkInterface the networkInterface value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -534,7 +536,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the expirationDate property: The expiration date for VM.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -543,7 +545,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the expirationDate property: The expiration date for VM.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -557,7 +559,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
-     *
+     * 
      * @return the allowClaim value.
      */
     public Boolean allowClaim() {
@@ -566,7 +568,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
-     *
+     * 
      * @param allowClaim the allowClaim value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -580,7 +582,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -589,7 +591,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
-     *
+     * 
      * @param storageType the storageType value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -603,7 +605,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -612,7 +614,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -626,7 +628,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
-     *
+     * 
      * @return the dataDiskParameters value.
      */
     public List<DataDiskProperties> dataDiskParameters() {
@@ -635,7 +637,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
-     *
+     * 
      * @param dataDiskParameters the dataDiskParameters value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -649,7 +651,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Get the scheduleParameters property: Virtual Machine schedules to be created.
-     *
+     * 
      * @return the scheduleParameters value.
      */
     public List<ScheduleCreationParameter> scheduleParameters() {
@@ -658,7 +660,7 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Set the scheduleParameters property: Virtual Machine schedules to be created.
-     *
+     * 
      * @param scheduleParameters the scheduleParameters value to set.
      * @return the LabVirtualMachineCreationParameter object itself.
      */
@@ -673,12 +675,60 @@ public final class LabVirtualMachineCreationParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabVirtualMachineCreationParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabVirtualMachineCreationParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabVirtualMachineCreationParameter.
+     */
+    public static LabVirtualMachineCreationParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabVirtualMachineCreationParameter deserializedLabVirtualMachineCreationParameter
+                = new LabVirtualMachineCreationParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedLabVirtualMachineCreationParameter.innerProperties
+                        = LabVirtualMachineCreationParameterProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabVirtualMachineCreationParameter.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLabVirtualMachineCreationParameter.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabVirtualMachineCreationParameter.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabVirtualMachineCreationParameter;
+        });
     }
 }

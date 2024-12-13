@@ -6,36 +6,41 @@ package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for creating a custom image from a VHD. */
+/**
+ * Properties for creating a custom image from a VHD.
+ */
 @Fluent
-public final class CustomImagePropertiesCustom {
+public final class CustomImagePropertiesCustom implements JsonSerializable<CustomImagePropertiesCustom> {
     /*
      * The image name.
      */
-    @JsonProperty(value = "imageName")
     private String imageName;
 
     /*
      * Indicates whether sysprep has been run on the VHD.
      */
-    @JsonProperty(value = "sysPrep")
     private Boolean sysPrep;
 
     /*
      * The OS type of the custom image (i.e. Windows, Linux)
      */
-    @JsonProperty(value = "osType", required = true)
     private CustomImageOsType osType;
 
-    /** Creates an instance of CustomImagePropertiesCustom class. */
+    /**
+     * Creates an instance of CustomImagePropertiesCustom class.
+     */
     public CustomImagePropertiesCustom() {
     }
 
     /**
      * Get the imageName property: The image name.
-     *
+     * 
      * @return the imageName value.
      */
     public String imageName() {
@@ -44,7 +49,7 @@ public final class CustomImagePropertiesCustom {
 
     /**
      * Set the imageName property: The image name.
-     *
+     * 
      * @param imageName the imageName value to set.
      * @return the CustomImagePropertiesCustom object itself.
      */
@@ -55,7 +60,7 @@ public final class CustomImagePropertiesCustom {
 
     /**
      * Get the sysPrep property: Indicates whether sysprep has been run on the VHD.
-     *
+     * 
      * @return the sysPrep value.
      */
     public Boolean sysPrep() {
@@ -64,7 +69,7 @@ public final class CustomImagePropertiesCustom {
 
     /**
      * Set the sysPrep property: Indicates whether sysprep has been run on the VHD.
-     *
+     * 
      * @param sysPrep the sysPrep value to set.
      * @return the CustomImagePropertiesCustom object itself.
      */
@@ -75,7 +80,7 @@ public final class CustomImagePropertiesCustom {
 
     /**
      * Get the osType property: The OS type of the custom image (i.e. Windows, Linux).
-     *
+     * 
      * @return the osType value.
      */
     public CustomImageOsType osType() {
@@ -84,7 +89,7 @@ public final class CustomImagePropertiesCustom {
 
     /**
      * Set the osType property: The OS type of the custom image (i.e. Windows, Linux).
-     *
+     * 
      * @param osType the osType value to set.
      * @return the CustomImagePropertiesCustom object itself.
      */
@@ -95,15 +100,59 @@ public final class CustomImagePropertiesCustom {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osType in model CustomImagePropertiesCustom"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model CustomImagePropertiesCustom"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomImagePropertiesCustom.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("imageName", this.imageName);
+        jsonWriter.writeBooleanField("sysPrep", this.sysPrep);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomImagePropertiesCustom from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomImagePropertiesCustom if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomImagePropertiesCustom.
+     */
+    public static CustomImagePropertiesCustom fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomImagePropertiesCustom deserializedCustomImagePropertiesCustom = new CustomImagePropertiesCustom();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedCustomImagePropertiesCustom.osType = CustomImageOsType.fromString(reader.getString());
+                } else if ("imageName".equals(fieldName)) {
+                    deserializedCustomImagePropertiesCustom.imageName = reader.getString();
+                } else if ("sysPrep".equals(fieldName)) {
+                    deserializedCustomImagePropertiesCustom.sysPrep = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomImagePropertiesCustom;
+        });
+    }
 }

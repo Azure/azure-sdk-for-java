@@ -29,14 +29,14 @@ public final class FormulasImpl implements Formulas {
 
     public PagedIterable<Formula> list(String resourceGroupName, String labName) {
         PagedIterable<FormulaInner> inner = this.serviceClient().list(resourceGroupName, labName);
-        return Utils.mapPage(inner, inner1 -> new FormulaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FormulaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Formula> list(String resourceGroupName, String labName, String expand, String filter,
         Integer top, String orderby, Context context) {
         PagedIterable<FormulaInner> inner
             = this.serviceClient().list(resourceGroupName, labName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new FormulaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FormulaImpl(inner1, this.manager()));
     }
 
     public Response<Formula> getWithResponse(String resourceGroupName, String labName, String name, String expand,
@@ -69,17 +69,17 @@ public final class FormulasImpl implements Formulas {
     }
 
     public Formula getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "formulas");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "formulas");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));
@@ -89,17 +89,17 @@ public final class FormulasImpl implements Formulas {
     }
 
     public Response<Formula> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "formulas");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "formulas");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));
@@ -108,17 +108,17 @@ public final class FormulasImpl implements Formulas {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "formulas");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "formulas");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));
@@ -127,17 +127,17 @@ public final class FormulasImpl implements Formulas {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labName = Utils.getValueFromIdByName(id, "labs");
+        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
         if (labName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "formulas");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "formulas");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));

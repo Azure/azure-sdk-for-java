@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devtestlabs.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -57,375 +58,439 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DevTestLabsClientImpl type. */
+/**
+ * Initializes a new instance of the DevTestLabsClientImpl type.
+ */
 @ServiceClient(builder = DevTestLabsClientBuilder.class)
 public final class DevTestLabsClientImpl implements DevTestLabsClient {
-    /** The subscription ID. */
+    /**
+     * The subscription ID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ProviderOperationsClient object to access its operations. */
+    /**
+     * The ProviderOperationsClient object to access its operations.
+     */
     private final ProviderOperationsClient providerOperations;
 
     /**
      * Gets the ProviderOperationsClient object to access its operations.
-     *
+     * 
      * @return the ProviderOperationsClient object.
      */
     public ProviderOperationsClient getProviderOperations() {
         return this.providerOperations;
     }
 
-    /** The LabsClient object to access its operations. */
+    /**
+     * The LabsClient object to access its operations.
+     */
     private final LabsClient labs;
 
     /**
      * Gets the LabsClient object to access its operations.
-     *
+     * 
      * @return the LabsClient object.
      */
     public LabsClient getLabs() {
         return this.labs;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The GlobalSchedulesClient object to access its operations. */
+    /**
+     * The GlobalSchedulesClient object to access its operations.
+     */
     private final GlobalSchedulesClient globalSchedules;
 
     /**
      * Gets the GlobalSchedulesClient object to access its operations.
-     *
+     * 
      * @return the GlobalSchedulesClient object.
      */
     public GlobalSchedulesClient getGlobalSchedules() {
         return this.globalSchedules;
     }
 
-    /** The ArtifactSourcesClient object to access its operations. */
+    /**
+     * The ArtifactSourcesClient object to access its operations.
+     */
     private final ArtifactSourcesClient artifactSources;
 
     /**
      * Gets the ArtifactSourcesClient object to access its operations.
-     *
+     * 
      * @return the ArtifactSourcesClient object.
      */
     public ArtifactSourcesClient getArtifactSources() {
         return this.artifactSources;
     }
 
-    /** The ArmTemplatesClient object to access its operations. */
+    /**
+     * The ArmTemplatesClient object to access its operations.
+     */
     private final ArmTemplatesClient armTemplates;
 
     /**
      * Gets the ArmTemplatesClient object to access its operations.
-     *
+     * 
      * @return the ArmTemplatesClient object.
      */
     public ArmTemplatesClient getArmTemplates() {
         return this.armTemplates;
     }
 
-    /** The ArtifactsClient object to access its operations. */
+    /**
+     * The ArtifactsClient object to access its operations.
+     */
     private final ArtifactsClient artifacts;
 
     /**
      * Gets the ArtifactsClient object to access its operations.
-     *
+     * 
      * @return the ArtifactsClient object.
      */
     public ArtifactsClient getArtifacts() {
         return this.artifacts;
     }
 
-    /** The CostsClient object to access its operations. */
+    /**
+     * The CostsClient object to access its operations.
+     */
     private final CostsClient costs;
 
     /**
      * Gets the CostsClient object to access its operations.
-     *
+     * 
      * @return the CostsClient object.
      */
     public CostsClient getCosts() {
         return this.costs;
     }
 
-    /** The CustomImagesClient object to access its operations. */
+    /**
+     * The CustomImagesClient object to access its operations.
+     */
     private final CustomImagesClient customImages;
 
     /**
      * Gets the CustomImagesClient object to access its operations.
-     *
+     * 
      * @return the CustomImagesClient object.
      */
     public CustomImagesClient getCustomImages() {
         return this.customImages;
     }
 
-    /** The FormulasClient object to access its operations. */
+    /**
+     * The FormulasClient object to access its operations.
+     */
     private final FormulasClient formulas;
 
     /**
      * Gets the FormulasClient object to access its operations.
-     *
+     * 
      * @return the FormulasClient object.
      */
     public FormulasClient getFormulas() {
         return this.formulas;
     }
 
-    /** The GalleryImagesClient object to access its operations. */
+    /**
+     * The GalleryImagesClient object to access its operations.
+     */
     private final GalleryImagesClient galleryImages;
 
     /**
      * Gets the GalleryImagesClient object to access its operations.
-     *
+     * 
      * @return the GalleryImagesClient object.
      */
     public GalleryImagesClient getGalleryImages() {
         return this.galleryImages;
     }
 
-    /** The NotificationChannelsClient object to access its operations. */
+    /**
+     * The NotificationChannelsClient object to access its operations.
+     */
     private final NotificationChannelsClient notificationChannels;
 
     /**
      * Gets the NotificationChannelsClient object to access its operations.
-     *
+     * 
      * @return the NotificationChannelsClient object.
      */
     public NotificationChannelsClient getNotificationChannels() {
         return this.notificationChannels;
     }
 
-    /** The PolicySetsClient object to access its operations. */
+    /**
+     * The PolicySetsClient object to access its operations.
+     */
     private final PolicySetsClient policySets;
 
     /**
      * Gets the PolicySetsClient object to access its operations.
-     *
+     * 
      * @return the PolicySetsClient object.
      */
     public PolicySetsClient getPolicySets() {
         return this.policySets;
     }
 
-    /** The PoliciesClient object to access its operations. */
+    /**
+     * The PoliciesClient object to access its operations.
+     */
     private final PoliciesClient policies;
 
     /**
      * Gets the PoliciesClient object to access its operations.
-     *
+     * 
      * @return the PoliciesClient object.
      */
     public PoliciesClient getPolicies() {
         return this.policies;
     }
 
-    /** The SchedulesClient object to access its operations. */
+    /**
+     * The SchedulesClient object to access its operations.
+     */
     private final SchedulesClient schedules;
 
     /**
      * Gets the SchedulesClient object to access its operations.
-     *
+     * 
      * @return the SchedulesClient object.
      */
     public SchedulesClient getSchedules() {
         return this.schedules;
     }
 
-    /** The ServiceRunnersClient object to access its operations. */
+    /**
+     * The ServiceRunnersClient object to access its operations.
+     */
     private final ServiceRunnersClient serviceRunners;
 
     /**
      * Gets the ServiceRunnersClient object to access its operations.
-     *
+     * 
      * @return the ServiceRunnersClient object.
      */
     public ServiceRunnersClient getServiceRunners() {
         return this.serviceRunners;
     }
 
-    /** The UsersClient object to access its operations. */
+    /**
+     * The UsersClient object to access its operations.
+     */
     private final UsersClient users;
 
     /**
      * Gets the UsersClient object to access its operations.
-     *
+     * 
      * @return the UsersClient object.
      */
     public UsersClient getUsers() {
         return this.users;
     }
 
-    /** The DisksClient object to access its operations. */
+    /**
+     * The DisksClient object to access its operations.
+     */
     private final DisksClient disks;
 
     /**
      * Gets the DisksClient object to access its operations.
-     *
+     * 
      * @return the DisksClient object.
      */
     public DisksClient getDisks() {
         return this.disks;
     }
 
-    /** The EnvironmentsClient object to access its operations. */
+    /**
+     * The EnvironmentsClient object to access its operations.
+     */
     private final EnvironmentsClient environments;
 
     /**
      * Gets the EnvironmentsClient object to access its operations.
-     *
+     * 
      * @return the EnvironmentsClient object.
      */
     public EnvironmentsClient getEnvironments() {
         return this.environments;
     }
 
-    /** The SecretsClient object to access its operations. */
+    /**
+     * The SecretsClient object to access its operations.
+     */
     private final SecretsClient secrets;
 
     /**
      * Gets the SecretsClient object to access its operations.
-     *
+     * 
      * @return the SecretsClient object.
      */
     public SecretsClient getSecrets() {
         return this.secrets;
     }
 
-    /** The ServiceFabricsClient object to access its operations. */
+    /**
+     * The ServiceFabricsClient object to access its operations.
+     */
     private final ServiceFabricsClient serviceFabrics;
 
     /**
      * Gets the ServiceFabricsClient object to access its operations.
-     *
+     * 
      * @return the ServiceFabricsClient object.
      */
     public ServiceFabricsClient getServiceFabrics() {
         return this.serviceFabrics;
     }
 
-    /** The ServiceFabricSchedulesClient object to access its operations. */
+    /**
+     * The ServiceFabricSchedulesClient object to access its operations.
+     */
     private final ServiceFabricSchedulesClient serviceFabricSchedules;
 
     /**
      * Gets the ServiceFabricSchedulesClient object to access its operations.
-     *
+     * 
      * @return the ServiceFabricSchedulesClient object.
      */
     public ServiceFabricSchedulesClient getServiceFabricSchedules() {
         return this.serviceFabricSchedules;
     }
 
-    /** The VirtualMachinesClient object to access its operations. */
+    /**
+     * The VirtualMachinesClient object to access its operations.
+     */
     private final VirtualMachinesClient virtualMachines;
 
     /**
      * Gets the VirtualMachinesClient object to access its operations.
-     *
+     * 
      * @return the VirtualMachinesClient object.
      */
     public VirtualMachinesClient getVirtualMachines() {
         return this.virtualMachines;
     }
 
-    /** The VirtualMachineSchedulesClient object to access its operations. */
+    /**
+     * The VirtualMachineSchedulesClient object to access its operations.
+     */
     private final VirtualMachineSchedulesClient virtualMachineSchedules;
 
     /**
      * Gets the VirtualMachineSchedulesClient object to access its operations.
-     *
+     * 
      * @return the VirtualMachineSchedulesClient object.
      */
     public VirtualMachineSchedulesClient getVirtualMachineSchedules() {
         return this.virtualMachineSchedules;
     }
 
-    /** The VirtualNetworksClient object to access its operations. */
+    /**
+     * The VirtualNetworksClient object to access its operations.
+     */
     private final VirtualNetworksClient virtualNetworks;
 
     /**
      * Gets the VirtualNetworksClient object to access its operations.
-     *
+     * 
      * @return the VirtualNetworksClient object.
      */
     public VirtualNetworksClient getVirtualNetworks() {
@@ -434,7 +499,7 @@ public final class DevTestLabsClientImpl implements DevTestLabsClient {
 
     /**
      * Initializes an instance of DevTestLabsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -479,7 +544,7 @@ public final class DevTestLabsClientImpl implements DevTestLabsClient {
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -488,7 +553,7 @@ public final class DevTestLabsClientImpl implements DevTestLabsClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -498,7 +563,7 @@ public final class DevTestLabsClientImpl implements DevTestLabsClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -516,7 +581,7 @@ public final class DevTestLabsClientImpl implements DevTestLabsClient {
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -579,7 +644,7 @@ public final class DevTestLabsClientImpl implements DevTestLabsClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {
