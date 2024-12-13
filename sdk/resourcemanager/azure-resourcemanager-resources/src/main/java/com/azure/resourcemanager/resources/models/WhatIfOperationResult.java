@@ -31,7 +31,7 @@ public interface WhatIfOperationResult extends HasInnerModel<WhatIfOperationResu
     List<WhatIfChange> changes();
 
     /**
-     * Gets error when What-If operation fails.
+     * Gets the error when What-If operation fails.
      *
      * @return error when What-If operation fails.
      */

@@ -21,7 +21,7 @@ public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceD
 
     /**
      * Creates a new instance of ForceDeletionResourceType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +38,7 @@ public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceD
     }
 
     /**
-     * Gets know ForceDeletionResourceType values.
+     * Gets known ForceDeletionResourceType values.
      *
      * @return known ForceDeletionResourceType values
      */

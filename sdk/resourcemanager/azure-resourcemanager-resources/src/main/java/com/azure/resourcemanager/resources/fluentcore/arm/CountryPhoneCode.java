@@ -960,7 +960,7 @@ public final class CountryPhoneCode extends ExpandableStringEnum<CountryPhoneCod
 
     /**
      * Creates a new instance of CountryPhoneCode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -978,7 +978,7 @@ public final class CountryPhoneCode extends ExpandableStringEnum<CountryPhoneCod
     }
 
     /**
-     * Gets know CountryPhoneCode values.
+     * Gets known CountryPhoneCode values.
      *
      * @return known country phone codes
      */

@@ -478,7 +478,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
-     * Gets the ResourceManagerUtils.InternalRuntimeContext associated with this manager
+     * Gets the ResourceManagerUtils.InternalRuntimeContext associated with this manager.
      *
      * @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager
      */
