@@ -18,7 +18,9 @@ public final class EnvironmentsCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().define("public").withExistingWorkspace("contoso-resources", "contoso", "default")
+        manager.environments()
+            .define("public")
+            .withExistingWorkspace("contoso-resources", "contoso", "default")
             .create();
     }
 }

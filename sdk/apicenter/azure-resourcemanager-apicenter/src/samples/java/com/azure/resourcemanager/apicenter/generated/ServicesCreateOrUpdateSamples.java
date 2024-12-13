@@ -26,8 +26,12 @@ public final class ServicesCreateOrUpdateSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.services().define("contoso").withRegion("East US").withExistingResourceGroup("contoso-resources")
-            .withTags(mapOf()).withProperties(new ServiceProperties())
+        manager.services()
+            .define("contoso")
+            .withRegion("East US")
+            .withExistingResourceGroup("contoso-resources")
+            .withTags(mapOf())
+            .withProperties(new ServiceProperties())
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
                 .withUserAssignedIdentities(mapOf(

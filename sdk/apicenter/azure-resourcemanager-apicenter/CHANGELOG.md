@@ -1,14 +1,51 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-13)
 
-### Features Added
+- Azure Resource Manager ApiCenter client library for Java. This package contains Microsoft Azure SDK for ApiCenter Management SDK. Azure API Center Resource Provider. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.MetadataSchema$Update` was modified
+
+* `withProperties(models.MetadataSchemaProperties)` was added
+
+#### `models.Environment$Update` was modified
+
+* `withProperties(models.EnvironmentProperties)` was added
+
+#### `models.Workspace$Update` was modified
+
+* `withProperties(models.WorkspaceProperties)` was added
+
+#### `models.Api$Update` was modified
+
+* `withProperties(models.ApiProperties)` was added
+
+#### `models.Deployment$Update` was modified
+
+* `withProperties(models.DeploymentProperties)` was added
+
+#### `models.ApiVersion$Update` was modified
+
+* `withProperties(models.ApiVersionProperties)` was added
+
+#### `models.ApiDefinition$Update` was modified
+
+* `withProperties(models.ApiDefinitionProperties)` was added
 
 ## 1.0.0 (2024-02-22)
 

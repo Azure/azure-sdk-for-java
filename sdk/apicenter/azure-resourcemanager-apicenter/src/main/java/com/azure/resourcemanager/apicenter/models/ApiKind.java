@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class ApiKind extends ExpandableStringEnum<ApiKind> {
      * @param name a name to look for.
      * @return the corresponding ApiKind.
      */
-    @JsonCreator
     public static ApiKind fromString(String name) {
         return fromString(name, ApiKind.class);
     }
