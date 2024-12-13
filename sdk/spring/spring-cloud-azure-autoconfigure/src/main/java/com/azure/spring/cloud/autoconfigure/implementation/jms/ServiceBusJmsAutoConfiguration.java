@@ -22,7 +22,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -47,11 +46,12 @@ import java.util.function.BiFunction;
     AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({ JmsProperties.class })
+@EnableConfigurationProperties
 @Import({
-    ServiceBusJmsConnectionFactoryConfiguration.class,
+    AzureJmsConnectionFactoryConfiguration.class,
     ServiceBusJmsContainerConfiguration.class,
-    ServiceBusJmsPropertiesConfiguration.class })
+    ServiceBusJmsPropertiesConfiguration.class
+})
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
