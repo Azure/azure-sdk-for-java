@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the Security profile settings for the virtual machine. */
+/**
+ * Specifies the Security profile settings for the virtual machine.
+ */
 @Fluent
-public final class SecurityProfile {
+public final class SecurityProfile implements JsonSerializable<SecurityProfile> {
     /*
      * Specifies the security settings like secure boot used while creating the virtual machine.
      */
-    @JsonProperty(value = "uefiSettings")
     private UefiSettings uefiSettings;
 
-    /** Creates an instance of SecurityProfile class. */
+    /**
+     * Creates an instance of SecurityProfile class.
+     */
     public SecurityProfile() {
     }
 
     /**
      * Get the uefiSettings property: Specifies the security settings like secure boot used while creating the virtual
      * machine.
-     *
+     * 
      * @return the uefiSettings value.
      */
     public UefiSettings uefiSettings() {
@@ -33,7 +40,7 @@ public final class SecurityProfile {
     /**
      * Set the uefiSettings property: Specifies the security settings like secure boot used while creating the virtual
      * machine.
-     *
+     * 
      * @param uefiSettings the uefiSettings value to set.
      * @return the SecurityProfile object itself.
      */
@@ -44,12 +51,48 @@ public final class SecurityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (uefiSettings() != null) {
             uefiSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("uefiSettings", this.uefiSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityProfile.
+     */
+    public static SecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityProfile deserializedSecurityProfile = new SecurityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uefiSettings".equals(fieldName)) {
+                    deserializedSecurityProfile.uefiSettings = UefiSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityProfile;
+        });
     }
 }
