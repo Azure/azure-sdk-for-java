@@ -141,7 +141,13 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         if (state != State.WRITING) {
             resetRequest(throwable);
         } else {
-            error = throwable;
+            if (error != null) {
+                // Already saw another error while writing, add this as a suppressed exception.
+                error.addSuppressed(throwable);
+            } else {
+                // First error seen while writing, maintain it for future use.
+                error = throwable;
+            }
         }
     }
 
