@@ -23,7 +23,6 @@ import java.time.OffsetDateTime;
  * @see SecretAsyncClient
  */
 public final class DeletedSecret extends KeyVaultSecret {
-
     static {
         DeletedSecretHelper.setAccessor(new DeletedSecretHelper.DeletedSecretAccessor() {
             @Override
@@ -102,6 +101,13 @@ public final class DeletedSecret extends KeyVaultSecret {
      * The time when the secret was deleted, in UTC.
      */
     private OffsetDateTime deletedOn;
+
+    /**
+     * Creates an instance of DeletedSecret.
+     */
+    public DeletedSecret() {
+        super();
+    }
 
     /**
      * Get the recoveryId identifier.
