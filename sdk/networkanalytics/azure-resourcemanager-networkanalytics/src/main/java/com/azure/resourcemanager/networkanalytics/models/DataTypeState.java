@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DataTypeState extends ExpandableStringEnum<DataTypeState> {
      * @param name a name to look for.
      * @return the corresponding DataTypeState.
      */
-    @JsonCreator
     public static DataTypeState fromString(String name) {
         return fromString(name, DataTypeState.class);
     }

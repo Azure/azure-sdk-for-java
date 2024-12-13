@@ -24,12 +24,15 @@ public final class DataProductsAddUserRoleSamples {
      */
     public static void dataProductsAddUserRoleMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().addUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
-            new RoleAssignmentCommonProperties().withRoleId("00000000-0000-0000-0000-00000000000")
-                .withPrincipalId("00000000-0000-0000-0000-00000000000").withUsername("userName")
-                .withDataTypeScope(Arrays.asList("scope")).withPrincipalType("User")
-                .withRole(DataProductUserRole.READER),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .addUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
+                new RoleAssignmentCommonProperties().withRoleId("00000000-0000-0000-0000-00000000000")
+                    .withPrincipalId("00000000-0000-0000-0000-00000000000")
+                    .withUsername("userName")
+                    .withDataTypeScope(Arrays.asList("scope"))
+                    .withPrincipalType("User")
+                    .withRole(DataProductUserRole.READER),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,11 +47,14 @@ public final class DataProductsAddUserRoleSamples {
      */
     public static void dataProductsAddUserRoleMaximumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().addUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
-            new RoleAssignmentCommonProperties().withRoleId("00000000-0000-0000-0000-00000000000")
-                .withPrincipalId("00000000-0000-0000-0000-00000000000").withUsername("UserName")
-                .withDataTypeScope(Arrays.asList("scope")).withPrincipalType("User")
-                .withRole(DataProductUserRole.READER),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .addUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
+                new RoleAssignmentCommonProperties().withRoleId("00000000-0000-0000-0000-00000000000")
+                    .withPrincipalId("00000000-0000-0000-0000-00000000000")
+                    .withUsername("UserName")
+                    .withDataTypeScope(Arrays.asList("scope"))
+                    .withPrincipalType("User")
+                    .withRole(DataProductUserRole.READER),
+                com.azure.core.util.Context.NONE);
     }
 }

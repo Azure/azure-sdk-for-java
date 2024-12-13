@@ -6,17 +6,20 @@ package com.azure.resourcemanager.networkanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of storage account sas token .
  */
 @Fluent
-public final class AccountSasTokenInner {
+public final class AccountSasTokenInner implements JsonSerializable<AccountSasTokenInner> {
     /*
      * Field to specify storage account sas token.
      */
-    @JsonProperty(value = "storageAccountSasToken")
     private String storageAccountSasToken;
 
     /**
@@ -52,10 +55,48 @@ public final class AccountSasTokenInner {
      */
     public void validate() {
         if (storageAccountSasToken() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountSasToken in model AccountSasTokenInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountSasToken in model AccountSasTokenInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AccountSasTokenInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountSasToken", this.storageAccountSasToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountSasTokenInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountSasTokenInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountSasTokenInner.
+     */
+    public static AccountSasTokenInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountSasTokenInner deserializedAccountSasTokenInner = new AccountSasTokenInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountSasToken".equals(fieldName)) {
+                    deserializedAccountSasTokenInner.storageAccountSasToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountSasTokenInner;
+        });
+    }
 }

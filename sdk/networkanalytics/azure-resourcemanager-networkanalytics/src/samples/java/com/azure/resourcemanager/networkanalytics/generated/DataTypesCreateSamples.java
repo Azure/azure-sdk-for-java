@@ -23,9 +23,13 @@ public final class DataTypesCreateSamples {
      */
     public static void
         dataTypesCreateMaximumSetGen(com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().define("datatypename").withExistingDataProduct("aoiresourceGroupName", "dataproduct01")
+        manager.dataTypes()
+            .define("datatypename")
+            .withExistingDataProduct("aoiresourceGroupName", "dataproduct01")
             .withProperties(new DataTypeProperties().withState(DataTypeState.fromString("STARTED"))
-                .withStorageOutputRetention(27).withDatabaseCacheRetention(23).withDatabaseRetention(6))
+                .withStorageOutputRetention(27)
+                .withDatabaseCacheRetention(23)
+                .withDatabaseRetention(6))
             .create();
     }
 
@@ -41,7 +45,9 @@ public final class DataTypesCreateSamples {
      */
     public static void dataTypesCreateMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().define("datatypename").withExistingDataProduct("aoiresourceGroupName", "dataproduct01")
+        manager.dataTypes()
+            .define("datatypename")
+            .withExistingDataProduct("aoiresourceGroupName", "dataproduct01")
             .create();
     }
 }

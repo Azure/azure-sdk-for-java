@@ -24,12 +24,16 @@ public final class DataProductsRemoveUserRoleSamples {
      */
     public static void dataProductsRemoveUserRoleMaximumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().removeUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
-            new RoleAssignmentDetailInner().withRoleId("00000000-0000-0000-0000-00000000000")
-                .withPrincipalId("00000000-0000-0000-0000-00000000000").withUsername("UserName")
-                .withDataTypeScope(Arrays.asList("scope")).withPrincipalType("User")
-                .withRole(DataProductUserRole.READER).withRoleAssignmentId("00000000-0000-0000-0000-00000000000"),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .removeUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
+                new RoleAssignmentDetailInner().withRoleId("00000000-0000-0000-0000-00000000000")
+                    .withPrincipalId("00000000-0000-0000-0000-00000000000")
+                    .withUsername("UserName")
+                    .withDataTypeScope(Arrays.asList("scope"))
+                    .withPrincipalType("User")
+                    .withRole(DataProductUserRole.READER)
+                    .withRoleAssignmentId("00000000-0000-0000-0000-00000000000"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,11 +48,15 @@ public final class DataProductsRemoveUserRoleSamples {
      */
     public static void dataProductsRemoveUserRoleMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().removeUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
-            new RoleAssignmentDetailInner().withRoleId("00000000-0000-0000-0000-00000000000")
-                .withPrincipalId("00000000-0000-0000-0000-00000000000").withUsername("UserName")
-                .withDataTypeScope(Arrays.asList("scope")).withPrincipalType("User")
-                .withRole(DataProductUserRole.READER).withRoleAssignmentId("00000000-0000-0000-0000-00000000000"),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .removeUserRoleWithResponse("aoiresourceGroupName", "dataproduct01",
+                new RoleAssignmentDetailInner().withRoleId("00000000-0000-0000-0000-00000000000")
+                    .withPrincipalId("00000000-0000-0000-0000-00000000000")
+                    .withUsername("UserName")
+                    .withDataTypeScope(Arrays.asList("scope"))
+                    .withPrincipalType("User")
+                    .withRole(DataProductUserRole.READER)
+                    .withRoleAssignmentId("00000000-0000-0000-0000-00000000000"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DataProductUserRole extends ExpandableStringEnum<DataProductU
      * @param name a name to look for.
      * @return the corresponding DataProductUserRole.
      */
-    @JsonCreator
     public static DataProductUserRole fromString(String name) {
         return fromString(name, DataProductUserRole.class);
     }

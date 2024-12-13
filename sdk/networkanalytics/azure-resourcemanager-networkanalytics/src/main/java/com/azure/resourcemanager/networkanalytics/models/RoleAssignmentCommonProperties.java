@@ -6,48 +6,46 @@ package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The details for role assignment common properties.
  */
 @Fluent
-public final class RoleAssignmentCommonProperties {
+public final class RoleAssignmentCommonProperties implements JsonSerializable<RoleAssignmentCommonProperties> {
     /*
      * Role Id of the Built-In Role
      */
-    @JsonProperty(value = "roleId", required = true)
     private String roleId;
 
     /*
      * Object ID of the AAD principal or security-group.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * User name.
      */
-    @JsonProperty(value = "userName", required = true)
     private String username;
 
     /*
      * Data Type Scope at which the role assignment is created.
      */
-    @JsonProperty(value = "dataTypeScope", required = true)
     private List<String> dataTypeScope;
 
     /*
      * Type of the principal Id: User, Group or ServicePrincipal
      */
-    @JsonProperty(value = "principalType", required = true)
     private String principalType;
 
     /*
      * Data Product role to be assigned to a user.
      */
-    @JsonProperty(value = "role", required = true)
     private DataProductUserRole role;
 
     /**
@@ -183,30 +181,92 @@ public final class RoleAssignmentCommonProperties {
      */
     public void validate() {
         if (roleId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property roleId in model RoleAssignmentCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleId in model RoleAssignmentCommonProperties"));
         }
         if (principalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property principalId in model RoleAssignmentCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model RoleAssignmentCommonProperties"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model RoleAssignmentCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model RoleAssignmentCommonProperties"));
         }
         if (dataTypeScope() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataTypeScope in model RoleAssignmentCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataTypeScope in model RoleAssignmentCommonProperties"));
         }
         if (principalType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property principalType in model RoleAssignmentCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalType in model RoleAssignmentCommonProperties"));
         }
         if (role() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property role in model RoleAssignmentCommonProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property role in model RoleAssignmentCommonProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentCommonProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("roleId", this.roleId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeArrayField("dataTypeScope", this.dataTypeScope,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("principalType", this.principalType);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentCommonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentCommonProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentCommonProperties.
+     */
+    public static RoleAssignmentCommonProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentCommonProperties deserializedRoleAssignmentCommonProperties
+                = new RoleAssignmentCommonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roleId".equals(fieldName)) {
+                    deserializedRoleAssignmentCommonProperties.roleId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedRoleAssignmentCommonProperties.principalId = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedRoleAssignmentCommonProperties.username = reader.getString();
+                } else if ("dataTypeScope".equals(fieldName)) {
+                    List<String> dataTypeScope = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleAssignmentCommonProperties.dataTypeScope = dataTypeScope;
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedRoleAssignmentCommonProperties.principalType = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedRoleAssignmentCommonProperties.role
+                        = DataProductUserRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentCommonProperties;
+        });
+    }
 }

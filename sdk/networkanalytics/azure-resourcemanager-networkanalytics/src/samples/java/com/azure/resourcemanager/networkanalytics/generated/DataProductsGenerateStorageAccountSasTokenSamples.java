@@ -24,10 +24,12 @@ public final class DataProductsGenerateStorageAccountSasTokenSamples {
      */
     public static void dataProductsGenerateStorageAccountSasTokenMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().generateStorageAccountSasTokenWithResponse("aoiresourceGroupName", "dataproduct01",
-            new AccountSas().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:35:17.051Z"))
-                .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:35:17.051Z")).withIpAddress("1.1.1.1"),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .generateStorageAccountSasTokenWithResponse("aoiresourceGroupName", "dataproduct01",
+                new AccountSas().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:35:17.051Z"))
+                    .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:35:17.051Z"))
+                    .withIpAddress("1.1.1.1"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -42,9 +44,11 @@ public final class DataProductsGenerateStorageAccountSasTokenSamples {
      */
     public static void dataProductsGenerateStorageAccountSasTokenMaximumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().generateStorageAccountSasTokenWithResponse("aoiresourceGroupName", "dataproduct01",
-            new AccountSas().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.151Z"))
-                .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.151Z")).withIpAddress("1.1.1.1"),
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .generateStorageAccountSasTokenWithResponse("aoiresourceGroupName", "dataproduct01",
+                new AccountSas().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.151Z"))
+                    .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.151Z"))
+                    .withIpAddress("1.1.1.1"),
+                com.azure.core.util.Context.NONE);
     }
 }

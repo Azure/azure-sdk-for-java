@@ -20,8 +20,8 @@ public final class DataProductsGetByResourceGroupSamples {
      */
     public static void
         dataProductsGetMaximumSetGen(com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().getByResourceGroupWithResponse("aoiresourceGroupName", "dataproduct01",
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .getByResourceGroupWithResponse("aoiresourceGroupName", "dataproduct01", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class DataProductsGetByResourceGroupSamples {
      */
     public static void dataProductsGetMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().getByResourceGroupWithResponse("aoiresourceGroupName", "dataproduct01",
-            com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .getByResourceGroupWithResponse("aoiresourceGroupName", "dataproduct01", com.azure.core.util.Context.NONE);
     }
 }

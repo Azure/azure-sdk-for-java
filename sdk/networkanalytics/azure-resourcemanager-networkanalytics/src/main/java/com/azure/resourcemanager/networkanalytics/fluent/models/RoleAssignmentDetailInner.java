@@ -6,55 +6,52 @@ package com.azure.resourcemanager.networkanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkanalytics.models.DataProductUserRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The details for role assignment response.
  */
 @Fluent
-public final class RoleAssignmentDetailInner {
+public final class RoleAssignmentDetailInner implements JsonSerializable<RoleAssignmentDetailInner> {
     /*
      * Role Id of the Built-In Role
      */
-    @JsonProperty(value = "roleId", required = true)
     private String roleId;
 
     /*
      * Object ID of the AAD principal or security-group.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * User name.
      */
-    @JsonProperty(value = "userName", required = true)
     private String username;
 
     /*
      * Data Type Scope at which the role assignment is created.
      */
-    @JsonProperty(value = "dataTypeScope", required = true)
     private List<String> dataTypeScope;
 
     /*
      * Type of the principal Id: User, Group or ServicePrincipal
      */
-    @JsonProperty(value = "principalType", required = true)
     private String principalType;
 
     /*
      * Data Product role to be assigned to a user.
      */
-    @JsonProperty(value = "role", required = true)
     private DataProductUserRole role;
 
     /*
      * Id of role assignment request
      */
-    @JsonProperty(value = "roleAssignmentId", required = true)
     private String roleAssignmentId;
 
     /**
@@ -210,34 +207,97 @@ public final class RoleAssignmentDetailInner {
      */
     public void validate() {
         if (roleId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property roleId in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleId in model RoleAssignmentDetailInner"));
         }
         if (principalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property principalId in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model RoleAssignmentDetailInner"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model RoleAssignmentDetailInner"));
         }
         if (dataTypeScope() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataTypeScope in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataTypeScope in model RoleAssignmentDetailInner"));
         }
         if (principalType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property principalType in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalType in model RoleAssignmentDetailInner"));
         }
         if (role() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property role in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property role in model RoleAssignmentDetailInner"));
         }
         if (roleAssignmentId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property roleAssignmentId in model RoleAssignmentDetailInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleAssignmentId in model RoleAssignmentDetailInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentDetailInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("roleId", this.roleId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeArrayField("dataTypeScope", this.dataTypeScope,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("principalType", this.principalType);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("roleAssignmentId", this.roleAssignmentId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentDetailInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentDetailInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentDetailInner.
+     */
+    public static RoleAssignmentDetailInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentDetailInner deserializedRoleAssignmentDetailInner = new RoleAssignmentDetailInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roleId".equals(fieldName)) {
+                    deserializedRoleAssignmentDetailInner.roleId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedRoleAssignmentDetailInner.principalId = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedRoleAssignmentDetailInner.username = reader.getString();
+                } else if ("dataTypeScope".equals(fieldName)) {
+                    List<String> dataTypeScope = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleAssignmentDetailInner.dataTypeScope = dataTypeScope;
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedRoleAssignmentDetailInner.principalType = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedRoleAssignmentDetailInner.role = DataProductUserRole.fromString(reader.getString());
+                } else if ("roleAssignmentId".equals(fieldName)) {
+                    deserializedRoleAssignmentDetailInner.roleAssignmentId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentDetailInner;
+        });
+    }
 }

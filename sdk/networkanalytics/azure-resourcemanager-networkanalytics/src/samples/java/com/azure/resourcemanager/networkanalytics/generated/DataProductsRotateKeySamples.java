@@ -22,8 +22,9 @@ public final class DataProductsRotateKeySamples {
      */
     public static void
         dataProductsRotateKeyMaximumSetGen(com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().rotateKeyWithResponse("aoiresourceGroupName", "dataproduct01",
-            new KeyVaultInfo().withKeyVaultUrl("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .rotateKeyWithResponse("aoiresourceGroupName", "dataproduct01",
+                new KeyVaultInfo().withKeyVaultUrl("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -38,7 +39,8 @@ public final class DataProductsRotateKeySamples {
      */
     public static void dataProductsRotateKeyMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().rotateKeyWithResponse("aoiresourceGroupName", "dataproduct01",
-            new KeyVaultInfo().withKeyVaultUrl("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
+        manager.dataProducts()
+            .rotateKeyWithResponse("aoiresourceGroupName", "dataproduct01",
+                new KeyVaultInfo().withKeyVaultUrl("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 }

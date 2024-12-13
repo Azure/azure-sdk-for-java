@@ -25,8 +25,9 @@ public final class DataProductsListRolesAssignmentsSamples {
     public static void dataProductsListRolesAssignmentsMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) throws IOException {
         manager.dataProducts()
-            .listRolesAssignmentsWithResponse("aoiresourceGroupName", "dataproduct01", SerializerFactory
-                .createDefaultManagementSerializerAdapter().deserialize("{}", Object.class, SerializerEncoding.JSON),
+            .listRolesAssignmentsWithResponse("aoiresourceGroupName", "dataproduct01",
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{}", Object.class, SerializerEncoding.JSON),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -43,8 +44,9 @@ public final class DataProductsListRolesAssignmentsSamples {
     public static void dataProductsListRolesAssignmentsMaximumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) throws IOException {
         manager.dataProducts()
-            .listRolesAssignmentsWithResponse("aoiresourceGroupName", "dataproduct01", SerializerFactory
-                .createDefaultManagementSerializerAdapter().deserialize("{}", Object.class, SerializerEncoding.JSON),
+            .listRolesAssignmentsWithResponse("aoiresourceGroupName", "dataproduct01",
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{}", Object.class, SerializerEncoding.JSON),
                 com.azure.core.util.Context.NONE);
     }
 }

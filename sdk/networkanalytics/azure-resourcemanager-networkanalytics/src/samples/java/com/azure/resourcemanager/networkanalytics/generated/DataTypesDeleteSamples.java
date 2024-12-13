@@ -20,8 +20,8 @@ public final class DataTypesDeleteSamples {
      */
     public static void dataTypesDeleteMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().delete("aoiresourceGroupName", "dataproduct01", "datatypename",
-            com.azure.core.util.Context.NONE);
+        manager.dataTypes()
+            .delete("aoiresourceGroupName", "dataproduct01", "datatypename", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class DataTypesDeleteSamples {
      */
     public static void
         dataTypesDeleteMaximumSetGen(com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().delete("aoiresourceGroupName", "dataproduct01", "datatypename",
-            com.azure.core.util.Context.NONE);
+        manager.dataTypes()
+            .delete("aoiresourceGroupName", "dataproduct01", "datatypename", com.azure.core.util.Context.NONE);
     }
 }

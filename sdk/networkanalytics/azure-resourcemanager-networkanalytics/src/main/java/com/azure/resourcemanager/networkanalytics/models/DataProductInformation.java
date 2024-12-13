@@ -6,30 +6,31 @@ package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Data Product Information.
  */
 @Fluent
-public final class DataProductInformation {
+public final class DataProductInformation implements JsonSerializable<DataProductInformation> {
     /*
      * Name of data product.
      */
-    @JsonProperty(value = "dataProductName", required = true)
     private String dataProductName;
 
     /*
      * Description about data product.
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * Version information of data product.
      */
-    @JsonProperty(value = "dataProductVersions", required = true)
     private List<DataProductVersion> dataProductVersions;
 
     /**
@@ -105,20 +106,69 @@ public final class DataProductInformation {
      */
     public void validate() {
         if (dataProductName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataProductName in model DataProductInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataProductName in model DataProductInformation"));
         }
         if (description() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property description in model DataProductInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model DataProductInformation"));
         }
         if (dataProductVersions() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataProductVersions in model DataProductInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataProductVersions in model DataProductInformation"));
         } else {
             dataProductVersions().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataProductInformation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataProductName", this.dataProductName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("dataProductVersions", this.dataProductVersions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataProductInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataProductInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataProductInformation.
+     */
+    public static DataProductInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataProductInformation deserializedDataProductInformation = new DataProductInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataProductName".equals(fieldName)) {
+                    deserializedDataProductInformation.dataProductName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataProductInformation.description = reader.getString();
+                } else if ("dataProductVersions".equals(fieldName)) {
+                    List<DataProductVersion> dataProductVersions
+                        = reader.readArray(reader1 -> DataProductVersion.fromJson(reader1));
+                    deserializedDataProductInformation.dataProductVersions = dataProductVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataProductInformation;
+        });
+    }
 }

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkanalytics.fluent.models.DataProductsCatalogInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a DataProductsCatalog list operation.
  */
 @Fluent
-public final class DataProductsCatalogListResult {
+public final class DataProductsCatalogListResult implements JsonSerializable<DataProductsCatalogListResult> {
     /*
      * The DataProductsCatalog items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<DataProductsCatalogInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -80,12 +82,56 @@ public final class DataProductsCatalogListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model DataProductsCatalogListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model DataProductsCatalogListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataProductsCatalogListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataProductsCatalogListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataProductsCatalogListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataProductsCatalogListResult.
+     */
+    public static DataProductsCatalogListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataProductsCatalogListResult deserializedDataProductsCatalogListResult
+                = new DataProductsCatalogListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataProductsCatalogInner> value
+                        = reader.readArray(reader1 -> DataProductsCatalogInner.fromJson(reader1));
+                    deserializedDataProductsCatalogListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataProductsCatalogListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataProductsCatalogListResult;
+        });
+    }
 }

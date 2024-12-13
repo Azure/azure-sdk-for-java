@@ -6,132 +6,116 @@ package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The data product properties.
  */
 @Fluent
-public final class DataProductProperties {
+public final class DataProductProperties implements JsonSerializable<DataProductProperties> {
     /*
      * The resource GUID property of the data product resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * Latest provisioning state of data product.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Data product publisher name.
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * Product name of data product.
      */
-    @JsonProperty(value = "product", required = true)
     private String product;
 
     /*
      * Major version of data product.
      */
-    @JsonProperty(value = "majorVersion", required = true)
     private String majorVersion;
 
     /*
      * List of name or email associated with data product resource deployment.
      */
-    @JsonProperty(value = "owners")
     private List<String> owners;
 
     /*
      * Flag to enable or disable redundancy for data product.
      */
-    @JsonProperty(value = "redundancy")
     private ControlState redundancy;
 
     /*
      * Purview account url for data product to connect to.
      */
-    @JsonProperty(value = "purviewAccount")
     private String purviewAccount;
 
     /*
      * Purview collection url for data product to connect to.
      */
-    @JsonProperty(value = "purviewCollection")
     private String purviewCollection;
 
     /*
      * Flag to enable or disable private link for data product resource.
      */
-    @JsonProperty(value = "privateLinksEnabled")
     private ControlState privateLinksEnabled;
 
     /*
      * Flag to enable or disable public access of data product resource.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private ControlState publicNetworkAccess;
 
     /*
      * Flag to enable customer managed key encryption for data product.
      */
-    @JsonProperty(value = "customerManagedKeyEncryptionEnabled")
     private ControlState customerManagedKeyEncryptionEnabled;
 
     /*
      * Customer managed encryption key details for data product.
      */
-    @JsonProperty(value = "customerEncryptionKey")
     private EncryptionKeyDetails customerEncryptionKey;
 
     /*
      * Network rule set for data product.
      */
-    @JsonProperty(value = "networkacls")
     private DataProductNetworkAcls networkacls;
 
     /*
      * Managed resource group configuration.
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedResourceGroupConfiguration managedResourceGroupConfiguration;
 
     /*
      * List of available minor versions of the data product resource.
      */
-    @JsonProperty(value = "availableMinorVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> availableMinorVersions;
 
     /*
      * Current configured minor version of the data product resource.
      */
-    @JsonProperty(value = "currentMinorVersion")
     private String currentMinorVersion;
 
     /*
      * Documentation link for the data product based on definition file.
      */
-    @JsonProperty(value = "documentation", access = JsonProperty.Access.WRITE_ONLY)
     private String documentation;
 
     /*
      * Resource links which exposed to the customer to query the data.
      */
-    @JsonProperty(value = "consumptionEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private ConsumptionEndpointsProperties consumptionEndpoints;
 
     /*
      * Key vault url.
      */
-    @JsonProperty(value = "keyVaultUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultUrl;
 
     /**
@@ -485,16 +469,18 @@ public final class DataProductProperties {
      */
     public void validate() {
         if (publisher() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property publisher in model DataProductProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property publisher in model DataProductProperties"));
         }
         if (product() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property product in model DataProductProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property product in model DataProductProperties"));
         }
         if (majorVersion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property majorVersion in model DataProductProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property majorVersion in model DataProductProperties"));
         }
         if (customerEncryptionKey() != null) {
             customerEncryptionKey().validate();
@@ -511,4 +497,103 @@ public final class DataProductProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataProductProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("majorVersion", this.majorVersion);
+        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("redundancy", this.redundancy == null ? null : this.redundancy.toString());
+        jsonWriter.writeStringField("purviewAccount", this.purviewAccount);
+        jsonWriter.writeStringField("purviewCollection", this.purviewCollection);
+        jsonWriter.writeStringField("privateLinksEnabled",
+            this.privateLinksEnabled == null ? null : this.privateLinksEnabled.toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("customerManagedKeyEncryptionEnabled",
+            this.customerManagedKeyEncryptionEnabled == null
+                ? null
+                : this.customerManagedKeyEncryptionEnabled.toString());
+        jsonWriter.writeJsonField("customerEncryptionKey", this.customerEncryptionKey);
+        jsonWriter.writeJsonField("networkacls", this.networkacls);
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeStringField("currentMinorVersion", this.currentMinorVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataProductProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataProductProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataProductProperties.
+     */
+    public static DataProductProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataProductProperties deserializedDataProductProperties = new DataProductProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedDataProductProperties.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedDataProductProperties.product = reader.getString();
+                } else if ("majorVersion".equals(fieldName)) {
+                    deserializedDataProductProperties.majorVersion = reader.getString();
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedDataProductProperties.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDataProductProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("owners".equals(fieldName)) {
+                    List<String> owners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataProductProperties.owners = owners;
+                } else if ("redundancy".equals(fieldName)) {
+                    deserializedDataProductProperties.redundancy = ControlState.fromString(reader.getString());
+                } else if ("purviewAccount".equals(fieldName)) {
+                    deserializedDataProductProperties.purviewAccount = reader.getString();
+                } else if ("purviewCollection".equals(fieldName)) {
+                    deserializedDataProductProperties.purviewCollection = reader.getString();
+                } else if ("privateLinksEnabled".equals(fieldName)) {
+                    deserializedDataProductProperties.privateLinksEnabled = ControlState.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedDataProductProperties.publicNetworkAccess = ControlState.fromString(reader.getString());
+                } else if ("customerManagedKeyEncryptionEnabled".equals(fieldName)) {
+                    deserializedDataProductProperties.customerManagedKeyEncryptionEnabled
+                        = ControlState.fromString(reader.getString());
+                } else if ("customerEncryptionKey".equals(fieldName)) {
+                    deserializedDataProductProperties.customerEncryptionKey = EncryptionKeyDetails.fromJson(reader);
+                } else if ("networkacls".equals(fieldName)) {
+                    deserializedDataProductProperties.networkacls = DataProductNetworkAcls.fromJson(reader);
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedDataProductProperties.managedResourceGroupConfiguration
+                        = ManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("availableMinorVersions".equals(fieldName)) {
+                    List<String> availableMinorVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataProductProperties.availableMinorVersions = availableMinorVersions;
+                } else if ("currentMinorVersion".equals(fieldName)) {
+                    deserializedDataProductProperties.currentMinorVersion = reader.getString();
+                } else if ("documentation".equals(fieldName)) {
+                    deserializedDataProductProperties.documentation = reader.getString();
+                } else if ("consumptionEndpoints".equals(fieldName)) {
+                    deserializedDataProductProperties.consumptionEndpoints
+                        = ConsumptionEndpointsProperties.fromJson(reader);
+                } else if ("keyVaultUrl".equals(fieldName)) {
+                    deserializedDataProductProperties.keyVaultUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataProductProperties;
+        });
+    }
 }

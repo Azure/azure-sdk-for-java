@@ -6,36 +6,36 @@ package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Data Product Network rule set.
  */
 @Fluent
-public final class DataProductNetworkAcls {
+public final class DataProductNetworkAcls implements JsonSerializable<DataProductNetworkAcls> {
     /*
      * Virtual Network Rule
      */
-    @JsonProperty(value = "virtualNetworkRule", required = true)
     private List<VirtualNetworkRule> virtualNetworkRule;
 
     /*
      * IP rule with specific IP or IP range in CIDR format.
      */
-    @JsonProperty(value = "ipRules", required = true)
     private List<IpRules> ipRules;
 
     /*
      * The list of query ips in the format of CIDR allowed to connect to query/visualization endpoint.
      */
-    @JsonProperty(value = "allowedQueryIpRangeList", required = true)
     private List<String> allowedQueryIpRangeList;
 
     /*
      * Default Action
      */
-    @JsonProperty(value = "defaultAction", required = true)
     private DefaultAction defaultAction;
 
     /**
@@ -133,26 +133,81 @@ public final class DataProductNetworkAcls {
      */
     public void validate() {
         if (virtualNetworkRule() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetworkRule in model DataProductNetworkAcls"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkRule in model DataProductNetworkAcls"));
         } else {
             virtualNetworkRule().forEach(e -> e.validate());
         }
         if (ipRules() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ipRules in model DataProductNetworkAcls"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipRules in model DataProductNetworkAcls"));
         } else {
             ipRules().forEach(e -> e.validate());
         }
         if (allowedQueryIpRangeList() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property allowedQueryIpRangeList in model DataProductNetworkAcls"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowedQueryIpRangeList in model DataProductNetworkAcls"));
         }
         if (defaultAction() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property defaultAction in model DataProductNetworkAcls"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultAction in model DataProductNetworkAcls"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataProductNetworkAcls.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("virtualNetworkRule", this.virtualNetworkRule,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("allowedQueryIpRangeList", this.allowedQueryIpRangeList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataProductNetworkAcls from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataProductNetworkAcls if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataProductNetworkAcls.
+     */
+    public static DataProductNetworkAcls fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataProductNetworkAcls deserializedDataProductNetworkAcls = new DataProductNetworkAcls();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetworkRule".equals(fieldName)) {
+                    List<VirtualNetworkRule> virtualNetworkRule
+                        = reader.readArray(reader1 -> VirtualNetworkRule.fromJson(reader1));
+                    deserializedDataProductNetworkAcls.virtualNetworkRule = virtualNetworkRule;
+                } else if ("ipRules".equals(fieldName)) {
+                    List<IpRules> ipRules = reader.readArray(reader1 -> IpRules.fromJson(reader1));
+                    deserializedDataProductNetworkAcls.ipRules = ipRules;
+                } else if ("allowedQueryIpRangeList".equals(fieldName)) {
+                    List<String> allowedQueryIpRangeList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataProductNetworkAcls.allowedQueryIpRangeList = allowedQueryIpRangeList;
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedDataProductNetworkAcls.defaultAction = DefaultAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataProductNetworkAcls;
+        });
+    }
 }

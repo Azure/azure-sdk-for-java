@@ -23,11 +23,12 @@ public final class DataTypesGenerateStorageContainerSasTokenSamples {
      */
     public static void dataTypesGenerateStorageContainerSasTokenMaximumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().generateStorageContainerSasTokenWithResponse("aoiresourceGroupName", "dataproduct01",
-            "datatypename",
-            new ContainerSaS().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.039Z"))
-                .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.039Z")).withIpAddress("1.1.1.1"),
-            com.azure.core.util.Context.NONE);
+        manager.dataTypes()
+            .generateStorageContainerSasTokenWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename",
+                new ContainerSaS().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.039Z"))
+                    .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:34:58.039Z"))
+                    .withIpAddress("1.1.1.1"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -43,10 +44,11 @@ public final class DataTypesGenerateStorageContainerSasTokenSamples {
      */
     public static void dataTypesGenerateStorageContainerSasTokenMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().generateStorageContainerSasTokenWithResponse("aoiresourceGroupName", "dataproduct01",
-            "datatypename",
-            new ContainerSaS().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:35:16.887Z"))
-                .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:35:16.887Z")).withIpAddress("1.1.1.1"),
-            com.azure.core.util.Context.NONE);
+        manager.dataTypes()
+            .generateStorageContainerSasTokenWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename",
+                new ContainerSaS().withStartTimestamp(OffsetDateTime.parse("2023-08-24T05:35:16.887Z"))
+                    .withExpiryTimestamp(OffsetDateTime.parse("2023-08-24T05:35:16.887Z"))
+                    .withIpAddress("1.1.1.1"),
+                com.azure.core.util.Context.NONE);
     }
 }

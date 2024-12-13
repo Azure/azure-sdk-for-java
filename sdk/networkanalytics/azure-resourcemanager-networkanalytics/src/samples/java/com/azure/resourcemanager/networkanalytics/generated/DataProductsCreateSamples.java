@@ -35,23 +35,32 @@ public final class DataProductsCreateSamples {
      */
     public static void
         dataProductsCreateMaximumSetGen(com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().define("dataproduct01").withRegion("eastus")
+        manager.dataProducts()
+            .define("dataproduct01")
+            .withRegion("eastus")
             .withExistingResourceGroup("aoiresourceGroupName")
             .withTags(mapOf("userSpecifiedKeyName", "fakeTokenPlaceholder"))
-            .withProperties(new DataProductProperties().withPublisher("Microsoft").withProduct("MCC")
-                .withMajorVersion("1.0.0").withOwners(Arrays.asList("abc@micros.com"))
-                .withRedundancy(ControlState.DISABLED).withPurviewAccount("testpurview")
-                .withPurviewCollection("134567890").withPrivateLinksEnabled(ControlState.DISABLED)
+            .withProperties(new DataProductProperties().withPublisher("Microsoft")
+                .withProduct("MCC")
+                .withMajorVersion("1.0.0")
+                .withOwners(Arrays.asList("abc@micros.com"))
+                .withRedundancy(ControlState.DISABLED)
+                .withPurviewAccount("testpurview")
+                .withPurviewCollection("134567890")
+                .withPrivateLinksEnabled(ControlState.DISABLED)
                 .withPublicNetworkAccess(ControlState.ENABLED)
                 .withCustomerManagedKeyEncryptionEnabled(ControlState.ENABLED)
                 .withCustomerEncryptionKey(new EncryptionKeyDetails().withKeyVaultUri("fakeTokenPlaceholder")
-                    .withKeyName("fakeTokenPlaceholder").withKeyVersion("fakeTokenPlaceholder"))
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder"))
                 .withNetworkacls(new DataProductNetworkAcls()
                     .withVirtualNetworkRule(Arrays.asList(new VirtualNetworkRule().withId(
                         "/subscriptions/subscriptionId/resourcegroups/resourceGroupName/providers/Microsoft.Network/virtualNetworks/virtualNetworkName/subnets/subnetName")
-                        .withAction("Allow").withState("")))
+                        .withAction("Allow")
+                        .withState("")))
                     .withIpRules(Arrays.asList(new IpRules().withValue("1.1.1.1").withAction("Allow")))
-                    .withAllowedQueryIpRangeList(Arrays.asList("1.1.1.1")).withDefaultAction(DefaultAction.ALLOW))
+                    .withAllowedQueryIpRangeList(Arrays.asList("1.1.1.1"))
+                    .withDefaultAction(DefaultAction.ALLOW))
                 .withManagedResourceGroupConfiguration(
                     new ManagedResourceGroupConfiguration().withName("managedResourceGroupName").withLocation("eastus"))
                 .withCurrentMinorVersion("1.0.1"))
@@ -74,7 +83,9 @@ public final class DataProductsCreateSamples {
      */
     public static void dataProductsCreateMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataProducts().define("dataproduct01").withRegion("eastus")
+        manager.dataProducts()
+            .define("dataproduct01")
+            .withRegion("eastus")
             .withExistingResourceGroup("aoiresourceGroupName")
             .withTags(mapOf("userSpecifiedKeyName", "fakeTokenPlaceholder"))
             .withProperties(

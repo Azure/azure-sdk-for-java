@@ -6,24 +6,26 @@ package com.azure.resourcemanager.networkanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * list role assignments.
  */
 @Fluent
-public final class ListRoleAssignmentsInner {
+public final class ListRoleAssignmentsInner implements JsonSerializable<ListRoleAssignmentsInner> {
     /*
      * Count of role assignments.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * list of role assignments
      */
-    @JsonProperty(value = "roleAssignmentResponse", required = true)
     private List<RoleAssignmentDetailInner> roleAssignmentResponse;
 
     /**
@@ -79,12 +81,56 @@ public final class ListRoleAssignmentsInner {
      */
     public void validate() {
         if (roleAssignmentResponse() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property roleAssignmentResponse in model ListRoleAssignmentsInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleAssignmentResponse in model ListRoleAssignmentsInner"));
         } else {
             roleAssignmentResponse().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ListRoleAssignmentsInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeArrayField("roleAssignmentResponse", this.roleAssignmentResponse,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListRoleAssignmentsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListRoleAssignmentsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListRoleAssignmentsInner.
+     */
+    public static ListRoleAssignmentsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListRoleAssignmentsInner deserializedListRoleAssignmentsInner = new ListRoleAssignmentsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedListRoleAssignmentsInner.count = reader.getInt();
+                } else if ("roleAssignmentResponse".equals(fieldName)) {
+                    List<RoleAssignmentDetailInner> roleAssignmentResponse
+                        = reader.readArray(reader1 -> RoleAssignmentDetailInner.fromJson(reader1));
+                    deserializedListRoleAssignmentsInner.roleAssignmentResponse = roleAssignmentResponse;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListRoleAssignmentsInner;
+        });
+    }
 }

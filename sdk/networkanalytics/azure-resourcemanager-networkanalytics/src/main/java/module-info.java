@@ -10,6 +10,6 @@ module com.azure.resourcemanager.networkanalytics {
     exports com.azure.resourcemanager.networkanalytics.fluent.models;
     exports com.azure.resourcemanager.networkanalytics.models;
 
-    opens com.azure.resourcemanager.networkanalytics.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.networkanalytics.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.networkanalytics.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.networkanalytics.models to com.azure.core;
 }

@@ -45,7 +45,11 @@ public final class DataTypesUpdateSamples {
         DataType resource = manager.dataTypes()
             .getWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withProperties(new DataTypeUpdateProperties().withState(DataTypeState.fromString("STARTED"))
-            .withStorageOutputRetention(30).withDatabaseCacheRetention(16).withDatabaseRetention(9)).apply();
+        resource.update()
+            .withProperties(new DataTypeUpdateProperties().withState(DataTypeState.fromString("STARTED"))
+                .withStorageOutputRetention(30)
+                .withDatabaseCacheRetention(16)
+                .withDatabaseRetention(9))
+            .apply();
     }
 }

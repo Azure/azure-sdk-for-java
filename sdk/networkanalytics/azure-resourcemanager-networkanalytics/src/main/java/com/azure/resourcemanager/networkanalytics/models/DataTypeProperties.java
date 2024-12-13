@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The data type properties.
  */
 @Fluent
-public final class DataTypeProperties {
+public final class DataTypeProperties implements JsonSerializable<DataTypeProperties> {
     /*
      * Latest provisioning state of data product.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * State of data type.
      */
-    @JsonProperty(value = "state")
     private DataTypeState state;
 
     /*
      * Reason for the state of data type.
      */
-    @JsonProperty(value = "stateReason", access = JsonProperty.Access.WRITE_ONLY)
     private String stateReason;
 
     /*
      * Field for storage output retention in days.
      */
-    @JsonProperty(value = "storageOutputRetention")
     private Integer storageOutputRetention;
 
     /*
      * Field for database cache retention in days.
      */
-    @JsonProperty(value = "databaseCacheRetention")
     private Integer databaseCacheRetention;
 
     /*
      * Field for database data retention in days.
      */
-    @JsonProperty(value = "databaseRetention")
     private Integer databaseRetention;
 
     /*
      * Url for data visualization.
      */
-    @JsonProperty(value = "visualizationUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String visualizationUrl;
 
     /**
@@ -173,5 +170,56 @@ public final class DataTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeNumberField("storageOutputRetention", this.storageOutputRetention);
+        jsonWriter.writeNumberField("databaseCacheRetention", this.databaseCacheRetention);
+        jsonWriter.writeNumberField("databaseRetention", this.databaseRetention);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataTypeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataTypeProperties.
+     */
+    public static DataTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataTypeProperties deserializedDataTypeProperties = new DataTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDataTypeProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedDataTypeProperties.state = DataTypeState.fromString(reader.getString());
+                } else if ("stateReason".equals(fieldName)) {
+                    deserializedDataTypeProperties.stateReason = reader.getString();
+                } else if ("storageOutputRetention".equals(fieldName)) {
+                    deserializedDataTypeProperties.storageOutputRetention = reader.getNullable(JsonReader::getInt);
+                } else if ("databaseCacheRetention".equals(fieldName)) {
+                    deserializedDataTypeProperties.databaseCacheRetention = reader.getNullable(JsonReader::getInt);
+                } else if ("databaseRetention".equals(fieldName)) {
+                    deserializedDataTypeProperties.databaseRetention = reader.getNullable(JsonReader::getInt);
+                } else if ("visualizationUrl".equals(fieldName)) {
+                    deserializedDataTypeProperties.visualizationUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataTypeProperties;
+        });
     }
 }

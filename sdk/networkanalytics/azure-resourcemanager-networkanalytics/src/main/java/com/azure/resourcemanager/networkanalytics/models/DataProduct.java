@@ -275,9 +275,9 @@ public interface DataProduct {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The updatable properties of the DataProduct..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties The updatable properties of the DataProduct.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             Update withProperties(DataProductUpdateProperties properties);

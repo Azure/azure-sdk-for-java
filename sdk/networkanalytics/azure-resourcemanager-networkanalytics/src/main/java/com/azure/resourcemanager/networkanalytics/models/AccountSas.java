@@ -5,31 +5,34 @@
 package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The details for storage account sas creation.
  */
 @Fluent
-public final class AccountSas {
+public final class AccountSas implements JsonSerializable<AccountSas> {
     /*
      * Sas token start timestamp.
      */
-    @JsonProperty(value = "startTimeStamp", required = true)
     private OffsetDateTime startTimestamp;
 
     /*
      * Sas token expiry timestamp.
      */
-    @JsonProperty(value = "expiryTimeStamp", required = true)
     private OffsetDateTime expiryTimestamp;
 
     /*
      * Ip Address
      */
-    @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
 
     /**
@@ -105,18 +108,65 @@ public final class AccountSas {
      */
     public void validate() {
         if (startTimestamp() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property startTimestamp in model AccountSas"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startTimestamp in model AccountSas"));
         }
         if (expiryTimestamp() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property expiryTimestamp in model AccountSas"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expiryTimestamp in model AccountSas"));
         }
         if (ipAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ipAddress in model AccountSas"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipAddress in model AccountSas"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AccountSas.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTimeStamp",
+            this.startTimestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimestamp));
+        jsonWriter.writeStringField("expiryTimeStamp",
+            this.expiryTimestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTimestamp));
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountSas from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountSas if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccountSas.
+     */
+    public static AccountSas fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountSas deserializedAccountSas = new AccountSas();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTimeStamp".equals(fieldName)) {
+                    deserializedAccountSas.startTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTimeStamp".equals(fieldName)) {
+                    deserializedAccountSas.expiryTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedAccountSas.ipAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountSas;
+        });
+    }
 }

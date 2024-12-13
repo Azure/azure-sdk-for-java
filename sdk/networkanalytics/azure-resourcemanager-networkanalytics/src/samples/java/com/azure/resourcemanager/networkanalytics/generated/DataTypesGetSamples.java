@@ -20,8 +20,8 @@ public final class DataTypesGetSamples {
      */
     public static void dataTypesGetMaximumSetGenGeneratedByMinimumSetRuleMinimumSetGen(
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().getWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename",
-            com.azure.core.util.Context.NONE);
+        manager.dataTypes()
+            .getWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class DataTypesGetSamples {
      */
     public static void
         dataTypesGetMaximumSetGen(com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager manager) {
-        manager.dataTypes().getWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename",
-            com.azure.core.util.Context.NONE);
+        manager.dataTypes()
+            .getWithResponse("aoiresourceGroupName", "dataproduct01", "datatypename", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,29 +6,30 @@ package com.azure.resourcemanager.networkanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Encryption key details.
  */
 @Fluent
-public final class EncryptionKeyDetails {
+public final class EncryptionKeyDetails implements JsonSerializable<EncryptionKeyDetails> {
     /*
      * The Uri of the key vault.
      */
-    @JsonProperty(value = "keyVaultUri", required = true)
     private String keyVaultUri;
 
     /*
      * The name of the key vault key.
      */
-    @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
     /*
      * The version of the key vault key.
      */
-    @JsonProperty(value = "keyVersion", required = true)
     private String keyVersion;
 
     /**
@@ -104,18 +105,63 @@ public final class EncryptionKeyDetails {
      */
     public void validate() {
         if (keyVaultUri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyVaultUri in model EncryptionKeyDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultUri in model EncryptionKeyDetails"));
         }
         if (keyName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyName in model EncryptionKeyDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyName in model EncryptionKeyDetails"));
         }
         if (keyVersion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyVersion in model EncryptionKeyDetails"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property keyVersion in model EncryptionKeyDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncryptionKeyDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultUri", this.keyVaultUri);
+        jsonWriter.writeStringField("keyName", this.keyName);
+        jsonWriter.writeStringField("keyVersion", this.keyVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionKeyDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionKeyDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncryptionKeyDetails.
+     */
+    public static EncryptionKeyDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionKeyDetails deserializedEncryptionKeyDetails = new EncryptionKeyDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultUri".equals(fieldName)) {
+                    deserializedEncryptionKeyDetails.keyVaultUri = reader.getString();
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedEncryptionKeyDetails.keyName = reader.getString();
+                } else if ("keyVersion".equals(fieldName)) {
+                    deserializedEncryptionKeyDetails.keyVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionKeyDetails;
+        });
+    }
 }
