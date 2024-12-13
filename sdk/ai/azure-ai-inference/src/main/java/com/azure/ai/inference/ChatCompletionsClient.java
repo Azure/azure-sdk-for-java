@@ -37,6 +37,7 @@ public final class ChatCompletionsClient {
 
     @Generated
     private final ChatCompletionsClientImpl serviceClient;
+
     private final ChatCompletionClientTracer tracer;
 
     /**
@@ -44,7 +45,6 @@ public final class ChatCompletionsClient {
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
     ChatCompletionsClient(ChatCompletionsClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.tracer = new ChatCompletionClientTracer(serviceClient.getEndpoint());
