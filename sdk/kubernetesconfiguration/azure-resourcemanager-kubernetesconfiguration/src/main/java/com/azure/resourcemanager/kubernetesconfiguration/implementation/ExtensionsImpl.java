@@ -112,14 +112,14 @@ public final class ExtensionsImpl implements Extensions {
         String clusterName) {
         PagedIterable<ExtensionInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,
         String clusterName, Context context) {
         PagedIterable<ExtensionInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
     }
 
     private ExtensionsClient serviceClient() {

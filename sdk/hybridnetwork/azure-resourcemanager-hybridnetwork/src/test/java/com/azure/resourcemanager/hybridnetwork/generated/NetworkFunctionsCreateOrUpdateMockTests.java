@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.DeploymentResourceIdReference;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedServiceIdentity;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.hybridnetwork.models.NetworkFunction;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionPropertiesFormat;
 import com.azure.resourcemanager.hybridnetwork.models.NfviType;
 import com.azure.resourcemanager.hybridnetwork.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,32 +24,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkFunctionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"configurationType\":\"NetworkFunctionPropertiesFormat\",\"provisioningState\":\"Succeeded\",\"publisherName\":\"ab\",\"publisherScope\":\"Private\",\"networkFunctionDefinitionGroupName\":\"tmvcop\",\"networkFunctionDefinitionVersion\":\"c\",\"networkFunctionDefinitionOfferingLocation\":\"urbuhhlkyqltq\",\"networkFunctionDefinitionVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"nfviType\":\"AzureArcKubernetes\",\"nfviId\":\"uwkffdjktsysid\",\"allowSoftwareUpdate\":false,\"roleOverrideValues\":[\"lxnfuijtkbusqogs\"]},\"etag\":\"kayi\",\"identity\":{\"principalId\":\"d2d46ca0-ef18-4463-b92c-b8eaf9b8d369\",\"tenantId\":\"589555a5-23c6-4b43-83cd-9210c63dac70\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ji\":{\"principalId\":\"eaa4d8d6-7a66-478b-ab37-00605d29bdfb\",\"clientId\":\"443e5ff1-f9df-4d86-8ecd-70664cc36e17\"},\"zyjq\":{\"principalId\":\"302c399e-6132-4934-ad35-75157ed5b00f\",\"clientId\":\"e29615dd-07ee-4b78-88bb-b2b697fbbf40\"},\"wkpqhjpenuygbq\":{\"principalId\":\"66753bc8-00d8-41bd-ba72-331b24411413\",\"clientId\":\"8a2f71f4-103a-4bd4-a4e9-acb142a20000\"}}},\"location\":\"qekewvnqvcd\",\"tags\":{\"cmfdjwnlax\":\"a\",\"qikczvvita\":\"un\"},\"id\":\"gx\",\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"}";
+            = "{\"properties\":{\"configurationType\":\"NetworkFunctionPropertiesFormat\",\"provisioningState\":\"Succeeded\",\"publisherName\":\"ab\",\"publisherScope\":\"Private\",\"networkFunctionDefinitionGroupName\":\"tmvcop\",\"networkFunctionDefinitionVersion\":\"c\",\"networkFunctionDefinitionOfferingLocation\":\"urbuhhlkyqltq\",\"networkFunctionDefinitionVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"nfviType\":\"AzureArcKubernetes\",\"nfviId\":\"uwkffdjktsysid\",\"allowSoftwareUpdate\":false,\"roleOverrideValues\":[\"lxnfuijtkbusqogs\"]},\"etag\":\"kayi\",\"identity\":{\"principalId\":\"d5271a30-cb58-4696-b6d2-6b7640e2d9a8\",\"tenantId\":\"a48722cf-37a6-400c-81db-719675b5ac48\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ji\":{\"principalId\":\"aec9089a-c58b-4ab2-9e59-102f16a6f26c\",\"clientId\":\"86bb3466-6eeb-49f1-8692-56747f4692a4\"},\"zyjq\":{\"principalId\":\"93a2f8cc-0458-4216-a43c-31a369cc1c3b\",\"clientId\":\"2d79491a-168d-40b3-8012-33e48a39d827\"},\"wkpqhjpenuygbq\":{\"principalId\":\"f6a7f0a9-5241-4237-851e-48fd07181b79\",\"clientId\":\"8f53c30b-bb12-4306-9cc1-4b45433845f8\"}}},\"location\":\"qekewvnqvcd\",\"tags\":{\"cmfdjwnlax\":\"a\",\"qikczvvita\":\"un\"},\"id\":\"gx\",\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridNetworkManager manager = HybridNetworkManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

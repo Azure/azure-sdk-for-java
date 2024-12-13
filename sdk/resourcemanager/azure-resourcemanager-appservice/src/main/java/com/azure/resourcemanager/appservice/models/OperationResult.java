@@ -286,7 +286,6 @@ public class OperationResult extends OperationResultProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (inputsLink() != null) {
             inputsLink().validate();
         }
@@ -295,6 +294,9 @@ public class OperationResult extends OperationResultProperties {
         }
         if (retryHistory() != null) {
             retryHistory().forEach(e -> e.validate());
+        }
+        if (correlation() != null) {
+            correlation().validate();
         }
     }
 

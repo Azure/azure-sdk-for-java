@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * User details for an organization.
  */
 @Fluent
-public final class LiftrBaseUserDetailsUpdate {
+public final class LiftrBaseUserDetailsUpdate implements JsonSerializable<LiftrBaseUserDetailsUpdate> {
     /*
      * First name of the user
      */
-    @JsonProperty(value = "firstName")
     private String firstName;
 
     /*
      * Last name of the user
      */
-    @JsonProperty(value = "lastName")
     private String lastName;
 
     /*
      * Email address of the user
      */
-    @JsonProperty(value = "emailAddress")
     private String emailAddress;
 
     /*
      * User's principal name
      */
-    @JsonProperty(value = "upn")
     private String upn;
 
     /*
      * User's phone number
      */
-    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
 
     /**
@@ -154,5 +153,53 @@ public final class LiftrBaseUserDetailsUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("emailAddress", this.emailAddress);
+        jsonWriter.writeStringField("upn", this.upn);
+        jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiftrBaseUserDetailsUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiftrBaseUserDetailsUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiftrBaseUserDetailsUpdate.
+     */
+    public static LiftrBaseUserDetailsUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiftrBaseUserDetailsUpdate deserializedLiftrBaseUserDetailsUpdate = new LiftrBaseUserDetailsUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstName".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetailsUpdate.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetailsUpdate.lastName = reader.getString();
+                } else if ("emailAddress".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetailsUpdate.emailAddress = reader.getString();
+                } else if ("upn".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetailsUpdate.upn = reader.getString();
+                } else if ("phoneNumber".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetailsUpdate.phoneNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiftrBaseUserDetailsUpdate;
+        });
     }
 }

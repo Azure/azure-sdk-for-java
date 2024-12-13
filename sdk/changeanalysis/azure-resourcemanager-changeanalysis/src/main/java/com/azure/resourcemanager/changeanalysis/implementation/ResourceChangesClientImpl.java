@@ -32,17 +32,23 @@ import com.azure.resourcemanager.changeanalysis.models.ChangeList;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceChangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceChangesClient.
+ */
 public final class ResourceChangesClientImpl implements ResourceChangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceChangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureChangeAnalysisManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceChangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceChangesClientImpl(AzureChangeAnalysisManagementClientImpl client) {
@@ -78,13 +84,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -118,13 +124,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -159,13 +165,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -181,7 +187,7 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
@@ -200,13 +206,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,7 +229,7 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
@@ -241,13 +247,13 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
     /**
      * List the changes of a resource within the specified time range. Customer data will be masked if the user doesn't
      * have access.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -262,9 +268,8 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -288,9 +293,8 @@ public final class ResourceChangesClientImpl implements ResourceChangesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

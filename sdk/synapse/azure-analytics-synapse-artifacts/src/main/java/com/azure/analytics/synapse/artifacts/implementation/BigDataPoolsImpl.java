@@ -79,9 +79,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfoListResult>> listWithResponseAsync() {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(context));
     }
 
     /**
@@ -163,10 +161,7 @@ public final class BigDataPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfo>> getWithResponseAsync(String bigDataPoolName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.get(this.client.getEndpoint(), apiVersion, bigDataPoolName, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(bigDataPoolName, context));
     }
 
     /**

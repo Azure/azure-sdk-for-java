@@ -7,7 +7,10 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Resource used by a cache.
@@ -17,14 +20,27 @@ public class StorageTargetResource extends ProxyResource {
     /*
      * Region name string.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of StorageTargetResource class.
@@ -42,6 +58,17 @@ public class StorageTargetResource extends ProxyResource {
     }
 
     /**
+     * Set the location property: Region name string.
+     * 
+     * @param location the location value to set.
+     * @return the StorageTargetResource object itself.
+     */
+    StorageTargetResource withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the systemData property: The system meta data relating to this resource.
      * 
      * @return the systemData value.
@@ -51,10 +78,95 @@ public class StorageTargetResource extends ProxyResource {
     }
 
     /**
+     * Set the systemData property: The system meta data relating to this resource.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the StorageTargetResource object itself.
+     */
+    StorageTargetResource withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTargetResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTargetResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTargetResource.
+     */
+    public static StorageTargetResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTargetResource deserializedStorageTargetResource = new StorageTargetResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageTargetResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageTargetResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageTargetResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedStorageTargetResource.location = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStorageTargetResource.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTargetResource;
+        });
     }
 }

@@ -6,32 +6,39 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.VmInstanceHybridIdentityMetadataInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of HybridIdentityMetadata. */
+/**
+ * List of HybridIdentityMetadata.
+ */
 @Fluent
-public final class VmInstanceHybridIdentityMetadataList {
+public final class VmInstanceHybridIdentityMetadataList
+    implements JsonSerializable<VmInstanceHybridIdentityMetadataList> {
     /*
      * Url to follow for getting next page of HybridIdentityMetadata.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of HybridIdentityMetadata
      */
-    @JsonProperty(value = "value", required = true)
     private List<VmInstanceHybridIdentityMetadataInner> value;
 
-    /** Creates an instance of VmInstanceHybridIdentityMetadataList class. */
+    /**
+     * Creates an instance of VmInstanceHybridIdentityMetadataList class.
+     */
     public VmInstanceHybridIdentityMetadataList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of HybridIdentityMetadata.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +47,7 @@ public final class VmInstanceHybridIdentityMetadataList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of HybridIdentityMetadata.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VmInstanceHybridIdentityMetadataList object itself.
      */
@@ -51,7 +58,7 @@ public final class VmInstanceHybridIdentityMetadataList {
 
     /**
      * Get the value property: Array of HybridIdentityMetadata.
-     *
+     * 
      * @return the value value.
      */
     public List<VmInstanceHybridIdentityMetadataInner> value() {
@@ -60,7 +67,7 @@ public final class VmInstanceHybridIdentityMetadataList {
 
     /**
      * Set the value property: Array of HybridIdentityMetadata.
-     *
+     * 
      * @param value the value value to set.
      * @return the VmInstanceHybridIdentityMetadataList object itself.
      */
@@ -71,17 +78,61 @@ public final class VmInstanceHybridIdentityMetadataList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model VmInstanceHybridIdentityMetadataList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VmInstanceHybridIdentityMetadataList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VmInstanceHybridIdentityMetadataList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmInstanceHybridIdentityMetadataList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmInstanceHybridIdentityMetadataList if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VmInstanceHybridIdentityMetadataList.
+     */
+    public static VmInstanceHybridIdentityMetadataList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmInstanceHybridIdentityMetadataList deserializedVmInstanceHybridIdentityMetadataList
+                = new VmInstanceHybridIdentityMetadataList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VmInstanceHybridIdentityMetadataInner> value
+                        = reader.readArray(reader1 -> VmInstanceHybridIdentityMetadataInner.fromJson(reader1));
+                    deserializedVmInstanceHybridIdentityMetadataList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVmInstanceHybridIdentityMetadataList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmInstanceHybridIdentityMetadataList;
+        });
+    }
 }

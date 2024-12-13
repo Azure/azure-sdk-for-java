@@ -20,7 +20,7 @@ public final class ConfigurationGroupSchemasGetSamples {
      */
     public static void getANetworkFunctionDefinitionGroupResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.configurationGroupSchemas().getWithResponse("rg1", "testPublisher", "testConfigurationGroupSchema",
-            com.azure.core.util.Context.NONE);
+        manager.configurationGroupSchemas()
+            .getWithResponse("rg1", "testPublisher", "testConfigurationGroupSchema", com.azure.core.util.Context.NONE);
     }
 }

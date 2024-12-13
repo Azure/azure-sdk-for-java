@@ -12,39 +12,42 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.AgentPoolInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.AgentPoolPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in AgentPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AgentPoolsClient.
+ */
 public interface AgentPoolsClient {
     /**
      * List agent pools of the Kubernetes cluster.
-     *
-     * <p>Get a list of agent pools for the provided Kubernetes cluster.
-     *
+     * 
+     * Get a list of agent pools for the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools for the provided Kubernetes cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of agent pools for the provided Kubernetes cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName);
 
     /**
      * List agent pools of the Kubernetes cluster.
-     *
-     * <p>Get a list of agent pools for the provided Kubernetes cluster.
-     *
+     * 
+     * Get a list of agent pools for the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of agent pools for the provided Kubernetes cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of agent pools for the provided Kubernetes cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
@@ -52,9 +55,9 @@ public interface AgentPoolsClient {
 
     /**
      * Retrieve the Kubernetes cluster agent pool.
-     *
-     * <p>Get properties of the provided Kubernetes cluster agent pool.
-     *
+     * 
+     * Get properties of the provided Kubernetes cluster agent pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -70,9 +73,9 @@ public interface AgentPoolsClient {
 
     /**
      * Retrieve the Kubernetes cluster agent pool.
-     *
-     * <p>Get properties of the provided Kubernetes cluster agent pool.
-     *
+     * 
+     * Get properties of the provided Kubernetes cluster agent pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -86,9 +89,9 @@ public interface AgentPoolsClient {
 
     /**
      * Create or update the Kubernetes cluster agent pool.
-     *
-     * <p>Create a new Kubernetes cluster agent pool or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster agent pool or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -104,9 +107,9 @@ public interface AgentPoolsClient {
 
     /**
      * Create or update the Kubernetes cluster agent pool.
-     *
-     * <p>Create a new Kubernetes cluster agent pool or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster agent pool or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -123,9 +126,9 @@ public interface AgentPoolsClient {
 
     /**
      * Create or update the Kubernetes cluster agent pool.
-     *
-     * <p>Create a new Kubernetes cluster agent pool or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster agent pool or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -141,9 +144,9 @@ public interface AgentPoolsClient {
 
     /**
      * Create or update the Kubernetes cluster agent pool.
-     *
-     * <p>Create a new Kubernetes cluster agent pool or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster agent pool or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -160,26 +163,26 @@ public interface AgentPoolsClient {
 
     /**
      * Delete the Kubernetes cluster agent pool.
-     *
-     * <p>Delete the provided Kubernetes cluster agent pool.
-     *
+     * 
+     * Delete the provided Kubernetes cluster agent pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
-        String agentPoolName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName);
 
     /**
      * Delete the Kubernetes cluster agent pool.
-     *
-     * <p>Delete the provided Kubernetes cluster agent pool.
-     *
+     * 
+     * Delete the provided Kubernetes cluster agent pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -187,32 +190,33 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
-        String agentPoolName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, Context context);
 
     /**
      * Delete the Kubernetes cluster agent pool.
-     *
-     * <p>Delete the provided Kubernetes cluster agent pool.
-     *
+     * 
+     * Delete the provided Kubernetes cluster agent pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String kubernetesClusterName, String agentPoolName);
+    OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName, String agentPoolName);
 
     /**
      * Delete the Kubernetes cluster agent pool.
-     *
-     * <p>Delete the provided Kubernetes cluster agent pool.
-     *
+     * 
+     * Delete the provided Kubernetes cluster agent pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -220,16 +224,18 @@ public interface AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        Context context);
 
     /**
      * Patch the Kubernetes cluster agent pool.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
+     * 
+     * Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
      * Kubernetes cluster agent pool. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -244,10 +250,10 @@ public interface AgentPoolsClient {
 
     /**
      * Patch the Kubernetes cluster agent pool.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
+     * 
+     * Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
      * Kubernetes cluster agent pool. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -265,10 +271,10 @@ public interface AgentPoolsClient {
 
     /**
      * Patch the Kubernetes cluster agent pool.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
+     * 
+     * Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
      * Kubernetes cluster agent pool. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.
@@ -282,10 +288,10 @@ public interface AgentPoolsClient {
 
     /**
      * Patch the Kubernetes cluster agent pool.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
+     * 
+     * Patch the properties of the provided Kubernetes cluster agent pool, or update the tags associated with the
      * Kubernetes cluster agent pool. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param agentPoolName The name of the Kubernetes cluster agent pool.

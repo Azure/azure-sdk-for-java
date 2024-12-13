@@ -23,8 +23,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.CalculateModelCapacityResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DomainAvailabilityInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.CalculateModelCapacityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import reactor.core.publisher.Mono;
@@ -78,6 +80,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         Mono<Response<DomainAvailabilityInner>> checkDomainAvailability(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckDomainAvailabilityParameter parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/calculateModelCapacity")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CalculateModelCapacityResultInner>> calculateModelCapacity(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CalculateModelCapacityParameter parameters,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -309,5 +320,114 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
         return checkDomainAvailabilityWithResponse(parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CalculateModelCapacityResultInner>>
+        calculateModelCapacityWithResponseAsync(CalculateModelCapacityParameter parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.calculateModelCapacity(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CalculateModelCapacityResultInner>>
+        calculateModelCapacityWithResponseAsync(CalculateModelCapacityParameter parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.calculateModelCapacity(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CalculateModelCapacityResultInner>
+        calculateModelCapacityAsync(CalculateModelCapacityParameter parameters) {
+        return calculateModelCapacityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CalculateModelCapacityResultInner>
+        calculateModelCapacityWithResponse(CalculateModelCapacityParameter parameters, Context context) {
+        return calculateModelCapacityWithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CalculateModelCapacityResultInner calculateModelCapacity(CalculateModelCapacityParameter parameters) {
+        return calculateModelCapacityWithResponse(parameters, Context.NONE).getValue();
     }
 }

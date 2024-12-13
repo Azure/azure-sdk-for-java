@@ -123,10 +123,10 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     ScriptImpl(ScriptInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
-        this.scriptName = Utils.getValueFromIdByName(innerObject.id(), "scripts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.scriptName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scripts");
     }
 
     public Script refresh() {

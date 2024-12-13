@@ -19,11 +19,13 @@ import com.azure.resourcemanager.datadog.fluent.models.LinkedResourceInner;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogMonitorResourceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in MonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorsClient.
+ */
 public interface MonitorsClient {
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -50,7 +52,7 @@ public interface MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -65,7 +67,7 @@ public interface MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +80,7 @@ public interface MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -94,7 +96,7 @@ public interface MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +108,7 @@ public interface MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -133,7 +135,7 @@ public interface MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +148,7 @@ public interface MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -161,7 +163,7 @@ public interface MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +176,7 @@ public interface MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -189,7 +191,7 @@ public interface MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
@@ -199,7 +201,7 @@ public interface MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,7 +213,7 @@ public interface MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,7 +225,7 @@ public interface MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +238,7 @@ public interface MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -251,7 +253,7 @@ public interface MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +266,7 @@ public interface MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +280,7 @@ public interface MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -294,7 +296,7 @@ public interface MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,7 +309,7 @@ public interface MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -323,7 +325,7 @@ public interface MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,10 +339,10 @@ public interface MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -353,7 +355,7 @@ public interface MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,10 +368,10 @@ public interface MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -382,7 +384,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,7 +397,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -409,7 +411,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,7 +423,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -434,7 +436,7 @@ public interface MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -449,7 +451,7 @@ public interface MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -12,7 +12,8 @@ import io.opentelemetry.api.common.AttributeKey;
 
 import java.util.List;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.stringArrayKeyTemplate;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AttributeKeyTemplate.stringKeyTemplate;
 import static io.opentelemetry.api.common.AttributeKey.booleanKey;
 import static io.opentelemetry.api.common.AttributeKey.doubleKey;
 import static io.opentelemetry.api.common.AttributeKey.longKey;

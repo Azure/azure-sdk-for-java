@@ -24,7 +24,8 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType string).
+     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
+     * string).
      */
     private Object path;
 

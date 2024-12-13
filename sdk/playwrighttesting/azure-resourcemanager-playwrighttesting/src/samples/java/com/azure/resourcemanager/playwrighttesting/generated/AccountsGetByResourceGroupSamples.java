@@ -19,7 +19,7 @@ public final class AccountsGetByResourceGroupSamples {
      * @param manager Entry point to PlaywrightTestingManager.
      */
     public static void accountsGet(com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
-        manager.accounts().getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount",
-            com.azure.core.util.Context.NONE);
+        manager.accounts()
+            .getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount", com.azure.core.util.Context.NONE);
     }
 }

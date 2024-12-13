@@ -6,102 +6,97 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties related to a storage container endpoint. */
+/**
+ * The properties related to a storage container endpoint.
+ */
 @Fluent
-public final class RoutingStorageContainerProperties {
+public final class RoutingStorageContainerProperties implements JsonSerializable<RoutingStorageContainerProperties> {
     /*
      * Id of the storage container endpoint
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The connection string of the storage account.
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * The url of the storage endpoint. It must include the protocol https://
      */
-    @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
      * Method used to authenticate against the storage endpoint
      */
-    @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
     /*
      * Managed identity properties of routing storage endpoint.
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
      * The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-     * hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications,
+     * hyphens and has a maximum length of 64 characters. The following names are reserved: events, fileNotifications,
      * $default. Endpoint names must be unique across endpoint types.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The subscription identifier of the storage account.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The name of the resource group of the storage account.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * The name of storage container in the storage account.
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
      * File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters
      * are mandatory but can be reordered.
      */
-    @JsonProperty(value = "fileNameFormat")
     private String fileNameFormat;
 
     /*
-     * Time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value
-     * is 300 seconds.
+     * Time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value is
+     * 300 seconds.
      */
-    @JsonProperty(value = "batchFrequencyInSeconds")
     private Integer batchFrequencyInSeconds;
 
     /*
      * Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and
      * 524288000(500MB). Default value is 314572800(300MB).
      */
-    @JsonProperty(value = "maxChunkSizeInBytes")
     private Integer maxChunkSizeInBytes;
 
     /*
      * Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'.
      * Default value is 'avro'.
      */
-    @JsonProperty(value = "encoding")
     private RoutingStorageContainerPropertiesEncoding encoding;
 
-    /** Creates an instance of RoutingStorageContainerProperties class. */
+    /**
+     * Creates an instance of RoutingStorageContainerProperties class.
+     */
     public RoutingStorageContainerProperties() {
     }
 
     /**
      * Get the id property: Id of the storage container endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -110,7 +105,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the id property: Id of the storage container endpoint.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -121,7 +116,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the connectionString property: The connection string of the storage account.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -130,7 +125,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the connectionString property: The connection string of the storage account.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -141,7 +136,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the endpointUri property: The url of the storage endpoint. It must include the protocol https://.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -150,7 +145,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the endpointUri property: The url of the storage endpoint. It must include the protocol https://.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -161,7 +156,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the authenticationType property: Method used to authenticate against the storage endpoint.
-     *
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -170,7 +165,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the authenticationType property: Method used to authenticate against the storage endpoint.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -181,7 +176,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the identity property: Managed identity properties of routing storage endpoint.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -190,7 +185,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the identity property: Managed identity properties of routing storage endpoint.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -203,7 +198,7 @@ public final class RoutingStorageContainerProperties {
      * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
      * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -214,7 +209,7 @@ public final class RoutingStorageContainerProperties {
      * Set the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
      * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -225,7 +220,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the subscriptionId property: The subscription identifier of the storage account.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -234,7 +229,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the subscriptionId property: The subscription identifier of the storage account.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -245,7 +240,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the resourceGroup property: The name of the resource group of the storage account.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -254,7 +249,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the resourceGroup property: The name of the resource group of the storage account.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -265,7 +260,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the containerName property: The name of storage container in the storage account.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -274,7 +269,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the containerName property: The name of storage container in the storage account.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -286,7 +281,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Get the fileNameFormat property: File name format for the blob. Default format is
      * {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
-     *
+     * 
      * @return the fileNameFormat value.
      */
     public String fileNameFormat() {
@@ -296,7 +291,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Set the fileNameFormat property: File name format for the blob. Default format is
      * {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
-     *
+     * 
      * @param fileNameFormat the fileNameFormat value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -308,7 +303,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Get the batchFrequencyInSeconds property: Time interval at which blobs are written to storage. Value should be
      * between 60 and 720 seconds. Default value is 300 seconds.
-     *
+     * 
      * @return the batchFrequencyInSeconds value.
      */
     public Integer batchFrequencyInSeconds() {
@@ -318,7 +313,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Set the batchFrequencyInSeconds property: Time interval at which blobs are written to storage. Value should be
      * between 60 and 720 seconds. Default value is 300 seconds.
-     *
+     * 
      * @param batchFrequencyInSeconds the batchFrequencyInSeconds value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -330,7 +325,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Get the maxChunkSizeInBytes property: Maximum number of bytes for each blob written to storage. Value should be
      * between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
-     *
+     * 
      * @return the maxChunkSizeInBytes value.
      */
     public Integer maxChunkSizeInBytes() {
@@ -340,7 +335,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Set the maxChunkSizeInBytes property: Maximum number of bytes for each blob written to storage. Value should be
      * between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
-     *
+     * 
      * @param maxChunkSizeInBytes the maxChunkSizeInBytes value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -352,7 +347,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Get the encoding property: Encoding that is used to serialize messages to blobs. Supported values are 'avro',
      * 'avrodeflate', and 'JSON'. Default value is 'avro'.
-     *
+     * 
      * @return the encoding value.
      */
     public RoutingStorageContainerPropertiesEncoding encoding() {
@@ -362,7 +357,7 @@ public final class RoutingStorageContainerProperties {
     /**
      * Set the encoding property: Encoding that is used to serialize messages to blobs. Supported values are 'avro',
      * 'avrodeflate', and 'JSON'. Default value is 'avro'.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -373,7 +368,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -381,14 +376,95 @@ public final class RoutingStorageContainerProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model RoutingStorageContainerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model RoutingStorageContainerProperties"));
         }
         if (containerName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property containerName in model RoutingStorageContainerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerName in model RoutingStorageContainerProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoutingStorageContainerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("fileNameFormat", this.fileNameFormat);
+        jsonWriter.writeNumberField("batchFrequencyInSeconds", this.batchFrequencyInSeconds);
+        jsonWriter.writeNumberField("maxChunkSizeInBytes", this.maxChunkSizeInBytes);
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingStorageContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingStorageContainerProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoutingStorageContainerProperties.
+     */
+    public static RoutingStorageContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingStorageContainerProperties deserializedRoutingStorageContainerProperties
+                = new RoutingStorageContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.name = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.containerName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.id = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.connectionString = reader.getString();
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.endpointUri = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.identity = ManagedIdentity.fromJson(reader);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.resourceGroup = reader.getString();
+                } else if ("fileNameFormat".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.fileNameFormat = reader.getString();
+                } else if ("batchFrequencyInSeconds".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.batchFrequencyInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxChunkSizeInBytes".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.maxChunkSizeInBytes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("encoding".equals(fieldName)) {
+                    deserializedRoutingStorageContainerProperties.encoding
+                        = RoutingStorageContainerPropertiesEncoding.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingStorageContainerProperties;
+        });
+    }
 }

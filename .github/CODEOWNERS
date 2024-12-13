@@ -443,10 +443,10 @@
 # ServiceOwners:                                     @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @jamdavi
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                      @billwert @mssfang @srnagar @lmolkova
+/sdk/eventgrid/                                      @samvaity @billwert @srnagar @lmolkova
 
 # ServiceLabel: %Event Grid
-# AzureSdkOwners:                                    @billwert
+# AzureSdkOwners:                                    @samvaity
 # ServiceOwners:                                     @Kishp01 @ahamad-MS
 
 # PRLabel: %Event Hubs
@@ -464,7 +464,7 @@
 
 # ServiceLabel: %Health Deidentification
 # PRLabel: %Health Deidentification
-/sdk/healthdataaiservices/                           @GrahamMThomas @danielszaniszlo @billwert
+/sdk/healthdataaiservices/                           @GrahamMThomas @alexathomases @billwert
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
@@ -659,6 +659,9 @@
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-assistants/              @brandom-msft @jpalvarezl @mssfang
 
+# PRLabel: %OpenAI
+/sdk/openai/azure-ai-openai-realtime/              @brandom-msft @jpalvarezl @mssfang
+
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                     @AzmonLogA
 
@@ -796,7 +799,8 @@
 # ServiceOwners:                                     @shahbj79 @mit2nil @aygoya @ganganarayanan
 
 # ServiceLabel:  %Synapse
-# ServiceOwners:                                     @wonner @zesluo
+# PRLabel: %Synapse
+/sdk/synapse                                         @wanyang7
 
 # PRLabel: %Tables
 /sdk/tables/                                         @jairmyree @vcolin7
@@ -848,10 +852,10 @@
 /sdk/spring-experimental/                            @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan
 
 # ServiceLabel:  %Monitor - Spring
 # AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar

@@ -71,7 +71,7 @@
     <dependency>
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna-platform</artifactId>
-      <version>5.6.0</version> <!-- {x-version-update;net.java.dev.jna:jna-platform;external_dependency} -->
+      <version>5.13.0</version> <!-- {x-version-update;net.java.dev.jna:jna-platform;external_dependency} -->
     </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
     <dependency>
@@ -138,7 +138,7 @@
               <includes>
                 <include>com.microsoft.azure:msal4j:[1.17.2]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:msal4j-persistence-extension:[1.3.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
-                <include>net.java.dev.jna:jna-platform:[5.6.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
+                <include>net.java.dev.jna:jna-platform:[5.13.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

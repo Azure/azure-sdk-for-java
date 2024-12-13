@@ -5,74 +5,73 @@
 package com.azure.resourcemanager.resourcehealth.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcehealth.models.KeyValueItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of impacted resource. */
+/**
+ * Properties of impacted resource.
+ */
 @Fluent
-public final class EventImpactedResourceProperties {
+public final class EventImpactedResourceProperties implements JsonSerializable<EventImpactedResourceProperties> {
     /*
      * Resource type within Microsoft cloud.
      */
-    @JsonProperty(value = "targetResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceType;
 
     /*
      * Identity for resource within Microsoft cloud.
      */
-    @JsonProperty(value = "targetResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceId;
 
     /*
      * Impacted resource region name.
      */
-    @JsonProperty(value = "targetRegion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetRegion;
 
     /*
      * Resource name of the impacted resource.
      */
-    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /*
      * Resource group name of the impacted resource.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /*
      * Status of the impacted resource.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Start time of maintenance for the impacted resource.
      */
-    @JsonProperty(value = "maintenanceStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private String maintenanceStartTime;
 
     /*
      * End time of maintenance for the impacted resource.
      */
-    @JsonProperty(value = "maintenanceEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private String maintenanceEndTime;
 
     /*
      * Additional information.
      */
-    @JsonProperty(value = "info")
     private List<KeyValueItem> info;
 
-    /** Creates an instance of EventImpactedResourceProperties class. */
+    /**
+     * Creates an instance of EventImpactedResourceProperties class.
+     */
     public EventImpactedResourceProperties() {
     }
 
     /**
      * Get the targetResourceType property: Resource type within Microsoft cloud.
-     *
+     * 
      * @return the targetResourceType value.
      */
     public String targetResourceType() {
@@ -81,7 +80,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the targetResourceId property: Identity for resource within Microsoft cloud.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -90,7 +89,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the targetRegion property: Impacted resource region name.
-     *
+     * 
      * @return the targetRegion value.
      */
     public String targetRegion() {
@@ -99,7 +98,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the resourceName property: Resource name of the impacted resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -108,7 +107,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the resourceGroup property: Resource group name of the impacted resource.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -117,7 +116,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the status property: Status of the impacted resource.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -126,7 +125,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the maintenanceStartTime property: Start time of maintenance for the impacted resource.
-     *
+     * 
      * @return the maintenanceStartTime value.
      */
     public String maintenanceStartTime() {
@@ -135,7 +134,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the maintenanceEndTime property: End time of maintenance for the impacted resource.
-     *
+     * 
      * @return the maintenanceEndTime value.
      */
     public String maintenanceEndTime() {
@@ -144,7 +143,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Get the info property: Additional information.
-     *
+     * 
      * @return the info value.
      */
     public List<KeyValueItem> info() {
@@ -153,7 +152,7 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Set the info property: Additional information.
-     *
+     * 
      * @param info the info value to set.
      * @return the EventImpactedResourceProperties object itself.
      */
@@ -164,12 +163,66 @@ public final class EventImpactedResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (info() != null) {
             info().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("info", this.info, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventImpactedResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventImpactedResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventImpactedResourceProperties.
+     */
+    public static EventImpactedResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventImpactedResourceProperties deserializedEventImpactedResourceProperties
+                = new EventImpactedResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceType".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.targetResourceType = reader.getString();
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.targetResourceId = reader.getString();
+                } else if ("targetRegion".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.targetRegion = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.resourceName = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.resourceGroup = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.status = reader.getString();
+                } else if ("maintenanceStartTime".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.maintenanceStartTime = reader.getString();
+                } else if ("maintenanceEndTime".equals(fieldName)) {
+                    deserializedEventImpactedResourceProperties.maintenanceEndTime = reader.getString();
+                } else if ("info".equals(fieldName)) {
+                    List<KeyValueItem> info = reader.readArray(reader1 -> KeyValueItem.fromJson(reader1));
+                    deserializedEventImpactedResourceProperties.info = info;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventImpactedResourceProperties;
+        });
     }
 }

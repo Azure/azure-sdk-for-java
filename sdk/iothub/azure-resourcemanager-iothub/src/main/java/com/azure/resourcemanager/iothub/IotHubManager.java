@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -46,7 +46,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure subscription. */
+/**
+ * Entry point to IotHubManager.
+ * Use this API to manage the IoT hubs in your Azure subscription.
+ */
 public final class IotHubManager {
     private Operations operations;
 
@@ -76,7 +79,7 @@ public final class IotHubManager {
 
     /**
      * Creates an instance of IotHub service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the IotHub service API instance.
@@ -89,7 +92,7 @@ public final class IotHubManager {
 
     /**
      * Creates an instance of IotHub service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the IotHub service API instance.
@@ -102,14 +105,16 @@ public final class IotHubManager {
 
     /**
      * Gets a Configurable instance that can be used to create IotHubManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new IotHubManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -181,8 +186,8 @@ public final class IotHubManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -224,7 +229,7 @@ public final class IotHubManager {
                 .append("-")
                 .append("com.azure.resourcemanager.iothub")
                 .append("/")
-                .append("1.2.0");
+                .append("1.3.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -257,7 +262,7 @@ public final class IotHubManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -272,7 +277,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -284,7 +289,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of IotHubResources. It manages IotHubDescription, EventHubConsumerGroupInfo.
-     *
+     * 
      * @return Resource collection API of IotHubResources.
      */
     public IotHubResources iotHubResources() {
@@ -296,7 +301,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of ResourceProviderCommons.
-     *
+     * 
      * @return Resource collection API of ResourceProviderCommons.
      */
     public ResourceProviderCommons resourceProviderCommons() {
@@ -309,7 +314,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of Certificates. It manages CertificateDescription.
-     *
+     * 
      * @return Resource collection API of Certificates.
      */
     public Certificates certificates() {
@@ -321,7 +326,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of IotHubs.
-     *
+     * 
      * @return Resource collection API of IotHubs.
      */
     public IotHubs iotHubs() {
@@ -333,7 +338,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResourcesOperations.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResourcesOperations.
      */
     public PrivateLinkResourcesOperations privateLinkResourcesOperations() {
@@ -346,7 +351,7 @@ public final class IotHubManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -360,7 +365,7 @@ public final class IotHubManager {
     /**
      * Gets wrapped service client IotHubClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client IotHubClient.
      */
     public IotHubClient serviceClient() {

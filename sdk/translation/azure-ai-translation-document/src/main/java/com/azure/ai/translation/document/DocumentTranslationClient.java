@@ -8,6 +8,8 @@ import com.azure.ai.translation.document.implementation.models.SupportedFileForm
 import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
+import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
+import com.azure.ai.translation.document.models.ListTranslationStatusesOptions;
 import com.azure.ai.translation.document.models.TranslationBatch;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.annotation.Generated;
@@ -23,7 +25,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -682,123 +683,53 @@ public final class DocumentTranslationClient {
      * The absence of a continuation
      * token means that no additional pages are available.
      *
-     * top, skip
-     * and maxpagesize query parameters can be used to specify a number of results to
-     * return and an offset for the collection.
+     * @param listTranslationStatusesOptions The configurable options to pass for filtering the output result.
      *
-     * top indicates the total
-     * number of records the user wants to be returned across all pages.
-     * skip
-     * indicates the number of records to skip from the list of batches based on the
-     * sorting method specified. By default, we sort by descending start
-     * time.
-     * maxpagesize is the maximum items returned in a page. If more items are
-     * requested via top (or top is not specified and there are more items to be
-     * returned), &#064;nextLink will contain the link to the next page.
-     *
-     * orderby query parameter can be used to sort the returned list (ex
-     * "orderby=createdDateTimeUtc asc" or "orderby=createdDateTimeUtc
-     * desc").
-     * The default sorting is descending by createdDateTimeUtc.
-     * Some query
-     * parameters can be used to filter the returned list (ex:
-     * "status=Succeeded,Cancelled") will only return succeeded and cancelled
-     * operations.
-     * createdDateTimeUtcStart and createdDateTimeUtcEnd can be used
-     * combined or separately to specify a range of datetime to filter the returned
-     * list by.
-     * The supported filtering query parameters are (status, ids,
-     * createdDateTimeUtcStart, createdDateTimeUtcEnd).
-     *
-     * The server honors
-     * the values specified by the client. However, clients must be prepared to handle
-     * responses that contain a different page size or contain a continuation token.
-     *
-     * When both top and skip are included, the server should first apply
-     * skip and then top on the collection.
-     * Note: If the server can't honor top
-     * and/or skip, the server must return an error to the client informing about it
-     * instead of just ignoring the query options.
-     * This reduces the risk of the client
-     * making assumptions about the data returned.
-     *
-     * @param top top indicates the total number of records the user wants to be returned across
-     * all pages.
-     *
-     * Clients MAY use top and skip query parameters to
-     * specify a number of results to return and an offset into the collection.
-     * When
-     * both top and skip are given by a client, the server SHOULD first apply skip
-     * and then top on the collection.
-     *
-     * Note: If the server can't honor
-     * top and/or skip, the server MUST return an error to the client informing
-     * about it instead of just ignoring the query options.
-     * @param skip skip indicates the number of records to skip from the list of records held by
-     * the server based on the sorting method specified. By default, we sort by
-     * descending start time.
-     *
-     * Clients MAY use top and skip query
-     * parameters to specify a number of results to return and an offset into the
-     * collection.
-     * When both top and skip are given by a client, the server SHOULD
-     * first apply skip and then top on the collection.
-     *
-     * Note: If the
-     * server can't honor top and/or skip, the server MUST return an error to the
-     * client informing about it instead of just ignoring the query options.
-     * @param translationIds Ids to use in filtering.
-     * @param statuses Statuses to use in filtering.
-     * @param createdDateTimeUtcStart the start datetime to get items after.
-     * @param createdDateTimeUtcEnd the end datetime to get items before.
-     * @param orderBy the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc desc').
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return translation job Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TranslationStatusResult> listTranslationStatuses(Integer top, Integer skip,
-        List<String> translationIds, List<String> statuses, OffsetDateTime createdDateTimeUtcStart,
-        OffsetDateTime createdDateTimeUtcEnd, List<String> orderBy) {
-        // Generated convenience method for listTranslationStatuses
+    public PagedIterable<TranslationStatusResult>
+        listTranslationStatuses(ListTranslationStatusesOptions listTranslationStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (translationIds != null) {
-            requestOptions.addQueryParam("ids",
-                translationIds.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (statuses != null) {
-            requestOptions.addQueryParam("statuses",
-                statuses.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (createdDateTimeUtcStart != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(createdDateTimeUtcStart), false);
-        }
-        if (createdDateTimeUtcEnd != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcEnd", String.valueOf(createdDateTimeUtcEnd), false);
-        }
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby",
-                orderBy.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+        if (listTranslationStatusesOptions != null) {
+            if (listTranslationStatusesOptions.getTop() != null) {
+                requestOptions.addQueryParam("top", String.valueOf(listTranslationStatusesOptions.getTop()), false);
+            }
+            if (listTranslationStatusesOptions.getSkip() != null) {
+                requestOptions.addQueryParam("skip", String.valueOf(listTranslationStatusesOptions.getSkip()), false);
+            }
+            if (listTranslationStatusesOptions.getTranslationIds() != null) {
+                requestOptions.addQueryParam("ids",
+                    listTranslationStatusesOptions.getTranslationIds()
+                        .stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(",")),
+                    false);
+            }
+            if (listTranslationStatusesOptions.getStatuses() != null) {
+                requestOptions.addQueryParam("statuses",
+                    listTranslationStatusesOptions.getStatuses()
+                        .stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(",")),
+                    false);
+            }
+            if (listTranslationStatusesOptions.getCreatedAfter() != null) {
+                requestOptions.addQueryParam("createdDateTimeUtcStart",
+                    String.valueOf(listTranslationStatusesOptions.getCreatedAfter()), false);
+            }
+            if (listTranslationStatusesOptions.getCreatedBefore() != null) {
+                requestOptions.addQueryParam("createdDateTimeUtcEnd",
+                    String.valueOf(listTranslationStatusesOptions.getCreatedBefore()), false);
+            }
+            if (listTranslationStatusesOptions.getOrderBy() != null) {
+                requestOptions.addQueryParam("orderby",
+                    listTranslationStatusesOptions.getOrderBy()
+                        .stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(",")),
+                    false);
+            }
         }
         return serviceClient.listTranslationStatuses(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TranslationStatusResult.class));
@@ -865,7 +796,6 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return translation job Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TranslationStatusResult> listTranslationStatuses() {
         // Generated convenience method for listTranslationStatuses
@@ -966,123 +896,53 @@ public final class DocumentTranslationClient {
      * include a continuation token in the response. The absence of a continuation
      * token means that no additional pages are available.
      *
-     * top, skip
-     * and maxpagesize query parameters can be used to specify a number of results to
-     * return and an offset for the collection.
+     * @param listDocumentStatusesOptions The configurable options to pass for filtering the output result.
      *
-     * top indicates the total
-     * number of records the user wants to be returned across all pages.
-     * skip
-     * indicates the number of records to skip from the list of document status held
-     * by the server based on the sorting method specified. By default, we sort by
-     * descending start time.
-     * maxpagesize is the maximum items returned in a page.
-     * If more items are requested via top (or top is not specified and there are
-     * more items to be returned), &#064;nextLink will contain the link to the next page.
-     *
-     * orderby query parameter can be used to sort the returned list (ex
-     * "orderby=createdDateTimeUtc asc" or "orderby=createdDateTimeUtc
-     * desc").
-     * The default sorting is descending by createdDateTimeUtc.
-     * Some query
-     * parameters can be used to filter the returned list (ex:
-     * "status=Succeeded,Cancelled") will only return succeeded and cancelled
-     * documents.
-     * createdDateTimeUtcStart and createdDateTimeUtcEnd can be used
-     * combined or separately to specify a range of datetime to filter the returned
-     * list by.
-     * The supported filtering query parameters are (status, ids,
-     * createdDateTimeUtcStart, createdDateTimeUtcEnd).
-     *
-     * When both top
-     * and skip are included, the server should first apply skip and then top on
-     * the collection.
-     * Note: If the server can't honor top and/or skip, the server
-     * must return an error to the client informing about it instead of just ignoring
-     * the query options.
-     * This reduces the risk of the client making assumptions about
-     * the data returned.
-     *
-     * @param translationId Format - uuid. The operation id.
-     * @param top top indicates the total number of records the user wants to be returned across
-     * all pages.
-     *
-     * Clients MAY use top and skip query parameters to
-     * specify a number of results to return and an offset into the collection.
-     * When
-     * both top and skip are given by a client, the server SHOULD first apply skip
-     * and then top on the collection.
-     *
-     * Note: If the server can't honor
-     * top and/or skip, the server MUST return an error to the client informing
-     * about it instead of just ignoring the query options.
-     * @param skip skip indicates the number of records to skip from the list of records held by
-     * the server based on the sorting method specified. By default, we sort by
-     * descending start time.
-     *
-     * Clients MAY use top and skip query
-     * parameters to specify a number of results to return and an offset into the
-     * collection.
-     * When both top and skip are given by a client, the server SHOULD
-     * first apply skip and then top on the collection.
-     *
-     * Note: If the
-     * server can't honor top and/or skip, the server MUST return an error to the
-     * client informing about it instead of just ignoring the query options.
-     * @param documentIds Ids to use in filtering.
-     * @param statuses Statuses to use in filtering.
-     * @param createdDateTimeUtcStart the start datetime to get items after.
-     * @param createdDateTimeUtcEnd the end datetime to get items before.
-     * @param orderBy the sorting query for the collection (ex: 'CreatedDateTimeUtc asc','CreatedDateTimeUtc desc').
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentStatusResult> listDocumentStatuses(String translationId, Integer top, Integer skip,
-        List<String> documentIds, List<String> statuses, OffsetDateTime createdDateTimeUtcStart,
-        OffsetDateTime createdDateTimeUtcEnd, List<String> orderBy) {
-        // Generated convenience method for listDocumentStatuses
+    public PagedIterable<DocumentStatusResult>
+        listDocumentStatuses(ListDocumentStatusesOptions listDocumentStatusesOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (documentIds != null) {
-            requestOptions.addQueryParam("ids",
-                documentIds.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (statuses != null) {
-            requestOptions.addQueryParam("statuses",
-                statuses.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (createdDateTimeUtcStart != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(createdDateTimeUtcStart), false);
-        }
-        if (createdDateTimeUtcEnd != null) {
-            requestOptions.addQueryParam("createdDateTimeUtcEnd", String.valueOf(createdDateTimeUtcEnd), false);
-        }
-        if (orderBy != null) {
+        if (listDocumentStatusesOptions.getOrderBy() != null) {
             requestOptions.addQueryParam("orderby",
-                orderBy.stream()
+                listDocumentStatusesOptions.getOrderBy()
+                    .stream()
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return serviceClient.listDocumentStatuses(translationId, requestOptions)
+        if (listDocumentStatusesOptions.getSkip() != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(listDocumentStatusesOptions.getSkip()), false);
+        }
+        if (listDocumentStatusesOptions.getTop() != null) {
+            requestOptions.addQueryParam("top", String.valueOf(listDocumentStatusesOptions.getTop()), false);
+        }
+        if (listDocumentStatusesOptions.getCreatedAfter() != null) {
+            requestOptions.addQueryParam("createdDateTimeUtcStart",
+                String.valueOf(listDocumentStatusesOptions.getCreatedAfter()), false);
+        }
+        if (listDocumentStatusesOptions.getCreatedBefore() != null) {
+            requestOptions.addQueryParam("createdDateTimeUtcEnd",
+                String.valueOf(listDocumentStatusesOptions.getCreatedBefore()), false);
+        }
+        if (listDocumentStatusesOptions.getDocumentIds() != null) {
+            requestOptions.addQueryParam("ids",
+                listDocumentStatusesOptions.getDocumentIds()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (listDocumentStatusesOptions.getStatuses() != null) {
+            requestOptions.addQueryParam("statuses",
+                listDocumentStatusesOptions.getStatuses()
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listDocumentStatuses(listDocumentStatusesOptions.getTranslationId(), requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentStatusResult.class));
     }
 
@@ -1143,7 +1003,6 @@ public final class DocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return documents Status Response as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentStatusResult> listDocumentStatuses(String translationId) {
         // Generated convenience method for listDocumentStatuses

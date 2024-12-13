@@ -5,7 +5,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.builders;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.StackFrame;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class StackFrameBuilder {
 

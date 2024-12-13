@@ -15,10 +15,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.util.ClassUtils;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.AZURE_GLOBAL_PROPERTY_BEAN_NAME;
-import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.SPRING_TOKEN_CREDENTIAL_PROVIDER_CONTEXT_BEAN_NAME;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
@@ -30,10 +28,8 @@ import static org.springframework.beans.factory.support.BeanDefinitionBuilder.ge
 public class AzureGlobalPropertiesAutoConfiguration {
 
     static class Registrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
-        private Environment environment;
 
-        private static final String AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME =
-            "com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate";
+        private Environment environment;
 
         @Override
         public void setEnvironment(Environment environment) {
@@ -48,13 +44,9 @@ public class AzureGlobalPropertiesAutoConfiguration {
                     () -> Binder.get(this.environment)
                                 .bindOrCreate(AzureGlobalProperties.PREFIX,
                                     AzureGlobalProperties.class));
-                if (ClassUtils.isPresent(AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME, null)) {
-                    definitionBuilder.addDependsOn(SPRING_TOKEN_CREDENTIAL_PROVIDER_CONTEXT_BEAN_NAME);
-                }
                 registry.registerBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME, definitionBuilder.getBeanDefinition());
             }
         }
-
     }
 
     static class AzureGlobalPropertiesBeanRegistrationExcludeFilter implements BeanRegistrationExcludeFilter {

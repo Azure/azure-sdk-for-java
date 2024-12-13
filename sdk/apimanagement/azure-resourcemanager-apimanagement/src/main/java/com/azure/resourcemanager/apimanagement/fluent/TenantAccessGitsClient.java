@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 
-/** An instance of this class provides access to all the operations defined in TenantAccessGitsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantAccessGitsClient.
+ */
 public interface TenantAccessGitsClient {
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -30,7 +32,7 @@ public interface TenantAccessGitsClient {
 
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -43,7 +45,7 @@ public interface TenantAccessGitsClient {
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -59,7 +61,7 @@ public interface TenantAccessGitsClient {
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.

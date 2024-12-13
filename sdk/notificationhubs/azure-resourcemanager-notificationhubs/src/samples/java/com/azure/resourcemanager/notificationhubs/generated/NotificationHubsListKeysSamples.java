@@ -20,7 +20,8 @@ public final class NotificationHubsListKeysSamples {
      */
     public static void
         notificationHubsListKeys(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().listKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", "sdk-AuthRules-5800",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .listKeysWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub", "sdk-AuthRules-5800",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -56,6 +56,12 @@ public final class Quota implements JsonSerializable<Quota> {
     private MeterPeriod period;
 
     /**
+     * Creates an instance of {@link Quota}.
+     */
+    public Quota() {
+    }
+
+    /**
      * Get the dimension property: The name of the dimension associated with the quota.
      *
      * @return the dimension value.

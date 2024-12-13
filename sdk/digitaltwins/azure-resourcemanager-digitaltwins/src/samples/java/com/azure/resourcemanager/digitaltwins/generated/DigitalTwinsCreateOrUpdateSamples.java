@@ -11,20 +11,23 @@ import com.azure.resourcemanager.digitaltwins.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DigitalTwins CreateOrUpdate. */
+/**
+ * Samples for DigitalTwins CreateOrUpdate.
+ */
 public final class DigitalTwinsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsPut_example.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsPut_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsInstance resource.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
-    public static void putADigitalTwinsInstanceResource(
-        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager
-            .digitalTwins()
+    public static void
+        putADigitalTwinsInstanceResource(com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
+        manager.digitalTwins()
             .define("myDigitalTwinsService")
             .withRegion("WestUS2")
             .withExistingResourceGroup("resRg")
@@ -32,17 +35,18 @@ public final class DigitalTwinsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsPut_WithPublicNetworkAccess.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsPut_WithPublicNetworkAccess.json
      */
     /**
      * Sample code: Put a DigitalTwinsInstance resource with publicNetworkAccess property.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
     public static void putADigitalTwinsInstanceResourceWithPublicNetworkAccessProperty(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager
-            .digitalTwins()
+        manager.digitalTwins()
             .define("myDigitalTwinsService")
             .withRegion("WestUS2")
             .withExistingResourceGroup("resRg")
@@ -51,30 +55,29 @@ public final class DigitalTwinsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsPut_WithIdentity_example.json
+     * x-ms-original-file:
+     * specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/
+     * DigitalTwinsPut_WithIdentity_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsInstance resource with identity.
-     *
+     * 
      * @param manager Entry point to AzureDigitalTwinsManager.
      */
     public static void putADigitalTwinsInstanceResourceWithIdentity(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager
-            .digitalTwins()
+        manager.digitalTwins()
             .define("myDigitalTwinsService")
             .withRegion("WestUS2")
             .withExistingResourceGroup("resRg")
-            .withIdentity(
-                new DigitalTwinsIdentity()
-                    .withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/50016170-c839-41ba-a724-51e9df440b9e/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity",
-                            new UserAssignedIdentity())))
+            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/50016170-c839-41ba-a724-51e9df440b9e/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity",
+                    new UserAssignedIdentity())))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,7 +11,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "eastus",
+      "defaultValue": "eu2euap",
       "metadata": {
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
@@ -33,6 +33,10 @@
     "batchTrainingDataContainer": {
       "type": "string",
       "defaultValue": "trainingdata-batch"
+    },
+    "batchTrainingDataResultContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata-batch-result"
     },
     "selectionMarkTrainingDataContainer": {
       "type": "string",

@@ -40,7 +40,10 @@ public final class TargetAvailability extends ExpandableStringEnum<TargetAvailab
         return fromString(name, TargetAvailability.class);
     }
 
-    /** @return known TargetAvailability values. */
+    /**
+     * Gets the known values for TargetAvailability.
+     * @return known TargetAvailability values.
+     */
     public static Collection<TargetAvailability> values() {
         return values(TargetAvailability.class);
     }

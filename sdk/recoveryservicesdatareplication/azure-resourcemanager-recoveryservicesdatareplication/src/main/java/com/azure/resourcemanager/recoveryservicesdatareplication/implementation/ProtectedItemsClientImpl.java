@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemsClient.
+ */
 public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectedItemsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ProtectedItemsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectedItemsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -128,9 +134,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -170,9 +176,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -212,9 +218,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -232,9 +238,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -252,9 +258,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Gets the protected item.
-     *
-     * <p>Gets the details of the protected item.
-     *
+     * 
+     * Gets the details of the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -270,9 +276,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -316,9 +322,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -362,9 +368,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -386,9 +392,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -410,9 +416,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -436,9 +442,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -456,9 +462,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -478,9 +484,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -499,9 +505,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -520,9 +526,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -542,9 +548,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -561,9 +567,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Puts the protected item.
-     *
-     * <p>Creates the protected item.
-     *
+     * 
+     * Creates the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -582,9 +588,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -626,9 +632,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -669,9 +675,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -692,9 +698,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -715,9 +721,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -740,9 +746,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -760,9 +766,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -782,9 +788,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -803,9 +809,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -823,9 +829,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -845,9 +851,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -863,9 +869,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Deletes the protected item.
-     *
-     * <p>Removes the protected item.
-     *
+     * 
+     * Removes the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -883,16 +889,16 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of protected items in the given vault along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectedItemModelInner>> listSinglePageAsync(String resourceGroupName,
@@ -923,9 +929,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -933,7 +939,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of protected items in the given vault along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectedItemModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -964,9 +970,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -982,9 +988,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1001,9 +1007,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1018,9 +1024,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Lists the protected items.
-     *
-     * <p>Gets the list of protected items in the given vault.
-     *
+     * 
+     * Gets the list of protected items in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1036,9 +1042,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1082,9 +1088,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1128,9 +1134,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1152,9 +1158,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1176,9 +1182,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1202,9 +1208,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1222,9 +1228,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1245,9 +1251,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1266,9 +1272,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1287,9 +1293,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1309,9 +1315,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1329,9 +1335,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Performs planned failover.
-     *
-     * <p>Performs the planned failover on the protected item.
-     *
+     * 
+     * Performs the planned failover on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -1350,14 +1356,13 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protected item model collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return protected item model collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectedItemModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -1377,15 +1382,14 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protected item model collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return protected item model collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectedItemModelInner>> listNextSinglePageAsync(String nextLink, Context context) {

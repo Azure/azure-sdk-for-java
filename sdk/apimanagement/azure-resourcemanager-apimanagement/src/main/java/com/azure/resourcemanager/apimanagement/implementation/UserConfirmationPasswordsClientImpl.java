@@ -25,17 +25,23 @@ import com.azure.resourcemanager.apimanagement.fluent.UserConfirmationPasswordsC
 import com.azure.resourcemanager.apimanagement.models.AppType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UserConfirmationPasswordsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UserConfirmationPasswordsClient.
+ */
 public final class UserConfirmationPasswordsClientImpl implements UserConfirmationPasswordsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UserConfirmationPasswordsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of UserConfirmationPasswordsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UserConfirmationPasswordsClientImpl(ApiManagementClientImpl client) {
@@ -64,12 +70,12 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
 
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,12 +111,12 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
 
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -146,7 +152,7 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
 
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -163,12 +169,12 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
 
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,7 +189,7 @@ public final class UserConfirmationPasswordsClientImpl implements UserConfirmati
 
     /**
      * Sends confirmation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.

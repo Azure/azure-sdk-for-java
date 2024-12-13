@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the SAP Message Server properties. */
+/**
+ * Defines the SAP Message Server properties.
+ */
 @Immutable
-public final class MessageServerProperties {
+public final class MessageServerProperties implements JsonSerializable<MessageServerProperties> {
     /*
      * Message Server port.
      */
-    @JsonProperty(value = "msPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long msPort;
 
     /*
      * Message Server internal MS port.
      */
-    @JsonProperty(value = "internalMsPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long internalMsPort;
 
     /*
      * Message Server HTTP Port.
      */
-    @JsonProperty(value = "httpPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long httpPort;
 
     /*
      * Message Server HTTPS Port.
      */
-    @JsonProperty(value = "httpsPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long httpsPort;
 
     /*
      * Message Server SAP Hostname.
      */
-    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * Message server IP Address.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
      * Defines the health of SAP Instances.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
-    /** Creates an instance of MessageServerProperties class. */
+    /**
+     * Creates an instance of MessageServerProperties class.
+     */
     public MessageServerProperties() {
     }
 
     /**
      * Get the msPort property: Message Server port.
-     *
+     * 
      * @return the msPort value.
      */
     public Long msPort() {
@@ -67,7 +68,7 @@ public final class MessageServerProperties {
 
     /**
      * Get the internalMsPort property: Message Server internal MS port.
-     *
+     * 
      * @return the internalMsPort value.
      */
     public Long internalMsPort() {
@@ -76,7 +77,7 @@ public final class MessageServerProperties {
 
     /**
      * Get the httpPort property: Message Server HTTP Port.
-     *
+     * 
      * @return the httpPort value.
      */
     public Long httpPort() {
@@ -85,7 +86,7 @@ public final class MessageServerProperties {
 
     /**
      * Get the httpsPort property: Message Server HTTPS Port.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Long httpsPort() {
@@ -94,7 +95,7 @@ public final class MessageServerProperties {
 
     /**
      * Get the hostname property: Message Server SAP Hostname.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -103,7 +104,7 @@ public final class MessageServerProperties {
 
     /**
      * Get the ipAddress property: Message server IP Address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -112,7 +113,7 @@ public final class MessageServerProperties {
 
     /**
      * Get the health property: Defines the health of SAP Instances.
-     *
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -121,9 +122,56 @@ public final class MessageServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageServerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MessageServerProperties.
+     */
+    public static MessageServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageServerProperties deserializedMessageServerProperties = new MessageServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("msPort".equals(fieldName)) {
+                    deserializedMessageServerProperties.msPort = reader.getNullable(JsonReader::getLong);
+                } else if ("internalMsPort".equals(fieldName)) {
+                    deserializedMessageServerProperties.internalMsPort = reader.getNullable(JsonReader::getLong);
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedMessageServerProperties.httpPort = reader.getNullable(JsonReader::getLong);
+                } else if ("httpsPort".equals(fieldName)) {
+                    deserializedMessageServerProperties.httpsPort = reader.getNullable(JsonReader::getLong);
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedMessageServerProperties.hostname = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedMessageServerProperties.ipAddress = reader.getString();
+                } else if ("health".equals(fieldName)) {
+                    deserializedMessageServerProperties.health = SapHealthState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMessageServerProperties;
+        });
     }
 }

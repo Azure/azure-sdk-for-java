@@ -22,7 +22,7 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ilcfxwmdboxd\",\"isAvailable\":true},{\"availabilityZone\":\"tufqobrjlnacgc\",\"isAvailable\":false}]},\"id\":\"hxkizvytnrzv\",\"name\":\"lj\",\"type\":\"aaeranokqgukk\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"pmpdn\",\"isAvailable\":true},{\"availabilityZone\":\"awaoqvmmbnpqfrt\",\"isAvailable\":true},{\"availabilityZone\":\"megni\",\"isAvailable\":false},{\"availabilityZone\":\"xlzyqd\",\"isAvailable\":false}]},\"id\":\"cealzxwh\",\"name\":\"ansym\",\"type\":\"yqhlwigdivbkbx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RegionInfoResource response
-            = manager.netAppResourceRegionInfos().getWithResponse("kdlpa", com.azure.core.util.Context.NONE).getValue();
+            = manager.netAppResourceRegionInfos().getWithResponse("kenx", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
-            response.storageToNetworkProximity());
-        Assertions.assertEquals("ilcfxwmdboxd", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2AND_ACROSS_T2, response.storageToNetworkProximity());
+        Assertions.assertEquals("pmpdn", response.availabilityZoneMappings().get(0).availabilityZone());
         Assertions.assertEquals(true, response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AppConfigurationManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the AppConfigurationManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { AppConfigurationManagementClientImpl.class })
 public final class AppConfigurationManagementClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Sets The Microsoft Azure subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AppConfigurationManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AppConfigurationManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AppConfigurationManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AppConfigurationManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AppConfigurationManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AppConfigurationManagementClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class AppConfigurationManagementClientBuilder {
 
     /**
      * Builds an instance of AppConfigurationManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AppConfigurationManagementClientImpl.
      */
     public AppConfigurationManagementClientImpl buildClient() {
@@ -130,7 +132,7 @@ public final class AppConfigurationManagementClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AppConfigurationManagementClientImpl client = new AppConfigurationManagementClientImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

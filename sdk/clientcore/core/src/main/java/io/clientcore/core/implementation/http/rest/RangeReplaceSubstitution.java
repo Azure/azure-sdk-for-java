@@ -16,7 +16,7 @@ import java.util.Objects;
  * Before the introduction of this replacement {@link String#replace(CharSequence, CharSequence)} was used which would
  * generate a {@code Pattern} to perform replacing.
  */
-public class RangeReplaceSubstitution extends Substitution {
+class RangeReplaceSubstitution extends Substitution {
     private final List<Range> ranges;
 
     /**
@@ -29,7 +29,7 @@ public class RangeReplaceSubstitution extends Substitution {
      * taking place.
      * @param substitutionBase The string that will have its ranges substituted.
      */
-    public RangeReplaceSubstitution(String uriParameterName, int methodParameterIndex, boolean shouldEncode,
+    RangeReplaceSubstitution(String uriParameterName, int methodParameterIndex, boolean shouldEncode,
         String substitutionBase) {
         super(uriParameterName, methodParameterIndex, shouldEncode);
         this.ranges = new ArrayList<>();
@@ -48,11 +48,11 @@ public class RangeReplaceSubstitution extends Substitution {
         }
     }
 
-    public List<Range> getRanges() {
+    List<Range> getRanges() {
         return ranges;
     }
 
-    public static final class Range implements Comparable<Range> {
+    static final class Range implements Comparable<Range> {
         private final int start;
         private final int end;
 
@@ -61,15 +61,15 @@ public class RangeReplaceSubstitution extends Substitution {
             this.end = end;
         }
 
-        public int getStart() {
+        int getStart() {
             return start;
         }
 
-        public int getEnd() {
+        int getEnd() {
             return end;
         }
 
-        public int getSize() {
+        int getSize() {
             return end - start;
         }
 

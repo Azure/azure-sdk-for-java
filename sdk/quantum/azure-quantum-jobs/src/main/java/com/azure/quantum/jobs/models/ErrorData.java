@@ -30,6 +30,12 @@ public final class ErrorData implements JsonSerializable<ErrorData> {
     private String message;
 
     /**
+     * Creates an instance of {@link ErrorData}.
+     */
+    public ErrorData() {
+    }
+
+    /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
      *

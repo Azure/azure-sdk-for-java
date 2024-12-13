@@ -35,17 +35,23 @@ import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurationL
 import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurationResourcePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceConfigurationsClient.
+ */
 public final class ServiceConfigurationsClientImpl implements ServiceConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServiceConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HybridConnectivityManagementApiImpl client;
 
     /**
      * Initializes an instance of ServiceConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServiceConfigurationsClientImpl(HybridConnectivityManagementApiImpl client) {
@@ -127,16 +133,16 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of serviceConfigurations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceConfigurationResourceInner>>
@@ -162,9 +168,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -172,7 +178,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of serviceConfigurations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceConfigurationResourceInner>>
@@ -198,9 +204,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,9 +223,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -237,9 +243,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,9 +261,9 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -274,7 +280,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -282,7 +288,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the service to the resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> getWithResponseAsync(String resourceUri,
@@ -310,7 +316,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -319,7 +325,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the service to the resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> getWithResponseAsync(String resourceUri,
@@ -346,7 +352,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -364,7 +370,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -382,7 +388,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -399,7 +405,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -408,7 +414,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service configuration details associated with the target resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> createOrupdateWithResponseAsync(String resourceUri,
@@ -443,7 +449,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -453,7 +459,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service configuration details associated with the target resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> createOrupdateWithResponseAsync(String resourceUri,
@@ -487,7 +493,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -495,8 +501,8 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service configuration details associated with the target resource on successful completion of {@link
-     *     Mono}.
+     * @return the service configuration details associated with the target resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceConfigurationResourceInner> createOrupdateAsync(String resourceUri, String endpointName,
@@ -507,7 +513,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -528,7 +534,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -547,7 +553,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -556,7 +562,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service configuration details associated with the target resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> updateWithResponseAsync(String resourceUri,
@@ -591,7 +597,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -601,7 +607,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the service configuration details associated with the target resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceConfigurationResourceInner>> updateWithResponseAsync(String resourceUri,
@@ -635,7 +641,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -643,8 +649,8 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service configuration details associated with the target resource on successful completion of {@link
-     *     Mono}.
+     * @return the service configuration details associated with the target resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceConfigurationResourceInner> updateAsync(String resourceUri, String endpointName,
@@ -655,7 +661,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -676,7 +682,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -695,7 +701,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -730,7 +736,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -765,7 +771,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -782,7 +788,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -800,7 +806,7 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -815,14 +821,13 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of serviceConfigurations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceConfigurationResourceInner>>
@@ -845,15 +850,14 @@ public final class ServiceConfigurationsClientImpl implements ServiceConfigurati
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of serviceConfigurations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceConfigurationResourceInner>>

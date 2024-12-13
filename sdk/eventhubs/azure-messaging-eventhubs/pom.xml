@@ -26,6 +26,10 @@
       --add-reads com.azure.messaging.eventhubs=com.azure.core.tracing.opentelemetry
       --add-reads com.azure.messaging.eventhubs=com.azure.core.experimental
     </javaModulesSurefireArgLine>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
   <distributionManagement>
     <site>
@@ -56,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

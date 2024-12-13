@@ -113,6 +113,12 @@ public final class JobDetails implements JsonSerializable<JobDetails> {
     private ErrorData errorData;
 
     /**
+     * Creates an instance of {@link JobDetails}.
+     */
+    public JobDetails() {
+    }
+
+    /**
      * Get the id property: The job id.
      *
      * @return the id value.

@@ -18,6 +18,12 @@ public class BatchBaseOptions {
     }
 
     /**
+     * Creates an instance of {@link BatchBaseOptions}.
+     */
+    public BatchBaseOptions() {
+    }
+
+    /**
      * Sets the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
      *
      * @param timeOutInSeconds The maximum time that the server can spend processing the request, in seconds.

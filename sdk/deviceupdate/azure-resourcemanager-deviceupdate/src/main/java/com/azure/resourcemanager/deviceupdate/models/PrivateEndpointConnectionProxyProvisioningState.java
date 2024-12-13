@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class PrivateEndpointConnectionProxyProvisioningState
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionProxyProvisioningState.
      */
-    @JsonCreator
     public static PrivateEndpointConnectionProxyProvisioningState fromString(String name) {
         return fromString(name, PrivateEndpointConnectionProxyProvisioningState.class);
     }

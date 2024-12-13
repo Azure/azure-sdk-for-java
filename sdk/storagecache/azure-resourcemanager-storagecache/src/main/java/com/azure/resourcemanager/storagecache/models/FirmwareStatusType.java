@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class FirmwareStatusType extends ExpandableStringEnum<FirmwareStatu
      * @param name a name to look for.
      * @return the corresponding FirmwareStatusType.
      */
-    @JsonCreator
     public static FirmwareStatusType fromString(String name) {
         return fromString(name, FirmwareStatusType.class);
     }

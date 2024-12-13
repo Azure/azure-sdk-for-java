@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ServerRole extends ExpandableStringEnum<ServerRole> {
      * @param name a name to look for.
      * @return the corresponding ServerRole.
      */
-    @JsonCreator
     public static ServerRole fromString(String name) {
         return fromString(name, ServerRole.class);
     }

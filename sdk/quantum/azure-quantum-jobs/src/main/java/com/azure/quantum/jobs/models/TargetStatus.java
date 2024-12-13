@@ -38,6 +38,12 @@ public final class TargetStatus implements JsonSerializable<TargetStatus> {
     private String statusPage;
 
     /**
+     * Creates an instance of {@link TargetStatus}.
+     */
+    public TargetStatus() {
+    }
+
+    /**
      * Get the id property: Target id.
      *
      * @return the id value.

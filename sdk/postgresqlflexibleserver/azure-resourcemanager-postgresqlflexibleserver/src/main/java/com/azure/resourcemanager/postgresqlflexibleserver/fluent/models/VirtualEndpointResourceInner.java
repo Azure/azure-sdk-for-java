@@ -6,9 +6,12 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResourceForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,28 +20,30 @@ import java.util.List;
 @Fluent
 public final class VirtualEndpointResourceInner extends VirtualEndpointResourceForPatch {
     /*
-     * Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the resource
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Properties of the virtual endpoint resource.
+     */
+    private VirtualEndpointResourceProperties innerProperties;
 
     /**
      * Creates an instance of VirtualEndpointResourceInner class.
@@ -85,21 +90,67 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
     }
 
     /**
-     * {@inheritDoc}
+     * Get the innerProperties property: Properties of the virtual endpoint resource.
+     * 
+     * @return the innerProperties value.
      */
-    @Override
+    private VirtualEndpointResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the endpointType property: The endpoint type for the virtual endpoint.
+     * 
+     * @return the endpointType value.
+     */
+    public VirtualEndpointType endpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointType();
+    }
+
+    /**
+     * Set the endpointType property: The endpoint type for the virtual endpoint.
+     * 
+     * @param endpointType the endpointType value to set.
+     * @return the VirtualEndpointResourceInner object itself.
+     */
     public VirtualEndpointResourceInner withEndpointType(VirtualEndpointType endpointType) {
-        super.withEndpointType(endpointType);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualEndpointResourceProperties();
+        }
+        this.innerProperties().withEndpointType(endpointType);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the members property: List of members for a virtual endpoint.
+     * 
+     * @return the members value.
      */
-    @Override
+    public List<String> members() {
+        return this.innerProperties() == null ? null : this.innerProperties().members();
+    }
+
+    /**
+     * Set the members property: List of members for a virtual endpoint.
+     * 
+     * @param members the members value to set.
+     * @return the VirtualEndpointResourceInner object itself.
+     */
     public VirtualEndpointResourceInner withMembers(List<String> members) {
-        super.withMembers(members);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualEndpointResourceProperties();
+        }
+        this.innerProperties().withMembers(members);
         return this;
+    }
+
+    /**
+     * Get the virtualEndpoints property: List of virtual endpoints for a server.
+     * 
+     * @return the virtualEndpoints value.
+     */
+    public List<String> virtualEndpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualEndpoints();
     }
 
     /**
@@ -109,6 +160,53 @@ public final class VirtualEndpointResourceInner extends VirtualEndpointResourceF
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", innerProperties());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualEndpointResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualEndpointResourceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualEndpointResourceInner.
+     */
+    public static VirtualEndpointResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualEndpointResourceInner deserializedVirtualEndpointResourceInner = new VirtualEndpointResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceInner.innerProperties
+                        = VirtualEndpointResourceProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualEndpointResourceInner;
+        });
     }
 }

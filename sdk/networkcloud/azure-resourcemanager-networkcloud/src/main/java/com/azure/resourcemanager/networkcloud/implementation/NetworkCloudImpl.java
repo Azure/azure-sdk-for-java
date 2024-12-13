@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.networkcloud.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -30,6 +31,7 @@ import com.azure.resourcemanager.networkcloud.fluent.CloudServicesNetworksClient
 import com.azure.resourcemanager.networkcloud.fluent.ClusterManagersClient;
 import com.azure.resourcemanager.networkcloud.fluent.ClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.ConsolesClient;
+import com.azure.resourcemanager.networkcloud.fluent.KubernetesClusterFeaturesClient;
 import com.azure.resourcemanager.networkcloud.fluent.KubernetesClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.L2NetworksClient;
 import com.azure.resourcemanager.networkcloud.fluent.L3NetworksClient;
@@ -51,303 +53,369 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the NetworkCloudImpl type. */
+/**
+ * Initializes a new instance of the NetworkCloudImpl type.
+ */
 @ServiceClient(builder = NetworkCloudBuilder.class)
 public final class NetworkCloudImpl implements NetworkCloud {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The BareMetalMachinesClient object to access its operations. */
+    /**
+     * The BareMetalMachinesClient object to access its operations.
+     */
     private final BareMetalMachinesClient bareMetalMachines;
 
     /**
      * Gets the BareMetalMachinesClient object to access its operations.
-     *
+     * 
      * @return the BareMetalMachinesClient object.
      */
     public BareMetalMachinesClient getBareMetalMachines() {
         return this.bareMetalMachines;
     }
 
-    /** The CloudServicesNetworksClient object to access its operations. */
+    /**
+     * The CloudServicesNetworksClient object to access its operations.
+     */
     private final CloudServicesNetworksClient cloudServicesNetworks;
 
     /**
      * Gets the CloudServicesNetworksClient object to access its operations.
-     *
+     * 
      * @return the CloudServicesNetworksClient object.
      */
     public CloudServicesNetworksClient getCloudServicesNetworks() {
         return this.cloudServicesNetworks;
     }
 
-    /** The ClusterManagersClient object to access its operations. */
+    /**
+     * The ClusterManagersClient object to access its operations.
+     */
     private final ClusterManagersClient clusterManagers;
 
     /**
      * Gets the ClusterManagersClient object to access its operations.
-     *
+     * 
      * @return the ClusterManagersClient object.
      */
     public ClusterManagersClient getClusterManagers() {
         return this.clusterManagers;
     }
 
-    /** The ClustersClient object to access its operations. */
+    /**
+     * The ClustersClient object to access its operations.
+     */
     private final ClustersClient clusters;
 
     /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     public ClustersClient getClusters() {
         return this.clusters;
     }
 
-    /** The KubernetesClustersClient object to access its operations. */
+    /**
+     * The KubernetesClustersClient object to access its operations.
+     */
     private final KubernetesClustersClient kubernetesClusters;
 
     /**
      * Gets the KubernetesClustersClient object to access its operations.
-     *
+     * 
      * @return the KubernetesClustersClient object.
      */
     public KubernetesClustersClient getKubernetesClusters() {
         return this.kubernetesClusters;
     }
 
-    /** The L2NetworksClient object to access its operations. */
+    /**
+     * The L2NetworksClient object to access its operations.
+     */
     private final L2NetworksClient l2Networks;
 
     /**
      * Gets the L2NetworksClient object to access its operations.
-     *
+     * 
      * @return the L2NetworksClient object.
      */
     public L2NetworksClient getL2Networks() {
         return this.l2Networks;
     }
 
-    /** The L3NetworksClient object to access its operations. */
+    /**
+     * The L3NetworksClient object to access its operations.
+     */
     private final L3NetworksClient l3Networks;
 
     /**
      * Gets the L3NetworksClient object to access its operations.
-     *
+     * 
      * @return the L3NetworksClient object.
      */
     public L3NetworksClient getL3Networks() {
         return this.l3Networks;
     }
 
-    /** The RackSkusClient object to access its operations. */
+    /**
+     * The RackSkusClient object to access its operations.
+     */
     private final RackSkusClient rackSkus;
 
     /**
      * Gets the RackSkusClient object to access its operations.
-     *
+     * 
      * @return the RackSkusClient object.
      */
     public RackSkusClient getRackSkus() {
         return this.rackSkus;
     }
 
-    /** The RacksClient object to access its operations. */
+    /**
+     * The RacksClient object to access its operations.
+     */
     private final RacksClient racks;
 
     /**
      * Gets the RacksClient object to access its operations.
-     *
+     * 
      * @return the RacksClient object.
      */
     public RacksClient getRacks() {
         return this.racks;
     }
 
-    /** The StorageAppliancesClient object to access its operations. */
+    /**
+     * The StorageAppliancesClient object to access its operations.
+     */
     private final StorageAppliancesClient storageAppliances;
 
     /**
      * Gets the StorageAppliancesClient object to access its operations.
-     *
+     * 
      * @return the StorageAppliancesClient object.
      */
     public StorageAppliancesClient getStorageAppliances() {
         return this.storageAppliances;
     }
 
-    /** The TrunkedNetworksClient object to access its operations. */
+    /**
+     * The TrunkedNetworksClient object to access its operations.
+     */
     private final TrunkedNetworksClient trunkedNetworks;
 
     /**
      * Gets the TrunkedNetworksClient object to access its operations.
-     *
+     * 
      * @return the TrunkedNetworksClient object.
      */
     public TrunkedNetworksClient getTrunkedNetworks() {
         return this.trunkedNetworks;
     }
 
-    /** The VirtualMachinesClient object to access its operations. */
+    /**
+     * The VirtualMachinesClient object to access its operations.
+     */
     private final VirtualMachinesClient virtualMachines;
 
     /**
      * Gets the VirtualMachinesClient object to access its operations.
-     *
+     * 
      * @return the VirtualMachinesClient object.
      */
     public VirtualMachinesClient getVirtualMachines() {
         return this.virtualMachines;
     }
 
-    /** The VolumesClient object to access its operations. */
+    /**
+     * The VolumesClient object to access its operations.
+     */
     private final VolumesClient volumes;
 
     /**
      * Gets the VolumesClient object to access its operations.
-     *
+     * 
      * @return the VolumesClient object.
      */
     public VolumesClient getVolumes() {
         return this.volumes;
     }
 
-    /** The BareMetalMachineKeySetsClient object to access its operations. */
+    /**
+     * The BareMetalMachineKeySetsClient object to access its operations.
+     */
     private final BareMetalMachineKeySetsClient bareMetalMachineKeySets;
 
     /**
      * Gets the BareMetalMachineKeySetsClient object to access its operations.
-     *
+     * 
      * @return the BareMetalMachineKeySetsClient object.
      */
     public BareMetalMachineKeySetsClient getBareMetalMachineKeySets() {
         return this.bareMetalMachineKeySets;
     }
 
-    /** The BmcKeySetsClient object to access its operations. */
+    /**
+     * The BmcKeySetsClient object to access its operations.
+     */
     private final BmcKeySetsClient bmcKeySets;
 
     /**
      * Gets the BmcKeySetsClient object to access its operations.
-     *
+     * 
      * @return the BmcKeySetsClient object.
      */
     public BmcKeySetsClient getBmcKeySets() {
         return this.bmcKeySets;
     }
 
-    /** The MetricsConfigurationsClient object to access its operations. */
+    /**
+     * The MetricsConfigurationsClient object to access its operations.
+     */
     private final MetricsConfigurationsClient metricsConfigurations;
 
     /**
      * Gets the MetricsConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the MetricsConfigurationsClient object.
      */
     public MetricsConfigurationsClient getMetricsConfigurations() {
         return this.metricsConfigurations;
     }
 
-    /** The AgentPoolsClient object to access its operations. */
+    /**
+     * The AgentPoolsClient object to access its operations.
+     */
     private final AgentPoolsClient agentPools;
 
     /**
      * Gets the AgentPoolsClient object to access its operations.
-     *
+     * 
      * @return the AgentPoolsClient object.
      */
     public AgentPoolsClient getAgentPools() {
         return this.agentPools;
     }
 
-    /** The ConsolesClient object to access its operations. */
+    /**
+     * The KubernetesClusterFeaturesClient object to access its operations.
+     */
+    private final KubernetesClusterFeaturesClient kubernetesClusterFeatures;
+
+    /**
+     * Gets the KubernetesClusterFeaturesClient object to access its operations.
+     * 
+     * @return the KubernetesClusterFeaturesClient object.
+     */
+    public KubernetesClusterFeaturesClient getKubernetesClusterFeatures() {
+        return this.kubernetesClusterFeatures;
+    }
+
+    /**
+     * The ConsolesClient object to access its operations.
+     */
     private final ConsolesClient consoles;
 
     /**
      * Gets the ConsolesClient object to access its operations.
-     *
+     * 
      * @return the ConsolesClient object.
      */
     public ConsolesClient getConsoles() {
@@ -356,7 +424,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
 
     /**
      * Initializes an instance of NetworkCloud client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -371,7 +439,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-07-01";
+        this.apiVersion = "2024-06-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.bareMetalMachines = new BareMetalMachinesClientImpl(this);
         this.cloudServicesNetworks = new CloudServicesNetworksClientImpl(this);
@@ -390,12 +458,13 @@ public final class NetworkCloudImpl implements NetworkCloud {
         this.bmcKeySets = new BmcKeySetsClientImpl(this);
         this.metricsConfigurations = new MetricsConfigurationsClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
+        this.kubernetesClusterFeatures = new KubernetesClusterFeaturesClientImpl(this);
         this.consoles = new ConsolesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -404,7 +473,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -414,7 +483,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -432,7 +501,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -495,7 +564,7 @@ public final class NetworkCloudImpl implements NetworkCloud {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

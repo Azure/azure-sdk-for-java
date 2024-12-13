@@ -24,7 +24,8 @@ public class HttpDataset extends Dataset {
     private String type = "HttpFile";
 
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
+     * with resultType string).
      */
     private Object relativeUrl;
 

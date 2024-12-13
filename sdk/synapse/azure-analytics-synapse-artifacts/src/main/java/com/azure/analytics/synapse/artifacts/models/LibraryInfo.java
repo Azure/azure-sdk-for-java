@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -218,8 +219,8 @@ public final class LibraryInfo implements JsonSerializable<LibraryInfo> {
                 } else if ("containerName".equals(fieldName)) {
                     deserializedLibraryInfo.containerName = reader.getString();
                 } else if ("uploadedTimestamp".equals(fieldName)) {
-                    deserializedLibraryInfo.uploadedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedLibraryInfo.uploadedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("type".equals(fieldName)) {
                     deserializedLibraryInfo.type = reader.getString();
                 } else if ("provisioningStatus".equals(fieldName)) {

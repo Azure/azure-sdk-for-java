@@ -59,32 +59,32 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
 
     public PagedIterable<VirtualMachineTemplate> list() {
         PagedIterable<VirtualMachineTemplateInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualMachineTemplate> list(Context context) {
         PagedIterable<VirtualMachineTemplateInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualMachineTemplate> listByResourceGroup(String resourceGroupName) {
         PagedIterable<VirtualMachineTemplateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualMachineTemplate> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<VirtualMachineTemplateInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineTemplateImpl(inner1, this.manager()));
     }
 
     public VirtualMachineTemplate getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineTemplateName = Utils.getValueFromIdByName(id, "virtualMachineTemplates");
+        String virtualMachineTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachineTemplates");
         if (virtualMachineTemplateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachineTemplates'.", id)));
@@ -94,12 +94,12 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
     }
 
     public Response<VirtualMachineTemplate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineTemplateName = Utils.getValueFromIdByName(id, "virtualMachineTemplates");
+        String virtualMachineTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachineTemplates");
         if (virtualMachineTemplateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachineTemplates'.", id)));
@@ -108,12 +108,12 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineTemplateName = Utils.getValueFromIdByName(id, "virtualMachineTemplates");
+        String virtualMachineTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachineTemplates");
         if (virtualMachineTemplateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachineTemplates'.", id)));
@@ -123,12 +123,12 @@ public final class VirtualMachineTemplatesImpl implements VirtualMachineTemplate
     }
 
     public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineTemplateName = Utils.getValueFromIdByName(id, "virtualMachineTemplates");
+        String virtualMachineTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachineTemplates");
         if (virtualMachineTemplateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachineTemplates'.", id)));

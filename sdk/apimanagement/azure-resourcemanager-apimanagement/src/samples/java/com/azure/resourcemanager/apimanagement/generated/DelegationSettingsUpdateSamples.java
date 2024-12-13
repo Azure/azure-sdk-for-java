@@ -8,26 +8,25 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PortalDelegationSet
 import com.azure.resourcemanager.apimanagement.models.RegistrationDelegationSettingsProperties;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSettingsProperties;
 
-/** Samples for DelegationSettings Update. */
+/**
+ * Samples for DelegationSettings Update.
+ */
 public final class DelegationSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPortalSettingsUpdateDelegation.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementPortalSettingsUpdateDelegation.json
      */
     /**
      * Sample code: ApiManagementPortalSettingsUpdateDelegation.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementPortalSettingsUpdateDelegation(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .delegationSettings()
-            .updateWithResponse(
-                "rg1",
-                "apimService1",
-                "*",
-                new PortalDelegationSettingsInner()
-                    .withUrl("http://contoso.com/delegation")
+        manager.delegationSettings()
+            .updateWithResponse("rg1", "apimService1", "*",
+                new PortalDelegationSettingsInner().withUrl("http://contoso.com/delegation")
                     .withValidationKey("fakeTokenPlaceholder")
                     .withSubscriptions(new SubscriptionsDelegationSettingsProperties().withEnabled(true))
                     .withUserRegistration(new RegistrationDelegationSettingsProperties().withEnabled(true)),

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
      * @param name a name to look for.
      * @return the corresponding BackupType.
      */
-    @JsonCreator
     public static BackupType fromString(String name) {
         return fromString(name, BackupType.class);
     }

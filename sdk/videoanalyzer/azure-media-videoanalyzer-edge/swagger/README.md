@@ -7,21 +7,16 @@
 ```yaml
 title: Microsoft Azure SDK for Azure Video Analyzer on IoT Edge - edge client library for Java
 description: This package contains the edge client library for Azure Video Analyzer on IoT Edge.
-generate-metadata: false
 license-header: MICROSOFT_MIT_SMALL
 output-folder: ../
 source-code-folder-path: ./src/generated
 java: true
 require: https://github.com/Azure/azure-rest-api-specs/blob/60fcb275cbce38d343f9c35411786e672aba154e/specification/videoanalyzer/data-plane/readme.md
-add-credentials: false
 namespace: com.azure.media.videoanalyzer.edge
 sync-methods: none
-add-context-parameter: true
 models-subpackage: models
 custom-types-subpacakge: models
-context-client-method-parameter: true
-use: '@autorest/java@4.1.39'
-model-override-setter-from-superclass: true
+use: '@autorest/java@4.1.42'
 required-fields-as-ctor-args: true
 customization-class: src/main/java/VideoAnalyzerEdgeCustomization.java
 ```

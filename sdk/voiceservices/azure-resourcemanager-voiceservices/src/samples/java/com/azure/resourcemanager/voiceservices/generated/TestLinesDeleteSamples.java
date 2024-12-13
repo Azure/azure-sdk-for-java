@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.voiceservices.generated;
 
-/** Samples for TestLines Delete. */
+/**
+ * Samples for TestLines Delete.
+ */
 public final class TestLinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Delete.json
+     * x-ms-original-file:
+     * specification/voiceservices/resource-manager/Microsoft.VoiceServices/stable/2023-01-31/examples/TestLines_Delete.
+     * json
      */
     /**
      * Sample code: DeleteTestLineResource.
-     *
+     * 
      * @param manager Entry point to VoiceServicesManager.
      */
     public static void deleteTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {

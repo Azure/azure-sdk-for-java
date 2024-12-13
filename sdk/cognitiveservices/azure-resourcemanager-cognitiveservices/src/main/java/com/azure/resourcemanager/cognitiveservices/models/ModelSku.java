@@ -45,6 +45,11 @@ public final class ModelSku implements JsonSerializable<ModelSku> {
      */
     private List<CallRateLimit> rateLimits;
 
+    /*
+     * The list of billing meter info.
+     */
+    private List<BillingMeterInfo> cost;
+
     /**
      * Creates an instance of ModelSku class.
      */
@@ -152,6 +157,26 @@ public final class ModelSku implements JsonSerializable<ModelSku> {
     }
 
     /**
+     * Get the cost property: The list of billing meter info.
+     * 
+     * @return the cost value.
+     */
+    public List<BillingMeterInfo> cost() {
+        return this.cost;
+    }
+
+    /**
+     * Set the cost property: The list of billing meter info.
+     * 
+     * @param cost the cost value to set.
+     * @return the ModelSku object itself.
+     */
+    public ModelSku withCost(List<BillingMeterInfo> cost) {
+        this.cost = cost;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,6 +187,9 @@ public final class ModelSku implements JsonSerializable<ModelSku> {
         }
         if (rateLimits() != null) {
             rateLimits().forEach(e -> e.validate());
+        }
+        if (cost() != null) {
+            cost().forEach(e -> e.validate());
         }
     }
 
@@ -177,6 +205,7 @@ public final class ModelSku implements JsonSerializable<ModelSku> {
             this.deprecationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deprecationDate));
         jsonWriter.writeJsonField("capacity", this.capacity);
         jsonWriter.writeArrayField("rateLimits", this.rateLimits, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cost", this.cost, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -207,6 +236,9 @@ public final class ModelSku implements JsonSerializable<ModelSku> {
                 } else if ("rateLimits".equals(fieldName)) {
                     List<CallRateLimit> rateLimits = reader.readArray(reader1 -> CallRateLimit.fromJson(reader1));
                     deserializedModelSku.rateLimits = rateLimits;
+                } else if ("cost".equals(fieldName)) {
+                    List<BillingMeterInfo> cost = reader.readArray(reader1 -> BillingMeterInfo.fromJson(reader1));
+                    deserializedModelSku.cost = cost;
                 } else {
                     reader.skipChildren();
                 }

@@ -30,17 +30,23 @@ import com.azure.resourcemanager.loganalytics.fluent.models.ManagementGroupInner
 import com.azure.resourcemanager.loganalytics.models.WorkspaceListManagementGroupsResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementGroupsClient.
+ */
 public final class ManagementGroupsClientImpl implements ManagementGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagementGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementGroupsClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -68,14 +74,14 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of management groups connected to a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInner>> listSinglePageAsync(String resourceGroupName,
@@ -107,7 +113,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -115,7 +121,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of management groups connected to a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementGroupInner>> listSinglePageAsync(String resourceGroupName,
@@ -147,7 +153,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +168,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -178,7 +184,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +199,7 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
 
     /**
      * Gets a list of management groups connected to a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

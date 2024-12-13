@@ -14,6 +14,12 @@ public class StressOptions extends PerfStressOptions {
     private String serviceEndpoint;
 
     /**
+     * Creates a new instance of {@link StressOptions}.
+     */
+    public StressOptions() {
+    }
+
+    /**
      * Gets the service endpoint.
      * @return the service endpoint.
      */

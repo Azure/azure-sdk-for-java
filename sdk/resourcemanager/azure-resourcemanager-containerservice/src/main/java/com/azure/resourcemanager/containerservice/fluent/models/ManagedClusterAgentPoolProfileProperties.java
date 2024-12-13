@@ -39,6 +39,13 @@ import java.util.Map;
 public class ManagedClusterAgentPoolProfileProperties
     implements JsonSerializable<ManagedClusterAgentPoolProfileProperties> {
     /*
+     * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
+     * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
+     * optimistic concurrency per the normal etag convention.
+     */
+    private String etag;
+
+    /*
      * Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive)
      * for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
      */
@@ -307,6 +314,30 @@ public class ManagedClusterAgentPoolProfileProperties
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
      */
     public ManagedClusterAgentPoolProfileProperties() {
+    }
+
+    /**
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @param etag the etag value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    ManagedClusterAgentPoolProfileProperties withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -1415,7 +1446,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("count".equals(fieldName)) {
+                if ("eTag".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.etag = reader.getString();
+                } else if ("count".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.count = reader.getNullable(JsonReader::getInt);
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.vmSize = reader.getString();

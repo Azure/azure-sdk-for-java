@@ -14,24 +14,24 @@ public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationInner model = BinaryData.fromString(
-            "{\"replicationId\":\"vljxywsu\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"ndsytgadg\",\"remoteVolumeRegion\":\"aeaeneqnzarrw\"}")
+            "{\"replicationId\":\"fcktqumiekke\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"ly\",\"remoteVolumeRegion\":\"hdgqggeb\"}")
             .toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("ndsytgadg", model.remoteVolumeResourceId());
-        Assertions.assertEquals("aeaeneqnzarrw", model.remoteVolumeRegion());
+        Assertions.assertEquals("ly", model.remoteVolumeResourceId());
+        Assertions.assertEquals("hdgqggeb", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationInner model = new ReplicationInner().withEndpointType(EndpointType.SRC)
             .withReplicationSchedule(ReplicationSchedule.HOURLY)
-            .withRemoteVolumeResourceId("ndsytgadg")
-            .withRemoteVolumeRegion("aeaeneqnzarrw");
+            .withRemoteVolumeResourceId("ly")
+            .withRemoteVolumeRegion("hdgqggeb");
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("ndsytgadg", model.remoteVolumeResourceId());
-        Assertions.assertEquals("aeaeneqnzarrw", model.remoteVolumeRegion());
+        Assertions.assertEquals("ly", model.remoteVolumeResourceId());
+        Assertions.assertEquals("hdgqggeb", model.remoteVolumeRegion());
     }
 }

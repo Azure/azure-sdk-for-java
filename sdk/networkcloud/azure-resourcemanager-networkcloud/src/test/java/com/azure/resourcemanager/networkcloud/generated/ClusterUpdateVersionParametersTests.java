@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterUpdateVersionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterUpdateVersionParameters model = BinaryData.fromString("{\"targetClusterVersion\":\"ytprwnwvroev\"}")
+        ClusterUpdateVersionParameters model = BinaryData.fromString("{\"targetClusterVersion\":\"idjpuuyju\"}")
             .toObject(ClusterUpdateVersionParameters.class);
-        Assertions.assertEquals("ytprwnwvroev", model.targetClusterVersion());
+        Assertions.assertEquals("idjpuuyju", model.targetClusterVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterUpdateVersionParameters model
-            = new ClusterUpdateVersionParameters().withTargetClusterVersion("ytprwnwvroev");
+            = new ClusterUpdateVersionParameters().withTargetClusterVersion("idjpuuyju");
         model = BinaryData.fromObject(model).toObject(ClusterUpdateVersionParameters.class);
-        Assertions.assertEquals("ytprwnwvroev", model.targetClusterVersion());
+        Assertions.assertEquals("idjpuuyju", model.targetClusterVersion());
     }
 }

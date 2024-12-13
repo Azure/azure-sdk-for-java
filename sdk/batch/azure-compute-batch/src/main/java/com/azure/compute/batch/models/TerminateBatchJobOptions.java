@@ -9,6 +9,12 @@ public class TerminateBatchJobOptions extends BatchTerminateOptions {
     private Boolean force;
 
     /**
+     * Creates an instance of {@link TerminateBatchJobOptions}.
+     */
+    public TerminateBatchJobOptions() {
+    }
+
+    /**
      * Gets the value indicating whether to force the termination of the Batch job.
      *
      * <p>If true, the server will terminate the job even if the corresponding nodes have not fully processed

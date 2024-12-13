@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-translation-document</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.3</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -376,11 +376,12 @@ String translationId = response.poll().getValue().getId();
 
 // Add Status filter
 List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+
+ListDocumentStatusesOptions listDocumentStatusesOptions
+    = new ListDocumentStatusesOptions(translationId).setStatuses(succeededStatusList);
 try {
     PagedIterable < DocumentStatusResult> documentStatusResponse = documentTranslationClient
-        .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
-            null,
-            null, null);
+        .listDocumentStatuses(listDocumentStatusesOptions);
     for (DocumentStatusResult documentStatus: documentStatusResponse) {
         String id = documentStatus.getId();
         System.out.println("Document Translation ID is: " + id);
@@ -435,11 +436,11 @@ String translationId = response.poll().getValue().getId();
 
 // Add Status filter
 List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+ListDocumentStatusesOptions listDocumentStatusesOptions
+    = new ListDocumentStatusesOptions(translationId).setStatuses(succeededStatusList);
 try {
     PagedIterable<DocumentStatusResult> documentStatusResponse = documentTranslationClient
-        .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
-            null,
-            null, null);
+        .listDocumentStatuses(listDocumentStatusesOptions);
     for (DocumentStatusResult documentsStatus: documentStatusResponse) {
         String id = documentsStatus.getId();
         System.out.println("Document Translation ID is: " + id);

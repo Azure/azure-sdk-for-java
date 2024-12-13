@@ -72,9 +72,9 @@ public final class AnswerCallOptions {
     /**
      * Get the Transcription configuration.
      *
-     * @return the transcriptionConfiguration.
+     * @return the transcriptionOptions.
      */
-    public TranscriptionOptions getTranscriptionConfiguration() {
+    public TranscriptionOptions getTranscriptionOptions() {
         return transcriptionOptions;
     }
 
@@ -90,10 +90,10 @@ public final class AnswerCallOptions {
     /**
      * Set the transcription configuration.
      *
-     * @param transcriptionOptions The transcription configuration.
+     * @param transcriptionOptions The transcription options.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+    public AnswerCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
         return this;
     }
@@ -132,19 +132,19 @@ public final class AnswerCallOptions {
     /**
      * Get the Media Streaming configuration.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the mediaStreamingOptions.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
+    public MediaStreamingOptions getMediaStreamingOptions() {
         return mediaStreamingOptions;
     }
 
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming options.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+    public AnswerCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }

@@ -9,11 +9,13 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class IssuesGetResponse extends ResponseBase<IssuesGetHeaders, IssueContractInner> {
     /**
      * Creates an instance of IssuesGetResponse.
-     *
+     * 
      * @param request the request which resulted in this IssuesGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -27,7 +29,7 @@ public final class IssuesGetResponse extends ResponseBase<IssuesGetHeaders, Issu
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

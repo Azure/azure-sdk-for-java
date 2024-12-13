@@ -205,8 +205,8 @@ public final class HostModelImpl implements HostModel, HostModel.Definition, Hos
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hostname = Utils.getValueFromIdByName(innerObject.id(), "hosts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hostname = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hosts");
     }
 
     public HostModel refresh() {

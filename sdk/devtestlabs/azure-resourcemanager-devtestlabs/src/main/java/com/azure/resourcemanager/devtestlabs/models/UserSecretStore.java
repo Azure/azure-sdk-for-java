@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a user's secret store. */
+/**
+ * Properties of a user's secret store.
+ */
 @Fluent
-public final class UserSecretStore {
+public final class UserSecretStore implements JsonSerializable<UserSecretStore> {
     /*
      * The URI of the user's Key vault.
      */
-    @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
 
     /*
      * The ID of the user's Key vault.
      */
-    @JsonProperty(value = "keyVaultId")
     private String keyVaultId;
 
-    /** Creates an instance of UserSecretStore class. */
+    /**
+     * Creates an instance of UserSecretStore class.
+     */
     public UserSecretStore() {
     }
 
     /**
      * Get the keyVaultUri property: The URI of the user's Key vault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -37,7 +43,7 @@ public final class UserSecretStore {
 
     /**
      * Set the keyVaultUri property: The URI of the user's Key vault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the UserSecretStore object itself.
      */
@@ -48,7 +54,7 @@ public final class UserSecretStore {
 
     /**
      * Get the keyVaultId property: The ID of the user's Key vault.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -57,7 +63,7 @@ public final class UserSecretStore {
 
     /**
      * Set the keyVaultId property: The ID of the user's Key vault.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the UserSecretStore object itself.
      */
@@ -68,9 +74,48 @@ public final class UserSecretStore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultUri", this.keyVaultUri);
+        jsonWriter.writeStringField("keyVaultId", this.keyVaultId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserSecretStore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserSecretStore if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserSecretStore.
+     */
+    public static UserSecretStore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserSecretStore deserializedUserSecretStore = new UserSecretStore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultUri".equals(fieldName)) {
+                    deserializedUserSecretStore.keyVaultUri = reader.getString();
+                } else if ("keyVaultId".equals(fieldName)) {
+                    deserializedUserSecretStore.keyVaultId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserSecretStore;
+        });
     }
 }

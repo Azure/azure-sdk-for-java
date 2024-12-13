@@ -39,6 +39,8 @@ public class CreateTasksErrorException extends AzureException {
     private final List<BatchTaskCreateContent> pendingTaskList;
 
     /**
+     * Gets the list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
+     *
      * @return The list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
      */
     public List<BatchTaskAddResult> failureTaskList() {
@@ -46,6 +48,8 @@ public class CreateTasksErrorException extends AzureException {
     }
 
     /**
+     * Gets the list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
+     *
      * @return The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
     public List<BatchTaskCreateContent> pendingTaskList() {

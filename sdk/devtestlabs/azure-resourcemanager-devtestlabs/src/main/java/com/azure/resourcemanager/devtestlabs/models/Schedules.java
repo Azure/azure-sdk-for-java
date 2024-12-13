@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 
-/** Resource collection API of Schedules. */
+/**
+ * Resource collection API of Schedules.
+ */
 public interface Schedules {
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface Schedules {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -43,7 +45,7 @@ public interface Schedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -59,7 +61,7 @@ public interface Schedules {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -72,7 +74,7 @@ public interface Schedules {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -88,7 +90,7 @@ public interface Schedules {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -102,7 +104,7 @@ public interface Schedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -116,7 +118,7 @@ public interface Schedules {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -128,7 +130,7 @@ public interface Schedules {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -144,7 +146,7 @@ public interface Schedules {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -158,7 +160,7 @@ public interface Schedules {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -170,7 +172,7 @@ public interface Schedules {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -183,7 +185,7 @@ public interface Schedules {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -196,7 +198,7 @@ public interface Schedules {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.

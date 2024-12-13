@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-appconfiguration</artifactId>
-  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appconfiguration;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appconfiguration;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for AppConfiguration Management</name>
-  <description>This package contains Microsoft Azure SDK for AppConfiguration Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2023-03-01.</description>
+  <description>This package contains Microsoft Azure SDK for AppConfiguration Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2024-05-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,7 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -76,8 +76,6 @@
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>

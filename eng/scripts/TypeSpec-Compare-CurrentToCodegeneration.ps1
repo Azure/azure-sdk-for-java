@@ -24,7 +24,7 @@ function Reset-Repository {
   git clean -fd .
 }
 
-$tpsYamls = Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse
+$tspYamls = Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse
 if ($tspYamls.Count -eq 0) {
   Write-Host "
 
@@ -55,7 +55,7 @@ Invoking tsp-client update
 "
 
 $failedSdk = $null
-foreach ($tspLocationPath in $tpsYamls) {
+foreach ($tspLocationPath in $tspYamls) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
   Push-Location

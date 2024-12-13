@@ -61,3 +61,7 @@ variables:
   Codeql.SkipTaskAutoInjection: true
 
   ComponentDetection.Timeout: 1200
+
+  # Docs publishing variables for repo/owner
+  DocRepoOwner: 'Azure'
+  DocRepoName: 'azure-docs-sdk-java'

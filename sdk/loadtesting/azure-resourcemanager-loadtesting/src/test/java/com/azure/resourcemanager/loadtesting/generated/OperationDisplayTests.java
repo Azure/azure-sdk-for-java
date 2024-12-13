@@ -6,17 +6,16 @@ package com.azure.resourcemanager.loadtesting.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.models.OperationDisplay;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDisplay model = BinaryData.fromString(
             "{\"provider\":\"yrtih\",\"resource\":\"tijbpzvgnwzsymgl\",\"operation\":\"fcyzkohdbihanufh\",\"description\":\"bj\"}")
             .toObject(OperationDisplay.class);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model = new OperationDisplay();
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);

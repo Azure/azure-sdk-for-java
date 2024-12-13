@@ -8,11 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 
@@ -52,10 +51,8 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      * @throws RuntimeException If an error occurs while reading the file or file not found.
      */
     public ChatMessageImageContentItem(Path filePath, String imageFormat) {
-        File imageFile = filePath.toFile();
-        try (FileInputStream fileInputStreamReader = new FileInputStream(imageFile)) {
-            byte[] bytes = new byte[(int) imageFile.length()];
-            fileInputStreamReader.read(bytes);
+        try {
+            byte[] bytes = Files.readAllBytes(filePath);
             String encodedFile = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
             String urlTemplate = "data:image/%s;base64,%s";
             this.imageUrl = new ChatMessageImageUrl(String.format(urlTemplate, imageFormat, encodedFile));

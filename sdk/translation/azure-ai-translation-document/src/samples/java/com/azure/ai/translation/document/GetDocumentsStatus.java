@@ -6,6 +6,7 @@ package com.azure.ai.translation.document;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
+import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
 import com.azure.ai.translation.document.models.TranslationGlossary;
 import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.StorageInputType;
@@ -69,11 +70,12 @@ public class GetDocumentsStatus {
 
         // Add Status filter
         List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+        
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationId).setStatuses(succeededStatusList);
         try {
             PagedIterable < DocumentStatusResult> documentStatusResponse = documentTranslationClient
-                .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
-                    null,
-                    null, null);
+                .listDocumentStatuses(listDocumentStatusesOptions);
             for (DocumentStatusResult documentStatus: documentStatusResponse) {
                 String id = documentStatus.getId();
                 System.out.println("Document Translation ID is: " + id);

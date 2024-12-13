@@ -5,75 +5,75 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ConsoleDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.ConsoleEnabled;
 import com.azure.resourcemanager.networkcloud.models.ConsoleProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** ConsoleProperties represents the properties of the virtual machine console. */
+/**
+ * ConsoleProperties represents the properties of the virtual machine console.
+ */
 @Fluent
-public final class ConsoleProperties {
+public final class ConsoleProperties implements JsonSerializable<ConsoleProperties> {
     /*
      * The more detailed status of the console.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConsoleDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * The indicator of whether the console access is enabled.
      */
-    @JsonProperty(value = "enabled", required = true)
     private ConsoleEnabled enabled;
 
     /*
      * The date and time after which the key will be disallowed access.
      */
-    @JsonProperty(value = "expiration")
     private OffsetDateTime expiration;
 
     /*
      * The resource ID of the private link service that is used to provide virtual machine console access.
      */
-    @JsonProperty(value = "privateLinkServiceId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkServiceId;
 
     /*
      * The provisioning state of the virtual machine console.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ConsoleProvisioningState provisioningState;
 
     /*
-     * SshPublicKey represents the public key used to authenticate with a resource through SSH.
-     *
      * The SSH public key that will be provisioned for user access. The user is expected to have the corresponding SSH
      * private key for logging in.
      */
-    @JsonProperty(value = "sshPublicKey", required = true)
     private SshPublicKey sshPublicKey;
 
     /*
      * The unique identifier for the virtual machine that is used to access the console.
      */
-    @JsonProperty(value = "virtualMachineAccessId", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualMachineAccessId;
 
-    /** Creates an instance of ConsoleProperties class. */
+    /**
+     * Creates an instance of ConsoleProperties class.
+     */
     public ConsoleProperties() {
     }
 
     /**
      * Get the detailedStatus property: The more detailed status of the console.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public ConsoleDetailedStatus detailedStatus() {
@@ -82,7 +82,7 @@ public final class ConsoleProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -91,7 +91,7 @@ public final class ConsoleProperties {
 
     /**
      * Get the enabled property: The indicator of whether the console access is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public ConsoleEnabled enabled() {
@@ -100,7 +100,7 @@ public final class ConsoleProperties {
 
     /**
      * Set the enabled property: The indicator of whether the console access is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ConsoleProperties object itself.
      */
@@ -111,7 +111,7 @@ public final class ConsoleProperties {
 
     /**
      * Get the expiration property: The date and time after which the key will be disallowed access.
-     *
+     * 
      * @return the expiration value.
      */
     public OffsetDateTime expiration() {
@@ -120,7 +120,7 @@ public final class ConsoleProperties {
 
     /**
      * Set the expiration property: The date and time after which the key will be disallowed access.
-     *
+     * 
      * @param expiration the expiration value to set.
      * @return the ConsoleProperties object itself.
      */
@@ -132,7 +132,7 @@ public final class ConsoleProperties {
     /**
      * Get the privateLinkServiceId property: The resource ID of the private link service that is used to provide
      * virtual machine console access.
-     *
+     * 
      * @return the privateLinkServiceId value.
      */
     public String privateLinkServiceId() {
@@ -141,7 +141,7 @@ public final class ConsoleProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual machine console.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConsoleProvisioningState provisioningState() {
@@ -149,12 +149,9 @@ public final class ConsoleProperties {
     }
 
     /**
-     * Get the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
-     * through SSH.
-     *
-     * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
-     * SSH private key for logging in.
-     *
+     * Get the sshPublicKey property: The SSH public key that will be provisioned for user access. The user is expected
+     * to have the corresponding SSH private key for logging in.
+     * 
      * @return the sshPublicKey value.
      */
     public SshPublicKey sshPublicKey() {
@@ -162,12 +159,9 @@ public final class ConsoleProperties {
     }
 
     /**
-     * Set the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
-     * through SSH.
-     *
-     * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
-     * SSH private key for logging in.
-     *
+     * Set the sshPublicKey property: The SSH public key that will be provisioned for user access. The user is expected
+     * to have the corresponding SSH private key for logging in.
+     * 
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the ConsoleProperties object itself.
      */
@@ -179,7 +173,7 @@ public final class ConsoleProperties {
     /**
      * Get the virtualMachineAccessId property: The unique identifier for the virtual machine that is used to access the
      * console.
-     *
+     * 
      * @return the virtualMachineAccessId value.
      */
     public String virtualMachineAccessId() {
@@ -188,21 +182,77 @@ public final class ConsoleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (enabled() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property enabled in model ConsoleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property enabled in model ConsoleProperties"));
         }
         if (sshPublicKey() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sshPublicKey in model ConsoleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sshPublicKey in model ConsoleProperties"));
         } else {
             sshPublicKey().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConsoleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabled", this.enabled == null ? null : this.enabled.toString());
+        jsonWriter.writeJsonField("sshPublicKey", this.sshPublicKey);
+        jsonWriter.writeStringField("expiration",
+            this.expiration == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiration));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConsoleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConsoleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConsoleProperties.
+     */
+    public static ConsoleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConsoleProperties deserializedConsoleProperties = new ConsoleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedConsoleProperties.enabled = ConsoleEnabled.fromString(reader.getString());
+                } else if ("sshPublicKey".equals(fieldName)) {
+                    deserializedConsoleProperties.sshPublicKey = SshPublicKey.fromJson(reader);
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedConsoleProperties.detailedStatus = ConsoleDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedConsoleProperties.detailedStatusMessage = reader.getString();
+                } else if ("expiration".equals(fieldName)) {
+                    deserializedConsoleProperties.expiration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("privateLinkServiceId".equals(fieldName)) {
+                    deserializedConsoleProperties.privateLinkServiceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConsoleProperties.provisioningState
+                        = ConsoleProvisioningState.fromString(reader.getString());
+                } else if ("virtualMachineAccessId".equals(fieldName)) {
+                    deserializedConsoleProperties.virtualMachineAccessId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConsoleProperties;
+        });
+    }
 }

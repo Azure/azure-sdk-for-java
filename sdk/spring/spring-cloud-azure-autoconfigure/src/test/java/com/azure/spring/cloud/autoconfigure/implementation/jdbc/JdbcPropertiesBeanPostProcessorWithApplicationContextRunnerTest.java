@@ -29,11 +29,8 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
     private static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
-    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean("springTokenCredentialProviderContextProvider", SpringTokenCredentialProviderContextProvider.class,
-            SpringTokenCredentialProviderContextProvider::new)
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             DataSourceProperties.class,
             AzureJdbcPasswordlessProperties.class,
@@ -99,7 +96,6 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
             });
     }
 
@@ -113,7 +109,6 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
 
                 ConfigurableEnvironment environment = context.getEnvironment();
                 AzureJdbcPasswordlessProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJdbcPasswordlessProperties.class);
@@ -132,7 +127,6 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
                 assertThat(context).hasSingleBean(AzureGlobalProperties.class);
                 AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
 

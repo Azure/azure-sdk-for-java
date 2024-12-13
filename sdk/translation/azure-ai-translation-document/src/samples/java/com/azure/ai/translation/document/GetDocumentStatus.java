@@ -5,6 +5,7 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
+import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.ai.translation.document.models.TranslationGlossary;
 import com.azure.ai.translation.document.models.TranslationSource;
@@ -73,11 +74,11 @@ public class GetDocumentStatus {
 
         // Add Status filter
         List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+        ListDocumentStatusesOptions listDocumentStatusesOptions
+            = new ListDocumentStatusesOptions(translationId).setStatuses(succeededStatusList);
         try {
             PagedIterable<DocumentStatusResult> documentStatusResponse = documentTranslationClient
-                .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
-                    null,
-                    null, null);
+                .listDocumentStatuses(listDocumentStatusesOptions);
             for (DocumentStatusResult documentsStatus: documentStatusResponse) {
                 String id = documentsStatus.getId();
                 System.out.println("Document Translation ID is: " + id);

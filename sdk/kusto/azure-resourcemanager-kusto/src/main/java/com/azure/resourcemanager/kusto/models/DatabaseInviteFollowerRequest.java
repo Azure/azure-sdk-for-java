@@ -6,30 +6,36 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request to invite a follower to a database. */
+/**
+ * The request to invite a follower to a database.
+ */
 @Fluent
-public final class DatabaseInviteFollowerRequest {
+public final class DatabaseInviteFollowerRequest implements JsonSerializable<DatabaseInviteFollowerRequest> {
     /*
      * The email of the invited user for which the follower invitation is generated.
      */
-    @JsonProperty(value = "inviteeEmail", required = true)
     private String inviteeEmail;
 
     /*
      * Table level sharing specifications
      */
-    @JsonProperty(value = "tableLevelSharingProperties")
     private TableLevelSharingProperties tableLevelSharingProperties;
 
-    /** Creates an instance of DatabaseInviteFollowerRequest class. */
+    /**
+     * Creates an instance of DatabaseInviteFollowerRequest class.
+     */
     public DatabaseInviteFollowerRequest() {
     }
 
     /**
      * Get the inviteeEmail property: The email of the invited user for which the follower invitation is generated.
-     *
+     * 
      * @return the inviteeEmail value.
      */
     public String inviteeEmail() {
@@ -38,7 +44,7 @@ public final class DatabaseInviteFollowerRequest {
 
     /**
      * Set the inviteeEmail property: The email of the invited user for which the follower invitation is generated.
-     *
+     * 
      * @param inviteeEmail the inviteeEmail value to set.
      * @return the DatabaseInviteFollowerRequest object itself.
      */
@@ -49,7 +55,7 @@ public final class DatabaseInviteFollowerRequest {
 
     /**
      * Get the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @return the tableLevelSharingProperties value.
      */
     public TableLevelSharingProperties tableLevelSharingProperties() {
@@ -58,7 +64,7 @@ public final class DatabaseInviteFollowerRequest {
 
     /**
      * Set the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
      * @return the DatabaseInviteFollowerRequest object itself.
      */
@@ -70,13 +76,14 @@ public final class DatabaseInviteFollowerRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (inviteeEmail() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property inviteeEmail in model DatabaseInviteFollowerRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property inviteeEmail in model DatabaseInviteFollowerRequest"));
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();
@@ -84,4 +91,46 @@ public final class DatabaseInviteFollowerRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseInviteFollowerRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inviteeEmail", this.inviteeEmail);
+        jsonWriter.writeJsonField("tableLevelSharingProperties", this.tableLevelSharingProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseInviteFollowerRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseInviteFollowerRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseInviteFollowerRequest.
+     */
+    public static DatabaseInviteFollowerRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseInviteFollowerRequest deserializedDatabaseInviteFollowerRequest
+                = new DatabaseInviteFollowerRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inviteeEmail".equals(fieldName)) {
+                    deserializedDatabaseInviteFollowerRequest.inviteeEmail = reader.getString();
+                } else if ("tableLevelSharingProperties".equals(fieldName)) {
+                    deserializedDatabaseInviteFollowerRequest.tableLevelSharingProperties
+                        = TableLevelSharingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseInviteFollowerRequest;
+        });
+    }
 }

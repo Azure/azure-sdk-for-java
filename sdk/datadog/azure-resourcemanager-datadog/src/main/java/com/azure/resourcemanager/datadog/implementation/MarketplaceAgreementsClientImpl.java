@@ -32,17 +32,23 @@ import com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceI
 import com.azure.resourcemanager.datadog.models.DatadogAgreementResourceListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient.
+ */
 public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreementsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MarketplaceAgreementsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of MarketplaceAgreementsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MarketplaceAgreementsClientImpl(MicrosoftDatadogClientImpl client) {
@@ -86,7 +92,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -112,7 +118,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -140,7 +146,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedFlux}.
@@ -152,7 +158,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -167,7 +173,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
@@ -179,7 +185,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -193,7 +199,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Create Datadog marketplace agreement in the subscription.
-     *
+     * 
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,7 +229,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Create Datadog marketplace agreement in the subscription.
-     *
+     * 
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +259,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Create Datadog marketplace agreement in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
@@ -266,7 +272,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Create Datadog marketplace agreement in the subscription.
-     *
+     * 
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +288,7 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Create Datadog marketplace agreement in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
@@ -295,9 +301,8 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -321,9 +326,8 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

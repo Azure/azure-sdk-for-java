@@ -6,18 +6,21 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.FcmV1CredentialProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub FcmV1Credential.
  */
 @Fluent
-public final class FcmV1Credential {
+public final class FcmV1Credential implements JsonSerializable<FcmV1Credential> {
     /*
      * Description of a NotificationHub FcmV1Credential.
      */
-    @JsonProperty(value = "properties", required = true)
     private FcmV1CredentialProperties innerProperties = new FcmV1CredentialProperties();
 
     /**
@@ -111,12 +114,50 @@ public final class FcmV1Credential {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model FcmV1Credential"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property innerProperties in model FcmV1Credential"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FcmV1Credential.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FcmV1Credential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FcmV1Credential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FcmV1Credential.
+     */
+    public static FcmV1Credential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FcmV1Credential deserializedFcmV1Credential = new FcmV1Credential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedFcmV1Credential.innerProperties = FcmV1CredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFcmV1Credential;
+        });
+    }
 }

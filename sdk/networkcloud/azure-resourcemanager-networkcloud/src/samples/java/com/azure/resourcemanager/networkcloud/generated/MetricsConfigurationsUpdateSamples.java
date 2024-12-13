@@ -9,25 +9,26 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MetricsConfigurations Update. */
+/**
+ * Samples for MetricsConfigurations Update.
+ */
 public final class MetricsConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/ClusterMetricsConfigurations_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * ClusterMetricsConfigurations_Patch.json
      */
     /**
      * Sample code: Patch metrics configuration of cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void patchMetricsConfigurationOfCluster(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        ClusterMetricsConfiguration resource =
-            manager
-                .metricsConfigurations()
-                .getWithResponse("resourceGroupName", "clusterName", "default", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        patchMetricsConfigurationOfCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        ClusterMetricsConfiguration resource = manager.metricsConfigurations()
+            .getWithResponse("resourceGroupName", "clusterName", "default", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withCollectionInterval(15L)
             .withEnabledMetrics(Arrays.asList("metric1", "metric2"))

@@ -26,7 +26,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * A token service for obtaining tokens to be used by the container registry service.
  */
 public class ContainerRegistryTokenService implements TokenCredential {
-    private AccessTokenCacheImpl refreshTokenCache;
+    private final AccessTokenCacheImpl refreshTokenCache;
     private final AuthenticationsImpl authenticationsImpl;
     private final boolean isAnonymousAccess;
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryTokenService.class);
@@ -47,9 +47,10 @@ public class ContainerRegistryTokenService implements TokenCredential {
         if (aadTokenCredential != null) {
             this.refreshTokenCache = new AccessTokenCacheImpl(
                 new ContainerRegistryRefreshTokenCredential(authenticationsImpl, aadTokenCredential, audience));
-            isAnonymousAccess = false;
+            this.isAnonymousAccess = false;
         } else {
-            isAnonymousAccess = true;
+            this.refreshTokenCache = null;
+            this.isAnonymousAccess = true;
         }
     }
 

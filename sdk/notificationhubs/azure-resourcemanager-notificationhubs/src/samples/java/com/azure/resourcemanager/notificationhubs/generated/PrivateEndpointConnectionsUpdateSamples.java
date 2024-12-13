@@ -26,11 +26,12 @@ public final class PrivateEndpointConnectionsUpdateSamples {
      */
     public static void
         privateEndpointConnectionsUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().update("5ktrial", "nh-sdk-ns",
-            "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
-            new PrivateEndpointConnectionResourceInner().withProperties(new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new RemotePrivateEndpointConnection()).withPrivateLinkServiceConnectionState(
-                    new RemotePrivateLinkServiceConnectionState().withStatus(PrivateLinkConnectionStatus.APPROVED))),
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .update("5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                new PrivateEndpointConnectionResourceInner().withProperties(
+                    new PrivateEndpointConnectionProperties().withPrivateEndpoint(new RemotePrivateEndpointConnection())
+                        .withPrivateLinkServiceConnectionState(new RemotePrivateLinkServiceConnectionState()
+                            .withStatus(PrivateLinkConnectionStatus.APPROVED))),
+                com.azure.core.util.Context.NONE);
     }
 }

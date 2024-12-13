@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,8 +22,6 @@ import java.util.Map;
 @Fluent
 public class SqlPool extends TrackedResource {
     /*
-     * Sku
-     * 
      * SQL pool SKU
      */
     private Sku sku;
@@ -67,11 +66,15 @@ public class SqlPool extends TrackedResource {
      * 
      * Default: regular sql pool creation.
      * 
-     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
      * 
-     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
      * 
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
     private CreateMode createMode;
 
@@ -80,6 +83,23 @@ public class SqlPool extends TrackedResource {
      */
     private OffsetDateTime creationDate;
 
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of SqlPool class.
      */
@@ -87,9 +107,7 @@ public class SqlPool extends TrackedResource {
     }
 
     /**
-     * Get the sku property: Sku
-     * 
-     * SQL pool SKU.
+     * Get the sku property: SQL pool SKU.
      * 
      * @return the sku value.
      */
@@ -98,9 +116,7 @@ public class SqlPool extends TrackedResource {
     }
 
     /**
-     * Set the sku property: Sku
-     * 
-     * SQL pool SKU.
+     * Set the sku property: SQL pool SKU.
      * 
      * @param sku the sku value to set.
      * @return the SqlPool object itself.
@@ -315,6 +331,38 @@ public class SqlPool extends TrackedResource {
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -385,11 +433,11 @@ public class SqlPool extends TrackedResource {
                 if ("location".equals(fieldName)) {
                     deserializedSqlPool.setLocation(reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    deserializedSqlPool.setId(reader.getString());
+                    deserializedSqlPool.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedSqlPool.setName(reader.getString());
+                    deserializedSqlPool.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedSqlPool.setType(reader.getString());
+                    deserializedSqlPool.type = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlPool.setTags(tags);
@@ -417,8 +465,8 @@ public class SqlPool extends TrackedResource {
                         } else if ("createMode".equals(fieldName)) {
                             deserializedSqlPool.createMode = CreateMode.fromString(reader.getString());
                         } else if ("creationDate".equals(fieldName)) {
-                            deserializedSqlPool.creationDate
-                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            deserializedSqlPool.creationDate = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                         } else {
                             reader.skipChildren();
                         }

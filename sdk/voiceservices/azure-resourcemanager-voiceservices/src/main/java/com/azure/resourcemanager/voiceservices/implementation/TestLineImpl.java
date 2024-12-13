@@ -142,9 +142,10 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
         com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.communicationsGatewayName = Utils.getValueFromIdByName(innerObject.id(), "communicationsGateways");
-        this.testLineName = Utils.getValueFromIdByName(innerObject.id(), "testLines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.communicationsGatewayName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communicationsGateways");
+        this.testLineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "testLines");
     }
 
     public TestLine refresh() {

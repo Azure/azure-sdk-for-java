@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** AttachedNetworkConfiguration represents the set of workload networks to attach to a resource. */
+/**
+ * AttachedNetworkConfiguration represents the set of workload networks to attach to a resource.
+ */
 @Fluent
-public final class AttachedNetworkConfiguration {
+public final class AttachedNetworkConfiguration implements JsonSerializable<AttachedNetworkConfiguration> {
     /*
      * The list of Layer 2 Networks and related configuration for attachment.
      */
-    @JsonProperty(value = "l2Networks")
     private List<L2NetworkAttachmentConfiguration> l2Networks;
 
     /*
      * The list of Layer 3 Networks and related configuration for attachment.
      */
-    @JsonProperty(value = "l3Networks")
     private List<L3NetworkAttachmentConfiguration> l3Networks;
 
     /*
      * The list of Trunked Networks and related configuration for attachment.
      */
-    @JsonProperty(value = "trunkedNetworks")
     private List<TrunkedNetworkAttachmentConfiguration> trunkedNetworks;
 
-    /** Creates an instance of AttachedNetworkConfiguration class. */
+    /**
+     * Creates an instance of AttachedNetworkConfiguration class.
+     */
     public AttachedNetworkConfiguration() {
     }
 
     /**
      * Get the l2Networks property: The list of Layer 2 Networks and related configuration for attachment.
-     *
+     * 
      * @return the l2Networks value.
      */
     public List<L2NetworkAttachmentConfiguration> l2Networks() {
@@ -44,7 +49,7 @@ public final class AttachedNetworkConfiguration {
 
     /**
      * Set the l2Networks property: The list of Layer 2 Networks and related configuration for attachment.
-     *
+     * 
      * @param l2Networks the l2Networks value to set.
      * @return the AttachedNetworkConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class AttachedNetworkConfiguration {
 
     /**
      * Get the l3Networks property: The list of Layer 3 Networks and related configuration for attachment.
-     *
+     * 
      * @return the l3Networks value.
      */
     public List<L3NetworkAttachmentConfiguration> l3Networks() {
@@ -64,7 +69,7 @@ public final class AttachedNetworkConfiguration {
 
     /**
      * Set the l3Networks property: The list of Layer 3 Networks and related configuration for attachment.
-     *
+     * 
      * @param l3Networks the l3Networks value to set.
      * @return the AttachedNetworkConfiguration object itself.
      */
@@ -75,7 +80,7 @@ public final class AttachedNetworkConfiguration {
 
     /**
      * Get the trunkedNetworks property: The list of Trunked Networks and related configuration for attachment.
-     *
+     * 
      * @return the trunkedNetworks value.
      */
     public List<TrunkedNetworkAttachmentConfiguration> trunkedNetworks() {
@@ -84,7 +89,7 @@ public final class AttachedNetworkConfiguration {
 
     /**
      * Set the trunkedNetworks property: The list of Trunked Networks and related configuration for attachment.
-     *
+     * 
      * @param trunkedNetworks the trunkedNetworks value to set.
      * @return the AttachedNetworkConfiguration object itself.
      */
@@ -96,7 +101,7 @@ public final class AttachedNetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -109,5 +114,54 @@ public final class AttachedNetworkConfiguration {
         if (trunkedNetworks() != null) {
             trunkedNetworks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("l2Networks", this.l2Networks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("l3Networks", this.l3Networks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("trunkedNetworks", this.trunkedNetworks,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachedNetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachedNetworkConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AttachedNetworkConfiguration.
+     */
+    public static AttachedNetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachedNetworkConfiguration deserializedAttachedNetworkConfiguration = new AttachedNetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("l2Networks".equals(fieldName)) {
+                    List<L2NetworkAttachmentConfiguration> l2Networks
+                        = reader.readArray(reader1 -> L2NetworkAttachmentConfiguration.fromJson(reader1));
+                    deserializedAttachedNetworkConfiguration.l2Networks = l2Networks;
+                } else if ("l3Networks".equals(fieldName)) {
+                    List<L3NetworkAttachmentConfiguration> l3Networks
+                        = reader.readArray(reader1 -> L3NetworkAttachmentConfiguration.fromJson(reader1));
+                    deserializedAttachedNetworkConfiguration.l3Networks = l3Networks;
+                } else if ("trunkedNetworks".equals(fieldName)) {
+                    List<TrunkedNetworkAttachmentConfiguration> trunkedNetworks
+                        = reader.readArray(reader1 -> TrunkedNetworkAttachmentConfiguration.fromJson(reader1));
+                    deserializedAttachedNetworkConfiguration.trunkedNetworks = trunkedNetworks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachedNetworkConfiguration;
+        });
     }
 }

@@ -5,27 +5,34 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserCreateParameterProperties;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** User create details. */
+/**
+ * User create details.
+ */
 @Fluent
-public final class UserCreateParameters {
+public final class UserCreateParameters implements JsonSerializable<UserCreateParameters> {
     /*
      * User entity create contract properties.
      */
-    @JsonProperty(value = "properties")
     private UserCreateParameterProperties innerProperties;
 
-    /** Creates an instance of UserCreateParameters class. */
+    /**
+     * Creates an instance of UserCreateParameters class.
+     */
     public UserCreateParameters() {
     }
 
     /**
      * Get the innerProperties property: User entity create contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserCreateParameterProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class UserCreateParameters {
 
     /**
      * Get the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -43,7 +50,7 @@ public final class UserCreateParameters {
 
     /**
      * Set the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -57,7 +64,7 @@ public final class UserCreateParameters {
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -66,7 +73,7 @@ public final class UserCreateParameters {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -80,7 +87,7 @@ public final class UserCreateParameters {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -89,7 +96,7 @@ public final class UserCreateParameters {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -103,7 +110,7 @@ public final class UserCreateParameters {
 
     /**
      * Get the password property: User Password. If no value is provided, a default password is generated.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -112,7 +119,7 @@ public final class UserCreateParameters {
 
     /**
      * Set the password property: User Password. If no value is provided, a default password is generated.
-     *
+     * 
      * @param password the password value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -127,7 +134,7 @@ public final class UserCreateParameters {
     /**
      * Get the appType property: Determines the type of application which send the create user request. Default is
      * legacy portal.
-     *
+     * 
      * @return the appType value.
      */
     public AppType appType() {
@@ -137,7 +144,7 @@ public final class UserCreateParameters {
     /**
      * Set the appType property: Determines the type of application which send the create user request. Default is
      * legacy portal.
-     *
+     * 
      * @param appType the appType value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -152,7 +159,7 @@ public final class UserCreateParameters {
     /**
      * Get the confirmation property: Determines the type of confirmation e-mail that will be sent to the newly created
      * user.
-     *
+     * 
      * @return the confirmation value.
      */
     public Confirmation confirmation() {
@@ -162,7 +169,7 @@ public final class UserCreateParameters {
     /**
      * Set the confirmation property: Determines the type of confirmation e-mail that will be sent to the newly created
      * user.
-     *
+     * 
      * @param confirmation the confirmation value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -177,7 +184,7 @@ public final class UserCreateParameters {
     /**
      * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @return the state value.
      */
     public UserState state() {
@@ -187,7 +194,7 @@ public final class UserCreateParameters {
     /**
      * Set the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @param state the state value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -201,7 +208,7 @@ public final class UserCreateParameters {
 
     /**
      * Get the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @return the note value.
      */
     public String note() {
@@ -210,7 +217,7 @@ public final class UserCreateParameters {
 
     /**
      * Set the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @param note the note value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -224,7 +231,7 @@ public final class UserCreateParameters {
 
     /**
      * Get the identities property: Collection of user identities.
-     *
+     * 
      * @return the identities value.
      */
     public List<UserIdentityContractInner> identities() {
@@ -233,7 +240,7 @@ public final class UserCreateParameters {
 
     /**
      * Set the identities property: Collection of user identities.
-     *
+     * 
      * @param identities the identities value to set.
      * @return the UserCreateParameters object itself.
      */
@@ -247,12 +254,48 @@ public final class UserCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserCreateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserCreateParameters.
+     */
+    public static UserCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserCreateParameters deserializedUserCreateParameters = new UserCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUserCreateParameters.innerProperties = UserCreateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserCreateParameters;
+        });
     }
 }

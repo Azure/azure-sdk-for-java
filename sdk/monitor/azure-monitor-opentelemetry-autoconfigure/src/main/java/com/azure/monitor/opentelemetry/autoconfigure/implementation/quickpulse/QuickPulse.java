@@ -4,8 +4,11 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ThreadPoolUtils;
@@ -16,11 +19,12 @@ import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    static final int QP_INVARIANT_VERSION = 1;
+    static final int QP_INVARIANT_VERSION = 5;
 
     private volatile QuickPulseDataCollector collector;
 
@@ -67,9 +71,11 @@ public class QuickPulse {
         @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
-        ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
+        ArrayBlockingQueue<MonitoringDataPoint> sendQueue = new ArrayBlockingQueue<>(256, true);
 
-        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
+        LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
 
         String instanceName = roleInstance;
         String machineName = HostName.get();
@@ -81,12 +87,18 @@ public class QuickPulse {
             instanceName = "Unknown host";
         }
 
-        QuickPulseDataCollector collector = new QuickPulseDataCollector();
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> atomicConfig = new AtomicReference<>(configuration);
 
-        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(httpPipeline, endpointUrl,
-            instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion);
-        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, endpointUrl,
-            instrumentationKey, roleName, instanceName, machineName, quickPulseId);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(atomicConfig);
+
+        QuickPulsePingSender quickPulsePingSender
+            = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, endpointUrl, instrumentationKey, roleName,
+                instanceName, machineName, quickPulseId, sdkVersion, atomicConfig);
+        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs,
+            sendQueue, endpointUrl, instrumentationKey, atomicConfig);
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, roleName,
+            instanceName, machineName, quickPulseId, sdkVersion);
 
         QuickPulseCoordinatorInitData coordinatorInitData
             = new QuickPulseCoordinatorInitDataBuilder().withPingSender(quickPulsePingSender)

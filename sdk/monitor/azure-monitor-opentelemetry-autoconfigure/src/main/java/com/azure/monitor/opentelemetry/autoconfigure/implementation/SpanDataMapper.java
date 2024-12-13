@@ -3,13 +3,13 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.RemoteDependencyTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.RequestTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.WarningLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
@@ -34,8 +34,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.*;
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.SPAN;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;

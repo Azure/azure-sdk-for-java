@@ -284,6 +284,13 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     /** @return resource ID of the disk encryption set of the OS disk */
     String osDiskDiskEncryptionSetId();
 
+    /**
+     * Gets whether the write accelerator is enabled.
+     *
+     * @return whether the write accelerator is enabled
+     */
+    boolean isOsDiskWriteAcceleratorEnabled();
+
     /** @return whether the os disk is ephemeral*/
     boolean isOSDiskEphemeral();
 
@@ -454,6 +461,13 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      * @return the base64 encoded user data for the virtual machine.
      */
     String userData();
+
+    /**
+     * Gets resource id of capacity reservation group for the virtual machine.
+     *
+     * @return the resource id of capacity reservation group for the virtual machine.
+     */
+    String capacityReservationGroupId();
 
     // Setters
     //
@@ -1223,6 +1237,18 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
 
             /**
+             * Specifies the write accelerator for the OS disks.
+             * <p>
+             * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+             * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+             * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+             *
+             * @param writeAcceleratorEnabled whether to enable the write accelerator
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
+
+            /**
              * Specifies the disk encryption set for the managed OS disk.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
@@ -1842,6 +1868,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
 
             /**
+             * Specifies the write accelerator for managed data disks.
+             *
+             * @param writeAcceleratorEnabled whether to enable the write accelerator
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
+
+            /**
              * Specifies the disk encryption set for the managed data disk.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
@@ -1952,6 +1986,17 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             WithCreate withUserData(String base64EncodedUserData);
         }
 
+        /** The stage of a virtual machine definition allowing to specify capacity reservation configurations. */
+        interface WithCapacityReservation {
+            /**
+             * Specifies resource id of capacity reservation group for the virtual machine.
+             *
+             * @param capacityReservationGroupId the resource id of capacity reservation group
+             * @return the next stage of the definition
+             */
+            WithCreate withCapacityReservationGroup(String capacityReservationGroupId);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1965,7 +2010,8 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             DefinitionStages.WithUserAssignedManagedServiceIdentity, DefinitionStages.WithLicenseType,
             DefinitionStages.WithAdditionalCapacities, DefinitionStages.WithNetworkInterfaceDeleteOptions,
             DefinitionStages.WithEphemeralOSDisk, DefinitionStages.WithScaleSet, DefinitionStages.WithSecurityTypes,
-            DefinitionStages.WithSecurityProfile, DefinitionStages.WithUserData {
+            DefinitionStages.WithSecurityProfile, DefinitionStages.WithUserData,
+            DefinitionStages.WithCapacityReservation {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2617,6 +2663,17 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              */
             Update withUserData(String base64EncodedUserData);
         }
+
+        /** The stage of the virtual machine update allowing to capacity reservation configurations. */
+        interface WithCapacityReservation {
+            /**
+             * Specifies resource id of capacity reservation group for the virtual machine.
+             *
+             * @param capacityReservationGroupId the resource id of capacity reservation group
+             * @return the next stage of the update
+             */
+            Update withCapacityReservationGroup(String capacityReservationGroupId);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2626,7 +2683,8 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
         UpdateStages.WithBillingProfile, UpdateStages.WithSystemAssignedManagedServiceIdentity,
         UpdateStages.WithUserAssignedManagedServiceIdentity, UpdateStages.WithLicenseType,
         UpdateStages.WithAdditionalCapacities, UpdateStages.WithOSDisk, UpdateStages.WithSecurityFeatures,
-        UpdateStages.WithDeleteOptions, UpdateStages.WithSecurityProfile, UpdateStages.WithUserData {
+        UpdateStages.WithDeleteOptions, UpdateStages.WithSecurityProfile, UpdateStages.WithUserData,
+        UpdateStages.WithCapacityReservation {
         /**
          * Specifies the encryption settings for the OS Disk.
          *
@@ -2634,6 +2692,18 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
          * @return the stage representing creatable VM update
          */
         Update withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
+
+        /**
+         * Specifies the write accelerator for the OS disks.
+         * <p>
+         * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+         * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+         * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+         *
+         * @param writeAcceleratorEnabled whether to enable the write accelerator
+         * @return the next stage of the update
+         */
+        Update withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
 
         /**
          * Specifies the default caching type for the managed data disks.
@@ -2658,6 +2728,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
          * @return the next stage of the definition
          */
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+        /**
+         * Specifies the write accelerator for managed data disks.
+         *
+         * @param writeAcceleratorEnabled whether to enable the write accelerator
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
 
         /**
          * Specifies the disk encryption set for the managed data disk.

@@ -257,6 +257,15 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
+     * Get the isLargeVolume property: Specifies if the backup is for a large volume.
+     * 
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLargeVolume();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

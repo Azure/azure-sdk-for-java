@@ -33,22 +33,22 @@ public final class GrafanasImpl implements Grafanas {
 
     public PagedIterable<ManagedGrafana> list() {
         PagedIterable<ManagedGrafanaInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedGrafana> list(Context context) {
         PagedIterable<ManagedGrafanaInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedGrafana> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ManagedGrafanaInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedGrafana> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ManagedGrafanaInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedGrafanaImpl(inner1, this.manager()));
     }
 
     public Response<ManagedGrafana> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
@@ -124,12 +124,12 @@ public final class GrafanasImpl implements Grafanas {
     }
 
     public ManagedGrafana getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "grafana");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
@@ -138,12 +138,12 @@ public final class GrafanasImpl implements Grafanas {
     }
 
     public Response<ManagedGrafana> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "grafana");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
@@ -152,12 +152,12 @@ public final class GrafanasImpl implements Grafanas {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "grafana");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));
@@ -166,12 +166,12 @@ public final class GrafanasImpl implements Grafanas {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "grafana");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "grafana");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'grafana'.", id)));

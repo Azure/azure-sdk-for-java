@@ -67,7 +67,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        tableClient = getClientBuilder(tableName, true).buildAsyncClient();
+        tableClient = getClientBuilder(tableName, false).buildAsyncClient();
 
         tableClient.createTable().block(DEFAULT_TIMEOUT);
     }
@@ -76,7 +76,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
     public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, true).buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, false).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(tableClient2.createTable())
@@ -1065,7 +1065,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
 
         final TableAsyncClient tableClient2
-            = getClientBuilderWithConnectionString(tableClient.getTableName(), true).buildAsyncClient();
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
         StepVerifier
             .create(tableClient2.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier)))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
@@ -1109,7 +1109,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
 
         final TableAsyncClient tableClient2
-            = getClientBuilderWithConnectionString(tableClient.getTableName(), true).buildAsyncClient();
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
 
         StepVerifier.create(tableClient2.setAccessPoliciesWithResponse(tableSignedIdentifiers))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))

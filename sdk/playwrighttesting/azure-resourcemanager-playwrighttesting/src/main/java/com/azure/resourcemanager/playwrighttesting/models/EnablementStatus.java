@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class EnablementStatus extends ExpandableStringEnum<EnablementStatu
      * @param name a name to look for.
      * @return the corresponding EnablementStatus.
      */
-    @JsonCreator
     public static EnablementStatus fromString(String name) {
         return fromString(name, EnablementStatus.class);
     }

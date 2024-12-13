@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current status of the agent pool. */
+/**
+ * The current status of the agent pool.
+ */
 public final class AgentPoolDetailedStatus extends ExpandableStringEnum<AgentPoolDetailedStatus> {
-    /** Static value Available for AgentPoolDetailedStatus. */
+    /**
+     * Static value Available for AgentPoolDetailedStatus.
+     */
     public static final AgentPoolDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Error for AgentPoolDetailedStatus. */
+    /**
+     * Static value Error for AgentPoolDetailedStatus.
+     */
     public static final AgentPoolDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Provisioning for AgentPoolDetailedStatus. */
+    /**
+     * Static value Provisioning for AgentPoolDetailedStatus.
+     */
     public static final AgentPoolDetailedStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of AgentPoolDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AgentPoolDetailedStatus extends ExpandableStringEnum<AgentPoo
 
     /**
      * Creates or finds a AgentPoolDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentPoolDetailedStatus.
      */
-    @JsonCreator
     public static AgentPoolDetailedStatus fromString(String name) {
         return fromString(name, AgentPoolDetailedStatus.class);
     }
 
     /**
      * Gets known AgentPoolDetailedStatus values.
-     *
+     * 
      * @return known AgentPoolDetailedStatus values.
      */
     public static Collection<AgentPoolDetailedStatus> values() {

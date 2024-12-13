@@ -6,32 +6,34 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.resourcemanager.connectedvmware.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation is data action or not.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the display property: Properties of the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the inner com.azure.resourcemanager.connectedvmware.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

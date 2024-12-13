@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.VolumesClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.VolumeInner;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.Volume;
 import com.azure.resourcemanager.networkcloud.models.Volumes;
 
@@ -29,22 +31,22 @@ public final class VolumesImpl implements Volumes {
 
     public PagedIterable<Volume> list() {
         PagedIterable<VolumeInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Volume> list(Context context) {
         PagedIterable<VolumeInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Volume> listByResourceGroup(String resourceGroupName) {
         PagedIterable<VolumeInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Volume> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<VolumeInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
     public Response<Volume> getByResourceGroupWithResponse(String resourceGroupName, String volumeName,
@@ -68,21 +70,31 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String volumeName) {
-        this.serviceClient().delete(resourceGroupName, volumeName);
+    public OperationStatusResult deleteByResourceGroup(String resourceGroupName, String volumeName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, volumeName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String volumeName, Context context) {
-        this.serviceClient().delete(resourceGroupName, volumeName, context);
+    public OperationStatusResult delete(String resourceGroupName, String volumeName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, volumeName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Volume getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
@@ -91,12 +103,12 @@ public final class VolumesImpl implements Volumes {
     }
 
     public Response<Volume> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
@@ -104,32 +116,32 @@ public final class VolumesImpl implements Volumes {
         return this.getByResourceGroupWithResponse(resourceGroupName, volumeName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        this.delete(resourceGroupName, volumeName, Context.NONE);
+        return this.delete(resourceGroupName, volumeName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        this.delete(resourceGroupName, volumeName, context);
+        return this.delete(resourceGroupName, volumeName, context);
     }
 
     private VolumesClient serviceClient() {

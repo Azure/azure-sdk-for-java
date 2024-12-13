@@ -11,11 +11,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationLoginR
 import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginLinksPostResponse;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginRequestContract;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationLoginLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationLoginLinksClient.
+ */
 public interface AuthorizationLoginLinksClient {
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -34,7 +36,7 @@ public interface AuthorizationLoginLinksClient {
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.

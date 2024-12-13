@@ -16,15 +16,17 @@ import com.azure.resourcemanager.apimanagement.models.ApiOperationsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.ApiOperationsUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.OperationUpdateContract;
 
-/** An instance of this class provides access to all the operations defined in ApiOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiOperationsClient.
+ */
 public interface ApiOperationsClient {
     /**
      * Lists a collection of the operations for the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -35,18 +37,18 @@ public interface ApiOperationsClient {
 
     /**
      * Lists a collection of the operations for the specified API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| method | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| urlTemplate | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;| method | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| urlTemplate | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param tags Include tags in the response.
@@ -62,13 +64,13 @@ public interface ApiOperationsClient {
 
     /**
      * Gets the entity state (Etag) version of the API operation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,13 +83,13 @@ public interface ApiOperationsClient {
 
     /**
      * Gets the entity state (Etag) version of the API operation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -97,13 +99,13 @@ public interface ApiOperationsClient {
 
     /**
      * Gets the details of the API Operation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -116,13 +118,13 @@ public interface ApiOperationsClient {
 
     /**
      * Gets the details of the API Operation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -133,13 +135,13 @@ public interface ApiOperationsClient {
 
     /**
      * Creates a new operation in the API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param parameters Create parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
@@ -154,13 +156,13 @@ public interface ApiOperationsClient {
 
     /**
      * Creates a new operation in the API or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,15 +175,15 @@ public interface ApiOperationsClient {
 
     /**
      * Updates the details of the operation in the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Operation Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,15 +197,15 @@ public interface ApiOperationsClient {
 
     /**
      * Updates the details of the operation in the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Operation Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,15 +218,15 @@ public interface ApiOperationsClient {
 
     /**
      * Deletes the specified operation in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,15 +239,15 @@ public interface ApiOperationsClient {
 
     /**
      * Deletes the specified operation in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param operationId Operation identifier within an API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

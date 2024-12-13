@@ -20,7 +20,7 @@ public final class ArtifactManifestsDeleteSamples {
      */
     public static void
         deleteAArtifactManifestResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactManifests().delete("rg", "TestPublisher", "TestArtifactStore", "TestManifest",
-            com.azure.core.util.Context.NONE);
+        manager.artifactManifests()
+            .delete("rg", "TestPublisher", "TestArtifactStore", "TestManifest", com.azure.core.util.Context.NONE);
     }
 }

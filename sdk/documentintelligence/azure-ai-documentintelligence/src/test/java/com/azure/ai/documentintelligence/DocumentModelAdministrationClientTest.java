@@ -3,14 +3,13 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
+import com.azure.ai.documentintelligence.models.ComposeDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -18,6 +17,7 @@ import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetai
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTypeDetails;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -59,7 +59,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         buildModelRunner((trainingDataSasUrl) -> {
             DocumentModelDetails documentModelDetails = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode)
                 .getFinalResult();
@@ -78,7 +78,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void validGetResourceDetails(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        validateResourceInfo(client.getResourceInfo());
+        validateResourceInfo(client.getResourceDetails());
     }
 
     /**
@@ -89,7 +89,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     public void validGetResourceDetailsWithResponse(HttpClient httpClient,
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        Response<BinaryData> resourceDetailsResponse = client.getResourceInfoWithResponse(null);
+        Response<BinaryData> resourceDetailsResponse = client.getResourceDetailsWithResponse(null);
         assertEquals(resourceDetailsResponse.getStatusCode(), HttpResponseStatus.OK.code());
     }
 
@@ -101,7 +101,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         client = getModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -127,7 +127,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             List<DocumentModelDetails> modelInfoList = documentModelDetailsPagedResponse.getValue();
             modelInfoList.forEach(DocumentModelDetails -> {
                 assertNotNull(DocumentModelDetails.getModelId());
-                assertNotNull(DocumentModelDetails.getCreatedDateTime());
+                assertNotNull(DocumentModelDetails.getCreatedOn());
             });
             pageCount++;
             if (pageCount > 4) {
@@ -149,7 +149,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             List<BinaryData> modelInfoList = documentModelDetailsPagedResponse.getValue();
             modelInfoList.forEach(modelInfo -> {
                 assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getModelId());
-                assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getCreatedDateTime());
+                assertNotNull(modelInfo.toObject(DocumentModelDetails.class).getCreatedOn());
             });
             pageCount++;
             if (pageCount > 4) {
@@ -169,14 +169,14 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         buildModelRunner((trainingDataSasUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller.getFinalResult();
 
-            CopyAuthorization target = client.authorizeModelCopy(
-                new AuthorizeCopyRequest("copyModelId" + UUID.randomUUID()).setTags(actualModel.getTags())
+            ModelCopyAuthorization target = client.authorizeModelCopy(
+                new AuthorizeModelCopyOptions("copyModelId" + UUID.randomUUID()).setTags(actualModel.getTags())
                     .setDescription(actualModel.getDescription()));
 
             SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> copyPoller
@@ -200,7 +200,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         buildModelRunner((trainingDataSasUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -220,7 +220,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         client = getModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingDataSasUrl -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -240,7 +240,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         selectionMarkTrainingRunner(trainingFilesUrl -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "filelist.jsonl")))
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -263,13 +263,13 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
         try {
             buildModelRunner((trainingDataSasUrl) -> {
                 client
-                    .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId1, DocumentBuildMode.TEMPLATE)
+                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                     .setPollInterval(durationTestMode)
                     .getFinalResult();
 
                 client
-                    .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId2, DocumentBuildMode.TEMPLATE)
+                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId2, DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                     .setPollInterval(durationTestMode)
                     .getFinalResult();
@@ -290,7 +290,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
                     .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
                 SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildClassifier = client
                     .beginBuildClassifier(
-                        new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsClassifierMap))
+                        new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsClassifierMap))
                     .setPollInterval(durationTestMode);
                 buildClassifier.getFinalResult();
             });
@@ -303,14 +303,14 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             DocumentModelDetails composedModel
                 = client
                     .beginComposeModel(
-                        new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap)
+                        new ComposeDocumentModelOptions(composedModelId, classifierId, documentTypeDetailsMap)
                             .setDescription("test desc"))
                     .setPollInterval(durationTestMode)
                     .getFinalResult();
 
             assertNotNull(composedModel.getModelId());
             assertEquals("test desc", composedModel.getDescription());
-            assertEquals(2, composedModel.getDocTypes().size());
+            assertEquals(2, composedModel.getDocumentTypes().size());
             validateDocumentModelData(composedModel);
 
             client.deleteModel(composedModel.getModelId());
@@ -342,12 +342,12 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
                 .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
             SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
-                = client.beginBuildClassifier(new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsMap))
+                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsMap))
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(documentClassifierDetails);
-            documentClassifierDetails.getDocTypes()
+            documentClassifierDetails.getDocumentTypes()
                 .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
                     classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl()));
         });
@@ -377,12 +377,12 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
                 .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
             SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
-                = client.beginBuildClassifier(new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsMap))
+                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsMap))
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
 
-            documentClassifierDetails.getDocTypes()
+            documentClassifierDetails.getDocumentTypes()
                 .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
                     classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl()));
 

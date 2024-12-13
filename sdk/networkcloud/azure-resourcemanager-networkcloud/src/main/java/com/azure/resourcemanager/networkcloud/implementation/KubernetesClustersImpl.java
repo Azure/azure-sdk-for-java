@@ -32,23 +32,23 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
 
     public PagedIterable<KubernetesCluster> list() {
         PagedIterable<KubernetesClusterInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<KubernetesCluster> list(Context context) {
         PagedIterable<KubernetesClusterInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<KubernetesCluster> listByResourceGroup(String resourceGroupName) {
         PagedIterable<KubernetesClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<KubernetesCluster> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<KubernetesClusterInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
     public Response<KubernetesCluster> getByResourceGroupWithResponse(String resourceGroupName,
@@ -73,12 +73,23 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String kubernetesClusterName) {
-        this.serviceClient().delete(resourceGroupName, kubernetesClusterName);
+    public OperationStatusResult deleteByResourceGroup(String resourceGroupName, String kubernetesClusterName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, kubernetesClusterName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String kubernetesClusterName, Context context) {
-        this.serviceClient().delete(resourceGroupName, kubernetesClusterName, context);
+    public OperationStatusResult delete(String resourceGroupName, String kubernetesClusterName, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, kubernetesClusterName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public OperationStatusResult restartNode(String resourceGroupName, String kubernetesClusterName,
@@ -104,12 +115,12 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
     }
 
     public KubernetesCluster getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
+        String kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
@@ -118,12 +129,12 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
     }
 
     public Response<KubernetesCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
+        String kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
@@ -131,32 +142,32 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
         return this.getByResourceGroupWithResponse(resourceGroupName, kubernetesClusterName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
+        String kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
-        this.delete(resourceGroupName, kubernetesClusterName, Context.NONE);
+        return this.delete(resourceGroupName, kubernetesClusterName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String kubernetesClusterName = Utils.getValueFromIdByName(id, "kubernetesClusters");
+        String kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(id, "kubernetesClusters");
         if (kubernetesClusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
-        this.delete(resourceGroupName, kubernetesClusterName, context);
+        return this.delete(resourceGroupName, kubernetesClusterName, context);
     }
 
     private KubernetesClustersClient serviceClient() {

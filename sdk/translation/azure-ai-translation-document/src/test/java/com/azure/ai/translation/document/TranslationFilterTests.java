@@ -8,6 +8,7 @@ import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.ai.translation.document.models.TranslationTarget;
+import com.azure.ai.translation.document.models.ListTranslationStatusesOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
@@ -36,11 +37,14 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         // list translations with filter
         List<String> cancelledStatusList
             = Arrays.asList(TranslationStatus.CANCELLED.toString(), TranslationStatus.CANCELLING.toString());
-        OffsetDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC).atOffset(ZoneOffset.UTC);
+        OffsetDateTime testStartTime = testResourceNamer.now();
+
+        ListTranslationStatusesOptions listTranslationStatusesOptions
+            = new ListTranslationStatusesOptions().setStatuses(cancelledStatusList).setCreatedAfter(testStartTime);
 
         try {
-            PagedIterable<TranslationStatusResult> translationStatusResult = documentTranslationClient
-                .listTranslationStatuses(null, null, null, cancelledStatusList, testStartTime, null, null);
+            PagedIterable<TranslationStatusResult> translationStatusResult
+                = documentTranslationClient.listTranslationStatuses(listTranslationStatusesOptions);
             for (TranslationStatusResult translationStatus : translationStatusResult) {
                 String status = translationStatus.getStatus().toString();
                 assertTrue(cancelledStatusList.contains(status));
@@ -61,9 +65,12 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         List<String> targetIds = new ArrayList<>();
         targetIds.add(allIds.get(0));
 
+        ListTranslationStatusesOptions listTranslationStatusesOptions
+            = new ListTranslationStatusesOptions().setTranslationIds(targetIds);
+
         try {
             PagedIterable<TranslationStatusResult> translationStatusResult
-                = documentTranslationClient.listTranslationStatuses(null, null, targetIds, null, null, null, null);
+                = documentTranslationClient.listTranslationStatuses(listTranslationStatusesOptions);
             for (TranslationStatusResult translationStatus : translationStatusResult) {
                 String status = translationStatus.getStatus().toString();
                 assertTrue(status.equalsIgnoreCase(TranslationStatus.SUCCEEDED.toString()));
@@ -81,16 +88,19 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     public void testGetTranslationStatusesFilterByCreatedAfter() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // timestamp before creating a translation job
-        LocalDateTime localTime = LocalDateTime.now(ZoneOffset.UTC);
+        LocalDateTime localTime = testResourceNamer.now().toLocalDateTime();
         OffsetDateTime testStartTime = localTime.atOffset(ZoneOffset.UTC);
 
         // create test job
         List<String> targetIds = createTranslationJobs(1, 1, TranslationStatus.SUCCEEDED);
 
+        ListTranslationStatusesOptions listTranslationStatusesOptions
+            = new ListTranslationStatusesOptions().setCreatedAfter(testStartTime);
+
         // list translations with filter
         try {
             PagedIterable<TranslationStatusResult> translationStatusResult
-                = documentTranslationClient.listTranslationStatuses(null, null, null, null, testStartTime, null, null);
+                = documentTranslationClient.listTranslationStatuses(listTranslationStatusesOptions);
             for (TranslationStatusResult translationStatus : translationStatusResult) {
                 String id = translationStatus.getId();
                 assertTrue(targetIds.contains(id));
@@ -111,18 +121,21 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create some translations
         List<String> targetIds = createTranslationJobs(1, 1, TranslationStatus.SUCCEEDED);
-        LocalDateTime timeStamp = LocalDateTime.now(ZoneOffset.UTC);
+        LocalDateTime timeStamp = testResourceNamer.now().toLocalDateTime();
         OffsetDateTime endDateTime = timeStamp.atOffset(ZoneOffset.UTC);
         createTranslationJobs(1, 1, TranslationStatus.SUCCEEDED);
 
         // getting only translations from the last hour
-        LocalDateTime recentTimestamp = LocalDateTime.now(ZoneOffset.UTC).minusHours(1);
+        LocalDateTime recentTimestamp = testResourceNamer.now().toLocalDateTime().minusHours(1);
         OffsetDateTime startDateTime = recentTimestamp.atOffset(ZoneOffset.UTC);
+
+        ListTranslationStatusesOptions listTranslationStatusesOptions
+            = new ListTranslationStatusesOptions().setCreatedAfter(startDateTime).setCreatedBefore(endDateTime);
 
         // add translations with filter
         try {
-            PagedIterable<TranslationStatusResult> translationStatusResult = documentTranslationClient
-                .listTranslationStatuses(null, null, null, null, startDateTime, endDateTime, null);
+            PagedIterable<TranslationStatusResult> translationStatusResult
+                = documentTranslationClient.listTranslationStatuses(listTranslationStatusesOptions);
             boolean idExists = false;
             for (TranslationStatusResult translationStatus : translationStatusResult) {
                 String id = translationStatus.getId();
@@ -148,14 +161,18 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         // create some translations
         createTranslationJobs(3, 1, TranslationStatus.SUCCEEDED);
         // getting only translations from the last few hours
-        LocalDateTime recentTimestamp = LocalDateTime.now(ZoneOffset.UTC).minusHours(2);
+        LocalDateTime recentTimestamp = testResourceNamer.now().toLocalDateTime().minusHours(2);
         OffsetDateTime startDateTime = recentTimestamp.atOffset(ZoneOffset.UTC);
 
         // add translations with filter
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
+
+        ListTranslationStatusesOptions listTranslationStatusesOptions
+            = new ListTranslationStatusesOptions().setCreatedAfter(startDateTime).setOrderby(orderBy);
+
         try {
-            PagedIterable<TranslationStatusResult> translationStatusResult = documentTranslationClient
-                .listTranslationStatuses(null, null, null, null, startDateTime, null, orderBy);
+            PagedIterable<TranslationStatusResult> translationStatusResult
+                = documentTranslationClient.listTranslationStatuses(listTranslationStatusesOptions);
             LocalDateTime timestamp = LocalDateTime.MIN;
             for (TranslationStatusResult translationStatus : translationStatusResult) {
                 String createdDateTimeString = translationStatus.getCreatedOn().toString();

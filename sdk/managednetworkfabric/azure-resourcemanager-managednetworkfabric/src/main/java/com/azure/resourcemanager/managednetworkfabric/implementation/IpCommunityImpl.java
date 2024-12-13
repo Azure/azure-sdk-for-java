@@ -152,8 +152,8 @@ public final class IpCommunityImpl implements IpCommunity, IpCommunity.Definitio
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ipCommunityName = Utils.getValueFromIdByName(innerObject.id(), "ipCommunities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.ipCommunityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ipCommunities");
     }
 
     public IpCommunity refresh() {

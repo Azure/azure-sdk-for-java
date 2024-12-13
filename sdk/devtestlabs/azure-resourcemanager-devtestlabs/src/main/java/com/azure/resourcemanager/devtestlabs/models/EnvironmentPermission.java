@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The access rights to be granted to the user when provisioning an environment. */
+/**
+ * The access rights to be granted to the user when provisioning an environment.
+ */
 public final class EnvironmentPermission extends ExpandableStringEnum<EnvironmentPermission> {
-    /** Static value Reader for EnvironmentPermission. */
+    /**
+     * Static value Reader for EnvironmentPermission.
+     */
     public static final EnvironmentPermission READER = fromString("Reader");
 
-    /** Static value Contributor for EnvironmentPermission. */
+    /**
+     * Static value Contributor for EnvironmentPermission.
+     */
     public static final EnvironmentPermission CONTRIBUTOR = fromString("Contributor");
 
     /**
      * Creates a new instance of EnvironmentPermission value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EnvironmentPermission extends ExpandableStringEnum<Environmen
 
     /**
      * Creates or finds a EnvironmentPermission from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnvironmentPermission.
      */
-    @JsonCreator
     public static EnvironmentPermission fromString(String name) {
         return fromString(name, EnvironmentPermission.class);
     }
 
     /**
      * Gets known EnvironmentPermission values.
-     *
+     * 
      * @return known EnvironmentPermission values.
      */
     public static Collection<EnvironmentPermission> values() {

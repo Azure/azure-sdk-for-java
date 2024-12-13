@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,20 +20,23 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.AzureHsmResourceProvider;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.AzureHsmResourceProviderBuilder;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterBackupStatusImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterPrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterPrivateLinkResourcesImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterRestoreStatusImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClustersImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.DedicatedHsmsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.OperationsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterBackupStatus;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateEndpointConnections;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateLinkResources;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterRestoreStatus;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusters;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsms;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Operations;
@@ -57,9 +61,13 @@ public final class HardwareSecurityModulesManager {
 
     private PrivateEndpointConnections privateEndpointConnections;
 
-    private Operations operations;
+    private CloudHsmClusterBackupStatus cloudHsmClusterBackupStatus;
+
+    private CloudHsmClusterRestoreStatus cloudHsmClusterRestoreStatus;
 
     private DedicatedHsms dedicatedHsms;
+
+    private Operations operations;
 
     private final AzureHsmResourceProvider clientObject;
 
@@ -227,7 +235,7 @@ public final class HardwareSecurityModulesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hardwaresecuritymodules")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -260,7 +268,7 @@ public final class HardwareSecurityModulesManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -326,15 +334,29 @@ public final class HardwareSecurityModulesManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
+     * Gets the resource collection API of CloudHsmClusterBackupStatus.
      * 
-     * @return Resource collection API of Operations.
+     * @return Resource collection API of CloudHsmClusterBackupStatus.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    public CloudHsmClusterBackupStatus cloudHsmClusterBackupStatus() {
+        if (this.cloudHsmClusterBackupStatus == null) {
+            this.cloudHsmClusterBackupStatus
+                = new CloudHsmClusterBackupStatusImpl(clientObject.getCloudHsmClusterBackupStatus(), this);
         }
-        return operations;
+        return cloudHsmClusterBackupStatus;
+    }
+
+    /**
+     * Gets the resource collection API of CloudHsmClusterRestoreStatus.
+     * 
+     * @return Resource collection API of CloudHsmClusterRestoreStatus.
+     */
+    public CloudHsmClusterRestoreStatus cloudHsmClusterRestoreStatus() {
+        if (this.cloudHsmClusterRestoreStatus == null) {
+            this.cloudHsmClusterRestoreStatus
+                = new CloudHsmClusterRestoreStatusImpl(clientObject.getCloudHsmClusterRestoreStatus(), this);
+        }
+        return cloudHsmClusterRestoreStatus;
     }
 
     /**
@@ -347,6 +369,18 @@ public final class HardwareSecurityModulesManager {
             this.dedicatedHsms = new DedicatedHsmsImpl(clientObject.getDedicatedHsms(), this);
         }
         return dedicatedHsms;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**

@@ -148,6 +148,7 @@
     "sdk/keyvault/test-resources/test-resources.json",
     "sdk/keyvault/test-resources-jca/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
+    "sdk/formrecognizer/test-resources.json",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/documentintelligence/test-resources.json",
     "sdk/maps/azure-maps-render/**",
@@ -201,9 +202,7 @@
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
-    "sdk/clientcore/core-json/**",
     "sdk/clientcore/http-okhttp3/**",
-    "sdk/clientcore/http-jdk-httpclient/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
     "sdk/serialization/azure-xml/**",
@@ -213,7 +212,8 @@
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/StemmerTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
-    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java"
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java",
+    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml"
   ],
   "words": [
     "adal",
@@ -984,7 +984,8 @@
         "liudmila",
         "Milli",
         "qpid",
-        "unretriable"
+        "unretriable",
+        "AMQPS"
       ]
     },
     {
@@ -1028,6 +1029,7 @@
         "epoll",
         "fcgi",
         "flywaydb",
+        "fips",
         "gcloud",
         "gimap",
         "ginq",
@@ -1282,11 +1284,18 @@
       ]
     },
     {
+      "filename": "sdk/tables/**",
+      "words": [
+        "mmspecial"
+      ]
+    },
+    {
       "filename": "sdk/tables/azure-data-tables/**",
       "words": [
         "upserts",
         "upserted",
-        "raud"
+        "raud",
+        "mmspecial"
       ]
     },
     {

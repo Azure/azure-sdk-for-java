@@ -182,9 +182,9 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.bmcKeySetName = Utils.getValueFromIdByName(innerObject.id(), "bmcKeySets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.bmcKeySetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bmcKeySets");
     }
 
     public BmcKeySet refresh() {

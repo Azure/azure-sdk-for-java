@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
-import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
@@ -32,8 +31,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     EventHubClientBuilderFactory, AzureEventHubsProperties> {
     private static final String CONNECTION_STRING = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-            AzureEventHubsAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
@@ -78,6 +76,19 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
+    }
+
+    @Test
+    void configureWithNamespaceAndEmptyConnectionString() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=",
+                "spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
+            });
     }
 
     @Test

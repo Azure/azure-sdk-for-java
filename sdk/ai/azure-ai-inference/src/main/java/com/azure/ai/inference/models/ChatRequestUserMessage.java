@@ -146,23 +146,23 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         if (contentItems == null || contentItems.isEmpty()) {
             throw new RuntimeException("Content items cannot be null or empty.");
         }
-        String jsonPrompt = "{\"content\":[";
+        StringBuilder jsonPrompt = new StringBuilder("{\"content\":[");
         for (ChatMessageContentItem item : contentItems) {
             if (item instanceof ChatMessageTextContentItem) {
                 ChatMessageTextContentItem textItem = (ChatMessageTextContentItem) item;
-                String textPrompt = "{\"type\": \"text\", \"text\":\"%s\"" + "}";
-                jsonPrompt += String.format(textPrompt, textItem.getText());
+                String textPrompt = "{\"type\": \"text\", \"text\":\"%s\"}";
+                jsonPrompt.append(String.format(textPrompt, textItem.getText()));
             } else if (item instanceof ChatMessageImageContentItem) {
                 ChatMessageImageContentItem imageItem = (ChatMessageImageContentItem) item;
-                String imageUrlPrompt = "{\"type\": \"image_url\", \"image_url\":{ \"url\": \"%s\"}" + "}";
-                jsonPrompt += String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl());
+                String imageUrlPrompt = "{\"type\": \"image_url\", \"image_url\":{ \"url\": \"%s\"}}";
+                jsonPrompt.append(String.format(imageUrlPrompt, imageItem.getImageUrl().getUrl()));
             }
-            jsonPrompt += ",";
+            jsonPrompt.append(",");
         }
-        jsonPrompt = jsonPrompt.substring(0, jsonPrompt.length() - 1);
-        jsonPrompt += "]}";
+        jsonPrompt = new StringBuilder(jsonPrompt.substring(0, jsonPrompt.length() - 1));
+        jsonPrompt.append("]}");
         try {
-            return ChatRequestUserMessage.fromJson(JsonProviders.createReader(new StringReader(jsonPrompt)));
+            return ChatRequestUserMessage.fromJson(JsonProviders.createReader(new StringReader(jsonPrompt.toString())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

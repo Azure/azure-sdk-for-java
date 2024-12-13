@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Private endpoint connection proxy object properties.
  */
 @Immutable
-public final class ConnectionDetails {
+public final class ConnectionDetails implements JsonSerializable<ConnectionDetails> {
     /*
      * Connection details ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Private IP address.
      */
-    @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
      * Link ID.
      */
-    @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
 
     /*
      * Group ID.
      */
-    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
      * Member name.
      */
-    @JsonProperty(value = "memberName", access = JsonProperty.Access.WRITE_ONLY)
     private String memberName;
 
     /**
@@ -99,5 +98,48 @@ public final class ConnectionDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionDetails.
+     */
+    public static ConnectionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionDetails deserializedConnectionDetails = new ConnectionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionDetails.id = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedConnectionDetails.privateIpAddress = reader.getString();
+                } else if ("linkIdentifier".equals(fieldName)) {
+                    deserializedConnectionDetails.linkIdentifier = reader.getString();
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedConnectionDetails.groupId = reader.getString();
+                } else if ("memberName".equals(fieldName)) {
+                    deserializedConnectionDetails.memberName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionDetails;
+        });
     }
 }

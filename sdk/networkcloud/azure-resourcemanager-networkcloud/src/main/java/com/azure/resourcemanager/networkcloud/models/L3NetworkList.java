@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.L3NetworkInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** L3NetworkList represents a list of L3 networks. */
+/**
+ * L3NetworkList represents a list of L3 networks.
+ */
 @Fluent
-public final class L3NetworkList {
+public final class L3NetworkList implements JsonSerializable<L3NetworkList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of L3 networks.
      */
-    @JsonProperty(value = "value")
     private List<L3NetworkInner> value;
 
-    /** Creates an instance of L3NetworkList class. */
+    /**
+     * Creates an instance of L3NetworkList class.
+     */
     public L3NetworkList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class L3NetworkList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the L3NetworkList object itself.
      */
@@ -50,7 +56,7 @@ public final class L3NetworkList {
 
     /**
      * Get the value property: The list of L3 networks.
-     *
+     * 
      * @return the value value.
      */
     public List<L3NetworkInner> value() {
@@ -59,7 +65,7 @@ public final class L3NetworkList {
 
     /**
      * Set the value property: The list of L3 networks.
-     *
+     * 
      * @param value the value value to set.
      * @return the L3NetworkList object itself.
      */
@@ -70,12 +76,52 @@ public final class L3NetworkList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3NetworkList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3NetworkList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3NetworkList.
+     */
+    public static L3NetworkList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3NetworkList deserializedL3NetworkList = new L3NetworkList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedL3NetworkList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<L3NetworkInner> value = reader.readArray(reader1 -> L3NetworkInner.fromJson(reader1));
+                    deserializedL3NetworkList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3NetworkList;
+        });
     }
 }

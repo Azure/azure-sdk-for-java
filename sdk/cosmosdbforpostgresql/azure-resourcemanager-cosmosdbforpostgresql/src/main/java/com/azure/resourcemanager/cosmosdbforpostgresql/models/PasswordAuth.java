@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PasswordAuth extends ExpandableStringEnum<PasswordAuth> {
      * @param name a name to look for.
      * @return the corresponding PasswordAuth.
      */
-    @JsonCreator
     public static PasswordAuth fromString(String name) {
         return fromString(name, PasswordAuth.class);
     }

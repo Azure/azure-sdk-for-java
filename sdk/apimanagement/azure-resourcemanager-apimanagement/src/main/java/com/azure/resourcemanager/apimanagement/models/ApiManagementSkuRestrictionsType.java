@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of restrictions. */
+/**
+ * The type of restrictions.
+ */
 public enum ApiManagementSkuRestrictionsType {
-    /** Enum value Location. */
+    /**
+     * Enum value Location.
+     */
     LOCATION("Location"),
 
-    /** Enum value Zone. */
+    /**
+     * Enum value Zone.
+     */
     ZONE("Zone");
 
-    /** The actual serialized value for a ApiManagementSkuRestrictionsType instance. */
+    /**
+     * The actual serialized value for a ApiManagementSkuRestrictionsType instance.
+     */
     private final String value;
 
     ApiManagementSkuRestrictionsType(String value) {
@@ -24,11 +29,10 @@ public enum ApiManagementSkuRestrictionsType {
 
     /**
      * Parses a serialized value to a ApiManagementSkuRestrictionsType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ApiManagementSkuRestrictionsType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ApiManagementSkuRestrictionsType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum ApiManagementSkuRestrictionsType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

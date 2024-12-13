@@ -16,7 +16,7 @@ public interface CloudHsmClusterPrivateEndpointConnections {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface CloudHsmClusterPrivateEndpointConnections {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +43,7 @@ public interface CloudHsmClusterPrivateEndpointConnections {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +59,7 @@ public interface CloudHsmClusterPrivateEndpointConnections {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param peConnectionName Name of the private endpoint connection associated with the Cloud HSM Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

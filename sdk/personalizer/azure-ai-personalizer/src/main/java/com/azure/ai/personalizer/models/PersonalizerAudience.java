@@ -24,6 +24,15 @@ public final class PersonalizerAudience extends ExpandableStringEnum<Personalize
         = fromString("https://cognitiveservices.azure.com");
 
     /**
+     * Creates an instance of {@link PersonalizerAudience} with not string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of PersonalizerAudience.
+     */
+    @Deprecated
+    public PersonalizerAudience() {
+    }
+
+    /**
      * Creates or finds a PersonalizerAudience from its string representation.
      *
      * @param name a name to look for.
@@ -34,6 +43,7 @@ public final class PersonalizerAudience extends ExpandableStringEnum<Personalize
     }
 
     /**
+     * Gets the known values of FormRecognizerAudience.
      * @return known FormRecognizerAudience values.
      */
     public static Collection<PersonalizerAudience> values() {

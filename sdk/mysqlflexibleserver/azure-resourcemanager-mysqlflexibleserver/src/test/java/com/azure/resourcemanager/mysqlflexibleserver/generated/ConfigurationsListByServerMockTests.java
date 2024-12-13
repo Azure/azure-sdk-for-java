@@ -23,7 +23,7 @@ public final class ConfigurationsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"h\",\"currentValue\":\"vkbunzozudh\",\"description\":\"gkmoyxcdyuibhmfd\",\"documentationLink\":\"zydvfvf\",\"defaultValue\":\"naeo\",\"dataType\":\"rvhmgor\",\"allowedValues\":\"ukiscvwmzhw\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"cbtgnhnz\",\"name\":\"yqxtjjfzql\",\"type\":\"hycav\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"cy\",\"currentValue\":\"zdgiruj\",\"description\":\"bomvzzbtdcqv\",\"documentationLink\":\"iyujviylwdshfs\",\"defaultValue\":\"rbgyefry\",\"dataType\":\"gaojf\",\"allowedValues\":\"nc\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"ymoxoftpipiwyczu\",\"name\":\"xacpqjli\",\"type\":\"hyus\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class ConfigurationsListByServerMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Configuration> response = manager.configurations()
-            .listByServer("nifmzzsdymbrnysu", "m", "rafwgckhocxvdf", "fwafqrouda", 1715905241, 1222177326,
+            .listByServer("fo", "jzhpjbibgjmfx", "mv", "cluyovwxnbkf", 1806347124, 1794198042,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("h", response.iterator().next().value());
-        Assertions.assertEquals("vkbunzozudh", response.iterator().next().currentValue());
+        Assertions.assertEquals("cy", response.iterator().next().value());
+        Assertions.assertEquals("zdgiruj", response.iterator().next().currentValue());
         Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.iterator().next().source());
     }
 }
