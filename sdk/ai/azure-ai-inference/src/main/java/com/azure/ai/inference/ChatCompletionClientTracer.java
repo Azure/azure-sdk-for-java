@@ -54,6 +54,10 @@ import java.util.stream.Collectors;
 /**
  * Tracing for the convenience methods in {@link com.azure.ai.inference.ChatCompletionsClient} and
  * {@link com.azure.ai.inference.ChatCompletionsAsyncClient}.
+ * <p>
+ * For more about the OTel semantic conventions this type enables, see
+ * <a href="https://github.com/open-telemetry/semantic-conventions/blob/v1.29.0/docs/gen-ai/azure-ai-inference.md">Azure AI Inference semantic conventions</a>.
+ * </p>
  */
 final class ChatCompletionClientTracer {
     private static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
@@ -349,6 +353,13 @@ final class ChatCompletionClientTracer {
         }
         if (request.getPresencePenalty() != null) {
             tracer.setAttribute("gen_ai.request.presence_penalty", request.getPresencePenalty(), span);
+        }
+        if (request.getStop() != null) {
+            final StringJoiner stopSequence = new StringJoiner(",", "[", "]");
+            for (String stop : request.getStop()) {
+                stopSequence.add(stop);
+            }
+            tracer.setAttribute("gen_ai.request.stop_sequences", stopSequence.toString(), span);
         }
         if (request.getTemperature() != null) {
             tracer.setAttribute("gen_ai.request.temperature", request.getTemperature(), span);
