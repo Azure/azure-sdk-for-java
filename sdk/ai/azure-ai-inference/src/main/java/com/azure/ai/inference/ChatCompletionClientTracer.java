@@ -60,6 +60,7 @@ final class ChatCompletionClientTracer {
     private static final String INFERENCE_GEN_AI_SYSTEM_NAME = "az.ai.inference";
     private static final String FINISH_REASON_ERROR = "{\"finish_reason\": \"error\"}";
     private static final String FINISH_REASON_CANCELLED = "{\"finish_reason\": \"cancelled\"}";
+    private static final StartSpanOptions START_SPAN_OPTIONS = new StartSpanOptions(SpanKind.CLIENT);
 
     private static final ConfigurationProperty<Boolean> CAPTURE_MESSAGE_CONTENT
         = ConfigurationPropertyBuilder.ofBoolean("otel.instrumentation.genai.capture_message_content")
@@ -170,8 +171,7 @@ final class ChatCompletionClientTracer {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
         }
-        final Context span
-            = tracer.start(spanName(request), new StartSpanOptions(SpanKind.CLIENT), parentSpan(requestOptions));
+        final Context span = tracer.start(spanName(request), START_SPAN_OPTIONS, parentSpan(requestOptions));
         if (tracer.isRecording(span)) {
             traceCompletionRequestAttributes(request, span);
             traceCompletionRequestEvents(request.getMessages(), span);
@@ -208,8 +208,7 @@ final class ChatCompletionClientTracer {
         }
 
         final Mono<Context> resourceSupplier = Mono.fromSupplier(() -> {
-            final Context span
-                = tracer.start(spanName(request), new StartSpanOptions(SpanKind.CLIENT), parentSpan(requestOptions));
+            final Context span = tracer.start(spanName(request), START_SPAN_OPTIONS, parentSpan(requestOptions));
             if (tracer.isRecording(span)) {
                 traceCompletionRequestAttributes(request, span);
                 traceCompletionRequestEvents(request.getMessages(), span);
@@ -274,8 +273,8 @@ final class ChatCompletionClientTracer {
         final Mono<StreamingChatCompletionsState> resourceSupplier = Mono.fromSupplier(() -> {
             final StreamingChatCompletionsState resource = state;
 
-            final Context span = tracer.start(spanName(resource.request), new StartSpanOptions(SpanKind.CLIENT),
-                parentSpan(resource.requestOptions));
+            final Context span
+                = tracer.start(spanName(resource.request), START_SPAN_OPTIONS, parentSpan(resource.requestOptions));
             if (tracer.isRecording(span)) {
                 traceCompletionRequestAttributes(resource.request, span);
                 traceCompletionRequestEvents(resource.request.getMessages(), span);

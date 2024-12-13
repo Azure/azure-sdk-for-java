@@ -20,17 +20,16 @@ import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.tracing.StartSpanOptions;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 
@@ -44,23 +43,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.util.tracing.SpanKind.CLIENT;
-
 public class TraceStreamingChatCompletionsToolCallSample {
     private static final String APP_NAMESPACE = "contoso-flight-info-app";
-    static {
-        configureOTEL();
-    }
 
     /**
      * @param args Unused. Arguments to the program.
      */
     @SuppressWarnings("try")
     public static void main(final String[] args) {
+        final OpenTelemetrySdk telemetry = configureOpenTelemetry();
         final ChatCompletionsClient client = createChatCompletionClient();
-        final Tracer tracer = createTracer();
-        final Context span = tracer.start(APP_NAMESPACE, new StartSpanOptions(CLIENT), Context.NONE);
-        try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
+        final Tracer tracer = telemetry.getTracer(APP_NAMESPACE);
+
+        final Span span = tracer.spanBuilder("Contoso.App").startSpan();
+        try (AutoCloseable scope = span.makeCurrent()) {
             final List<ChatRequestMessage> messages = new ArrayList<>();
             messages.add(new ChatRequestSystemMessage("You an assistant that helps users find flight information."));
             messages.add(new ChatRequestUserMessage("What is the next flights from Seattle to Miami?"));
@@ -77,14 +73,17 @@ public class TraceStreamingChatCompletionsToolCallSample {
             final IterableStream<StreamingChatCompletionsUpdate> modelResponseChunks = client.completeStream(new ChatCompletionsOptions(messages).setTools(function.toolDefinitions()));
             final ChunksMerged modelResponseChunksMerged = ChunksMerged.create(modelResponseChunks);
             System.out.println("Model response: " + modelResponseChunksMerged.content);
-            tracer.end(null, null, span);
+            span.end();
         } catch (Exception e) {
-            tracer.end(null, e, span);
+            span.setAttribute("error.type", e.getClass().getName());
+            span.end();
             throw new RuntimeException(e);
+        } finally {
+            telemetry.close();
         }
     }
 
-    private static void configureOTEL() {
+    private static OpenTelemetrySdk configureOpenTelemetry() {
         // With the below configuration, the runtime sends OpenTelemetry data to the local OTLP/gRPC endpoint.
         //
         // For debugging purposes, Aspire Dashboard can be run locally that listens for telemetry data and offer a UI
@@ -98,7 +97,7 @@ public class TraceStreamingChatCompletionsToolCallSample {
         // For production telemetry use cases, see Azure Monitor, https://learn.microsoft.com/java/api/overview/azure/monitor-opentelemetry-exporter-readme
         //
         final AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        sdkBuilder
+        return sdkBuilder
             .addPropertiesSupplier(() -> {
                 final Map<String, String> properties = new HashMap<>();
                 properties.put("otel.exporter.otlp.endpoint", "http://localhost:4317");
@@ -114,10 +113,6 @@ public class TraceStreamingChatCompletionsToolCallSample {
             .endpoint(System.getenv("MODEL_ENDPOINT"))
             .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
             .buildClient();
-    }
-
-    private static Tracer createTracer() {
-        return TracerProvider.getDefaultProvider().createTracer("demo-app", "1.0", "Contoso.App", null);
     }
 
     private static ChatRequestAssistantMessage toAssistantMessage(ChatCompletionsToolCall toolCall) {
