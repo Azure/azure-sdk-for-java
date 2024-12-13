@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Linked storage accounts properties. */
+/**
+ * Linked storage accounts properties.
+ */
 @Fluent
-public final class LinkedStorageAccountsProperties {
+public final class LinkedStorageAccountsProperties implements JsonSerializable<LinkedStorageAccountsProperties> {
     /*
      * Linked storage accounts type.
      */
-    @JsonProperty(value = "dataSourceType", access = JsonProperty.Access.WRITE_ONLY)
     private DataSourceType dataSourceType;
 
     /*
      * Linked storage accounts resources ids.
      */
-    @JsonProperty(value = "storageAccountIds")
     private List<String> storageAccountIds;
 
-    /** Creates an instance of LinkedStorageAccountsProperties class. */
+    /**
+     * Creates an instance of LinkedStorageAccountsProperties class.
+     */
     public LinkedStorageAccountsProperties() {
     }
 
     /**
      * Get the dataSourceType property: Linked storage accounts type.
-     *
+     * 
      * @return the dataSourceType value.
      */
     public DataSourceType dataSourceType() {
@@ -39,7 +45,7 @@ public final class LinkedStorageAccountsProperties {
 
     /**
      * Get the storageAccountIds property: Linked storage accounts resources ids.
-     *
+     * 
      * @return the storageAccountIds value.
      */
     public List<String> storageAccountIds() {
@@ -48,7 +54,7 @@ public final class LinkedStorageAccountsProperties {
 
     /**
      * Set the storageAccountIds property: Linked storage accounts resources ids.
-     *
+     * 
      * @param storageAccountIds the storageAccountIds value to set.
      * @return the LinkedStorageAccountsProperties object itself.
      */
@@ -59,9 +65,51 @@ public final class LinkedStorageAccountsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("storageAccountIds", this.storageAccountIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedStorageAccountsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedStorageAccountsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkedStorageAccountsProperties.
+     */
+    public static LinkedStorageAccountsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedStorageAccountsProperties deserializedLinkedStorageAccountsProperties
+                = new LinkedStorageAccountsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSourceType".equals(fieldName)) {
+                    deserializedLinkedStorageAccountsProperties.dataSourceType
+                        = DataSourceType.fromString(reader.getString());
+                } else if ("storageAccountIds".equals(fieldName)) {
+                    List<String> storageAccountIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLinkedStorageAccountsProperties.storageAccountIds = storageAccountIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedStorageAccountsProperties;
+        });
     }
 }

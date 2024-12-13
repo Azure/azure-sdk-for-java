@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The core summary of a search. */
+/**
+ * The core summary of a search.
+ */
 @Fluent
-public final class CoreSummary {
+public final class CoreSummary implements JsonSerializable<CoreSummary> {
     /*
      * The status of a core summary.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The number of documents of a core summary.
      */
-    @JsonProperty(value = "numberOfDocuments", required = true)
     private long numberOfDocuments;
 
-    /** Creates an instance of CoreSummary class. */
+    /**
+     * Creates an instance of CoreSummary class.
+     */
     public CoreSummary() {
     }
 
     /**
      * Get the status property: The status of a core summary.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -37,7 +43,7 @@ public final class CoreSummary {
 
     /**
      * Set the status property: The status of a core summary.
-     *
+     * 
      * @param status the status value to set.
      * @return the CoreSummary object itself.
      */
@@ -48,7 +54,7 @@ public final class CoreSummary {
 
     /**
      * Get the numberOfDocuments property: The number of documents of a core summary.
-     *
+     * 
      * @return the numberOfDocuments value.
      */
     public long numberOfDocuments() {
@@ -57,7 +63,7 @@ public final class CoreSummary {
 
     /**
      * Set the numberOfDocuments property: The number of documents of a core summary.
-     *
+     * 
      * @param numberOfDocuments the numberOfDocuments value to set.
      * @return the CoreSummary object itself.
      */
@@ -68,9 +74,49 @@ public final class CoreSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("numberOfDocuments", this.numberOfDocuments);
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CoreSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CoreSummary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CoreSummary.
+     */
+    public static CoreSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CoreSummary deserializedCoreSummary = new CoreSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfDocuments".equals(fieldName)) {
+                    deserializedCoreSummary.numberOfDocuments = reader.getLong();
+                } else if ("status".equals(fieldName)) {
+                    deserializedCoreSummary.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCoreSummary;
+        });
     }
 }
