@@ -6,6 +6,9 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.util.binarydata.StringBinaryData;
+
 import java.io.IOException;
 
 /**
@@ -20,6 +23,7 @@ public class ResponseBase<H, T> implements Response<T> {
     private final H deserializedHeaders;
     private final HttpHeaders headers;
     private final T value;
+    private BinaryData body;
 
     /**
      * Creates a {@link ResponseBase}.
@@ -77,17 +81,40 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("unchecked")
     public T getValue() {
-        return value;
+        return (T) bodyToValue(getBody());
     }
 
     @Override
     public BinaryData getBody() {
-        return null;
+        if (body == null) {
+            if (value == null) {
+                body = BinaryData.empty();
+            } else if (value instanceof BinaryData) {
+                body = (BinaryData) value;
+            } else {
+                body = BinaryData.fromObject(value);
+            }
+        }
+        return body;
     }
 
     @Override
     public void close() throws IOException {
 
+    }
+
+    public Object bodyToValue(BinaryData data) {
+        if (data instanceof ByteArrayBinaryData) {
+            ByteArrayBinaryData byteArray = (ByteArrayBinaryData) data;
+            return byteArray.toStream();
+        }
+        if (data instanceof StringBinaryData) {
+            StringBinaryData string = (StringBinaryData) data;
+            return string.toString();
+        }
+
+        return data;
     }
 }
