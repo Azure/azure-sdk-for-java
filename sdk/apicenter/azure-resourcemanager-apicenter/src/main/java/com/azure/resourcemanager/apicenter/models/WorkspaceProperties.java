@@ -6,23 +6,25 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Workspace properties.
  */
 @Fluent
-public final class WorkspaceProperties {
+public final class WorkspaceProperties implements JsonSerializable<WorkspaceProperties> {
     /*
      * Workspace title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Workspace description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -78,10 +80,50 @@ public final class WorkspaceProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model WorkspaceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model WorkspaceProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkspaceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceProperties.
+     */
+    public static WorkspaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceProperties deserializedWorkspaceProperties = new WorkspaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedWorkspaceProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWorkspaceProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceProperties;
+        });
+    }
 }
