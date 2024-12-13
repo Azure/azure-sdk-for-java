@@ -43,7 +43,9 @@ public class CosmosExceptionUtils {
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
 
             switch (cosmosException.getStatusCode()) {
-                case Constants.CosmosExceptionStatusCodes.BADREQUEST -> cosmosAccessException = new CosmosBadRequestException(message, cosmosException);
+                case Constants.CosmosExceptionStatusCodes.BADREQUEST -> {
+                    cosmosAccessException = new CosmosBadRequestException(message, cosmosException);
+                }
                 case Constants.CosmosExceptionStatusCodes.CONFLICT -> cosmosAccessException = new CosmosConflictException(message, cosmosException);
                 case Constants.CosmosExceptionStatusCodes.FORBIDDEN -> cosmosAccessException = new CosmosForbiddenException(message, cosmosException);
                 case Constants.CosmosExceptionStatusCodes.GONE -> {
