@@ -88,7 +88,7 @@ public class FeatureManager {
             .filter(Objects::nonNull).filter(featureFilter -> featureFilter.getName() != null);
         
         if (featureFlag.getConditions().getClientFilters().size() == 0) {
-            return true;
+            return featureFlag.isEnabled();
         }
 
         // All Filters must be true
