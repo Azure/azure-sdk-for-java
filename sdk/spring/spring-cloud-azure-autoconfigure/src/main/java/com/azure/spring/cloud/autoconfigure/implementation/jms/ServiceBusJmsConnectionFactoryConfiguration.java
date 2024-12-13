@@ -35,8 +35,8 @@ import static org.springframework.beans.factory.support.BeanDefinitionBuilder.ge
  *
  * @since 5.19.0
  */
-@Import(AzureJmsConnectionFactoryConfiguration.Registrar.class)
-public class AzureJmsConnectionFactoryConfiguration {
+@Import(ServiceBusJmsConnectionFactoryConfiguration.Registrar.class)
+class ServiceBusJmsConnectionFactoryConfiguration {
 
     static class Registrar implements BeanFactoryAware, EnvironmentAware, ImportBeanDefinitionRegistrar {
 
@@ -63,17 +63,17 @@ public class AzureJmsConnectionFactoryConfiguration {
 
             if (isPoolConnectionFactoryClassPresent()
                 && ((!cacheEnabledResult.isBound() && !poolEnabledResult.isBound())) || poolEnabledResult.orElseGet(() -> false)) {
-                registryJmsPoolConnectionFactory(registry);
+                registerJmsPoolConnectionFactory(registry);
                 return;
             }
 
             if (isCacheConnectionFactoryClassPresent() && (!cacheEnabledResult.isBound() || cacheEnabledResult.orElseGet(() -> false))) {
-                registryJmsCacheConnectionFactory(registry);
+                registerJmsCacheConnectionFactory(registry);
                 return;
             }
 
             if (cacheEnabledResult.isBound() && !cacheEnabledResult.orElseGet(() -> false)) {
-                registryJmsConnectionFactory(registry);
+                registerJmsConnectionFactory(registry);
             }
         }
 
@@ -86,23 +86,17 @@ public class AzureJmsConnectionFactoryConfiguration {
                 && ClassUtils.isPresent("org.apache.commons.pool2.PooledObject", null);
         }
 
-        private void registryJmsConnectionFactory(BeanDefinitionRegistry registry) {
+        private void registerJmsConnectionFactory(BeanDefinitionRegistry registry) {
             BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(ServiceBusJmsConnectionFactory.class,
-                () -> {
-                    AzureServiceBusJmsProperties properties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
-                    ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
-                    return createJmsConnectionFactory(properties, factoryCustomizers);
-                });
+                () -> createJmsConnectionFactory(beanFactory));
             registry.registerBeanDefinition(JMS_CONNECTION_FACTORY_BEAN_NAME, definitionBuilder.getBeanDefinition());
         }
 
-        private void registryJmsCacheConnectionFactory(BeanDefinitionRegistry registry) {
+        private void registerJmsCacheConnectionFactory(BeanDefinitionRegistry registry) {
             BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(CachingConnectionFactory.class,
                 () -> {
                     JmsProperties jmsProperties = beanFactory.getBean(JmsProperties.class);
-                    AzureServiceBusJmsProperties properties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
-                    ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
-                    ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
+                    ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(beanFactory);
                     CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
                     JmsProperties.Cache cacheProperties = jmsProperties.getCache();
                     connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
@@ -113,17 +107,28 @@ public class AzureJmsConnectionFactoryConfiguration {
             registry.registerBeanDefinition(JMS_CONNECTION_FACTORY_BEAN_NAME, definitionBuilder.getBeanDefinition());
         }
 
-        private void registryJmsPoolConnectionFactory(BeanDefinitionRegistry registry) {
+        private void registerJmsPoolConnectionFactory(BeanDefinitionRegistry registry) {
             BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(JmsPoolConnectionFactory.class,
                 () -> {
-                    AzureServiceBusJmsProperties properties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
-                    ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
-                    ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
-                    return new JmsPoolConnectionFactoryFactory(properties.getPool())
+                    AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
+                    ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(beanFactory, serviceBusJmsProperties);
+                    return new JmsPoolConnectionFactoryFactory(serviceBusJmsProperties.getPool())
                         .createPooledConnectionFactory(factory);
                 });
             definitionBuilder.setDestroyMethodName("stop");
             registry.registerBeanDefinition(JMS_POOL_CONNECTION_FACTORY_BEAN_NAME, definitionBuilder.getBeanDefinition());
+        }
+
+        private ServiceBusJmsConnectionFactory createJmsConnectionFactory(BeanFactory beanFactory) {
+            AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
+            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
+            return createJmsConnectionFactory(serviceBusJmsProperties, factoryCustomizers);
+        }
+
+        private ServiceBusJmsConnectionFactory createJmsConnectionFactory(BeanFactory beanFactory,
+                                                                          AzureServiceBusJmsProperties serviceBusJmsProperties) {
+            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
+            return createJmsConnectionFactory(serviceBusJmsProperties, factoryCustomizers);
         }
 
         private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJmsProperties,

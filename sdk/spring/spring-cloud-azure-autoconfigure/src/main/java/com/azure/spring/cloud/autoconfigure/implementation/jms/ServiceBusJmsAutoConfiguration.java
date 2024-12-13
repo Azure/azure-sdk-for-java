@@ -48,9 +48,9 @@ import java.util.function.BiFunction;
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
 @EnableConfigurationProperties
 @Import({
-    AzureJmsConnectionFactoryConfiguration.class,
     ServiceBusJmsContainerConfiguration.class,
-    ServiceBusJmsPropertiesConfiguration.class
+    ServiceBusJmsPropertiesConfiguration.class,
+    ServiceBusJmsConnectionFactoryConfiguration.class
 })
 public class ServiceBusJmsAutoConfiguration {
 

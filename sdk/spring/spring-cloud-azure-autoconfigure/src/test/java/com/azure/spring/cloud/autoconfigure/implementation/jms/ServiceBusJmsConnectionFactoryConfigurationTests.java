@@ -18,7 +18,7 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AzureJmsConnectionFactoryConfigurationTests {
+class ServiceBusJmsConnectionFactoryConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -68,7 +68,7 @@ class AzureJmsConnectionFactoryConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "standard"})
+    @ValueSource(strings = { "standard", "premium" })
     void useCacheConnectionViaAdditionConfigurationFile(String pricingTier) {
         this.contextRunner
             .withConfiguration(AutoConfigurations.of(AdditionalPropertySourceConfiguration.class))
