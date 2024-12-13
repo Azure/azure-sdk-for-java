@@ -13,74 +13,76 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of Lab. */
+/**
+ * An immutable client-side representation of Lab.
+ */
 public interface Lab {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the defaultStorageAccount property: The lab's default storage account.
-     *
+     * 
      * @return the defaultStorageAccount value.
      */
     String defaultStorageAccount();
 
     /**
      * Gets the defaultPremiumStorageAccount property: The lab's default premium storage account.
-     *
+     * 
      * @return the defaultPremiumStorageAccount value.
      */
     String defaultPremiumStorageAccount();
 
     /**
      * Gets the artifactsStorageAccount property: The lab's artifact storage account.
-     *
+     * 
      * @return the artifactsStorageAccount value.
      */
     String artifactsStorageAccount();
 
     /**
      * Gets the premiumDataDiskStorageAccount property: The lab's premium data disk storage account.
-     *
+     * 
      * @return the premiumDataDiskStorageAccount value.
      */
     String premiumDataDiskStorageAccount();
 
     /**
      * Gets the vaultName property: The lab's Key vault.
-     *
+     * 
      * @return the vaultName value.
      */
     String vaultName();
@@ -88,7 +90,7 @@ public interface Lab {
     /**
      * Gets the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
      * is Premium.
-     *
+     * 
      * @return the labStorageType value.
      */
     StorageType labStorageType();
@@ -96,7 +98,7 @@ public interface Lab {
     /**
      * Gets the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
      * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @return the mandatoryArtifactsResourceIdsLinux value.
      */
     List<String> mandatoryArtifactsResourceIdsLinux();
@@ -104,23 +106,23 @@ public interface Lab {
     /**
      * Gets the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
      * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
+     * 
      * @return the mandatoryArtifactsResourceIdsWindows value.
      */
     List<String> mandatoryArtifactsResourceIdsWindows();
 
     /**
      * Gets the createdDate property: The creation date of the lab.
-     *
+     * 
      * @return the createdDate value.
      */
     OffsetDateTime createdDate();
 
     /**
-     * Gets the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
+     * Gets the premiumDataDisks property: The setting to enable usage of premium data disks.
+     * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+     * When its value is 'Disabled', only creation of standard data disks is allowed.
+     * 
      * @return the premiumDataDisks value.
      */
     PremiumDataDisk premiumDataDisks();
@@ -128,21 +130,21 @@ public interface Lab {
     /**
      * Gets the environmentPermission property: The access rights to be granted to the user when provisioning an
      * environment.
-     *
+     * 
      * @return the environmentPermission value.
      */
     EnvironmentPermission environmentPermission();
 
     /**
      * Gets the announcement property: The properties of any lab announcement associated with this lab.
-     *
+     * 
      * @return the announcement value.
      */
     LabAnnouncementProperties announcement();
 
     /**
      * Gets the support property: The properties of any lab support message associated with this lab.
-     *
+     * 
      * @return the support value.
      */
     LabSupportProperties support();
@@ -150,21 +152,21 @@ public interface Lab {
     /**
      * Gets the vmCreationResourceGroup property: The resource group in which all new lab virtual machines will be
      * created. To let DevTest Labs manage resource group creation, set this value to null.
-     *
+     * 
      * @return the vmCreationResourceGroup value.
      */
     String vmCreationResourceGroup();
 
     /**
      * Gets the publicIpId property: The public IP address for the lab's load balancer.
-     *
+     * 
      * @return the publicIpId value.
      */
     String publicIpId();
 
     /**
      * Gets the loadBalancerId property: The load balancer used to for lab VMs that use shared IP address.
-     *
+     * 
      * @return the loadBalancerId value.
      */
     String loadBalancerId();
@@ -172,76 +174,84 @@ public interface Lab {
     /**
      * Gets the networkSecurityGroupId property: The Network Security Group attached to the lab VMs Network interfaces
      * to restrict open ports.
-     *
+     * 
      * @return the networkSecurityGroupId value.
      */
     String networkSecurityGroupId();
 
     /**
      * Gets the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
+     * 
      * @return the extendedProperties value.
      */
     Map<String, String> extendedProperties();
 
     /**
      * Gets the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     String uniqueIdentifier();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.LabInner object.
-     *
+     * 
      * @return the inner object.
      */
     LabInner innerModel();
 
-    /** The entirety of the Lab definition. */
+    /**
+     * The entirety of the Lab definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
         DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The Lab definition stages. */
+    /**
+     * The Lab definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Lab definition. */
+        /**
+         * The first stage of the Lab definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the Lab definition allowing to specify location. */
+        /**
+         * The stage of the Lab definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -249,18 +259,20 @@ public interface Lab {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the Lab definition allowing to specify parent resource. */
+        /**
+         * The stage of the Lab definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group.
              * @return the next definition stage.
              */
@@ -278,126 +290,144 @@ public interface Lab {
             DefinitionStages.WithExtendedProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Lab create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Lab create(Context context);
         }
 
-        /** The stage of the Lab definition allowing to specify tags. */
+        /**
+         * The stage of the Lab definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Lab definition allowing to specify labStorageType. */
+        /**
+         * The stage of the Lab definition allowing to specify labStorageType.
+         */
         interface WithLabStorageType {
             /**
              * Specifies the labStorageType property: Type of storage used by the lab. It can be either Premium or
              * Standard. Default is Premium..
-             *
+             * 
              * @param labStorageType Type of storage used by the lab. It can be either Premium or Standard. Default is
-             *     Premium.
+             * Premium.
              * @return the next definition stage.
              */
             WithCreate withLabStorageType(StorageType labStorageType);
         }
 
-        /** The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsLinux. */
+        /**
+         * The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsLinux.
+         */
         interface WithMandatoryArtifactsResourceIdsLinux {
             /**
              * Specifies the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that
              * should be applied on all Linux VM creations by default, prior to the artifacts specified by the user..
-             *
+             * 
              * @param mandatoryArtifactsResourceIdsLinux The ordered list of artifact resource IDs that should be
-             *     applied on all Linux VM creations by default, prior to the artifacts specified by the user.
+             * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
              * @return the next definition stage.
              */
             WithCreate withMandatoryArtifactsResourceIdsLinux(List<String> mandatoryArtifactsResourceIdsLinux);
         }
 
-        /** The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsWindows. */
+        /**
+         * The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsWindows.
+         */
         interface WithMandatoryArtifactsResourceIdsWindows {
             /**
              * Specifies the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs
              * that should be applied on all Windows VM creations by default, prior to the artifacts specified by the
              * user..
-             *
+             * 
              * @param mandatoryArtifactsResourceIdsWindows The ordered list of artifact resource IDs that should be
-             *     applied on all Windows VM creations by default, prior to the artifacts specified by the user.
+             * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
              * @return the next definition stage.
              */
             WithCreate withMandatoryArtifactsResourceIdsWindows(List<String> mandatoryArtifactsResourceIdsWindows);
         }
 
-        /** The stage of the Lab definition allowing to specify premiumDataDisks. */
+        /**
+         * The stage of the Lab definition allowing to specify premiumDataDisks.
+         */
         interface WithPremiumDataDisks {
             /**
-             * Specifies the premiumDataDisks property: The setting to enable usage of premium data disks. When its
-             * value is 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled',
-             * only creation of standard data disks is allowed..
-             *
-             * @param premiumDataDisks The setting to enable usage of premium data disks. When its value is 'Enabled',
-             *     creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-             *     standard data disks is allowed.
+             * Specifies the premiumDataDisks property: The setting to enable usage of premium data disks.
+             * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+             * When its value is 'Disabled', only creation of standard data disks is allowed..
+             * 
+             * @param premiumDataDisks The setting to enable usage of premium data disks.
+             * When its value is 'Enabled', creation of standard or premium data disks is allowed.
+             * When its value is 'Disabled', only creation of standard data disks is allowed.
              * @return the next definition stage.
              */
             WithCreate withPremiumDataDisks(PremiumDataDisk premiumDataDisks);
         }
 
-        /** The stage of the Lab definition allowing to specify environmentPermission. */
+        /**
+         * The stage of the Lab definition allowing to specify environmentPermission.
+         */
         interface WithEnvironmentPermission {
             /**
              * Specifies the environmentPermission property: The access rights to be granted to the user when
              * provisioning an environment.
-             *
+             * 
              * @param environmentPermission The access rights to be granted to the user when provisioning an
-             *     environment.
+             * environment.
              * @return the next definition stage.
              */
             WithCreate withEnvironmentPermission(EnvironmentPermission environmentPermission);
         }
 
-        /** The stage of the Lab definition allowing to specify announcement. */
+        /**
+         * The stage of the Lab definition allowing to specify announcement.
+         */
         interface WithAnnouncement {
             /**
              * Specifies the announcement property: The properties of any lab announcement associated with this lab.
-             *
+             * 
              * @param announcement The properties of any lab announcement associated with this lab.
              * @return the next definition stage.
              */
             WithCreate withAnnouncement(LabAnnouncementProperties announcement);
         }
 
-        /** The stage of the Lab definition allowing to specify support. */
+        /**
+         * The stage of the Lab definition allowing to specify support.
+         */
         interface WithSupport {
             /**
              * Specifies the support property: The properties of any lab support message associated with this lab.
-             *
+             * 
              * @param support The properties of any lab support message associated with this lab.
              * @return the next definition stage.
              */
             WithCreate withSupport(LabSupportProperties support);
         }
 
-        /** The stage of the Lab definition allowing to specify extendedProperties. */
+        /**
+         * The stage of the Lab definition allowing to specify extendedProperties.
+         */
         interface WithExtendedProperties {
             /**
              * Specifies the extendedProperties property: Extended properties of the lab used for experimental features.
-             *
+             * 
              * @param extendedProperties Extended properties of the lab used for experimental features.
              * @return the next definition stage.
              */
@@ -407,36 +437,42 @@ public interface Lab {
 
     /**
      * Begins update for the Lab resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Lab.Update update();
 
-    /** The template for Lab update. */
+    /**
+     * The template for Lab update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Lab apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Lab apply(Context context);
     }
 
-    /** The Lab update stages. */
+    /**
+     * The Lab update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Lab update allowing to specify tags. */
+        /**
+         * The stage of the Lab update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: The tags of the resource..
-             *
+             * 
              * @param tags The tags of the resource.
              * @return the next definition stage.
              */
@@ -446,14 +482,14 @@ public interface Lab {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Lab refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -461,7 +497,7 @@ public interface Lab {
 
     /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -469,7 +505,7 @@ public interface Lab {
 
     /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -479,7 +515,7 @@ public interface Lab {
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
-     *
+     * 
      * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -489,7 +525,7 @@ public interface Lab {
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
-     *
+     * 
      * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,7 +536,7 @@ public interface Lab {
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     *
+     * 
      * @param exportResourceUsageParameters The parameters of the export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -510,7 +546,7 @@ public interface Lab {
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     *
+     * 
      * @param exportResourceUsageParameters The parameters of the export operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,7 +557,7 @@ public interface Lab {
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
-     *
+     * 
      * @param generateUploadUriParameter Properties for generating an upload URI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,7 +570,7 @@ public interface Lab {
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
-     *
+     * 
      * @param generateUploadUriParameter Properties for generating an upload URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -545,9 +581,9 @@ public interface Lab {
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
-     *
+     * 
      * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     *     different lab into the current one.
+     * different lab into the current one.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -556,9 +592,9 @@ public interface Lab {
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
-     *
+     * 
      * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     *     different lab into the current one.
+     * different lab into the current one.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -568,7 +604,7 @@ public interface Lab {
 
     /**
      * List disk images available for custom image creation.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
@@ -577,7 +613,7 @@ public interface Lab {
 
     /**
      * List disk images available for custom image creation.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

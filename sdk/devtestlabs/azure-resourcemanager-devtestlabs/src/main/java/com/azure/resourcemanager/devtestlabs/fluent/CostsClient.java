@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabCostInner;
 
-/** An instance of this class provides access to all the operations defined in CostsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CostsClient.
+ */
 public interface CostsClient {
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -31,7 +33,7 @@ public interface CostsClient {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -45,7 +47,7 @@ public interface CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -62,7 +64,7 @@ public interface CostsClient {
 
     /**
      * Create or replace an existing cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
