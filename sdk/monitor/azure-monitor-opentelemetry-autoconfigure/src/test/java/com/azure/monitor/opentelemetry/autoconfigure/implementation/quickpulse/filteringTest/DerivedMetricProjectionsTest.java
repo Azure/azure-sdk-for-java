@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filteringTest;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*;
@@ -16,8 +19,8 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DerivedMetricProjectionsTest {
-    private DerivedMetricInfo createDerivedMetricInfoWithEmptyFilters(String id, String telemetryType, AggregationType agg,
-                                                      AggregationType backendAgg, String projection) {
+    private DerivedMetricInfo createDerivedMetricInfoWithEmptyFilters(String id, String telemetryType,
+        AggregationType agg, AggregationType backendAgg, String projection) {
         DerivedMetricInfo result = new DerivedMetricInfo();
         result.setId(id);
         result.setTelemetryType(telemetryType);
@@ -35,14 +38,21 @@ public class DerivedMetricProjectionsTest {
 
     @Test
     void testCountProjection() {
-        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters("id-for-request", "Request", AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
-        DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters("id-for-dependency", "Dependency", AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
-        DerivedMetricInfo dmiException = createDerivedMetricInfoWithEmptyFilters("id-for-exception", "Exception", AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
-        DerivedMetricInfo dmiTrace = createDerivedMetricInfoWithEmptyFilters("id-for-trace", "Trace", AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
+        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters("id-for-request", "Request",
+            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
+        DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters("id-for-dependency", "Dependency",
+            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
+        DerivedMetricInfo dmiException = createDerivedMetricInfoWithEmptyFilters("id-for-exception", "Exception",
+            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
+        DerivedMetricInfo dmiTrace = createDerivedMetricInfoWithEmptyFilters("id-for-trace", "Trace",
+            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
 
-        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true, "GET /hiThere", new HashMap<>(), new HashMap<>());
-        DependencyDataColumns dependency = new DependencyDataColumns("test.com", 200000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
-        ExceptionDataColumns exception = new ExceptionDataColumns("Exception Message", "Stack Trace", new HashMap<>(), new HashMap<>());
+        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", new HashMap<>(), new HashMap<>());
+        DependencyDataColumns dependency = new DependencyDataColumns("test.com", 200000L, true, "GET /hiThere", 200,
+            "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
+        ExceptionDataColumns exception
+            = new ExceptionDataColumns("Exception Message", "Stack Trace", new HashMap<>(), new HashMap<>());
         TraceDataColumns trace = new TraceDataColumns("Message", new HashMap<>(), new HashMap<>());
 
         Map<String, AggregationType> projectionInfo = new HashMap<>();
@@ -75,24 +85,40 @@ public class DerivedMetricProjectionsTest {
 
     @Test
     void testDurationProjection() {
-        DerivedMetricInfo dmiRequestAvg = createDerivedMetricInfoWithEmptyFilters("request-avg", "Request", AggregationType.AVG, AggregationType.AVG, KnownRequestColumns.DURATION);
-        DerivedMetricInfo dmiRequestMin = createDerivedMetricInfoWithEmptyFilters("request-min", "Request", AggregationType.MIN, AggregationType.MIN, KnownRequestColumns.DURATION);
-        DerivedMetricInfo dmiRequestMax = createDerivedMetricInfoWithEmptyFilters("request-max", "Request", AggregationType.MAX, AggregationType.MAX, KnownRequestColumns.DURATION);
-        DerivedMetricInfo dmiDepAvg = createDerivedMetricInfoWithEmptyFilters("dependency-avg", "Dependency", AggregationType.AVG, AggregationType.AVG, KnownRequestColumns.DURATION);
-        DerivedMetricInfo dmiDepMin = createDerivedMetricInfoWithEmptyFilters("dependency-min", "Dependency", AggregationType.MIN, AggregationType.MIN, KnownRequestColumns.DURATION);
-        DerivedMetricInfo dmiDepMax = createDerivedMetricInfoWithEmptyFilters("dependency-max", "Dependency", AggregationType.MAX, AggregationType.MAX, KnownRequestColumns.DURATION);
+        DerivedMetricInfo dmiRequestAvg = createDerivedMetricInfoWithEmptyFilters("request-avg", "Request",
+            AggregationType.AVG, AggregationType.AVG, KnownRequestColumns.DURATION);
+        DerivedMetricInfo dmiRequestMin = createDerivedMetricInfoWithEmptyFilters("request-min", "Request",
+            AggregationType.MIN, AggregationType.MIN, KnownRequestColumns.DURATION);
+        DerivedMetricInfo dmiRequestMax = createDerivedMetricInfoWithEmptyFilters("request-max", "Request",
+            AggregationType.MAX, AggregationType.MAX, KnownRequestColumns.DURATION);
+        DerivedMetricInfo dmiDepAvg = createDerivedMetricInfoWithEmptyFilters("dependency-avg", "Dependency",
+            AggregationType.AVG, AggregationType.AVG, KnownRequestColumns.DURATION);
+        DerivedMetricInfo dmiDepMin = createDerivedMetricInfoWithEmptyFilters("dependency-min", "Dependency",
+            AggregationType.MIN, AggregationType.MIN, KnownRequestColumns.DURATION);
+        DerivedMetricInfo dmiDepMax = createDerivedMetricInfoWithEmptyFilters("dependency-max", "Dependency",
+            AggregationType.MAX, AggregationType.MAX, KnownRequestColumns.DURATION);
 
         // The main dif between these requests/deps is the duration.
-        RequestDataColumns request1 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true, "GET /hiThere", new HashMap<>(), new HashMap<>());
-        RequestDataColumns request2 = new RequestDataColumns("https://test.com/hiThere", 400000L, 200, true, "GET /hiThere", new HashMap<>(), new HashMap<>());
-        RequestDataColumns request3 = new RequestDataColumns("https://test.com/hiThere", 600000L, 200, true, "GET /hiThere", new HashMap<>(), new HashMap<>());
-        RequestDataColumns request4 = new RequestDataColumns("https://test.com/hiThere", 100000L, 200, true, "GET /hiThere", new HashMap<>(), new HashMap<>());
-        RequestDataColumns request5 = new RequestDataColumns("https://test.com/hiThere", 500000L, 200, true, "GET /hiThere", new HashMap<>(), new HashMap<>());
-        DependencyDataColumns dep1 = new DependencyDataColumns("test.com", 200000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
-        DependencyDataColumns dep2 = new DependencyDataColumns("test.com", 400000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
-        DependencyDataColumns dep3 = new DependencyDataColumns("test.com", 600000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
-        DependencyDataColumns dep4 = new DependencyDataColumns("test.com", 100000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
-        DependencyDataColumns dep5 = new DependencyDataColumns("test.com", 500000L, true, "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
+        RequestDataColumns request1 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", new HashMap<>(), new HashMap<>());
+        RequestDataColumns request2 = new RequestDataColumns("https://test.com/hiThere", 400000L, 200, true,
+            "GET /hiThere", new HashMap<>(), new HashMap<>());
+        RequestDataColumns request3 = new RequestDataColumns("https://test.com/hiThere", 600000L, 200, true,
+            "GET /hiThere", new HashMap<>(), new HashMap<>());
+        RequestDataColumns request4 = new RequestDataColumns("https://test.com/hiThere", 100000L, 200, true,
+            "GET /hiThere", new HashMap<>(), new HashMap<>());
+        RequestDataColumns request5 = new RequestDataColumns("https://test.com/hiThere", 500000L, 200, true,
+            "GET /hiThere", new HashMap<>(), new HashMap<>());
+        DependencyDataColumns dep1 = new DependencyDataColumns("test.com", 200000L, true, "GET /hiThere", 200, "HTTP",
+            "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
+        DependencyDataColumns dep2 = new DependencyDataColumns("test.com", 400000L, true, "GET /hiThere", 200, "HTTP",
+            "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
+        DependencyDataColumns dep3 = new DependencyDataColumns("test.com", 600000L, true, "GET /hiThere", 200, "HTTP",
+            "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
+        DependencyDataColumns dep4 = new DependencyDataColumns("test.com", 100000L, true, "GET /hiThere", 200, "HTTP",
+            "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
+        DependencyDataColumns dep5 = new DependencyDataColumns("test.com", 500000L, true, "GET /hiThere", 200, "HTTP",
+            "https://test.com/hiThere?x=y", new HashMap<>(), new HashMap<>());
 
         Map<String, AggregationType> projectionInfo = new HashMap<>();
         projectionInfo.put("request-avg", AggregationType.AVG);
@@ -142,6 +168,77 @@ public class DerivedMetricProjectionsTest {
         assertEquals(finalValues.get("dependency-max"), 600.0);
     }
 
-    // TODO (harskaur): add test for custom dim projection
+    @Test
+    void testCustomProjection() {
+        DerivedMetricInfo dmiRequestAvg = createDerivedMetricInfoWithEmptyFilters("request-avg", "Request",
+            AggregationType.AVG, AggregationType.AVG, "CustomDimensions.property");
+        DerivedMetricInfo dmiRequestMin = createDerivedMetricInfoWithEmptyFilters("request-min", "Request",
+            AggregationType.MIN, AggregationType.MIN, "CustomDimensions.property");
+        DerivedMetricInfo dmiRequestMax = createDerivedMetricInfoWithEmptyFilters("request-max", "Request",
+            AggregationType.MAX, AggregationType.MAX, "CustomDimensions.property");
+        DerivedMetricInfo dmiRequestSum = createDerivedMetricInfoWithEmptyFilters("request-sum", "Request",
+            AggregationType.SUM, AggregationType.SUM, "CustomDimensions.property");
+
+        Map<String, AggregationType> projectionInfo = new HashMap<>();
+        projectionInfo.put("request-avg", AggregationType.AVG);
+        projectionInfo.put("request-min", AggregationType.MIN);
+        projectionInfo.put("request-max", AggregationType.MAX);
+        projectionInfo.put("request-sum", AggregationType.SUM);
+        DerivedMetricProjections projections = new DerivedMetricProjections(projectionInfo);
+
+        Map<String, String> customDims = new HashMap<>();
+        RequestDataColumns request1 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+        customDims.put("property", "hi");
+        RequestDataColumns request2 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+        customDims.put("property", "5");
+        RequestDataColumns request3 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+        customDims.put("property", "10");
+        RequestDataColumns request4 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+        customDims.put("property", "15");
+        RequestDataColumns request5 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+        customDims.put("property", "1");
+        RequestDataColumns request6 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+        customDims.put("property", "20");
+        RequestDataColumns request7 = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
+            "GET /hiThere", customDims, new HashMap<>());
+
+        // custom dim does not exist in current request - should not count
+        projections.calculateProjection(dmiRequestAvg, request1);
+
+        // custom dim exists in current request, but does not have a value that converts to a double - should not count
+        projections.calculateProjection(dmiRequestAvg, request2);
+
+        // custom dim - avg
+        projections.calculateProjection(dmiRequestAvg, request3);
+        projections.calculateProjection(dmiRequestAvg, request4);
+        projections.calculateProjection(dmiRequestAvg, request5);
+
+        // custom dim - min
+        projections.calculateProjection(dmiRequestMin, request5);
+        projections.calculateProjection(dmiRequestMin, request6);
+        projections.calculateProjection(dmiRequestMin, request7);
+
+        // custom dim - max
+        projections.calculateProjection(dmiRequestMax, request7);
+        projections.calculateProjection(dmiRequestMax, request6);
+        projections.calculateProjection(dmiRequestMax, request5);
+
+        // custom dim - sum
+        projections.calculateProjection(dmiRequestSum, request5);
+        projections.calculateProjection(dmiRequestSum, request6);
+        projections.calculateProjection(dmiRequestSum, request5);
+
+        Map<String, Double> finalValues = projections.fetchFinalDerivedMetricValues();
+        assertEquals(finalValues.get("request-avg"), 10.0);
+        assertEquals(finalValues.get("request-min"), 1.0);
+        assertEquals(finalValues.get("request-max"), 20.0);
+        assertEquals(finalValues.get("request-sum"), 31.0);
+    }
 
 }

@@ -71,7 +71,7 @@ public class DerivedMetricProjections {
             // For now, such cases produce Double.Nan and get skipped when calculating projection.
         }
 
-        if (incrementBy != Double.NaN) {
+        if (!Double.isNaN(incrementBy)) {
             calculateAggregation(derivedMetricInfo.getAggregation(), derivedMetricInfo.getId(), incrementBy);
         }
     }
