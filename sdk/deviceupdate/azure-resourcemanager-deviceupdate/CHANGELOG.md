@@ -1,14 +1,27 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-13)
 
-### Features Added
+- Azure Resource Manager DeviceUpdate client library for Java. This package contains Microsoft Azure SDK for DeviceUpdate Management SDK. Microsoft Device Update resource provider. Package tag package-2023-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.PrivateLinkServiceProxyRemotePrivateEndpointConnection` was modified
+
+* `id()` was added
 
 ## 1.0.0 (2023-12-19)
 
