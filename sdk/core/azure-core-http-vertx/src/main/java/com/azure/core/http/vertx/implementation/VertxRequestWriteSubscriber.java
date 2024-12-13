@@ -5,6 +5,7 @@ package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
@@ -23,6 +24,8 @@ import java.nio.ByteBuffer;
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
+    private static final ClientLogger LOGGER = new ClientLogger(VertxRequestWriteSubscriber.class);
+
     private final HttpClientRequest request;
     private final Promise<HttpResponse> promise;
     private final ProgressReporter progressReporter;
@@ -127,6 +130,11 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         // code 2 and greater are completion states which means the error should be dropped as we already completed.
         if (state.code >= 2) {
             Operators.onErrorDropped(throwable, Context.of(contextView));
+
+            // Also, even though Reactor may have an operator for the dropped error or will be logged by Operators
+            // itself, we should log as well as at least this will help associate the error with this class.
+            LOGGER.atError().log(() -> "VertxRequestWriteSubscriber dropped an exception as it already reached a "
+                + "completion state.", throwable);
         }
 
         this.state = State.ERROR;
@@ -145,9 +153,19 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
             Throwable cause = promise.future().cause();
             if (cause != null) {
                 cause.addSuppressed(throwable);
+
+                // Also, even though the exception was added as a suppressed exception to the failed Promise, we should
+                // log as well as at least this will help associate the error with this class.
+                LOGGER.atError().log(() -> "VertxRequestWriteSubscriber added an exception as a suppressed exception "
+                    + "as the Promise already failed.", throwable);
             } else {
                 // Turns out the future was completed as successfully externally, drop the error.
-                Operators.onErrorDropped(throwable, Context.of(contextView));
+                Operators.onErrorDropped(LOGGER.logThrowableAsError(throwable), Context.of(contextView));
+
+                // Also, even though Reactor may have an operator for the dropped error or will be logged by Operators
+                // itself, we should log as well as at least this will help associate the error with this class.
+                LOGGER.atError().log(() -> "VertxRequestWriteSubscriber dropped an exception as the Promise already "
+                    + "completed successfully.", throwable);
             }
         }
         request.reset(0, throwable);

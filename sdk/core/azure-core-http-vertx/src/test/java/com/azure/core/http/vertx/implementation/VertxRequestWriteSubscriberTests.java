@@ -237,15 +237,13 @@ public class VertxRequestWriteSubscriberTests {
     }
 
     private static void waitForCompletion(Promise<?> promise) throws InterruptedException {
-        Thread.sleep(1000);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
+            Thread.sleep(1000);
             if (promise.future().isComplete()) {
-                break;
-            }
-
-            if (i == 3) {
-                fail("Timed out waiting for test to complete.");
+                return;
             }
         }
+
+        fail("Timed out waiting for test to complete.");
     }
 }
