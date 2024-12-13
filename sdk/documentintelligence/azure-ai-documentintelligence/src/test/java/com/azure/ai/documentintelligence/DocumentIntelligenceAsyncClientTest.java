@@ -4,10 +4,11 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
@@ -87,7 +88,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeReceiptData(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-receipt", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -106,7 +107,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeReceiptSourceUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(urlSource -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-receipt", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -127,7 +128,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeLayout(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-layout", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -141,7 +142,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeLayoutWithPages(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller = client
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller = client
                 .beginAnalyzeDocument("prebuilt-layout",
                     new AnalyzeDocumentOptions(data).setPages(Arrays.asList("1, 2")))
                 .setPollInterval(durationTestMode)
@@ -162,7 +163,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeContentFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(urlSource -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-layout", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -176,7 +177,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeGermanContentFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-layout", new AnalyzeDocumentOptions(data).setLocale("de"))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -193,7 +194,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeInvoiceData(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(data).setLocale("de"))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -213,7 +214,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeInvoiceSourceUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner((urlSource) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -232,7 +233,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeLicenseCardData(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-idDocument", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -252,7 +253,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeLicenseSourceUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(urlSource -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-idDocument", new AnalyzeDocumentOptions(urlSource))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -266,7 +267,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     public void analyzeW2Data(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
-            SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+            SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-tax.us.w2", new AnalyzeDocumentOptions(data))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -311,7 +312,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         if (documentClassifierDetails.get() != null) {
             String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
-                SyncPoller<AnalyzeOperation, AnalyzeResult> syncPoller
+                SyncPoller<AnalyzeOperationDetails, AnalyzeResult> syncPoller
                     = client.beginClassifyDocument(classifierId, new ClassifyDocumentOptions(data))
                         .setPollInterval(durationTestMode)
                         .getSyncPoller();
@@ -331,7 +332,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         String modelID = "prebuilt-read";
         dataRunner((data, dataLength) -> {
-            PollerFlux<AnalyzeOperation, AnalyzeResult> resultPollerFlux = client
+            PollerFlux<AnalyzeOperationDetails, AnalyzeResult> resultPollerFlux = client
                 .beginAnalyzeDocument(modelID,
                     new AnalyzeDocumentOptions(data).setOutput(Collections.singletonList(PDF)))
                 .setPollInterval(durationTestMode);
@@ -358,7 +359,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         String modelID = "prebuilt-layout";
         dataRunner((data, dataLength) -> {
-            PollerFlux<AnalyzeOperation, AnalyzeResult> resultPollerFlux = client
+            PollerFlux<AnalyzeOperationDetails, AnalyzeResult> resultPollerFlux = client
                 .beginAnalyzeDocument(modelID,
                     new AnalyzeDocumentOptions(data).setOutput(Collections.singletonList(FIGURES)))
                 .setPollInterval(durationTestMode);
@@ -388,7 +389,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
 
-            SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> syncPoller = client
+            SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> syncPoller = client
                 .beginAnalyzeBatchDocuments("prebuilt-layout",
                     new AnalyzeBatchDocumentsOptions(new AzureBlobContentSource(trainingFilesUrl),
                         trainingFilesResultUrl).setResultPrefix("result/").setOverwriteExisting(true))

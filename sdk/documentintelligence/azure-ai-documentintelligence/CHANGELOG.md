@@ -25,6 +25,9 @@
 - Renamed all occurrences of properties `docType` and `docTypes` to `documentType` and `documentTypes`, respectively.
 - Removed enum value `Generative` from `DocumentBuildMode`.
 - Renamed enum value `StyleFonts` to `FontStyling` in `DocumentAnalysisFeature`.
+- Renamed class `AnalyzeBatchOperationDetail` to `AnalyzeBatchResultDetails`.
+- Renamed class `AnalyzeBatchOperation` to `AnalyzeBatchOperationDetails`.
+- Renamed class `AnalyzeOperation` to `AnalyzeOperationDetails`.
 - Renamed all occurrences of property `expirationDateTime` to `expiresOn`.
 - Renamed method `getResourceInfo` to `getResourceDetails` in `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceAdministrationAsyncClient`.
 - Renamed class `ResourceDetails` to `DocumentIntelligenceResourceDetails`.

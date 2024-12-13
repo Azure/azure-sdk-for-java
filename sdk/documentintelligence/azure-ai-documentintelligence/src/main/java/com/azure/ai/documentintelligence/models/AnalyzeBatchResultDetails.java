@@ -15,7 +15,7 @@ import java.io.IOException;
  * Operation detail for a document in a batch analysis.
  */
 @Immutable
-public final class AnalyzeBatchOperationDetail implements JsonSerializable<AnalyzeBatchOperationDetail> {
+public final class AnalyzeBatchResultDetails implements JsonSerializable<AnalyzeBatchResultDetails> {
 
     /*
      * Analyze status. succeeded, failed, or skipped
@@ -42,13 +42,13 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
     private DocumentIntelligenceError error;
 
     /**
-     * Creates an instance of AnalyzeBatchOperationDetail class.
+     * Creates an instance of AnalyzeBatchResultDetails class.
      *
      * @param status the status value to set.
      * @param sourceUrl the sourceUrl value to set.
      */
     @Generated
-    private AnalyzeBatchOperationDetail(DocumentIntelligenceOperationStatus status, String sourceUrl) {
+    private AnalyzeBatchResultDetails(DocumentIntelligenceOperationStatus status, String sourceUrl) {
         this.status = status;
         this.sourceUrl = sourceUrl;
     }
@@ -108,16 +108,16 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
     }
 
     /**
-     * Reads an instance of AnalyzeBatchOperationDetail from the JsonReader.
+     * Reads an instance of AnalyzeBatchResultDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeBatchOperationDetail if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of AnalyzeBatchResultDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeBatchOperationDetail.
+     * @throws IOException If an error occurs while reading the AnalyzeBatchResultDetails.
      */
     @Generated
-    public static AnalyzeBatchOperationDetail fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalyzeBatchResultDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentIntelligenceOperationStatus status = null;
             String sourceUrl = null;
@@ -138,11 +138,11 @@ public final class AnalyzeBatchOperationDetail implements JsonSerializable<Analy
                     reader.skipChildren();
                 }
             }
-            AnalyzeBatchOperationDetail deserializedAnalyzeBatchOperationDetail
-                = new AnalyzeBatchOperationDetail(status, sourceUrl);
-            deserializedAnalyzeBatchOperationDetail.resultUrl = resultUrl;
-            deserializedAnalyzeBatchOperationDetail.error = error;
-            return deserializedAnalyzeBatchOperationDetail;
+            AnalyzeBatchResultDetails deserializedAnalyzeBatchResultDetails
+                = new AnalyzeBatchResultDetails(status, sourceUrl);
+            deserializedAnalyzeBatchResultDetails.resultUrl = resultUrl;
+            deserializedAnalyzeBatchResultDetails.error = error;
+            return deserializedAnalyzeBatchResultDetails;
         });
     }
 }

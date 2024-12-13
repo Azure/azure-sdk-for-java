@@ -5,9 +5,9 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -647,7 +647,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
+    public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
         BinaryData analyzeRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, analyzeRequest, requestOptions),
@@ -659,7 +659,8 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -705,7 +706,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
+    public SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
         BinaryData analyzeRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, analyzeRequest, requestOptions),
@@ -717,7 +718,8 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -1179,7 +1181,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModelAsync(
+    public PollerFlux<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModelAsync(
         String modelId, BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, analyzeBatchRequest, requestOptions),
@@ -1191,7 +1193,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(AnalyzeBatchOperation.class),
+            TypeReference.createInstance(AnalyzeBatchOperationDetails.class),
             TypeReference.createInstance(AnalyzeBatchResult.class));
     }
 
@@ -1247,8 +1249,8 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModel(String modelId,
-        BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
+    public SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModel(
+        String modelId, BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeBatchDocumentsWithResponse(modelId, analyzeBatchRequest, requestOptions),
             new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
@@ -1259,7 +1261,7 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(AnalyzeBatchOperation.class),
+            TypeReference.createInstance(AnalyzeBatchOperationDetails.class),
             TypeReference.createInstance(AnalyzeBatchResult.class));
     }
 
@@ -1878,7 +1880,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
+    public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
@@ -1890,7 +1892,8 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -1927,7 +1930,7 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
+    public SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
@@ -1939,7 +1942,8 @@ public final class DocumentIntelligenceClientImpl {
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
-            TypeReference.createInstance(AnalyzeOperation.class), TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeOperationDetails.class),
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**

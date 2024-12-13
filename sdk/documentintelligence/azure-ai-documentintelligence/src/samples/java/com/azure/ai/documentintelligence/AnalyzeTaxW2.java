@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
@@ -38,7 +38,7 @@ public class AnalyzeTaxW2 {
 
         File invoice = new File("./documentintelligence/azure-ai-documentintelligence/src/samples/resources/Sample-W2.jpg");
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeW2Poller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2",
                 new AnalyzeDocumentOptions(Files.readAllBytes(invoice.toPath())));
 
@@ -61,7 +61,7 @@ public class AnalyzeTaxW2 {
             if (employeeField != null) {
                 System.out.println("Employee Data: ");
                 if (DocumentFieldType.OBJECT == employeeField.getType()) {
-                    Map<String, DocumentField> employeeDataFieldMap = employeeField.getValueObject();
+                    Map<String, DocumentField> employeeDataFieldMap = employeeField.getValueMap();
                     DocumentField employeeName = employeeDataFieldMap.get("Name");
                     if (employeeName != null) {
                         if (DocumentFieldType.STRING == employeeName.getType()) {
@@ -85,7 +85,7 @@ public class AnalyzeTaxW2 {
             if (employerField != null) {
                 System.out.println("Employer Data: ");
                 if (DocumentFieldType.OBJECT == employerField.getType()) {
-                    Map<String, DocumentField> employerDataFieldMap = employerField.getValueObject();
+                    Map<String, DocumentField> employerDataFieldMap = employerField.getValueMap();
                     DocumentField employerNameField = employerDataFieldMap.get("Name");
                     if (employerNameField != null) {
                         if (DocumentFieldType.STRING == employerNameField.getType()) {
@@ -110,7 +110,7 @@ public class AnalyzeTaxW2 {
             if (localTaxInfosField != null) {
                 System.out.println("Local Tax Info data:");
                 if (DocumentFieldType.ARRAY == localTaxInfosField.getType()) {
-                    Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueObject();
+                    Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueMap();
                     DocumentField localWagesTips = localTaxInfoDataFields.get("LocalWagesTipsEtc");
                     if (DocumentFieldType.NUMBER == localTaxInfosField.getType()) {
                         System.out.printf("Local Wages Tips Value: %.2f, confidence: %.2f%n",

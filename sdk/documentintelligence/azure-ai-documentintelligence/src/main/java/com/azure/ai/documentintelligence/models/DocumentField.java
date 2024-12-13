@@ -82,18 +82,6 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     private String valueCountryRegion;
 
     /*
-     * Array of field values.
-     */
-    @Generated
-    private List<DocumentField> valueArray;
-
-    /*
-     * Dictionary of named field values.
-     */
-    @Generated
-    private Map<String, DocumentField> valueObject;
-
-    /*
      * Currency value.
      */
     @Generated
@@ -252,26 +240,6 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
     }
 
     /**
-     * Get the valueArray property: Array of field values.
-     *
-     * @return the valueArray value.
-     */
-    @Generated
-    public List<DocumentField> getValueArray() {
-        return this.valueArray;
-    }
-
-    /**
-     * Get the valueObject property: Dictionary of named field values.
-     *
-     * @return the valueObject value.
-     */
-    @Generated
-    public Map<String, DocumentField> getValueObject() {
-        return this.valueObject;
-    }
-
-    /**
      * Get the valueCurrency property: Currency value.
      *
      * @return the valueCurrency value.
@@ -370,8 +338,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
         jsonWriter.writeStringField("valueSignature",
             this.valueSignature == null ? null : this.valueSignature.toString());
         jsonWriter.writeStringField("valueCountryRegion", this.valueCountryRegion);
-        jsonWriter.writeArrayField("valueArray", this.valueArray, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("valueObject", this.valueObject, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("valueArray", this.valueList, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("valueObject", this.valueMap, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("valueCurrency", this.valueCurrency);
         jsonWriter.writeJsonField("valueAddress", this.valueAddress);
         jsonWriter.writeBooleanField("valueBoolean", this.valueBoolean);
@@ -407,8 +375,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
             DocumentSelectionMarkState valueSelectionMark = null;
             DocumentSignatureType valueSignature = null;
             String valueCountryRegion = null;
-            List<DocumentField> valueArray = null;
-            Map<String, DocumentField> valueObject = null;
+            List<DocumentField> valueList = null;
+            Map<String, DocumentField> valueMap = null;
             CurrencyValue valueCurrency = null;
             AddressValue valueAddress = null;
             Boolean valueBoolean = null;
@@ -441,9 +409,9 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
                 } else if ("valueCountryRegion".equals(fieldName)) {
                     valueCountryRegion = reader.getString();
                 } else if ("valueArray".equals(fieldName)) {
-                    valueArray = reader.readArray(reader1 -> DocumentField.fromJson(reader1));
+                    valueList = reader.readArray(reader1 -> DocumentField.fromJson(reader1));
                 } else if ("valueObject".equals(fieldName)) {
-                    valueObject = reader.readMap(reader1 -> DocumentField.fromJson(reader1));
+                    valueMap = reader.readMap(reader1 -> DocumentField.fromJson(reader1));
                 } else if ("valueCurrency".equals(fieldName)) {
                     valueCurrency = CurrencyValue.fromJson(reader);
                 } else if ("valueAddress".equals(fieldName)) {
@@ -474,8 +442,8 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
             deserializedDocumentField.valueSelectionMark = valueSelectionMark;
             deserializedDocumentField.valueSignature = valueSignature;
             deserializedDocumentField.valueCountryRegion = valueCountryRegion;
-            deserializedDocumentField.valueArray = valueArray;
-            deserializedDocumentField.valueObject = valueObject;
+            deserializedDocumentField.valueList = valueList;
+            deserializedDocumentField.valueMap = valueMap;
             deserializedDocumentField.valueCurrency = valueCurrency;
             deserializedDocumentField.valueAddress = valueAddress;
             deserializedDocumentField.valueBoolean = valueBoolean;
@@ -486,5 +454,37 @@ public final class DocumentField implements JsonSerializable<DocumentField> {
             deserializedDocumentField.confidence = confidence;
             return deserializedDocumentField;
         });
+    }
+
+    /*
+     * Array of field values.
+     */
+    @Generated
+    private List<DocumentField> valueList;
+
+    /*
+     * Dictionary of named field values.
+     */
+    @Generated
+    private Map<String, DocumentField> valueMap;
+
+    /**
+     * Get the valueList property: Array of field values.
+     *
+     * @return the valueList value.
+     */
+    @Generated
+    public List<DocumentField> getValueList() {
+        return this.valueList;
+    }
+
+    /**
+     * Get the valueMap property: Dictionary of named field values.
+     *
+     * @return the valueMap value.
+     */
+    @Generated
+    public Map<String, DocumentField> getValueMap() {
+        return this.valueMap;
     }
 }
