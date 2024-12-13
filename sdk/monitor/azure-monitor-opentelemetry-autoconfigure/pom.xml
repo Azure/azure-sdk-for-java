@@ -186,12 +186,12 @@
       <version>3.9.1</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-          <version>33.1.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.1.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+        <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>

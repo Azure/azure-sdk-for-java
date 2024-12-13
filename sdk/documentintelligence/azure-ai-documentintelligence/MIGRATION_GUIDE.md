@@ -38,14 +38,14 @@ SDK introduces a new enum _ContentFormat_ with value "text" or "markdown" to ind
 
 ```java
 File document = new File("{your-file-to-analyze}");
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
         client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
                 null,
                 null,
-                ContentFormat.MARKDOWN,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                DocumentContentFormat.MARKDOWN,
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
 ```
 For the complete sample, see [Sample: Markdown][Sample-AnalyzeLayoutMarkdownOutput].
 
@@ -57,14 +57,14 @@ existing fields defined by the model as fallback.
 
 ```java
 File document = new File("{your-file-to-analyze}");
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
         client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
                 Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                 Arrays.asList("Address", "InvoiceNumber"),
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
 ```
 For the complete sample, see [Sample: Query Fields][Sample-AnalyzeAddOnQueryFields].
 
@@ -170,14 +170,14 @@ the _Currency_ field in result has been removed.
 
   ```java
   File document = new File("{your-file-to-analyze}");
-  SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+  SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
           client.beginAnalyzeDocument("prebuilt-layout", null,
                   null,
                   null,
                   Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                   null,
                   null,
-                  new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                  new AnalyzeDocumentOptions().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
 
   For the complete sample, see [Sample: KeyValuePair][Sample-AnalyzeAddOnKeyValuePair].
