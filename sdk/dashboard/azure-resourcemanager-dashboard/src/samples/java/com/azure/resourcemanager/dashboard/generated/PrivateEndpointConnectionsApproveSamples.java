@@ -18,7 +18,9 @@ public final class PrivateEndpointConnectionsApproveSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void privateEndpointConnectionsApprove(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.privateEndpointConnections().define("myConnection")
-            .withExistingGrafana("myResourceGroup", "myWorkspace").create();
+        manager.privateEndpointConnections()
+            .define("myConnection")
+            .withExistingGrafana("myResourceGroup", "myWorkspace")
+            .create();
     }
 }
