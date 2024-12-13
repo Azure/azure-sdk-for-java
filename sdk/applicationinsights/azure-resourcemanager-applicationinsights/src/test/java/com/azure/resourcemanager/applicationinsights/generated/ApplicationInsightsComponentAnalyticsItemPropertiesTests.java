@@ -12,16 +12,16 @@ public final class ApplicationInsightsComponentAnalyticsItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentAnalyticsItemProperties model
-            = BinaryData.fromString("{\"functionAlias\":\"csonpclhoco\"}")
+            = BinaryData.fromString("{\"functionAlias\":\"tqhjfbebrjcx\"}")
                 .toObject(ApplicationInsightsComponentAnalyticsItemProperties.class);
-        Assertions.assertEquals("csonpclhoco", model.functionAlias());
+        Assertions.assertEquals("tqhjfbebrjcx", model.functionAlias());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationInsightsComponentAnalyticsItemProperties model
-            = new ApplicationInsightsComponentAnalyticsItemProperties().withFunctionAlias("csonpclhoco");
+            = new ApplicationInsightsComponentAnalyticsItemProperties().withFunctionAlias("tqhjfbebrjcx");
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentAnalyticsItemProperties.class);
-        Assertions.assertEquals("csonpclhoco", model.functionAlias());
+        Assertions.assertEquals("tqhjfbebrjcx", model.functionAlias());
     }
 }

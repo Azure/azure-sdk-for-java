@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customer Managed Identity. */
+/**
+ * Customer Managed Identity.
+ */
 @Fluent
-public final class MyWorkbookManagedIdentity {
+public final class MyWorkbookManagedIdentity implements JsonSerializable<MyWorkbookManagedIdentity> {
     /*
      * Customer Managed Identity
      */
-    @JsonProperty(value = "userAssignedIdentities")
     private MyWorkbookUserAssignedIdentities userAssignedIdentities;
 
     /*
      * The identity type.
      */
-    @JsonProperty(value = "type")
     private MyWorkbookManagedIdentityType type;
 
-    /** Creates an instance of MyWorkbookManagedIdentity class. */
+    /**
+     * Creates an instance of MyWorkbookManagedIdentity class.
+     */
     public MyWorkbookManagedIdentity() {
     }
 
     /**
      * Get the userAssignedIdentities property: Customer Managed Identity.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public MyWorkbookUserAssignedIdentities userAssignedIdentities() {
@@ -37,7 +43,7 @@ public final class MyWorkbookManagedIdentity {
 
     /**
      * Set the userAssignedIdentities property: Customer Managed Identity.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the MyWorkbookManagedIdentity object itself.
      */
@@ -49,7 +55,7 @@ public final class MyWorkbookManagedIdentity {
 
     /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public MyWorkbookManagedIdentityType type() {
@@ -58,7 +64,7 @@ public final class MyWorkbookManagedIdentity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the MyWorkbookManagedIdentity object itself.
      */
@@ -69,12 +75,53 @@ public final class MyWorkbookManagedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
             userAssignedIdentities().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userAssignedIdentities", this.userAssignedIdentities);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MyWorkbookManagedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MyWorkbookManagedIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MyWorkbookManagedIdentity.
+     */
+    public static MyWorkbookManagedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MyWorkbookManagedIdentity deserializedMyWorkbookManagedIdentity = new MyWorkbookManagedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userAssignedIdentities".equals(fieldName)) {
+                    deserializedMyWorkbookManagedIdentity.userAssignedIdentities
+                        = MyWorkbookUserAssignedIdentities.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedMyWorkbookManagedIdentity.type
+                        = MyWorkbookManagedIdentityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMyWorkbookManagedIdentity;
+        });
     }
 }

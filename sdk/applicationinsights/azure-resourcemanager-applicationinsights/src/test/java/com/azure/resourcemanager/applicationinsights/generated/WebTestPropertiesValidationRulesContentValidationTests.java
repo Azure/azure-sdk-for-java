@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class WebTestPropertiesValidationRulesContentValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebTestPropertiesValidationRulesContentValidation model = BinaryData
-            .fromString("{\"ContentMatch\":\"ureximoryocfs\",\"IgnoreCase\":false,\"PassIfTextFound\":true}")
-            .toObject(WebTestPropertiesValidationRulesContentValidation.class);
-        Assertions.assertEquals("ureximoryocfs", model.contentMatch());
-        Assertions.assertEquals(false, model.ignoreCase());
+        WebTestPropertiesValidationRulesContentValidation model
+            = BinaryData.fromString("{\"ContentMatch\":\"pwhonowkg\",\"IgnoreCase\":true,\"PassIfTextFound\":true}")
+                .toObject(WebTestPropertiesValidationRulesContentValidation.class);
+        Assertions.assertEquals("pwhonowkg", model.contentMatch());
+        Assertions.assertEquals(true, model.ignoreCase());
         Assertions.assertEquals(true, model.passIfTextFound());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WebTestPropertiesValidationRulesContentValidation model
-            = new WebTestPropertiesValidationRulesContentValidation().withContentMatch("ureximoryocfs")
-                .withIgnoreCase(false)
+            = new WebTestPropertiesValidationRulesContentValidation().withContentMatch("pwhonowkg")
+                .withIgnoreCase(true)
                 .withPassIfTextFound(true);
         model = BinaryData.fromObject(model).toObject(WebTestPropertiesValidationRulesContentValidation.class);
-        Assertions.assertEquals("ureximoryocfs", model.contentMatch());
-        Assertions.assertEquals(false, model.ignoreCase());
+        Assertions.assertEquals("pwhonowkg", model.contentMatch());
+        Assertions.assertEquals(true, model.ignoreCase());
         Assertions.assertEquals(true, model.passIfTextFound());
     }
 }
