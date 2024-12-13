@@ -1,14 +1,163 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-13)
 
-### Features Added
+- Azure Resource Manager HybridNetwork client library for Java. This package contains Microsoft Azure SDK for HybridNetwork Management SDK. The definitions in this swagger specification will be used to manage the Hybrid Network resources. Package tag package-2023-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.DeploymentResourceIdReference` was modified
+
+* `idType()` was added
+
+#### `models.AzureCoreNfviDetails` was modified
+
+* `nfviType()` was added
+
+#### `models.AzureOperatorNexusNetworkFunctionArmTemplateApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.ConfigurationGroupValuePropertiesFormat` was modified
+
+* `configurationType()` was added
+
+#### `models.ResourceElementTemplate` was modified
+
+* `resourceElementType()` was added
+
+#### `models.NetworkFunctionDefinitionVersionPropertiesFormat` was modified
+
+* `networkFunctionType()` was added
+
+#### `models.AzureCoreNetworkFunctionTemplate` was modified
+
+* `nfviType()` was added
+
+#### `models.AzureOperatorNexusNetworkFunctionApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.VirtualNetworkFunctionDefinitionVersion` was modified
+
+* `networkFunctionType()` was added
+
+#### `models.AzureOperatorNexusNetworkFunctionTemplate` was modified
+
+* `nfviType()` was added
+
+#### `models.NfvIs` was modified
+
+* `nfviType()` was added
+
+#### `models.ArtifactAccessCredential` was modified
+
+* `credentialType()` was added
+
+#### `models.AzureCoreNetworkFunctionArmTemplateApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.AzureCoreNetworkFunctionVhdApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.AzureCoreNetworkFunctionApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.AzureArcK8SClusterNfviDetails` was modified
+
+* `nfviType()` was added
+
+#### `models.NetworkFunctionValueWithoutSecrets` was modified
+
+* `configurationType()` was added
+
+#### `models.ContainerizedNetworkFunctionTemplate` was modified
+
+* `nfviType()` was added
+
+#### `models.ConfigurationValueWithSecrets` was modified
+
+* `configurationType()` was added
+
+#### `models.ConfigurationValueWithoutSecrets` was modified
+
+* `configurationType()` was added
+
+#### `models.ContainerizedNetworkFunctionDefinitionVersion` was modified
+
+* `networkFunctionType()` was added
+
+#### `models.AzureArcKubernetesNetworkFunctionApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.NetworkFunctionValueWithSecrets` was modified
+
+* `configurationType()` was added
+
+#### `models.VirtualNetworkFunctionTemplate` was modified
+
+* `nfviType()` was added
+
+#### `models.AzureArcKubernetesNetworkFunctionTemplate` was modified
+
+* `nfviType()` was added
+
+#### `models.AzureOperatorNexusNetworkFunctionImageApplication` was modified
+
+* `artifactType()` was added
+
+#### `models.AzureOperatorNexusClusterNfviDetails` was modified
+
+* `nfviType()` was added
+
+#### `models.ArmResourceDefinitionResourceElementTemplateDetails` was modified
+
+* `resourceElementType()` was added
+
+#### `models.SecretDeploymentResourceReference` was modified
+
+* `idType()` was added
+
+#### `models.AzureStorageAccountCredential` was modified
+
+* `credentialType()` was added
+
+#### `models.NetworkFunctionPropertiesFormat` was modified
+
+* `configurationType()` was added
+
+#### `models.OpenDeploymentResourceReference` was modified
+
+* `idType()` was added
+
+#### `models.AzureContainerRegistryScopedTokenCredential` was modified
+
+* `credentialType()` was added
+
+#### `models.NetworkFunctionDefinitionResourceElementTemplateDetails` was modified
+
+* `resourceElementType()` was added
+
+#### `models.AzureArcKubernetesHelmApplication` was modified
+
+* `artifactType()` was added
 
 ## 1.0.0 (2023-11-20)
 

@@ -24,8 +24,10 @@ public final class NetworkFunctionDefinitionGroupsUpdateSamples {
      */
     public static void createOrUpdateTheNetworkFunctionDefinitionGroupResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        NetworkFunctionDefinitionGroup resource = manager.networkFunctionDefinitionGroups().getWithResponse("rg",
-            "TestPublisher", "TestNetworkFunctionDefinitionGroupName", com.azure.core.util.Context.NONE).getValue();
+        NetworkFunctionDefinitionGroup resource = manager.networkFunctionDefinitionGroups()
+            .getWithResponse("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
