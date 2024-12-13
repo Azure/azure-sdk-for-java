@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the VM SKU capabilities like MemoryGB, vCPUs, etc.
  */
 @Immutable
-public final class VmSkuCapabilities {
+public final class VmSkuCapabilities implements JsonSerializable<VmSkuCapabilities> {
     /*
      * Name of the VM SKU capability
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Value of the VM SKU capability
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
@@ -54,5 +56,42 @@ public final class VmSkuCapabilities {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmSkuCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmSkuCapabilities if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VmSkuCapabilities.
+     */
+    public static VmSkuCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmSkuCapabilities deserializedVmSkuCapabilities = new VmSkuCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVmSkuCapabilities.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedVmSkuCapabilities.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmSkuCapabilities;
+        });
     }
 }
