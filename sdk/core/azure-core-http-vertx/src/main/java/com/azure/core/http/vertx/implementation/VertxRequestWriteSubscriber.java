@@ -6,6 +6,7 @@ package com.azure.core.http.vertx.implementation;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
+import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import org.reactivestreams.Subscriber;
@@ -23,7 +24,7 @@ import java.nio.ByteBuffer;
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     private final HttpClientRequest request;
-    private final io.vertx.core.Promise<HttpResponse> promise;
+    private final Promise<HttpResponse> promise;
     private final ProgressReporter progressReporter;
     private final ContextView contextView;
 
@@ -42,7 +43,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      * @param progressReporter The {@link ProgressReporter} to report progress to.
      * @param contextView The {@link ContextView} to use when dropping errors.
      */
-    public VertxRequestWriteSubscriber(HttpClientRequest request, io.vertx.core.Promise<HttpResponse> promise,
+    public VertxRequestWriteSubscriber(HttpClientRequest request, Promise<HttpResponse> promise,
         ProgressReporter progressReporter, ContextView contextView) {
         this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
         this.promise = promise;
@@ -101,6 +102,10 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
                 }
             } else {
                 this.state = State.ERROR;
+                if (error != null) {
+                    // Don't lose any reactive error that may have occurred while writing.
+                    result.cause().addSuppressed(error);
+                }
                 resetRequest(result.cause());
             }
         });
@@ -134,7 +139,17 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
     private void resetRequest(Throwable throwable) {
         subscription.cancel();
-        promise.fail(throwable);
+        if (!promise.tryFail(throwable)) {
+            // Seems the promise has already completed in some form.
+            // Attempt to associate this error with the existing failure.
+            Throwable cause = promise.future().cause();
+            if (cause != null) {
+                cause.addSuppressed(throwable);
+            } else {
+                // Turns out the future was completed as successfully externally, drop the error.
+                Operators.onErrorDropped(throwable, Context.of(contextView));
+            }
+        }
         request.reset(0, throwable);
     }
 
