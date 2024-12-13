@@ -10,22 +10,22 @@ public class App {
     public static void main(String[] args) {
         TelemetryHelper.init();
         PerfStressProgram.run(new Class<?>[]{
-            AppendBlock.class,
+            //AppendBlock.class,
             AppendBlobOutputStream.class,
-            BlockBlobOutputStream.class,
-            BlockBlobUpload.class,
-            CommitBlockList.class,
-            DownloadToFile.class,
-            DownloadStream.class,
-            DownloadContent.class,
-            OpenInputStream.class,
-            OpenSeekableByteChannelRead.class,
-            OpenSeekableByteChannelWrite.class,
-            PageBlobOutputStream.class,
-            StageBlock.class,
-            Upload.class,
-            UploadFromFile.class,
-            UploadPages.class,
+//            BlockBlobOutputStream.class,
+//            BlockBlobUpload.class,
+//            CommitBlockList.class,
+//            DownloadToFile.class,
+//            DownloadStream.class,
+//            DownloadContent.class,
+//            OpenInputStream.class,
+//            OpenSeekableByteChannelRead.class,
+//            OpenSeekableByteChannelWrite.class,
+//            PageBlobOutputStream.class,
+//            StageBlock.class,
+//            Upload.class,
+//            UploadFromFile.class,
+//            UploadPages.class,
         }, args);
     }
 }

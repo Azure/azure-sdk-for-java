@@ -6,6 +6,7 @@ package com.azure.storage.stress;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import io.netty.channel.unix.Errors;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -195,9 +196,14 @@ public class TelemetryHelper {
     private void trackFailure(Instant start, Throwable e, Span span) {
         Throwable unwrapped = Exceptions.unwrap(e);
 
+        // Check if the message contains "NativeIoException" and the unwrapped exception is not already a NativeIoException
+        if (unwrapped.getMessage().contains("NativeIoException") && !(unwrapped instanceof io.netty.channel.unix.Errors.NativeIoException)) {
+            unwrapped = new io.netty.channel.unix.Errors.NativeIoException(unwrapped.getMessage(), Errors.ERRNO_ECONNRESET_NEGATIVE);
+        }
+
         span.recordException(unwrapped);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, unwrapped.getClass().getName());
-        span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
+        span.setStatus(StatusCode.ERROR, unwrapped.getMessage()); // add check here to see if its a connection reset exception/NativeIoException
 
         String errorType = unwrapped.getClass().getName();
         logger.atError()
