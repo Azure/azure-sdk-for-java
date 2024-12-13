@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class GalleryImageVersionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Update.json
      */
     /**
@@ -46,7 +46,28 @@ public final class GalleryImageVersionsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * GalleryImageVersion_Update_RestoreSoftDeleted.json
+     */
+    /**
+     * Sample code: Restore a Soft Deleted Gallery Image Version.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void restoreASoftDeletedGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .update("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionUpdate().withStorageProfile(new GalleryImageVersionStorageProfile())
+                    .withRestore(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Update_WithoutSourceId.json
      */
     /**
