@@ -829,7 +829,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -884,7 +884,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -938,7 +938,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -992,7 +992,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1037,7 +1037,7 @@ public final class CertificateClientImpl {
      * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1141,7 +1141,7 @@ public final class CertificateClientImpl {
      * to remove individual versions of a certificate object. This operation requires the certificates/delete
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1243,7 +1243,7 @@ public final class CertificateClientImpl {
      * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1258,9 +1258,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1300,7 +1300,7 @@ public final class CertificateClientImpl {
      * Sets the certificate contacts for the specified key vault. This operation requires the
      * certificates/managecontacts permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1315,9 +1315,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1355,7 +1355,7 @@ public final class CertificateClientImpl {
      * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
      * This operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1392,7 +1392,7 @@ public final class CertificateClientImpl {
      * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
      * This operation requires the certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1428,7 +1428,7 @@ public final class CertificateClientImpl {
      * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1465,7 +1465,7 @@ public final class CertificateClientImpl {
      * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1509,7 +1509,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1551,7 +1551,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1591,7 +1591,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1631,7 +1631,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1663,7 +1663,7 @@ public final class CertificateClientImpl {
      * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
      * certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1691,9 +1691,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1750,7 +1750,7 @@ public final class CertificateClientImpl {
      * The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the
      * certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1778,9 +1778,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1835,7 +1835,7 @@ public final class CertificateClientImpl {
      * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1863,9 +1863,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1921,7 +1921,7 @@ public final class CertificateClientImpl {
      * The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This
      * operation requires the certificates/setissuers permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1949,9 +1949,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2005,7 +2005,7 @@ public final class CertificateClientImpl {
      * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
      * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2058,7 +2058,7 @@ public final class CertificateClientImpl {
      * The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault.
      * This operation requires the certificates/manageissuers/getissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2109,7 +2109,7 @@ public final class CertificateClientImpl {
      * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
      * operation requires the certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2162,7 +2162,7 @@ public final class CertificateClientImpl {
      * The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This
      * operation requires the certificates/manageissuers/deleteissuers permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2213,7 +2213,7 @@ public final class CertificateClientImpl {
      * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2283,9 +2283,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2337,7 +2337,7 @@ public final class CertificateClientImpl {
      * If this is the first version, the certificate resource is created. This operation requires the
      * certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2407,9 +2407,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2461,7 +2461,7 @@ public final class CertificateClientImpl {
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2533,9 +2533,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2641,7 +2641,7 @@ public final class CertificateClientImpl {
      * certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault will only
      * accept a key in PKCS#8 format.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2713,9 +2713,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2825,7 +2825,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2880,7 +2880,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2933,7 +2933,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2987,7 +2987,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3032,7 +3032,7 @@ public final class CertificateClientImpl {
      * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
      * This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3119,7 +3119,7 @@ public final class CertificateClientImpl {
      * The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault.
      * This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3206,7 +3206,7 @@ public final class CertificateClientImpl {
      * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3270,9 +3270,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3362,7 +3362,7 @@ public final class CertificateClientImpl {
      * Set specified members in the certificate policy. Leave others as null. This operation requires the
      * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3426,9 +3426,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3517,7 +3517,7 @@ public final class CertificateClientImpl {
      * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
      * are the certificate's attributes. This operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3587,9 +3587,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3693,7 +3693,7 @@ public final class CertificateClientImpl {
      * The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated
      * are the certificate's attributes. This operation requires the certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3763,9 +3763,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3866,7 +3866,7 @@ public final class CertificateClientImpl {
      *
      * Gets information about a specific certificate. This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3970,7 +3970,7 @@ public final class CertificateClientImpl {
      *
      * Gets information about a specific certificate. This operation requires the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4073,7 +4073,7 @@ public final class CertificateClientImpl {
      * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4081,9 +4081,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4134,7 +4134,7 @@ public final class CertificateClientImpl {
      * Updates a certificate creation operation that is already in progress. This operation requires the
      * certificates/update permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4142,9 +4142,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4193,7 +4193,7 @@ public final class CertificateClientImpl {
      * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4243,7 +4243,7 @@ public final class CertificateClientImpl {
      * Gets the creation operation associated with a specified certificate. This operation requires the certificates/get
      * permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4292,7 +4292,7 @@ public final class CertificateClientImpl {
      * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4340,7 +4340,7 @@ public final class CertificateClientImpl {
      * Deletes the creation operation for a specified certificate that is in the process of being created. The
      * certificate is no longer created. This operation requires the certificates/update permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4387,7 +4387,7 @@ public final class CertificateClientImpl {
      * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4409,9 +4409,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4514,7 +4514,7 @@ public final class CertificateClientImpl {
      * The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair
      * currently available in the service. This operation requires the certificates/create permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4536,9 +4536,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4639,7 +4639,7 @@ public final class CertificateClientImpl {
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
      * will be downloaded. This operation requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4671,7 +4671,7 @@ public final class CertificateClientImpl {
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
      * will be downloaded. This operation requires the certificates/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4701,7 +4701,7 @@ public final class CertificateClientImpl {
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4709,9 +4709,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4812,7 +4812,7 @@ public final class CertificateClientImpl {
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the
      * certificates/restore permission.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4820,9 +4820,9 @@ public final class CertificateClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4932,7 +4932,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4992,7 +4992,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5050,7 +5050,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5108,7 +5108,7 @@ public final class CertificateClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5157,7 +5157,7 @@ public final class CertificateClientImpl {
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5261,7 +5261,7 @@ public final class CertificateClientImpl {
      * retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires
      * the certificates/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5410,7 +5410,7 @@ public final class CertificateClientImpl {
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5511,7 +5511,7 @@ public final class CertificateClientImpl {
      * applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5609,7 +5609,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5654,7 +5654,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5698,7 +5698,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5733,7 +5733,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5766,7 +5766,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5812,7 +5812,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5857,7 +5857,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5907,7 +5907,7 @@ public final class CertificateClientImpl {
      *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
