@@ -3,7 +3,6 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.CoreUtils;

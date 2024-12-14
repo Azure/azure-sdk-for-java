@@ -1042,7 +1042,7 @@ public final class KeyClient {
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
         Response<BinaryData> response = implClient.updateKeyWithResponse(keyProperties.getName(),
-            keyProperties.getVersion(), BinaryData.fromObject(keyOperations), new RequestOptions().setContext(context));
+            keyProperties.getVersion(), BinaryData.fromObject(keyUpdateParameters), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
