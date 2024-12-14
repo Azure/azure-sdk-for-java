@@ -26,6 +26,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
@@ -42,19 +43,19 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class TraceChatCompletionsToolCallSample {
-    private static final String APP_NAMESPACE = "contoso-weather-temperature-app";
-
     /**
      * @param args Unused. Arguments to the program.
      */
     @SuppressWarnings("try")
     public static void main(final String[] args) {
         final OpenTelemetrySdk telemetry = configureOpenTelemetry();
-        final ChatCompletionsClient client = createChatCompletionClient();
-        final Tracer tracer = telemetry.getTracer(APP_NAMESPACE);
+        final Tracer tracer = telemetry.getTracer(TraceChatCompletionsToolCallSample.class.getName());
 
-        final Span span = tracer.spanBuilder("Contoso.App").startSpan();
+        final Span span = tracer.spanBuilder("main").startSpan();
         try (AutoCloseable scope = span.makeCurrent()) {
+
+            final ChatCompletionsClient client = createChatCompletionClient();
+
             final List<ChatRequestMessage> messages = new ArrayList<>();
             messages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
             messages.add(new ChatRequestUserMessage("What is the weather and temperature in Seattle?"));
@@ -75,13 +76,11 @@ public class TraceChatCompletionsToolCallSample {
             }
 
             System.out.println("Model response: " + modelResponseContent(response));
-            span.end();
         } catch (Exception e) {
-            span.setAttribute("error.type", e.getClass().getName());
-            span.end();
+            span.setStatus(StatusCode.ERROR, e.getMessage());
             throw new RuntimeException(e);
         } finally {
-            telemetry.close();
+            span.end();
         }
     }
 
@@ -96,13 +95,15 @@ public class TraceChatCompletionsToolCallSample {
         // The output of the docker command includes a link to the dashboard. For more information on Aspire Dashboard,
         // see https://learn.microsoft.com/dotnet/aspire/fundamentals/dashboard/overview
         //
-        // For production telemetry use cases, see Azure Monitor, https://learn.microsoft.com/java/api/overview/azure/monitor-opentelemetry-exporter-readme
+        // See https://learn.microsoft.com/azure/developer/java/sdk/tracing for more information on tracing with Azure SDK.
         //
         final AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         return sdkBuilder
             .addPropertiesSupplier(() -> {
                 final Map<String, String> properties = new HashMap<>();
-                properties.put("otel.exporter.otlp.endpoint", "http://localhost:4317");
+                properties.put("otel.service.name", "samples");
+                // change to your endpoint address, "http://localhost:4317" is used by default
+                // properties.put("otel.exporter.otlp.endpoint", "http://localhost:4317");
                 return properties;
             })
             .setResultAsGlobal()
@@ -114,6 +115,8 @@ public class TraceChatCompletionsToolCallSample {
         return new ChatCompletionsClientBuilder()
             .endpoint(System.getenv("MODEL_ENDPOINT"))
             .credential(new AzureKeyCredential(System.getenv("AZURE_API_KEY")))
+            // uncomment to capture message content in the telemetry (or you can set AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED environment variable to `true`)
+            // .configuration(new ConfigurationBuilder().putProperty("azure.tracing.gen_ai.content_recording_enabled", "true").build())
             .buildClient();
     }
 
@@ -269,14 +272,6 @@ public class TraceChatCompletionsToolCallSample {
                     return byteArrayOutputStream.toByteArray();
                 } catch (IOException ioe) {
                     throw new UncheckedIOException(ioe);
-                }
-            }
-
-            private static void sleep() {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    // ignored
                 }
             }
         }

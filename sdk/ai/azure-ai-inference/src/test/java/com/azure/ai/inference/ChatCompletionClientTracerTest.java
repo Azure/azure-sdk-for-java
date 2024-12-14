@@ -3,6 +3,7 @@
 
 package com.azure.ai.inference;
 
+import com.azure.ai.inference.implementation.ChatCompletionClientTracer;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
@@ -17,6 +18,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import io.opentelemetry.api.common.AttributeKey;
@@ -90,6 +93,7 @@ public final class ChatCompletionClientTracerTest {
 
     private ClientOptions clientOptions;
     private TestSpanProcessor spanProcessor;
+    private Tracer tracer;
 
     @BeforeEach
     public void setup() {
@@ -98,7 +102,8 @@ public final class ChatCompletionClientTracerTest {
             = new OpenTelemetryTracingOptions().setOpenTelemetry(OpenTelemetrySdk.builder()
                 .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build())
                 .build());
-        clientOptions = new ClientOptions().setTracingOptions(tracingOptions);
+        tracer = TracerProvider.getDefaultProvider()
+            .createTracer("test", null, "Microsoft.CognitiveServices", tracingOptions);
     }
 
     @AfterEach
@@ -108,8 +113,8 @@ public final class ChatCompletionClientTracerTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void shouldTraceSyncChatComplete(boolean captureContent) {
-        final ChatCompletionClientTracer tracer
-            = new ChatCompletionClientTracer(MODEL_ENDPOINT, configuration(captureContent), clientOptions);
+        final ChatCompletionClientTracer inferenceTracer
+            = new ChatCompletionClientTracer(MODEL_ENDPOINT, configuration(captureContent), tracer);
 
         final List<ChatRequestMessage> messages = new ArrayList<>();
         messages.add(new ChatRequestSystemMessage(SYSTEM_MESSAGE));
@@ -118,7 +123,7 @@ public final class ChatCompletionClientTracerTest {
             = new ChatCompletionsOptions(messages).setTopP(5.0).setMaxTokens(100).setTemperature(75.4);
         final ChatCompletions toolCallsResponse = getChatCompletionsModelResponse(true);
 
-        tracer.traceSyncComplete(completionsOptions, (arg0, arg1) -> toolCallsResponse,
+        inferenceTracer.traceSyncComplete(completionsOptions, (arg0, arg1) -> toolCallsResponse,
             toCompleteRequest(completionsOptions), new RequestOptions());
 
         final List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -143,8 +148,8 @@ public final class ChatCompletionClientTracerTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void shouldTraceChatComplete(boolean captureContent) {
-        final ChatCompletionClientTracer tracer
-            = new ChatCompletionClientTracer(MODEL_ENDPOINT, configuration(captureContent), clientOptions);
+        final ChatCompletionClientTracer inferenceTracer
+            = new ChatCompletionClientTracer(MODEL_ENDPOINT, configuration(captureContent), tracer);
 
         final List<ChatRequestMessage> messages = new ArrayList<>();
         messages.add(new ChatRequestSystemMessage(SYSTEM_MESSAGE));
@@ -154,7 +159,7 @@ public final class ChatCompletionClientTracerTest {
             = new ChatCompletionsOptions(messages).setTopP(5.0).setMaxTokens(100).setTemperature(75.4);
         final ChatCompletions modelResponse = getChatCompletionsModelResponse(false);
 
-        final Mono<ChatCompletions> r = tracer.traceComplete(completionsOptions,
+        final Mono<ChatCompletions> r = inferenceTracer.traceComplete(completionsOptions,
             (arg0, arg1) -> Mono.just(modelResponse), toCompleteRequest(completionsOptions), new RequestOptions());
 
         StepVerifier.create(r).expectNextCount(1).verifyComplete();
@@ -356,12 +361,10 @@ public final class ChatCompletionClientTracerTest {
     private static Configuration configuration(boolean captureContent) {
         if (captureContent) {
             return new com.azure.core.util.ConfigurationBuilder()
-                .putProperty("otel.instrumentation.genai.capture_message_content", "true")
+                .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
                 .build();
         } else {
-            return new com.azure.core.util.ConfigurationBuilder()
-                .putProperty("otel.instrumentation.genai.capture_message_content", "false")
-                .build();
+            return new com.azure.core.util.ConfigurationBuilder().build();
         }
     }
 

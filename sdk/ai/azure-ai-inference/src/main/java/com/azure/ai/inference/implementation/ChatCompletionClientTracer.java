@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.inference;
+package com.azure.ai.inference.implementation;
 
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
@@ -17,19 +17,15 @@ import com.azure.ai.inference.models.StreamingChatResponseMessageUpdate;
 import com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.LibraryTelemetryOptions;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
@@ -59,22 +55,24 @@ import java.util.stream.Collectors;
  * <a href="https://github.com/open-telemetry/semantic-conventions/blob/v1.29.0/docs/gen-ai/azure-ai-inference.md">Azure AI Inference semantic conventions</a>.
  * </p>
  */
-final class ChatCompletionClientTracer {
-    private static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
+public final class ChatCompletionClientTracer {
+    public static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
+
+    private static final ClientLogger LOGGER = new ClientLogger(ChatCompletionClientTracer.class);
     private static final String INFERENCE_GEN_AI_SYSTEM_NAME = "az.ai.inference";
     private static final String FINISH_REASON_ERROR = "{\"finish_reason\": \"error\"}";
     private static final String FINISH_REASON_CANCELLED = "{\"finish_reason\": \"cancelled\"}";
     private static final StartSpanOptions START_SPAN_OPTIONS = new StartSpanOptions(SpanKind.CLIENT);
 
     private static final ConfigurationProperty<Boolean> CAPTURE_MESSAGE_CONTENT
-        = ConfigurationPropertyBuilder.ofBoolean("otel.instrumentation.genai.capture_message_content")
-            .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_DISABLED)
+        = ConfigurationPropertyBuilder.ofBoolean("azure.tracing.gen_ai.content_recording_enabled")
+            .environmentVariableName("AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED")
+            .systemPropertyName("azure.tracing.gen_ai.content_recording_enabled")
             .shared(true)
             .defaultValue(false)
             .build();
     private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
 
-    private final ClientLogger logger;
     private final String host;
     private final int port;
     private final boolean captureContent;
@@ -131,22 +129,12 @@ final class ChatCompletionClientTracer {
      * Creates ChatCompletionClientTracer.
      *
      * @param endpoint the service endpoint.
-     */
-    ChatCompletionClientTracer(String endpoint) {
-        this(endpoint, null, null);
-    }
-
-    /**
-     * Creates ChatCompletionClientTracer.
-     *
-     * @param endpoint the service endpoint.
      * @param configuration the {@link Configuration} instance to check if message content needs to be captured,
      *     if {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
-     * @param clientOptions the client options.
+     * @param tracer the Tracer instance.
      */
-    ChatCompletionClientTracer(String endpoint, Configuration configuration, ClientOptions clientOptions) {
-        this.logger = new ClientLogger(ChatCompletionClientTracer.class);
-        final URL url = parse(endpoint, logger);
+    public ChatCompletionClientTracer(String endpoint, Configuration configuration, Tracer tracer) {
+        final URL url = parse(endpoint);
         if (url != null) {
             this.host = url.getHost();
             this.port = url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
@@ -157,7 +145,7 @@ final class ChatCompletionClientTracer {
         this.captureContent = configuration == null
             ? GLOBAL_CONFIG.get(CAPTURE_MESSAGE_CONTENT)
             : configuration.get(CAPTURE_MESSAGE_CONTENT);
-        this.tracer = createTracer(clientOptions);
+        this.tracer = tracer;
     }
 
     /**
@@ -170,7 +158,7 @@ final class ChatCompletionClientTracer {
      * @return chat completions for the provided chat messages.
      */
     @SuppressWarnings("try")
-    ChatCompletions traceSyncComplete(ChatCompletionsOptions request, SyncCompleteOperation operation,
+    public ChatCompletions traceSyncComplete(ChatCompletionsOptions request, SyncCompleteOperation operation,
         BinaryData completeRequest, RequestOptions requestOptions) {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
@@ -205,7 +193,7 @@ final class ChatCompletionClientTracer {
      * @param requestOptions The requestOptions parameter for the {@code operation}.
      * @return chat completions for the provided chat messages.
      */
-    Mono<ChatCompletions> traceComplete(ChatCompletionsOptions request, CompleteOperation operation,
+    public Mono<ChatCompletions> traceComplete(ChatCompletionsOptions request, CompleteOperation operation,
         BinaryData completeRequest, RequestOptions requestOptions) {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
@@ -266,7 +254,7 @@ final class ChatCompletionClientTracer {
      * @param requestOptions The requestOptions parameter for the {@code operation}.
      * @return chat completions streaming for the provided chat messages.
      */
-    Flux<StreamingChatCompletionsUpdate> traceStreamingCompletion(ChatCompletionsOptions request,
+    public Flux<StreamingChatCompletionsUpdate> traceStreamingCompletion(ChatCompletionsOptions request,
         StreamingCompleteOperation operation, BinaryData completeRequest, RequestOptions requestOptions) {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
@@ -306,7 +294,7 @@ final class ChatCompletionClientTracer {
                 final StreamingChatCompletionsUpdate lastChunk = resource.lastChunk;
                 final String finishReasons = resource.getFinishReasons();
                 traceCompletionResponseAttributes(lastChunk, finishReasons, span);
-                traceChoiceEvent(resource.toJson(logger), span);
+                traceChoiceEvent(resource.toJson(), span);
             }
             tracer.end(null, null, span);
             return Mono.empty();
@@ -440,7 +428,7 @@ final class ChatCompletionClientTracer {
         try {
             return message.toJsonString();
         } catch (IOException e) {
-            logger.atVerbose().log("'ChatRequestMessage' serialization error", e);
+            LOGGER.verbose("'ChatRequestMessage' serialization error", e);
         }
         return null;
     }
@@ -478,7 +466,7 @@ final class ChatCompletionClientTracer {
             writer.flush();
             return new String(stream.toByteArray(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            logger.atVerbose().log("'ChatChoice' serialization error", e);
+            LOGGER.verbose("'ChatChoice' serialization error", e);
         }
         return null;
     }
@@ -494,19 +482,7 @@ final class ChatCompletionClientTracer {
         return finishReasons.toString();
     }
 
-    private static Tracer createTracer(ClientOptions clientOptions) {
-        final Map<String, String> properties = CoreUtils.getProperties("azure-ai-inference.properties");
-        final String libraryName = properties.getOrDefault("name", "UnknownName");
-        final String libraryVersion = properties.getOrDefault("version", "UnknownVersion");
-        final LibraryTelemetryOptions telemetryOptions
-            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion)
-                .setResourceProviderNamespace("Microsoft.CognitiveServices")
-                .setSchemaUrl(OTEL_SCHEMA_URL);
-        final TracingOptions options = clientOptions == null ? null : clientOptions.getTracingOptions();
-        return TracerProvider.getDefaultProvider().createTracer(telemetryOptions, options);
-    }
-
-    private static URL parse(String endpoint, ClientLogger logger) {
+    private static URL parse(String endpoint) {
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             return null;
         }
@@ -514,7 +490,7 @@ final class ChatCompletionClientTracer {
             final URI uri = new URI(endpoint);
             return uri.toURL();
         } catch (MalformedURLException | URISyntaxException e) {
-            logger.atWarning().log("service endpoint uri parse error.", e);
+            LOGGER.atWarning().log("service endpoint uri parse error.", e);
         }
         return null;
     }
@@ -598,7 +574,7 @@ final class ChatCompletionClientTracer {
             }
         }
 
-        String toJson(ClientLogger logger) {
+        String toJson() {
             try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 JsonWriter writer = JsonProviders.createWriter(stream)) {
                 writer.writeStartObject();
@@ -630,7 +606,7 @@ final class ChatCompletionClientTracer {
                 writer.flush();
                 return new String(stream.toByteArray(), StandardCharsets.UTF_8);
             } catch (IOException e) {
-                logger.atVerbose().log("'StreamingChatCompletionsState' serialization error", e);
+                LOGGER.verbose("'StreamingChatCompletionsState' serialization error", e);
             }
             return null;
         }
