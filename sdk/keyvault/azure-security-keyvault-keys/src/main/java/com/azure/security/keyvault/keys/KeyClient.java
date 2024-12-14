@@ -384,10 +384,10 @@ public final class KeyClient {
             .setTags(createKeyOptions.getTags())
             .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-        Response<BinaryData> response =
-            callWithMappedException(() ->
-                implClient.createKeyWithResponse(createKeyOptions.getName(), BinaryData.fromObject(keyCreateParameters),
-                    new RequestOptions().setContext(context)), KeyAsyncClient::mapCreateKeyException);
+        Response<BinaryData> response = callWithMappedException(
+            () -> implClient.createKeyWithResponse(createKeyOptions.getName(),
+                BinaryData.fromObject(keyCreateParameters), new RequestOptions().setContext(context)),
+            KeyAsyncClient::mapCreateKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
@@ -485,9 +485,8 @@ public final class KeyClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'createRsaKeyOptions' cannot be null."));
         }
 
-        KeyCreateParameters keyCreateParameters =
-            new KeyCreateParameters(createRsaKeyOptions.getKeyType())
-                .setKeySize(createRsaKeyOptions.getKeySize())
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createRsaKeyOptions.getKeyType()).setKeySize(createRsaKeyOptions.getKeySize())
                 .setPublicExponent(createRsaKeyOptions.getPublicExponent())
                 .setKeyOps(createRsaKeyOptions.getKeyOperations())
                 .setKeyAttributes(createKeyAttributes(createRsaKeyOptions))
@@ -598,9 +597,8 @@ public final class KeyClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'createEcKeyOptions' cannot be null."));
         }
 
-        KeyCreateParameters keyCreateParameters =
-            new KeyCreateParameters(createEcKeyOptions.getKeyType())
-                .setKeyOps(createEcKeyOptions.getKeyOperations())
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createEcKeyOptions.getKeyType()).setKeyOps(createEcKeyOptions.getKeyOperations())
                 .setKeyAttributes(createKeyAttributes(createEcKeyOptions))
                 .setTags(createEcKeyOptions.getTags())
                 .setCurve(createEcKeyOptions.getCurveName())
@@ -701,9 +699,8 @@ public final class KeyClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'createOctKeyOptions' cannot be null."));
         }
 
-        KeyCreateParameters keyCreateParameters =
-            new KeyCreateParameters(createOctKeyOptions.getKeyType())
-                .setKeySize(createOctKeyOptions.getKeySize())
+        KeyCreateParameters keyCreateParameters
+            = new KeyCreateParameters(createOctKeyOptions.getKeyType()).setKeySize(createOctKeyOptions.getKeySize())
                 .setKeyOps(createOctKeyOptions.getKeyOperations())
                 .setKeyAttributes(createKeyAttributes(createOctKeyOptions))
                 .setTags(createOctKeyOptions.getTags())
@@ -832,12 +829,11 @@ public final class KeyClient {
             throw LOGGER.logExceptionAsError(new RuntimeException("'importKeyOptions' cannot be null."));
         }
 
-        KeyImportParameters keyImportParameters =
-            new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
-                .setHsm(importKeyOptions.isHardwareProtected())
-                .setKeyAttributes(createKeyAttributes(importKeyOptions))
-                .setTags(importKeyOptions.getTags())
-                .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
+        KeyImportParameters keyImportParameters = new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
+            .setHsm(importKeyOptions.isHardwareProtected())
+            .setKeyAttributes(createKeyAttributes(importKeyOptions))
+            .setTags(importKeyOptions.getTags())
+            .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
         Response<BinaryData> response = implClient.importKeyWithResponse(importKeyOptions.getName(),
             BinaryData.fromObject(keyImportParameters), new RequestOptions().setContext(context));
@@ -1039,16 +1035,14 @@ public final class KeyClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'keyProperties' cannot be null."));
         }
 
-        KeyUpdateParameters keyUpdateParameters =
-            new KeyUpdateParameters()
-                .setKeyOps(keyOperations == null ? null : Arrays.asList(keyOperations))
+        KeyUpdateParameters keyUpdateParameters
+            = new KeyUpdateParameters().setKeyOps(keyOperations == null ? null : Arrays.asList(keyOperations))
                 .setKeyAttributes(createKeyAttributes(keyProperties))
                 .setTags(keyProperties.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-        Response<BinaryData> response
-            = implClient.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
-                BinaryData.fromObject(keyOperations), new RequestOptions().setContext(context));
+        Response<BinaryData> response = implClient.updateKeyWithResponse(keyProperties.getName(),
+            keyProperties.getVersion(), BinaryData.fromObject(keyOperations), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
@@ -1097,10 +1091,8 @@ public final class KeyClient {
     }
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deleteActivationOperation(String name) {
-        return pollingContext ->
-            new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                createDeletedKey(implClient.deleteKeyWithResponse(name, EMPTY_OPTIONS)
-                    .getValue().toObject(DeletedKeyBundle.class)));
+        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedKey(
+            implClient.deleteKeyWithResponse(name, EMPTY_OPTIONS).getValue().toObject(DeletedKeyBundle.class)));
     }
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deletePollOperation(String name) {
@@ -1108,7 +1100,8 @@ public final class KeyClient {
             try {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     createDeletedKey(implClient.getDeletedKeyWithResponse(name, EMPTY_OPTIONS)
-                        .getValue().toObject(DeletedKeyBundle.class)));
+                        .getValue()
+                        .toObject(DeletedKeyBundle.class)));
             } catch (HttpResponseException e) {
                 if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -1184,8 +1177,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
-        Response<BinaryData> response =
-            implClient.getDeletedKeyWithResponse(name, new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.getDeletedKeyWithResponse(name, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createDeletedKey(response.getValue().toObject(DeletedKeyBundle.class)));
     }
@@ -1276,26 +1269,20 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            recoverActivationOperation(name),
-            recoverPollOperation(name),
-            (pollingContext, firstResponse) -> null,
-            pollingContext -> null);
+        return SyncPoller.createPoller(Duration.ofSeconds(1), recoverActivationOperation(name),
+            recoverPollOperation(name), (pollingContext, firstResponse) -> null, pollingContext -> null);
     }
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverActivationOperation(String name) {
-        return pollingContext ->
-            new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                createKeyVaultKey(implClient.recoverDeletedKeyWithResponse(name, EMPTY_OPTIONS)
-                    .getValue().toObject(KeyBundle.class)));
+        return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createKeyVaultKey(
+            implClient.recoverDeletedKeyWithResponse(name, EMPTY_OPTIONS).getValue().toObject(KeyBundle.class)));
     }
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverPollOperation(String keyName) {
         return pollingContext -> {
             try {
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createKeyVaultKey(implClient.getKeyWithResponse(keyName, null, EMPTY_OPTIONS)
-                        .getValue().toObject(KeyBundle.class)));
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createKeyVaultKey(
+                    implClient.getKeyWithResponse(keyName, null, EMPTY_OPTIONS).getValue().toObject(KeyBundle.class)));
             } catch (HttpResponseException e) {
                 if (e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -1385,8 +1372,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
-        Response<BinaryData> response =
-            implClient.backupKeyWithResponse(name, new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.backupKeyWithResponse(name, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, response.getValue().toObject(BackupKeyResult.class).getValue());
     }
@@ -1463,13 +1450,12 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, Context context) {
-        KeyRestoreParameters keyRestoreParameters =
-            new KeyRestoreParameters(backup);
+        KeyRestoreParameters keyRestoreParameters = new KeyRestoreParameters(backup);
 
-        Response<BinaryData> response =
-            callWithMappedException(() ->
-                implClient.restoreKeyWithResponse(BinaryData.fromObject(keyRestoreParameters),
-                    new RequestOptions().setContext(context)), KeyAsyncClient::mapRestoreKeyException);
+        Response<BinaryData> response = callWithMappedException(
+            () -> implClient.restoreKeyWithResponse(BinaryData.fromObject(keyRestoreParameters),
+                new RequestOptions().setContext(context)),
+            KeyAsyncClient::mapRestoreKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
@@ -1572,8 +1558,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
         return implClient.getKeys(new RequestOptions().setContext(context))
-            .mapPage(binaryData ->
-                KeyVaultKeysModelsUtils.createKeyProperties(binaryData.toObject(KeyItem.class)));
+            .mapPage(binaryData -> KeyVaultKeysModelsUtils.createKeyProperties(binaryData.toObject(KeyItem.class)));
     }
 
     /**
@@ -1653,8 +1638,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
         return implClient.getDeletedKeys(new RequestOptions().setContext(context))
-            .mapPage(binaryData ->
-                KeyVaultKeysModelsUtils.createDeletedKey(binaryData.toObject(DeletedKeyItem.class)));
+            .mapPage(binaryData -> KeyVaultKeysModelsUtils.createDeletedKey(binaryData.toObject(DeletedKeyItem.class)));
     }
 
     /**
@@ -1754,8 +1738,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
         return implClient.getKeyVersions(name, new RequestOptions().setContext(context))
-            .mapPage(binaryData ->
-                KeyVaultKeysModelsUtils.createKeyProperties(binaryData.toObject(KeyItem.class)));
+            .mapPage(binaryData -> KeyVaultKeysModelsUtils.createKeyProperties(binaryData.toObject(KeyItem.class)));
     }
 
     /**
@@ -1810,9 +1793,8 @@ public final class KeyClient {
     public Response<byte[]> getRandomBytesWithResponse(int count, Context context) {
         GetRandomBytesRequest getRandomBytesRequest = new GetRandomBytesRequest(count);
 
-        Response<BinaryData> response =
-            implClient.getRandomBytesWithResponse(BinaryData.fromObject(getRandomBytesRequest),
-                new RequestOptions().setContext(context));
+        Response<BinaryData> response = implClient.getRandomBytesWithResponse(
+            BinaryData.fromObject(getRandomBytesRequest), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, response.getValue().toObject(RandomBytes.class).getValue());
     }
@@ -1934,14 +1916,11 @@ public final class KeyClient {
 
         String nonce = releaseKeyOptions == null ? null : releaseKeyOptions.getNonce();
         KeyExportEncryptionAlgorithm algorithm = releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm();
-        KeyReleaseParameters keyReleaseParameters =
-            new KeyReleaseParameters(targetAttestationToken)
-                .setEnc(algorithm)
-                .setNonce(nonce);
+        KeyReleaseParameters keyReleaseParameters
+            = new KeyReleaseParameters(targetAttestationToken).setEnc(algorithm).setNonce(nonce);
 
-        Response<BinaryData> response =
-            implClient.releaseWithResponse(name, version, BinaryData.fromObject(keyReleaseParameters),
-                new RequestOptions().setContext(context));
+        Response<BinaryData> response = implClient.releaseWithResponse(name, version,
+            BinaryData.fromObject(keyReleaseParameters), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, response.getValue().toObject(ReleaseKeyResult.class));
     }
@@ -2004,8 +1983,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> rotateKeyWithResponse(String name, Context context) {
-        Response<BinaryData> response =
-            implClient.rotateKeyWithResponse(name, new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.rotateKeyWithResponse(name, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
@@ -2066,8 +2045,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, Context context) {
-        Response<BinaryData> response = implClient.getKeyRotationPolicyWithResponse(keyName,
-            new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.getKeyRotationPolicyWithResponse(keyName, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()
             .toObject(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class)));
@@ -2160,12 +2139,10 @@ public final class KeyClient {
     public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String keyName,
         KeyRotationPolicy keyRotationPolicy, Context context) {
 
-        Response<BinaryData> response =
-            implClient.updateKeyRotationPolicyWithResponse(keyName,
-                BinaryData.fromObject(mapKeyRotationPolicy(keyRotationPolicy)),
-                new RequestOptions().setContext(context));
+        Response<BinaryData> response = implClient.updateKeyRotationPolicyWithResponse(keyName,
+            BinaryData.fromObject(mapKeyRotationPolicy(keyRotationPolicy)), new RequestOptions().setContext(context));
 
-        return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue().toObject(
-            com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class)));
+        return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()
+            .toObject(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class)));
     }
 }

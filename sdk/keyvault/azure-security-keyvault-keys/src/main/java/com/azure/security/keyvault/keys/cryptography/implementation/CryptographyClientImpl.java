@@ -93,13 +93,13 @@ public final class CryptographyClientImpl {
     public Mono<Response<KeyVaultKey>> getKeyAsync() {
         return keyClient.getKeyWithResponseAsync(keyName, keyVersion, EMPTY_OPTIONS)
             .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapGetKeyException)
-            .map(response ->
-                new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
+            .map(response -> new SimpleResponse<>(response,
+                createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
     }
 
     public Response<KeyVaultKey> getKey(Context context) {
-        Response<BinaryData> response =
-            keyClient.getKeyWithResponse(keyName, keyVersion, new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = keyClient.getKeyWithResponse(keyName, keyVersion, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
@@ -146,12 +146,12 @@ public final class CryptographyClientImpl {
 
     private Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) {
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText)
-                .setIv(iv)
+        KeyOperationsParameters keyOperationsParameters
+            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText).setIv(iv)
                 .setAad(additionalAuthenticatedData);
 
-        return keyClient.encryptWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+        return keyClient
+            .encryptWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
                 new RequestOptions().setContext(context))
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
@@ -177,14 +177,16 @@ public final class CryptographyClientImpl {
 
     private EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) {
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText)
-                .setIv(iv)
+        KeyOperationsParameters keyOperationsParameters
+            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText).setIv(iv)
                 .setAad(additionalAuthenticatedData);
 
-        KeyOperationResult result =
-            keyClient.encryptWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                    new RequestOptions().setContext(context)).getValue().toObject(KeyOperationResult.class);
+        KeyOperationResult result
+            = keyClient
+                .encryptWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(KeyOperationResult.class);
 
         return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(), result.getAuthenticationTag(),
             result.getAdditionalAuthenticatedData());
@@ -208,13 +210,13 @@ public final class CryptographyClientImpl {
     private Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) {
 
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext)
-                .setIv(iv)
+        KeyOperationsParameters keyOperationsParameters
+            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext).setIv(iv)
                 .setAad(additionalAuthenticatedData)
                 .setTag(authenticationTag);
 
-        return keyClient.decryptWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+        return keyClient
+            .decryptWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
                 new RequestOptions().setContext(context))
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
@@ -240,15 +242,17 @@ public final class CryptographyClientImpl {
     private DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) {
 
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext)
-                .setIv(iv)
+        KeyOperationsParameters keyOperationsParameters
+            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext).setIv(iv)
                 .setAad(additionalAuthenticatedData)
                 .setTag(authenticationTag);
 
-        KeyOperationResult result =
-            keyClient.decryptWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context)).getValue().toObject(KeyOperationResult.class);
+        KeyOperationResult result
+            = keyClient
+                .decryptWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(KeyOperationResult.class);
 
         return new DecryptResult(result.getResult(), algorithm, keyId);
     }
@@ -257,10 +261,10 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
 
-        KeySignParameters keyOperationsParameters =
-            new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
+        KeySignParameters keyOperationsParameters = new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
 
-        return keyClient.signWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+        return keyClient
+            .signWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
                 new RequestOptions().setContext(context))
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
@@ -273,12 +277,14 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
 
-        KeySignParameters keyOperationsParameters =
-            new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
+        KeySignParameters keyOperationsParameters = new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
 
-        KeyOperationResult result =
-            keyClient.signWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context)).getValue().toObject(KeyOperationResult.class);
+        KeyOperationResult result
+            = keyClient
+                .signWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(KeyOperationResult.class);
 
         return new SignResult(result.getResult(), algorithm, keyId);
     }
@@ -289,10 +295,11 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
-        KeyVerifyParameters keyVerifyParameters =
-            new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
+        KeyVerifyParameters keyVerifyParameters
+            = new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
 
-        return keyClient.verifyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyVerifyParameters),
+        return keyClient
+            .verifyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyVerifyParameters),
                 new RequestOptions().setContext(context))
             .map(response -> {
                 KeyVerifyResult result = response.getValue().toObject(KeyVerifyResult.class);
@@ -306,12 +313,15 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
-        KeyVerifyParameters keyVerifyParameters =
-            new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
+        KeyVerifyParameters keyVerifyParameters
+            = new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
 
-        KeyVerifyResult result =
-            keyClient.verifyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyVerifyParameters),
-                new RequestOptions().setContext(context)).getValue().toObject(KeyVerifyResult.class);
+        KeyVerifyResult result
+            = keyClient
+                .verifyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyVerifyParameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(KeyVerifyResult.class);
 
         return new VerifyResult(result.isValue(), algorithm, keyId);
     }
@@ -320,10 +330,10 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
+        KeyOperationsParameters keyOperationsParameters = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
 
-        return keyClient.wrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+        return keyClient
+            .wrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
                 new RequestOptions().setContext(context))
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
@@ -336,12 +346,14 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
+        KeyOperationsParameters keyOperationsParameters = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
 
-        KeyOperationResult result =
-            keyClient.wrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context)).getValue().toObject(KeyOperationResult.class);
+        KeyOperationResult result
+            = keyClient
+                .wrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(KeyOperationResult.class);
 
         return new WrapResult(result.getResult(), algorithm, keyId);
     }
@@ -350,10 +362,11 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
+        KeyOperationsParameters keyOperationsParameters
+            = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
 
-        return keyClient.unwrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+        return keyClient
+            .unwrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
                 new RequestOptions().setContext(context))
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
@@ -366,12 +379,15 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters =
-            new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
+        KeyOperationsParameters keyOperationsParameters
+            = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
 
-        KeyOperationResult result =
-            keyClient.unwrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context)).getValue().toObject(KeyOperationResult.class);
+        KeyOperationResult result
+            = keyClient
+                .unwrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(KeyOperationResult.class);
 
         return new UnwrapResult(result.getResult(), algorithm, keyId);
     }

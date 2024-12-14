@@ -52,8 +52,8 @@ public final class KeyVaultKeysModelsUtils {
 
     private static void populateKeyProperties(KeyItem keyItem, KeyProperties properties) {
         if (keyItem != null) {
-            populateKeyProperties(null, keyItem.getTags(), keyItem.isManaged(), keyItem.getKid(),
-                properties, keyItem.getAttributes());
+            populateKeyProperties(null, keyItem.getTags(), keyItem.isManaged(), keyItem.getKid(), properties,
+                keyItem.getAttributes());
         }
     }
 
@@ -169,6 +169,7 @@ public final class KeyVaultKeysModelsUtils {
                 bundle.isManaged(), bundle.getKey().getKid(), properties, bundle.getAttributes());
         }
     }
+
     private static void populateKeyProperties(DeletedKeyBundle bundle, KeyProperties properties) {
         if (bundle != null) {
             populateKeyProperties(mapKeyReleasePolicyImpl(bundle.getReleasePolicy()), bundle.getTags(),
