@@ -15,6 +15,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,10 +27,19 @@ import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
+import com.azure.security.keyvault.keys.implementation.models.BackupKeyResult;
+import com.azure.security.keyvault.keys.implementation.models.DeletedKeyBundle;
 import com.azure.security.keyvault.keys.implementation.models.DeletedKeyItem;
+import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
+import com.azure.security.keyvault.keys.implementation.models.KeyBundle;
+import com.azure.security.keyvault.keys.implementation.models.KeyCreateParameters;
+import com.azure.security.keyvault.keys.implementation.models.KeyImportParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyItem;
-import com.azure.security.keyvault.keys.implementation.models.KeyVaultErrorException;
+import com.azure.security.keyvault.keys.implementation.models.KeyReleaseParameters;
+import com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters;
+import com.azure.security.keyvault.keys.implementation.models.KeyUpdateParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils;
+import com.azure.security.keyvault.keys.implementation.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -58,6 +68,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils.EMPTY_OPTIONS;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createDeletedKey;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyAttributes;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyVaultKey;
@@ -336,21 +347,27 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createKeyOptions' cannot be null."));
             }
 
-            return implClient
-                .createKeyWithResponseAsync(vaultUrl, createKeyOptions.getName(), createKeyOptions.getKeyType(), null,
-                    null, createKeyOptions.getKeyOperations(), createKeyAttributes(createKeyOptions),
-                    createKeyOptions.getTags(), null, mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()))
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyCreateParameters keyCreateParameters =
+                new KeyCreateParameters(createKeyOptions.getKeyType())
+                    .setKeyOps(createKeyOptions.getKeyOperations())
+                    .setKeyAttributes(createKeyAttributes(createKeyOptions))
+                    .setTags(createKeyOptions.getTags())
+                    .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
+
+            return implClient.createKeyWithResponseAsync(createKeyOptions.getName(),
+                    BinaryData.fromObject(keyCreateParameters), EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapCreateKeyException)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
     }
 
-    static HttpResponseException mapCreateKeyException(KeyVaultErrorException exception) {
-        return (exception.getResponse().getStatusCode() == 400)
-            ? new ResourceModifiedException(exception.getMessage(), exception.getResponse(), exception.getValue())
-            : exception;
+    static HttpResponseException mapCreateKeyException(HttpResponseException e) {
+        return (e.getResponse().getStatusCode() == 400)
+            ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
+            : e;
     }
 
     /**
@@ -500,13 +517,20 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createRsaKeyOptions' cannot be null."));
             }
 
-            return implClient
-                .createKeyWithResponseAsync(vaultUrl, createRsaKeyOptions.getName(), createRsaKeyOptions.getKeyType(),
-                    createRsaKeyOptions.getKeySize(), createRsaKeyOptions.getPublicExponent(),
-                    createRsaKeyOptions.getKeyOperations(), createKeyAttributes(createRsaKeyOptions),
-                    createRsaKeyOptions.getTags(), null, mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()))
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyCreateParameters keyCreateParameters =
+                new KeyCreateParameters(createRsaKeyOptions.getKeyType())
+                    .setKeySize(createRsaKeyOptions.getKeySize())
+                    .setPublicExponent(createRsaKeyOptions.getPublicExponent())
+                    .setKeyOps(createRsaKeyOptions.getKeyOperations())
+                    .setKeyAttributes(createKeyAttributes(createRsaKeyOptions))
+                    .setTags(createRsaKeyOptions.getTags())
+                    .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
+
+            return implClient.createKeyWithResponseAsync(createRsaKeyOptions.getName(),
+                    BinaryData.fromObject(keyCreateParameters), EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapCreateKeyException)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -614,13 +638,19 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createEcKeyOptions' cannot be null."));
             }
 
-            return implClient
-                .createKeyWithResponseAsync(vaultUrl, createEcKeyOptions.getName(), createEcKeyOptions.getKeyType(),
-                    null, null, createEcKeyOptions.getKeyOperations(), createKeyAttributes(createEcKeyOptions),
-                    createEcKeyOptions.getTags(), createEcKeyOptions.getCurveName(),
-                    mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()))
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyCreateParameters keyCreateParameters =
+                new KeyCreateParameters(createEcKeyOptions.getKeyType())
+                    .setKeyOps(createEcKeyOptions.getKeyOperations())
+                    .setKeyAttributes(createKeyAttributes(createEcKeyOptions))
+                    .setTags(createEcKeyOptions.getTags())
+                    .setCurve(createEcKeyOptions.getCurveName())
+                    .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
+
+            return implClient.createKeyWithResponseAsync(createEcKeyOptions.getName(),
+                    BinaryData.fromObject(keyCreateParameters), EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapCreateKeyException)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -719,13 +749,19 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createOctKeyOptions' cannot be null."));
             }
 
-            return implClient
-                .createKeyWithResponseAsync(vaultUrl, createOctKeyOptions.getName(), createOctKeyOptions.getKeyType(),
-                    createOctKeyOptions.getKeySize(), null, createOctKeyOptions.getKeyOperations(),
-                    createKeyAttributes(createOctKeyOptions), createOctKeyOptions.getTags(), null,
-                    mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()))
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyCreateParameters keyCreateParameters =
+                new KeyCreateParameters(createOctKeyOptions.getKeyType())
+                    .setKeySize(createOctKeyOptions.getKeySize())
+                    .setKeyOps(createOctKeyOptions.getKeyOperations())
+                    .setKeyAttributes(createKeyAttributes(createOctKeyOptions))
+                    .setTags(createOctKeyOptions.getTags())
+                    .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
+
+            return implClient.createKeyWithResponseAsync(createOctKeyOptions.getName(),
+                    BinaryData.fromObject(keyCreateParameters), EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapCreateKeyException)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -846,12 +882,17 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new RuntimeException("'importKeyOptions' cannot be null."));
             }
 
-            return implClient
-                .importKeyWithResponseAsync(vaultUrl, importKeyOptions.getName(),
-                    mapJsonWebKey(importKeyOptions.getKey()), importKeyOptions.isHardwareProtected(),
-                    createKeyAttributes(importKeyOptions), importKeyOptions.getTags(),
-                    mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()))
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyImportParameters keyImportParameters =
+                new KeyImportParameters(mapJsonWebKey(importKeyOptions.getKey()))
+                    .setHsm(importKeyOptions.isHardwareProtected())
+                    .setKeyAttributes(createKeyAttributes(importKeyOptions))
+                    .setTags(importKeyOptions.getTags())
+                    .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
+
+            return implClient.importKeyWithResponseAsync(importKeyOptions.getName(),
+                    BinaryData.fromObject(keyImportParameters), EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -926,12 +967,25 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version) {
         try {
-            return implClient.getKeyWithResponseAsync(vaultUrl, name, version)
-                .onErrorMap(KeyVaultErrorException.class, KeyVaultKeysUtils::mapGetKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            return implClient.getKeyWithResponseAsync(name, version, EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapGetKeyException)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
+    }
+
+    /**
+     * Maps a {@link HttpResponseException} to an {@link HttpResponseException} for get key operations.
+     *
+     * @param e The {@link HttpResponseException} to map.
+     * @return The {@link HttpResponseException} that maps from the {@link HttpResponseException}.
+     */
+    public static HttpResponseException mapGetKeyException(HttpResponseException e) {
+        return e.getResponse().getStatusCode() == 403
+            ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
+            : e;
     }
 
     /**
@@ -1009,16 +1063,23 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponse(KeyProperties keyProperties,
         KeyOperation... keyOperations) {
+
         try {
             if (keyProperties == null) {
                 return monoError(LOGGER, new NullPointerException("'keyProperties' cannot be null."));
             }
 
-            return implClient
-                .updateKeyWithResponseAsync(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
-                    keyOperations == null ? null : Arrays.asList(keyOperations), createKeyAttributes(keyProperties),
-                    keyProperties.getTags(), mapKeyReleasePolicy(keyProperties.getReleasePolicy()))
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyUpdateParameters keyUpdateParameters =
+                new KeyUpdateParameters()
+                    .setKeyOps(keyOperations == null ? null : Arrays.asList(keyOperations))
+                    .setKeyAttributes(createKeyAttributes(keyProperties))
+                    .setTags(keyProperties.getTags())
+                    .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
+
+            return implClient.updateKeyWithResponseAsync(keyProperties.getName(), keyProperties.getVersion(),
+                    BinaryData.fromObject(keyUpdateParameters), EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1102,28 +1163,26 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1), deleteActivationOperation(name), deletePollOperation(name),
-            (context, firstResponse) -> Mono.empty(), context -> Mono.empty());
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            deleteActivationOperation(name),
+            deletePollOperation(name),
+            (context, firstResponse) -> Mono.empty(),
+            context -> Mono.empty());
     }
 
     private Function<PollingContext<DeletedKey>, Mono<DeletedKey>> deleteActivationOperation(String name) {
-        return pollingContext -> implClient.deleteKeyAsync(vaultUrl, name)
-            .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapDeleteKeyException)
-            .map(KeyVaultKeysModelsUtils::createDeletedKey);
-    }
-
-    static HttpResponseException mapDeleteKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
+        return pollingContext ->
+            implClient.deleteKeyWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response ->
+                    createDeletedKey(response.getValue().toObject(DeletedKeyBundle.class)));
     }
 
     private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> deletePollOperation(String name) {
-        return pollingContext -> implClient.getDeletedKeyAsync(vaultUrl, name)
-            .map(bundle -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createDeletedKey(bundle)))
-            .onErrorResume(HttpResponseException.class, ex -> {
-                if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+        return pollingContext -> implClient.getDeletedKeyWithResponseAsync(name, EMPTY_OPTIONS)
+            .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createDeletedKey(response.getValue().toObject(DeletedKeyBundle.class))))
+            .onErrorResume(HttpResponseException.class, e -> {
+                if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -1196,18 +1255,13 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
         try {
-            return implClient.getDeletedKeyWithResponseAsync(vaultUrl, name)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapGetDeletedKeyException)
-                .map(response -> new SimpleResponse<>(response, createDeletedKey(response.getValue())));
+            return implClient.getDeletedKeyWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        createDeletedKey(response.getValue().toObject(DeletedKeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapGetDeletedKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 
     /**
@@ -1265,17 +1319,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
         try {
-            return implClient.purgeDeletedKeyWithResponseAsync(vaultUrl, name)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapPurgeDeletedKeyException);
+            return implClient.purgeDeletedKeyWithResponseAsync(name, EMPTY_OPTIONS);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapPurgeDeletedKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 
     /**
@@ -1307,29 +1354,28 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1), recoverActivationOperation(name), recoverPollOperation(name),
-            (context, firstResponse) -> Mono.empty(), context -> Mono.empty());
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            recoverActivationOperation(name),
+            recoverPollOperation(name),
+            (context, firstResponse) -> Mono.empty(),
+            context -> Mono.empty());
     }
 
     private Function<PollingContext<KeyVaultKey>, Mono<KeyVaultKey>> recoverActivationOperation(String name) {
-        return pollingContext -> implClient.recoverDeletedKeyAsync(vaultUrl, name)
-            .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapRecoverDeletedKeyException)
-            .map(KeyVaultKeysModelsUtils::createKeyVaultKey);
-    }
-
-    static HttpResponseException mapRecoverDeletedKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
+        return pollingContext ->
+            implClient.recoverDeletedKeyWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response ->
+                    KeyVaultKeysModelsUtils.createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
 
     private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>>
         recoverPollOperation(String keyName) {
-        return pollingContext -> implClient.getKeyAsync(vaultUrl, keyName, null)
-            .map(keyResponse -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createKeyVaultKey(keyResponse)))
-            .onErrorResume(KeyVaultErrorException.class, ex -> {
-                if (ex.getResponse().getStatusCode() == 404) {
+
+        return pollingContext -> implClient.getKeyWithResponseAsync(keyName, null, EMPTY_OPTIONS)
+            .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createKeyVaultKey(response.getValue().toObject(KeyBundle.class))))
+            .onErrorResume(HttpResponseException.class, e -> {
+                if (e.getResponse().getStatusCode() == 404) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -1418,18 +1464,12 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
         try {
-            return implClient.backupKeyWithResponseAsync(vaultUrl, name)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapBackupKeyException)
-                .map(response -> new SimpleResponse<>(response, response.getValue().getValue()));
+            return implClient.backupKeyWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response, response.getValue().toObject(BackupKeyResult.class).getValue()));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapBackupKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 
     /**
@@ -1507,18 +1547,22 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponse(byte[] backup) {
         try {
-            return implClient.restoreKeyWithResponseAsync(vaultUrl, backup)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapRestoreKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            KeyRestoreParameters keyRestoreParameters =
+                new KeyRestoreParameters(backup);
+
+            return implClient.restoreKeyWithResponseAsync(BinaryData.fromObject(keyRestoreParameters), EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapRestoreKeyException)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
     }
 
-    static HttpResponseException mapRestoreKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 400)
-            ? new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
+    static HttpResponseException mapRestoreKeyException(HttpResponseException e) {
+        return (e.getResponse().getStatusCode() == 400)
+            ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
+            : e;
     }
 
     /**
@@ -1549,21 +1593,28 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeys() {
-        return new PagedFlux<>(
-            maxResults -> implClient.getKeysSinglePageAsync(vaultUrl, maxResults)
-                .map(KeyAsyncClient::mapKeyItemPagedResponse),
-            (continuationToken, maxResults) -> implClient.getKeysNextSinglePageAsync(continuationToken, vaultUrl)
-                .map(KeyAsyncClient::mapKeyItemPagedResponse));
+        PagedFlux<BinaryData> pagedFlux = implClient.getKeysAsync(EMPTY_OPTIONS);
+
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationTokenParam).take(1);
+
+            return pagedResponseFlux
+                .map(pagedResponse ->
+                    mapPagedResponse(pagedResponse, binaryData ->
+                        KeyVaultKeysModelsUtils.createKeyProperties(binaryData.toObject(KeyItem.class))));
+        });
     }
 
-    static PagedResponse<KeyProperties> mapKeyItemPagedResponse(PagedResponse<KeyItem> page) {
-        List<KeyProperties> properties = new ArrayList<>(page.getValue().size());
+    private static <T, R> PagedResponse<R> mapPagedResponse(PagedResponse<T> page, Function<T, R> itemMapper) {
+        List<R> mappedValues = new ArrayList<>(page.getValue().size());
 
-        for (KeyItem keyItem : page.getValue()) {
-            properties.add(KeyVaultKeysModelsUtils.createKeyProperties(keyItem));
+        for (T item : page.getValue()) {
+            mappedValues.add(itemMapper.apply(item));
         }
 
-        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), properties,
+        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), mappedValues,
             page.getContinuationToken(), null);
     }
 
@@ -1589,22 +1640,18 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        return new PagedFlux<>(
-            maxResults -> implClient.getDeletedKeysSinglePageAsync(vaultUrl, maxResults)
-                .map(KeyAsyncClient::mapDeletedKeyItemPagedResponse),
-            (continuationToken, maxResults) -> implClient.getDeletedKeysNextSinglePageAsync(continuationToken, vaultUrl)
-                .map(KeyAsyncClient::mapDeletedKeyItemPagedResponse));
-    }
+        PagedFlux<BinaryData> pagedFlux = implClient.getDeletedKeysAsync(EMPTY_OPTIONS);
 
-    static PagedResponse<DeletedKey> mapDeletedKeyItemPagedResponse(PagedResponse<DeletedKeyItem> page) {
-        List<DeletedKey> properties = new ArrayList<>(page.getValue().size());
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationTokenParam).take(1);
 
-        for (DeletedKeyItem keyItem : page.getValue()) {
-            properties.add(KeyVaultKeysModelsUtils.createDeletedKey(keyItem));
-        }
-
-        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), properties,
-            page.getContinuationToken(), null);
+            return pagedResponseFlux
+                .map(pagedResponse ->
+                    mapPagedResponse(pagedResponse, binaryData ->
+                        createDeletedKey(binaryData.toObject(DeletedKeyItem.class))));
+        });
     }
 
     /**
@@ -1639,11 +1686,18 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
-        return new PagedFlux<>(
-            maxResults -> implClient.getKeyVersionsSinglePageAsync(vaultUrl, name, maxResults)
-                .map(KeyAsyncClient::mapKeyItemPagedResponse),
-            (continuationToken, maxResults) -> implClient.getKeyVersionsNextSinglePageAsync(continuationToken, vaultUrl)
-                .map(KeyAsyncClient::mapKeyItemPagedResponse));
+        PagedFlux<BinaryData> pagedFlux = implClient.getKeyVersionsAsync(name, EMPTY_OPTIONS);
+
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> pagedResponseFlux = (continuationTokenParam == null)
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationTokenParam).take(1);
+
+            return pagedResponseFlux
+                .map(pagedResponse ->
+                    mapPagedResponse(pagedResponse, binaryData ->
+                        KeyVaultKeysModelsUtils.createKeyProperties(binaryData.toObject(KeyItem.class))));
+        });
     }
 
     /**
@@ -1693,8 +1747,13 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> getRandomBytesWithResponse(int count) {
         try {
-            return withContext(context -> implClient.getRandomBytesWithResponseAsync(vaultUrl, count))
-                .map(response -> new SimpleResponse<>(response, response.getValue().getValue()));
+            GetRandomBytesRequest getRandomBytesRequest =
+                new GetRandomBytesRequest(count);
+
+            return withContext(context ->
+                implClient.getRandomBytesWithResponseAsync(BinaryData.fromObject(getRandomBytesRequest), EMPTY_OPTIONS)
+                    .map(response ->
+                        new SimpleResponse<>(response, response.getValue().toObject(RandomBytes.class).getValue())));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1808,6 +1867,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReleaseKeyResult>> releaseKeyWithResponse(String name, String version,
         String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions) {
+
         try {
             if (CoreUtils.isNullOrEmpty(name) || CoreUtils.isNullOrEmpty(targetAttestationToken)) {
                 return monoError(LOGGER,
@@ -1815,21 +1875,22 @@ public final class KeyAsyncClient {
             }
 
             String nonce = releaseKeyOptions == null ? null : releaseKeyOptions.getNonce();
-            KeyExportEncryptionAlgorithm algorithm
-                = releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm();
+            KeyExportEncryptionAlgorithm algorithm = releaseKeyOptions == null
+                ? null
+                : releaseKeyOptions.getAlgorithm();
 
-            return implClient
-                .releaseWithResponseAsync(vaultUrl, name, version, targetAttestationToken, nonce, algorithm)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapReleaseKeyException);
+            KeyReleaseParameters keyReleaseParameters =
+                new KeyReleaseParameters(targetAttestationToken)
+                    .setNonce(nonce)
+                    .setEnc(algorithm);
+
+            return implClient.releaseWithResponseAsync(name, version, BinaryData.fromObject(keyReleaseParameters),
+                    EMPTY_OPTIONS)
+                .map(binaryData ->
+                    new SimpleResponse<>(binaryData, binaryData.getValue().toObject(ReleaseKeyResult.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapReleaseKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 
     /**
@@ -1889,18 +1950,12 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> rotateKeyWithResponse(String name) {
         try {
-            return implClient.rotateKeyWithResponseAsync(vaultUrl, name)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapRotateKeyException)
-                .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+            return implClient.rotateKeyWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapRotateKeyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 
     /**
@@ -1960,18 +2015,14 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyWithResponse(String keyName) {
         try {
-            return implClient.getKeyRotationPolicyWithResponseAsync(vaultUrl, keyName)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapGetKeyRotationPolicyException)
-                .map(response -> new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue())));
+            return implClient.getKeyRotationPolicyWithResponseAsync(keyName, EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        mapKeyRotationPolicyImpl(response.getValue().toObject(
+                            com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapGetKeyRotationPolicyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 
     /**
@@ -2060,18 +2111,16 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponse(String keyName,
         KeyRotationPolicy keyRotationPolicy) {
         try {
-            return implClient
-                .updateKeyRotationPolicyWithResponseAsync(vaultUrl, keyName, mapKeyRotationPolicy(keyRotationPolicy))
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapUpdateKeyRotationPolicyException)
-                .map(response -> new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue())));
+
+
+            return implClient.updateKeyRotationPolicyWithResponseAsync(keyName,
+                    BinaryData.fromObject(mapKeyRotationPolicy(keyRotationPolicy)), EMPTY_OPTIONS)
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        mapKeyRotationPolicyImpl(response.getValue().toObject(
+                            com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
-    }
-
-    static HttpResponseException mapUpdateKeyRotationPolicyException(KeyVaultErrorException ex) {
-        return (ex.getResponse().getStatusCode() == 404)
-            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
-            : ex;
     }
 }
