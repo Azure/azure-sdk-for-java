@@ -27,8 +27,8 @@ options:
     "package-dir": "azure-security-keyvault-keys"
     "namespace": "com.azure.security.keyvault.keys"
     "models-subpackage": "implementation.models"
-    #"custom-types": "AdministratorContact,CertificateContact,CertificateKeyCurveName,CertificateKeyType,CertificateKeyUsage,CertificateOperationError,SubjectAlternativeNames"
-    #"custom-types-subpackage": "models"
+    "custom-types": "KeyCurveName,KeyExportEncryptionAlgorithm,KeyOperation,KeyRotationPolicyAction,KeyType,ReleaseKeyResult"
+    "custom-types-subpackage": "models"
     "customization-class": "swagger/src/main/java/KeysCustomizations.java"
     "partial-update": true
     "generate-tests": false

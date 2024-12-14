@@ -98,7 +98,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
     private static final String CLIENT_VERSION;
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
@@ -188,7 +188,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new KeyClientImpl(pipeline, serviceVersion.getVersion());
+            return new KeyClientImpl(pipeline, vaultUrl, serviceVersion);
         }
 
         if (credential == null) {
@@ -234,7 +234,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
             .clientOptions(localClientOptions)
             .build();
 
-        return new KeyClientImpl(pipeline, serviceVersion.getVersion());
+        return new KeyClientImpl(pipeline, vaultUrl, serviceVersion);
     }
 
     /**
