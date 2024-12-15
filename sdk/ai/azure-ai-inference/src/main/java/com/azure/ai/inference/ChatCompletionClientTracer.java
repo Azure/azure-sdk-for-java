@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.inference.implementation;
+package com.azure.ai.inference;
 
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
  * <a href="https://github.com/open-telemetry/semantic-conventions/blob/v1.29.0/docs/gen-ai/azure-ai-inference.md">Azure AI Inference semantic conventions</a>.
  * </p>
  */
-public final class ChatCompletionClientTracer {
+final class ChatCompletionClientTracer {
     public static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
 
     private static final ClientLogger LOGGER = new ClientLogger(ChatCompletionClientTracer.class);
@@ -133,7 +133,7 @@ public final class ChatCompletionClientTracer {
      *     if {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
      * @param tracer the Tracer instance.
      */
-    public ChatCompletionClientTracer(String endpoint, Configuration configuration, Tracer tracer) {
+    ChatCompletionClientTracer(String endpoint, Configuration configuration, Tracer tracer) {
         final URL url = parse(endpoint);
         if (url != null) {
             this.host = url.getHost();
@@ -158,7 +158,7 @@ public final class ChatCompletionClientTracer {
      * @return chat completions for the provided chat messages.
      */
     @SuppressWarnings("try")
-    public ChatCompletions traceSyncComplete(ChatCompletionsOptions request, SyncCompleteOperation operation,
+    ChatCompletions traceSyncComplete(ChatCompletionsOptions request, SyncCompleteOperation operation,
         BinaryData completeRequest, RequestOptions requestOptions) {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
@@ -193,7 +193,7 @@ public final class ChatCompletionClientTracer {
      * @param requestOptions The requestOptions parameter for the {@code operation}.
      * @return chat completions for the provided chat messages.
      */
-    public Mono<ChatCompletions> traceComplete(ChatCompletionsOptions request, CompleteOperation operation,
+    Mono<ChatCompletions> traceComplete(ChatCompletionsOptions request, CompleteOperation operation,
         BinaryData completeRequest, RequestOptions requestOptions) {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);
@@ -254,7 +254,7 @@ public final class ChatCompletionClientTracer {
      * @param requestOptions The requestOptions parameter for the {@code operation}.
      * @return chat completions streaming for the provided chat messages.
      */
-    public Flux<StreamingChatCompletionsUpdate> traceStreamingCompletion(ChatCompletionsOptions request,
+    Flux<StreamingChatCompletionsUpdate> traceStreamingCompletion(ChatCompletionsOptions request,
         StreamingCompleteOperation operation, BinaryData completeRequest, RequestOptions requestOptions) {
         if (!tracer.isEnabled()) {
             return operation.invoke(completeRequest, requestOptions);

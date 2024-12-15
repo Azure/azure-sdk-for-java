@@ -3,7 +3,6 @@
 
 package com.azure.ai.inference;
 
-import com.azure.ai.inference.implementation.ChatCompletionClientTracer;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
