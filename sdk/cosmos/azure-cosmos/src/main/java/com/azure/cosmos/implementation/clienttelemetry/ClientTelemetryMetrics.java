@@ -1085,7 +1085,7 @@ public final class ClientTelemetryMetrics {
                 if (globalOpCountOptions.isEnabled()
                     && (!globalOpCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     DistributionSummary globalOpCountMeter = DistributionSummary
-                        .builder(opCountPerEvaluationOptions.getMeterName().toString())
+                        .builder(globalOpCountOptions.getMeterName().toString())
                         .baseUnit("item count")
                         .description("Global operation count")
                         .maximumExpectedValue(Double.MAX_VALUE)
@@ -1277,7 +1277,7 @@ public final class ClientTelemetryMetrics {
                 if (globalOpCountOptions.isEnabled()
                     && (!globalOpCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     DistributionSummary globalOpCountMeter = DistributionSummary
-                        .builder(opCountPerEvaluationOptions.getMeterName().toString())
+                        .builder(globalOpCountOptions.getMeterName().toString())
                         .baseUnit("item count")
                         .description("Global operation count")
                         .maximumExpectedValue(Double.MAX_VALUE)
