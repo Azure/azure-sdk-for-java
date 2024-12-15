@@ -421,7 +421,6 @@ public final class DiagnosticsProvider {
                 0L,
                 null,
                 null,
-                null,
                 context,
                 isForcedEmptyCompletion,
                 isSampledOut);
