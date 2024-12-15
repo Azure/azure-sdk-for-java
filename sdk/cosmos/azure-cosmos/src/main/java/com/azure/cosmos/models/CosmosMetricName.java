@@ -114,6 +114,18 @@ public final class CosmosMetricName {
         nameOf("req.rntbd.actualItemCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.rntbd.opCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.rntbd.opRetriedCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT = new CosmosMetricName(
+        nameOf("req.rntbd.globalOpCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
     /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
@@ -143,6 +155,18 @@ public final class CosmosMetricName {
      */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT = new CosmosMetricName(
         nameOf("req.gw.actualItemCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.gw.opCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.gw.opRetriedCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT = new CosmosMetricName(
+        nameOf("req.gw.globalOpCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**

@@ -60,6 +60,10 @@ public final class ClientTelemetryMetrics {
     private static final
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static final
+    ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor diagnosticsCtxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+
     private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-/.", false);
 
     private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
@@ -153,7 +157,10 @@ public final class ClientTelemetryMetrics {
             diagnosticsContext.getEffectiveConsistencyLevel(),
             diagnosticsContext.getOperationId(),
             diagnosticsContext.getTotalRequestCharge(),
-            diagnosticsContext.getDuration()
+            diagnosticsContext.getDuration(),
+            diagnosticsCtxAccessor.getOpCountPerEvaluation(diagnosticsContext),
+            diagnosticsCtxAccessor.getRetriedOpCountPerEvaluation(diagnosticsContext),
+            diagnosticsCtxAccessor.getGlobalOpCount(diagnosticsContext)
         );
     }
 
@@ -215,8 +222,11 @@ public final class ClientTelemetryMetrics {
         ConsistencyLevel consistencyLevel,
         String operationId,
         float requestCharge,
-        Duration latency
-    ) {
+        Duration latency,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount) {
+
         boolean isClientTelemetryMetricsEnabled = clientAccessor.shouldEnableEmptyPageDiagnostics(client);
 
         if (!hasAnyActualMeterRegistry() || !isClientTelemetryMetricsEnabled) {
@@ -257,6 +267,9 @@ public final class ClientTelemetryMetrics {
             latency,
             maxItemCount == null ? -1 : maxItemCount,
             actualItemCount == null ? -1: actualItemCount,
+            opCountPerEvaluation,
+            opRetriedCountPerEvaluation,
+            globalOpCount,
             diagnosticsContext,
             contactedRegions
         );
@@ -422,6 +435,9 @@ public final class ClientTelemetryMetrics {
             Duration latency,
             int maxItemCount,
             int actualItemCount,
+            long opCountPerEvaluation,
+            long opRetriedCountPerEvaluation,
+            long globalOpCount,
             CosmosDiagnosticsContext diagnosticsContext,
             Set<String> contactedRegions) {
 
@@ -503,11 +519,17 @@ public final class ClientTelemetryMetrics {
                             diagnosticsContext,
                             cosmosAsyncClient,
                             requestStatistics.getResponseStatisticsList(),
-                            actualItemCount);
+                            actualItemCount,
+                            opCountPerEvaluation,
+                            opRetriedCountPerEvaluation,
+                            globalOpCount);
                         recordStoreResponseStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
                             requestStatistics.getSupplementalResponseStatisticsList(),
+                            -1,
+                            -1,
+                            -1,
                             -1);
                         recordGatewayStatistics(
                             diagnosticsContext,
@@ -515,7 +537,10 @@ public final class ClientTelemetryMetrics {
                             requestStatistics.getDuration(),
                             requestStatistics.getGatewayStatisticsList(),
                             requestStatistics.getRequestPayloadSizeInBytes(),
-                            actualItemCount);
+                            actualItemCount,
+                            opCountPerEvaluation,
+                            opRetriedCountPerEvaluation,
+                            globalOpCount);
                         recordAddressResolutionStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -896,7 +921,10 @@ public final class ClientTelemetryMetrics {
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
             Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics,
-            int actualItemCount) {
+            int actualItemCount,
+            long opCountPerEvaluation,
+            long opRetriedCountPerEvaluation,
+            long globalOpCount) {
 
             if (!this.metricCategories.contains(MetricCategory.RequestSummary)) {
                 return;
@@ -1011,6 +1039,63 @@ public final class ClientTelemetryMetrics {
                     actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
                 }
 
+                CosmosMeterOptions opCountPerEvaluationOptions = clientAccessor.getMeterOptions(
+                  client,
+                  CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION
+                );
+
+                if (opCountPerEvaluationOptions.isEnabled()
+                    && (!opCountPerEvaluationOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary opCountPerEvaluationMeter = DistributionSummary
+                        .builder(opCountPerEvaluationOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Operation count per evaluation")
+                        .maximumExpectedValue(Double.MAX_VALUE)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, opCountPerEvaluationOptions))
+                        .register(compositeRegistry);
+                    opCountPerEvaluationMeter.record(Math.max(0, Math.min(opCountPerEvaluation, Double.MAX_VALUE)));
+                }
+
+                CosmosMeterOptions opRetriedCountPerEvaluationOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION
+                );
+
+                if (opRetriedCountPerEvaluationOptions.isEnabled()
+                    && (!opRetriedCountPerEvaluationOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary opRetriedCountPerEvaluationMeter = DistributionSummary
+                        .builder(opRetriedCountPerEvaluationOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Operation retried count per evaluation")
+                        .maximumExpectedValue(Double.MAX_VALUE)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, opRetriedCountPerEvaluationOptions))
+                        .register(compositeRegistry);
+                    opRetriedCountPerEvaluationMeter.record(Math.max(0, Math.min(opRetriedCountPerEvaluation, Double.MAX_VALUE)));
+                }
+
+                CosmosMeterOptions globalOpCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT
+                );
+
+                if (globalOpCountOptions.isEnabled()
+                    && (!globalOpCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary globalOpCountMeter = DistributionSummary
+                        .builder(opCountPerEvaluationOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Global operation count")
+                        .maximumExpectedValue(Double.MAX_VALUE)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, globalOpCountOptions))
+                        .register(compositeRegistry);
+                    globalOpCountMeter.record(Math.max(0, Math.min(globalOpCount, Double.MAX_VALUE)));
+                }
+
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
                     recordRequestTimeline(
                         ctx,
@@ -1039,7 +1124,10 @@ public final class ClientTelemetryMetrics {
             Duration latency,
             List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList,
             int requestPayloadSizeInBytes,
-            int actualItemCount) {
+            int actualItemCount,
+            long opCountPerEvaluation,
+            long opRetriedCountPerEvaluation,
+            long globalOpCount) {
 
             if (gatewayStatisticsList == null
                 || gatewayStatisticsList.size() == 0
@@ -1141,6 +1229,63 @@ public final class ClientTelemetryMetrics {
                         .tags(getEffectiveTags(requestTags, actualItemCountOptions))
                         .register(compositeRegistry);
                     actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
+                }
+
+                CosmosMeterOptions opCountPerEvaluationOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_COUNT_PER_EVALUATION
+                );
+
+                if (opCountPerEvaluationOptions.isEnabled()
+                    && (!opCountPerEvaluationOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary opCountPerEvaluationMeter = DistributionSummary
+                        .builder(opCountPerEvaluationOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Operation count per evaluation")
+                        .maximumExpectedValue(Double.MAX_VALUE)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, opCountPerEvaluationOptions))
+                        .register(compositeRegistry);
+                    opCountPerEvaluationMeter.record(Math.max(0, Math.min(opCountPerEvaluation, Double.MAX_VALUE)));
+                }
+
+                CosmosMeterOptions opRetriedCountPerEvaluationOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_RETRIED_COUNT_PER_EVALUATION
+                );
+
+                if (opRetriedCountPerEvaluationOptions.isEnabled()
+                    && (!opRetriedCountPerEvaluationOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary opRetriedCountPerEvaluationMeter = DistributionSummary
+                        .builder(opRetriedCountPerEvaluationOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Operation retried count per evaluation")
+                        .maximumExpectedValue(Double.MAX_VALUE)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, opRetriedCountPerEvaluationOptions))
+                        .register(compositeRegistry);
+                    opRetriedCountPerEvaluationMeter.record(Math.max(0, Math.min(opRetriedCountPerEvaluation, Double.MAX_VALUE)));
+                }
+
+                CosmosMeterOptions globalOpCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT
+                );
+
+                if (globalOpCountOptions.isEnabled()
+                    && (!globalOpCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary globalOpCountMeter = DistributionSummary
+                        .builder(opCountPerEvaluationOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Global operation count")
+                        .maximumExpectedValue(Double.MAX_VALUE)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, globalOpCountOptions))
+                        .register(compositeRegistry);
+                    globalOpCountMeter.record(Math.max(0, Math.min(globalOpCount, Double.MAX_VALUE)));
                 }
 
                 recordRequestTimeline(

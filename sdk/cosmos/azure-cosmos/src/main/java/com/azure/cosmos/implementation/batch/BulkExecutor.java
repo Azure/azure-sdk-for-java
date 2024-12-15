@@ -602,7 +602,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             serverRequest.getPartitionKeyRangeId(),
             batchTrackingId);
 
-        return this.executeBatchRequest(serverRequest)
+        return this.executeBatchRequest(serverRequest, thresholds)
             .subscribeOn(this.executionScheduler)
             .flatMapMany(response -> {
 
@@ -838,7 +838,10 @@ public final class BulkExecutor<TContext> implements Disposable {
         });
     }
 
-    private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
+    private Mono<CosmosBatchResponse> executeBatchRequest(
+        PartitionKeyRangeServerBatchRequest serverRequest,
+        PartitionScopeThresholds partitionScopeThresholds) {
+
         RequestOptions options = new RequestOptions();
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
         options.setExcludedRegions(cosmosBulkExecutionOptions.getExcludedRegions());
@@ -887,7 +890,19 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         return withContext(context -> {
             final Mono<CosmosBatchResponse> responseMono = this.docClientWrapper.executeBatchRequest(
-                BridgeInternal.getLink(this.container), serverRequest, options, false);
+                BridgeInternal.getLink(this.container), serverRequest, options, false)
+                .flatMap(cosmosBatchResponse -> {
+
+                    cosmosBatchResponse.setGlobalOpCount(partitionScopeThresholds.getTotalOperationCountSnapshot());
+
+                    PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
+                        = partitionScopeThresholds.getCurrentThresholds();
+
+                    cosmosBatchResponse.setOpCountPerEvaluation(currentIntervalThresholdsSnapshot.currentOperationCount.get());
+                    cosmosBatchResponse.setRetriedOpCountPerEvaluation(currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
+
+                    return Mono.just(cosmosBatchResponse);
+                });
 
             return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(

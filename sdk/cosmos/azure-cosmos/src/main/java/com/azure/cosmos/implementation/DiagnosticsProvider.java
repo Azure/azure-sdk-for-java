@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
@@ -261,12 +262,15 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount,
         CosmosDiagnostics diagnostics,
         boolean isSampledOut
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics, isSampledOut);
+            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, opCountPerEvaluation, opRetriedCountPerEvaluation, globalOpCount, diagnostics, isSampledOut);
         } catch (Throwable error) {
             this.handleErrors(error, 9901);
         }
@@ -278,6 +282,9 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount,
         CosmosDiagnostics diagnostics,
         boolean isSampledOut
     ) {
@@ -296,6 +303,9 @@ public final class DiagnosticsProvider {
                     0,
                     actualItemCount,
                     requestCharge,
+                    opCountPerEvaluation,
+                    opRetriedCountPerEvaluation,
+                    globalOpCount,
                     diagnostics,
                     null,
                     context,
@@ -309,6 +319,9 @@ public final class DiagnosticsProvider {
                     0,
                     actualItemCount,
                     requestCharge,
+                    opCountPerEvaluation,
+                    opRetriedCountPerEvaluation,
+                    globalOpCount,
                     diagnostics,
                     null,
                     context,
@@ -345,6 +358,9 @@ public final class DiagnosticsProvider {
                     subStatusCode,
                     actualItemCount,
                     effectiveRequestCharge,
+                    opCountPerEvaluation,
+                    opRetriedCountPerEvaluation,
+                    globalOpCount,
                     effectiveDiagnostics,
                     throwable,
                     context,
@@ -377,9 +393,10 @@ public final class DiagnosticsProvider {
                 statusCode,
                 subStatusCode,
                 null,
-
                 effectiveRequestCharge,
-
+                0L,
+                0L,
+                0L,
                 effectiveDiagnostics,
                 throwable,
                 context,
@@ -398,6 +415,10 @@ public final class DiagnosticsProvider {
                 200,
                 0,
                 null,
+                null,
+                0L,
+                0L,
+                0L,
                 null,
                 null,
                 null,
@@ -555,6 +576,9 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            r -> 0L,
+            r -> 0L,
+            r -> 0L,
             requestOptions,
             null);
     }
@@ -600,6 +624,9 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            CosmosBatchResponse::getOpCountPerEvaluation,
+            CosmosBatchResponse::getRetriedOpCountPerEvaluation,
+            CosmosBatchResponse::getGlobalOpCount,
             requestOptions,
             null);
     }
@@ -646,6 +673,9 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            r -> 0L,
+            r -> 0L,
+            r -> 0L,
             requestOptions,
             null);
     }
@@ -697,6 +727,9 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
+            r -> 0L,
+            r -> 0L,
+            r -> 0L,
             requestOptions,
             ctx
         );
@@ -815,8 +848,11 @@ public final class DiagnosticsProvider {
       Function<T, Integer> statusCodeFunc,
       Function<T, Integer> actualItemCountFunc,
       Function<T, Double> requestChargeFunc,
-      BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc
-    ) {
+      BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc,
+      Function<T, Long> opCountPerEvaluationPeriodFunc,
+      Function<T, Long> opRetriedCountPerEvaluationPeriodFunc,
+      Function<T, Long> globalOpCountPerEvaluationPeriodFunc) {
+
         final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         if (cosmosCtx != null) {
@@ -845,6 +881,9 @@ public final class DiagnosticsProvider {
                             statusCodeFunc.apply(response),
                             actualItemCountFunc.apply(response),
                             requestChargeFunc.apply(response),
+                            opCountPerEvaluationPeriodFunc.apply(response),
+                            opRetriedCountPerEvaluationPeriodFunc.apply(response),
+                            globalOpCountPerEvaluationPeriodFunc.apply(response),
                             diagnosticsFunc.apply(response, samplingRateSnapshot),
                             isSampledOut);
                         break;
@@ -855,6 +894,9 @@ public final class DiagnosticsProvider {
                             signal,
                             cosmosCtx,
                             ERROR_CODE,
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             null,
@@ -882,6 +924,9 @@ public final class DiagnosticsProvider {
                                                  Function<T, Integer> actualItemCountFunc,
                                                  Function<T, Double> requestChargeFunc,
                                                  BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
+                                                 Function<T, Long> opCountPerEvaluationPeriodFunc,
+                                                 Function<T, Long> opRetriedCountPerEvaluationPeriodFunc,
+                                                 Function<T, Long> globalOpCountPerEvaluationPeriodFunc,
                                                  RequestOptions requestOptions,
                                                  CosmosDiagnosticsContext cosmosCtxFromUpstream) {
 
@@ -922,7 +967,10 @@ public final class DiagnosticsProvider {
             statusCodeFunc,
             actualItemCountFunc,
             requestChargeFunc,
-            diagnosticFunc);
+            diagnosticFunc,
+            opCountPerEvaluationPeriodFunc,
+            opRetriedCountPerEvaluationPeriodFunc,
+            globalOpCountPerEvaluationPeriodFunc);
     }
 
     private void end(
@@ -931,6 +979,9 @@ public final class DiagnosticsProvider {
         int subStatusCode,
         Integer actualItemCount,
         Double requestCharge,
+        Long opCountPerEvaluation,
+        Long opRetriedCountPerEvaluation,
+        Long globalOpCount,
         CosmosDiagnostics diagnostics,
         Throwable throwable,
         Context context,
@@ -946,6 +997,9 @@ public final class DiagnosticsProvider {
             subStatusCode,
             actualItemCount,
             requestCharge,
+            opCountPerEvaluation,
+            opRetriedCountPerEvaluation,
+            globalOpCount,
             diagnostics,
             throwable)) {
 
