@@ -101,7 +101,7 @@ public class TraceChatCompletionsToolCallSample {
         return sdkBuilder
             .addPropertiesSupplier(() -> {
                 final Map<String, String> properties = new HashMap<>();
-                properties.put("otel.service.name", "samples");
+                properties.put("otel.service.name", "get-weather-temperature-sample");
                 // change to your endpoint address, "http://localhost:4317" is used by default
                 // properties.put("otel.exporter.otlp.endpoint", "http://localhost:4317");
                 return properties;

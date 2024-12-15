@@ -840,7 +840,6 @@
     {
       "filename": "/sdk/ai/**",
       "words": [
-        "GENAI",
         "OTEL",
         "ubinary",
         "UBINARY"
